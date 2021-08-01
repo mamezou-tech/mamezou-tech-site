@@ -12,8 +12,8 @@ description: 'Kubernetesを含むコンテナエコシステムの環境構築�
 1. [GCP GKEクラスタ環境構築](/containers/k8s/tutorial/env/gcp-gke)
 1. [Azure AKSクラスタ環境構築](/containers/k8s/tutorial/env/azure-aks)
 1. [パッケージマネージャ(helm)](/containers/k8s/tutorial/env/helm)
-1. [Ingress Controller - Nginx](/containers/k8s/tutorial/env/ingress-nginx)
-1. [Ingress Controller - ALB](/containers/k8s/tutorial/env/ingress-alb)
+1. [Ingress Controller導入(Nginx編)](/containers/k8s/tutorial/env/ingress-nginx)
+1. [Ingress Controller導入(AWS ALB編)](/containers/k8s/tutorial/env/ingress-alb)
 1. [Ingress TLS証明書管理(Cert Manager)](/containers/k8s/tutorial/env/cert)
 1. [Container Storage(OpenEBS)](/containers/k8s/tutorial/env/storage-openebs)
 

@@ -1,6 +1,6 @@
 ---
 title: ローカルクラスタ環境構築(kubeadm)
-description: Kubernetesを自分のローカル環境にインストールしてみよう
+author: noboru-kudo
 ---
 
 EKS, AKS, GKE, Rancher, OpenShift, Tanzu等、Kubernetesが利用できるディストリビューションはたくさんありますね。  

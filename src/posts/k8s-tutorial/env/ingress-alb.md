@@ -9,12 +9,13 @@ AWSのL7ロードバランサのIngressリソースの実装であるALB Ingress
 
 このハンズオンでは[Ingress]リソースを投入するとALB Ingress Controllerが[AWS Elastic Load Balancing] のALBリソースを作成することを確認する。
 ![](https://i.gyazo.com/a7124857e2ba6fafeb8d7b3737032cb4.png)
+
 ALB Ingress ControllerはIngressの投入を検知するとALBリソースを動的に生成し、ルーティングルールやTargetNodeをプロビジョニングしてくれる。
 さらに今回はexternal-dnsを使って自動でRoute53で公開アドレスを割り当てるところまでやる（目指すところはAWSリソースを手動で作ったりしない）。
 
 
 ## EKSクラスタ環境作成
-基本は[Kubernetesハンズオン-AWS EKSクラスタ環境構築]と同じだけど、いくつかのオプションをつけておくとALBに必要なIAM Policy回りを合わせて付けてくれる。
+基本はAWS EKSクラスタ環境構築と同じだけど、いくつかのオプションをつけておくとALBに必要なIAM Policy回りを合わせて付けてくれる。
 
 - `--alb-ingress-access`: ALBリソースを作成するためにWorkerNodeにPolicyを付けてれる
 - `--external-dns-access`: Route53に対するアクセスPolicy(自動プロビジョニングする)

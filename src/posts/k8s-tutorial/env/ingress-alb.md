@@ -4,7 +4,7 @@ author: noboru-kudo
 ---
 Kubernetesハンズオン-Ingress Controller - Nginxの続き。
 
-AWSのL7ロードバランサのIngressリソースの実装であるALB Ingress Controllerの動作を確認する。  
+AWSのL7ロードバランサのIngressリソースの実装であるALB Ingress Controllerの動作を確認する(以下AWS公式サイトより抜粋)。  
 <https://github.com/kubernetes-sigs/aws-alb-ingress-controller>
 
 このハンズオンでは[Ingress]リソースを投入するとALB Ingress Controllerが[AWS Elastic Load Balancing] のALBリソースを作成することを確認する。
@@ -15,8 +15,10 @@ ALB Ingress ControllerはIngressの投入を検知するとALBリソースを動
 
 ## EKSクラスタ環境作成
 基本は[Kubernetesハンズオン-AWS EKSクラスタ環境構築]と同じだけど、いくつかのオプションをつけておくとALBに必要なIAM Policy回りを合わせて付けてくれる。
-`--alb-ingress-access`: ALBリソースを作成するためにWorkerNodeにPolicyを付けてれる
-`--external-dns-access`: Route53に対するアクセスPolicy(自動プロビジョニングする)
+
+- `--alb-ingress-access`: ALBリソースを作成するためにWorkerNodeにPolicyを付けてれる
+- `--external-dns-access`: Route53に対するアクセスPolicy(自動プロビジョニングする)
+
 ```shell
 CLUSTER_NAME=frieza
 eksctl create cluster \

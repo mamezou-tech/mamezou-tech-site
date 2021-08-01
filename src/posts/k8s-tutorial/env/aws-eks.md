@@ -83,7 +83,7 @@ aws eks describe-cluster --name $CLUSTER_NAME
 
 eksctlは内部的には`eksctl-${CLUSTER_NAME}-cluster`というVPCを作成するCloudFormationスタックと`eksctl-${CLUSTER_NAME}-nodegroup-standard-workers`というWorker(NodeGroup)を構築するCloudFormationスタックが作成されている。
 VPC、EKS(k8sのMaster)、Woker(普通のEC2)を順次作成している。CloudFormationのイベントを見てるとかなり多くのことをやっている（時間が長いのはそれが理由っぽいですね）。
-[[https://gyazo.com/2052e3f22cf37a05f36d36b43be41c93]]
+![](https://i.gyazo.com/2052e3f22cf37a05f36d36b43be41c93.png)
 
 ## 3. クラスタ環境への接続
 

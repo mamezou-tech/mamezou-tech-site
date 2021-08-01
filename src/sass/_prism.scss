@@ -1,33 +1,55 @@
+/**
+ * MIT License
+ * Copyright (c) 2018 Sarah Drasner
+ * Sarah Drasner's[@sdras] Night Owl
+ * Ported by Sara vieria [@SaraVieira]
+ * Added by Souvik Mandal [@SimpleIndian]
+ */
+
 code[class*="language-"],
 pre[class*="language-"] {
-  color: #ABB2BF;
-  background: none;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  color: #d6deeb;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
   word-break: normal;
   word-wrap: normal;
   line-height: 1.5;
+  font-size: 1em;
+
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
+
   -webkit-hyphens: none;
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
 }
 
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-  text-shadow: none;
-  background: #383e49;
+pre[class*="language-"] {
+  padding: 1em;
+  margin: 2rem 0;
+  overflow: auto;
+  border-radius: 0.3em;
+  max-width: calc(100vw - 2rem);
 }
 
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
+pre[class*="language-"]::-moz-selection,
+pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection,
+code[class*="language-"] ::-moz-selection {
   text-shadow: none;
-  background: #9aa2b1;
+  background: rgba(29, 59, 83, 0.99);
+}
+
+pre[class*="language-"]::selection,
+pre[class*="language-"] ::selection,
+code[class*="language-"]::selection,
+code[class*="language-"] ::selection {
+  text-shadow: none;
+  background: rgba(29, 59, 83, 0.99);
 }
 
 @media print {
@@ -36,80 +58,102 @@ code[class*="language-"]::selection, code[class*="language-"] ::selection {
     text-shadow: none;
   }
 }
+
 /* Code blocks */
 pre[class*="language-"] {
   padding: 1em;
-  margin: .5em 0;
+  margin: 0.5em 0;
   overflow: auto;
 }
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-  background: #282c34;
+  color: white;
+  background: #011627;
 }
 
-/* Inline code */
 :not(pre) > code[class*="language-"] {
-  padding: .1em;
-  border-radius: .3em;
+  padding: 0.1em;
+  border-radius: 0.3em;
   white-space: normal;
 }
 
 .token.comment,
 .token.prolog,
-.token.doctype,
 .token.cdata {
-  color: #5C6370;
+  color: rgb(99, 119, 119);
+  font-style: italic;
 }
 
 .token.punctuation {
-  color: #abb2bf;
+  color: rgb(199, 146, 234);
+}
+
+.namespace {
+  color: rgb(178, 204, 214);
+}
+
+.token.deleted {
+  color: rgba(239, 83, 80, 0.56);
+  font-style: italic;
+}
+
+.token.symbol,
+.token.property {
+  color: rgb(128, 203, 196);
+}
+
+.token.tag,
+.token.operator,
+.token.keyword {
+  color: rgb(127, 219, 202);
+}
+
+.token.boolean {
+  color: rgb(255, 88, 116);
+}
+
+.token.number {
+  color: rgb(247, 140, 108);
+}
+
+.token.constant,
+.token.function,
+.token.builtin,
+.token.char {
+  color: rgb(130, 170, 255);
 }
 
 .token.selector,
-.token.tag {
-  color: #e06c75;
+.token.doctype {
+  color: rgb(199, 146, 234);
+  font-style: italic;
 }
 
-.token.property,
-.token.boolean,
-.token.number,
-.token.constant,
-.token.symbol,
 .token.attr-name,
-.token.deleted {
-  color: #d19a66;
+.token.inserted {
+  color: rgb(173, 219, 103);
+  font-style: italic;
 }
 
 .token.string,
-.token.char,
-.token.attr-value,
-.token.builtin,
-.token.inserted {
-  color: #98c379;
-}
-
-.token.operator,
-.token.entity,
 .token.url,
+.token.entity,
 .language-css .token.string,
 .style .token.string {
-  color: #56b6c2;
+  color: rgb(173, 219, 103);
 }
 
+.token.class-name,
 .token.atrule,
-.token.keyword {
-  color: #c678dd;
-}
-
-.token.function {
-  color: #61afef;
+.token.attr-value {
+  color: rgb(255, 203, 139);
 }
 
 .token.regex,
 .token.important,
 .token.variable {
-  color: #c678dd;
+  color: rgb(214, 222, 235);
 }
 
 .token.important,
@@ -119,49 +163,4 @@ pre[class*="language-"] {
 
 .token.italic {
   font-style: italic;
-}
-
-.token.entity {
-  cursor: help;
-}
-
-pre.line-numbers {
-  position: relative;
-  padding-left: 3.8em;
-  counter-reset: linenumber;
-}
-
-pre.line-numbers > code {
-  position: relative;
-}
-
-.line-numbers .line-numbers-rows {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  font-size: 100%;
-  left: -3.8em;
-  width: 3em; /* works for line-numbers below 1000 lines */
-  letter-spacing: -1px;
-  border-right: 0;
-
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-}
-
-.line-numbers-rows > span {
-  pointer-events: none;
-  display: block;
-  counter-increment: linenumber;
-}
-
-.line-numbers-rows > span:before {
-  content: counter(linenumber);
-  color: #5C6370;
-  display: block;
-  padding-right: 0.8em;
-  text-align: right;
 }

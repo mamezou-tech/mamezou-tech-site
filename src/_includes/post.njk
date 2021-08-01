@@ -15,6 +15,10 @@ layout: base.njk
         <span> | </span>
         <span>{{ content | readingTime }} read</span>
       </div>
+      {%- if author %}
+        <span> Author: </span>
+        <span>{{ author | safe }}</span>
+      {% endif %}
     </header>
 
     <main class="post__content">

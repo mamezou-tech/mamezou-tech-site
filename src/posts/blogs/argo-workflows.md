@@ -123,7 +123,7 @@ spec:
           parameters: [{name: message, value: D}]
 ```
 
-dag 宣言の後 tasks の dependencies で先行 task を指定できます。C と B は先行 task に A を 指定しているので並行実行されます(フォーク)。D は先行 task に B と C を指定しているので、両方の完了を待って実行されます (ジョイン)
+dag 宣言の後 tasks の dependencies で先行 task を指定できます。C と B は先行 task に A を 指定しているので並行実行されます(フォーク)。D は先行 task に B と C を指定しているので、両方の完了を待って実行されます(ジョイン)。
 
 実行結果はこのようになります。
 
@@ -223,9 +223,9 @@ spec:
       command: [cat]
       args: [/etc/os-release]
 ```
-withItems で指定したオブジェクト配列を iterate して cat-os-release template を実行します。
+withItems で指定したオブジェクトのリストを iterate して cat-os-release template を実行します。
 
-次に Kubernetes の特性を活かした Argo Workflows の特徴的な機能を見ていきましょう。
+以下 Kubernetes の特性を活かした Argo Workflows の特徴的な機能を見ていきましょう。
 
 コンテナを Daemon として起動する例です([Daemon Containers サンプル](https://github.com/argoproj/argo-workflows/blob/master/examples/README.md#daemon-containers)から)
 
@@ -300,10 +300,10 @@ spec:
           cpu: 100m
 ```
 
-少し長いですが、[InfluxDB](https://www.influxdata.com/)を最初に実行される influx step で起動しています。ここで指定されている influxdb template では `daemon: true` を指定することで、実行される template のスコープで daemon コンテナとして利用できます。後続の step で InfluxDB を初期化し複数の producer が並列でデータを投入します。最後に consumer が投入されたデータを読み出します。このように、実行される template のスコープで常に利用できるコンテナを起動できるので
+少し長いですが、[InfluxDB](https://www.influxdata.com/) を最初に実行される influx step で起動しています。ここで指定されている influxdb template では `daemon: true` を指定することで、実行される template のスコープで daemon コンテナとして利用できます。後続の step で InfluxDB を初期化し複数の producer が並列でデータを投入します。最後に consumer が投入されたデータを読み出します。このように実行される template のスコープで常に利用できるコンテナを起動できるので、
 
 - 開発中の Web アプリケーションを daemon として起動しテストする
-- コンテナレジストリや NPM パッケージレジストリを daemon として起動し、テスト中 に成果物を push / pull する
+- コンテナレジストリや NPM パッケージレジストリを daemon として起動し、ワークフロー実行中に成果物を push / pull する
 
 などの用途が考えられます。
 
@@ -365,7 +365,7 @@ spec:
 
 Docker イメージを使って debian のイメージを docker run しています。通常は Docker daemon が起動していないとダメなのですが、サイドカーとして docker の dind イメージを起動していることで実現しています。
 
-失敗した step のリトライでも Kubernetes の機能がいかせます([Retrying Failed or Errored Steps サンプル](https://github.com/argoproj/argo-workflows/tree/master/examples#retrying-failed-or-errored-steps)から)。
+失敗した step のリトライでも Kubernetes の機能が活かせます([Retrying Failed or Errored Steps サンプル](https://github.com/argoproj/argo-workflows/tree/master/examples#retrying-failed-or-errored-steps)から)。
 
 ```yaml
 # This example demonstrates the use of retry back offs

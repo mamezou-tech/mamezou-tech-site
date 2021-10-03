@@ -97,3 +97,12 @@ hr {
   margin-bottom: 4rem;
   border: 1px solid tdbc-color("secondary");
 }
+
+table {
+  border-collapse: collapse;
+  margin: 1rem;
+}
+
+table, th, td {
+  border: 1px solid grey;
+}

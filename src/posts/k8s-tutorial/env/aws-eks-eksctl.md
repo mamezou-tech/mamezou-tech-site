@@ -1,5 +1,5 @@
 ---
-title: クラスタ環境構築 - AWS EKS(eksctl/CloudFormation)
+title: クラスタ環境構築 - AWS EKS (eksctl)
 author: noboru-kudo
 ---
 

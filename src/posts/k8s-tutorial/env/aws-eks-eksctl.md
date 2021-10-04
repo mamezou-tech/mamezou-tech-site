@@ -5,11 +5,11 @@ author: noboru-kudo
 
 AWSのKubernetesフルマネージドサービスのEKS(Elastic Kubernetes Service)でクラスタ環境を構築してみましょう。
 
-今回クラスタの構築には公式のCLIツールの[eksctl](https://eksctl.io/)を利用します。
+今回クラスタの構築にはAWS公式のCLIツールの[eksctl](https://eksctl.io/)を利用します。
 
-eksctlはWeaveworks社で開発されたGoベースのCLIツールでEKSクラスタの構築・運用を容易にしてくれるツールです。  
-実際の商用で利用するグレードの環境であればAWSの知識は必要になりますが、このツールのおかげでk8sの知識はあるけどAWSインフラのことをよく知らない方でもEKS環境の構築が簡単になりました。  
-eksctlの内部ではCloudFormationスタックを構築・更新していくスタイルになっており、IaCツールとしてCloudFormationを利用することになります。
+eksctlはWeaveworks社で開発されたEKSクラスタの構築・運用を容易にしてくれるCLIツールです。
+このツールはAWSインフラ部分を抽象化してくれるのでAWSのことをよく知らない方でもEKS環境の構築が簡単になりました（実際の商用で利用する環境であればAWSの知識は必要ですが）。  
+eksctlはIaCツールとしてCloudFormationを利用しており、クラスタの運用はスタックを作成・更新していくスタイルになります。
 
 ## 事前準備
 まずはeksctlをローカルマシンにセットアップします(現時点で最新の`0.68.0`を使います)。
@@ -23,19 +23,20 @@ brew install weaveworks/tap/eksctl
 
 また、ローカル環境にインストールできない場合は[Dockerコンテナ](https://hub.docker.com/r/weaveworks/eksctl)を使う方法もあります。
 
-kubectlは[こちら](https://kubernetes.io/docs/tasks/tools/#kubectl)を参照して準備してください。
+kubectlはk8sの操作するための必須ツールです。
+[こちら](https://kubernetes.io/docs/tasks/tools/#kubectl)を参照して準備してください。
 
 ## アクセス許可設定
 eksctlでクラスタの作成をするにはEKSだけでなく、VPCやCloudFormation等様々なアクセス許可をIAMユーザーに付与する必要があります。  
-広範囲のアクセス許可が必要となりますし、将来的にパイプライン上で実行することも踏まえてeksctl専用のIAMユーザーを作成しておくとよいでしょう。
+そのユーザーは広範囲のアクセス許可が必要となりますし、将来的にパイプライン上で実行することも踏まえてeksctl専用のIAMユーザーを作成しておくとよいでしょう。
 
-最小限のポリシーについてはeksctlのドキュメントに記載されていますので、これをマネジメントコンソールからセットアップします。
+最小限のポリシーについてはeksctlのドキュメントに記載されていますので、IAMユーザの作成とポリシーの設定をマネジメントコンソールから行います。
 - <https://eksctl.io/usage/minimum-iam-policies/>
 
 ポリシーを設定したIAMユーザー(eksctl)は以下のようになります。
 ![](https://i.gyazo.com/408a2bb6d88f138bb21976435648d276.png)
 
-作成したIAMユーザーのアクセスキー、シークレットを環境変数に指定します。
+上記で作成したIAMユーザーのアクセスキー、シークレットを環境変数に指定します。
 
 ```shell
 export AWS_ACCESS_KEY_ID=xxxxxxxxxxxxxxx
@@ -44,14 +45,14 @@ export AWS_DEFAULT_REGION=ap-northeast-1
 ```
 
 ## Kubernetesクラスタ環境構築
-ではeksctlを使ってクラスタ環境を作成してみましょう。新規クラスタの構築にはeksctlの`create cluster`サブコマンドを使います。
+それではeksctlを使ってクラスタ環境を作成してみましょう。新規クラスタの構築にはeksctlの`create cluster`サブコマンドを使います。
 
 このコマンドには様々なオプションが用意されており、これらを指定することで詳細なチューニングを行うことができます。
 オプションは[Yamlファイル](https://eksctl.io/usage/schema/)として指定することもできますので、継続的に利用する場合はYamlファイルとして作成してgit管理の対象とするのが望ましいでしょう。
 
 今回はYamlファイルでなく直接コマンドのオプションとして指定します。
 以下のようにシンプルにクラスタ名とIRSA[^1]が使えるようにOIDCプロバイダを有効にしてクラスタを作成します。
-またデフォルトは25分でタイムアウトしますがAWSの状況によってはこれを超えることもあるため長めに指定しておくと良いでしょう。
+またデフォルトは25分でタイムアウトしますが、AWSの状況によってはこれを超えることもあるため長めに指定しておくと良いでしょう。
 
 実運用では必要なキャパシティを満たすWorkerの数(`--nodes`)やインスタンスタイプ(`--node-type`)等を適切に設定する必要があります。
 
@@ -68,6 +69,7 @@ eksctl create cluster --name mz-k8s --with-oidc --timeout 40m
 
 まずはeksctlの動きを見てみます。前述の通りeksctlはIaCツールとしてCloudFormationを利用して各種リソースを作成しています。
 マネジメントコンソールのCloudFormationを見てみると`eksctl-${CLUSTER_NAME}-`というプリフィックスでで複数のスタックが作成されています[^2]。
+
 ![](https://i.gyazo.com/45cca0f45ad278defd180a3d6f25e5f4.png)
 
 [^2]: これらはeksctlのユーティリティコマンド`eksctl utils describe-stacks --name=mz-k8s`でも参照できます。
@@ -89,10 +91,10 @@ eksctl create cluster --name mz-k8s --with-oidc --timeout 40m
 
 設定 -> コンピューティング -> ノードグループと選択すると以下のようにマネージドノードグループの設定をみることができます。
 
-![](https://i.gyazo.com/ef525e73b459f49962d6261f87d0dcdf.png)
+![](https://i.gyazo.com/e0d7f8b83340934503a263bc23526837.png)
 
-今回は特に指定しませんでしたので、eksctlデフォルトの2ノード、インスタンスタイプ`m5.large`でノードグループが編成されていることが分かります。
-この部分はAWSの課金に大きく影響しますので注意しましょう。
+今回は特に指定しませんでしたので、eksctlデフォルトの2ノード、インスタンスタイプ`m5.large`でノードグループが構成されていることが分かります。
+この部分はAWSの費用に大きく影響しますので注意しましょう。
 
 ## クラスタ環境への接続
 
@@ -156,9 +158,9 @@ Kubernetes control plane is running at https://xxxxxxxxxxxxxxxxx.gr7.ap-northeas
 CoreDNS is running at https://xxxxxxxxxxxxxxxxx.gr7.ap-northeast-1.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 ```
 
-k8sのControl PlaneとCoreDNSの接続先情報が表示されました。kubectlはこのControl Planeと接続して各種操作を行っていきます。
+k8sのControl PlaneとCoreDNSの接続先情報が表示されました。kubectlはこのControl Planeと接続して各種リソースの作成・更新等を行います。
 
-最後にWorkerの方を見てみましょう。
+最後にNodeリソースの方を見てみましょう。
 
 ```shell
 kubectl get node -o wide
@@ -170,7 +172,7 @@ ip-192-168-60-212.ap-northeast-1.compute.internal   Ready    <none>   98m   v1.2
 ip-192-168-77-193.ap-northeast-1.compute.internal   Ready    <none>   98m   v1.20.7-eks-135321   192.168.77.193   54.64.218.240   Amazon Linux 2   5.4.144-69.257.amzn2.x86_64   docker://19.3.13
 ```
 
-WorkerのOSはAmazon Linux2、コンテナランタイムはDocker[^5]が使われているようです。
+NodeのOSイメージはAmazon Linux2、コンテナランタイムはDocker[^5]が使われているようです。
 
 [^5]: k8s v1.23ではdocker-shimのサポートが削除される予定ですので新しいバージョンでは変更になると思います。
 
@@ -185,7 +187,7 @@ kubectl run nginx --restart Never --image nginx
 kubectl expose pod nginx --port 80 --type LoadBalancer
 ```
 
-NginxのPodとそれに対応するServiceリソースを作成しました。内容を確認してみましょう。
+NginxのPodとそれに対応するServiceリソースを外部公開のロードバランサーとして作成しました。内容を確認してみましょう。
 
 ```shell
 kubectl get pod,service -l run=nginx
@@ -201,7 +203,7 @@ service/nginx        LoadBalancer   10.100.44.191   xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 service/nginxの`EXTERNAL-IP`の値が公開エンドポイントになります(`CLUSTER-IP`はクラスタ内のもので外部からアクセスはできません)。
 
-内部的にはServiceリソースの作成をEKSが検知するとここにトラフィックをルーティングするためにELBを作成します。
+内部的にはServiceリソースの作成をEKSが検知すると、外部からのトラフィックをルーティングするためのELBを作成します。
 実際にマネジメントコンソールからも確認することができます。
 
 ![](https://i.gyazo.com/bcf096bb54a7af4a7508e6dfa380f1ca.png)

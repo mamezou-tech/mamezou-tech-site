@@ -71,7 +71,8 @@ a:not(.tdbc-button) {
   color: $tdbc-link-color;
 }
 
-code:not([class*="language"]) {
+code:not[class*="language-"],
+pre:not[class*="language-"] {
   display: inline-flex;
   padding: 0.15em;
   background-color: tdbc-color("light");

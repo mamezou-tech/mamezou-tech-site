@@ -12,22 +12,23 @@ eksctlはWeaveworks社で開発されたEKSクラスタの構築・運用を容�
 eksctlはIaCツールとしてCloudFormationを利用しており、クラスタの運用はスタックを作成・更新していくスタイルになります。
 
 ## 事前準備
-まずはeksctlをローカルマシンにセットアップします(現時点で最新の`0.68.0`を使います)。
 
-```shell
-brew tap weaveworks/tap
-brew install weaveworks/tap/eksctl
-```
+以下の3つのツールを事前にセットアップしましょう。
 
-上記はHomeBrewを利用していますが、Mac以外の場合は[こちら](https://eksctl.io/introduction/#installation)を参考にインストールすればOKです。
+### eksctl
+本記事でメインに利用します。現時点で最新の`0.68.0`を使います。
+ローカル環境に応じて[こちら](https://eksctl.io/introduction/#installation)よりセットアップしてください。
 
-また、ローカル環境にインストールできない場合は[Dockerコンテナ](https://hub.docker.com/r/weaveworks/eksctl)を使う方法もあります。
+ローカル環境にインストールできない場合は[Dockerコンテナ](https://hub.docker.com/r/weaveworks/eksctl)を使う方法もあります。
 
+### kubectl
 kubectlはk8sの操作するための必須ツールです。[こちら](https://kubernetes.io/docs/tasks/tools/#kubectl)を参照して準備してください。
 
-またユーザー認証でAWS CLI(v2)も利用しますのでv1利用または未セットアップの場合は[こちら](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/install-cliv2.html)を参考にインストールしてください。
+### AWS CLI
+ユーザー認証でAWS CLI(v2)も利用します。
+v1利用または未セットアップの場合は[こちら](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/install-cliv2.html)を参考にインストールしてください。
 
-## アクセス許可設定
+## eksctlのアクセス許可設定
 eksctlでクラスタの作成をするにはEKSだけでなく、VPCやCloudFormation等様々なアクセス許可をIAMユーザーに付与する必要があります。  
 そのユーザーは広範囲のアクセス許可が必要となりますし、将来的にパイプライン上で実行することも踏まえてeksctl専用のIAMユーザーを作成しておくとよいでしょう。
 
@@ -177,7 +178,7 @@ NodeのOSイメージはAmazon Linux2、コンテナランタイムはDocker[^5]
 
 [^5]: k8s v1.23ではdocker-shimのサポートが削除される予定ですので新しいバージョンでは変更になると思います。
 
-## RBAC設定
+## 開発者ユーザーのアクセス許可
 現在の状態だとeksctlを実行したIAMユーザー(`eksctl`)のみがアクセス可能なクラスタです。
 セキュリティ上の理由により`eksctl`ユーザー環境構築用に限定し、各開発者に割り当てたIAMユーザーを使う必要があります。
 EKSでは`aws-auth`というConfigMapリソースでAWSのIAM認証とk8sクラスタのRBACを紐付けることで一般の開発者がkubectlツールでクラスタにアクセスできるようになります。
@@ -185,8 +186,6 @@ EKSでは`aws-auth`というConfigMapリソースでAWSのIAM認証とk8sクラ�
 まず、初期状態の`aws-auth`の内容を見てみましょう。
 ```shell
 eksctl get iamidentitymapping --cluster mz-k8s
-# または直接kubectlでも可
-# kubectl get cm aws-auth -n kube-system -o yaml
 ```
 
 ```
@@ -194,7 +193,9 @@ ARN												USERNAME				GROUPS
 arn:aws:iam::xxxxxxxxxxx:role/eksctl-mz-k8s-nodegroup-ng-1b7d5d-NodeInstanceRole-1ILPNQD3IML3I	system:node:{{EC2PrivateDNSName}}	system:bootstrappers,system:nodes
 ```
 
-1件のみ(`username: system:node:{{EC2PrivateDNSName}}`)設定されています。これはマネージドノードグループがNode管理やPodのスケジューリング等のインフラ管理タスクを実行する上で必要なもので、これを削除・変更してはいけません。
+クラスタ構築直後は1件のみ(`username: system:node:{{EC2PrivateDNSName}}`)設定されています[^6]。これはマネージドノードグループがNode管理やPodのスケジューリング等のインフラ管理タスクを実行する上で必要なもので、これを削除・変更してはいけません。
+
+[^6]: EKS on Fargateでセットアップした場合はFargateプロファイルについて設定されます。
 
 EKSではこれにクラスタにアクセスするIAM UserまたはRoleを追加することで該当の開発者がクラスタにアクセスできるようになります。
 実態は通常のk8sのConfigMapリソースなので直接更新してもよいのですが、eksctlには専用のサブコマンドが用意されていますのでそちらを利用しましょう。
@@ -368,7 +369,7 @@ service/nginxの`EXTERNAL-IP`の値が公開エンドポイントになります
 
 NginxのWelcomeページにアクセスできれば確認完了です。
 
-## 6. クリーンアップ
+## クリーンアップ
 EKSはControl Planeだけでなく、マネージドノード自体の課金もありますので使わなくなったものは削除しましょう。
 
 まずは先程作成したPod/Serviceリソースを削除しておきます。
@@ -379,9 +380,9 @@ kubectl delete svc/nginx pod/nginx
 
 LoadBalancerタイプのServiceリソースが削除されるとEKSはこれを検知して未使用になったELBリソースを削除します。
 
-マネジメントコンソールからELBが削除されたことを確認した後[^6]は、eksctlユーザーのターミナルに戻って以下のコマンドで全てのリソースを削除してしまいましょう。
+マネジメントコンソールからELBが削除されたことを確認した後[^7]は、eksctlユーザーのターミナルに戻って以下のコマンドで全てのリソースを削除してしまいましょう。
 
-[^6]: 以前は事前に削除しないと`eksctl delete cluster`で失敗しましたが最近のeksctlはk8s内で自動作成したELBも削除してくれるようです。
+[^7]: 以前は事前に削除しないと`eksctl delete cluster`で失敗しましたが最近のeksctlはk8s内で自動作成したELBも削除してくれるようです。
 
 ```shell
 # VPC,EKS削除

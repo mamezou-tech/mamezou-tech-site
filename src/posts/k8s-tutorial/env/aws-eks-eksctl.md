@@ -236,7 +236,7 @@ roleRef:
 kubectl get cm aws-auth -n kube-system -o yaml
 ```
 
-```
+```yaml
 # 一部省略/整形
 apiVersion: v1
 kind: ConfigMap

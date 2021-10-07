@@ -23,14 +23,15 @@ brew install weaveworks/tap/eksctl
 
 また、ローカル環境にインストールできない場合は[Dockerコンテナ](https://hub.docker.com/r/weaveworks/eksctl)を使う方法もあります。
 
-kubectlはk8sの操作するための必須ツールです。
-[こちら](https://kubernetes.io/docs/tasks/tools/#kubectl)を参照して準備してください。
+kubectlはk8sの操作するための必須ツールです。[こちら](https://kubernetes.io/docs/tasks/tools/#kubectl)を参照して準備してください。
+
+またユーザー認証でAWS CLI(v2)も利用しますのでv1利用または未セットアップの場合は[こちら](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/install-cliv2.html)を参考にインストールしてください。
 
 ## アクセス許可設定
 eksctlでクラスタの作成をするにはEKSだけでなく、VPCやCloudFormation等様々なアクセス許可をIAMユーザーに付与する必要があります。  
 そのユーザーは広範囲のアクセス許可が必要となりますし、将来的にパイプライン上で実行することも踏まえてeksctl専用のIAMユーザーを作成しておくとよいでしょう。
 
-最小限のポリシーについてはeksctlのドキュメントに記載されていますので、IAMユーザの作成とポリシーの設定をマネジメントコンソールから行います。
+必要最低限のポリシーについてeksctlのドキュメントに記載されていますので、IAMユーザの作成とポリシーの設定をマネジメントコンソールから行います。
 - <https://eksctl.io/usage/minimum-iam-policies/>
 
 ポリシーを設定したIAMユーザー(eksctl)は以下のようになります。
@@ -176,9 +177,161 @@ NodeのOSイメージはAmazon Linux2、コンテナランタイムはDocker[^5]
 
 [^5]: k8s v1.23ではdocker-shimのサポートが削除される予定ですので新しいバージョンでは変更になると思います。
 
+## RBAC設定
+現在の状態だとeksctlを実行したIAMユーザー(`eksctl`)のみがアクセス可能なクラスタです。
+セキュリティ上の理由により`eksctl`ユーザー環境構築用に限定し、各開発者に割り当てたIAMユーザーを使う必要があります。
+EKSでは`aws-auth`というConfigMapリソースでAWSのIAM認証とk8sクラスタのRBACを紐付けることで一般の開発者がkubectlツールでクラスタにアクセスできるようになります。
+
+まず、初期状態の`aws-auth`の内容を見てみましょう。
+```shell
+eksctl get iamidentitymapping --cluster mz-k8s
+# または直接kubectlでも可
+# kubectl get cm aws-auth -n kube-system -o yaml
+```
+
+```
+ARN												USERNAME				GROUPS
+arn:aws:iam::xxxxxxxxxxx:role/eksctl-mz-k8s-nodegroup-ng-1b7d5d-NodeInstanceRole-1ILPNQD3IML3I	system:node:{{EC2PrivateDNSName}}	system:bootstrappers,system:nodes
+```
+
+1件のみ(`username: system:node:{{EC2PrivateDNSName}}`)設定されています。これはマネージドノードグループがNode管理やPodのスケジューリング等のインフラ管理タスクを実行する上で必要なもので、これを削除・変更してはいけません。
+
+EKSではこれにクラスタにアクセスするIAM UserまたはRoleを追加することで該当の開発者がクラスタにアクセスできるようになります。
+実態は通常のk8sのConfigMapリソースなので直接更新してもよいのですが、eksctlには専用のサブコマンドが用意されていますのでそちらを利用しましょう。
+
+マネジメントコンソールから別途IAMユーザー(noboru-kudo)を作成した後、以下のコマンドでクラスタアクセスを許可するようにします。
+
+```shell
+eksctl create iamidentitymapping --cluster mz-k8s \
+  --arn arn:aws:iam::xxxxxxxxxxx:user/noboru-kudo \
+  --group system:masters \
+  --username noboru-kudo
+```
+
+`arn`オプションには作成したIAMユーザーのARNを指定しましょう（マネジメントコンソールから参照できます）。
+`username`は任意ですが分かりやすさのためIAMユーザー名に合わせるのが無難でしょう。スイッチロールで他のアカウントのIAMユーザを指定する場合はそのRoleのARNを指定します。
+`group`にはk8sのGroup名を指定します。今回は`system:masters`（管理者権限）を割り当てていますが、実運用では必要最低限のアクセス許可を持ったClusterRole/RoleとClusterRoleBinding/RoleBindingを作成し、割り当てるようにしましょう([k8sのRBACガイド](https://kubernetes.io/docs/reference/access-authn-authz/rbac/))。
+例えば、以下のような参照用の権限を作成した場合は`system:masters`ではなく`readonly`を指定します。
+
+```yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: readonly
+subjects:
+- kind: Group
+  name: readonly
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+```
+
+それでは実行結果を見てみましょう。もう一度aws-authの中身を参照します。今度は直接ConfigMapリソースの中身を見てみます。
+
+```shell
+kubectl get cm aws-auth -n kube-system -o yaml
+```
+
+```
+# 一部省略/整形
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::xxxxxxxxxxxx:role/eksctl-mz-k8s-nodegroup-ng-1b7d5d-NodeInstanceRole-1ILPNQD3IML3I
+      username: system:node:{{EC2PrivateDNSName}}
+  mapUsers: |
+    - groups:
+      - system:masters
+      userarn: arn:aws:iam::xxxxxxxxxxxx:user/noboru-kudo
+      username: noboru-kudo
+```
+
+`mapUsers`セクションに今回追加したIAMユーザーが登録されていることが分かります。
+別のターミナルを開いて登録したIAMユーザーでクラスタが参照できることを確認しましょう。
+まずAWS CLIのバージョンがv2以降であることを確認しましょう(v1ではこの手順は機能しません)。
+
+```shell
+aws --version
+```
+
+```
+aws-cli/2.2.44 Python/3.8.8 Darwin/20.6.0 exe/x86_64 prompt/off
+```
+
+続いて追加したユーザーのAWS CLIの設定を完了させましょう。
+作成したIAMユーザーのアクセスキー、シークレットをセットアップしてください。
+
+```shell
+aws configure
+```
+
+ではEKSクラスタの認証(kubeconfig)をセットアップしましょう。以下のawsコマンドでkubeconfigが更新されます。
+
+```shell
+aws eks update-kubeconfig --name mz-k8s
+```
+
+先程同様にkubeconfigの内容を見てみましょう。
+```shell
+kubectl config view
+```
+
+```yaml
+# 必要な部分のみ抜粋・編集
+apiVersion: v1
+kind: Config
+clusters:
+  - cluster:
+      certificate-authority-data: DATA+OMITTED
+      server: https://xxxxxxxxxxxxxxxxxxxxxxxxxxxx.yl4.ap-northeast-1.eks.amazonaws.com
+    name: arn:aws:eks:ap-northeast-1:xxxxxxxxxxxx:cluster/mz-k8s
+contexts:
+  - context:
+      cluster: arn:aws:eks:ap-northeast-1:xxxxxxxxxxxx:cluster/mz-k8s
+      user: arn:aws:eks:ap-northeast-1:xxxxxxxxxxxx:cluster/mz-k8s
+    name: arn:aws:eks:ap-northeast-1:xxxxxxxxxxxx:cluster/mz-k8s
+current-context: arn:aws:eks:ap-northeast-1:xxxxxxxxxxxx:cluster/mz-k8s
+users:
+  - name: arn:aws:eks:ap-northeast-1:xxxxxxxxxxxx:cluster/mz-k8s
+    user:
+      exec:
+        apiVersion: client.authentication.k8s.io/v1alpha1
+        args:
+          - --region
+          - ap-northeast-1
+          - eks
+          - get-token
+          - --cluster-name
+          - mz-k8s
+        command: aws
+        env:
+          - name: AWS_PROFILE
+            value: default
+        interactiveMode: IfAvailable
+        provideClusterInfo: false
+```
+
+`aws eks get-token`コマンドでIAMユーザーEKSクラスタの認証ステップが登録されていることが確認できます。
+以下のコマンドで先程同様にEKSクラスタの情報が表示されていればセットアップ完了です。
+
+```shell
+kubectl cluster-info
+```
+
+以降の動作確認は引き続きこのIAMユーザーで実施します。
+
 ## 動作確認
 
-作成したクラスタ環境で簡単に動作確認してみましょう。Nginxのコンテナをデプロイしてみます。
+最後に作成したクラスタ環境とIAMユーザーで簡単に動作確認してみましょう。Nginxのコンテナをデプロイしてみます。
 
 ```shell
 # Podリソース作成
@@ -209,39 +362,11 @@ service/nginxの`EXTERNAL-IP`の値が公開エンドポイントになります
 ![](https://i.gyazo.com/bcf096bb54a7af4a7508e6dfa380f1ca.png)
 
 このELBがマネージドノードに対して外部からのリクエストをルーティングしていることが分かります。
-それではこの公開エンドポイントに対してcurlでアクセスしてみましょう。
+それではこの公開エンドポイントに対してcurlでアクセスしてみましょう(DNSが伝播されるまで少し時間がかかりますので接続できない場合はしばらく待ってからリトライしてください)。
 
-```shell
-curl xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.ap-northeast-1.elb.amazonaws.com
-```
+![](https://i.gyazo.com/9b20756707bb6ba5dc27b7368ccfc012.png)
 
-```
-<!DOCTYPE html>
-<html>
-<head>
-<title>Welcome to nginx!</title>
-<style>
-html { color-scheme: light dark; }
-body { width: 35em; margin: 0 auto;
-font-family: Tahoma, Verdana, Arial, sans-serif; }
-</style>
-</head>
-<body>
-<h1>Welcome to nginx!</h1>
-<p>If you see this page, the nginx web server is successfully installed and
-working. Further configuration is required.</p>
-
-<p>For online documentation and support please refer to
-<a href="http://nginx.org/">nginx.org</a>.<br/>
-Commercial support is available at
-<a href="http://nginx.com/">nginx.com</a>.</p>
-
-<p><em>Thank you for using nginx.</em></p>
-</body>
-</html>
-```
-
-NginxのWelcomeページにアクセスできていることが分かります。
+NginxのWelcomeページにアクセスできれば確認完了です。
 
 ## 6. クリーンアップ
 EKSはControl Planeだけでなく、マネージドノード自体の課金もありますので使わなくなったものは削除しましょう。
@@ -253,7 +378,8 @@ kubectl delete svc/nginx pod/nginx
 ```
 
 LoadBalancerタイプのServiceリソースが削除されるとEKSはこれを検知して未使用になったELBリソースを削除します。
-マネジメントコンソールからELBが削除されたことを確認した後[^6]はeksctlで一気に削除してしまいましょう。
+
+マネジメントコンソールからELBが削除されたことを確認した後[^6]は、eksctlユーザーのターミナルに戻って以下のコマンドで全てのリソースを削除してしまいましょう。
 
 [^6]: 以前は事前に削除しないと`eksctl delete cluster`で失敗しましたが最近のeksctlはk8s内で自動作成したELBも削除してくれるようです。
 
@@ -266,3 +392,4 @@ eksctl delete cluster --name mz-k8s
 参照資料
 
 - AWSドキュメント: <https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/getting-started-eksctl.html>
+- eksctlドキュメント：<https://eksctl.io/>

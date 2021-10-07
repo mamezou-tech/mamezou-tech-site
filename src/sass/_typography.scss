@@ -72,18 +72,20 @@ a:not(.tdbc-button) {
 }
 
 pre:not([class*="language"]) {
-  font-size: 0.75em;
+  font-size: 1em;
+  margin: 0.5em;
 }
 
 code:not([class*="language"]) {
   display: inline-flex;
-  padding: 0.15em;
+  padding: 0.2em;
+  margin: 0.1em;
   background-color: tdbc-color("light");
   color: tdbc-color("gray");
   font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   border: 1px solid scale-color(tdbc-color("gray"), $lightness: 50%);
   border-radius: 2px;
-  font-size: 0.75em;
+  font-size: 1em;
   line-height: 1.1;
 }
 

@@ -6,6 +6,7 @@ const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const markdownIt = require("markdown-it");
 const markdownItAnchor = require("markdown-it-anchor");
+const markdownItFootNote = require("markdown-it-footnote");
 const packageVersion = require("./package.json").version;
 const readingTime = require("eleventy-plugin-reading-time");
 
@@ -109,6 +110,7 @@ module.exports = function (eleventyConfig) {
   /* Markdown Overrides */
   let markdownLibrary = markdownIt({
     html: true,
+    breaks: true,
   }).use(markdownItAnchor, {
     permalink: true,
     permalinkClass: "tdbc-anchor",
@@ -121,7 +123,7 @@ module.exports = function (eleventyConfig) {
         .toLowerCase()
         .replace(/[\s+~\/]/g, "-")
         .replace(/[().`,%·'"!?¿:@*]/g, ""),
-  });
+  }).use(markdownItFootNote);
   eleventyConfig.setLibrary("md", markdownLibrary);
 
   return {

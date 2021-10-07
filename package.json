@@ -35,6 +35,7 @@
     "luxon": "^1.25.0",
     "markdown-it": "^11.0.0",
     "markdown-it-anchor": "^5.2.7",
+    "markdown-it-footnote": "^3.0.3",
     "npm-run-all": "^4.1.5",
     "postcss-cli": "^7.1.2",
     "sass": "^1.26.10",
@@ -47,5 +48,6 @@
   },
   "browserslist": [
     "last 2 versions"
-  ]
+  ],
+  "dependencies": {}
 }

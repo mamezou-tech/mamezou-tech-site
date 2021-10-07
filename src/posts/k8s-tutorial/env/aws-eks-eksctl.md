@@ -113,7 +113,7 @@ kubectl config view
 
 以下に必要な部分を抜粋・整形したものを載せます。
 
-```
+```yaml
 apiVersion: v1
 kind: Config
 clusters:
@@ -193,7 +193,7 @@ ARN												USERNAME				GROUPS
 arn:aws:iam::xxxxxxxxxxx:role/eksctl-mz-k8s-nodegroup-ng-1b7d5d-NodeInstanceRole-1ILPNQD3IML3I	system:node:{{EC2PrivateDNSName}}	system:bootstrappers,system:nodes
 ```
 
-クラスタ構築直後は1件のみ(`username: system:node:{{EC2PrivateDNSName}}`)設定されています[^6]。
+クラスタ構築直後は1件のみ設定されています[^6]。
 これはマネージドノードグループがNode管理やPodのスケジューリング等のインフラタスクを実行する上で必要なもので、これを削除・変更してはいけません(確実にクラスタ壊れます)。
 
 [^6]: EKS on Fargateでセットアップした場合はFargateプロファイルについて設定されます。
@@ -235,7 +235,7 @@ roleRef:
 ```shell
 kubectl get cm aws-auth -n kube-system -o yaml
 ```
-
+{% raw %}
 ```yaml
 # 一部省略/整形
 apiVersion: v1
@@ -256,6 +256,7 @@ data:
       userarn: arn:aws:iam::xxxxxxxxxxxx:user/noboru-kudo
       username: noboru-kudo
 ```
+{% endraw %}
 
 `mapUsers`セクションに今回追加したIAMユーザーが登録されていることが分かります。
 別のターミナルを開いて登録したIAMユーザーでクラスタが参照できることを確認しましょう。

@@ -8,10 +8,7 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 ### 環境構築編
 #### クラスタ環境構築
 1. [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl)
-2. AWS EKS(terraform)
-
-#### RBAC
-1. [ユーザー管理](/containers/k8s/tutorial/ops/user)
+2. [AWS EKS(Terraform)](/containers/k8s/tutorial/env/aws-eks-terraform)
 
 #### Ingress
 1. [Nginx Ingress Controller](/containers/k8s/tutorial/env/ingress-nginx)

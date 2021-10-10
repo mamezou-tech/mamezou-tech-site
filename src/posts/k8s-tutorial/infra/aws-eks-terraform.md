@@ -183,7 +183,7 @@ module "eks" {
       userarn  = "arn:aws:iam::xxxxxxxxxxxx:user/noboru-kudo"
       username = "noboru-kudo"
       groups   = ["system:masters"]
-    },
+    }
   ]
 }
 ```

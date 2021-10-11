@@ -12,8 +12,8 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 
 #### Ingress
 1. [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
-2. [AWS LoadBalancer Controller](/containers/k8s/tutorial/ingress/ingress-alb)
-3. [Ingress TLS証明書管理(Cert Manager)](/containers/k8s/tutorial/ingress/cert)
+2. AWS LoadBalancer Controller Coming Soon!
+3. Ingress TLS証明書管理(Cert Manager) Coming Soon!
 
 #### コンテナストレージ
 1. AWS EBS Coming Soon!

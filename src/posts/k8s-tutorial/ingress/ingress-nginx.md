@@ -7,9 +7,9 @@ Kubernetesで提供されるL7 ロードバランサのIngressリソースを導
 
 Ingressとはクラス環境内にデプロイされたアプリに対してL7のロードバランシングを行うKubernetesの機能のことです([こちら](https://kubernetes.io/docs/concepts/services-networking/ingress/)参照)。
 
-環境構築編では動作確認用にServiceリソースをLoadBalancerとして定義することでL4ロードバランサーを作成(実態はELB)しましたが、この方法はクラスタ環境が成長して、様々なアプリケーションで利用されるようになるとエンドポイントごとにロードバランサーを配置する必要があり、柔軟性やコストの観点で劣ります。
+環境構築編では動作確認用にServiceリソースをLoadBalancerとして定義することでL4ロードバランサーを作成(実態はELB)しましたが、この方法はルーティング機能が貧弱だったり、クラスタ環境が成長して様々なアプリケーションで利用されるようになるとエンドポイントごとにロードバランサーを配置する必要がある等、柔軟性やコストの観点で劣ります。
 Ingressを利用すると、Ingressのマニフェストにルーティングのルールを記述することで、1つのロードバランサーで様々なアプリケーションへのエンドポイントを提供することが可能となります。
-実際のプロジェクトでもこの方法でサービスを公開するのではなく、Ingressリソースを利用することが多いかと思います。
+実際のプロジェクトでもこのIngressリソースを利用して外部にアプリケーションを公開することが多いかと思います。
 
 Ingressリソース自体はインターフェース(マニフェスト構造)のみを規定していて、その実装であるIngress Controller(Kubernetesのカスタムコントローラ)が実際のトラフィックルーティングを担います。
 Ingress Controllerは様々なものがあり、利用可能なものは以下の公式ドキュメントに記載されています。
@@ -53,8 +53,8 @@ helm repo update
 
 [^3]: `helm show values ingress-nginx/ingress-nginx`コマンドでも参照できます。
 
-ほとんどのものはデフォルトで構いませんが、Nginxは2台のレプリカ、AWSリソースとしてNLB(Network LoadBalancer)[^4]を使うようにインストールしましょう。
-任意の名前(ここでは`values.yaml`)でYAMLファイルを作成し、以下の内容を記述しましょう。
+ほとんどのものはデフォルトで構いませんが、Nginxは2台のレプリカ、AWSリソースとしてNLB(Network LoadBalancer)[^4]を使うようにセットアップしましょう。
+任意の名前(ここでは`values.yaml`)でYAMLファイルを作成し、以下の内容を記述します。
 
 [^4]: 何も指定しない場合は前世代のELBであるCLB(Classic LoadBalancer)として作成されます。L7レイヤの機能はNginxが担うため、AWSのELBとしてはNLBを使うのが望ましいでしょう。
 
@@ -82,8 +82,8 @@ helm upgrade ingress-nginx ingress-nginx/ingress-nginx \
 ```
 
 上記コマンドでhelmはHelmチャートのテンプレートとパラメータファイル(`--values`)からk8sのマニフェストを生成し、クラスタ環境に反映します。
-また、作成するNamespaceは`ingress-nginx`で存在しない場合は新たに作成するように指定しています(`--namespace`/`--create-namespace`)。
-`--version`ではHelmチャートのバージョンを指定しています。Helmチャートは時間とともにバージョンアップされていきますので、予期しないアップデート(デフォルトは最新)を避けるために必ずバージョン[^5]を指定しておくようにするのが望ましいでしょう。
+また、作成するNamespaceは`ingress-nginx`で、存在しない場合は新たに作成するように指定しています(`--namespace`/`--create-namespace`)。
+`--version`ではNGINX Ingress ControllerのHelmチャートのバージョンを指定しています。Helmチャートは時間とともにバージョンアップされていきますので、予期しないアップデート(デフォルトは最新)を避けるために必ずバージョン[^5]を指定しておくようにするのが望ましいでしょう。
 
 [^5]: バージョン情報はIngressControllerのGithubや[ArtifactHub](https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx)でも確認できます。
 
@@ -196,7 +196,7 @@ I1010 04:07:32.808211       6 controller.go:169] "Backend successfully reloaded"
 I1010 04:07:32.808361       6 controller.go:180] "Initial sync, sleeping for 1 second"
 ```
 
-2台のNginxがクラスタ構成で起動している様子が分かります。これで準備は完了です。
+NGINX Ingress Controllerがクラスタ構成で起動している様子が分かります。これで準備は完了です。
 
 ## サンプルアプリのデプロイ
 
@@ -325,24 +325,24 @@ spec:
       port: 80
 ```
 
-少し長いですが内容は非常に単純です。前述の通りここの内容については重要ではありませんのでコピペして構いません。
+少し長いですが内容は非常に単純です。前述の通りここの内容については重要ではありませんのでコピペで構いません。
 
 ### ConfigMap(`server`)
-Node.jsのスクリプト本体。Node.jsのサーバーを起動し、リクエストが来た際にはPod名と固定文字列を返します。
+Node.jsのスクリプト本体。Node.jsのサーバーを起動し、リクエストが来た際には環境変数に保存されたPod名と固定文字列を返します。
 
 ### Deployment(`app1`/`app2`)
 2種類のアプリケーションそれぞれをDeploymentリソースとして作成します。ポイントは以下のとおりです。
 
-- レプリカ数2の冗長構成
+- レプリカ数2の冗長構成(`replicas`)
 - 先程のConfigMapをマウント(`volueme`/`volumeMounts`)
 - Pod起動時にNode.jsの`node`コマンド(Deploymentリソースの`command`フィールド参照)でスクリプト実行
-- 環境変数としてPod名をデプロイ時に設定(`env`フィールド)
+- 環境変数としてPod名を設定(`env`フィールド)
 
 ### Service(`app1`/`app2`)
-最後にそれらをServiceリソースとして公開しています。前回のクラスタ環境構築と違う点として`type`を指定していません。
+最後に上記をServiceリソースとして公開しています。前回のクラスタ環境構築と違う点として`type`を指定していません。
 これにより、そのServiceはクラスタ内でのみアクセス可能なエンドポイントを提供するClusterIPとして作成されます。
 もちろん`EXTERNAL-IP`は設定されませんので、`type=LoadBalancer`としたときのようにELBが生成されることはありません。
-このように外部公開用のServiceはエッジ部分のみに限定して、一般的にServiceはClusterIPとして公開することが多くなります。
+このように外部公開用のServiceはエッジ部分のみに限定して、通常のServiceはClusterIPとして公開することが多くなります。
 
 kubectlでこれらのリソースをデプロイしましょう。
 
@@ -380,8 +380,8 @@ app1/app2でそれぞれPodが2つずつ起動して実行中であることが�
 
 ## Ingressリソース作成
 
-では、作成した2つの素晴らしいアプリを外部に公開するためのIngressリソースを作成しましょう。
-今回はドメインやDNSは作成せずに、仮想的なドメインに対して静的にマッピングしてローカル環境でのみ動作するようにしましょう。
+では、作成した2つの素晴らしい(?)アプリを外部に公開するためのIngressリソースを作成しましょう。
+今回はドメインやDNSは作成せずに、任意のドメインに対して動作シミュレーションするようにします。
 
 任意のYAMLファイル(ここでは`ingress.yaml`としました)を作成し、以下の内容を記述します。
 
@@ -422,7 +422,7 @@ spec:
 最も重要な部分はその下の`rules`フィールド配下です。ここにホスト名、パスに対してルーティングするServiceの名前を記述します。
 これにもとづいてIngress ControllerはNginxの設定ファイル(nginx.conf)を更新し、アプリケーションへのリクエストを転送するようになります。
 上記では2つのホスト名(`sample-app1.mamezou-tech.com`/`sample-app2.mamezou-tech.com`)に対してそれぞれapp1/app2へとリクエストを流すように指定しています。
-もちろんNginxはこれだけでなくリバプロとして数多くの機能を持っていますので、別途`annotations`フィールド[^10]やConfigMap[^11]を更新することで様々なカスタマイズが利用可能です。
+もちろんNginxはこれだけでなくリバースプロキシーとして数多くの機能を持っていますので、別途`annotations`フィールド[^10]やConfigMap[^11]を更新することで様々なカスタマイズを行うことができます。
 
 [^8]: Ingress Controllerは複数配置することもありますので、以前は`annotations`でどのIngress Controllerを使用するかを指定していましたが、k8s 1.19からは新たに`IngressClass`というリソースが追加され、これを指定するように変更されています。
 [^9]: 対応するIngressClassが存在しない場合(`kubectl get ingressClass -n ingress-nginx`)は、[こちら](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/)を参考に別途作成してください。
@@ -464,7 +464,7 @@ Events:
 Rulesのセクションを確認するとそれぞれのホスト・パスがService(app1は`app1:80`)およびその背後のPod(app1は`192.168.29.81:8080,192.168.52.46:8080`)に対してのルーティングが設定されていることが分かります。
 
 Nginxに詳しい方は実際のnginx.confの中身が気になるところでしょう。
-Nginx Controllerは以下のようにIngress ControllerのPod内の`/etc/nginx/nginx.conf`を見ると参照することができます。
+以下のようにIngress ControllerのPod内の`/etc/nginx/nginx.conf`を見ると実際のNginxの設定ファイルを参照することができます。
 
 ```shell
 kubectl exec -n ingress-nginx \
@@ -694,7 +694,10 @@ Percentage of the requests served within a certain time
 kubectl delete -f app.yaml
 # Ingress
 kubectl delete -f ingress.yaml
+# Ingress Controller
 helm uninstall ingress-nginx -n ingress-nginx
 ```
 
 クラスタ環境については環境構築編のクリーンアップ手順を参照してください。
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/env/aws-eks-terraform#クリーンアップ)

@@ -19,7 +19,7 @@ Ingress Controllerは様々なものがあり、利用可能なものは以下�
 NGINX Ingress ControllerはおそらくIngress Controllerでもっともよく知られているもので、その名の通り[Nginx](https://nginx.org/en/docs/)をロードバランサーとして利用して各アプリケーションへのルーティングを実現します。
 
 完成形は以下のようなイメージになります。
-![](https://i.gyazo.com/f825d65805ed42ef735d16728ec924be.png)
+![](https://i.gyazo.com/78e1811be6831f6e561f781b2bd513c0.png)
 
 ## 事前準備
 

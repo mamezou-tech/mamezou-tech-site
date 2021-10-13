@@ -1,6 +1,5 @@
 ---
-title: Kubernetes ネイティブなワークフローエンジン Argo Workflows について
-description: Kubernetes ネイティブなワークフローエンジン Argo workflow について紹介します。
+title: Kubernetes ネイティブなワークフローエンジン Argo Workflows
 author: masahiro-kondo
 ---
 
@@ -75,7 +74,7 @@ spec:
       args: ["{{inputs.parameters.message}}"]
 ```
 
-ワークフロー定義は、Kubernetes の manifest になっています。kind で `Workflow` を指定し、entrypoint となる template を呼び出します。template はネストでき、再利用ができます。template の記述自体は、わかりやすいシンタックスの YAML であり、GitHub Actions などのモダンなワークフローの利用経験があれば、さほど違和感なく読み書きできると思います。
+ワークフロー定義は、Kubernetes の manifest になっています。kind で `Workflow` を指定します。Workflow は [CRD](crd) です。spec で entrypoint となる template を呼び出します。template はネストでき、再利用ができます。template の記述自体は、わかりやすいシンタックスの YAML であり、GitHub Actions などのモダンなワークフローの利用経験があれば、さほど違和感なく読み書きできると思います。
 
 トップレベルの template は hello-hello-hello であり、これが Workflow manifest の spec/entorypoint に書かれているので、steps が実行されます。
 

@@ -1,7 +1,7 @@
 ---
 title: Kubernetes ネイティブなワークフローエンジン Argo Workflows について
 description: Kubernetes ネイティブなワークフローエンジン Argo workflow について紹介します。
-author: 近藤正裕
+author: masahiro-kondo
 ---
 
 [Argo Workflows](https://argoproj.github.io/argo-workflows/) は Kubernetes で動作するワークフローエンジンです。コンテナイメージを利用してジョブを記述でき、Kubernetes 上でそのまま実行できます。ワークフローというと、業務プロセスを実行する BPM エンジンを連想される方も多いと思いますが、Argo Workflows は GitHub Actions などと同様、CI/CD などのワークフロー(ジョブ)を記述・実行できるエンジンです。Kubernetes で動作する機械学習の OSS スイートである [Kubeflow](https://www.kubeflow.org/) でも機械学習パイプラインを実行するためのエンジンとして採用されています。
@@ -18,7 +18,12 @@ author: 近藤正裕
 - ソースコードやデータの秘匿がやりやすい
   - プライベートな Kubernetes クラスターに閉じていれば、機微なデータもクラウドを利用するよりは扱いやすくなります。
 
-Argo Workflows は公式の example がそのままチュートリアルになっているため、参照しながら雰囲気を掴んでみましょう。
+Argo Workflows のデプロイについては、公式のマニフェストかコミュニティベースの Helm Chart を利用可能です。
+
+- [公式マニフェスト : argo-workflows/manifests · argoproj/argo-workflows](https://github.com/argoproj/argo-workflows/tree/master/manifests)
+- [Helm Chart : argo-helm/charts/argo-workflows argoproj/argo-helm](https://github.com/argoproj/argo-helm/tree/master/charts/argo-workflows)
+
+Argo Workflows でのワークフロー作成については公式の example がそのままチュートリアルになっているため、参照しながら雰囲気を掴んでみましょう。
 
 [argo-workflows/examples - argoproj/argo-workflows](https://github.com/argoproj/argo-workflows/tree/master/examples)
 
@@ -80,7 +85,7 @@ hello-hello-hello の各 step からは、whalesay という template が再利�
 
 Argo workflow の Web UI で実行結果を見るとこのようになります。
 
-![](../../img/blogs/argo-workflows/steps.png)
+![](https://gyazo.com/123b0a6a712e065e67861b685c12142c.png)
 
 Steps サンプルの double dash による順序制御が直感的でないと思う人には、オプションとして DAG 記法も提供されており、おなじみの書き方も可能です([DAG サンプル](https://github.com/argoproj/argo-workflows/tree/master/examples#dag)から)。
 
@@ -127,7 +132,7 @@ dag 宣言の後 tasks の dependencies で先行 task を指定できます。C
 
 実行結果はこのようになります。
 
-![](../../img/blogs/argo-workflows/dag.png)
+![](https://gyazo.com/919c4167a7a25dc1cbca533ba55e340d.png)
 
 Argo workflows の特徴的な機能として `here script` があり、各プログラミング言語のソースコードを直接書けます([Scripts & Results サンプル](https://github.com/argoproj/argo-workflows/tree/master/examples#scripts--results)から)。
 

@@ -12,7 +12,7 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 
 #### Ingress
 1. [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
-2. AWS LoadBalancer Controller Coming Soon!
+2. [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws)
 3. Ingress TLS証明書管理(Cert Manager) Coming Soon!
 
 #### コンテナストレージ
@@ -56,7 +56,7 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 
 ---
 
-### サービスメッシュ実践(Istio)
+### サービスメッシュ実践
 #### Istio
 1. 導入編 Coming Soon!
 1. ルーティング編 Coming Soon!

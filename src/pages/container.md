@@ -72,3 +72,4 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 ### 応用編
 1. カスタムリソース(CRD)(Kubernetes Operators) Coming Soon!
 1. ポリシー管理(OPA) Coming Soon!
+1. [Argo Workflows](/containers/k8s/tutorial/advanced/argo-workflows)

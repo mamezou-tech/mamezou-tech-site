@@ -53,15 +53,13 @@ export AWS_DEFAULT_REGION=ap-northeast-1
 オプションは[YAMLファイル](https://eksctl.io/usage/schema/)として指定することもできますので、継続的に利用する場合はYAMLファイルとして作成してgit管理の対象とするのが望ましいでしょう。
 
 今回はYAMLファイルでなく直接コマンドのオプションとして指定します。
-以下のようにシンプルにクラスタ名とIRSA[^1]が使えるようにOIDCプロバイダを有効にしてクラスタを作成します。
+以下のようにシンプルにクラスタ名のみを指定してクラスタを作成します。ここではクラスタ名を`mz-k8s`としていますが任意の名前入で構いません。変更した場合は後続のクラスタ名は読み替えてください。
 またデフォルトは25分でタイムアウトしますが、AWSの状況によってはこれを超えることもあるため長めに指定しておくとよいでしょう。
 
 実運用では必要なキャパシティを満たすWorkerの数(`--nodes`)やインスタンスタイプ(`--node-type`)等を適切に設定する必要があります。
 
-[^1]: IAM Roles for Service Account。PodのAWSリソースアクセスを管理する機能。公式ドキュメントは[こちら](https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/iam-roles-for-service-accounts.html)参照。
-
 ```shell
-eksctl create cluster --name mz-k8s --with-oidc --timeout 40m
+eksctl create cluster --name mz-k8s --timeout 40m
 ```
 
 実行するとeksctlはCloudFormationスタック（VPC等のネットワークリソースやEKSクラスタ等）を作成し、AWS環境への適用を開始します。  
@@ -72,17 +70,16 @@ eksctl create cluster --name mz-k8s --with-oidc --timeout 40m
 まずはeksctlの動きを見てみます。前述の通りeksctlはIaCツールとしてCloudFormationを利用して各種リソースを作成しています。
 マネジメントコンソールのCloudFormationを見てみると`eksctl-${CLUSTER_NAME}-`というプリフィックスでで複数のスタックが作成されています[^2]。
 
-![](https://i.gyazo.com/45cca0f45ad278defd180a3d6f25e5f4.png)
+![](https://i.gyazo.com/ac96bd83580f0de6a84785af235f63dd.png)
 
 [^2]: これらはeksctlのユーティリティコマンド`eksctl utils describe-stacks --name=mz-k8s`でも参照できます。
 
-各スタックのテンプレートを見てみると以下のように各種リソースの定義が定義されています。これらはeksctlのオプションの設定内容により変わります。
+各スタックのテンプレートを見てみると以下のように各種リソースの構成が定義されています。これらはeksctlのオプションの設定内容により変わります。
 
 | スタック名 | 内容
 | --------- | --------------------------------------------------
 | eksctl-mz-k8s-cluster | VPC、サブネット、NatGateway/InternetGateway等のネットワークやEKSクラスタリソース
 | eksctl-mz-k8s-nodegroup-ng-92d271e3 | EKSのマネージドノードグループリソース(k8sのWorker)
-| eksctl-mz-k8s-addon-iamserviceaccount-kube-system-aws-node | IRSAで利用するIAMロール
 
 最後にEKSクラスタをマネジメントコンソールで確認しましょう。EKSを選択すると以下のように作成されていることが分かります。
 

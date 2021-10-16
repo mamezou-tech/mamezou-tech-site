@@ -25,8 +25,8 @@ NGINX Ingress ControllerはおそらくIngress Controllerでもっともよく�
 
 以下のいずれかの方法で事前にEKS環境を作成しておいてください。
 
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/env/aws-eks-terraform)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
 
 また、Ingress Controllerのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。
 ローカル環境に[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください[^1]。
@@ -688,7 +688,6 @@ Percentage of the requests served within a certain time
 今回のリソース削除する際にはまず作成したk8sリソースを削除してから、クラスタ環境を削除するようにしましょう。
 以下の手順でk8sのリソースを削除できます。
 
-
 ```
 # app1/app2
 kubectl delete -f app.yaml
@@ -701,3 +700,8 @@ helm uninstall ingress-nginx -n ingress-nginx
 クラスタ環境については環境構築編のクリーンアップ手順を参照してください。
 - [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl#クリーンアップ)
 - [AWS EKS(Terraform)](/containers/k8s/tutorial/env/aws-eks-terraform#クリーンアップ)
+
+---
+参照資料
+
+- NGINX Ingress Controllerドキュメント：<https://kubernetes.github.io/ingress-nginx/>

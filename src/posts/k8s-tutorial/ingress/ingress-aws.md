@@ -6,19 +6,20 @@ author: noboru-kudo
 [前回](/containers/k8s/tutorial/ingress/ingress-nginx)はNginxをIngress Controllerとして利用しました。
 Nginxはロードバランサーとして利用可能なプロキシサーバーで、実績のある成熟したミドルウェアと言えます。
 しかし、AWSにはロードバランサーのフルマネージドサービスとしてELB(Elastic Load Balancing)が存在しますので、あえてNginxを入れなくても、ロードバランサー機能として同等のことができます。
-今回はIngress ControllerとしてAWSマネージドサービスを利用できるようにしましょう。
-こちらに対応できるようAWS Load Balancer Controller[^1]というIngress Controllerがありますのでこちらを導入します。
+
+今回はIngress ControllerとしてAWSマネージドサービスのELBを利用できるようにしましょう。
+これに対応するAWS Load Balancer Controller[^1]というIngress Controllerがありますので、こちらを導入します。
 - Github: <https://github.com/kubernetes-sigs/aws-load-balancer-controller>
 - ドキュメント: <https://kubernetes-sigs.github.io/aws-load-balancer-controller>
 
 [^1]: 以前はAWS ALB Ingress Controllerという名前でTicketmaster社で開発されてものでしたが、2018年にKubernetes SIG-AWSに移管された後、NLB(Network Load Balancer)にも対応可能なAWS Load Balancer Controllerと改名されました。
 
-AWS Load Balancer Controllerはその設定によって以下の2種類のELBを作成することが可能です。
+AWS Load Balancer Controllerは、その設定によって以下の2種類のELBを作成することが可能です。
 
 1. [ALB:Application Load Balancer](https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/introduction.html)
 2. [NLB:Network Load Balancer](https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/network/introduction.html)
 
-上記NLBはL4 LoadBalancerのため、LoadBalancerタイプのServiceリソースのみに対応しているため、Ingressをスコープとする本章では対象外となります。
+上記NLBはL4タイプのLoadBalancerで、Serviceリソース(`type=LoadBalancer`)のみに対応しているため、Ingressをスコープとする本章では対象外となります。
 
 Ingressリソースが登録・変更を検知されると、以下のイメージ[^2]で自動構成されます。
 
@@ -26,7 +27,7 @@ Ingressリソースが登録・変更を検知されると、以下のイメー�
 
 [^2]: <https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/how-it-works/>より抜粋
 
-このようにAWS Ingress ControllerはIngressの投入を検知(API Serverから通知)すると、ALBリソースを動的に生成し、ルーティングルールやTargetGroupをプロビジョニングして、トラフィックをk8sクラスタにルーティングしてくれることが分かります。
+Ingress ControllerがIngressの投入を検知(API Serverから通知)すると、ALBリソースを動的に生成し、ルーティングルールやTargetGroupをプロビジョニングして、トラフィックをk8sクラスタにルーティングするように設定してくれることが分かります。
 
 
 ## 事前準備
@@ -40,14 +41,14 @@ Ingressリソースが登録・変更を検知されると、以下のイメー�
 ## IAMアクセス許可の設定
 
 事前にIngress ControllerがAWSリソースにアクセスできるようにアクセス許可を設定しましょう。
-これはeksctl or Terraformのどちらで環境構築したかで手順が変わってきます。
+これはeksctlとTerraformのどちらでクラスタ環境構築したかで手順が変わってきます。利用している環境に応じて以下のいずれかを実施してください。
 
 ### eksctl
 
-eksctlの場合はサブコマンドが用意されていますのでそちらを利用します。
-こちらは[公式ドキュメント](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/deploy/installation/#setup-iam-role-for-service-accounts)に記載されていますのでそのまま実行するだけで構いません。
+eksctlの場合は、専用のサブコマンドが用意されていますのでそちらを利用します。
+こちらは[公式ドキュメント](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/deploy/installation/#setup-iam-role-for-service-accounts)に記載されていますので、基本はそのまま実行するだけで構いません。
 
-まずはIngress ControllerのAWSリソースへのアクセスを厳密に行うためIRSA[^3]を有効化します。これはeksctlのサブコマンドを利用します。
+まずは、Ingress ControllerのAWSリソースへのアクセスを厳密に行うためIRSA[^3]を有効化します。
 
 [^3]: IAM Roles for Service Account。PodのAWSリソースアクセスを管理する機能。Pod単位でパーミッション管理ができるようになりますので原則使用するようにしましょう。公式ドキュメントは[こちら](https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/iam-roles-for-service-accounts.html)参照。
 
@@ -58,15 +59,18 @@ eksctl utils associate-iam-oidc-provider \
 ```
 
 次にAWS上にカスタムポリシーを作成します。下記はAWS CLIを利用していますが、マネジメントコンソールから作成しても構いません。
+カスタムポリシーについてはAWS Load Balancer Controllerで用意されていますのでそれをダウンロードして使用します。
 
 ```shell
+# ポリシーファイルのダウンロード
 curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
+# IAM Policy作成
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
     --policy-document file://iam-policy.json
 ```
 
-そして作成したポリシーを指定したIngress ControllerのIAM Roleを作成します。これはeksctlのサブコマンドが用意されています。
+そして作成したポリシーを指定したIngress ControllerのIAM Roleを作成します。`eksctl create iamserviceaccount`コマンドを使用します。
 
 ```shell
 eksctl create iamserviceaccount \
@@ -93,7 +97,7 @@ kubectl get sa -n kube-system aws-load-balancer-controller -o yaml
 ```
 
 ```yaml
-# 必要部分のみ抜粋
+# 必要部分のみ抜粋/整形
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -107,13 +111,119 @@ secrets:
 
 k8sクラスタにも`aws-load-balancer-controller`というServiceAccountリソースが作成されていることが分かります。
 `annotations`に注目してください。ここで作成したIAM Roleの紐付けが行われています。
-これにより、Ingress Controllerはこのアカウントを利用することで指定したパーミッションでAWSリソースにアクセスする形となります。
+Ingress Controllerはこのアカウントを利用することで指定したパーミッション（ポリシー）でELBリソースを作成・更新することが可能となります。
 
-このIRSA(IAM Role for ServiceAccount)はIngress Controllerだけでなく、全てのアプリケーションに適用可能ですのでAWSリソースへのアクセスが必要な場合に指定することが望ましいでしょう。
+このIRSAはIngress Controllerだけでなく、全てのアプリケーションに適用可能ですのでAWSリソースへのアクセスが必要な場合に漏れなく指定することが望ましいでしょう。
 
 ### Terraform
 
-TODO パブリックサブネットにkubernetes.io/role/elb: 1を指定する必要あり。auto-discovery有効にするため。
+Terraformの場合はクラスタ環境構築後（もちろん構築前でも構いませんが）に以下の点について変更してください。
+
+まず、[VPCモジュールの設定](/containers/k8s/tutorial/infra/aws-eks-terraform#VPCリソース)に以下を追加してください。
+
+```hcl
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+  
+  # 省略
+
+  # 変更点
+  # enable AWS Load Balancer Controller subnet-discovery
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = "1"
+  }
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = "1"
+  }
+}
+```
+
+これによりIngress Controllerの[Subnet Discovery](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/deploy/subnet_discovery/)が有効になります[^4]。
+これを指定しない場合は、別途Ingressリソースの`annotations`としてサブネットIDを設定する必要があります。
+
+[^4]: eksctlのときはこの手順を実施していませんが、デフォルトでサブネットに該当タグが付与されているようです。
+
+さらにIRSA[^3]を有効にするためもうひと手間加える必要があります。`main.tf`に以下を追加してください。
+
+```hcl
+# enable IRSA for AWS Load Balancer Controller
+resource "aws_iam_policy" "aws_loadbalancer_controller" {
+  name = "EKSIngressAWSLoadBalancerController"
+  policy = file("${path.module}/iam-policy.json")
+}
+
+module "iam_assumable_role_admin" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version = "~> 4.0"
+
+  create_role                   = true
+  role_name                     = "EKSIngressAWSLoadBalancerController"
+  provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
+  role_policy_arns              = [aws_iam_policy.aws_loadbalancer_controller.arn]
+  oidc_subjects_with_wildcards = ["system:serviceaccount:*:*"]
+}
+
+resource "kubernetes_service_account" "aws_loadbalancer_controller" {
+  metadata {
+    name = "aws-load-balancer-controller"
+    namespace = "kube-system"
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam_assumable_role_admin.iam_role_arn
+    }
+  }
+}
+```
+
+以下のことを行っています。
+
+- Ingress Controllerがアクセス可能なカスタムIAMポリシー作成(ポリシーファイルはローカルパス指定)
+- カスタムポリシーを利用するIngress Controller用のIAM Role(`EKSIngressAWSLoadBalancerController`)作成。これは[IAMリソース用のTerraform Module](https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest)を利用して簡素化しています。
+- k8sクラスタ内に上記Roleを利用するように指定したServiceAccount作成(kubernetesプロバイダ使用)。Ingress Controllerはここを通じてIAM Roleで指定したポリシーでAWSリソースにアクセスできるようになります。
+
+上記のIngress ControllerのIAMポリシーのJSONファイルはAWS Load Balancer Controllerで用意されています(eksctlでのセットアップと同じものです)。
+あらかじめTerraformのルートモジュール配下(ここでは`terraform`)にダウンロードしておきましょう。
+
+```shell
+curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
+```
+
+これで準備完了です。再度terraform コマンドを実行しましょう。
+
+```shell
+# Moduleを追加したため再度initコマンドを実行
+terraform init
+# 追加内容チェック
+terraform plan
+# AWS/EKSに変更適用
+terraform apply
+```
+
+作成したリソースを確認しましょう。まずはIAM Roleをマネジメントコンソールで見てみましょう(IAM -> ロール)。
+![](https://i.gyazo.com/beee6b2e46a6ef78d0cd960b8555c2b2.png)
+
+Terraformリソースで指定したようにIAM Roleが作成され、Ingress Controller用のIAM Policyが設定されていることが分かります。
+
+EKSクラスタに作成したServiceAccountも見てみましょう。これはkubectlで確認します。
+
+```shell
+kubectl get sa -n kube-system aws-load-balancer-controller -o yaml
+```
+
+```
+# 必要部分のみ抜粋/整形
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/EKSIngressAWSLoadBalancerController
+  name: aws-load-balancer-controller
+  namespace: kube-system
+secrets:
+- name: aws-load-balancer-controller-token-zjmzd
+```
+
+`annotations`フィールドに作成したIAM RoleのARNが指定されていることが確認できました。
 
 ## Ingress Controllerインストール
 
@@ -179,14 +289,14 @@ kubectl apply -f ingressclass.yaml
 
 これで準備は完了です。
 
-## サンプルアプリデプロイ
+## サンプルアプリのデプロイ
 
 それでは、Ingress作成前にサンプルアプリをデプロイしてみましょう。
 
 利用するアプリについてもNGINX Ingress Controllerと1点除いて同じですので、[こちら](/containers/k8s/tutorial/ingress/ingress-nginx/#サンプルアプリのデプロイ)を参照してください。
-異なる点はAWS Load Balancer ControllerはNodePortを経由してルーティングを行うため、Serviceリソースに対して`type=NodePort`を指定する必要があります[^4]。
+異なる点はAWS Load Balancer ControllerはNodePortを経由してルーティングを行うため、Serviceリソースに対して`type=NodePort`を指定する必要があります[^5]。
 
-[^4]: NGINX Ingress Controllerは、Ingress ControllerがLoadBalancerタイプのService(`ingress-nginx-controller`)経由でルーティングしていましたので、全く別の実装になっています。
+[^5]: NGINX Ingress Controllerは、Ingress ControllerがLoadBalancerタイプのService(`ingress-nginx-controller`)経由でルーティングしていましたので、全く別の実装になっています。
 
 以下はapp1のみですが、app2のServiceに対しても同様の変更をしてください。
 
@@ -213,7 +323,7 @@ spec:
 kubectl apply -f app.yaml
 ```
 
-デプロイ後はアプリの内容を確認しましょう。
+デプロイ後はアプリの状態を確認しましょう。
 
 ```shell
 kubectl get cm,deployment,pod,svc
@@ -281,7 +391,7 @@ spec:
 まず、AWS Load Balancer Controllerではデフォルトは内部LBとして構成されますので、外部公開用に作成する場合は`annotaions`で`alb.ingress.kubernetes.io/scheme: internet-facing`を指定する必要があります。
 また、`IngressClassName`には先程作成した`aws`を指定しています。これによりAWS Load Balancer Controllerを使ってIngressを構成するようにしています。
 
-最後に前回NGINX Ingress Controllerのときは、ホスト名ベースでルーティングルールを作成しましたが、今回はパスベースで作成しています。
+最後に[前回](/containers/k8s/tutorial/ingress/ingress-nginx/#ingressリソース作成)のNGINX Ingress Controllerのときは、ホスト名ベースでルーティングルールを作成しましたが、今回はパスベースで作成しています。
 `/app1`が指定されるとapp1へ、`/app2`が指定されるとapp2にリクエストを転送するようにしています。
 
 指定できるオプションは他にも多く存在します。詳細は[こちら](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/ingress/annotations/)を参照してください。
@@ -345,9 +455,9 @@ echo $INGRESS_URL
 
 ```shell
 # app1
-curl $INGRESS_URL/app1 -H 'Host:sample-app.mamezou-tech.com'; echo
+curl $INGRESS_URL/app1 -H 'Host:sample-app.mamezou-tech.com'
 # app2
-curl $INGRESS_URL/app2 -H 'Host:sample-app.mamezou-tech.com'; echo
+curl $INGRESS_URL/app2 -H 'Host:sample-app.mamezou-tech.com'
 ```
 
 ```
@@ -379,178 +489,86 @@ app1-7ff67dc549-9flp8: hello sample app!
 
 出力内容から2つのPodに負荷分散されている様子が見て取れます。
 
-## DNSプロビジョニング TODO 別章に移動
-Route53で宛先をIngerssリソースのHost名とALBをマッピングする。
-手動でやることもできるが、Ingressリソースを作成するたびにRecordSetを作るのは面倒。
-そんな面倒くさがりな人のためにDNSの自動プロビジョニングをやってくれる[external-dns https://github.com/kubernetes-incubator/external-dns]を使う。
-この製品はRoute53だけなく、Cloud DNS等様々なDNSサービスのプロビジョニングが可能
+## アクセスログの保管設定
 
-ここではドメインはGoogle Domainsで以前取得した`frieza.dev`を使い回す。
-まずはRoute53のHostedZoneを作成する(ここは手動でやる必要がある)。
-```shell
-aws route53 create-hosted-zone --name "frieza.dev." --caller-reference "frieza.dev-$(date +%s)"
-```
+ALBのセットアップが完了し、アプリへのリクエストが無事にルーティングされていることが確認できました。
+ただし、実運用では有事のときのためにアクセスログについて厳密な管理が求められることが多いかと思います。
+そこで最後にALBのアクセスログの設定を追加してみましょう。
 
-割り当てられたNameサーバ情報を取得する。
-```shell
-HOSTED_ZONE_ID=$(aws route53 list-hosted-zones --query 'HostedZones[0].Id' --output text)
-aws route53 get-hosted-zone --id $HOSTED_ZONE_ID
-```
-```
-> {
->     "HostedZone": {
->         "ResourceRecordSetCount": 4,
->         "CallerReference": "frieza.dev-1561126253",
->         "Config": {
->             "PrivateZone": false
->         },
->         "Id": "/hostedzone/ZINLB2WD5FXEV",
->         "Name": "frieza.dev."
->     },
->     "DelegationSet": {
->         "NameServers": [
->             "[* ns-1520.awsdns-62.org]",
->             "[* ns-822.awsdns-38.net]",
->             "[* ns-1749.awsdns-26.co.uk]",
->             "[* ns-470.awsdns-58.com]"
->         ]
->     }
-> }
-```
+まずマネジメントコンソールからS3選択してログ用のバケットを作成しましょう(Terraformで構築している場合はTerraformで管理しましょう)。
+ここではバケット名以外はデフォルトで構いません。ここでは`mz-alb-access-logs-001`という名前にしましたが、バケット名はグローバルで一意である必要がありますので重複しない名前を設定してください。
+![](https://i.gyazo.com/66f8ae592fe44b5e497bac9909ff4fb0.png)
 
-取得したNameServerを利用するようにGoogleDomainに設定する。実際に反映されるまでに数時間もかかった。
-![](https://i.gyazo.com/634bc5fad3f53edb15b2701e0b2420d5.png)
+次にS3メニューから対象のバケットを選択し、アクセス許可ページにあるバケットポリシーを設定します。
+設定値(JSON)については[AWSのALBドキュメント](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html#access-logging-bucket-permissions)に記載がありますので参照してください。
 
-external-dnsのマニフェストをダウンロードしてdomain-filterをfrieza.dev(Route53のHostedZone)に修正する(余計なものは消した)。
-```shell
-curl -o external-dns.yaml https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.2/docs/examples/external-dns.yaml
-```
+![](https://i.gyazo.com/48495c302ad084f0e5bf1824a46e2974.png)
+
+一番上のAWSアカウントは、利用するリージョンによって決まりますので、誤って自分のAWSアカウントを設定しないように注意してください(上記`582318560864`は東京リージョン(ap-northeast-1)のELBアカウントIDです)。
+また、バケット名については自分で作成したものを指定するようにしてください(上記で`mz-alb-access-logs-001`としている部分)。
+
+次にIngress側の設定を行います。アクセスログについてはIngressリソースの`annotations`にて指定します。
+以下のようにIngressリソースを修正します。
+
 ```yaml
-# (省略)
+# 必要部分のみ抜粋
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: external-dns
-spec:
-  strategy:
-  type: Recreate
-  template:
-    metadata:
-      labels:
-        app: external-dns
-    spec:
-      serviceAccountName: external-dns
-      containers:
-      - name: external-dns
-      image: registry.opensource.zalan.do/teapot/external-dns:v0.5.9
-      # ここだけ修正
-      args:
-      - --source=service
-      - --source=ingress
-      - --domain-filter=frieza.dev
-      - --provider=aws
-      - --policy=upsert-only
-      - --aws-zone-type=public
+  name: app-aws-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    # S3アクセスログ保管設定
+    alb.ingress.kubernetes.io/load-balancer-attributes: |
+      access_logs.s3.enabled=true,access_logs.s3.bucket=mz-alb-access-logs-001,access_logs.s3.prefix=sample-app
+# 以下同じ
 ```
-これをEKSに投入する。
-```shell
-kubectl apply -f external-dns.yaml
-```
-external-dnalのログを見てみる。
-```shell
-kubectl logs deploy/external-dns
-```
-```
-> time="2019-06-22T01:48:09Z" level=info msg="Created Kubernetes client https://10.100.0.1:443"
-> time="2019-06-22T01:48:11Z" level=info msg="Desired change: [* CREATE eks.frieza.dev A]"
-> time="2019-06-22T01:48:11Z" level=info msg="Desired change: [* CREATE eks.frieza.dev TXT]"
-> time="2019-06-22T01:48:11Z" level=info msg="[* 2 record(s) in zone frieza.dev. were successfully updated]"
-```
-external-dnsがIngressのHost名をRoute53にレコードセットを作成してくれているのが分かる(AレコードとTXTレコード)。
-- AWSコンソール(Route53)
-![](https://i.gyazo.com/0601e3527038d74bab56d7f5a47e1803.png)
+`alb.ingress.kubernetes.io/load-balancer-attributes`でS3アクセスログを有効化し、バケット名、プレフィックスを指定しています。
+プレフィックスについてはバケットポリシーで指定したものと合わせる必要がありますので注意してください。
+これをk8sに適用しましょう。
 
-DNSレコードがグローバルに伝播されるまでまたしばらく待つ。
 ```shell
-dig eks.frieza.dev
+kubectl -f ingress.yaml
 ```
-```
-> ; <<>> DiG 9.10.6 <<>> eks.frieza.dev
-> ;; global options: +cmd
-> ;; Got answer:
-> ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 27697
-> ;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 4, ADDITIONAL: 9
->
-> ;; OPT PSEUDOSECTION:
-> ; EDNS: version: 0, flags:; udp: 4096
-> ;; QUESTION SECTION:
-> ;eks.frieza.dev.                        IN      A
->
-> ;; ANSWER SECTION:
-> [* eks.frieza.dev.         60      IN      A       13.113.34.180]
-> [* eks.frieza.dev.         60      IN      A       13.113.165.21]
-> [* eks.frieza.dev.         60      IN      A       13.115.180.248]
->
-> ;; AUTHORITY SECTION:
-> frieza.dev.             10800   IN      NS      ns-1520.awsdns-62.org.
-> frieza.dev.             10800   IN      NS      ns-1749.awsdns-26.co.uk.
-> frieza.dev.             10800   IN      NS      ns-470.awsdns-58.com.
-> frieza.dev.             10800   IN      NS      ns-822.awsdns-38.net.
-> (省略)
-```
-OK!
-さっそくIngressリソースで指定したお気に入りのURLでアクセスする。
-```shell
-for i in {1..10}; do curl eks.frieza.dev/app1;echo; done
-```
-```
-> [app1:192.168.55.55]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.69.94]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.55.55]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.69.94]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.69.94]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.55.55]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.69.94]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.69.94]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.55.55]私の戦闘力は530000です…ですが、(省略)
-```
-```shell
-for i in {1..10}; do curl eks.frieza.dev/app2;echo; done
-```
-```
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.85.223]ずいぶんムダな努力をするんですね・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.85.223]ずいぶんムダな努力をするんですね・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.85.223]ずいぶんムダな努力をするんですね・・(省略)
-```
-ランダムにリクエストが各Podに分散されているのが分かる。
-ALBは負荷分散アルゴリズムとしてはラウンドロビンのみサポートしているのでそれ以外はできない。
 
-こうしておけば新たに別のIngressを投入する際にドメイン`frieza.dev`のサブドメインにしておけばALBリソースやRoute53のRecordSetが自動でプロビジョニングされるようになる。
+反映後に何度かアプリケーションにアクセスして、S3にアクセスログが保管されていることを確認してみましょう。
+
+```shell
+# アプリにアクセス
+for i in {1..10}; do curl -H 'Host:sample-app.mamezou-tech.com' $INGRESS_URL/app1; done
+```
+
+![](https://i.gyazo.com/1712ebdf68eae9f7a014741197dbf954.png)
+
+(かなり深い階層ですが)アクセスログが保管されていることが分かります。
+アクセスログは5分ごとにS3に保管されます。正しい設定なのにログファイルが見つからない場合は5分以上待ってから確認してみてください。
+
+ログの詳細な中身については[AWSドキュメント](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html#access-log-file-format)を参照してください。
+
+この他にもALBには認証基盤としてCognitoとの連携[^6]等も比較的容易にできますので、興味がある方は是非チャレンジしていただければと思います。
+
+[^6]: <https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/tasks/cognito_authentication/>
 
 ## クリーンアップ
 
-EKS経由でいろいろなりソースを作ってDriftしているので、単純にClusterだけを消すとCloudFormationスタックの削除に失敗する。
+最後に不要になったリソースを削除して余計な費用が発生しないようにしましょう。
 
 ```shell
+# app1/app2
+kubectl delete -f app.yaml
 # Ingress -> ALBリソース削除
-kubectl delete ingress/ingress
-# ALB Ingress Controller
-helm delete --purge aws-alb-ingress-controller
-# external-dns
-kubectl delete deploy/external-dns
-
-# Route53(CLIだとjson作らないとダメ。マネジメントコンソールから消したほうが早い)
-aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch file://del-records.json
-aws route53 delete-hosted-zone --id $HOSTED_ZONE_ID
-
-# 最後にクラスタを消す
-eksctl delete cluster --name $CLUSTER_NAME
+kubectl delete -f ingress.yaml
+# ALBが削除されたことを確認後にAWS Load Balancer Controllerをアンインストール
+helm uninstall -n kube-system aws-load-balancer-controller
 ```
 
-クラスタ削除にも15分程度時間がかかる。CloudFormationを見て削除が全て成功していることを確認した方がよい。
+また、アクセスログ保管に使用したS3バケットは別途マネジメントコンソールから削除してください。
 
+最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/env/aws-eks-terraform#クリーンアップ)
+
+---
+参照資料
+
+- AWS Load Balancer Controllerドキュメント：<https://kubernetes-sigs.github.io/aws-load-balancer-controller>

@@ -172,6 +172,7 @@ module "eks" {
   
   vpc_id          = module.vpc.vpc_id
   subnets         = module.vpc.private_subnets
+  enable_irsa = true
   node_groups = {
     mz_node = {
       desired_capacity = 2
@@ -195,6 +196,7 @@ EKSリソースについても1から作成するにはかなりの労力が必�
 - `cluster_version`で作成するk8sのバージョンを指定することができますので、こちらは今後のバージョンアップ運用のためにも指定しておくようにしましょう。利用可能なk8sのバージョンは[こちら](https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/kubernetes-versions.html)から確認できます。
 - `cluster_name`は必須ですので任意のクラスタ名を指定します。
 - `vpc_id`/`subnets`の部分で作成したVPCリソースのVPC IDとプライベートサブネットを指定し、その上にEKSクラスタを配置するように指示します(値参照のシンタックスは[こちら](https://www.terraform.io/docs/language/expressions/references.html)参照)。
+- `enable_irsa`はIRSA(IAM Role for ServiceAccount)を有効化しています。これはPodのAWSリソースへのアクセス許可を厳密に制御可能にするEKSの機能です。
 - `node_group`ブロックを指定することでEKSのマネージドノードグループを作成することを指定しています。他にもセルフマネージドやFargateでのノード構築にも対応しています。
 今回はノード数2で`m5.large`のインスタンスタイプでノードを作成するように指定しています。
 - `map_users`ブロックでEKSクラスタにアクセス可能なIAMユーザを作成するようにしています。

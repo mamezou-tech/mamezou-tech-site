@@ -13,56 +13,50 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 #### Ingress
 1. [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
 2. [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws)
-3. Ingress TLS証明書管理(Cert Manager) Coming Soon!
+3. DNS自動構成(Route53) <span style="color:red">Coming Soon!</span>
+4. TLS証明書管理(Cert Manager) <span style="color:red">Coming Soon!</span>
 
 #### コンテナストレージ
-1. AWS EBS Coming Soon!
-2. AWS EFS Coming Soon!
-3. Container Storage(OpenEBS) Coming Soon!
+1. AWS EBS <span style="color:red">Coming Soon!</span>
+2. AWS EFS <span style="color:red">Coming Soon!</span>
 
 ---
 
 ### アプリケーション開発編
-1. ステートレスアプリケーション(Deployment) Coming Soon!
-2. ステートフルアプリケーション(Statefulset) Coming Soon!
-3. バッチアプリケーション(Job, CronJob) Coming Soon!
-4. サーバーレスアプリケーション(Knative) Coming Soon!
-
-### マニフェスト管理編
-1. リソースマニフェスト管理(Kustomize) Coming Soon!
-2. Helm Coming Soon!
+1. ステートレスアプリケーション(Deployment) <span style="color:red">Coming Soon!</span>
+2. ステートフルアプリケーション(Statefulset) <span style="color:red">Coming Soon!</span>
+3. バッチアプリケーション(Job, CronJob) <span style="color:red">Coming Soon!</span>
 
 ---
 
 ### 継続的デリバリ
-1. Flux Coming Soon!
-2. ArgoCD Coming Soon!
+1. Flux <span style="color:red">Coming Soon!</span>
+2. ArgoCD <span style="color:red">Coming Soon!</span>
 
 ---
 
 ### クラスタ運用編
 
 #### スケーリング/スケジューラ
-1. オートスケーリング Coming Soon!
-2. カスタムスケジューリング Coming Soon!
+1. オートスケーリング <span style="color:red">Coming Soon!</span>
+2. カスタムスケジューリング <span style="color:red">Coming Soon!</span>
 
 #### モニタリング
-1. メトリクス収集(Prometheus) Coming Soon!
-2. アラート(Prometheus) Coming Soon!
-3. 可視化(Prometheus, Grafana) Coming Soon!
-4. トレーシング/APM(Jaeger) Coming Soon!
-5. ログ収集(AWS CloudWatch) Coming Soon!
-6. ログ収集(Fluentd、Elasticsearch、Kibana) Coming Soon!
+1. メトリクス収集 <span style="color:red">Coming Soon!</span>
+2. アラート <span style="color:red">Coming Soon!</span>
+3. 可視化 <span style="color:red">Coming Soon!</span>
+4. トレーシング/APM <span style="color:red">Coming Soon!</span>
+5. ログ収集 <span style="color:red">Coming Soon!</span>
 
 ---
 
 ### サービスメッシュ実践
 #### Istio
-1. 導入編 Coming Soon!
-1. ルーティング編 Coming Soon!
-1. フォールトトレランス編 Coming Soon!
-1. セキュリティ編 Coming Soon!
-1. モニタリング編 Coming Soon!
+1. 導入編 <span style="color:red">Coming Soon!</span>
+1. ルーティング編 <span style="color:red">Coming Soon!</span>
+1. フォールトトレランス編 <span style="color:red">Coming Soon!</span>
+1. セキュリティ編 <span style="color:red">Coming Soon!</span>
+1. モニタリング編 <span style="color:red">Coming Soon!</span>
 
 #### AWS App Mesh
 1. T.B.D
@@ -70,6 +64,6 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 ---
 
 ### 応用編
-1. カスタムリソース(CRD)(Kubernetes Operators) Coming Soon!
-1. ポリシー管理(OPA) Coming Soon!
+1. カスタムリソース(CRD)(Kubernetes Operators) <span style="color:red">Coming Soon!</span>
+1. ポリシー管理(OPA) <span style="color:red">Coming Soon!</span>
 1. [Argo Workflows](/containers/k8s/tutorial/advanced/argo-workflows)

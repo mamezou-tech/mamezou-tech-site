@@ -1,6 +1,7 @@
 ---
 title: Ingress - AWS Load Balancer Controller
 author: noboru-kudo
+date: 2021-10-17
 ---
 
 [前回](/containers/k8s/tutorial/ingress/ingress-nginx)はNginxをIngress Controllerとして利用しました。

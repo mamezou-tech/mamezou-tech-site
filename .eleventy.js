@@ -54,12 +54,12 @@ module.exports = function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter('htmlDateString', (dateObj) => {
-    return DateTime.fromJSDate(dateObj, { zone: 'utc' }).toFormat('yyyy-LL-dd');
+    return dateObj ? DateTime.fromJSDate(dateObj, { zone: 'Asia/Tokyo' }).toFormat('yyyy-LL-dd') : "";
   });
 
   eleventyConfig.addFilter('readableDate', (dateObj) => {
-    return DateTime.fromJSDate(dateObj, { zone: 'utc' }).toFormat(
-      'dd LLL yyyy'
+    return DateTime.fromJSDate(dateObj, { zone: 'Asia/Tokyo' }).toFormat(
+      'yyyy-LL-dd'
     );
   });
 

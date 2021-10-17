@@ -191,7 +191,7 @@ helm upgrade external-dns bitnami/external-dns \
 - `serviceAccount`/`serviceAccount.name`は事前に作成したものを指定
 - `domainFilters[0]`で対象とするドメイン(ホストゾーン)を指定。自分で用意したドメインに変更してください。
 
-その他にも多数のパラメータがあります。必要に応じて追加してください。
+external-dnsにはその他にも多数のパラメータが用意されています。必要に応じて追加してください。
 利用可能なパラメータは[こちら](https://github.com/bitnami/charts/tree/master/bitnami/external-dns#parameters)を参照してください。
 
 ## サンプルアプリのデプロイ
@@ -393,8 +393,9 @@ spec:
             path: /app2
             pathType: Prefix
 ```
-`annotations`部分に注目してください。`external-dns.alpha.kubernetes.io/hostname`に指定する値はルーティングルールの`host`で指定した`k8s-tutorial.mamezou-tech.com`を設定しています(複数の場合はカンマ区切り)。
-external-dnsはこれを検知してRoute53への同期します。
+`annotations`部分に注目してください。
+`external-dns.alpha.kubernetes.io/hostname`に、ルーティングルールの`host`で指定した`k8s-tutorial.mamezou-tech.com`を設定しています(複数の場合はカンマ区切り)。
+external-dnsはこれを検知してRoute53と同期します。
 
 これをk8sに反映しましょう。
 
@@ -426,10 +427,10 @@ Events:
   ----    ------                  ----  ----     -------
   Normal  SuccessfullyReconciled  53s   ingress  Successfully reconciled
 ```
-前回と同じように`Address`に外部公開用のURLが割り当てられ、バックエンドとしてパスベースのルーティングでapp1/app2が設定済みであることが確認できます。
+前回と同じように`Address`に外部公開用のURL(AWSで自動生成されたもの)が割り当てられ、バックエンドとしてパスベースのルーティングでapp1/app2が設定済みであることが確認できます。
 また、Annotationsにexternal-dnsのドメインが指定されていることも確認できます。
 
-AWSのマネジメントコンソールからRoute53の状態を見てみましょう。Route53から自分のドメインのレコードを見てみましょう。
+AWSのマネジメントコンソールからRoute53の状態を見てみましょう。サービスからRoute53を選択し、自分のドメインのホストゾーンに登録されているレコードを見てみましょう。
 ![](https://i.gyazo.com/b840185e7ffb26568626f928be009fdb.png)
 
 Aレコードが作成され、これがIngress(実態はALB)に対してマッピングされている様子が分かります。

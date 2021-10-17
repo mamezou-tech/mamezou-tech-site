@@ -4,7 +4,7 @@ author: noboru-kudo
 date: 2021-10-17
 ---
 
-前回まではアプリケーションにアクセスする際にはIngressに登録したホスト名をHostヘッダを直接指定することでシミュレーションしていました。
+前回まではアプリケーションにアクセスする際にはIngressに登録したホスト名をHostヘッダを直接指定することでDNSで名前解決がされた体で確認していました。
 当然ですが、実運用でこのようなことをすることはなく、DNSサーバにIngressとのマッピングを追加する必要があります。
 もちろん手動でDNSサーバにレコードを追加して実現することはできますが、Ingressにホストを追加する度に別途DNSで作業する必要が出てきますし、DNSは設定ミスがあるとその被害は大きくなるのが通例です(それ故にネットワーク管理者のみがアクセス可能な組織も多いでしょう)。
 
@@ -16,7 +16,8 @@ date: 2021-10-17
 Alphaステータスのものが多いですが、対応するDNSプロバイダとしては[こちら](https://github.com/kubernetes-sigs/external-dns#status-of-providers)で確認できるように様々なものがあります。
 今回はAWSのDNSサービスである[Route53](https://aws.amazon.com/jp/route53/)を使用します。
 
-また、自分のドメインを持っていない場合は任意のものを準備してください。安いものであれば年間数百円で購入可能です。
+また、今回は前提としてカスタムドメインを事前に用意する必要があります。
+自分のドメインを持っていない場合は任意のものを準備してください。安いものであれば年間数百円で購入可能です。
 本チュートリアルはAWSで実施するのでRoute53での取得をオススメしますが、以下のようなドメインレジストラでも構いません(動作は未検証です)。
 - [お名前.com](https://www.onamae.com/)
 - [Google Domains](https://domains.google/)
@@ -34,7 +35,8 @@ Route53でのドメイン取得については[こちら](https://docs.aws.amazo
 
 また、external-dnsのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください。
 
-次にIngress Controllerをインストールします。今回はAWS Load Balancer Controllerを使用します(未検証ですがNGINX Ingress Controllerにも対応可能なはずです)。
+次にIngress Controllerをインストールします。
+今回はAWS Load Balancer Controllerを使用します(未検証ですがNGINX Ingress Controllerにも対応可能なはずです)。以下手順でインストールしてください。
 
 - [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws)
 

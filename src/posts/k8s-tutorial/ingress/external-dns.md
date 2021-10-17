@@ -1,157 +1,530 @@
 ---
-title: DNSプロビジョニング(external-dns)
+title: DNSレコード管理(external-dns)
 author: noboru-kudo
+date: 2021-10-17
 ---
 
-## DNSプロビジョニング
-Route53で宛先をIngerssリソースのHost名とALBをマッピングする。
-手動でやることもできるが、Ingressリソースを作成するたびにRecordSetを作るのは面倒。
-そんな面倒くさがりな人のためにDNSの自動プロビジョニングをやってくれる[external-dns https://github.com/kubernetes-incubator/external-dns]を使う。
-この製品はRoute53だけなく、Cloud DNS等様々なDNSサービスのプロビジョニングが可能
+前回まではアプリケーションにアクセスする際にはIngressに登録したホスト名をHostヘッダを直接指定することでシミュレーションしていました。
+当然ですが、実運用でこのようなことをすることはなく、DNSサーバにIngressとのマッピングを追加する必要があります。
+もちろん手動でDNSサーバにレコードを追加して実現することはできますが、Ingressにホストを追加する度に別途DNSで作業する必要が出てきますし、DNSは設定ミスがあるとその被害は大きくなるのが通例です(それ故にネットワーク管理者のみがアクセス可能な組織も多いでしょう)。
 
-ここではドメインはGoogle Domainsで以前取得した`frieza.dev`を使い回す。
-まずはRoute53のHostedZoneを作成する(ここは手動でやる必要がある)。
+今回はこれを自動化してしまいましょう。
+このためのツールとしてKubernetesコミュニティ(Special Interest Groups:SIGs)で開発・運用されているexternal-dnsを利用します。
+
+- 公式サイト: <https://github.com/kubernetes-sigs/external-dns>
+
+Alphaステータスのものが多いですが、対応するDNSプロバイダとしては[こちら](https://github.com/kubernetes-sigs/external-dns#status-of-providers)で確認できるように様々なものがあります。
+今回はAWSのDNSサービスである[Route53](https://aws.amazon.com/jp/route53/)を使用します。
+
+また、自分のドメインを持っていない場合は任意のものを準備してください。安いものであれば年間数百円で購入可能です。
+本チュートリアルはAWSで実施するのでRoute53での取得をオススメしますが、以下のようなドメインレジストラでも構いません(動作は未検証です)。
+- [お名前.com](https://www.onamae.com/)
+- [Google Domains](https://domains.google/)
+- [Star Domain](https://www.star-domain.jp/)
+
+Route53でのドメイン取得については[こちら](https://docs.aws.amazon.com/ja_jp/Route53/latest/DeveloperGuide/domain-register.html)の公式ドキュメントを参照してください。
+ここでは本サイト同様に`mamezou-tech.com`（Route53で購入）のサブドメインを使用します。
+
+
+## 事前準備
+以下のいずれかの方法で事前にEKS環境を作成しておいてください。
+
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
+
+また、external-dnsのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください。
+
+次にIngress Controllerをインストールします。今回はAWS Load Balancer Controllerを使用します(未検証ですがNGINX Ingress Controllerにも対応可能なはずです)。
+
+- [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws)
+
+
+## external-dnsのアクセス許可設定
+external-dnsがRoute53に対してレコード操作ができるようにIAM PolicyとIAM Roleを作成します。
+マネジメントコンソールから以下のIAM Policyを作成しましょう。
+<https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#iam-policy>
+ここでは上記をJSONファイル(`external-dns-policy.json`)として保存して利用します。
+
+### eksctl
+環境構築にeksctlを利用している場合はIngress Controllerセットアップ同様にサブコマンドを利用します。
+
 ```shell
-aws route53 create-hosted-zone --name "frieza.dev." --caller-reference "frieza.dev-$(date +%s)"
+
 ```
 
-割り当てられたNameサーバ情報を取得する。
+### Terraform
+環境構築にTerraformを利用している場合は以下の定義を追加してください。
+
+```hcl
+resource "aws_iam_policy" "external_dns" {
+  name = "ExternalDNSRecordSetChange"
+  policy = file("${path.module}/external-dns-policy.json")
+}
+
+resource "kubernetes_namespace" "external_dns" {
+  metadata {
+    name = "external-dns"
+  }
+}
+
+module "external_dns" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version = "~> 4.0"
+  create_role                   = true
+  role_name                     = "EKSExternalDNS"
+  provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
+  role_policy_arns              = [aws_iam_policy.external_dns.arn]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:${kubernetes_namespace.external_dns.metadata[0].name}:external-dns"]
+}
+
+resource "kubernetes_service_account" "external_dns" {
+  metadata {
+    name = "external-dns"
+    namespace = kubernetes_namespace.external_dns.metadata[0].name
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.external_dns.iam_role_arn
+    }
+  }
+}
+```
+以下のことをしています。
+
+- JSONファイルよりIAM Policyを作成し、external-dnsがRoute53の更新をできるようにカスタムポリシーを作成
+- k8s上に`external-dns`というNamespaceを作成
+- external-dnsが利用するIAM Roleを作成（EKSのOIDCプロバイダ経由でk8sのServiceAccountが引受可能）し、上記カスタムポリシーを指定
+- k8s上にServiceAccountを作成して上記IAM Roleと紐付け
+
+
+これをAWS/k8sクラスタ環境に適用します。
 ```shell
-HOSTED_ZONE_ID=$(aws route53 list-hosted-zones --query 'HostedZones[0].Id' --output text)
-aws route53 get-hosted-zone --id $HOSTED_ZONE_ID
-```
-```
-> {
->     "HostedZone": {
->         "ResourceRecordSetCount": 4,
->         "CallerReference": "frieza.dev-1561126253",
->         "Config": {
->             "PrivateZone": false
->         },
->         "Id": "/hostedzone/ZINLB2WD5FXEV",
->         "Name": "frieza.dev."
->     },
->     "DelegationSet": {
->         "NameServers": [
->             "[* ns-1520.awsdns-62.org]",
->             "[* ns-822.awsdns-38.net]",
->             "[* ns-1749.awsdns-26.co.uk]",
->             "[* ns-470.awsdns-58.com]"
->         ]
->     }
-> }
+# 追加内容チェック
+terraform plan
+# AWS/EKSに変更適用
+terraform apply
 ```
 
-取得したNameServerを利用するようにGoogleDomainに設定する。実際に反映されるまでに数時間もかかった。
-![](https://i.gyazo.com/634bc5fad3f53edb15b2701e0b2420d5.png)
+反映が完了したらマネジメントコンソールで確認してみましょう。
+IAM Role/Policyは以下のようになります。
+![](https://i.gyazo.com/dad27d3aaba7475c75a6b52e3210a81c.png)
 
-external-dnsのマニフェストをダウンロードしてdomain-filterをfrieza.dev(Route53のHostedZone)に修正する(余計なものは消した)。
+IAM Role/Policyが問題なく作成されています。
+
+次にk8sのServiceAccountは以下のように確認できます。
+
 ```shell
-curl -o external-dns.yaml https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.2/docs/examples/external-dns.yaml
+kubectl get sa external-dns -n external-dns -o yaml
 ```
+
 ```yaml
-# (省略)
+# 必要部分のみ抜粋・整形
+apiVersion: v1
+automountServiceAccountToken: true
+kind: ServiceAccount
 metadata:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/EKSExternalDNS
   name: external-dns
+  namespace: external-dns
+secrets:
+- name: external-dns-token-nt5fl
+```
+
+指定したIAM RoleでServiceAccountリソースがNamespace`external-dns`に作成されていることが確認できます。
+
+## DNSホストゾーンの登録
+
+external-dnsの管理範囲とするホストゾーンをRoute53に事前に登録します。
+
+Route53で購入した場合は購入したドメインでホストゾーンが作成されていますので、新たに作成する必要はありません[^1]。この手順はスキップ可能です。
+[^1]: とはいえ複数のAWSアカウントで管理する環境ですと環境ごとにサブドメインでホストゾーンを作成し、親ドメイン側（マスターアカウント）はサブドメイン側のホストゾーンに移譲する方法がよく使われると思います。
+
+Route53で購入していない場合場合は、マネジメントコンソールより「Route53 -> ホストゾーンの作成」を選択して自分で用意したドメインを入力・作成してください。
+タイプはデフォルトの「パブリックホストゾーン」のままにしてください。
+![](https://i.gyazo.com/6502e899fe5594fa84157a34e1be79c4.png)
+
+AWS CLIの場合は以下で作成可能ですが、Route53へのアクセスができるIAMユーザーで実施してください[^2]
+[^2]: 環境構築時に作成した`terraform`IAM ユーザーは該当操作のパーミッションはありませんので別途ポリシーの追加が必要です。
+
+```shell
+aws route53 create-hosted-zone \
+  --name "xxxxxxxx.xxx" --caller-reference "k8s-tutorial-$(date +%s)"
+```
+
+続いて、ドメインレジストラ側で作成したホストゾーンに名前解決を移譲するように変更します。
+ドメインレジストラの管理ページで、このホストゾーンに割り当てられたネームサーバーを利用するように設定をしてください。
+ネームサーバーはマネジメントコンソールのNSレコードの内容から確認できます。
+![](https://i.gyazo.com/f0381c4581351f0c37eb1a7bbdb1e0ef.png)
+
+例としてGoogle Domainsで購入したものは、以下のようにカスタムネームサーバーとして上記内容を設定します。
+![](https://i.gyazo.com/69a2ed78fd729fa904111809410381e0.png)
+
+
+## external-dnsインストール
+それでは準備が整いましたので、今回主役のexternal-dnsをセットアップしましょう。
+以下にHelm Chartが準備されていますので今回もHelmを使ってインストールします。
+- <https://github.com/bitnami/charts/tree/master/bitnami/external-dns>
+
+いつものようにリポジトリを追加・更新します。
+```shell
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm update
+```
+
+以下のパラメータでexternal-dnsをインストールします。以下は現時点で最新の`5.4.11`のHelm Chartを利用しています。
+
+```shell
+helm upgrade external-dns bitnami/external-dns \
+  --install --version 5.4.11 \
+  --namespace external-dns \
+  --set provider=aws \
+  --set aws.region=ap-northeast-1 \
+  --set aws.zoneType=public \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=external-dns \
+  --set domainFilters[0]=mamezou-tech.com
+```
+
+- `--namespace`でexternal-dnsをインストールするのは事前に作成したnamespaceを指定
+- `provider`はRoute53を利用しますので`aws`を指定
+- `aws.region`は東京リージョン(ap-northeast-1)を指定。使っているリージョンが異なる場合は変更してください。
+- `aws.zoneType`は外部公開の`public`を指定
+- `serviceAccount`/`serviceAccount.name`は事前に作成したものを指定
+- `domainFilters[0]`で対象とするドメイン(ホストゾーン)を指定。自分で用意したドメインに変更してください。
+
+その他にも多数のパラメータがあります。必要に応じて追加してください。
+利用可能なパラメータは[こちら](https://github.com/bitnami/charts/tree/master/bitnami/external-dns#parameters)を参照してください。
+
+## サンプルアプリのデプロイ
+
+external-dnsを確認するためのサンプルアプリをデプロイしましょう。
+[こちら](/containers/k8s/tutorial/ingress/ingress-aws#サンプルアプリのデプロイ)と同じですが再掲します。
+
+```yaml
+# サンプルアプリスクリプト
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server
+data:
+  index.js: |
+    const http = require('http');
+
+    const server = http.createServer((req, res) => {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/plain');
+      res.end(`${process.env.POD_NAME}: hello sample app!\n`);
+    });
+
+    const hostname = '0.0.0.0';
+    const port = 8080;
+    server.listen(port, hostname, () => {
+      console.log(`Server running at http://${hostname}:${port}/`);
+    });
+---
+# 1つ目のアプリ
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
 spec:
-  strategy:
-  type: Recreate
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app1
   template:
     metadata:
       labels:
-        app: external-dns
+        app: app1
     spec:
-      serviceAccountName: external-dns
       containers:
-      - name: external-dns
-      image: registry.opensource.zalan.do/teapot/external-dns:v0.5.9
-      # ここだけ修正
-      args:
-      - --source=service
-      - --source=ingress
-      - --domain-filter=frieza.dev
-      - --provider=aws
-      - --policy=upsert-only
-      - --aws-zone-type=public
+        - name: app1
+          image: node:16
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          command: [sh, -c, "node /opt/server/index.js"]
+          volumeMounts:
+            - mountPath: /opt/server
+              name: server
+      volumes:
+        - name: server
+          configMap:
+            name: server
+---
+# 2つ目のアプリ
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app2
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+        - name: app2
+          image: node:16
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          command: [sh, -c, "node /opt/server/index.js"]
+          volumeMounts:
+            - mountPath: /opt/server
+              name: server
+      volumes:
+        - name: server
+          configMap:
+            name: server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: app1
+  name: app1
+spec:
+  type: NodePort
+  selector:
+    app: app1
+  ports:
+    - targetPort: http
+      port: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: app2
+  name: app2
+spec:
+  type: NodePort
+  selector:
+    app: app2
+  ports:
+    - targetPort: http
+      port: 80
 ```
-これをEKSに投入する。
-```shell
-kubectl apply -f external-dns.yaml
-```
-external-dnalのログを見てみる。
-```shell
-kubectl logs deploy/external-dns
-```
-```
-> time="2019-06-22T01:48:09Z" level=info msg="Created Kubernetes client https://10.100.0.1:443"
-> time="2019-06-22T01:48:11Z" level=info msg="Desired change: [* CREATE eks.frieza.dev A]"
-> time="2019-06-22T01:48:11Z" level=info msg="Desired change: [* CREATE eks.frieza.dev TXT]"
-> time="2019-06-22T01:48:11Z" level=info msg="[* 2 record(s) in zone frieza.dev. were successfully updated]"
-```
-external-dnsがIngressのHost名をRoute53にレコードセットを作成してくれているのが分かる(AレコードとTXTレコード)。
-- AWSコンソール(Route53)
-  ![](https://i.gyazo.com/0601e3527038d74bab56d7f5a47e1803.png)
 
-DNSレコードがグローバルに伝播されるまでまたしばらく待つ。
-```shell
-dig eks.frieza.dev
-```
-```
-> ; <<>> DiG 9.10.6 <<>> eks.frieza.dev
-> ;; global options: +cmd
-> ;; Got answer:
-> ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 27697
-> ;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 4, ADDITIONAL: 9
->
-> ;; OPT PSEUDOSECTION:
-> ; EDNS: version: 0, flags:; udp: 4096
-> ;; QUESTION SECTION:
-> ;eks.frieza.dev.                        IN      A
->
-> ;; ANSWER SECTION:
-> [* eks.frieza.dev.         60      IN      A       13.113.34.180]
-> [* eks.frieza.dev.         60      IN      A       13.113.165.21]
-> [* eks.frieza.dev.         60      IN      A       13.115.180.248]
->
-> ;; AUTHORITY SECTION:
-> frieza.dev.             10800   IN      NS      ns-1520.awsdns-62.org.
-> frieza.dev.             10800   IN      NS      ns-1749.awsdns-26.co.uk.
-> frieza.dev.             10800   IN      NS      ns-470.awsdns-58.com.
-> frieza.dev.             10800   IN      NS      ns-822.awsdns-38.net.
-> (省略)
-```
-OK!
-さっそくIngressリソースで指定したお気に入りのURLでアクセスする。
-```shell
-for i in {1..10}; do curl eks.frieza.dev/app1;echo; done
-```
-```
-> [app1:192.168.55.55]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.69.94]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.55.55]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.69.94]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.69.94]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.55.55]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.69.94]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.69.94]私の戦闘力は530000です…ですが、(省略)
-> [app1:192.168.55.55]私の戦闘力は530000です…ですが、(省略)
-```
-```shell
-for i in {1..10}; do curl eks.frieza.dev/app2;echo; done
-```
-```
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.85.223]ずいぶんムダな努力をするんですね・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.85.223]ずいぶんムダな努力をするんですね・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.38.49]ずいぶんムダな努力をするんですね・・・(省略)
-> [app2:192.168.85.223]ずいぶんムダな努力をするんですね・・(省略)
-```
-ランダムにリクエストが各Podに分散されているのが分かる。
-ALBは負荷分散アルゴリズムとしてはラウンドロビンのみサポートしているのでそれ以外はできない。
+AWS Load Balancer ControllerはNodePortを使う点に注意してください。
+こちらでデプロイします。
 
-こうしておけば新たに別のIngressを投入する際にドメイン`frieza.dev`のサブドメインにしておけばALBリソースやRoute53のRecordSetが自動でプロビジョニングされるようになる。
+```shell
+kubectl apply -f app.yaml
+```
+
+いつものようにデプロイ後はアプリの状態を確認しましょう。
+
+```shell
+kubectl get cm,deployment,pod,svc
+```
+
+```
+# 必要部分のみ抜粋
+NAME                         DATA   AGE
+configmap/server             1      100s
+
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/app1   2/2     2            2           100s
+deployment.apps/app2   2/2     2            2           100s
+
+NAME                        READY   STATUS    RESTARTS   AGE
+pod/app1-7ff67dc549-gz48k   1/1     Running   0          100s
+pod/app1-7ff67dc549-jxflp   1/1     Running   0          100s
+pod/app2-b6dc558b5-5zb69    1/1     Running   0          100s
+pod/app2-b6dc558b5-6nksz    1/1     Running   0          100s
+
+NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/app1         NodePort    172.20.135.3    <none>        80:31391/TCP   100s
+service/app2         NodePort    172.20.122.30   <none>        80:31670/TCP   100s
+```
+
+これでアプリの準備は完了です。
+
+## Ingressリソース作成
+
+それではこれに対応するIngressリソースを作成しましょう。
+基本的には[AWS Load Balancer Controllerの環境構築時](/containers/k8s/tutorial/ingress/ingress-aws#Ingressリソース作成)と同じです。
+
+以下のようになります。
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-aws-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    # external-dnsにRoute53への登録を指示
+    external-dns.alpha.kubernetes.io/hostname: k8s-tutorial.mamezou-tech.com
+spec:
+  ingressClassName: aws
+  rules:
+    - host: k8s-tutorial.mamezou-tech.com
+      http:
+        paths:
+          # app1へのルーティングルール
+          - backend:
+              service:
+                name: app1
+                port:
+                  number: 80
+            path: /app1
+            pathType: Prefix
+          # app2へのルーティングルール
+          - backend:
+              service:
+                name: app2
+                port:
+                  number: 80
+            path: /app2
+            pathType: Prefix
+```
+`annotations`部分に注目してください。`external-dns.alpha.kubernetes.io/hostname`に指定する値はルーティングルールの`host`で指定した`k8s-tutorial.mamezou-tech.com`を設定しています(複数の場合はカンマ区切り)。
+external-dnsはこれを検知してRoute53への同期します。
+
+これをk8sに反映しましょう。
+
+```shell
+kubectl apply -f ingress.yaml
+```
+
+反映が終わったら、まずはIngressリソースを確認してみましょう。
+
+```shell
+kubectl describe ing app-aws-ingress
+```
+
+```
+Name:             app-aws-ingress
+Namespace:        default
+Address:          k8s-default-appawsin-xxxxxxxxx-xxxxxxxxxxxx.ap-northeast-1.elb.amazonaws.com
+Default backend:  default-http-backend:80 (<error: endpoints "default-http-backend" not found>)
+Rules:
+  Host                           Path  Backends
+  ----                           ----  --------
+  k8s-tutorial.mamezou-tech.com  
+                                 /app1   app1:80 (10.0.1.55:8080,10.0.2.177:8080)
+                                 /app2   app2:80 (10.0.1.114:8080,10.0.2.131:8080)
+Annotations:                     alb.ingress.kubernetes.io/scheme: internet-facing
+                                 external-dns.alpha.kubernetes.io/hostname: k8s-tutorial.mamezou-tech.com
+Events:
+  Type    Reason                  Age   From     Message
+  ----    ------                  ----  ----     -------
+  Normal  SuccessfullyReconciled  53s   ingress  Successfully reconciled
+```
+前回と同じように`Address`に外部公開用のURLが割り当てられ、バックエンドとしてパスベースのルーティングでapp1/app2が設定済みであることが確認できます。
+また、Annotationsにexternal-dnsのドメインが指定されていることも確認できます。
+
+AWSのマネジメントコンソールからRoute53の状態を見てみましょう。Route53から自分のドメインのレコードを見てみましょう。
+![](https://i.gyazo.com/b840185e7ffb26568626f928be009fdb.png)
+
+Aレコードが作成され、これがIngress(実態はALB)に対してマッピングされている様子が分かります。
+実際に名前解決ができるのかを`dig`コマンドで確認します。
+
+```shell
+dig k8s-tutorial.mamezou-tech.com
+```
+
+```
+; <<>> DiG 9.10.6 <<>> k8s-tutorial.mamezou-tech.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 41319
+;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;k8s-tutorial.mamezou-tech.com.	IN	A
+
+;; ANSWER SECTION:
+k8s-tutorial.mamezou-tech.com. 60 IN	A	xxx.xxx.xxx.xxx
+k8s-tutorial.mamezou-tech.com. 60 IN	A	xxx.xxx.xxx.xxx
+k8s-tutorial.mamezou-tech.com. 60 IN	A	xxx.xxx.xxx.xxx
+
+;; Query time: 421 msec
+;; SERVER: 192.168.10.1#53(192.168.10.1)
+;; WHEN: Sun Oct 17 16:16:09 JST 2021
+;; MSG SIZE  rcvd: 106
+```
+
+`ANSWER SECTION`でAレコードが確認できました。DNSは全世界に伝播されるまでしばらく時間がかかります(特にRoute53以外でドメイン取得した場合は数時間かかることもあります)。
+アクセスできない場合はexternal-dnsにエラーがなことを確認し、正常であればしばらく待ちましょう。
+
+ログはこちらで確認できます。
+
+```shell
+kubectl logs deploy/external-dns -n external-dns
+```
+
+正常に終了していれば以下のような出力が確認できます。
+
+```
+time="2021-10-17T07:09:38Z" level=info msg="Applying provider record filter for domains: [mamezou-tech.com. .mamezou-tech.com.]"
+time="2021-10-17T07:09:38Z" level=info msg="Desired change: UPSERT k8s-tutorial.mamezou-tech.com A [Id: /hostedzone/XXXXXXXXXXXXXXXXXXXXX]"
+time="2021-10-17T07:09:38Z" level=info msg="Desired change: UPSERT k8s-tutorial.mamezou-tech.com TXT [Id: /hostedzone/XXXXXXXXXXXXXXXXXXXXX]"
+time="2021-10-17T07:09:39Z" level=info msg="2 record(s) in zone mamezou-tech.com. [Id: /hostedzone/XXXXXXXXXXXXXXXXXXXXX] were successfully updated"
+```
+
+## 動作確認
+
+最後にアプリにアクセスしてみましょう。
+前回まではcurlでエンドポイントはAWSで自動生成されたものを使い、そのHostヘッダにIngressのホスト名を指定してDNSの名前解決を擬似的に行っていましたが、今回はそのようなことは不要なはずです。
+実際に使うドメインは自分のものに置き換えてアクセスしてください。
+
+```shell
+# app1
+curl k8s-tutorial.mamezou-tech.com/app1
+# app2
+curl k8s-tutorial.mamezou-tech.com/app2
+```
+
+```
+app1-7ff67dc549-gz48k: hello sample app!
+app2-b6dc558b5-5zb69: hello sample app!
+```
+
+カスタムドメインのみでアクセスできていることが分かります。
+
+
+## クリーンアップ
+
+最後に不要になったリソースを削除しましょう。
+
+```shell
+# app1/app2
+kubectl delete -f app.yaml
+# Ingress -> ALBリソース削除
+kubectl delete -f ingress.yaml
+# ALBレコードが削除されたことを確認後にAWS Load Balancer Controller/external-dnsをアンインストール
+helm uninstall -n external-dns external-dns
+helm uninstall -n kube-system aws-load-balancer-controller
+```
+
+また、デフォルトでは安全のためにexternal-dnsはRoute53のレコードを削除しません(helmインストール時に`policy`に`sync`を指定すれば可能です)。
+マネジメントコンソールから不要になったレコード(A/Txt)は手動で削除しておきましょう(**誤って利用中のものを削除しないよう注意してください**)。
+
+最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/env/aws-eks-terraform#クリーンアップ)
+
+
+---
+
+参照資料
+
+external-dnsドキュメント: <https://github.com/kubernetes-sigs/external-dns>

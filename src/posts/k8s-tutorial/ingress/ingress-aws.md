@@ -64,11 +64,11 @@ eksctl utils associate-iam-oidc-provider \
 
 ```shell
 # ポリシーファイルのダウンロード
-curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
+curl -o alb-ingress-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
 # IAM Policy作成
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
-    --policy-document file://iam-policy.json
+    --policy-document file://alb-ingress-policy.json
 ```
 
 そして作成したポリシーを指定したIngress ControllerのIAM Roleを作成します。`eksctl create iamserviceaccount`コマンドを使用します。
@@ -150,7 +150,7 @@ module "vpc" {
 # enable IRSA for AWS Load Balancer Controller
 resource "aws_iam_policy" "aws_loadbalancer_controller" {
   name = "EKSIngressAWSLoadBalancerController"
-  policy = file("${path.module}/iam-policy.json")
+  policy = file("${path.module}/alb-ingress-policy.json")
 }
 
 module "iam_assumable_role_admin" {
@@ -185,7 +185,7 @@ resource "kubernetes_service_account" "aws_loadbalancer_controller" {
 あらかじめTerraformのルートモジュール配下(ここでは`terraform`)にダウンロードしておきましょう。
 
 ```shell
-curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
+curl -o alb-ingress-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
 ```
 
 これで準備完了です。再度terraform コマンドを実行しましょう。
@@ -228,7 +228,8 @@ secrets:
 
 ## Ingress Controllerインストール
 
-前回同様にhelmを用いてインストールしましょう。今回は別途設定ファイルを用意するのではなく、コマンド引数に設定も含めています。
+前回同様にhelmを用いてインストールしましょう。
+helm以外にもマニフェストファイルからのインストールオプションもありますので、helmを使わない場合は[こちら](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/deploy/installation/)を参照してください。
 
 ```shell
 # helm Chartリポジトリ追加
@@ -245,6 +246,7 @@ kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/
 これらのCRDについては、Ingress Controller内部や拡張設定(IngressClassParams)で利用するもで、今回は直接利用することはありません。
 
 最後にIngress Controllerをインストールしましょう。以下は現時点で最新の`1.2.7`のHelm Chartを利用しています。
+今回は別途設定ファイルを用意するのではなく、コマンド引数に設定も含めています(`clusterName`は自分で作成したクラスタ名に変更してください)。
 
 ```shell
 helm upgrade aws-load-balancer-controller eks/aws-load-balancer-controller \
@@ -254,9 +256,9 @@ helm upgrade aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set serviceAccount.name=aws-load-balancer-controller
 ```
 
-helm以外にもマニフェストファイルからのインストールオプションもあります。詳細は[こちら](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/deploy/installation/)を参照してください。
+Ingress Controllerが利用するServiceAccountについては事前に作成していますので、`serviceAccount.create`/`serviceAccount.name`で自動で作成せずに既存のものを利用するように指定しています。
 
-実際にIngress Controllerがデプロイされているのかを確認してみましょう。
+正常に実行が完了したら、実際にIngress Controllerがデプロイされているのかを確認してみましょう。
 
 ```shell
 kubectl get pod -n kube-system -l app.kubernetes.io/name=aws-load-balancer-controller

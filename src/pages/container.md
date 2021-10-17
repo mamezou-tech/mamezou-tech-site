@@ -13,7 +13,7 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 #### Ingress
 1. [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
 2. [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws)
-3. DNS自動構成(Route53) <span style="color:red">Coming Soon!</span>
+3. [DNSレコード管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns)
 4. TLS証明書管理(Cert Manager) <span style="color:red">Coming Soon!</span>
 
 #### コンテナストレージ

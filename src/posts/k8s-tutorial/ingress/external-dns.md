@@ -36,10 +36,10 @@ Route53でのドメイン取得については[こちら](https://docs.aws.amazo
 また、external-dnsのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください。
 
 次にIngress Controllerをインストールします。
-今回はAWS Load Balancer Controllerを使用します(未検証ですがNGINX Ingress Controllerにも対応可能なはずです)。以下手順でインストールしてください。
+以下のいずれかをインストールしてください(以降はAWS Load Balancer Controllerをインストールしたものとして記載していますがIngressClassNameの指定以外は変わりません)。
 
 - [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws)
-
+- [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
 
 ## external-dnsのアクセス許可設定
 external-dnsがRoute53に対してレコード操作ができるようにIAM PolicyとIAM Roleを作成します。
@@ -485,6 +485,8 @@ spec:
 `annotations`部分に注目してください。
 `external-dns.alpha.kubernetes.io/hostname`に、ルーティングルールの`host`で指定した`k8s-tutorial.mamezou-tech.com`を設定しています(複数の場合はカンマ区切り)。
 external-dnsはこれを検知してRoute53と同期します。
+
+NGINX Ingress Controllerを使用する場合は`ingressClassName`に`nginx`と指定してください。
 
 これをk8sに反映しましょう。
 

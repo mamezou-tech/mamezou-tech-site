@@ -1,73 +1,136 @@
 ---
-title: Ingress TLS証明書管理(Cert Manager)
+title: HTTPS通信(Cert Manager)
 author: noboru-kudo
 ---
-今回はIngressにTLS証明書をセットアップにしてセキュアに通信できるようにしてみましょう。
 
-ゼロトラストネットワークの考え方が普及し、今や開発・テスト環境でもTLS化が当たり前の時代になった。証明書の管理が面倒なのでできればやりたくないけど避けられなくなってきた。
+今回はIngressにTLS証明書をセットアップにしてHTTPSでセキュアに通信できるようにしてみましょう。
 
-KubernetesのIngressリソースは手動で証明書を作成・発行して登録することも可能だが、今回はTLS証明書の発行や更新を自動でやってくれるCert Managerを使う。
+ゼロトラストネットワークの考え方が普及し、今や開発・テスト環境でも通信のTLS化が当たり前の時代になりました(もちろん暗号化は通信だけではだめですが)。
+そこで課題となるのが、暗号化で利用する証明書の管理です。証明書を更新し忘れて有効期限切れによる通信障害が発生したというニュースもよく耳にしますね。
 
-<https://github.com/jetstack/cert-manager>
+KubernetesのIngressは手動では証明書を作成・発行して登録することも可能ですが、前述の証明書の運用問題があります。
+今回はTLS証明書の発行やローテートを自動でやってくれる[Cert Manager](https://github.com/jetstack/cert-manager)を使って実現しましょう[^1]。
 
-Cert ManagerはCRDとして提供されるIssuerとCertificateリソースを使って証明書の管理をしている。
-- Issuer
-  - Cert Managerが証明書の発行リクエストを行う証明書発行機関。ClusterスコープのClusterIssuerリソースもある。
-  - https://docs.cert-manager.io/en/latest/tasks/issuers/index.html#supported-issuer-types
+- 公式ドキュメント: https://cert-manager.io/docs/
+
+AWS Load Balancer ControllerつまりALB(Application Load Balancer)をIngressとして利用する場合は、AWSの[Certificate Manager](https://aws.amazon.com/jp/certificate-manager/)という証明書管理のマネージドサービスがありますのでこれを使う形になります（現時点でALBはACM以外の証明書を使う術はありません）[^2]。
+[^2]: AWS Load Balancer ControllerでHTTPSを使う場合は[こちら](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/tasks/ssl_redirect/)が参考になります。
+
+今回はNginxをIngressとして使うNGINX Ingress Controllerを使って、証明書の管理を自動化していきます。
+
+Cert ManagerはCRD(Custom Resource Definitions)として提供されるIssuerとCertificateリソースを使って証明書の管理をしています。
+- Issuer/ClusterIssuer
+  Cert Managerが証明書の発行リクエストを行う証明書発行機関です。サポート対象の発行機関の種類は[こちら](https://cert-manager.io/docs/configuration/#supported-issuer-types)から確認できます。
 - Certificate
-  - 発行された証明書リソース。Ingressリソースが定義されるとCert Managerが作成する。有効期限の管理にも使われている。
+  Issuerより発行された証明書リソース。Ingressリソースが定義されるとCert Managerが作成します。ここで有効期限の管理にも使われています。
 
-今回の完成イメージはこんな感じ。
+今回は自己署名(いわゆるオレオレ証明書)と無料で証明書発行ができる[Let's Encrypt](https://letsencrypt.org/)を使ってIngressのHTTPS通信を実現してみましょう。
+完成イメージは以下のようになります。
+
 ![](https://i.gyazo.com/fa39261af82bfefe43878d5f31e4b638.png)
 
+## 事前準備
+以下のいずれかの方法で事前にEKS環境を作成しておいてください。
 
-環境としては自己署名の証明書を使ったローカル環境とLet's Encryptの証明書を使ったクラウド環境(AKS)を対象にする。
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
+
+また、cert-managerのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。
+未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3.3[^3]以降のバージョンをセットアップしてください。
+
+[^3]: CRDバグの問題によりHelm v3.2以前の場合は個別にCRDをセットアップする必要があります。詳細は[こちら](https://cert-manager.io/docs/installation/helm/#option-1-installing-crds-with-kubectl)を参照してください。
+
+次にIngress Controllerをインストールします。
+今回はAWS Load Balancer Controllerを使用します(未検証ですがNGINX Ingress Controllerにも対応可能なはずです)。以下手順でインストールしてください。
+
+- [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
+
+また、Let's Encryptを利用する場合は証明書の発行にドメイン検証が必要なため、正規のドメインが必要となります。
+以下の手順を実施して、ドメイン準備とexternal-dnsのセットアップも実施してください(external-dnsは手動実施でも構いません)。
+本チュートリアルでは`mamezou-tech.com`（Route53で購入）のサブドメインを使用しますが、都度自分のドメインに置き換えてください。
+
+今回はAWS Load Balancer ControllerではなくNGINX Ingress Controllerを使用しますので、事前準備のAWS Load Balancer Controllerはスキップして構いません。
+
+- [カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns)
 
 ## Cert Managerインストール(自己署名・Let's Encrypt共通)
 
-ローカルクラスタ環境にCert Managerをインストールする。Helmでやる方法もあるが今回は普通にマニフェストから入れる。
+それではクラスタ環境にCert Managerをインストールしましょう。今回はHelmを使いますが、他にも多くの方法があります。詳細なセットアップ方法は[こちら](https://cert-manager.io/docs/installation/)を参照しくてださい。
+cert-managerのHelm Chartは[こちら](https://artifacthub.io/packages/helm/cert-manager/cert-manager)で確認できます。
+
+まずはリポジトリの追加と最新化を行います。
+
 ```shell
-kubectl create namespace cert-manager
-# WebHookが機能するようにValidationを無効化
-kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
-# インストール(local)
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.8.0/cert-manager.yaml
-# Kubernetesが1.13未満の場合
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.8.0/cert-manager.yaml --validate=false
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
 ```
 
-何がインストールされたのかを見てみる。
+それでは以下でcert-managerをインストールしましょう(現時点で最新の`1.5.4`を使います)。
+
 ```shell
-kubectl get pod -n cert-manager
+helm upgrade cert-manager jetstack/cert-manager \
+  --install --version 1.5.4 \
+  --namespace cert-manager --create-namespace \
+  --set installCRDs=true
 ```
 
-```
-NAME                                      READY   STATUS    RESTARTS   AGE
-cert-manager-54f645f7d6-bbtjx             1/1     Running   0          3m59s
-cert-manager-cainjector-79b7fc64f-mn7st   1/1     Running   0          4m
-cert-manager-webhook-6484955794-fxfkh     1/1     Running   0          4m
-```
+今回は`cert-manager`Namespace内にcert-managerを指定しているだけのシンプルなものです。また、`installCRDs`の設定でCRDのセットアップも合わせて行うようにしました[^4]。
+その他の詳細なオプションは[こちら](https://artifacthub.io/packages/helm/cert-manager/cert-manager#configuration)で確認してください。
 
-Cert Manager本体の他に証明書のInjectorとかWebHookが稼働している。この他にIssuerやCertificateのCRDリソースも作成されていた。
+[^4]: cert-managerはAWSリソースへのアクセスが発生しないため、今までと異なりIAM Role等の作成は不要です。
 
-### Part1. 自己署名編
+インストールされたものを確認してみましょう。
 
-いわゆるオレオレ証明書。ローカル環境等のCAの利用が難しい場合に使う。
-
-前提条件としてローカルクラスタ環境にNginxのIngress Controllerを導入済みとする。
-
-#### 1. サンプルアプリデプロイ
-サンプルアプリをデプロイする([Kubernetesハンズオン-Ingress Controller - Nginx]から流用)。
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/kudoh/k8s-hands-on/master/ingress/nginx/app1.yaml
-kubectl apply -f https://raw.githubusercontent.com/kudoh/k8s-hands-on/master/ingress/nginx/app2.yaml
+kubectl get deploy,svc,pod -n cert-manager
 ```
 
-#### 2. 自己署名のIssuerリソース作成
-自己署名用のIssuerリソースを作成する。内容はselfSignedを指定するだけでよい。
+```
+NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/cert-manager              1/1     1            1           4m21s
+deployment.apps/cert-manager-cainjector   1/1     1            1           4m21s
+deployment.apps/cert-manager-webhook      1/1     1            1           4m21s
+
+NAME                           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/cert-manager           ClusterIP   10.100.84.146    <none>        9402/TCP   4m21s
+service/cert-manager-webhook   ClusterIP   10.100.241.106   <none>        443/TCP    4m21s
+
+NAME                                           READY   STATUS    RESTARTS   AGE
+pod/cert-manager-74f46787b6-gs67b              1/1     Running   0          4m20s
+pod/cert-manager-cainjector-748dc889c5-9rzmm   1/1     Running   0          4m20s
+pod/cert-manager-webhook-995c5c5b6-5pn6j       1/1     Running   0          4m20s
+```
+
+Cert Manager本体の他にも、証明書のInjectorやWebHookが実行されていることが分かります。
+この他にもIssuerやCertificateのCRD(Custom Resource Definitions)も作成されています。こちらも以下で確認可能です。
+
+```shell
+kubectl get crd -l app.kubernetes.io/name=cert-manager
+```
+
+```
+NAME                                  CREATED AT
+certificaterequests.cert-manager.io   2021-10-20T05:49:02Z
+certificates.cert-manager.io          2021-10-20T05:49:02Z
+challenges.acme.cert-manager.io       2021-10-20T05:49:02Z
+clusterissuers.cert-manager.io        2021-10-20T05:49:02Z
+issuers.cert-manager.io               2021-10-20T05:49:02Z
+orders.acme.cert-manager.io           2021-10-20T05:49:02Z
+```
+
+上記のように様々なCRDが作成されていることが分かります。特にIssuerやCertificateは、cert-managerを運用する上では重要なリソースとなります[^5]。
+
+[^5]: これらを管理するkubectlの[プラグイン](https://cert-manager.io/docs/usage/kubectl-plugin/)も提供されていますので、管理者ロールの方はこちらも導入しておくとよいでしょう。
+
+
+## 自己署名の証明書を作成
+
+Let's Encryptを使う前に、まずはcert-managerの動きを確認しましょう。
+
+自己署名の場合は以下のIssuerリソース(CRD)のYAMLを作成します。ここでは`self-signing-issuer.yaml`というファイル名で作成しました。
 
 ```yaml
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: selfsigning-issuer
@@ -75,9 +138,211 @@ spec:
   selfSigned: {}
 ```
 
+`spec`フィールドに`selfSigned`を定義し、値として空のブロック`{}`を指定するだけです。
+このファイルをk8sに適用しましょう。
+
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/kudoh/k8s-hands-on/master/cert-manager/issuer-self.yaml
+kubectl apply -f self-signing-issuer.yaml
 ```
+
+作成したリソースの詳細を確認しましょう。
+
+```shell
+kubectl describe issuer selfsigning-issuer
+```
+
+以下出力内容の抜粋です。
+
+```
+Name:         selfsigning-issuer
+Namespace:    default
+API Version:  cert-manager.io/v1
+Kind:         Issuer
+Spec:
+  Self Signed:
+Status:
+  Conditions:
+    Last Transition Time:  2021-10-20T06:14:34Z
+    Observed Generation:   1
+    Reason:                IsReady
+    Status:                True
+    Type:                  Ready
+Events:                    <none>
+```
+
+自己署名用のIssuerが作成されて準備完了していることが分かります。
+
+実際にサンプルアプリをデプロイして確認しましょう。アプリは[こちら](/containers/k8s/tutorial/ingress/external-dns/#サンプルアプリのデプロイ)をそのまま使います。
+
+```shell
+kubectl apply -f app.yaml
+```
+
+次にIngressをデプロイしましょう。今回はHTTPS通信になりますので一部異なります。
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-aws-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    external-dns.alpha.kubernetes.io/hostname: k8s-tutorial.mamezou-tech.com
+    # 自己署名の証明書Issuerを指定
+    cert-manager.io/issuer: "selfsigning-issuer"
+spec:
+  ingressClassName: nginx
+  # IngressのTLS設定
+  tls:
+    - hosts:
+        - k8s-tutorial.mamezou-tech.com
+      # 証明書のSecret名は任意。Cert Managerが作成してくれる
+      secretName: selfsigning-cert
+  rules:
+    - host: k8s-tutorial.mamezou-tech.com
+      http:
+        paths:
+          # app1へのルーティングルール
+          - backend:
+              service:
+                name: app1
+                port:
+                  number: 80
+            path: /app1
+            pathType: Prefix
+          # app2へのルーティングルール
+          - backend:
+              service:
+                name: app2
+                port:
+                  number: 80
+            path: /app2
+            pathType: Prefix
+```
+`annotations`の`cert-manager.io/issuer`で利用するcert-managerのIssuerとして先程作成した`selfsigning-issuer`を指定しています。
+cert-managerで`annotations`に指定可能なオプションは[こちら](https://cert-manager.io/docs/usage/ingress/#supported-annotations)に記載されていますので環境に応じて使い分けましょう。
+
+最後に`spec.tls`フィールドを新たに追加し、TLS証明書を格納したSecretリソースを指定します。
+この名前は任意でよくcert-managerがこれに応じた自己署名の証明書をSecretリソースとして発行してくれます。
+
+これをクラスタ環境に反映しましょう。
+
+```shell
+kubectl apply -f ingress.yaml
+```
+
+それではまずはIngressリソースを確認しましょう。
+
+```shell
+kubectl describe ing app-aws-ingress
+```
+
+```
+Name:             app-aws-ingress
+Namespace:        default
+Address:          xxxxxxxxxxxxxxxxxxxxxx-xxxxxxxxxxxxx.elb.ap-northeast-1.amazonaws.com
+Default backend:  default-http-backend:80 (<error: endpoints "default-http-backend" not found>)
+TLS:
+  selfsigning-cert terminates k8s-tutorial.mamezou-tech.com
+Rules:
+  Host                           Path  Backends
+  ----                           ----  --------
+  k8s-tutorial.mamezou-tech.com  
+                                 /app1   app1:80 (192.168.59.71:8080,192.168.90.227:8080)
+                                 /app2   app2:80 (192.168.44.74:8080,192.168.79.72:8080)
+Annotations:                     alb.ingress.kubernetes.io/listen-ports: [{"HTTPS":443}]
+                                 alb.ingress.kubernetes.io/scheme: internet-facing
+                                 cert-manager.io/issuer: selfsigning-issuer
+                                 external-dns.alpha.kubernetes.io/hostname: k8s-tutorial.mamezou-tech.com
+Events:
+  Type    Reason             Age                  From                      Message
+  ----    ------             ----                 ----                      -------
+  Normal  CreateCertificate  10m                  cert-manager              Successfully created Certificate "selfsigning-cert"
+  Normal  Sync               9m27s (x2 over 10m)  nginx-ingress-controller  Scheduled for sync
+  Normal  Sync               9m27s (x2 over 10m)  nginx-ingress-controller  Scheduled for sync
+```
+
+TLSやEventsの内容から正しくTLS証明書の設定が完了していることが分かります。
+cert-managerで管理する証明書はCertificateリソースで確認できます。こちらを見てみましょう。
+
+```shell
+kubectl describe certificate selfsigning-cert
+```
+以下出力内容の抜粋になります。
+```
+Name:         selfsigning-cert
+Namespace:    default
+API Version:  cert-manager.io/v1
+Kind:         Certificate
+Spec:
+  Dns Names:
+    k8s-tutorial.mamezou-tech.com
+  Issuer Ref:
+    Group:      cert-manager.io
+    Kind:       Issuer
+    Name:       selfsigning-issuer
+  Secret Name:  selfsigning-cert
+  Usages:
+    digital signature
+    key encipherment
+Status:
+  Conditions:
+    Last Transition Time:  2021-10-20T07:43:03Z
+    Message:               Certificate is up to date and has not expired
+    Observed Generation:   1
+    Reason:                Ready
+    Status:                True
+    Type:                  Ready
+  Not After:               2022-01-18T06:35:31Z
+  Not Before:              2021-10-20T06:35:31Z
+  Renewal Time:            2021-12-19T06:35:31Z
+```
+
+証明書の現在の状態や有効期限を確認することができます。cert-managerはこの情報をもとに証明書のローテートを自動で実施してくれます。
+最後に証明書を確認しましょう。上記`Secret Name`の出力のとおり証明書は`selfsigning-cert`というSecretリソースに格納されています（これはIngressリソースで指定したものです）。
+こちらも確認してみましょう。
+
+```shell
+kubectl describe secret selfsigning-cert
+```
+
+```
+Name:         selfsigning-cert
+Namespace:    default
+
+Type:  kubernetes.io/tls
+
+Data
+====
+ca.crt:   1046 bytes
+tls.crt:  1046 bytes
+tls.key:  1679 bytes
+```
+
+このように証明書の公開鍵や秘密鍵が格納されている様子が分かります。Ingressはこの情報をもとにトラフィックの暗号化を行う形になります。
+
+最後にcurlでHTTPSでサンプリアプリにアクセスしてみましょう。
+今回は自己署名の証明書のため`-k`オプションを指定する必要があります。
+
+```shell
+curl -k https://k8s-tutorial.mamezou-tech.com/app1
+curl -k https://k8s-tutorial.mamezou-tech.com/app2
+```
+
+```
+app1-7ff67dc549-6gjk5: hello sample app!
+app2-b6dc558b5-g9m99: hello sample app!
+```
+
+
+TODO:以下修正
+
+
+### Part1. 自己署名編
+
+
+#### 2. 自己署名のIssuerリソース作成
+
 
 #### 3. Ingressリソース作成
 先程作成したIssuerとTLSの設定を指定したIngressリソースを作成する。
@@ -653,11 +918,9 @@ curl -v https://cloud.frieza.dev/app1
 有償なので終わったらきれいにして費用を抑える。
 
 ```shell
-# 念の為。これはリソースグループと共に消えると思う
-helm delete --purge nginx-ingress
-az aks delete --name aks-cluster --resource-group $RG --no-wait --yes
-# グローバルIP
-az network public-ip delete --name frieza-ip --resource-group $NODE_RG
-# リソースグループ
-az group delete --name k8sResourceGroup --yes --no-wait
+kubectl delete -f app.yaml
+kubectl delete -f ingress.yaml
+helm uninstall cert-manager -n cert-manager
+helm uninstall external-dns -n external-dns
+helm uninstall ingress-nginx -n ingress-nginx
 ```

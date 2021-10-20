@@ -33,8 +33,20 @@ v1利用または未セットアップの場合は[こちら](https://docs.aws.a
 eksctlでクラスタの作成をするにはEKSだけでなく、VPCやCloudFormation等様々なアクセス許可をIAMユーザーに付与する必要があります。  
 そのユーザーは広範囲のアクセス許可が必要となりますし、将来的にパイプライン上で実行することも踏まえてeksctl専用のIAMユーザーを作成しておくとよいでしょう。
 
-必要最低限のポリシーについてeksctlのドキュメントに記載されていますので、IAMユーザの作成とポリシーの設定をマネジメントコンソールから行います。
+必要最低限のポリシーについてeksctlのドキュメントに記載されています。
 - <https://eksctl.io/usage/minimum-iam-policies/>
+
+今回環境構築後のチュートリアルでIAMポリシーを作成することがありますので、`IamLimitedAccess`に以下を追加してください(`Resource`のARN内の`xxxxxxxxxxxx`は対象のAWSアカウントで置換してください)。
+
+```json
+{
+  "Effect": "Allow",
+  "Action": "iam:CreatePolicy",
+  "Resource": "arn:aws:iam::xxxxxxxxxxxx:policy/*"
+}
+```
+
+これでIAMユーザの作成とポリシーの設定をマネジメントコンソールから行います。
 
 ポリシーを設定したIAMユーザー(eksctl)は以下のようになります。
 ![](https://i.gyazo.com/408a2bb6d88f138bb21976435648d276.png)

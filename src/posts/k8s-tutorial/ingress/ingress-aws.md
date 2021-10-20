@@ -71,7 +71,8 @@ aws iam create-policy \
     --policy-document file://alb-ingress-policy.json
 ```
 
-そして作成したポリシーを指定したIngress ControllerのIAM Roleを作成します。`eksctl create iamserviceaccount`コマンドを使用します。
+そして作成したポリシーを指定したIngress ControllerのIAM Roleとそれを利用するk8sのServiceAccountを作成します。
+`eksctl create iamserviceaccount`コマンドを使用します。
 
 ```shell
 eksctl create iamserviceaccount \

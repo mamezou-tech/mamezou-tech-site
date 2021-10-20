@@ -43,16 +43,66 @@ Route53でのドメイン取得については[こちら](https://docs.aws.amazo
 
 ## external-dnsのアクセス許可設定
 external-dnsがRoute53に対してレコード操作ができるようにIAM PolicyとIAM Roleを作成します。
-マネジメントコンソールから以下のIAM Policyを作成しましょう。
+必要なアクセス許可は以下に記載されています。
 <https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#iam-policy>
 ここでは上記をJSONファイル(`external-dns-policy.json`)として保存して利用します。
 
 ### eksctl
-環境構築にeksctlを利用している場合はIngress Controllerセットアップ同様にサブコマンドを利用します。
+環境構築にeksctlを利用している場合は[Ingress Controllerセットアップ](/containers/k8s/tutorial/ingress/ingress-aws#eksctl)同様にeksctlのサブコマンドを利用します。
+今回もIRSAを利用しますので、EKSのOIDCは有効化しておいてください(`eksctl utils associate-iam-oidc-provider`)。
+
+まずはexternal-dnsで使用するカスタムポリシーを作成します。
+以下のコマンドで先程作成したIAM PolicyのJSONファイルを引数として作成しましょう(マネジメントコンソールから作成しても構いません)。
 
 ```shell
-
+aws iam create-policy \
+    --policy-name ExternalDNSRecordSetChange \
+    --policy-document file://external-dns-policy.json
 ```
+
+次に作成したポリシーに対応するIAM Role/k8s ServiceAccountを作成します。
+これについてはeksctlのサブコマンドで作成します。
+```shell
+eksctl create iamserviceaccount \
+  --cluster=mz-k8s \
+  --namespace=external-dns \
+  --name=external-dns \
+  --attach-policy-arn=arn:aws:iam::xxxxxxxxxxxx:policy/ExternalDNSRecordSetChange \
+  --approve
+```
+
+これを実行するとeksctlがCloudFormationスタックを実行し、AWS上にIAM Role、k8s上に対応するServiceAccountが作成されます。
+こちらについてもマネジメントコンソールで確認してみましょう。
+
+- CloudFormation
+  ![](https://i.gyazo.com/b4352477e391fef4ef73aed134e2e93e.png)
+- IAM Role
+  ![](https://i.gyazo.com/a8b15ff17ed076f113fe83df2b14def7.png)
+
+ServiceAccountについてはkubectlで確認します[^1]。
+
+[^1]: Namespaceについては存在しない場合はeksctlが作成してくれます。
+
+```shell
+kubectl get sa external-dns -n external-dns -o yaml
+```
+
+```yaml
+# 必要部分のみ抜粋・整形
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/eksctl-mz-k8s-addon-iamserviceaccount-extern-Role1-2P413LKUVE98
+  labels:
+    app.kubernetes.io/managed-by: eksctl
+  name: external-dns
+  namespace: external-dns
+secrets:
+  - name: external-dns-token-4f7s4
+```
+
+`annotations`に上記IAM RoleのARNが指定されていることが分かります。
 
 ### Terraform
 環境構築にTerraformを利用している場合は、`main.tf`に以下の定義を追加してください。
@@ -195,6 +245,43 @@ helm upgrade external-dns bitnami/external-dns \
 
 external-dnsにはその他にも多数のパラメータが用意されています。必要に応じて追加してください。
 利用可能なパラメータは[こちら](https://github.com/bitnami/charts/tree/master/bitnami/external-dns#parameters)を参照してください。
+
+デプロイが正常に終了しているかを確認しましょう。
+今回は`external-dns`Namespaceに配置していますので、以下のコマンドで確認できます。
+
+```shell
+kubectl get deploy,svc,pod -n external-dns
+```
+
+```
+NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/external-dns   1/1     1            1           44s
+
+NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/external-dns   ClusterIP   10.100.72.190   <none>        7979/TCP   44s
+
+NAME                                READY   STATUS    RESTARTS   AGE
+pod/external-dns-6d5f46b99d-9zhl9   1/1     Running   0          43s
+```
+
+1つのPod(デフォルト)でexternal-dnsが稼働中となっていることが分かります。
+ログについても確認してみましょう。
+
+```shell
+kubectl logs deploy/external-dns -n external-dns
+```
+
+以下抜粋です。
+
+```
+time="2021-10-20T02:48:01Z" level=info msg="Instantiating new Kubernetes client"
+time="2021-10-20T02:48:01Z" level=info msg="Using inCluster-config based on serviceaccount-token"
+time="2021-10-20T02:48:01Z" level=info msg="Created Kubernetes client https://10.100.0.1:443"
+time="2021-10-20T02:48:09Z" level=info msg="Applying provider record filter for domains: [mamezou-tech.com. .mamezou-tech.com.]"
+time="2021-10-20T02:48:09Z" level=info msg="All records are already up to date"
+```
+
+external-dnsが起動して、Route53とクラスタ環境を監視している様子が分かります。
 
 ## サンプルアプリのデプロイ
 
@@ -436,7 +523,22 @@ AWSのマネジメントコンソールからRoute53の状態を見てみまし�
 ![](https://i.gyazo.com/b840185e7ffb26568626f928be009fdb.png)
 
 Aレコードが作成され、これがIngress(実態はALB)に対してマッピングされている様子が分かります。
-実際に名前解決ができるのかを`dig`コマンドで確認します。
+Aレコードが作成されていない場合は、external-dnsのログを確認してみましょう。以下のようにexternal-logのPodより確認可能です。
+
+```shell
+kubectl logs deploy/external-dns -n external-dns
+```
+
+正常に終了していれば以下のような出力が確認できます。
+
+```
+time="2021-10-17T07:09:38Z" level=info msg="Applying provider record filter for domains: [mamezou-tech.com. .mamezou-tech.com.]"
+time="2021-10-17T07:09:38Z" level=info msg="Desired change: UPSERT k8s-tutorial.mamezou-tech.com A [Id: /hostedzone/XXXXXXXXXXXXXXXXXXXXX]"
+time="2021-10-17T07:09:38Z" level=info msg="Desired change: UPSERT k8s-tutorial.mamezou-tech.com TXT [Id: /hostedzone/XXXXXXXXXXXXXXXXXXXXX]"
+time="2021-10-17T07:09:39Z" level=info msg="2 record(s) in zone mamezou-tech.com. [Id: /hostedzone/XXXXXXXXXXXXXXXXXXXXX] were successfully updated"
+```
+
+レコード追加が完了したら、実際に名前解決ができるのかをdigコマンドで確認します。Windowsの場合はnslookupコマンドで代用してください。
 
 ```shell
 dig k8s-tutorial.mamezou-tech.com
@@ -466,22 +568,7 @@ k8s-tutorial.mamezou-tech.com. 60 IN	A	xxx.xxx.xxx.xxx
 ```
 
 `ANSWER SECTION`でAレコードが確認できました。DNSは全世界に伝播されるまでしばらく時間がかかります(特にRoute53以外でドメイン取得した場合は数時間かかることもあります)。
-アクセスできない場合はexternal-dnsにエラーがなことを確認し、正常であればしばらく待ちましょう。
 
-ログはこちらで確認できます。
-
-```shell
-kubectl logs deploy/external-dns -n external-dns
-```
-
-正常に終了していれば以下のような出力が確認できます。
-
-```
-time="2021-10-17T07:09:38Z" level=info msg="Applying provider record filter for domains: [mamezou-tech.com. .mamezou-tech.com.]"
-time="2021-10-17T07:09:38Z" level=info msg="Desired change: UPSERT k8s-tutorial.mamezou-tech.com A [Id: /hostedzone/XXXXXXXXXXXXXXXXXXXXX]"
-time="2021-10-17T07:09:38Z" level=info msg="Desired change: UPSERT k8s-tutorial.mamezou-tech.com TXT [Id: /hostedzone/XXXXXXXXXXXXXXXXXXXXX]"
-time="2021-10-17T07:09:39Z" level=info msg="2 record(s) in zone mamezou-tech.com. [Id: /hostedzone/XXXXXXXXXXXXXXXXXXXXX] were successfully updated"
-```
 
 ## 動作確認
 
@@ -513,12 +600,12 @@ app2-b6dc558b5-5zb69: hello sample app!
 kubectl delete -f app.yaml
 # Ingress -> ALBリソース削除
 kubectl delete -f ingress.yaml
-# ALBレコードが削除されたことを確認後にAWS Load Balancer Controller/external-dnsをアンインストール
+# ALBが削除されたことを確認後にAWS Load Balancer Controller/external-dnsをアンインストール
 helm uninstall -n external-dns external-dns
 helm uninstall -n kube-system aws-load-balancer-controller
 ```
 
-また、デフォルトでは安全のためにexternal-dnsはRoute53のレコードを削除しません(helmインストール時に`policy`に`sync`を指定すれば可能です)。
+また、external-dnsはデフォルトでは安全のためにRoute53のレコードを削除しません(helmインストール時に`policy`に`sync`を指定すれば可能です)。
 マネジメントコンソールから不要になったレコード(A/Txt)は手動で削除しておきましょう(**誤って利用中のものを削除しないよう注意してください**)。
 
 最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。

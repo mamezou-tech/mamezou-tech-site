@@ -1,5 +1,5 @@
 ---
-title: DNSレコード管理(external-dns)
+title: カスタムドメイン管理(external-dns)
 author: noboru-kudo
 date: 2021-10-17
 ---

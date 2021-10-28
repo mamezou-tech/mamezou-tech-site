@@ -694,7 +694,7 @@ kubectl delete -f app.yaml
 # Ingress
 kubectl delete -f ingress.yaml
 # Ingress Controller
-helm uninstall ingress-nginx -n ingress-nginx
+helm uninstall -n ingress-nginx ingress-nginx
 ```
 
 クラスタ環境については環境構築編のクリーンアップ手順を参照してください。

@@ -3,18 +3,19 @@ title: HTTPS通信(Cert Manager)
 author: noboru-kudo
 ---
 
-今回はIngressにTLS証明書をセットアップにしてHTTPSでセキュアに通信できるようにしてみましょう。
+今回はIngressにTLS証明書をセットアップし、サンプルアプリに対してセキュアに通信できるようにしてみましょう。
 
 ゼロトラストネットワークの考え方が普及し、今や開発・テスト環境でも通信のTLS化が当たり前の時代になりました(もちろん暗号化は通信だけではだめですが)。
-そこで課題となるのが、暗号化で利用する証明書の管理です。証明書を更新し忘れて有効期限切れによる通信障害が発生したというニュースもよく耳にしますね。
+そこで課題となるのが、暗号化で利用する証明書の管理です。証明書の有効期限切れによる通信障害のニュースもよく耳にします。
 
-KubernetesのIngressは手動では証明書を作成・発行して登録することも可能ですが、前述の証明書の運用問題があります。
-今回はTLS証明書の発行やローテートを自動でやってくれる[Cert Manager](https://github.com/jetstack/cert-manager)を使って実現しましょう[^1]。
+KubernetesのIngressは手動では証明書を作成・発行して登録することも可能ですが、前述の通り証明書の運用には課題があります。
+今回はTLS証明書の発行やローテートを自動でやってくれる[Cert Manager](https://github.com/jetstack/cert-manager)を使って実現しましょう。
 
-- 公式ドキュメント: https://cert-manager.io/docs/
+- 公式ドキュメント: <https://cert-manager.io/docs/>
 
-AWS Load Balancer ControllerつまりALB(Application Load Balancer)をIngressとして利用する場合は、AWSの[Certificate Manager](https://aws.amazon.com/jp/certificate-manager/)という証明書管理のマネージドサービスがありますのでこれを使う形になります（現時点でALBはACM以外の証明書を使う術はありません）[^2]。
-[^2]: AWS Load Balancer ControllerでHTTPSを使う場合は[こちら](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/tasks/ssl_redirect/)が参考になります。
+AWS Load Balancer ControllerつまりALB(Application Load Balancer)をIngressとして利用する場合(詳細は[こちら](/containers/k8s/tutorial/ingress/ingress-nginx)参照)は、[AWS Certificate Manager(ACM)](https://aws.amazon.com/jp/certificate-manager/)という証明書管理のマネージドサービスがありますのでこれを使う形になります（現時点でALBはACM以外の証明書を使う術はありません）[^1]。
+
+[^1]: AWS Load Balancer ControllerでHTTPSを使う場合は[こちら](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/tasks/ssl_redirect/)が参考になります。
 
 今回はNginxをIngressとして使うNGINX Ingress Controllerを使って、証明書の管理を自動化していきます。
 
@@ -35,28 +36,28 @@ Cert ManagerはCRD(Custom Resource Definitions)として提供されるIssuerと
 - [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
 - [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
 
-また、cert-managerのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。
-未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3.3[^3]以降のバージョンをセットアップしてください。
+また、Cert Managerのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。
+未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3.3[^2]以降のバージョンをセットアップしてください。
 
-[^3]: CRDバグの問題によりHelm v3.2以前の場合は個別にCRDをセットアップする必要があります。詳細は[こちら](https://cert-manager.io/docs/installation/helm/#option-1-installing-crds-with-kubectl)を参照してください。
+[^2]: CRDバグの問題によりHelm v3.2以前の場合は個別にCRDをセットアップする必要があります。詳細は[こちら](https://cert-manager.io/docs/installation/helm/#option-1-installing-crds-with-kubectl)を参照してください。
 
-次にIngress Controllerをインストールします。
-今回はAWS Load Balancer Controllerを使用します(未検証ですがNGINX Ingress Controllerにも対応可能なはずです)。以下手順でインストールしてください。
+EKS環境構築後はクラスタにIngress Controllerをインストールします。
+今回はNGINX Ingress Controllerを使用します。以下手順で事前にセットアップしてください。
 
 - [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
 
 また、Let's Encryptを利用する場合は証明書の発行にドメイン検証が必要なため、正規のドメインが必要となります。
-以下の手順を実施して、ドメイン準備とexternal-dnsのセットアップも実施してください(external-dnsは手動実施でも構いません)。
+以下の手順を実施して、ドメイン準備とDNSへのレコード登録を自動化するexternal-dnsのセットアップも実施してください。
 本チュートリアルでは`mamezou-tech.com`（Route53で購入）のサブドメインを使用しますが、都度自分のドメインに置き換えてください。
 
-今回はAWS Load Balancer ControllerではなくNGINX Ingress Controllerを使用しますので、事前準備のAWS Load Balancer Controllerはスキップして構いません。
+なお、今回はAWS Load Balancer ControllerではなくNGINX Ingress Controllerを使用しますので、以下手順に記載されている事前準備のAWS Load Balancer Controllerのインストールはスキップして構いません。
 
 - [カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns)
 
-## Cert Managerインストール(自己署名・Let's Encrypt共通)
+## Cert Managerインストール
 
 それではクラスタ環境にCert Managerをインストールしましょう。今回はHelmを使いますが、他にも多くの方法があります。詳細なセットアップ方法は[こちら](https://cert-manager.io/docs/installation/)を参照しくてださい。
-cert-managerのHelm Chartは[こちら](https://artifacthub.io/packages/helm/cert-manager/cert-manager)で確認できます。
+Cert ManagerのHelm Chartは[こちら](https://artifacthub.io/packages/helm/cert-manager/cert-manager)で確認できます。
 
 まずはリポジトリの追加と最新化を行います。
 
@@ -65,19 +66,21 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo update
 ```
 
-それでは以下でcert-managerをインストールしましょう(現時点で最新の`1.5.4`を使います)。
+それでは以下でCert Managerをインストールしましょう(現時点で最新の`1.5.4`を使います)。
 
 ```shell
 helm upgrade cert-manager jetstack/cert-manager \
   --install --version 1.5.4 \
   --namespace cert-manager --create-namespace \
-  --set installCRDs=true
+  --set installCRDs=true \
+  --wait
 ```
 
-今回は`cert-manager`Namespace内にcert-managerを指定しているだけのシンプルなものです。また、`installCRDs`の設定でCRDのセットアップも合わせて行うようにしました[^4]。
+今回は`cert-manager`Namespace内にCert Managerをインストールするように指定しているだけのシンプルなものです。
+また、`installCRDs`の設定でCRDのセットアップも合わせて行うようにしました[^3]。
 その他の詳細なオプションは[こちら](https://artifacthub.io/packages/helm/cert-manager/cert-manager#configuration)で確認してください。
 
-[^4]: cert-managerはAWSリソースへのアクセスが発生しないため、今までと異なりIAM Role等の作成は不要です。
+[^3]: Cert ManagerはAWSリソースへのアクセスが発生しないため、今までと異なりIAM Role等の作成は不要です。
 
 インストールされたものを確認してみましょう。
 
@@ -118,14 +121,14 @@ issuers.cert-manager.io               2021-10-20T05:49:02Z
 orders.acme.cert-manager.io           2021-10-20T05:49:02Z
 ```
 
-上記のように様々なCRDが作成されていることが分かります。特にIssuerやCertificateは、cert-managerを運用する上では重要なリソースとなります[^5]。
+上記のように様々なCRDが作成されていることが分かります。特にIssuerやCertificateは、Cert Managerを運用する上では重要なリソースとなります[^4]。
 
-[^5]: これらを管理するkubectlの[プラグイン](https://cert-manager.io/docs/usage/kubectl-plugin/)も提供されていますので、管理者ロールの方はこちらも導入しておくとよいでしょう。
+[^4]: これらを管理するkubectlの[プラグイン](https://cert-manager.io/docs/usage/kubectl-plugin/)も提供されていますので、管理者ロールの方はこちらも導入しておくとよいでしょう。
 
 
-## 自己署名の証明書を作成
+## 自己署名の証明書でHTTPS通信
 
-Let's Encryptを使う前に、まずはcert-managerの動きを確認しましょう。
+Let's Encryptを使う前に、まずは自己署名の証明書でCert Managerの動きを確認しましょう。
 
 自己署名の場合は以下のIssuerリソース(CRD)のYAMLを作成します。ここでは`self-signing-issuer.yaml`というファイル名で作成しました。
 
@@ -178,7 +181,9 @@ Events:                    <none>
 kubectl apply -f app.yaml
 ```
 
-次にIngressをデプロイしましょう。今回はHTTPS通信になりますので一部異なります。
+次にIngressをデプロイしましょう。
+今回はHTTPS通信になりますのでCert Managerを利用してTLS設定を有効化しましょう。
+以下のYAMLファイル(ここでは`ingress-self-signing.yaml`としました)を作成します。
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -186,7 +191,6 @@ kind: Ingress
 metadata:
   name: app-aws-ingress
   annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
     external-dns.alpha.kubernetes.io/hostname: k8s-tutorial.mamezou-tech.com
     # 自己署名の証明書Issuerを指定
     cert-manager.io/issuer: "selfsigning-issuer"
@@ -196,7 +200,6 @@ spec:
   tls:
     - hosts:
         - k8s-tutorial.mamezou-tech.com
-      # 証明書のSecret名は任意。Cert Managerが作成してくれる
       secretName: selfsigning-cert
   rules:
     - host: k8s-tutorial.mamezou-tech.com
@@ -219,16 +222,16 @@ spec:
             path: /app2
             pathType: Prefix
 ```
-`annotations`の`cert-manager.io/issuer`で利用するcert-managerのIssuerとして先程作成した`selfsigning-issuer`を指定しています。
-cert-managerで`annotations`に指定可能なオプションは[こちら](https://cert-manager.io/docs/usage/ingress/#supported-annotations)に記載されていますので環境に応じて使い分けましょう。
+`annotations`の`cert-manager.io/issuer`で利用するCert ManagerのIssuerとして先程作成した`selfsigning-issuer`を指定しています。
+Cert Managerで`annotations`に指定可能なオプションは[こちら](https://cert-manager.io/docs/usage/ingress/#supported-annotations)に記載されていますので環境に応じて使い分けましょう。
 
 最後に`spec.tls`フィールドを新たに追加し、TLS証明書を格納したSecretリソースを指定します。
-この名前は任意でよくcert-managerがこれに応じた自己署名の証明書をSecretリソースとして発行してくれます。
+この名前は任意で構いません。Cert Managerがこれに応じた自己署名の証明書をSecretリソースとして発行してくれます。
 
 これをクラスタ環境に反映しましょう。
 
 ```shell
-kubectl apply -f ingress.yaml
+kubectl apply -f ingress-self-signing.yaml
 ```
 
 それではまずはIngressリソースを確認しましょう。
@@ -250,9 +253,7 @@ Rules:
   k8s-tutorial.mamezou-tech.com  
                                  /app1   app1:80 (192.168.59.71:8080,192.168.90.227:8080)
                                  /app2   app2:80 (192.168.44.74:8080,192.168.79.72:8080)
-Annotations:                     alb.ingress.kubernetes.io/listen-ports: [{"HTTPS":443}]
-                                 alb.ingress.kubernetes.io/scheme: internet-facing
-                                 cert-manager.io/issuer: selfsigning-issuer
+Annotations:                     cert-manager.io/issuer: selfsigning-issuer
                                  external-dns.alpha.kubernetes.io/hostname: k8s-tutorial.mamezou-tech.com
 Events:
   Type    Reason             Age                  From                      Message
@@ -263,7 +264,7 @@ Events:
 ```
 
 TLSやEventsの内容から正しくTLS証明書の設定が完了していることが分かります。
-cert-managerで管理する証明書はCertificateリソースで確認できます。こちらを見てみましょう。
+Cert Managerで管理する証明書はSecretリソースと同名のCertificateリソースで確認できます。こちらを見てみましょう。
 
 ```shell
 kubectl describe certificate selfsigning-cert
@@ -298,7 +299,7 @@ Status:
   Renewal Time:            2021-12-19T06:35:31Z
 ```
 
-証明書の現在の状態や有効期限を確認することができます。cert-managerはこの情報をもとに証明書のローテートを自動で実施してくれます。
+証明書の現在の状態や有効期限を確認することができます。Cert Managerはこの情報をもとに証明書のローテートを自動で実施してくれます。
 最後に証明書を確認しましょう。上記`Secret Name`の出力のとおり証明書は`selfsigning-cert`というSecretリソースに格納されています（これはIngressリソースで指定したものです）。
 こちらも確認してみましょう。
 
@@ -319,10 +320,10 @@ tls.crt:  1046 bytes
 tls.key:  1679 bytes
 ```
 
-このように証明書の公開鍵や秘密鍵が格納されている様子が分かります。Ingressはこの情報をもとにトラフィックの暗号化を行う形になります。
+証明書の公開鍵(tls.crt)や秘密鍵(tls.key)が格納されている様子が分かります。Ingress(ここでの実態はNginx)はこの情報をもとに通信の暗号化・復号化を行う形になります。
 
-最後にcurlでHTTPSでサンプリアプリにアクセスしてみましょう。
-今回は自己署名の証明書のため`-k`オプションを指定する必要があります。
+最後にcurlを使ってHTTPS通信でサンプルアプリにアクセスしてみましょう。
+今回は自己署名の証明書のため、証明書の検証をスキップする`-k`オプションを指定する必要があります。
 
 ```shell
 curl -k https://k8s-tutorial.mamezou-tech.com/app1
@@ -334,593 +335,406 @@ app1-7ff67dc549-6gjk5: hello sample app!
 app2-b6dc558b5-g9m99: hello sample app!
 ```
 
+HTTP通信でサンプルアプリにアクセスできていることが分かります。DNS設定の反映には時間がかかりますので、名前解決に失敗する場合はしばらく待ってから試してみてください。
 
-TODO:以下修正
-
-
-### Part1. 自己署名編
-
-
-#### 2. 自己署名のIssuerリソース作成
-
-
-#### 3. Ingressリソース作成
-先程作成したIssuerとTLSの設定を指定したIngressリソースを作成する。
-```yaml
-kind: Ingress
-apiVersion: networking.k8s.io/v1beta1
-metadata:
-  name: ingress
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    # 自己署名の証明書Issuerを指定
-    certmanager.k8s.io/issuer: "selfsigning-issuer"
-spec:
-  # IngressのTLS設定
-  tls:
-  - hosts:
-      - frieza.dev
-    # 証明書のSecret名は任意でいい。Cert Managerが作成してくれる
-    secretName: selfsigning-cert
-  rules:
-  - host: frieza.dev
-    http:
-      paths:
-      - path: /app1
-        backend:
-          serviceName: app1
-          servicePort: 3000
-      - path: /app2
-        backend:
-          serviceName: app2
-          servicePort: 3000
-```
+ちなみにですが、試しにHTTPでアクセスしてみると以下のようにHTTPSのURLにリダイレクトされます。
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/kudoh/k8s-hands-on/master/cert-manager/ingress-local.yaml
-```
-
-このIngressリソースの作成を検知するとCert Managerはドメインに紐付いた自己署名の証明書を発行し、`selfsigning-cert`というSecretを作成してくれる（opensslとかで自分で作ったりする必要はない）。
-
-Ingressリソースの状態を見てみる。
-```shell
-kubectl describe ingress/ingress
+curl -k -v http://k8s-tutorial.mamezou-tech.com/app1
 ```
 
 ```
-Name:             ingress
-Namespace:        default
-Address:          
-Default backend:  default-http-backend:80 (<none>)
-TLS:
-  selfsigning-cert terminates frieza.dev
-Rules:
-  (省略)
-Events:
-  Type    Reason             Age    From                      Message
-  ----    ------             ----   ----                      -------
-  Normal  CREATE             3m37s  nginx-ingress-controller  Ingress default/ingress
-  Normal  CREATE             3m37s  nginx-ingress-controller  Ingress default/ingress
- [*  Normal  CreateCertificate  3m37s  cert-manager              Successfully created Certificate "selfsigning-cert"]
-  Normal  UPDATE             3m32s  nginx-ingress-controller  Ingress default/ingress
-  Normal  UPDATE             3m32s  nginx-ingress-controller  Ingress default/ingress
-```
-Cert ManagerがCertificateリソースを作成したEventが表示されている。
-
-それではそのCertificateリソースの中身を見てみよう。
-```shell
-kubectl describe certificate selfsigning-cert
-```
-
-```
-Name:         selfsigning-cert
- Namespace:    default
- Labels:       <none>
- Annotations:  <none>
- API Version:  certmanager.k8s.io/v1alpha1
- Kind:         Certificate
- (省略)
- Spec:
-   Dns Names:
-     frieza.dev
-   Issuer Ref:
-     Kind:       Issuer
-     Name:       [* selfsigning-issuer]
-   Secret Name:  [* selfsigning-cert]
- Status:
-   Conditions:
-     Last Transition Time:  2019-06-15T03:54:41Z
-     Message:               Certificate is up to date and has not expired
-     Reason:                Ready
-     Status:                True
-     Type:                  Ready
-   Not After:               2019-09-13T03:54:41Z
- Events:
-   Type    Reason      Age    From          Message
-   ----    ------      ----   ----          -------
-   Normal  CertIssued  6m51s  cert-manager  Certificate issued successfully
-```
-
-証明書の状態がここで管理されているのが分かる（有効期限が切れると自動更新してくれる）。
-Issuerとして先程作成した selfsigning-issuerと、実際の証明書が格納されたSecretリソース(selfsigning-cert)が紐付いているのが分かる。
-
-最後に実際の証明書データであるSecretリソースの中身も見てみる。
-```shell
-kubectl describe secret selfsigning-cert
-```
-
-```
-Name:         selfsigning-cert
-Namespace:    default
-Labels:       certmanager.k8s.io/certificate-name=selfsigning-cert
-Annotations:  certmanager.k8s.io/alt-names: frieza.dev
-              certmanager.k8s.io/common-name: frieza.dev
-              certmanager.k8s.io/ip-sans:
-              certmanager.k8s.io/issuer-kind: Issuer
-              certmanager.k8s.io/issuer-name: selfsigning-issuer
-Type:  kubernetes.io/tls
-Data
-====
-ca.crt:   1135 bytes
-tls.crt:  1135 bytes
-tls.key:  1675 bytes
-```
-
-ca.crt(CA証明書), tls.crt(公開鍵), tls.key(秘密鍵)が格納されている。Ingress ControllerのNginxはこれを使ってhttps通信を実現している。
-
-#### 4. 動作確認
-実際にHTTPSでアプリにアクセスしてみる。
-/etc/hostsにドメイン(frieza.dev)とLBのIPを静的に紐付けしている。
-
-```shell
-# 自己署名なので-kオプションが必要
-curl -k https://frieza.dev/app1; echo
-```
-```
-[app1:10.244.1.8]私の戦闘力は530000です…ですが、もちろんフルパワーであなたと戦う気はありませんからご心配なく…
-```
-```shell
-curl -k https://frieza.dev/app2; echo
-```
-```
-[app2:10.244.1.9]ずいぶんムダな努力をするんですね・・・そんなことがわたしに通用するわけがないでしょう！
-```
-問題なさそう。試しにHTTPでアクセスしてみると以下のようにHTTPSのURLにリダイレクトされる。
-```shell
-curl -v http://frieza.dev/app2; echo
-```
-```
-*   Trying 172.16.20.11...
+*   Trying 18.180.204.238...
 * TCP_NODELAY set
-* Connected to frieza.dev (172.16.20.11) port 80 (#0)
-> GET /app2 HTTP/1.1
-> Host: frieza.dev
-> User-Agent: curl/7.54.0
+* Connected to k8s-tutorial.mamezou-tech.com (18.180.204.238) port 80 (#0)
+> GET /app1 HTTP/1.1
+> Host: k8s-tutorial.mamezou-tech.com
+> User-Agent: curl/7.64.1
 > Accept: */*
->
-< HTTP/1.1 [* 308 Permanent Redirect]
-< Server: nginx/1.15.10
-< Date: Sat, 15 Jun 2019 04:11:40 GMT
+> 
+< HTTP/1.1 308 Permanent Redirect
+< Date: Thu, 28 Oct 2021 02:04:47 GMT
 < Content-Type: text/html
-< Content-Length: 172
+< Content-Length: 164
 < Connection: keep-alive
-< [* Location: https://frieza.dev/app2]
+< Location: https://k8s-tutorial.mamezou-tech.com/app1
+< 
 (省略)
 ```
 
+これはNGINX Ingress Controllerのデフォルト仕様([公式ドキュメント](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-side-https-enforcement-through-redirect))のためIngress Controllerの実装に何を使うかによって変わってきます。
 
-### Part2. Let's Encrypt編
+## 正規の証明書でHTTPS通信
 
-自己署名ではなくちゃんとした正規の証明書を使う。
-証明書の発行を無料でやってくれる[Let's Encrypt]を認証局として使う。
+次に自己署名ではなく正規の証明書を使って動作確認をしてみましょう。
+今回は証明書の発行を無料で実施できる[Let's Encrypt](https://letsencrypt.org/)を認証局[^5]として使用します。
 
-前提として環境はAKS上でクラスタ環境が構築されているものとする。
+[^5]: Let's Encryptは証明書の自動発行を行うACME(Automated Certificate Management Environment)プロトコルをサポートしており、個人レベルでも簡単に証明書を発行することが可能です。
 
-GKEはNativeでLet's Encryptサポートしている  
-<https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs>
-Cert Managerからやったらできなくてhttp01だとGCEのLBが作成されなくて断念。最近GoogleのIngressは仕様が変わったらしい(バグっぽい気もするけど、まぁNativeサポート使うほうがいいでしょ)
-
-#### 1. ドメイン取得
-TLS証明書を取得するにはドメインが必要なので確保しておく。
-ここでは`frieza.dev`ドメインをGoogle Domainsで取得した（年間1512円だった）。
-
-<https://domains.google/#/>
-
-#### 2. グローバルIP取得
-ドメイン用にIPアドレスを予約する。AKSなのでAzureのPublic IPを取得する。
-```shell
-# AKSのNodeGroupのResourceGroupに対して割当てる必要があった（そうしないとAKSクラスタ内からアクセスできずずっとPending状態になった）
-RG=k8sResourceGroup
-NODE_RG=$(az aks list --resource-group $RG --query '[0].nodeResourceGroup' -o tsv)
-az network public-ip create --name frieza-ip --resource-group $NODE_RG --allocation-method Static --sku Basic
-```
-```
- {
-   "publicIp": {
-   (省略)
-     [* "ipAddress": "13.78.10.155"],
-     "ipConfiguration": null,
-     "ipTags": [],
-     "location": "japaneast",
-     "name": "frieza-ip",
-     "provisioningState": "Succeeded",
-     "publicIpAddressVersion": "IPv4",
-     "publicIpAllocationMethod": "Static",
-     (省略)
-   }
- }
-```
-13.78.10.155がPublic IPとしてリザーブされた。
-
-#### 3. DNSサーバ登録
-取得したドメインをDNSサーバに登録する。
-Google DomainsのUIでサブドメイン`cloud.frieza.dev`をリザーブしたIP(13.78.10.155)に紐付けする(カスタムリソースレコード)。
-![](https://i.gyazo.com/f509291ec7b606cc021dfcdd28a749f3.png)
-
-DNSが機能しているかを確認する。反映までにはしばらく時間がかかる。
-```shell
-dig cloud.frieza.dev
-```
-```
- ; <<>> DiG 9.10.6 <<>> cloud.frieza.dev
- ;; global options: +cmd
- ;; Got answer:
- ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 63296
- ;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 4, ADDITIONAL: 9
-
- ;; OPT PSEUDOSECTION:
- ; EDNS: version: 0, flags:; udp: 4096
- ;; QUESTION SECTION:
- ;cloud.frieza.dev.              IN      A
-
- ;; ANSWER SECTION:
- [* cloud.frieza.dev.       300     IN      CNAME   frieza.dev.]
- [* frieza.dev.             300     IN      A       13.78.10.155]
-```
-AレコードとCNAMEレコードがちゃんと返ってきてる。大丈夫そう。
-
-#### 4. サンプルアプリデプロイ
-自己署名と同じようにサンプルアプリをデプロイする。
-```shell
-kubectl apply -f https://raw.githubusercontent.com/kudoh/k8s-hands-on/master/ingress/nginx/app1.yaml
-kubectl apply -f https://raw.githubusercontent.com/kudoh/k8s-hands-on/master/ingress/nginx/app2.yaml
-```
-
-#### 5. Let's EncryptのIssuerリソース作成
-Let's Encrypt用のIssuerリソースを作成する。
+Let's Encrypt用のIssuerリソースのYAMLファイルは以下のようになります。ここでは`lets-encrypt-issuer.yaml`として作成しました。
 
 ```yaml
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: letsencrypt-staging
+  name: letsencrypt-issuer
 spec:
   acme:
-  # Let's Encryptの証明書発行URL(練習用なのでTrustedではない)
-  server: https://acme-staging-v02.api.letsencrypt.org/directory
-  # こっちが本番向け(Trustedな証明書)
-  #server: https://acme-v02.api.letsencrypt.org/directory
-  # Let's Encryptに登録するアドレス(環境変数で置換してね)
-  email: ''
-  # Let's Encryptへのアクセス用のクレデンシャル(Cert Managerが自動生成する)
-  privateKeySecretRef:
-  name: acme-client-letsencrypt-staging
-  # HTTP-01 challenge(証明書発行するためにはそのドメインを所有しているという証明が必要)
-  # https://letsencrypt.org/docs/challenge-types/
-  # Cert ManagerがLet's EncryptのTokenValidation要求に応えてくれる
-  http01: {}
-```
-```shell
-export EMAIL=your-mail@mamezou.com
-curl -sSL https://raw.githubusercontent.com/kudoh/k8s-hands-on/master/cert-manager/issuer-letsencrypt.yaml | \
-sed -e "s/email: ''/email: $EMAIL/g" | \
-  kubectl apply -f-
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: '<your-mail-address>'
+    privateKeySecretRef:
+      name: acme-client-letsencrypt
+    solvers:
+      - http01:
+          ingress:
+            class: nginx
 ```
 
-#### 6. Nginx Ingress Controller作成
-HelmでNginxのIngress Controllerをインストールする。LoadBalancerのIPにリザーブしたものを指定する。
-```shell
-helm upgrade nginx-ingress --install stable/nginx-ingress \
---set controller.service.loadBalancerIP="13.78.10.155" \
---set nodeSelector."beta.kubernetes.io/os"=linux
-```
-AzureがIPアドレスをNginxに反映してくれるまでは少し待ちましょう（3分くらい）。
-```shell
-kubectl get svc -l app=nginx-ingress
-```
-```
-NAME                            TYPE           CLUSTER-IP    EXTERNAL-IP    PORT(S)                      AGE
-nginx-ingress-controller        LoadBalancer   10.0.66.254   [* 13.78.10.155 ]  80:31568/TCP,443:32535/TCP   2m57s
-nginx-ingress-default-backend   ClusterIP      10.0.60.173   <none>         80/TCP                       2m56s
-```
-グローバルIPがIngress Controllerに割り当てられた(EXTERNAL-IP)。
+上記はLet's EncryptをIssuerとして利用する設定になります。
+`email`フィールドには自分のメールアドレスを設定してください。このアドレスがLet's Encryptに登録され、その後の証明書に関するLet's Encryptとのやりとりを行う形になります。
+`acme-client-letsencrypt`で指定するSecretリソースはLet's Encryptとやりとりするための秘密鍵が保存されます（事前に作成する必要はありません）。
 
-#### 7. Ingressリソース作成
-Let's EncryptのIssuerを指定したIngressリソースを投入する。
-```yaml
-kind: Ingress
-apiVersion: extensions/v1beta1
-metadata:
-  name: ingress
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    # Let's Encrypt Issuer
-    certmanager.k8s.io/issuer: "letsencrypt-staging"
-    certmanager.k8s.io/acme-challenge-type: http01
-spec:
-  # IngressのTLS設定
-  tls:
-  - hosts:
-    - "cloud.frieza.dev"
-    secretName: letsencrypt-staging
-  rules:
-  - host: cloud.frieza.dev
-    http:
-      paths:
-      - path: /app1
-        backend:
-          serviceName: app1
-          servicePort: 3000
-      - path: /app2
-        backend:
-          serviceName: app2
-          servicePort: 3000
-```
+また、`solvers`フィールドのところに注目してください。Let's EncryptがサポートするACMEプロトコルでは証明書発行前にドメインの所有者検証が必要です(Challengeといいます)。
+この方法として実際にHTTP通信して検証するHTTP-01とDNSのTXTレコードで検証するDNS-01の2種類があります[^6]。
+今回は実際にLet's EncryptとHTTP通信をするHTTP-01を使って、ドメイン所有者が自分自身であることを証明する設定としています[^7]。
+
+[^6]: Challenge Typeの詳細は[こちら](https://letsencrypt.org/docs/challenge-types/)を参照してください。
+[^7]: DNS-01については[こちら](https://cert-manager.io/docs/configuration/acme/dns01/)を参照してください。
+
+それでは、こちらをクラスタ環境に反映しましょう。
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/kudoh/k8s-hands-on/master/cert-manager/ingress-aks.yaml
+kubectl apply -f lets-encrypt-issuer.yaml
 ```
 
-Ingressリソースの状態を見てみる。
-```shell
-kubectl describe ingress/ingress
-```
-```
-Name:             ingress
-Namespace:        default
-Address:          
-Default backend:  default-http-backend:80 (<none>)
-TLS:
-  letsencrypt-staging terminates cloud.frieza.dev
-Rules:
-  Host              Path  Backends
-  ----              ----  --------
-  cloud.frieza.dev  
-                    /app1   app1:3000 (10.244.0.7:3000,10.244.1.9:3000)
-                    /app2   app2:3000 (10.244.0.8:3000,10.244.1.10:3000)
-Annotations:
-  kubernetes.io/ingress.class:                       nginx
-  certmanager.k8s.io/acme-challenge-type:            http01
-  certmanager.k8s.io/issuer:                         letsencrypt-staging
-Events:
-  Type    Reason             Age   From                      Message
-  ----    ------             ----  ----                      -------
-  Normal  CREATE             64s   nginx-ingress-controller  Ingress default/ingress
-  [* Normal  CreateCertificate  64s   cert-manager              Successfully created Certificate "letsencrypt-staging"]
-  Normal  UPDATE             20s   nginx-ingress-controller  Ingress default/ingress
-```
-Cert ManagerがLet's EncryptのCertificateリソースを作成したEventが表示されている。
+作成したIssuerリソースを確認してみましょう。
 
-Certificateリソースの中身を見てみる。
 ```shell
-kubectl describe certificate letsencrypt-staging
+kubectl describe issuer letsencrypt-issuer
 ```
+
+以下抜粋して表示します。
+
 ```
-Name:         letsencrypt-staging
+Name:         letsencrypt-issuer
 Namespace:    default
-API Version:  certmanager.k8s.io/v1alpha1
-Kind:         Certificate
+API Version:  cert-manager.io/v1
+Kind:         Issuer
 Spec:
   Acme:
-    Config:
-      Domains:
-        cloud.frieza.dev
-      Http 01:
-        Ingress Class:  nginx
+    Email:            xxxxxxxxxx@mamezou.com
+    Preferred Chain:  
+    Private Key Secret Ref:
+      Name:  acme-client-letsencrypt
+    Server:  https://acme-v02.api.letsencrypt.org/directory
+    Solvers:
+      http01:
+        Ingress:
+          Class:  nginx
+Status:
+  Acme:
+    Last Registered Email:  xxxxxxxxx@mamezou.com
+    Uri:                    https://acme-v02.api.letsencrypt.org/acme/acct/257864610
+  Conditions:
+    Last Transition Time:  2021-10-28T04:28:02Z
+    Message:               The ACME account was registered with the ACME server
+    Observed Generation:   1
+    Reason:                ACMEAccountRegistered
+    Status:                True
+    Type:                  Ready
+Events:                    <none>
+```
+
+Statusの部分を見るとACMEアカウントとしてLet's Encryptにメールアドレスが登録されていることが確認できます。
+この時点では、Ingressリソースを作成していませんので証明書は発行されません。
+
+
+それでは実際に証明書を発行してみましょう。
+サンプルアプリについては自己署名のときに使用したものをそのまま使いますが、Ingressについては前回のものは削除しておきましょう。
+
+```shell
+kubectl delete -f ingress-self-signing.yaml
+```
+
+ではLet's Encryptに対応したIngressリソースのYAMLファイルを作成しましょう。ここでは`lets-encrypt-issuer.yaml`としました。
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-aws-ingress
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: k8s-tutorial.mamezou-tech.com
+    # Let's EncryptのIssuerを指定
+    cert-manager.io/issuer: "letsencrypt-issuer"
+spec:
+  ingressClassName: nginx
+  # IngressのTLS設定
+  tls:
+    - hosts:
+        - k8s-tutorial.mamezou-tech.com
+      secretName: letsencrypt-cert
+  rules:
+    - host: k8s-tutorial.mamezou-tech.com
+      http:
+        paths:
+          # app1へのルーティングルール
+          - backend:
+              service:
+                name: app1
+                port:
+                  number: 80
+            path: /app1
+            pathType: Prefix
+          # app2へのルーティングルール
+          - backend:
+              service:
+                name: app2
+                port:
+                  number: 80
+            path: /app2
+            pathType: Prefix
+```
+
+先程の自己署名のときに作成したものとほとんど同じですが、`cert-manager.io/issuer`に指定するIssuerを先程Let's Encrypt向けに作成したものに変更しています。
+また、証明書のSecretリソースは自己署名のものと区別するため、別の名前にしています。こちらも他のSecretと重複しない限り任意で構いません。
+
+ではIngressリソースを作成しましょう。
+
+```shell
+kubectl apply -f ingress-lets-encrypt.yaml
+```
+
+今回も作成したIngressリソースを確認しましょう。
+
+```shell
+kubectl describe ing app-aws-ingress
+```
+
+```
+Name:             app-aws-ingress
+Namespace:        default
+Address:          xxxxxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxx.elb.ap-northeast-1.amazonaws.com
+Default backend:  default-http-backend:80 (<error: endpoints "default-http-backend" not found>)
+TLS:
+  letsencrypt-cert terminates k8s-tutorial.mamezou-tech.com
+Rules:
+  Host                           Path  Backends
+  ----                           ----  --------
+  k8s-tutorial.mamezou-tech.com  
+                                 /app1   app1:80 (192.168.35.150:8080,192.168.64.249:8080)
+                                 /app2   app2:80 (192.168.42.251:8080,192.168.94.91:8080)
+Annotations:                     cert-manager.io/issuer: letsencrypt-issuer
+                                 external-dns.alpha.kubernetes.io/hostname: k8s-tutorial.mamezou-tech.com
+Events:
+  Type    Reason             Age                   From                      Message
+  ----    ------             ----                  ----                      -------
+  Normal  CreateCertificate  2m38s                 cert-manager              Successfully created Certificate "letsencrypt-cert"
+  Normal  Sync               110s (x2 over 2m39s)  nginx-ingress-controller  Scheduled for sync
+  Normal  Sync               110s (x2 over 2m39s)  nginx-ingress-controller  Scheduled for sync
+```
+
+Eventsに注目すると、Cert Managerが`letsencrypt-cert`という証明書を作成していることが分かります。
+実際に証明書が作成されるには、先程のLet's Encryptのドメイン所有者の検証(Challenge)をクリアする必要がありますのでタイムラグがあります[^8]。
+
+[^8]: 初めてのドメインは場合は、external-dnsによって作成されたRoute53のDNSレコードが有効になるまで名前解決ができませんのでかなり待ちます。
+
+内部ではCert Managerがドメイン所有者の検証するために一時的なエンドポイントを作成し、Let's Encryptに対して、証明書の発行要求を行うという動きをします。
+k8sのイベントログを見るとこのようになっています。
+
+```shell
+kubectl get ev
+```
+
+```
+19m         Normal    Sync                ingress/cm-acme-http-solver-b8jp6                              Scheduled for sync
+19m         Normal    Sync                ingress/cm-acme-http-solver-b8jp6                              Scheduled for sync
+19m         Normal    Scheduled           pod/cm-acme-http-solver-bv95g                                  Successfully assigned default/cm-acme-http-solver-bv95g to ip-192-168-46-142.ap-northeast-1.compute.internal
+19m         Normal    Pulling             pod/cm-acme-http-solver-bv95g                                  Pulling image "quay.io/jetstack/cert-manager-acmesolver:v1.5.4"
+18m         Normal    Pulled              pod/cm-acme-http-solver-bv95g                                  Successfully pulled image "quay.io/jetstack/cert-manager-acmesolver:v1.5.4" in 6.29418664s
+18m         Normal    Created             pod/cm-acme-http-solver-bv95g                                  Created container acmesolver
+18m         Normal    Started             pod/cm-acme-http-solver-bv95g                                  Started container acmesolver
+18m         Normal    Killing             pod/cm-acme-http-solver-bv95g                                  Stopping container acmesolver
+6m17s       Normal    Complete            order/letsencrypt-cert-lkpg9-182064821                         Order completed successfully
+6m19s       Normal    cert-manager.io     certificaterequest/letsencrypt-cert-lkpg9                      Certificate request has been approved by cert-manager.io
+6m19s       Normal    OrderCreated        certificaterequest/letsencrypt-cert-lkpg9                      Created Order resource default/letsencrypt-cert-lkpg9-182064821
+6m19s       Normal    OrderPending        certificaterequest/letsencrypt-cert-lkpg9                      Waiting on certificate issuance from order default/letsencrypt-cert-lkpg9-182064821: ""
+6m17s       Normal    CertificateIssued   certificaterequest/letsencrypt-cert-lkpg9                      Certificate fetched from issuer successfully
+6m20s       Normal    Issuing             certificate/letsencrypt-cert                                   Issuing certificate as Secret does not exist
+6m19s       Normal    Generated           certificate/letsencrypt-cert                                   Stored new private key in temporary Secret resource "letsencrypt-cert-frzt9"
+6m19s       Normal    Requested           certificate/letsencrypt-cert                                   Created new CertificateRequest resource "letsencrypt-cert-lkpg9"
+6m17s       Normal    Issuing             certificate/letsencrypt-cert                                   The certificate has been successfully issued
+```
+
+このようにとCert Managerは証明書を発行するために、HTTP-01に対応するために専用のIngress/Pod作成(これらは一時的で成功すると削除されます)や、その後の証明書発行要求と証明書のSecretリソースへの保存といった、様々な処理を実施していることが分かります。
+前回同様にCertificateリソースについても確認しましょう。
+
+```shell
+kubectl describe certificate letsencrypt-cert
+```
+
+以下抜粋になります。
+
+```
+Name:         letsencrypt-cert
+Namespace:    default
+API Version:  cert-manager.io/v1
+Kind:         Certificate
+Spec:
   Dns Names:
-    cloud.frieza.dev
+    k8s-tutorial.mamezou-tech.com
   Issuer Ref:
+    Group:      cert-manager.io
     Kind:       Issuer
-    Name:       letsencrypt-staging
-  Secret Name:  letsencrypt-staging
+    Name:       letsencrypt-issuer
+  Secret Name:  letsencrypt-cert
+  Usages:
+    digital signature
+    key encipherment
 Status:
   Conditions:
-    Last Transition Time:  2019-06-16T06:53:55Z
+    Last Transition Time:  2021-10-28T05:18:52Z
     Message:               Certificate is up to date and has not expired
+    Observed Generation:   1
     Reason:                Ready
     Status:                True
     Type:                  Ready
-  Not After:               2019-09-14T05:53:55Z
+  Not After:               2022-01-26T04:18:50Z
+  Not Before:              2021-10-28T04:18:51Z
+  Renewal Time:            2021-12-27T04:18:50Z
+  Revision:                1
 Events:
-  Type    Reason         Age   From          Message
-  ----    ------         ----  ----          -------
-  [* Normal  OrderCreated   85s   cert-manager  Created Order resource "letsencrypt-staging-1592929329"]
-  [* Normal  OrderComplete  58s   cert-manager  Order "letsencrypt-staging-1592929329" completed successfully]
-  Normal  CertIssued     58s   cert-manager  Certificate issued successfully
-```
-自己署名の証明書同様に証明書の状態がここで管理されている。
-Eventsを見てみると何やらOrderリソースというのが生成されていることが分かる。
-
-これについて調べてみる。
-
-Let's Encryptはドメインの所有者確認チェックをしてから証明書を発行する(Domain認証)。
-<https://letsencrypt.org/docs/challenge-types/>
-
-今回はIssuerリソースでhttp01というChallengeを指定したので、Let's Encryptから送信されるトークンリクエストに応えなければならない(cloud.frieza.devは自分が所有してますよという証明)が、Cert Managerはそれについても自動でやってくれる。
-このプロセスはOrderとChallengeというCRDリソースで管理されている。
-
-- Order
-
-認証局への証明書発行・更新の状態を管理している。
-```shell
-kubectl describe order
+  Type    Reason     Age   From          Message
+  ----    ------     ----  ----          -------
+  Normal  Issuing    23m   cert-manager  Issuing certificate as Secret does not exist
+  Normal  Generated  23m   cert-manager  Stored new private key in temporary Secret resource "letsencrypt-cert-frzt9"
+  Normal  Requested  23m   cert-manager  Created new CertificateRequest resource "letsencrypt-cert-lkpg9"
+  Normal  Issuing    23m   cert-manager  The certificate has been successfully issued
 ```
 
-```
-Name:         letsencrypt-staging-1592929329                                                                                                                                                                                                  
-Namespace:    default                                                                                                                                                                                                                         
-Labels:       acme.cert-manager.io/certificate-name=letsencrypt-staging                                                                                                                                                                       
-Annotations:  <none>                                                                                                                                                                                                                          
-API Version:  certmanager.k8s.io/v1alpha1                                                                                                                                                                                                     
-Kind:         Order                                                                                                                                                                                                                           
-Spec:
-  Config:
-    Domains:
-      cloud.frieza.dev
-    Http 01:
-      Ingress Class:  nginx
-  Csr:                xxxxxx
-  Dns Names:
-    cloud.frieza.dev
-  Issuer Ref:
-    Kind:  Issuer
-    Name:  letsencrypt-staging
-Status:
-  Certificate: XXXXX
-    Name:      letsencrypt-staging
-    Key:         XXXXX
-    Token:       XXXXXX
-    Type:        http-01
-    URL:         https://acme-staging-v02.api.letsencrypt.org/acme/challenge/v2/124677/token-xxxxxx
-    Wildcard:    false                  
-  Finalize URL:  https://acme-staging-v02.api.letsencrypt.org/acme/finalize/9621128/37570440
-  State:         valid
-  URL:           https://acme-staging-v02.api.letsencrypt.org/acme/order/9621128/37570440
-Events:                                                                                                                
-  Type    Reason      Age    From          Message
-  ----    ------      ----   ----          -------
-  Normal  Created     7m13s  cert-manager  [* Created Challenge resource "letsencrypt-staging-1592929329-0" for domain "cloud.frieza.dev"]
-  Normal  OrderValid  6m47s  cert-manager  [* Order completed successfully]
-```
-
-- Challenge
-
-Orderリソースが証明書の発行・要求リクエストを行うときにChallengeというリソースを生成して、ドメイン認証のライフサイクルを管理している。
-Challengeはリクエストの都度生成され、成功すると削除される。失敗したときはまずはここを見ると原因が分かる。
-Cert Managerが偉いのは内部的に認証局のリクエストが通るかどうかを確かめてからLet's Encryptに正式に証明書の発行を要求している(繰り返し実行するとLet's EncryptのRateLimitに引っ掛かるので)。
+こちらも自己署名同様に証明書の状態が確認できます。
+自分で署名した前回と違い、今回は認証局に対して証明書の発行要求をしています。こちらについてOrderリソースで確認できます。
 
 ```shell
-kubectl describe challenge
+kubectl get order
 ```
 ```
-Name:         letsencrypt-staging-1592929329-0
+NAME                               STATE   AGE
+letsencrypt-cert-lkpg9-182064821   valid   30m
+```
+
+長いのでここでは省略しますが、これを`kubectl describe order <order-name>`で見ると証明書発行要求の詳細を確認することができます。
+
+また、ドメインの所有者検証の情報はChallengeリソースで確認できます。このリソースはLet's Encryptとのドメイン検証の都度作成され、成功すると削除されます。
+証明書が発行されない場合はこのリソースの存在を確認し、存在する場合は失敗の原因を探ることができます(`kubectl describe challenge <challenge-name>`)。
+例えば名前解決に失敗している場合は以下のような出力になります。
+
+```
+Name:         letsencrypt-cert-l5mlt-129283757-1181534344
 Namespace:    default
-API Version:  certmanager.k8s.io/v1alpha1
+API Version:  acme.cert-manager.io/v1
 Kind:         Challenge
 Spec:
-  Authz URL:  https://acme-staging-v02.api.letsencrypt.org/acme/authz/v2/126005
-  Config:
-    Http 01:
-      Ingress Class:  nginx
-  Dns Name:           cloud.frieza.dev
-  Issuer Ref:
-    Kind:    Issuer
-    Name:    letsencrypt-staging
-  Key:       xxxxxxx
-  Token:     xxxxxxxx
-  Type:      http-01
-  URL:       https://acme-staging-v02.api.letsencrypt.org/acme/challenge/v2/126005/1T2Iyg==
-  Wildcard:  false
+  Authorization URL:  https://acme-v02.api.letsencrypt.org/acme/authz-v3/43990363140
+  Dns Name:           k8s-tutorial2.mamezou-tech.com
+  Solver:
+    http01:
+      Ingress:
+        Class:  nginx
+  Token:        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  Type:         HTTP-01
+  URL:          https://acme-v02.api.letsencrypt.org/acme/chall-v3/43990363140/0mMg8Q
+  Wildcard:     false
 Status:
-  Presented:   false
-  Processing:  false
-  Reason:      Successfully authorized domain
-  State:       valid
-Events:
-  Type    Reason          Age   From          Message
-  ----    ------          ----  ----          -------
-  Normal  Started         24s   cert-manager  Challenge scheduled for processing
-  [*  Normal  Presented       23s   cert-manager  Presented challenge using http-01 challenge mechanism]
-  [* Normal  DomainVerified  1s    cert-manager  Domain "cloud.frieza.dev" verified with "http-01" validation]
+  Presented:   true
+  Processing:  true
+  Reason:      Waiting for HTTP-01 challenge propagation: failed to perform self check GET request 'http://k8s-tutorial2.mamezou-tech.com/.well-known/acme-challenge/hkjOO6LYVrwvvPBzh9C6eA7kYUGNJxoNEGiJSYqPdUE': Get "http://k8s-tutorial2.mamezou-tech.com/.well-known/acme-challenge/hkjOO6LYVrwvvPBzh9C6eA7kYUGNJxoNEGiJSYqPdUE": dial tcp: lookup k8s-tutorial2.mamezou-tech.com on 172.20.0.10:53: no such host
+  State:       pending
 ```
 
-最後に実際の証明書データであるSecretリソースの中身も見てみる。
+StatusのReasonでHTTP-01実施する上でのセルフチェックで名前解決に失敗している様子を確認できます(しばらく待つとDNSが伝播されてこの状態は解消されますが)。
+
+最後に前回同様に証明書のSecretリソースを確認しましょう。
+
 ```shell
-kubectl describe secret letsencrypt-staging
+kubectl describe secret letsencrypt-cert
 ```
 
 ```
-Name:         letsencrypt-staging
+Name:         letsencrypt-cert
 Namespace:    default
-Labels:       certmanager.k8s.io/certificate-name=letsencrypt-staging
-Annotations:  certmanager.k8s.io/alt-names: cloud.frieza.dev
-              certmanager.k8s.io/common-name: cloud.frieza.dev
-              certmanager.k8s.io/ip-sans:
-              certmanager.k8s.io/issuer-kind: Issuer
-              certmanager.k8s.io/issuer-name: letsencrypt-staging
+
 Type:  kubernetes.io/tls
+
 Data
 ====
-tls.key:  1675 bytes
-ca.crt:   0 bytes
-tls.crt:  3553 bytes
+tls.crt:  5632 bytes
+tls.key:  1679 bytes
 ```
-自己署名と同じようにキーペアが格納されている。
 
-#### 7. 動作確認
-最後に実際にHTTPSリクエストで動作確認する。
+証明書の公開鍵(tls.crt)や秘密鍵(tls.key)が格納されている様子が分かります。
+
+それでは、curlを使ってHTTPS通信でサンプルアプリにアクセスしてみましょう。
+今回は正規の証明書を使っているため、証明書の検証をスキップは不要です。
+
 ```shell
-# Staging環境向けの証明書なので-kオプションが必要
-curl -k https://cloud.frieza.dev/app1; echo
-```
-```
-> [app1:10.244.1.8]私の戦闘力は530000です…ですが、もちろんフルパワーであなたと戦う気はありませんからご心配なく…
+curl https://k8s-tutorial.mamezou-tech.com/app1
+curl https://k8s-tutorial.mamezou-tech.com/app2
 ```
 
-Let's EncryptのIssuerで練習用(staging)でなくて、正規のURL(`https://acme-v02.api.letsencrypt.org/directory`)に変更してTLS接続部分を詳しく見てみる。
+```
+app1-7ff67dc549-7tjkf: hello sample app!
+app2-b6dc558b5-sf54z: hello sample app!
+```
+
+上記のように問題なくHTTPSで通信できているはずです。
+HTTPS接続の詳細も確認してみましょう。
+
 ```shell
-curl -v https://cloud.frieza.dev/app1
+curl -v https://k8s-tutorial.mamezou-tech.com/app1
 ```
 
 ```
-*   Trying 13.78.10.155...
-* TCP_NODELAY set
-* Connected to cloud.frieza.dev (13.78.10.155) port 443 (#0)
-* ALPN, offering h2
-* ALPN, offering http/1.1
-* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
 * successfully set certificate verify locations:
 *   CAfile: /etc/ssl/cert.pem
-    >   CApath: none
+  CApath: none
 * TLSv1.2 (OUT), TLS handshake, Client hello (1):
 * TLSv1.2 (IN), TLS handshake, Server hello (2):
 * TLSv1.2 (IN), TLS handshake, Certificate (11):
 * TLSv1.2 (IN), TLS handshake, Server key exchange (12):
 * TLSv1.2 (IN), TLS handshake, Server finished (14):
 * TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
-* TLSv1.2 (OUT), TLS change cipher, Client hello (1):
+* TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):
 * TLSv1.2 (OUT), TLS handshake, Finished (20):
-* TLSv1.2 (IN), TLS change cipher, Client hello (1):
+* TLSv1.2 (IN), TLS change cipher, Change cipher spec (1):
 * TLSv1.2 (IN), TLS handshake, Finished (20):
-* SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384
+* SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256
 * ALPN, server accepted to use h2
-* [** Server certificate:]
-*  [** subject: CN=cloud.frieza.dev]
-*  [** start date: Jun 16 06:50:56 2019 GMT]
-*  [** expire date: Sep 14 06:50:56 2019 GMT]
-*  [** subjectAltName: host "cloud.frieza.dev" matched cert's "cloud.frieza.dev"]
-*  [** issuer: C=US; O=Let's Encrypt; CN=Let's Encrypt Authority X3]
-*  [** SSL certificate verify ok].
-* Using HTTP2, server supports multi-use
-* Connection state changed (HTTP/2 confirmed)
-* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
-* Using Stream ID: 1 (easy handle 0x7fcc6e806c00)
-> GET /app1 HTTP/2
-> Host: cloud.frieza.dev
-> User-Agent: curl/7.54.0
-> Accept: */*
->
-(以降省略)
+* Server certificate:
+*  subject: CN=k8s-tutorial.mamezou-tech.com
+*  start date: Oct 28 05:03:12 2021 GMT
+*  expire date: Jan 26 05:03:11 2022 GMT
+*  subjectAltName: host "k8s-tutorial.mamezou-tech.com" matched cert's "k8s-tutorial.mamezou-tech.com"
+*  issuer: C=US; O=Let's Encrypt; CN=R3
+*  SSL certificate verify ok.
 ```
-ちゃんと証明書の検証がクリアできている。これで安心して使えるね！
 
-#### 8. クリーンアップ
-有償なので終わったらきれいにして費用を抑える。
+正常にLet's Encryptで発行された証明書の検証が実施されていることが分かります。
+
+## クリーンアップ
+
+不要になったリソースを削除しましょう。
 
 ```shell
+# app1/app2
 kubectl delete -f app.yaml
-kubectl delete -f ingress.yaml
-helm uninstall cert-manager -n cert-manager
-helm uninstall external-dns -n external-dns
-helm uninstall ingress-nginx -n ingress-nginx
+# Ingress削除(Let's Encrypt未実施の場合はingress-self-issuer.yaml)
+kubectl delete -f ingress-lets-encrypt.yaml
+helm uninstall -n ingress-nginx ingress-nginx
+helm uninstall -n external-dns external-dns
+helm uninstall -n cert-manager cert-manager
 ```
+
+最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/env/aws-eks-terraform#クリーンアップ)

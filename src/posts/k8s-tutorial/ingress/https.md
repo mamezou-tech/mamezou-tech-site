@@ -1,5 +1,5 @@
 ---
-title: HTTPS通信(Cert Manager)
+title: Ingress - HTTPS通信(Cert Manager)
 author: noboru-kudo
 ---
 

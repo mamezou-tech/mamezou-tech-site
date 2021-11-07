@@ -1,5 +1,5 @@
 ---
-title: カスタムドメイン管理(external-dns)
+title: Ingress - カスタムドメイン管理(external-dns)
 author: noboru-kudo
 date: 2021-10-17
 ---

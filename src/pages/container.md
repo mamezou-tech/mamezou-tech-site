@@ -16,15 +16,15 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 3. [カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns)
 4. [HTTPS通信(Cert Manager)](/containers/k8s/tutorial/ingress/https)
 
-#### コンテナストレージ
-1. AWS EBS <span style="color:red">Coming Soon!</span>
+#### ストレージ
+1. [AWS EBS](/containers/k8s/tutorial/storage/ebs)
 2. AWS EFS <span style="color:red">Coming Soon!</span>
 
 ---
 
 ### アプリケーション開発編
 1. ステートレスアプリケーション(Deployment) <span style="color:red">Coming Soon!</span>
-2. ステートフルアプリケーション(Statefulset) <span style="color:red">Coming Soon!</span>
+2. ステートフルアプリケーション(StatefulSet) <span style="color:red">Coming Soon!</span>
 3. バッチアプリケーション(Job, CronJob) <span style="color:red">Coming Soon!</span>
 
 ---
@@ -50,6 +50,7 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 
 ---
 
+{% comment %}
 ### サービスメッシュ実践
 #### Istio
 1. 導入編 <span style="color:red">Coming Soon!</span>
@@ -62,6 +63,8 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 1. T.B.D
 
 ---
+
+{% endcomment %}
 
 ### 応用編
 1. カスタムリソース(CRD)(Kubernetes Operators) <span style="color:red">Coming Soon!</span>

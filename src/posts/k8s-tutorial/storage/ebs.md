@@ -67,7 +67,7 @@ eksctl create iamserviceaccount \
   --cluster=mz-k8s \
   --namespace=kube-system \
   --name=aws-ebs-controller \
-  --attach-policy-arn=arn:aws:iam::446197467950:policy/AWSEBSControllerIAMPolicy \
+  --attach-policy-arn=arn:aws:iam::xxxxxxxxxxxx:policy/AWSEBSControllerIAMPolicy \
   --approve
 ```
 
@@ -396,7 +396,7 @@ spec:
 
 コンテナの動きとしてはbusyboxを起動して、sleepするだけの単純なものですが以下の点に注目してください[^4]。
 
-[^4]: 複数レプリカの場合で更新が必要な場合は、ファイル競合を避けるために、Deploymentではなくコンテナごとにボリュームを分離するStatefulSetを使用します。
+[^4]: 複数レプリカで更新が必要な場合は、ファイル競合を避けるために、Deploymentではなくコンテナごとにボリュームを分離するStatefulSetを使用します。
 
 - `volumes`フィールドにPodで利用するボリュームを定義し、ここに先程作成したPVCリソースを指定します。これによりPVCリソースがこのPodで利用できるようになります。
 - `containers.volumeMounts`でボリュームをコンテナのどのパスにマウントするのかを設定しています。これにより先程のEBSが`/app/data`にマウントされます。

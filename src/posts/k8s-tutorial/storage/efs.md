@@ -1,34 +1,19 @@
 ---
-title: ストレージ - AWS EBS
+title: ストレージ - AWS EFS
 author: noboru-kudo
 ---
 
-これまでAWS EKS上でk8sクラスタ環境の構築を行い、Ingress Controllerを導入することでインターネットからのリクエストを受け付けられるようにしました。
-ただ、アプリについては固定レスポンスを返すだけで実践的なものではありませんでした。
-そこで今回は、データ保存を行うアプリを考えてみましょう。
+[前回](/containers/k8s/tutorial/storage/ebs)はAWS EBSを使ってコンテナにストレージをマウントすることで、Podの再起動時にもデータを消失することなく永続化することができました。
 
-コンテナではローカファイルシステムは一時的なもので、保存しても再起動時にそのデータは消失してしまいます。
-コンテナが稼働しているノード自体のストレージにデータを保存することも可能ですが(hostpath)、各PodがどのNodeに配置されるかはスケジューラ次第で、次に起動されるときに同じノードが利用できるということは保証されません[^1]。
-やはりデータについてはコンテナはもちろんノードからも分離して管理することが理想的です。
+今回はNFSプロトコルを利用する共有ファイルストレージサービスである[AWS EFS](https://aws.amazon.com/jp/efs/)を使って複数Pod間でのファイル共有を実現します。
+EFSの場合はAZ内でのみ利用可能なEBSと異なり、同一リージョン内の複数AZに冗長化されるため、AZ障害が発生しても別のAZのノードから引き続き利用することが可能です。
+逆に多数の読み書きが発生する際のパフォーマンスや、コストの点ではEBSに劣りますので、ユースケースに応じて選択する必要があります。
 
-[^1]: [Node Affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)を使えばPodがスケジュールされるNodeを指定することはできますが、PodがNodeに依存することになり耐障害性やリソース効率性の観点で望ましくありありません。
+EFSについても[CSI(Container Storage Interface)](https://github.com/container-storage-interface/spec)ドライバが用意されているため、こちらを利用します。
+公式リポジトリは以下になります。
+- <https://github.com/kubernetes-sigs/aws-efs-csi-driver>
 
-Kubernetesでは[CSI(Container Storage Interface)](https://github.com/container-storage-interface/spec)というk8sとストレージプロバイダーとのインターフェースが規定されており、それを実装したCSIドライバを組み込むことで様々なストレージについて統一インターフェース(つまりはマニフェストファイル)で利用できるようになっています。 [^2]
-
-[^2]: 以前はin-treeプラグインと呼ばれ、Kubernetes本体のリポジトリに組み込まれていましたが(モノレポ)、開発効率の改善や様々なストレージプロバイダーが参入できるように現在はCSIドライバを使うように移行が進められています。
-
-CSIドライバはクラウドプロバイダが提供するものからサードパーティ製のものまで様々なものが提供されています。
-今回はAWSの提供するストレージサービスの[EBS(Elastic Block Store)](https://aws.amazon.com/jp/ebs/)をCSIを通してk8sクラスタ環境から利用できるようにしましょう。
-導入するEBSのCSIドライバはk8sコミュニティによって開発されており、公式リポジトリは以下になります。
-- <https://github.com/kubernetes-sigs/aws-ebs-csi-driver>
-
-k8sクラスタ環境のストレージ利用については以下の2種類が用意されています。
-- 静的プロビジョニング: 事前にストレージと、k8s上のPV(PersistentVolume)リソースを作成しておき、それに対してアプリからのストレージ要求(PVC:PersistentVolumeClaim)に対応する方法
-- 動的プロビジョニング: アプリからのストレージ要求(PVC)に対応して、ストレージとPVを動的に作成して紐付けを行う方法。別途StorageClassリソースで動的生成の手順を指定しておく。[^3]
-
-[^3]: PVCやPVを使わずに直接PodにVolumeを指定してマウントする方法もありますが、アプリとインフラ責務の分離ができないという理由でPVC，PVを利用する方法が主流です。こちらについては触れません。
-
-今回は両方のパターンについて実践していきましょう。
+前回同様に今回も静的プロビジョニングと動的プロビジョニングの両方を試してみましょう。
 
 ## 事前準備
 以下のいずれかの方法で事前にEKS環境を作成しておいてください。
@@ -40,9 +25,9 @@ CSIドライバのインストールにk8sパッケージマネージャーの[h
 未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください。
 
 
-## EBS CSIドライバのアクセス許可設定
-EBSのCSIドライバがEBSに対してアクセスができるようにIAM PolicyとIAM Roleを作成します。
-EKSクラスタ環境のセットアップ方法(eksctl/Terraform)によって手順が異なります。以下手順に応じてどちらかを実施してください。
+## EFS CSIドライバのアクセス許可設定
+EBS同様にEFSのCSIドライバがEFSに対してアクセスができるようにIAM PolicyとIAM Roleを作成します。
+こちらもEKSクラスタ環境のセットアップ方法(eksctl/Terraform)によって手順が異なります。以下手順に応じてどちらかを実施してください。
 
 ### eksctl
 環境構築にeksctlを利用している場合は今までと同様にeksctlのサブコマンドを利用してIRSAを構成します。
@@ -60,11 +45,11 @@ eksctl utils associate-iam-oidc-provider \
 
 ```shell
 # Policyファイルダウンロード
-curl -o ebs-controller-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/master/docs/example-iam-policy.json
+curl -o efs-controller-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/docs/iam-policy-example.json
 # カスタムポリシー作成
 aws iam create-policy \
-    --policy-name AWSEBSControllerIAMPolicy \
-    --policy-document file://ebs-controller-policy.json
+    --policy-name AWSEFSControllerIAMPolicy \
+    --policy-document file://efs-controller-policy.json
 ```
 
 次に作成したポリシーに対応するIAM Role/k8s ServiceAccountを作成します。
@@ -74,82 +59,139 @@ aws iam create-policy \
 eksctl create iamserviceaccount \
   --cluster=mz-k8s \
   --namespace=kube-system \
-  --name=aws-ebs-controller \
-  --attach-policy-arn=arn:aws:iam::xxxxxxxxxxxx:policy/AWSEBSControllerIAMPolicy \
+  --name=aws-efs-controller \
+  --attach-policy-arn=arn:aws:iam::xxxxxxxxxxxx:policy/AWSEFSControllerIAMPolicy \
   --approve
 ```
 
 実行するとeksctlがCloudFormationスタックを実行し、AWS上にIAM Role、k8s上に対応するServiceAccountが作成されます。
+
+また、Controllerだけでなく、EFSはマウント対象ノードのポリシーも別途必要になります。
+以下のJSONファイル(ここでは`efs-node-policy.json`としました)を用意しましょう。
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "elasticfilesystem:DescribeMountTargets",
+        "ec2:DescribeAvailabilityZones"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+こちらのポリシーについても作成します。
+
+```shell
+# カスタムポリシー作成
+aws iam create-policy \
+    --policy-name AWSEFSNodeIAMPolicy \
+    --policy-document file://efs-node-policy.json
+```
+
+先程同様にこれに対応するIAM Role/k8s ServiceAccountを作成します。
+
+```shell
+eksctl create iamserviceaccount \
+  --cluster=mz-k8s \
+  --namespace=kube-system \
+  --name=aws-efs-node \
+  --attach-policy-arn=arn:aws:iam::xxxxxxxxxxxx:policy/AWSEFSNodeIAMPolicy \
+  --approve
+```
+
 マネジメントコンソールで確認してみましょう。
 
 - CloudFormation
-  ![](https://i.gyazo.com/d68b779a28468f0514164e3e94532acf.png)
+  ![](https://i.gyazo.com/a852ae24125f665c22925d309b8482c8.png)
 - IAM Role
-  ![](https://i.gyazo.com/88b8d89478c0c2534ec37cc826c19a44.png)
+  - aws-efs-controller
+    ![](https://i.gyazo.com/cede07304730743abe6b00adca6b4cce.png)
+  - aws-efs-node
+    ![](https://i.gyazo.com/12733751e5ac3953915f5ebba8116312.png)
 
 ServiceAccountについてはkubectlで確認します。
 
 ```shell
-kubectl get sa aws-ebs-controller -n kube-system -o yaml
+kubectl get sa/aws-efs-controller sa/aws-efs-node -n kube-system -o yaml
 ```
 
 ```yaml
 # 必要部分のみ抜粋・整形
+kind: List
 apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: aws-ebs-controller
-  namespace: kube-system
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/eksctl-mz-k8s-addon-iamserviceaccount-kube-s-Role1-68K77KXE622V
-  labels:
-    app.kubernetes.io/managed-by: eksctl
-secrets:
-  - name: aws-ebs-controller-token-j88db
+items:
+  - apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/eksctl-mz-k8s-addon-iamserviceaccount-kube-s-Role1-U72PU1IQO2NP
+      labels:
+        app.kubernetes.io/managed-by: eksctl
+      name: aws-efs-controller
+      namespace: kube-system
+    secrets:
+      - name: aws-efs-controller-token-szqtw
+  - apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/eksctl-mz-k8s-addon-iamserviceaccount-kube-s-Role1-1JXEPD7H26K7Z
+      labels:
+        app.kubernetes.io/managed-by: eksctl
+      name: aws-efs-node
+      namespace: kube-system
+    secrets:
+      - name: aws-efs-node-token-nkfg8
 ```
 
 `annotations`に上記IAM RoleのARNが指定されていることが分かります。
 
-### Terraform
+### Terraform TODO:見直し
 
 環境構築にTerraformを利用している場合は、`main.tf`に以下の定義を追加してください。
 
 ```hcl
-resource "aws_iam_policy" "ebs_csi" {
-  name = "AWSEBSControllerIAMPolicy"
-  policy = file("${path.module}/ebs-controller-policy.json")
+resource "aws_iam_policy" "efs_csi" {
+  name = "AWSEFSControllerIAMPolicy"
+  policy = file("${path.module}/efs-controller-policy.json")
 }
 
-module "ebs_csi" {
+module "efs_csi" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version = "~> 4.0"
   create_role                   = true
-  role_name                     = "EKSEBSCsiDriver"
+  role_name                     = "EKSEFSCsiDriver"
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
-  role_policy_arns              = [aws_iam_policy.ebs_csi.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:aws-ebs-controller"]
+  role_policy_arns              = [aws_iam_policy.efs_csi.arn]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:aws-efs-controller"]
 }
 
-resource "kubernetes_service_account" "ebs_csi" {
+resource "kubernetes_service_account" "efs_csi" {
   metadata {
-    name = "aws-ebs-controller"
+    name = "aws-efs-controller"
     namespace = "kube-system"
     annotations = {
-      "eks.amazonaws.com/role-arn" = module.ebs_csi.iam_role_arn
+      "eks.amazonaws.com/role-arn" = module.efs_csi.iam_role_arn
     }
   }
 }
 ```
 以下のことをしています。
 
-- JSONファイルよりIAM Policyを作成し、CSIドライバがEBSにアクセスできるようにカスタムポリシーを作成
+- JSONファイルよりIAM Policyを作成し、CSIドライバがEFSにアクセスできるようにカスタムポリシーを作成
 - CSIドライバが利用するIAM Roleを作成（EKSのOIDCプロバイダ経由でk8sのServiceAccountが引受可能）し、上記カスタムポリシーを指定
 - k8s上にServiceAccountを作成して上記IAM Roleと紐付け
 
 これをAWS/k8sクラスタ環境に適用します。
 ```shell
 # Policyファイルダウンロード
-curl -o ebs-controller-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/master/docs/example-iam-policy.json
+curl -o efs-controller-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/docs/iam-policy-example.json
 # 追加内容チェック
 terraform plan
 # AWS/EKSに変更適用
@@ -165,7 +207,7 @@ IAM Role/Policyが問題なく作成されています。
 次にk8sのServiceAccountは以下のように確認できます。
 
 ```shell
-kubectl get sa aws-ebs-controller -n kube-system -o yaml
+kubectl get sa aws-efs-controller -n kube-system -o yaml
 ```
 
 ```yaml
@@ -175,36 +217,38 @@ automountServiceAccountToken: true
 kind: ServiceAccount
 metadata:
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/EKSEBSCsiDriver
-  name: aws-ebs-controller
+    eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/EKSEFSCsiDriver
+  name: aws-efs-controller
   namespace: kube-system
 secrets:
-  - name: aws-ebs-controller-token-d4kk2
+  - name: aws-efs-controller-token-d4kk2
 ```
 
 指定したIAM RoleでServiceAccountリソースがNamespace`kube-system`に作成されていることが確認できます。
 
-## EBS CSIドライバインストール
+## EFS CSIドライバインストール
 
-それではHelmでEBSのCSIドライバを導入しましょう。Helm Chartは以下にホスティングされています。
+それではHelmでEFSのCSIドライバを導入しましょう。Helm Chartは以下にホスティングされています。
 
-<https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/charts/aws-ebs-csi-driver>
+<https://github.com/kubernetes-sigs/aws-efs-csi-driver/tree/master/charts/aws-efs-csi-driver>
 
 まずはHelmチャートのリポジトリを追加します。
 
 ```shell
-helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+helm repo add aws-efs-csi-driver https://kubernetes-sigs.github.io/aws-efs-csi-driver
 helm repo update
 ```
 
-ではCSIドライバをインストールしましょう。Helmチャートは現時点で最新バージョンの`2.4.0`を使用します。
+ではCSIドライバをインストールしましょう。Helmチャートは現時点で最新バージョンの`2.2.0`を使用します。
 
 ```shell
-helm upgrade aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver \
-  --install --version 2.4.0 \
+helm upgrade aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
+  --install --version 2.2.0 \
   --namespace kube-system \
   --set controller.serviceAccount.create=false \
-  --set controller.serviceAccount.name=aws-ebs-controller \
+  --set controller.serviceAccount.name=aws-efs-controller \
+  --set node.serviceAccount.create=false \
+  --set node.serviceAccount.name=aws-efs-node \
   --wait
 ```
 
@@ -214,57 +258,81 @@ helm upgrade aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver \
 ## 静的プロビジョニング
 
 それでは静的プロビジョニングを構成してみましょう。
-静的プロビジョニングの場合は事前にEBSを作成しておく必要があります。
-EBSはAZ(Availability Zone)を跨って利用することはできませんので、まずk8sのノードがどのAZに配置されているのかを確認しましょう。
-各ノードは配置されているAZのラベルがつけられています。
+こちらもEBS同様に事前にEFSを作成しておく必要があります。ただし、標準設定だとEFSはAZに依存しませんのでEBSのようにAZを意識する必要はありません。
+
+以下のコマンドでAWS上にEFSとマウントポイントを作成します(マネジメントコンソールからでも構いません)。
+後で利用するので出力結果から`FileSystemId`の値(`fs-xxxxxxxxxxx`)を控えておきましょう。
 
 ```shell
-kubectl get node -L topology.ebs.csi.aws.com/zone
+# EFS作成
+aws efs create-file-system --tags Key=Name,Value=k8s-efs-test
 ```
 
-```
-NAME                                            STATUS   ROLES    AGE   VERSION               ZONE
-ip-10-0-1-90.ap-northeast-1.compute.internal    Ready    <none>   16m   v1.21.4-eks-033ce7e   ap-northeast-1a
-ip-10-0-3-122.ap-northeast-1.compute.internal   Ready    <none>   16m   v1.21.4-eks-033ce7e   ap-northeast-1d
-```
+デフォルト設定でEFSを作成しました（指定可能なパラメータは[こちら](https://docs.aws.amazon.com/cli/latest/reference/efs/create-file-system.html)を参照）。
 
-この結果から`ap-northeast-1a`、`ap-northeast-1d`に配置されていることが確認できます。
-ここではAZ`ap-northeast-1a`内に作成しましょう（どのAZに作成するかは出力されているものであれば任意です。別のAZの場合は以降置き換えてください）。
+マネジメントコンソールから作成したEFSを確認してみましょう。EFSメニューから参照することができます。
+![](https://i.gyazo.com/6eb907088415964072ed22fa1bd8ad89.png)
 
-以下のコマンドでAWS上にEBSボリュームを作成します(マネジメントコンソールからでも構いません)。
+次にNFSのマウントターゲットを作成します。NFSにマウントするにはVPC内のk8sノードの配置されているプライベートサブネットにマウントターゲットを作成する必要があります。
+リージョン内の全AZから利用できるよう全てのプライベートサブネットに対して作成しましょう。
+以下はAWS CLIで作成していますが、結構煩雑なのでマネジメントコンソールから作成しても構いません(EFSメニュー -> ファイルシステム選択 -> ネットワーク -> マウントターゲットを作成)。
 
 ```shell
-aws ec2 create-volume --availability-zone ap-northeast-1a --size 10 \
-  --tag-specifications 'ResourceType=volume,Tags=[{Key=Name,Value=k8s-ebs-test}]'
+# k8sが配置されているVPC ID取得
+aws ec2 describe-vpcs
+# マウントポイント用のセキュリティグループ
+aws ec2 create-security-group --region ap-northeast-1 \
+  --group-name efs-eks-sg \
+  --vpc-id vpc-063e883e24d7055c2 \
+  --description "EFS Mount point for EKS"
+# 出力結果よりGroupId取得
+aws ec2 authorize-security-group-ingress \
+  --group-id sg-0aeca0534c3b45823 \
+  --protocol tcp \
+  --port 2049 \
+  --cidr 0.0.0.0/0 \
+  --region ap-northeast-1
+
+# プライベートサブネットID取得
+aws ec2 describe-subnets --filters Name=vpc-id,Values=vpc-063e883e24d7055c2 \
+  --query 'Subnets[?MapPublicIpOnLaunch==`false`].SubnetId' --output text
+# 出力された全サブネットにマウントターゲット作成
+aws efs create-mount-target --file-system-id fs-0bd9d0366b39c6d35 --subnet-id subnet-0791edaa01fed3ede \
+  --security-groups sg-0aeca0534c3b45823
+aws efs create-mount-target --file-system-id fs-0bd9d0366b39c6d35 --subnet-id subnet-02475d48da09be36e \
+  --security-groups sg-0aeca0534c3b45823
+aws efs create-mount-target --file-system-id fs-0bd9d0366b39c6d35 --subnet-id subnet-074adcf1ddcd88f79 \
+  --security-groups sg-0aeca0534c3b45823
 ```
 
-上記では東京リージョン内の`ap-northeast-1a`を指定し、10GiBのストレージを作成しています。
-マネジメントコンソールから作成したボリュームを確認してみましょう。メニューからEC2 -> Elastic Block Storeで参照することができます。
-![](https://i.gyazo.com/422f6ddbd888ae232caa7304695b6e34.png)
+これでEFS側の準備が整いました。
 
-作成したEBSボリュームをk8sに関連付けます。これはPV(PersistentVolume)リソースを作成することで実施します。
+では、EBS同様に作成したEFSをk8sのPVリソースとして作成しましょう。
 以下のようにYAMLファイル(ここでは`pv.yaml`)を作成しましょう。
 
 ```yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: ebs-test-volume
+  name: efs-test-volume
 spec:
   capacity:
     storage: 10Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   # CSI設定
   csi:
-    driver: ebs.csi.aws.com
-    # 手動作成したEBSのVolumeID
-    volumeHandle: vol-00b52f41e6065cb7c
+    driver: efs.csi.aws.com
+    # EFSのFileSystemID
+    volumeHandle: fs-xxxxxxxxxxx
 ```
 
-`capacity`として10GiB、`accessModes`として読み書き可能なストレージとして作成しました。
-また`csi`部分で今回使用するCSIドライバを指定し、`volumeHandle`に先程作成したEBSのボリュームIDを設定します。
+ファイル共有目的で利用を想定し、`accessModes`として、複数クライアントから読み書き可能な`ReadWriteMany`を指定しました。
+また`csi`部分で今回使用するEFSのCSIドライバを指定し、`volumeHandle`に先程作成したEFSの`FileSystemId`を設定してください[^1]。
+EFSはストレージは自動拡張・縮小されるため、事前にサイズを指定する必要はありませんが、k8sでは`capacity`は必須フィールドのため有効な値を指定する必要があります。
+
+[^1]: 忘れてしまった場合はマネジメントコンソールまたはAWS CLI(`aws efs describe-file-systems --query "FileSystems[*].FileSystemId"`)で確認できます。
 
 これでPVリソースを作成しましょう。
 
@@ -275,28 +343,28 @@ kubectl apply -f pv.yaml
 ではPVの中身を確認してみましょう。
 
 ```shell
-kubectl describe pv ebs-test-volume
+kubectl describe pv efs-test-volume
 ```
 
 以下のようになっています。
 
 ```
-# 必要部分のみ抜粋・整形
-Name:            ebs-test-volume
+# 必要部分のみ抜粋
+Name:            efs-test-volume
 Finalizers:      [kubernetes.io/pv-protection]
 StorageClass:    
 Status:          Available
 Claim:           
 Reclaim Policy:  Retain
-Access Modes:    RWO
+Access Modes:    RWX
 VolumeMode:      Filesystem
 Capacity:        10Gi
-Node Affinity:   <none>
+Message:         
 Source:
     Type:              CSI (a Container Storage Interface (CSI) volume source)
-    Driver:            ebs.csi.aws.com
+    Driver:            efs.csi.aws.com
     FSType:            
-    VolumeHandle:      vol-00b52f41e6065cb7c
+    VolumeHandle:      fs-xxxxxxxxxxx
     ReadOnly:          false
     VolumeAttributes:  <none>
 ```
@@ -310,18 +378,18 @@ Source:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-test-volume-pvc
+  name: efs-test-volume-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
   storageClassName: ""
 ```
 
-`accessModes`で読み書き可能なストレージを10GiB(`storage`フィールド)のサイズで要求していることが分かると思います。
-`storageClassName`に空文字を設定していますが、これはEKSデフォルトの動的プロビジョニングが動作するのを防ぐために必要です。
+PVで指定したように`accessModes`で複数クライアントから読み書き可能(`ReadWriteMany`)なストレージを10GiB(`storage`フィールド)のサイズで要求しています。
+`storageClassName`には動的プロビジョニングが動作しないように空文字を設定しています。
 
 こちらでPVCリソースを作成しましょう。
 
@@ -332,65 +400,66 @@ kubectl apply -f pvc.yaml
 作成後はPVCリソースについても中身を確認しましょう。
 
 ```shell
-kubectl describe pvc ebs-test-volume-pvc
+kubectl describe pvc efs-test-volume-pvc
 ```
 
 ```
-Name:          ebs-test-volume-pvc
+# 必要部分のみ抜粋
+Name:          efs-test-volume-pvc
 Namespace:     default
 StorageClass:  
 Status:        Bound
-Volume:        ebs-test-volume
+Volume:        efs-test-volume
 Labels:        <none>
 Annotations:   pv.kubernetes.io/bind-completed: yes
                pv.kubernetes.io/bound-by-controller: yes
 Finalizers:    [kubernetes.io/pvc-protection]
 Capacity:      10Gi
-Access Modes:  RWO
+Access Modes:  RWX
 VolumeMode:    Filesystem
 Used By:       <none>
 ```
 
-`Status`をみると`Bound`となっており、PVCがPVにバインディングされていることが分かります。
-また`Volume`には先程作成したPVが設定されています。これはPVCの希望条件(サイズやアクセスモード)に対して、先程のPVがマッチしたため紐付けがされたものです。
+`Status`をみると`Bound`となっており、作成したPVCがPVにバインディングされていることが分かります。
 もう一度PVの方のステータスを見てみましょう。
 
 ```shell
-kubectl get pv ebs-test-volume
+kubectl get pv efs-test-volume
 ```
 
 ```
 NAME              CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                         STORAGECLASS   REASON   AGE
-ebs-test-volume   10Gi       RWO            Retain           Bound    default/ebs-test-volume-pvc                           17m
+efs-test-volume   10Gi       RWX            Retain           Bound    default/efs-test-volume-pvc                           10m
 ```
 
-こちらも`Status`が`Available`から`Bound`となり、`CLAIM`として先程のPVCが設定されていることが確認できます。
-この状態になるとこのPVは該当PVC以外から利用されることはありません(排他がかかっている状態)。
+`Status`が`Bound`となり、`CLAIM`として先程のPVCが設定されていることが確認できます。
+
+EBSの方をセットアップされた方は気づいているかもしれませんが、EBSのときとほとんど同じインターフェースでEFSの設定ができていることが分かります。
 
 では最後に利用するコンテナ側(アプリ)です。
-今回はbusyboxコンテナを起動し、実際にEBS内にファイルを配置し、コンテナの再起動や削除後でもデータが永続化されているかを確認するだけにします。
+
+今回は複数のbusyboxコンテナをそれぞれ別のDeploymentリソースから起動し、EFS内に作成したファイルが他のPodからも読み書きできることを確認します。
 
 以下のYAMLファイル(ここでは`deployment.yaml`)を用意しましょう。
 
 ```yaml
+# app1
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: app1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
+      app: app1
   template:
     metadata:
       labels:
-        app: app
+        app: app1
     spec:
-      nodeSelector:
-        topology.ebs.csi.aws.com/zone: ap-northeast-1a
       containers:
-        - name: app
+        - name: app1
           image: busybox
           command: [sh, -c, "sleep 10000"]
           volumeMounts:
@@ -399,18 +468,40 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: ebs-test-volume-pvc
+            claimName: efs-test-volume-pvc
+---
+# app2
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app2
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+        - name: app2
+          image: busybox
+          command: [sh, -c, "sleep 10000"]
+          volumeMounts:
+            - mountPath: /app/data
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: efs-test-volume-pvc
 ```
 
-コンテナの動きとしてはbusyboxを起動して、sleepするだけの単純なものですが以下の点に注目してください[^4]。
+基本はEBSのときと同様です。busyboxコンテナを起動して、sleepするだけの単純なものです。
+それをDeploymentを2つ(app1/app2)用意し、両方において`volumes.persistentVolumeClaim.claimName`に先程作成したPVCを指定しています。
 
-[^4]: 複数レプリカで更新が必要な場合は、ファイル競合を避けるために、Deploymentではなくコンテナごとにボリュームを分離するStatefulSetを使用します。
-
-- `volumes`フィールドにPodで利用するボリュームを定義し、ここに先程作成したPVCリソースを指定します。これによりPVCリソースがこのPodで利用できるようになります。
-- `containers.volumeMounts`でボリュームをコンテナのどのパスにマウントするのかを設定しています。これにより先程のEBSが`/app/data`にマウントされます。
-
-また、`nodeSelector`でAZを指定しています。これは前述の通りEBSはAZを跨って利用することができないため、先程EBSを作成したAZ(`ap-northeast-1a`)でのみスケジューリングされるようにしています。
-これを指定しない場合、別のAZに配置されたNodeにPodがデプロイされるとボリュームのマウントができずに起動することができなくなります。
+ではこちらをデプロイしましょう。
 
 ```shell
 kubectl apply -f deployment.yaml
@@ -419,8 +510,10 @@ kubectl apply -f deployment.yaml
 Podがデプロイ時にボリュームのマウントを始まります。Podリソースのイベントを確認してみます。
 
 ```shell
-POD=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app)
-kubectl describe pod $POD
+POD1=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app1)
+kubectl describe pod $POD1
+POD2=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app1)
+kubectl describe pod $POD2
 ```
 
 ```
@@ -439,53 +532,39 @@ Events:
 Eventsの2行目を見ると分かるようにPVのアタッチに成功しています。これでEBSボリュームがPod内のコンテナに対してマウントされました。
 
 実際にファイルを配置して、再起動後でもデータが永続化されているのかを見てみましょう。
-今回はbusyboxコンテナを起動しているだけですので、`kubectl exec`で直接コンテナ内に入ってテストファイルを直接配置します。
+まずapp1に対してテストファイルを配置します。
 
 ```shell
-POD=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app)
-kubectl exec $POD -- sh -c 'echo "hello ebs!" > /app/data/test.txt'
-kubectl exec $POD -- cat /app/data/test.txt
+POD1=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app1)
+kubectl exec $POD1 -- sh -c 'echo "app1:hello efs!" > /app/data/test.txt'
+kubectl exec $POD1 -- cat /app/data/test.txt
 ```
 
-マウントしたパス(`/app/data`)に`test.txt`というファイルを作成しました。`hello ebs!`という内容がコンソール上に出力されることを確認してください。
-
-ではPodを再起動してみましょう。
+次にapp2でファイルが参照されていることを確認します。
 
 ```shell
-kubectl rollout restart deployment app
-kubectl get pod
+POD2=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app2)
+kubectl exec $POD2 -- cat /app/data/test.txt
 ```
 
-```
-NAME                   READY   STATUS        RESTARTS   AGE
-app-5569fd9559-t6w8l   1/1     Running       0          6s
-app-5776847dd9-896vs   1/1     Terminating   0          105s
-```
-
-新しいPodが新たに作成され、先程実行していたPodが終了していく様子が分かります。
-古いPodが削除されたのを確認後に、新しく起動したPodに先程のファイルが存在し、内容が失われていないかを確認してみましょう。
+`app1:hello efs!`と出力されることが確認できると思います。これでapp1とapp2にファイル共有が実現できていることが確認できました。
+app2で同ファイルに追記してapp1側で内容を確認してみましょう。
 
 ```shell
-POD=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app)
-kubectl exec $POD -- cat /app/data/test.txt
+kubectl exec $POD2 -- sh -c 'echo "app2:hello efs!" >> /app/data/test.txt'
+kubectl exec $POD1 -- cat /app/data/test.txt
 ```
 
-`hello ebs!`という出力が確認できたと思います。Podの再起動後でもデータが引き継がれていることが確認できました。
-次はPodを生成したDeploymentリソースごと削除し、再度作成してみましょう。
+`app1:hello efs!`と`app2:hello efs!`の2行が出力されていれば確認OKです。
+NFSでファイル共有されていますので、Podの再起動等でもこの情報は失われることはありません。
 
-```shell
-kubectl delete -f deployment.yaml
-kubectl apply -f deployment.yaml
-# 新しいPodが起動して、古いPodが削除されるまでしばらく待つ(kubectl get pod)
+マネジメントコンソールから確認してみましょう。EFSメニューよりファイルシステム -> モニタリングと選択するとメトリクスが変動していることが確認できます[^2]。
 
-POD=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app)
-kubectl exec $POD -- cat /app/data/test.txt
-```
+[^2]: 残念ながら現状マネジメントコンソールでEFSに配置したファイルの参照機能はないようです。
 
-ここでも`hello ebs!`という出力が確認できたと思います。
-Pod再起動だけでなく、Deploymentごと消しても、永続化したデータは新しいPodで引き続き利用可能なことが分かります。
+![](https://i.gyazo.com/ec9df795aa1dd7ff66faab5775231407.png)
 
-## 動的プロビジョニング
+## 動的プロビジョニング TODO
 
 静的プロビジョニングによって、EBS CSI ControllerがEBSボリュームを該当ノードにアタッチして、Pod内部のコンテナにマウントされていることを確認してきました。
 ただ、AZを意識してEBSボリュームの手動作成やPVへの関連付け等はかなり面倒だと感じられたと思います。次は動的プロビジョニングによってEBS・PVの作成を自動化してしまいましょう。

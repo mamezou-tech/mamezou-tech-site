@@ -3,7 +3,7 @@ title: ストレージ - AWS EFS
 author: noboru-kudo
 ---
 
-[前回](/containers/k8s/tutorial/storage/ebs)はAWS EBSを使ってコンテナにストレージをマウントすることで、Podの再起動時にもデータを消失することなく永続化することができました。
+[前回](/containers/k8s/tutorial/storage/ebs)はAWS EBSを使ってコンテナにストレージをマウントすることで、Podの再起動時にもデータを消失することなく継続して利用することができました。
 
 今回はNFSプロトコルを利用する共有ファイルストレージサービスである[AWS EFS](https://aws.amazon.com/jp/efs/)を使って複数Pod間でのファイル共有を実現します。
 EFSの場合はAZ内でのみ利用可能なEBSと異なり、同一リージョン内の複数AZに冗長化されるため、AZ障害が発生しても別のAZのノードから引き続き利用することが可能です。
@@ -254,60 +254,45 @@ helm upgrade aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
 
 パラメータでServiceAccountの生成を無効にして先程作成したIAM Roleに紐付けしたものを指定しています。それ以外はデフォルトで構いません。
 
+## EFSの作成
+
+EFSは静的・動的プロビジョニングのどちらでも、事前にファイルシステムとそれに対応するマウントターゲットを準備する必要があります。
+ここではマネジメントコンソールまたはTerraformを用いて構築する方法を紹介します[^1]。
+eksctlで環境を構築している場合はAWSのマネジメントコンソール[^2]、Terraformの場合はクラスタ環境に利用した設定に追記してEFSを作成しましょう。
+
+[^1]: もちろんAWS CLIでも作成可能です。`aws efs create-file-system`/`aws efs create-mount-target`を利用して作成することが可能です。
+[^2]: eksctlを使う場合でもCloudFormationやTerraform等のIaCツールを併用することがバージョン管理や自動化の観点で望ましいでしょう。
+
+### マネジメントコンソール
+
+マネジメントコンソールのEFSメニューより以下の手順でマネジメントコンソールで作成します。
+
+1. マネジメントコンソールのEC2メニューよりEFS用の「セキュリティグループを作成」をクリックします。
+![](https://i.gyazo.com/9c5a8bcf57a0ee9ec5ff9e1991d53ec4.png)
+
+2. 以下の内容を入力し、セキュリティグループを作成してください。今回はインバウンドソースとして全て許可していますが、実運用ではセキュリティ観点からEKSノードのセキュリティグループのみ等に限定するのが望ましいでしょう。
+![](https://i.gyazo.com/5d94a18eeee461cabadb554cf4380d22.png)
+
+3. マネジメントコンソールのEFSメニューより「ファイルシステム」を選択し、「ファイルシステムの作成」をクリックします。
+![](https://i.gyazo.com/338acbbcb7ad1b68fdf829e4f0dd10e4.png)
+
+4. ファイルシステム名を入力し、EKSのノードがデプロイされているVPCを選択(デフォルトVPCではありません)し、「カスタマイズ」ボタンをクリックします。
+![](https://i.gyazo.com/d9133886f13d4a7b234de585d7083bf3.png)
+
+5. 「ネットワークアクセス」ページまで進み、マウントターゲットに各AZのプライベートサブネットを選択し、先程作成したセキュリティグループを設定します。
+![](https://i.gyazo.com/e663fb36c657c91f502c154011b2a7d9.png)
+
+6. あとはそのまま最後まで進んでファイルシステムを作成してください。「ネットワークアクセス」で設定したマウントターゲットが「利用可能」になれば準備完了です。
+![](https://i.gyazo.com/638425a8e90e3d289d2ed36927f8faac.png)
+
+### Terraform
+
 
 ## 静的プロビジョニング
 
-それでは静的プロビジョニングを構成してみましょう。
-こちらもEBS同様に事前にEFSを作成しておく必要があります。ただし、標準設定だとEFSはAZに依存しませんのでEBSのようにAZを意識する必要はありません。
+それでは静的プロビジョニングでPodからEFSを利用可能にしてみましょう。
 
-以下のコマンドでAWS上にEFSとマウントポイントを作成します(マネジメントコンソールからでも構いません)。
-後で利用するので出力結果から`FileSystemId`の値(`fs-xxxxxxxxxxx`)を控えておきましょう。
-
-```shell
-# EFS作成
-aws efs create-file-system --tags Key=Name,Value=k8s-efs-test
-```
-
-デフォルト設定でEFSを作成しました（指定可能なパラメータは[こちら](https://docs.aws.amazon.com/cli/latest/reference/efs/create-file-system.html)を参照）。
-
-マネジメントコンソールから作成したEFSを確認してみましょう。EFSメニューから参照することができます。
-![](https://i.gyazo.com/6eb907088415964072ed22fa1bd8ad89.png)
-
-次にNFSのマウントターゲットを作成します。NFSにマウントするにはVPC内のk8sノードの配置されているプライベートサブネットにマウントターゲットを作成する必要があります。
-リージョン内の全AZから利用できるよう全てのプライベートサブネットに対して作成しましょう。
-以下はAWS CLIで作成していますが、結構煩雑なのでマネジメントコンソールから作成しても構いません(EFSメニュー -> ファイルシステム選択 -> ネットワーク -> マウントターゲットを作成)。
-
-```shell
-# k8sが配置されているVPC ID取得
-aws ec2 describe-vpcs
-# マウントポイント用のセキュリティグループ
-aws ec2 create-security-group --region ap-northeast-1 \
-  --group-name efs-eks-sg \
-  --vpc-id vpc-063e883e24d7055c2 \
-  --description "EFS Mount point for EKS"
-# 出力結果よりGroupId取得
-aws ec2 authorize-security-group-ingress \
-  --group-id sg-0aeca0534c3b45823 \
-  --protocol tcp \
-  --port 2049 \
-  --cidr 0.0.0.0/0 \
-  --region ap-northeast-1
-
-# プライベートサブネットID取得
-aws ec2 describe-subnets --filters Name=vpc-id,Values=vpc-063e883e24d7055c2 \
-  --query 'Subnets[?MapPublicIpOnLaunch==`false`].SubnetId' --output text
-# 出力された全サブネットにマウントターゲット作成
-aws efs create-mount-target --file-system-id fs-0bd9d0366b39c6d35 --subnet-id subnet-0791edaa01fed3ede \
-  --security-groups sg-0aeca0534c3b45823
-aws efs create-mount-target --file-system-id fs-0bd9d0366b39c6d35 --subnet-id subnet-02475d48da09be36e \
-  --security-groups sg-0aeca0534c3b45823
-aws efs create-mount-target --file-system-id fs-0bd9d0366b39c6d35 --subnet-id subnet-074adcf1ddcd88f79 \
-  --security-groups sg-0aeca0534c3b45823
-```
-
-これでEFS側の準備が整いました。
-
-では、EBS同様に作成したEFSをk8sのPVリソースとして作成しましょう。
+先程作成したEFSをk8sのPVリソースとして作成しましょう。
 以下のようにYAMLファイル(ここでは`pv.yaml`)を作成しましょう。
 
 ```yaml
@@ -329,10 +314,10 @@ spec:
 ```
 
 ファイル共有目的で利用を想定し、`accessModes`として、複数クライアントから読み書き可能な`ReadWriteMany`を指定しました。
-また`csi`部分で今回使用するEFSのCSIドライバを指定し、`volumeHandle`に先程作成したEFSの`FileSystemId`を設定してください[^1]。
+`csi`部分では、今回使用するEFSのCSIドライバを指定します。`volumeHandle`には、先程作成したEFSのファイルシステムID(マネジメントコンソールから確認できます[^3])を設定してください。
 EFSはストレージは自動拡張・縮小されるため、事前にサイズを指定する必要はありませんが、k8sでは`capacity`は必須フィールドのため有効な値を指定する必要があります。
 
-[^1]: 忘れてしまった場合はマネジメントコンソールまたはAWS CLI(`aws efs describe-file-systems --query "FileSystems[*].FileSystemId"`)で確認できます。
+[^3]: AWS CLIの場合は`aws efs describe-file-systems --query "FileSystems[*].FileSystemId"`で確認できます。
 
 これでPVリソースを作成しましょう。
 
@@ -507,31 +492,7 @@ spec:
 kubectl apply -f deployment.yaml
 ```
 
-Podがデプロイ時にボリュームのマウントを始まります。Podリソースのイベントを確認してみます。
-
-```shell
-POD1=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app1)
-kubectl describe pod $POD1
-POD2=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app1)
-kubectl describe pod $POD2
-```
-
-```
-# Eventsのみ抜粋
-Events:
-  Type    Reason                  Age   From                     Message
-  ----    ------                  ----  ----                     -------
-  Normal  Scheduled               43s   default-scheduler        Successfully assigned default/app-5776847dd9-896vs to ip-10-0-1-90.ap-northeast-1.compute.internal
-  Normal  SuccessfulAttachVolume  41s   attachdetach-controller  AttachVolume.Attach succeeded for volume "ebs-test-volume"
-  Normal  Pulling                 33s   kubelet                  Pulling image "busybox"
-  Normal  Pulled                  30s   kubelet                  Successfully pulled image "busybox" in 3.847789281s
-  Normal  Created                 30s   kubelet                  Created container app
-  Normal  Started                 29s   kubelet                  Started container app
-```
-
-Eventsの2行目を見ると分かるようにPVのアタッチに成功しています。これでEBSボリュームがPod内のコンテナに対してマウントされました。
-
-実際にファイルを配置して、再起動後でもデータが永続化されているのかを見てみましょう。
+それではPodが起動していることを確認(`kubectl get pod`等)したら、実際にファイルを配置して、再起動後でもデータが永続化されているのかを見てみましょう。
 まずapp1に対してテストファイルを配置します。
 
 ```shell
@@ -556,11 +517,11 @@ kubectl exec $POD1 -- cat /app/data/test.txt
 ```
 
 `app1:hello efs!`と`app2:hello efs!`の2行が出力されていれば確認OKです。
-NFSでファイル共有されていますので、Podの再起動等でもこの情報は失われることはありません。
+EFSはNFSプロトコルでAZを跨ってファイル共有可能ですので、Podが他のAZで起動しても引き続き同じファイルの読み書きを実施することが可能です。
 
-マネジメントコンソールから確認してみましょう。EFSメニューよりファイルシステム -> モニタリングと選択するとメトリクスが変動していることが確認できます[^2]。
+マネジメントコンソールからも確認してみましょう。EFSメニューよりファイルシステム -> モニタリングと選択するとIOPSや接続数等のメトリクスが変動していることが確認できます[^4]。
 
-[^2]: 残念ながら現状マネジメントコンソールでEFSに配置したファイルの参照機能はないようです。
+[^4]: 残念ながら現状はマネジメントコンソールからEFSに配置したファイルの参照機能はないようです。
 
 ![](https://i.gyazo.com/ec9df795aa1dd7ff66faab5775231407.png)
 
@@ -738,20 +699,16 @@ kubectl exec $POD -- cat /app/data/test.txt
 本チュートリアルのリソースは以下で削除します。
 
 ```shell
-kubectl delete deploy app
+kubectl delete deploy --all
 kubectl delete pvc --all
 
 kubectl delete pv --all
-# マネジメントコンソールから動的プロビジョニングで作成されたEBSボリュームが削除されたことを確認する
 
-helm uninstall -n kube-system aws-ebs-csi-driver
+helm uninstall -n kube-system aws-efs-csi-driver
 ```
 
-動的プロビジョニングで作成したEBSボリュームは上記で削除されますが、静的プロビジョニングで作成したAWS CLIかマネジメントコンソールで削除します。
-
-```shell
-aws ec2 delete-volume --volume-id xxxxxxxxxxx
-```
+AWS CLIを利用してEFSを作成した場合は以下のコマンドで削除できます。
+Terraformで環境構築した場合は`terraform destroy`で一緒に削除されるため下記は実行しないでください。
 
 最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
 - [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl#クリーンアップ)

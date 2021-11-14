@@ -66,7 +66,7 @@ eksctl create iamserviceaccount \
 
 実行するとeksctlがCloudFormationスタックを実行し、AWS上にIAM Role、k8s上に対応するServiceAccountが作成されます。
 
-また、Controllerだけでなく、EFSはマウント対象ノードのポリシーも別途必要になります。
+また、Controllerだけでなく、EFSをマウントするためのノードのポリシーも別途必要になります。
 以下のJSONファイル(ここでは`efs-node-policy.json`としました)を用意しましょう。
 
 ```json
@@ -152,46 +152,93 @@ items:
 
 `annotations`に上記IAM RoleのARNが指定されていることが分かります。
 
-### Terraform TODO:見直し
+### Terraform
 
 環境構築にTerraformを利用している場合は、`main.tf`に以下の定義を追加してください。
 
 ```hcl
-resource "aws_iam_policy" "efs_csi" {
+resource "aws_iam_policy" "efs_csi_controller" {
   name = "AWSEFSControllerIAMPolicy"
   policy = file("${path.module}/efs-controller-policy.json")
 }
 
-module "efs_csi" {
+module "efs_csi_controller" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version = "~> 4.0"
   create_role                   = true
-  role_name                     = "EKSEFSCsiDriver"
+  role_name                     = "EKSEFSCsiController"
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
-  role_policy_arns              = [aws_iam_policy.efs_csi.arn]
+  role_policy_arns              = [aws_iam_policy.efs_csi_controller.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:aws-efs-controller"]
 }
 
-resource "kubernetes_service_account" "efs_csi" {
+resource "kubernetes_service_account" "efs_csi_controller" {
   metadata {
     name = "aws-efs-controller"
     namespace = "kube-system"
     annotations = {
-      "eks.amazonaws.com/role-arn" = module.efs_csi.iam_role_arn
+      "eks.amazonaws.com/role-arn" = module.efs_csi_controller.iam_role_arn
+    }
+  }
+}
+
+resource "aws_iam_policy" "efs_csi_node" {
+  name = "AWSEFSNodeIAMPolicy"
+  policy = file("${path.module}/efs-node-policy.json")
+}
+
+module "efs_csi_node" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version = "~> 4.0"
+  create_role                   = true
+  role_name                     = "EKSEFSCsiNode"
+  provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
+  role_policy_arns              = [aws_iam_policy.efs_csi_node.arn]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:aws-efs-node"]
+}
+
+resource "kubernetes_service_account" "efs_csi_node" {
+  metadata {
+    name = "aws-efs-node"
+    namespace = "kube-system"
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.efs_csi_node.iam_role_arn
     }
   }
 }
 ```
-以下のことをしています。
+
+EBSのときとは違い、EFS CSIドライバはControllerとノードそれぞれにポリシーを用意する必要があります。それぞれ以下のことをしています。
 
 - JSONファイルよりIAM Policyを作成し、CSIドライバがEFSにアクセスできるようにカスタムポリシーを作成
 - CSIドライバが利用するIAM Roleを作成（EKSのOIDCプロバイダ経由でk8sのServiceAccountが引受可能）し、上記カスタムポリシーを指定
 - k8s上にServiceAccountを作成して上記IAM Roleと紐付け
 
+次に、Terraform内で利用するカスタムポリシーのJSONファイルをそれぞれ準備します。
+
+- `efs-controller-policy.json`
+  ```shell
+  curl -o efs-controller-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/docs/iam-policy-example.json
+  ```
+- `efs-node-policy.json`
+  ```json
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "elasticfilesystem:DescribeMountTargets",
+          "ec2:DescribeAvailabilityZones"
+        ],
+        "Resource": "*"
+      }
+    ]
+  }
+  ```
+
 これをAWS/k8sクラスタ環境に適用します。
 ```shell
-# Policyファイルダウンロード
-curl -o efs-controller-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/docs/iam-policy-example.json
 # 追加内容チェック
 terraform plan
 # AWS/EKSに変更適用
@@ -200,31 +247,47 @@ terraform apply
 
 反映が完了したらマネジメントコンソールで確認してみましょう。
 IAM Role/Policyは以下のようになります。
-![](https://i.gyazo.com/1337b3a744402bff6acaf7e6d9f62c7e.png)
+- aws-efs-controller
+  ![](https://i.gyazo.com/15322579030df97d46584dbe59e55399.png)
+- aws-efs-node
+  ![](https://i.gyazo.com/7310786444e73e71544738f35eb2724f.png)
 
 IAM Role/Policyが問題なく作成されています。
 
 次にk8sのServiceAccountは以下のように確認できます。
 
 ```shell
-kubectl get sa aws-efs-controller -n kube-system -o yaml
+kubectl get sa/aws-efs-controller sa/aws-efs-node -n kube-system -o yaml
 ```
 
 ```yaml
 # 必要部分のみ抜粋・整形
 apiVersion: v1
-automountServiceAccountToken: true
-kind: ServiceAccount
-metadata:
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/EKSEFSCsiDriver
-  name: aws-efs-controller
-  namespace: kube-system
-secrets:
-  - name: aws-efs-controller-token-d4kk2
+kind: List
+items:
+  - apiVersion: v1
+    automountServiceAccountToken: true
+    kind: ServiceAccount
+    metadata:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/EKSEFSCsiController
+      name: aws-efs-controller
+      namespace: kube-system
+    secrets:
+      - name: aws-efs-controller-token-njd5z
+  - apiVersion: v1
+    automountServiceAccountToken: true
+    kind: ServiceAccount
+    metadata:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxxxxxx:role/EKSEFSCsiNode
+      name: aws-efs-node
+      namespace: kube-system
+    secrets:
+      - name: aws-efs-node-token-vjf9d
 ```
 
-指定したIAM RoleでServiceAccountリソースがNamespace`kube-system`に作成されていることが確認できます。
+指定したIAM RoleでそれぞれのServiceAccountリソースがNamespace`kube-system`に作成されていることが確認できます。
 
 ## EFS CSIドライバインストール
 
@@ -287,6 +350,96 @@ eksctlで環境を構築している場合はAWSのマネジメントコンソ�
 
 ### Terraform
 
+こちらはIaCツールのTerraformでEFSを作成します。
+まず[AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)で作成したTerraform実行ユーザー(`terraform`)にEFS作成のポリシーを追加しましょう。
+今回はマネジメントコンソールより追加しますが、AWS CLI等でも構いません。
+
+マネジメントコンソールよりIAMサービス -> ユーザーを選択し、terraformユーザーの「インラインポリシーの追加」をクリックします[^3]。
+
+[^3]: 手順簡略化のためインラインポリシーで作成していますが、もちろん専用のカスタムポリシーを作成しても構いません。その場合は「アクセス権限の追加」より編集してください。
+
+![](https://i.gyazo.com/47aad62fe3093efe0f5b4c7c4ad40e0c.png)
+
+ポリシーの作成で表示されるテキストエディタ内にJSON[^4]をコピペして「ポリシーの確認」をクリックしください。
+
+[^4]: EFSのフルアクセスを許可していますが、お使いのAWSセキュリティーポリシー上問題がある場合は権限を絞ってください。
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "elasticfilesystem:*",
+            "Resource": "*"
+        }
+    ]
+}
+```
+![](https://i.gyazo.com/6f04053e91145cab175602aba42b8d04.png)
+
+任意のポリシー名を入力して「ポリシーの作成」をクリックすればterraformユーザーにEFSのアクセス許可を与えることができます。
+
+![](https://i.gyazo.com/92a7b69c9962c9190d80f4f32f342f9d.png)
+
+それではEFSの構成を記述していきましょう。`main.tf`に以下を追記します。
+
+```hcl
+resource "aws_efs_file_system" "this" {
+  tags = {
+    Name = "k8s-efs-test"
+  }
+  encrypted = true
+}
+
+resource "aws_security_group" "efs_mount_target" {
+  name        = "efs-eks-sg"
+  description = "EFS Mount point for EKS"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    from_port        = 2049
+    to_port          = 2049
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_efs_mount_target" "this" {
+  count           = length(module.vpc.private_subnets)
+  file_system_id  = aws_efs_file_system.this.id
+  subnet_id       = module.vpc.private_subnets[count.index]
+  security_groups = [aws_security_group.efs_mount_target.id]
+}
+```
+
+以下3種類のリソース構成を作成しています。
+
+- aws_efs_file_system: EFSのファイルシステムそのもの。
+- aws_security_group: EFSにマウントターゲットに適用するセキュリティーグループ
+- aws_efs_mount_target: EFSのマウントターゲット。全AZに適用(`count`フィールド)。
+
+それではこちらを実行してEFS利用環境を構築しましょう。
+
+```shell
+# 追加内容チェック
+terraform plan
+# AWS/EKSに変更適用
+terraform apply
+```
+
+実行が終わったらマネジメントコンソールからEFSの状態を確認しましょう。
+
+![](https://i.gyazo.com/e752183e6d1b7001bfe75a6cad1b2802.png)
+
+EFSが作成されてマウントターゲットのマウントターゲットの状態が「利用可能」となれば準備完了です。
 
 ## 静的プロビジョニング
 
@@ -314,10 +467,10 @@ spec:
 ```
 
 ファイル共有目的で利用を想定し、`accessModes`として、複数クライアントから読み書き可能な`ReadWriteMany`を指定しました。
-`csi`部分では、今回使用するEFSのCSIドライバを指定します。`volumeHandle`には、先程作成したEFSのファイルシステムID(マネジメントコンソールから確認できます[^3])を設定してください。
+`csi`部分では、今回使用するEFSのCSIドライバを指定します。`volumeHandle`には、先程作成したEFSのファイルシステムID(マネジメントコンソールから確認できます[^5])を設定してください。
 EFSはストレージは自動拡張・縮小されるため、事前にサイズを指定する必要はありませんが、k8sでは`capacity`は必須フィールドのため有効な値を指定する必要があります。
 
-[^3]: AWS CLIの場合は`aws efs describe-file-systems --query "FileSystems[*].FileSystemId"`で確認できます。
+[^5]: AWS CLIの場合は`aws efs describe-file-systems --query "FileSystems[*].FileSystemId"`で確認できます。
 
 これでPVリソースを作成しましょう。
 
@@ -492,7 +645,7 @@ spec:
 kubectl apply -f deployment.yaml
 ```
 
-それではPodが起動していることを確認(`kubectl get pod`等)したら、実際にファイルを配置して、再起動後でもデータが永続化されているのかを見てみましょう。
+それではPodが起動していることを確認(`kubectl get pod`等)したら、実際にファイルを配置して各Pod間でデータが共有されているかを見てみましょう。
 まずapp1に対してテストファイルを配置します。
 
 ```shell
@@ -509,7 +662,7 @@ kubectl exec $POD2 -- cat /app/data/test.txt
 ```
 
 `app1:hello efs!`と出力されることが確認できると思います。これでapp1とapp2にファイル共有が実現できていることが確認できました。
-app2で同ファイルに追記してapp1側で内容を確認してみましょう。
+app2で同ファイルに追記してapp1側から内容を確認してみましょう。
 
 ```shell
 kubectl exec $POD2 -- sh -c 'echo "app2:hello efs!" >> /app/data/test.txt'
@@ -517,37 +670,43 @@ kubectl exec $POD1 -- cat /app/data/test.txt
 ```
 
 `app1:hello efs!`と`app2:hello efs!`の2行が出力されていれば確認OKです。
-EFSはNFSプロトコルでAZを跨ってファイル共有可能ですので、Podが他のAZで起動しても引き続き同じファイルの読み書きを実施することが可能です。
+EFSはNFSプロトコルでAZを跨ってファイル共有可能ですので、Podが他のAZで起動していても同じファイルの読み書きを実施することができます。
 
-マネジメントコンソールからも確認してみましょう。EFSメニューよりファイルシステム -> モニタリングと選択するとIOPSや接続数等のメトリクスが変動していることが確認できます[^4]。
+マネジメントコンソールからも確認してみましょう。EFSメニューよりファイルシステム -> モニタリングと選択するとIOPSや接続数等のメトリクスが変動していることが確認できます[^6]。
 
-[^4]: 残念ながら現状はマネジメントコンソールからEFSに配置したファイルの参照機能はないようです。
+[^6]: 残念ながら現状はマネジメントコンソールからEFSに配置したファイルの参照機能はないようです。
 
 ![](https://i.gyazo.com/ec9df795aa1dd7ff66faab5775231407.png)
 
-## 動的プロビジョニング TODO
+## 動的プロビジョニング
 
-静的プロビジョニングによって、EBS CSI ControllerがEBSボリュームを該当ノードにアタッチして、Pod内部のコンテナにマウントされていることを確認してきました。
-ただ、AZを意識してEBSボリュームの手動作成やPVへの関連付け等はかなり面倒だと感じられたと思います。次は動的プロビジョニングによってEBS・PVの作成を自動化してしまいましょう。
+それでは次は動的プロビジョニングの方で構成しましょう。
 
-動的プロビジョニングを利用するにはStorageClassというリソースを別途用意します。
-StorageClassはアクセス速度(SSDやHDD)やIOスループット等、カテゴリごとに用意するのが一般的ですが今回は1つのみ用意します。
+EBS同様にStorageClassというリソースを別途用意します。
 YAMLファイル(ここでは`storageclass.yaml`)を作成し、以下を記述しましょう。
 
 ```yaml
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: aws-ebs-ssd
-provisioner: ebs.csi.aws.com
-volumeBindingMode: WaitForFirstConsumer
+  name: aws-efs
+provisioner: efs.csi.aws.com
+mountOptions:
+  - tls
 parameters:
-  type: gp2
+  provisioningMode: efs-ap
+  fileSystemId: fs-xxxxxxxxxxxxxxxxx
+  directoryPerms: "700"
 ```
 
-`type`フィールドにEBSのボリュームタイプである`gp2`(SSD)を指定しています。
-こちらで指定可能なタイプはEBSの仕様に準じますので[こちら](https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/ebs-volume-types.html)を参考にしてください。
-また、`volumeBindingMode`を`WaitForFirstConsumer`に設定し、Podで初めて利用する際にEBSボリュームつまりPVを作成するように指示しています。
+`provisioner`にEFSのCSIドライバを指定し、`parameters`にCSIドライバの必須フィールドを設定します。
+
+現状EFSのCSIドライバーは動的プロビジョニングは、[EFSのアクセスポイント](https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html)のみをサポートしています。
+このため`provisioningMode`にはアクセスポイントでマウントを表す`efs-ap`を指定します。
+また、`fileSystemId`には、EFSのファイルシステムIDをマネジメントコンソール等から取得したものを設定してください。
+最後に`directoryPerms`にはマウントパスのパーミッションを指定します。今回は所有者が読み書きできるように700を指定しました[^7]。
+
+[^7]: アクセスポイントを利用する場合は、マウントパス上はEFS CSIドライバで指定されるユーザーID(デフォルトは50000-の連番)でファイルが作成されます。
 
 ではこれをk8sクラスタ環境に反映しましょう。
 
@@ -563,14 +722,11 @@ kubectl get sc
 
 ```
 NAME            PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
-aws-ebs-ssd     ebs.csi.aws.com         Delete          WaitForFirstConsumer   false                  40s
-gp2 (default)   kubernetes.io/aws-ebs   Delete          WaitForFirstConsumer   false                  75m
+aws-efs         efs.csi.aws.com         Delete          Immediate              false                  39s
+gp2 (default)   kubernetes.io/aws-ebs   Delete          WaitForFirstConsumer   false                  5h56m
 ```
 
-作成した`aws-ebs-ssd`以外に`gp2`というStorageClassが出てきたことに不思議に思われるかもしれません。
-k8sのディストーションには予めデフォルトのStorageClassが設定されていることが多いです。
-EKSでも既にデフォルトのStorageClassとしてこの`gp2`が作成されています（ここはCSIドライバでなくk8s内部のProvisionerが使用されています）。
-今回はこのデフォルトのStorageClassはなく、CSIドライバとしてインストールしたPROVISIONERを使用する`aws-ebs-ssd`による動的プロビジョニングを行います。
+CSIドライバとしてインストールしたPROVISIONERを使用する`aws-efs`としてStorageClassが生成されていることが分かります。
 
 これに対してPVCでストレージ要求を行うようにします。
 YAMLファイル(`pvc.yaml`)を作成します。
@@ -579,20 +735,19 @@ YAMLファイル(`pvc.yaml`)を作成します。
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-ssd-volume-pvc
+  name: efs-test-dynamic-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
-  storageClassName: aws-ebs-ssd
+  storageClassName: aws-efs
 ```
 
-静的プロビジョニングのときに利用したものとほとんど同じですが、`storageClassName`に先程作成したStorageClassを指定します(先程はStorageClassを利用しないように空文字を設定しました)。
-これによって、動的プロビジョニングつまりStorageClassを使用してPV/EBSの作成を自動的に実行する形になります。
+静的プロビジョニングのときに利用したものとほとんど同じですが、`storageClassName`に先程作成したStorageClassの`aws-efs`を指定します。
 
-では、こちらについても作成しましょう。
+こちらについても作成しましょう。
 
 ```shell
 kubectl apply -f pvc.yaml
@@ -601,34 +756,77 @@ kubectl apply -f pvc.yaml
 PVCの状態を確認しておきましょう。
 
 ```shell
-kubectl get pvc ebs-ssd-volume-pvc
+kubectl get pvc efs-test-dynamic-pvc
 ```
 
 ```
-NAME                 STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-ebs-ssd-volume-pvc   Pending                                      aws-ebs-ssd    3m17s
+NAME                   STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+efs-test-dynamic-pvc   Bound    pvc-4ea2196b-a789-40b8-96c1-159824c0bb90   10Gi       RWX            aws-efs        14s
 ```
 
-今回はPVを作成していませんので`STATUS`は`Pending`になっています。
-ではPodを作成しましょう。
+`STATUS`/`VOLUME`からPVCが作成され、PVがマウントされていることが分かります。
+バインドされたPVの方も見てみましょう。PV名は`VOLUME`の値に置き換えてください。
+
+```shell
+kubectl describe pv pvc-4ea2196b-a789-40b8-96c1-159824c0bb90
+```
+
+```
+# 一部抜粋
+Name:            pvc-4ea2196b-a789-40b8-96c1-159824c0bb90
+Annotations:     pv.kubernetes.io/provisioned-by: efs.csi.aws.com
+Finalizers:      [kubernetes.io/pv-protection]
+StorageClass:    aws-efs
+Status:          Bound
+Claim:           default/efs-test-dynamic-pvc
+Reclaim Policy:  Delete
+Access Modes:    RWX
+VolumeMode:      Filesystem
+Capacity:        10Gi
+Source:
+    Type:              CSI (a Container Storage Interface (CSI) volume source)
+    Driver:            efs.csi.aws.com
+    FSType:            
+    VolumeHandle:      fs-xxxxxxxxxxxxxx::fsap-xxxxxxxxxxxxxx
+    ReadOnly:          false
+    VolumeAttributes:      storage.kubernetes.io/csiProvisionerIdentity=1636851384129-8081-efs.csi.aws.com
+```
+
+動的プロビジョニングによって、自動的にPVが作成されていることが分かります[^8]。
+`VolumeHandle`を見るとファイルシステムIDに続いて`fsap-xxxxxxxxxxxxxxx`というものが付加されています。これがEFSのアクセスポイントになります。
+
+[^8]: EBSのときは`volumeBindingMode`に`WaitForFirstConsumer`を指定することで初回利用までPVの作成を遅延させましたが、EFS CSIドライバーは現状これをサポートしていません。
+
+実際にマネジメントコンソール(EFSメニュー -> アクセスポイント)からも確認できます。
+
+![](https://i.gyazo.com/7235d4533f2bed077381ea60845f0832.png)
+
+実際にAWS上にEFSのアクセスポイントが作成されていることが分かります[^9]。
+
+[^9]: デフォルトではCSIドライバが自動的にアクセスポイント専用のパス`pvc-`プレフィックスで作成しますが、StorageClassの`parameters.basePath`でパス名を直接指定することも可能です。
+
+
+ではこれをNFSマウントするPodを作成しましょう。
+ファイル(`app.yaml`)は以下のようになります。
 
 ```yaml
+# app1
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: app1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
+      app: app1
   template:
     metadata:
       labels:
-        app: app
+        app: app1
     spec:
       containers:
-        - name: app
+        - name: app1
           image: busybox
           command: [sh, -c, "sleep 10000"]
           volumeMounts:
@@ -637,62 +835,61 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: ebs-ssd-volume-pvc
+            claimName: efs-test-dynamic-pvc
+---
+# app2
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app2
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+        - name: app2
+          image: busybox
+          command: [sh, -c, "sleep 10000"]
+          volumeMounts:
+            - mountPath: /app/data
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: efs-test-dynamic-pvc
 ```
 
-基本的には先程とほとんど同じですが、以下の点が異なります。
-- `nodeSelector`を削除。CSIドライバがPodがデプロイされたAZに動的にEBSを作成するため指定不要
-- `volumes.persistentVolumeClaim.claimName`をStorageClassを使うように指定したPVCの名前を指定
-
-こちらで作成(静的プロビジョニングで既に作成済みの場合は更新)します。
+静的プロビジョニングとの違いは、`volumes.persistentVolumeClaim.claimName`を先程StorageClassを使うように指定したPVCの名前に変更しました。
+こちらでデプロイしましょう。
 
 ```shell
 kubectl apply -f deployment.yaml
 ```
 
-Podが起動したらPV,PVCの状態を確認してみましょう。
+app1/app2のPodが正常に起動(`Running`)したことを確認してから、先程と同様にPod間でファイル共有できることを確認しましょう。
 
 ```shell
-kubectl get pvc,pv
+# app1にファイル作成・書き込み
+POD1=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app1)
+kubectl exec $POD1 -- sh -c 'echo "app1:hello efs!" > /app/data/test.txt'
+kubectl exec $POD1 -- cat /app/data/test.txt
+
+# app2でファイル参照・追記
+POD2=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app2)
+kubectl exec $POD2 -- cat /app/data/test.txt
+kubectl exec $POD2 -- sh -c 'echo "app2:hello efs!" >> /app/data/test.txt'
+
+# app1でファイル参照
+kubectl exec $POD1 -- cat /app/data/test.txt
 ```
 
-```
-# 動的プロビジョニングのみ抜粋
-NAME                                        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-persistentvolumeclaim/ebs-ssd-volume-pvc    Bound    pvc-7dc82e91-e25c-401b-acc1-5bf9615c522b   10Gi       RWO            aws-ebs-ssd    8m56s
-
-NAME                                                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                         STORAGECLASS   REASON   AGE
-persistentvolume/pvc-7dc82e91-e25c-401b-acc1-5bf9615c522b   10Gi       RWO            Delete           Bound    default/ebs-ssd-volume-pvc    aws-ebs-ssd             2m50s
-```
-
-PVリソース(`pvc-xxxxxx`)が自動的に作成され、それが先程作成したPVCにバインドされている様子が分かります。
-この状態でマネジメントコンソールでEBSを見ると実際に作成されたEBSボリュームを確認することもできます。
-
-![](https://i.gyazo.com/39a28347379b88d3e35cc34db6a129da.png)
-
-これで先程同様にコンテナ内にファイル保存して、再起動または削除すると同じ結果が得られます。
-
-```shell
-# ファイル作成
-POD=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app)
-kubectl exec $POD -- sh -c 'echo "hello ebs!" > /app/data/test.txt'
-kubectl exec $POD -- cat /app/data/test.txt
-
-# Pod再起動
-kubectl rollout restart deployment app
-# 新しいPodが起動して、古いPodが削除されるまでしばらく待つ(kubectl get pod)
-POD=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app)
-kubectl exec $POD -- cat /app/data/test.txt
-
-# Pod削除 -> 新規生成
-kubectl delete -f deployment.yaml
-kubectl apply -f deployment.yaml
-# 新しいPodが起動して、古いPodが削除されるまでしばらく待つ(kubectl get pod)
-POD=$(kubectl get pod -o jsonpath='{.items[0].metadata.name}' -l app=app)
-kubectl exec $POD -- cat /app/data/test.txt
-```
-
-全てのケースで`hello ebs!`という文字列が出力されれば確認終了です。
+最終的に`app1:hello efs!`と`app2:hello efs!`の2行が出力されていれば確認OKです。
 
 ## クリーンアップ
 
@@ -707,8 +904,8 @@ kubectl delete pv --all
 helm uninstall -n kube-system aws-efs-csi-driver
 ```
 
-AWS CLIを利用してEFSを作成した場合は以下のコマンドで削除できます。
-Terraformで環境構築した場合は`terraform destroy`で一緒に削除されるため下記は実行しないでください。
+EFSをマネジメントコンソールから作成した場合は、マネジメントコンソールからマウントターゲット、ファイルシステム、セキュリティグループの順に順序削除してください。
+Terraformで環境構築した場合は`terraform destroy`で一緒に削除されるためマネジメントコンソールから削除しないでください。
 
 最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
 - [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl#クリーンアップ)

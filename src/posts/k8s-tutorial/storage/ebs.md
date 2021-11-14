@@ -146,10 +146,18 @@ resource "kubernetes_service_account" "ebs_csi" {
 - CSIドライバが利用するIAM Roleを作成（EKSのOIDCプロバイダ経由でk8sのServiceAccountが引受可能）し、上記カスタムポリシーを指定
 - k8s上にServiceAccountを作成して上記IAM Roleと紐付け
 
-これをAWS/k8sクラスタ環境に適用します。
+次に、Terraform内で利用するカスタムポリシーのJSONファイルを準備します。
+JSONファイルあはCSI ドライバのリポジトリにあるサンプルをそのまま使います。
+
 ```shell
 # Policyファイルダウンロード
 curl -o ebs-controller-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/master/docs/example-iam-policy.json
+```
+
+これをAWS/k8sクラスタ環境に適用します。
+```shell
+# module初期化
+terraform init
 # 追加内容チェック
 terraform plan
 # AWS/EKSに変更適用

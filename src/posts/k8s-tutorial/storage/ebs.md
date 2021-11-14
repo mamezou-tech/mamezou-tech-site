@@ -170,7 +170,7 @@ IAM Role/Policyは以下のようになります。
 
 IAM Role/Policyが問題なく作成されています。
 
-次にk8sのServiceAccountは以下のように確認できます。
+次にk8s側に作成したServiceAccountを確認します。
 
 ```shell
 kubectl get sa aws-ebs-controller -n kube-system -o yaml
@@ -194,7 +194,7 @@ secrets:
 
 ## EBS CSIドライバインストール
 
-それではHelmでEBSのCSIドライバを導入しましょう。Helm Chartは以下にホスティングされています。
+それではHelmでEBSのCSIドライバを導入しましょう。利用するHelm Chartは以下にホスティングされています。
 
 <https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/charts/aws-ebs-csi-driver>
 
@@ -216,7 +216,7 @@ helm upgrade aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver \
   --wait
 ```
 
-パラメータでServiceAccountの生成を無効にして先程作成したIAM Roleに紐付けしたものを指定しています。それ以外はデフォルトで構いません。
+パラメータでServiceAccountの生成を無効にして、先程作成したIAM Roleに紐付けしたものを指定しています。それ以外はデフォルトで構いません。
 
 
 ## 静的プロビジョニング

@@ -6,7 +6,7 @@ author: noboru-kudo
 [前回](/containers/k8s/tutorial/storage/ebs)はAWS EBSを使ってコンテナにストレージをマウントすることで、Podの再起動時にもデータを消失することなく継続して利用することができました。
 
 今回はNFSプロトコルを利用する共有ファイルストレージサービスである[AWS EFS](https://aws.amazon.com/jp/efs/)を使って複数Pod間でのファイル共有を実現します。
-EFSの場合はAZ内でのみ利用可能なEBSと異なり、同一リージョン内の複数AZに冗長化されるため、AZ障害が発生しても別のAZのノードから引き続き利用することが可能です。
+EFSはAZ内でのみ利用可能なEBSと異なり、同一リージョン内の複数AZに冗長化されるため、AZ障害が発生しても別のAZのノードから引き続き利用することが可能です。
 逆に多数の読み書きが発生する際のパフォーマンスや、コストの点ではEBSに劣りますので、ユースケースに応じて選択する必要があります。
 
 EFSについても[CSI(Container Storage Interface)](https://github.com/container-storage-interface/spec)ドライバが用意されているため、こちらを利用します。
@@ -105,7 +105,7 @@ eksctl create iamserviceaccount \
   --approve
 ```
 
-マネジメントコンソールで確認してみましょう。
+CloudFormationの実行結果と作成されたIAM Roleをマネジメントコンソールで確認しておきましょう。
 
 - CloudFormation
   ![](https://i.gyazo.com/a852ae24125f665c22925d309b8482c8.png)
@@ -210,7 +210,7 @@ resource "kubernetes_service_account" "efs_csi_node" {
 
 EBSのときとは違い、EFS CSIドライバはControllerとノードそれぞれにポリシーを用意する必要があります。それぞれ以下のことをしています。
 
-- JSONファイルよりIAM Policyを作成し、CSIドライバがEFSにアクセスできるようにカスタムポリシーを作成
+- JSONファイルよりIAM Policyを作成し、CSIドライバ（Controllerおよびノード）がEFSにアクセスできるようにカスタムポリシーを作成
 - CSIドライバが利用するIAM Roleを作成（EKSのOIDCプロバイダ経由でk8sのServiceAccountが引受可能）し、上記カスタムポリシーを指定
 - k8s上にServiceAccountを作成して上記IAM Roleと紐付け
 
@@ -254,7 +254,7 @@ IAM Role/Policyは以下のようになります。
 
 IAM Role/Policyが問題なく作成されています。
 
-次にk8sのServiceAccountは以下のように確認できます。
+次にk8s側に作成したServiceAccountを確認します。
 
 ```shell
 kubectl get sa/aws-efs-controller sa/aws-efs-node -n kube-system -o yaml
@@ -291,7 +291,7 @@ items:
 
 ## EFS CSIドライバインストール
 
-それではHelmでEFSのCSIドライバを導入しましょう。Helm Chartは以下にホスティングされています。
+それではHelmでEFSのCSIドライバを導入しましょう。利用するHelm Chartは以下にホスティングされています。
 
 <https://github.com/kubernetes-sigs/aws-efs-csi-driver/tree/master/charts/aws-efs-csi-driver>
 
@@ -315,25 +315,23 @@ helm upgrade aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
   --wait
 ```
 
-パラメータでServiceAccountの生成を無効にして先程作成したIAM Roleに紐付けしたものを指定しています。それ以外はデフォルトで構いません。
+パラメータでServiceAccount(controller/node)の生成を無効にして、先程作成したIAM Roleに紐付けしたものを指定しています。それ以外はデフォルトで構いません。
 
 ## EFSの作成
 
 EFSは静的・動的プロビジョニングのどちらでも、事前にファイルシステムとそれに対応するマウントターゲットを準備する必要があります。
-ここではマネジメントコンソールまたはTerraformを用いて構築する方法を紹介します[^1]。
-eksctlで環境を構築している場合はAWSのマネジメントコンソール[^2]、Terraformの場合はクラスタ環境に利用した設定に追記してEFSを作成しましょう。
+ここではAWSマネジメントコンソールまたはTerraformを用いて構築する方法を紹介します[^1]。
+eksctlで環境を構築している場合はマネジメントコンソール[^2]、Terraformの場合はクラスタ環境に利用した設定に追記してEFSを作成しましょう。
 
 [^1]: もちろんAWS CLIでも作成可能です。`aws efs create-file-system`/`aws efs create-mount-target`を利用して作成することが可能です。
 [^2]: eksctlを使う場合でもCloudFormationやTerraform等のIaCツールを併用することがバージョン管理や自動化の観点で望ましいでしょう。
 
 ### マネジメントコンソール
 
-マネジメントコンソールのEFSメニューより以下の手順でマネジメントコンソールで作成します。
-
-1. マネジメントコンソールのEC2メニューよりEFS用の「セキュリティグループを作成」をクリックします。
+1. マネジメントコンソールのEC2メニュー -> セキュリティグループを選択し、「セキュリティグループを作成」をクリックします。
 ![](https://i.gyazo.com/9c5a8bcf57a0ee9ec5ff9e1991d53ec4.png)
 
-2. 以下の内容を入力し、セキュリティグループを作成してください。今回はインバウンドソースとして全て許可していますが、実運用ではセキュリティ観点からEKSノードのセキュリティグループのみ等に限定するのが望ましいでしょう。
+2. 以下の内容を入力し、EFS用のセキュリティグループを作成してください[^3]。
 ![](https://i.gyazo.com/5d94a18eeee461cabadb554cf4380d22.png)
 
 3. マネジメントコンソールのEFSメニューより「ファイルシステム」を選択し、「ファイルシステムの作成」をクリックします。
@@ -348,21 +346,23 @@ eksctlで環境を構築している場合はAWSのマネジメントコンソ�
 6. あとはそのまま最後まで進んでファイルシステムを作成してください。「ネットワークアクセス」で設定したマウントターゲットが「利用可能」になれば準備完了です。
 ![](https://i.gyazo.com/638425a8e90e3d289d2ed36927f8faac.png)
 
+[^3]: 今回はインバウンドとして全て許可していますが、実運用ではセキュリティ観点からアクセスが必要なソースに限定するのが望ましいでしょう。
+
 ### Terraform
 
 こちらはIaCツールのTerraformでEFSを作成します。
 まず[AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)で作成したTerraform実行ユーザー(`terraform`)にEFS作成のポリシーを追加しましょう。
 今回はマネジメントコンソールより追加しますが、AWS CLI等でも構いません。
 
-マネジメントコンソールよりIAMサービス -> ユーザーを選択し、terraformユーザーの「インラインポリシーの追加」をクリックします[^3]。
+マネジメントコンソールよりIAMサービス -> ユーザーを選択し、`terraform`ユーザーを表示し、「インラインポリシーの追加」をクリックします[^4]。
 
-[^3]: 手順簡略化のためインラインポリシーで作成していますが、もちろん専用のカスタムポリシーを作成しても構いません。その場合は「アクセス権限の追加」より編集してください。
+[^4]: 手順簡略化のためインラインポリシーで作成していますが、もちろん専用のカスタムポリシーを作成しても構いません。その場合は「アクセス権限の追加」より編集してください。
 
 ![](https://i.gyazo.com/47aad62fe3093efe0f5b4c7c4ad40e0c.png)
 
-ポリシーの作成で表示されるテキストエディタ内にJSON[^4]をコピペして「ポリシーの確認」をクリックしください。
+ポリシーの作成で表示されるテキストエディタ内に以下のJSON[^5]をコピペして「ポリシーの確認」をクリックしください。
 
-[^4]: EFSのフルアクセスを許可していますが、お使いのAWSセキュリティーポリシー上問題がある場合は権限を絞ってください。
+[^5]: EFSのフルアクセスを許可していますが、お使いのAWSセキュリティーポリシー上問題がある場合は権限を絞ってください。
 
 ```json
 {
@@ -467,10 +467,10 @@ spec:
 ```
 
 ファイル共有目的で利用を想定し、`accessModes`として、複数クライアントから読み書き可能な`ReadWriteMany`を指定しました。
-`csi`部分では、今回使用するEFSのCSIドライバを指定します。`volumeHandle`には、先程作成したEFSのファイルシステムID(マネジメントコンソールから確認できます[^5])を設定してください。
+`csi`部分では、今回使用するEFSのCSIドライバを指定します。`volumeHandle`には、先程作成したEFSのファイルシステムID(マネジメントコンソールから確認できます[^6])を設定してください。
 EFSはストレージは自動拡張・縮小されるため、事前にサイズを指定する必要はありませんが、k8sでは`capacity`は必須フィールドのため有効な値を指定する必要があります。
 
-[^5]: AWS CLIの場合は`aws efs describe-file-systems --query "FileSystems[*].FileSystemId"`で確認できます。
+[^6]: AWS CLIの場合は`aws efs describe-file-systems --query "FileSystems[*].FileSystemId"`で確認できます。
 
 これでPVリソースを作成しましょう。
 
@@ -672,9 +672,9 @@ kubectl exec $POD1 -- cat /app/data/test.txt
 `app1:hello efs!`と`app2:hello efs!`の2行が出力されていれば確認OKです。
 EFSはNFSプロトコルでAZを跨ってファイル共有可能ですので、Podが他のAZで起動していても同じファイルの読み書きを実施することができます。
 
-マネジメントコンソールからも確認してみましょう。EFSメニューよりファイルシステム -> モニタリングと選択するとIOPSや接続数等のメトリクスが変動していることが確認できます[^6]。
+マネジメントコンソールからも確認してみましょう。EFSメニューよりファイルシステム -> モニタリングと選択するとIOPSや接続数等のメトリクスが変動していることが確認できます[^7]。
 
-[^6]: 残念ながら現状はマネジメントコンソールからEFSに配置したファイルの参照機能はないようです。
+[^7]: 残念ながら現状はマネジメントコンソールからEFSに配置したファイルの参照機能はないようです。
 
 ![](https://i.gyazo.com/ec9df795aa1dd7ff66faab5775231407.png)
 
@@ -701,12 +701,12 @@ parameters:
 
 `provisioner`にEFSのCSIドライバを指定し、`parameters`にCSIドライバの必須フィールドを設定します。
 
-現状EFSのCSIドライバーは動的プロビジョニングは、[EFSのアクセスポイント](https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html)のみをサポートしています。
+現状EFSのCSIドライバは動的プロビジョニングは、[EFSのアクセスポイント](https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html)のみをサポートしています。
 このため`provisioningMode`にはアクセスポイントでマウントを表す`efs-ap`を指定します。
 また、`fileSystemId`には、EFSのファイルシステムIDをマネジメントコンソール等から取得したものを設定してください。
-最後に`directoryPerms`にはマウントパスのパーミッションを指定します。今回は所有者が読み書きできるように700を指定しました[^7]。
+最後に`directoryPerms`にはマウントパスのパーミッションを指定します。今回は所有者が読み書きできるように700を指定しました[^8]。
 
-[^7]: アクセスポイントを利用する場合は、マウントパス上はEFS CSIドライバで指定されるユーザーID(デフォルトは50000-の連番)でファイルが作成されます。
+[^8]: アクセスポイントを利用する場合は、マウントパス上はEFS CSIドライバで指定されるユーザーID(デフォルトは50000-の連番)でファイルが作成されます。
 
 ではこれをk8sクラスタ環境に反映しましょう。
 
@@ -792,18 +792,18 @@ Source:
     VolumeAttributes:      storage.kubernetes.io/csiProvisionerIdentity=1636851384129-8081-efs.csi.aws.com
 ```
 
-動的プロビジョニングによって、自動的にPVが作成されていることが分かります[^8]。
+動的プロビジョニングによって、自動的にPVが作成されていることが分かります[^9]。
 `VolumeHandle`を見るとファイルシステムIDに続いて`fsap-xxxxxxxxxxxxxxx`というものが付加されています。これがEFSのアクセスポイントになります。
 
-[^8]: EBSのときは`volumeBindingMode`に`WaitForFirstConsumer`を指定することで初回利用までPVの作成を遅延させましたが、EFS CSIドライバーは現状これをサポートしていません。
+[^9]: EBSのときは`volumeBindingMode`に`WaitForFirstConsumer`を指定することで初回利用までPVの作成を遅延させましたが、EFS CSIドライバは現状これをサポートしていません。
 
 実際にマネジメントコンソール(EFSメニュー -> アクセスポイント)からも確認できます。
 
 ![](https://i.gyazo.com/7235d4533f2bed077381ea60845f0832.png)
 
-実際にAWS上にEFSのアクセスポイントが作成されていることが分かります[^9]。
+実際にAWS上にEFSのアクセスポイントが作成されていることが分かります[^10]。
 
-[^9]: デフォルトではCSIドライバが自動的にアクセスポイント専用のパス`pvc-`プレフィックスで作成しますが、StorageClassの`parameters.basePath`でパス名を直接指定することも可能です。
+[^10]: デフォルトではCSIドライバが自動的にアクセスポイント専用のパス`pvc-`プレフィックスで作成しますが、StorageClassの`parameters.basePath`でパス名を直接指定することも可能です。
 
 
 ではこれをNFSマウントするPodを作成しましょう。
@@ -904,7 +904,7 @@ kubectl delete pv --all
 helm uninstall -n kube-system aws-efs-csi-driver
 ```
 
-EFSをマネジメントコンソールから作成した場合は、マネジメントコンソールからマウントターゲット、ファイルシステム、セキュリティグループの順に順序削除してください。
+EFSをマネジメントコンソールから作成した場合は、マネジメントコンソールからマウントターゲット、ファイルシステム、セキュリティグループの順に削除してください。
 Terraformで環境構築した場合は`terraform destroy`で一緒に削除されるためマネジメントコンソールから削除しないでください。
 
 最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。

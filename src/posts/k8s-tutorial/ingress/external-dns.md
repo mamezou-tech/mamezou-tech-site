@@ -149,6 +149,8 @@ resource "kubernetes_service_account" "external_dns" {
 
 これをAWS/k8sクラスタ環境に適用します。
 ```shell
+# module初期化
+terraform init
 # 追加内容チェック
 terraform plan
 # AWS/EKSに変更適用

@@ -18,14 +18,14 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 
 #### ストレージ
 1. [AWS EBS](/containers/k8s/tutorial/storage/ebs)
-2. AWS EFS <span style="color:red">Coming Soon!</span>
+2. [AWS EFS](/containers/k8s/tutorial/storage/efs)
 
 ---
 
 ### アプリケーション開発編
-1. ステートレスアプリケーション(Deployment) <span style="color:red">Coming Soon!</span>
-2. ステートフルアプリケーション(StatefulSet) <span style="color:red">Coming Soon!</span>
-3. バッチアプリケーション(Job, CronJob) <span style="color:red">Coming Soon!</span>
+1. 事前準備<span style="color:red">Coming Soon!</span>
+2. Webアプリケーション開発 <span style="color:red">Coming Soon!</span>
+3. バッチアプリケーション開発 <span style="color:red">Coming Soon!</span>
 
 ---
 

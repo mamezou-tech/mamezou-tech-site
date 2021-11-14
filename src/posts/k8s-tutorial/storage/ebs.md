@@ -47,6 +47,14 @@ EKSクラスタ環境のセットアップ方法(eksctl/Terraform)によって�
 ### eksctl
 環境構築にeksctlを利用している場合は今までと同様にeksctlのサブコマンドを利用してIRSAを構成します。
 
+IRSAを利用するためにはOIDCプロバイダを有効化する必要があります。未実施の場合は以下のコマンドを実行してください。
+
+```shell
+eksctl utils associate-iam-oidc-provider \
+    --cluster mz-k8s \
+    --approve
+```
+
 まずはCSIドライバで使用するカスタムポリシーを作成します。
 以下のコマンドでJSONファイルをダウンロードし、AWS上にカスタムポリシー作成しましょう(マネジメントコンソールから作成しても構いません)。
 
@@ -138,10 +146,18 @@ resource "kubernetes_service_account" "ebs_csi" {
 - CSIドライバが利用するIAM Roleを作成（EKSのOIDCプロバイダ経由でk8sのServiceAccountが引受可能）し、上記カスタムポリシーを指定
 - k8s上にServiceAccountを作成して上記IAM Roleと紐付け
 
-これをAWS/k8sクラスタ環境に適用します。
+次に、Terraform内で利用するカスタムポリシーのJSONファイルを準備します。
+JSONファイルあはCSI ドライバのリポジトリにあるサンプルをそのまま使います。
+
 ```shell
 # Policyファイルダウンロード
 curl -o ebs-controller-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/master/docs/example-iam-policy.json
+```
+
+これをAWS/k8sクラスタ環境に適用します。
+```shell
+# module初期化
+terraform init
 # 追加内容チェック
 terraform plan
 # AWS/EKSに変更適用
@@ -154,7 +170,7 @@ IAM Role/Policyは以下のようになります。
 
 IAM Role/Policyが問題なく作成されています。
 
-次にk8sのServiceAccountは以下のように確認できます。
+次にk8s側に作成したServiceAccountを確認します。
 
 ```shell
 kubectl get sa aws-ebs-controller -n kube-system -o yaml
@@ -178,7 +194,7 @@ secrets:
 
 ## EBS CSIドライバインストール
 
-それではHelmでEBSのCSIドライバを導入しましょう。Helm Chartは以下にホスティングされています。
+それではHelmでEBSのCSIドライバを導入しましょう。利用するHelm Chartは以下にホスティングされています。
 
 <https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/charts/aws-ebs-csi-driver>
 
@@ -200,7 +216,7 @@ helm upgrade aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver \
   --wait
 ```
 
-パラメータでServiceAccountの生成を無効にして先程作成したIAM Roleに紐付けしたものを指定しています。それ以外はデフォルトで構いません。
+パラメータでServiceAccountの生成を無効にして、先程作成したIAM Roleに紐付けしたものを指定しています。それ以外はデフォルトで構いません。
 
 
 ## 静的プロビジョニング

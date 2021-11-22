@@ -29,7 +29,7 @@ Kubernetes のオブジェクトは Key-Value store である etcd に保存さ�
 - [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
 - [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
 
-[ストレージ - AWS EBS](/containers/k8s/tutorial/storage/ebs) では、EBS CSI ドライバーを導入しました。Velero は最新の v1.7 でも EBS CSI Driver で作成される PV をサポートしていません[^1]。そこで、in-tree のドライバーで作成される PV と VolumeSnapshot を利用するため、StorageClass は gp2 を利用します。
+[ストレージ - AWS EBS](/containers/k8s/tutorial/storage/ebs) では、EBS CSI ドライバーを導入しましたが、Velero は最新の v1.7 でも EBS CSI ドライバーで作成される PV をサポートしていません[^1]。そこで、in-tree のドライバーで作成される PV と VolumeSnapshot を利用するため、StorageClass は gp2 を利用します。
 
 [^1]: 2022 年にリリースされる v1.8 で対応される予定です。[velero/ROADMAP.md at main · vmware-tanzu/velero](https://github.com/vmware-tanzu/velero/blob/main/ROADMAP.md)
 
@@ -355,4 +355,4 @@ PV データについては、CSI ドライバーが Snapshot に対応してい
 
 [Drivers - Kubernetes CSI Developer Documentation](https://kubernetes-csi.github.io/docs/drivers.html)
 
-またこの記事のように EBS CSI Driver に Velero プラグイン自体が未対応というケースもあります。今後 CSI ドライバーへの移行が進み多くのプラットフォームで利用可能になることが期待できます。
+またこの記事のように EBS CSI ドライバーに Velero プラグイン自体が未対応というケースもあります。今後は CSI ドライバーへの移行が進み多くのプラットフォームで利用可能になることが期待できます。

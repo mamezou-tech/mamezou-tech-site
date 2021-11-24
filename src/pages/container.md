@@ -48,6 +48,9 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 4. トレーシング/APM <span style="color:red">Coming Soon!</span>
 5. ログ収集 <span style="color:red">Coming Soon!</span>
 
+#### バックアップ・リストア
+1. [Velero による Kubernetes クラスタのバックアップ・リストア](/containers/k8s/tutorial/ops/velero-backup)
+
 ---
 
 {% comment %}

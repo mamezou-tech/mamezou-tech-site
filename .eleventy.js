@@ -21,7 +21,6 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("./src/css");
   eleventyConfig.addPassthroughCopy("./src/fonts");
   eleventyConfig.addPassthroughCopy("./src/img");
-  eleventyConfig.addPassthroughCopy("./src/favicon.png");
 
   eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`);
   eleventyConfig.addShortcode("packageVersion", () => `v${packageVersion}`);
@@ -65,7 +64,6 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter('excerpt', (post) => {
     const content = post.replace(/(<([^>]+)>)/gi, '');
-    console.log(content)
     return content.substr(0, content.lastIndexOf('。', 200)) + '...';
   });
 
@@ -80,13 +78,22 @@ module.exports = function (eleventyConfig) {
       });
   });
 
-  eleventyConfig.addCollection('tagList', function (collection) {
+  eleventyConfig.addCollection('articles', (collection) => {
+    return collection.getAll().filter(item => {
+      if ('layout' in item.data) {
+        return item.data.layout === 'post';
+      }
+      return false;
+    })
+  });
+
+  eleventyConfig.addCollection('tagList', (collection) => {
     let tagSet = new Set();
-    collection.getAll().forEach(function (item) {
+    collection.getAll().forEach(item => {
       if ('tags' in item.data) {
         let tags = item.data.tags;
 
-        tags = tags.filter(function (item) {
+        tags = tags.filter(item => {
           switch (item) {
             case 'all':
             case 'nav':

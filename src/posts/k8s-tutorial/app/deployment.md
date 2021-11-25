@@ -1,6 +1,7 @@
 ---
 title: ステートレスアプリ(Deployment)
 author: noboru-kudo
+eleventyExcludeFromCollections: true
 ---
 ステートレスアプリを開発し、[Kubernetes]のDeploymentリソースを利用してデプロイするハンズオン。
 

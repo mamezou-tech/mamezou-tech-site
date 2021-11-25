@@ -1,6 +1,7 @@
 ---
 title: Container Storage(OpenEBS)
 author: noboru-kudo
+eleventyExcludeFromCollections: true
 ---
 [Kubernetes]上で稼働するアプリはコンテナ内に存在するため、ローカルファイルシステムにデータを保存しても、コンテナが消えると同時にデータも消失する。
 

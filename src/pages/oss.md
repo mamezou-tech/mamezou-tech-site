@@ -1,6 +1,6 @@
 ---
 title: "OSS"
-description: '豆蔵社員が開発するOSSの紹介'
+description: '豆蔵メンバーが開発しているOSSの紹介'
 ---
 
 ## CI/CD関連

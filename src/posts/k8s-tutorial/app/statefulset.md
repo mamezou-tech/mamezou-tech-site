@@ -1,6 +1,7 @@
 ---
 title: ステートフルアプリ(StatefulSet)
 author: noboru-kudo
+eleventyExcludeFromCollections: true
 ---
 アプリが状態を持っている場合に使用するStatefulSetリソースのハンズオン。
 

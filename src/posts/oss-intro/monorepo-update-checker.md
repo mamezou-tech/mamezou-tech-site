@@ -30,6 +30,7 @@ jobs:
             service1:test/service1,test/service1-option
             service2:test/service2
             service3:test/service3
+{% raw %}
       - name: serivce1 processing
       - if: ${{ fromJSON(steps.check.outputs.results).service1 }}
         run: echo execute processing of service1
@@ -39,8 +40,11 @@ jobs:
       - name: serivce3 processing
       - if: ${{ fromJSON(steps.check.outputs.results).service3 }}
         run: echo execute processing of service3
+{% endraw %}
 ```
 
-各プロジェクトの変更有無が `${{ fromJSON(steps.check.outputs.results).proj }}` の形式で取得できるので、その結果に従って GitHub Actions ワークフロー構文の if を用いてビルドやデプロイなどの変更に伴う処理をトリガーします。
+{% raw %}
+各プロジェクトの変更有無が `${{fromJSON(steps.check.outputs.results).proj }}` の形式で取得できるので、その結果に従って GitHub Actions ワークフロー構文の if を用いてビルドやデプロイなど変更に伴う処理をトリガーします。
+{% endraw %}
 
 詳細は [README](https://github.com/mamezou-tech/monorepo-update-checker/blob/main/README.md) を参照してください。

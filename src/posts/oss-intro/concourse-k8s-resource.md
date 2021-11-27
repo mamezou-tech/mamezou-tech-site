@@ -1,6 +1,7 @@
 ---
 title: "concourse-k8s-resource"
 description: '豆蔵社員が開発するOSS紹介 concourse-k8s-resource 編'
+date: 2021-11-26
 ---
 
 [concourse-k8s-resource](https://github.com/mamezou-tech/concourse-k8s-resource) は Concource CI で、Kubernetes クラスターにコンテナイメージをデプロイするための Concource カスタムリソースです。

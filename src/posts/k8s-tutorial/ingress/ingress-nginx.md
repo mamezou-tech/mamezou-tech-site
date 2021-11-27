@@ -1,6 +1,7 @@
 ---
 title: Ingress - NGINX Ingress Controller
 author: noboru-kudo
+date: 2021-10-10
 ---
 
 Kubernetesで提供されるL7 ロードバランサのIngressリソースを導入しましょう。

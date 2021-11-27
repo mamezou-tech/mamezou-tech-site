@@ -1,0 +1,6 @@
+---
+layout: page.njk
+---
+{% set postslist = collections.posts | head(-20) %}
+{% set postsTitle = "最近投稿されたブログ" %}
+{% include "posts-list.njk" %}

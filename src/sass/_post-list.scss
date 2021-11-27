@@ -25,13 +25,13 @@
 
 .post-list {
   list-style: none;
+  padding-inline-start: 0;
 }
 
 .post-list__item {
   display: flex;
   flex-direction: column;
-  padding-bottom: 3rem;
-  padding-top: 3rem;
+  padding: 0;
   border-top: 1px solid rgba(230, 230, 230, 1);
   &:last-child {
     border-bottom: 1px solid rgba(230, 230, 230, 1);
@@ -86,10 +86,11 @@
 
 .post-list__read-more {
   width: fit-content;
+  margin-top: 0;
+  margin-bottom: 1rem;
   font-size: 1rem;
-  text-transform: capitalize;
-  margin-top: 1rem;
   text-decoration: underline;
+  text-transform: capitalize;
   &:hover {
     text-decoration: underline;
   }

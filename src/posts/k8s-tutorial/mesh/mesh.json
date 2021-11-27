@@ -1,5 +1,5 @@
 {
-  "tags": "container,k8s,tutorial",
+  "tags": ["container","k8s","tutorial"],
   "layout": "post",
   "permalink": "/containers/k8s/tutorial/mesh/{{ page.fileSlug }}/"
 }

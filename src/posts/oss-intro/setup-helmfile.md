@@ -1,6 +1,7 @@
 ---
 title: "setup-helmfile"
 description: '豆蔵社員が開発するOSS紹介 setup-helmfile 編'
+date: 2021-11-26
 ---
 [setup-helmfile](https://github.com/mamezou-tech/setup-helmfile) は Github Actionsで [Helmfile](https://github.com/roboll/helmfile) を利用するための Action です。
 

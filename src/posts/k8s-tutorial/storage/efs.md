@@ -1,6 +1,7 @@
 ---
 title: ストレージ - AWS EFS
 author: noboru-kudo
+date: 2021-11-14
 ---
 
 [前回](/containers/k8s/tutorial/storage/ebs)はAWS EBSを使ってコンテナにストレージをマウントすることで、Podの再起動時にもデータを消失することなく継続して利用することができました。

@@ -1,6 +1,7 @@
 ---
 title: ストレージ - AWS EBS
 author: noboru-kudo
+date: 2021-11-07
 ---
 
 これまでAWS EKS上でk8sクラスタ環境の構築を行い、Ingress Controllerを導入することでインターネットからのリクエストを受け付けられるようにしました。

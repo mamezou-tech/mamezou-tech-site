@@ -1,6 +1,7 @@
 ---
 title: Ingress - HTTPS通信(Cert Manager)
 author: noboru-kudo
+date: 2021-10-28
 ---
 
 今回はIngressにTLS証明書をセットアップし、サンプルアプリに対してセキュアに通信できるようにしてみましょう。

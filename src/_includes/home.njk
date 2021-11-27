@@ -27,9 +27,10 @@ layout: base.njk
     padding-inline-start: 0;
   }
   .mameka {
+    padding-top: 3rem;
     width: 30%
   }
-  .article-area .post-list__item{
+  .article-area {
     padding: 0;
   }
 </style>
@@ -79,7 +80,7 @@ layout: base.njk
         <section class="post-list__wrapper recent-article">
           <h2 class="post-list__heading">最近の記事</h2>
           <ul class="post-list">
-            {% for post in collections.articles | head(-10) | reverse %}
+            {% for post in collections.articles | head(-20) | reverse %}
               <li class="post-list__item">
                 <div>
                   <div class="post-list__meta">
@@ -106,7 +107,7 @@ layout: base.njk
 
                 <p class="post-list__excerpt">{{ post.templateContent | excerpt | safe  }}</p>
 
-                <a class="post-list__read-more" href="{{ post.url }}">read article</a>
+                <a class="post-list__read-more" href="{{ post.url }}">記事を読む</a>
               </li>
             {% endfor %}
           </ul>

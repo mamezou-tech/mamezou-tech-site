@@ -1,6 +1,7 @@
 ---
 title: "sbgraph"
 description: '豆蔵社員が開発するOSS紹介 sbgraph 編'
+date: 2021-11-26
 ---
 
 [sbgraph](https://github.com/mamezou-tech/sbgraph) は [Scrapbox](https://scrapbox.io) のページ間リンクを可視化するためデータを出力する CLI です。

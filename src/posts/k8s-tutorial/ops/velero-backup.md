@@ -1,6 +1,7 @@
 ---
 title: Velero による Kubernetes クラスタのバックアップ・リストア
 author: masahiro-kondo
+date: 2021-11-24
 ---
 
 Velero は Kubernetes クラスタのオブジェクトをバックアップ・リストアするためのツールです。

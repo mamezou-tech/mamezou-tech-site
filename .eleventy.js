@@ -84,7 +84,7 @@ module.exports = function (eleventyConfig) {
         return item.data.layout === 'post';
       }
       return false;
-    })
+    }).sort((a, b) => a.date - b.date )
   });
 
   eleventyConfig.addCollection('tagList', (collection) => {

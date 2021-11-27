@@ -1,6 +1,7 @@
 ---
 title: "monorepo-update-checker"
 description: '豆蔵社員が開発するOSS紹介 monorepo-update-checker 編'
+date: 2021-11-26
 ---
 
 [monorepo-update-checker](https://github.com/mamezou-tech/monorepo-update-checker) は モノレポの変更有無を配下のプロジェクト（リポジトリ）ごとにチェックできる Action です。

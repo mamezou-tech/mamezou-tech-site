@@ -1,7 +1,7 @@
 ---
 title: クラスタ環境構築 - AWS EKS (eksctl)
 author: noboru-kudo
-date: 2021-09-15
+date: 2021-10-07
 ---
 
 AWSのKubernetesフルマネージドサービスのEKS(Elastic Kubernetes Service)でクラスタ環境を構築してみましょう。

@@ -1,6 +1,7 @@
 ---
 title: Kubernetes ネイティブなワークフローエンジン Argo Workflows
 author: masahiro-kondo
+date: 2021-10-14
 ---
 
 [Argo Workflows](https://argoproj.github.io/argo-workflows/) は Kubernetes で動作するワークフローエンジンです。コンテナイメージを利用してジョブを記述でき、Kubernetes 上でそのまま実行できます。ワークフローというと、業務プロセスを実行する BPM エンジンを連想される方も多いと思いますが、Argo Workflows は GitHub Actions などと同様、CI/CD などのワークフロー(ジョブ)を記述・実行できるエンジンです。Kubernetes で動作する機械学習の OSS スイートである [Kubeflow](https://www.kubeflow.org/) でも機械学習パイプラインを実行するためのエンジンとして採用されています。

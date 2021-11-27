@@ -25,6 +25,7 @@ URL(実験用): <https://rd-test.mamezou-tech.com/>
 ---
 title: (記事のタイトル)
 author: (あなたのお名前)
+date: (記事の作成日)
 ---
 ```
 

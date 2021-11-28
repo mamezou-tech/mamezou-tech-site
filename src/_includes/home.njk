@@ -17,7 +17,7 @@ layout: base.njk
     display: flex;
   }
   .column {
-    padding: 5px;
+    padding: 3px;
     margin: 0 10px;
   }
   .article-area {
@@ -33,6 +33,12 @@ layout: base.njk
   .article-area {
     padding: 0;
   }
+  .plus-mark {
+    margin: auto 0;
+  }
+  .plus-mark span {
+    font-size: 2rem
+  }
 </style>
 <header class="tdbc-hero">
   <div class="tdbc-container">
@@ -40,6 +46,9 @@ layout: base.njk
       <div class="row">
         <div class="column">
           <img src="/img/logo/mamezoulogo.png" />
+        </div>
+        <div class="column plus-mark">
+          <span>+</span>
         </div>
         <div class="column">
           <img src="/img/logo/mame-kun1.png" />

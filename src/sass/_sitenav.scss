@@ -2,7 +2,7 @@
 
 // stylelint-disable-next-line selector-max-id, selector-max-specificity
 #tdbc-siteid {
-  font-size: $tdbc-h3-font-size;
+  font-size: $tdbc-h4-font-size;
   text-decoration: none;
 }
 
@@ -15,6 +15,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    font-size: $tdbc-h4-font-size;
   }
 
   &__container {
@@ -41,6 +42,14 @@
     outline-color: transparent;
     outline-style: solid;
     box-shadow: 0 0 1px 2px tdbc-color("light");
+  }
+
+  img {
+    display: inline-block;
+    width: 2.5rem;
+    max-width: 100%;
+    margin: auto;
+    vertical-align: middle;
   }
 }
 // stylelint-enable

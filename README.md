@@ -2,7 +2,7 @@
 
 mamezou-tech公開サイトリソース。
 
-URL(実験用): <https://rd-test.mamezou-tech.com/>
+URL: <https://developer.mamezou-tech.com/>
 
 ## 記事投稿方法
 

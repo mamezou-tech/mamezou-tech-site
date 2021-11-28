@@ -162,3 +162,10 @@ $accent: #0074d9 !default;
     font-size: $text-lg;
   }
 }
+
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}

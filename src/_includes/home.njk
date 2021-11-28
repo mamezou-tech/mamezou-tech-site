@@ -13,22 +13,15 @@ layout: base.njk
     padding-top: 5vh;
     padding-bottom: 0;
   }
-  .row {
-    display: flex;
-  }
-  .column {
-    padding: 3px;
-    margin: 0 10px;
-  }
   .article-area {
-    width: 70%
+    width: 70%;
   }
   .post-list {
     padding-inline-start: 0;
   }
   .mameka {
     padding-top: 3rem;
-    width: 30%
+    width: 30%;
   }
   .article-area {
     padding: 0;
@@ -37,20 +30,25 @@ layout: base.njk
     margin: auto 0;
   }
   .plus-mark span {
-    font-size: 2rem
+    font-size: 2rem;
+  }
+  a.all-article-link {
+    font-size: 0.85rem;
+    margin-left: 1rem;
+    text-decoration: none;
   }
 </style>
 <header class="tdbc-hero">
   <div class="tdbc-container">
     <span class="logo">
-      <div class="row">
-        <div class="column">
-          <img src="/img/logo/mamezoulogo.png" />
+      <div class="tdbc-flex-row">
+        <div class="tdbc-flex-column">
+          <a target="_blank" href="https://www.mamezou.com/" rel="noopener noreferrer"><img src="/img/logo/mamezoulogo.png" /></a>
         </div>
-        <div class="column plus-mark">
+        <div class="tdbc-flex-column plus-mark">
           <span>+</span>
         </div>
-        <div class="column">
+        <div class="tdbc-flex-column">
           <img src="/img/logo/mame-kun1.png" />
         </div>
       </div>
@@ -74,20 +72,15 @@ layout: base.njk
       {%- endfor -%}
     </ul>
   </div>
-  <style>
-    #quickstart + ol li:first-child,
-    #quickstart + ol li:first-child p {
-      font-size: 1.5rem;
-    }
-  </style>
 
 {{ content | safe }}
+  <p style="font-size:1rem;margin:1rem;">本サイトは本家の豆蔵ホームページではありません。会社概要、製品紹介や採用情報等は<a style="text-decoration:underline" href="https://www.mamezou.com/">こちら</a>をご覧ください。</p>
 
-  <div class="row">
-    <div class="column article-area">
+  <div class="tdbc-flex-row">
+    <div class="tdbc-flex-column article-area">
       <article class="tdbc-mx-auto" style="margin-top: 3em">
         <section class="post-list__wrapper recent-article">
-          <h2 class="post-list__heading">最近の記事</h2>
+          <h2 class="post-list__heading">最近の記事<a class="all-article-link" href="/articles/">全ての記事の一覧</a></h2>
           <ul class="post-list">
             {% for post in collections.articles | head(-20) | reverse %}
               <li class="post-list__item">
@@ -123,7 +116,7 @@ layout: base.njk
         </section>
       </article>
     </div>
-    <div class="column mameka">
+    <div class="tdbc-flex-column mameka">
       <img src="/img/logo/mameka.png" />
     </div>
   </div>

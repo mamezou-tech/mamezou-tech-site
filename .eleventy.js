@@ -97,8 +97,8 @@ module.exports = function (eleventyConfig) {
           switch (item) {
             case 'all':
             case 'nav':
-            case 'post':
-            case 'posts':
+            case 'pages':
+            case 'no-page':
               return false;
           }
 

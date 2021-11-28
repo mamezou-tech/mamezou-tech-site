@@ -1,6 +1,7 @@
 ---
 title: "OSS"
-description: '豆蔵メンバーが開発しているOSSの紹介'
+description: "豆蔵メンバーが開発しているOSSの紹介"
+titleImage: "/img/logo/mame-kun4.png"
 ---
 
 ## CI/CD

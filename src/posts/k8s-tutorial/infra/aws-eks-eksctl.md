@@ -9,8 +9,8 @@ AWSのKubernetesフルマネージドサービスのEKS(Elastic Kubernetes Servi
 今回クラスタの構築にはAWS公式のCLIツールの[eksctl](https://eksctl.io/)を利用します。
 
 eksctlはWeaveworks社で開発されたEKSクラスタの構築・運用を容易にしてくれるCLIツールです。
-このツールはAWSインフラ部分を抽象化してくれるのでAWSのことをよく知らない方でもEKS環境の構築が簡単になりました（実際の商用で利用する環境であればAWSの知識は必要ですが）。  
-eksctlはIaCツールとしてCloudFormationを利用しており、クラスタの運用はスタックを作成・更新していくスタイルになります。
+このツールはAWSインフラ部分を抽象化してくれるので、AWSのことをよく知らない方でもEKS環境の構築が簡単になりました（実際の商用で利用する環境であればAWSの知識は必要ですが）。  
+eksctl内部ではIaCツールとしてCloudFormationを利用しており、CloudFormationスタックを作成・更新していくスタイルになります。
 
 ## 事前準備
 
@@ -222,7 +222,7 @@ eksctl create iamidentitymapping --cluster mz-k8s \
 
 `arn`オプションには作成したIAMユーザーのARNを指定しましょう（マネジメントコンソールから参照できます）。
 `username`は任意ですがAWS側とマッピングしやすくするためにIAMユーザー名に合わせるのが無難でしょう。スイッチロールで他のアカウントのIAMユーザを指定する場合はそのRoleのARNを指定します。
-`group`にはk8sのGroup名を指定します。今回は`system:masters`（管理者権限）を割り当てていますが、実運用では必要最低限のアクセス許可を持ったClusterRole/RoleとClusterRoleBinding/RoleBindingを作成し、割り当てるようにしましょう([k8sのRBACガイド](https://kubernetes.io/docs/reference/access-authn-authz/rbac/))。
+`group`にはk8sのGroup名を指定します。今回は`system:masters`（管理者権限）を割り当てていますが、実運用では必要最低限のアクセス許可を持った専用のClusterRole/RoleとClusterRoleBinding/RoleBindingを作成して割り当てるようにしましょう([k8sのRBACガイド](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)参照)。
 例えば、以下のような参照用の権限を作成した場合は`system:masters`ではなく`readonly`を指定します。
 
 ```yaml

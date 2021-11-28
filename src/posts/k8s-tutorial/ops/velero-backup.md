@@ -38,7 +38,7 @@ Kubernetes のオブジェクトは Key-Value store である etcd に保存さ�
 
 Velero はサーバー側のプログラムだけインストールして、kubectl で manifest をデプロイすることでも使用できますが、Velero CLI をインストールすると操作が楽です。各 OS へのインストールは公式サイトの手順に従ってください。
 
-https://velero.io/docs/v1.7/basic-install/#install-the-cli
+<https://velero.io/docs/v1.7/basic-install/#install-the-cli>
 
 ## EKS クラスタへの Velero インストール
 

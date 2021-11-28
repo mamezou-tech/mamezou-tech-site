@@ -66,7 +66,7 @@ ul.tdbc-column-container {
 
 .tdbc-hero {
   display: grid;
-  min-height: 30vh;
+  min-height: 10vh;
   place-content: center;
   padding-top: 5vh;
   padding-bottom: 5vh;
@@ -105,4 +105,19 @@ table {
 
 table, th, td {
   border: 1px solid grey;
+}
+
+img.page-title-icon {
+  display: inline-block;
+  width: 2.5rem;
+  margin-left: 0.5rem;
+}
+
+.tdbc-flex-row {
+  display: flex;
+}
+
+.tdbc-flex-column {
+  margin: 0 10px;
+  padding: 3px;
 }

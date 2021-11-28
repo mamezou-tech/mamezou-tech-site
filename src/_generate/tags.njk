@@ -7,14 +7,14 @@ pagination:
     - all
     - nav
     - post
-    - posts
+    - pages
+    - no-page
     - tagList
   addAllPagesToCollections: true
 layout: page.njk
 permalink: /tags/{{ tag }}/
 eleventyComputed:
-  title: "{{ tag | title }}"
-  description: "“{{ tag }}”タグの記事"
+  title: "“{{ tag }}”タグの記事"
 ---
 
 {% set postslist = collections[tag] %}

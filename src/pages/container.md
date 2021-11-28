@@ -1,9 +1,14 @@
 ---
 title: "コンテナ"
 description: Kubernetesを含むコンテナエコシステムの環境構築や運用ノウハウ
+layout: page.njk
+titleImage: "/img/logo/mameka5.png"
 ---
 
 ## Kubernetesチュートリアル
+コンテナ界隈でデファクトスタンダードとなったKubernetesはもはやクラウド環境のみならずオンプレ環境でも利用が進んでいます。
+アプリケーション開発する上で、アプリ内のことだけでなくコンテナ基盤について理解することは、拡張性や耐障害性といったコンテナメリットを活かす上で非常に重要な要素であると考えています。
+ここではそんなKubernetesの環境構築から開発・運用までで必要な作業をハンズオン形式で実施することで初心者レベルからの脱却を目指します。
 
 ### 環境構築編
 #### クラスタ環境構築
@@ -20,20 +25,14 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 1. [AWS EBS](/containers/k8s/tutorial/storage/ebs)
 2. [AWS EFS](/containers/k8s/tutorial/storage/efs)
 
----
-
 ### アプリケーション開発編
 1. 事前準備<span style="color:red">Coming Soon!</span>
 2. Webアプリケーション開発 <span style="color:red">Coming Soon!</span>
 3. バッチアプリケーション開発 <span style="color:red">Coming Soon!</span>
 
----
-
 ### 継続的デリバリ
 1. Flux <span style="color:red">Coming Soon!</span>
 2. ArgoCD <span style="color:red">Coming Soon!</span>
-
----
 
 ### クラスタ運用編
 
@@ -51,8 +50,6 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 #### バックアップ・リストア
 1. [Velero による Kubernetes クラスタのバックアップ・リストア](/containers/k8s/tutorial/ops/velero-backup)
 
----
-
 {% comment %}
 ### サービスメッシュ実践
 #### Istio
@@ -64,8 +61,6 @@ description: Kubernetesを含むコンテナエコシステムの環境構築や
 
 #### AWS App Mesh
 1. T.B.D
-
----
 
 {% endcomment %}
 

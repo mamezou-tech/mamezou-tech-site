@@ -8,5 +8,5 @@ title: 全ての記事
   {% include "tags-list.njk" %}
 </div>
 
-{% set postslist = collections.articles %}
+{% set postslist = collections.articles | reverse %}
 {% include "posts-list.njk" %}

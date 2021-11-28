@@ -1,6 +1,20 @@
 ---
+pagination:
+  data: collections.posts
+  size: 2
+  alias: blog
+  reverse: true
 layout: page.njk
+permalink: "/{{ page.fileSlug }}/{% if pagination.pageNumber > 0 %}{{ pagination.pageNumber }}/{% endif %}"
 ---
-{% set postslist = collections.posts | head(-20) %}
+<nav class="tdbc-pagination" aria-labelledby="tdbc-pagination">
+  {% if page.url != pagination.href.first %}<a href="{{ pagination.href.first }}">&laquo;</a>{% else %}<span>&laquo;</span>{% endif %}
+  {%- for pageEntry in pagination.pages %}
+    <a href="{{ pagination.hrefs[ loop.index0 ] }}"{% if page.url == pagination.hrefs[ loop.index0 ] %} aria-current="page"{% endif %}>{{ loop.index }}</a>
+  {%- endfor %}
+  {% if page.url != pagination.href.last %}<a href="{{ pagination.href.last }}">&raquo;</a>{% else %}<span>&raquo;</span>{% endif %}
+</nav>
+
+{% set postslist = blog %}
 {% set postsTitle = "最近投稿されたブログ" %}
 {% include "posts-list.njk" %}

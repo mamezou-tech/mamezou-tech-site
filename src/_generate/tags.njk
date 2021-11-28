@@ -17,5 +17,5 @@ eleventyComputed:
   title: "“{{ tag }}”タグの記事"
 ---
 
-{% set postslist = collections[tag] %}
+{% set postslist = collections[tag] | reverse %}
 {% include "posts-list.njk" %}

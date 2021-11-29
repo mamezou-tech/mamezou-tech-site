@@ -15,7 +15,7 @@
     "build": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy social-images",
     "lint": "stylelint 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
     "lint:fix": "stylelint --fix 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
-    "social-images": "eleventy-social-images --outputDir public --dataFile social/pages.json --templatePath social/template.html --theme pop",
+    "social-images": "eleventy-social-images --outputDir public --dataFile social/pages.json --templatePath social/template.html",
     "bump": "npm --no-git-tag-version version"
   },
   "keywords": [],

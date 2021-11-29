@@ -12,10 +12,11 @@
     "build:eleventy": "eleventy",
     "postbuild": "postcss public/css/*.css -u autoprefixer cssnano -r",
     "start": "cross-env ELEVENTY_ENV=dev npm-run-all build:sass --parallel watch:*",
-    "build": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy social-images",
+    "build:netlify": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy",
+    "build:local": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy social-images",
     "lint": "stylelint 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
     "lint:fix": "stylelint --fix 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
-    "social-images": "eleventy-social-images --outputDir public --dataFile social/pages.json --templatePath social/template.html --stylesPath public/css/style.css",
+    "social-images": "eleventy-social-images --outputDir src --dataFile social/pages.json --templatePath social/template.html",
     "bump": "npm --no-git-tag-version version"
   },
   "keywords": [],

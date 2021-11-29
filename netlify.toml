@@ -9,8 +9,8 @@
   publish = "public"
 
   # Default build command.
-  command = "AWS_LAMBDA_FUNCTION_NAME=trickpuppeteer npm run build"
-#  command = "npm run build"
+#  command = "AWS_LAMBDA_FUNCTION_NAME=trickpuppeteer npm run build"
+  command = "npm run build:netlify"
 
   [[redirects]]
     from = "/feed/"

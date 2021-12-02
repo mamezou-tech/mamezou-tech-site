@@ -163,9 +163,8 @@ $social-min-height: 30px !default;
   .tweet {
   }
   .fb-recommend {
-    margin-top: -3px;
     .fb-like {
-      margin: 0 -25px;
+      margin: 0 -20px;
       padding-top: 3px;
     }
   }
@@ -173,5 +172,11 @@ $social-min-height: 30px !default;
     span {
       vertical-align: top !important;
     }
+  }
+}
+
+@media (min-width: 80ch) {
+  .tdbc-social-plugins .fb-recommend {
+    margin-top: -3px;
   }
 }

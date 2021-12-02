@@ -19,6 +19,10 @@ layout: base.njk
         <span> Author: </span>
         <span>{{ author | safe }}</span>
       {% endif %}
+
+      <div style="float: right">
+        {% include 'social-plugins.njk' %}
+      </div>
     </header>
 
     <main class="post__content">

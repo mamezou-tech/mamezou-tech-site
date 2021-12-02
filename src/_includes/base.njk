@@ -51,6 +51,10 @@
       name="og:description"
       content="{{pageDescription}}"
     />
+    <meta
+      name="og:url"
+      content="{{ meta.url }}{{ page.url }}"
+    />
     <meta property="og:image" content="{{pageSocialImg}}" />
     <meta name="twitter:image" content="{{pageSocialImg}}" />
 
@@ -60,10 +64,10 @@
       title="RSS Feed for {{ meta.siteName }}"
       href="/feed/"
     />
-  </head>
   <body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v12.0" nonce="8Wa5XpDX"></script>
     {{ content | safe }}
-
     <footer class="tdbc-background--secondary">
       <div class="tdbc-container tdbc-text-align-center">
         <div class="tdbc-row tdbc-ink--light tdbc-mx-auto">

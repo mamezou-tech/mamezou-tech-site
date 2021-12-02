@@ -391,13 +391,14 @@ spec:
             class: nginx
 ```
 
-上記はLet's EncryptをIssuerとして利用する設定になります。
+上記はLet's Encryptを認証局として利用する設定になります。
 `email`フィールドには自分のメールアドレスを設定してください。このアドレスがLet's Encryptに登録され、その後の証明書に関するLet's Encryptとのやりとりを行う形になります。
 `acme-client-letsencrypt`で指定するSecretリソースはLet's Encryptとやりとりするための秘密鍵が保存されます（事前に作成する必要はありません）。
 
-また、`solvers`フィールドのところに注目してください。Let's EncryptがサポートするACMEプロトコルでは証明書発行前にドメインの所有者検証が必要です(Challengeといいます)。
-この方法として実際にHTTP通信して検証するHTTP-01とDNSのTXTレコードで検証するDNS-01の2種類があります[^6]。
-今回は実際にLet's EncryptとHTTP通信をするHTTP-01を使って、ドメイン所有者が自分自身であることを証明する設定としています[^7]。
+また、`solvers`フィールドのところに注目してください。Let's EncryptがサポートするACMEプロトコルでは、証明書発行前にドメインの所有者が自分自身であることを証明する必要があります(Challengeといいます)。
+この方法として実際にHTTP通信して検証するHTTP-01と、DNSのTXTレコードで検証するDNS-01の2種類があります[^6]。
+今回はDNS関連の作業なしで検証可能なHTTP-01を使ってドメイン所有を検証しましょう。
+そのため、ここでは`http01`フィールドを追加して、HTTP検証時に利用するIngress ControllerのIngressClassを指定しています[^7]。
 
 [^6]: Challenge Typeの詳細は[こちら](https://letsencrypt.org/docs/challenge-types/)を参照してください。
 [^7]: DNS-01については[こちら](https://cert-manager.io/docs/configuration/acme/dns01/)を参照してください。
@@ -449,15 +450,14 @@ Events:                    <none>
 Statusの部分を見るとACMEアカウントとしてLet's Encryptにメールアドレスが登録されていることが確認できます。
 この時点では、Ingressリソースを作成していませんので証明書は発行されません。
 
-
 それでは実際に証明書を発行してみましょう。
-サンプルアプリについては自己署名のときに使用したものをそのまま使いますが、Ingressについては前回のものは削除しておきましょう。
+サンプルアプリについては自己署名のときに使用したものをそのまま使いますが、前回作成したIngressリソースについては削除しておきましょう。
 
 ```shell
 kubectl delete -f ingress-self-signing.yaml
 ```
 
-ではLet's Encryptに対応したIngressリソースのYAMLファイルを作成しましょう。ここでは`lets-encrypt-issuer.yaml`としました。
+では、Let's Encryptに対応したIngressリソースのYAMLファイル(ここでは`lets-encrypt-issuer.yaml`としました)を作成しましょう。
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -541,7 +541,7 @@ Eventsに注目すると、Cert Managerが`letsencrypt-cert`という証明書�
 [^8]: 初めてのドメインは場合は、external-dnsによって作成されたRoute53のDNSレコードが有効になるまで名前解決ができませんのでかなり待ちます。
 
 内部ではCert Managerがドメイン所有者の検証するために一時的なエンドポイントを作成し、Let's Encryptに対して、証明書の発行要求を行うという動きをします。
-k8sのイベントログを見るとこのようになっています。
+k8sのイベントログを見ると次のようになっています。
 
 ```shell
 kubectl get ev
@@ -567,7 +567,7 @@ kubectl get ev
 6m17s       Normal    Issuing             certificate/letsencrypt-cert                                   The certificate has been successfully issued
 ```
 
-このようにとCert Managerは証明書を発行するために、HTTP-01に対応するために専用のIngress/Pod作成(これらは一時的で成功すると削除されます)や、その後の証明書発行要求と証明書のSecretリソースへの保存といった、様々な処理を実施していることが分かります。
+このようにCert Managerは証明書を発行するために、HTTP-01に対応するために専用のIngress/Pod作成(これらは一時的で成功すると削除されます)や、その後の証明書発行要求と証明書のSecretリソースへの保存といった、様々な処理をユーザーの代わりに実施してくれていることが分かります。
 前回同様にCertificateリソースについても確認しましょう。
 
 ```shell
@@ -614,7 +614,7 @@ Events:
 ```
 
 こちらも自己署名同様に証明書の状態が確認できます。
-自分で署名した前回と違い、今回は認証局に対して証明書の発行要求をしています。こちらについてOrderリソースで確認できます。
+自分で署名した前回と違い、今回は認証局に対して証明書の発行要求をしています。これはOrderリソースで確認できます。
 
 ```shell
 kubectl get order
@@ -689,38 +689,6 @@ app2-b6dc558b5-sf54z: hello sample app!
 ```
 
 上記のように問題なくHTTPSで通信できているはずです。
-HTTPS接続の詳細も確認してみましょう。
-
-```shell
-curl -v https://k8s-tutorial.mamezou-tech.com/app1
-```
-
-```
-* successfully set certificate verify locations:
-*   CAfile: /etc/ssl/cert.pem
-  CApath: none
-* TLSv1.2 (OUT), TLS handshake, Client hello (1):
-* TLSv1.2 (IN), TLS handshake, Server hello (2):
-* TLSv1.2 (IN), TLS handshake, Certificate (11):
-* TLSv1.2 (IN), TLS handshake, Server key exchange (12):
-* TLSv1.2 (IN), TLS handshake, Server finished (14):
-* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
-* TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):
-* TLSv1.2 (OUT), TLS handshake, Finished (20):
-* TLSv1.2 (IN), TLS change cipher, Change cipher spec (1):
-* TLSv1.2 (IN), TLS handshake, Finished (20):
-* SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256
-* ALPN, server accepted to use h2
-* Server certificate:
-*  subject: CN=k8s-tutorial.mamezou-tech.com
-*  start date: Oct 28 05:03:12 2021 GMT
-*  expire date: Jan 26 05:03:11 2022 GMT
-*  subjectAltName: host "k8s-tutorial.mamezou-tech.com" matched cert's "k8s-tutorial.mamezou-tech.com"
-*  issuer: C=US; O=Let's Encrypt; CN=R3
-*  SSL certificate verify ok.
-```
-
-正常にLet's Encryptで発行された証明書の検証が実施されていることが分かります。
 
 ## クリーンアップ
 

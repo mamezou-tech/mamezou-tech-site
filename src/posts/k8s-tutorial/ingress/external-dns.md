@@ -239,7 +239,7 @@ helm upgrade external-dns bitnami/external-dns \
 ```
 
 - `--namespace`でexternal-dnsをインストールするのは事前に作成したnamespaceを指定
-- `provider`はRoute53を利用しますので`aws`を指定
+- `provider`はRoute53を利用するため`aws`を指定
 - `aws.region`は東京リージョン(ap-northeast-1)を指定。使っているリージョンが異なる場合は変更してください。
 - `aws.zoneType`は外部公開の`public`を指定
 - `serviceAccount`/`serviceAccount.name`は事前に作成したものを指定
@@ -488,7 +488,7 @@ spec:
 `external-dns.alpha.kubernetes.io/hostname`に、ルーティングルールの`host`で指定した`k8s-tutorial.mamezou-tech.com`を設定しています(複数の場合はカンマ区切り)。
 external-dnsはこれを検知してRoute53と同期します。
 
-NGINX Ingress Controllerを使用する場合は`ingressClassName`に`nginx`と指定してください。
+なお、NGINX Ingress Controllerを使用する場合は`ingressClassName`に`nginx`と指定してください。
 
 これをk8sに反映しましょう。
 

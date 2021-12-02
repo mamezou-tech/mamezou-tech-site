@@ -2,6 +2,8 @@
 title: Ingress - HTTPS通信(Cert Manager)
 author: noboru-kudo
 date: 2021-10-28
+prevPage: ./src/posts/k8s-tutorial/ingress/external-dns.md
+nextPage: ./src/posts/k8s-tutorial/storage/ebs.md
 ---
 
 今回はIngressにTLS証明書をセットアップし、サンプルアプリに対してセキュアに通信できるようにしてみましょう。

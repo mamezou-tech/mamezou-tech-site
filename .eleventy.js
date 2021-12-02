@@ -69,7 +69,7 @@ module.exports = function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter('pageTags', (tags) => {
-    const generalTags = ['all', 'nav', 'post', 'posts'];
+    const generalTags = ['all', 'nav', 'post'];
 
     return tags
       .toString()
@@ -79,13 +79,17 @@ module.exports = function (eleventyConfig) {
       });
   });
 
+  eleventyConfig.addFilter('inputPath', (pages, path) => {
+    return pages.find((page) => page.inputPath === path);
+  });
+
   eleventyConfig.addCollection('articles', (collection) => {
     return collection.getAll().filter(item => {
       if ('layout' in item.data) {
         return item.data.layout === 'post';
       }
       return false;
-    }).sort((a, b) => a.date - b.date )
+    }).sort((a, b) => a.date - b.date );
   });
 
   eleventyConfig.addCollection('tagList', (collection) => {

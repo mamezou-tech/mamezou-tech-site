@@ -2,6 +2,8 @@
 title: Ingress - カスタムドメイン管理(external-dns)
 author: noboru-kudo
 date: 2021-10-17
+prevPage: ./src/posts/k8s-tutorial/ingress/ingress-aws.md
+nextPage: ./src/posts/k8s-tutorial/ingress/https.md
 ---
 
 前回まではアプリケーションにアクセスする際にはIngressに登録したホスト名をHostヘッダを直接指定することでDNSで名前解決がされた体で確認していました。

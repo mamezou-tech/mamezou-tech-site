@@ -2,6 +2,8 @@
 title: クラスタ環境構築 - AWS EKS (Terraform)
 author: noboru-kudo
 date: 2021-10-09
+prevPage: ./src/posts/k8s-tutorial/infra/aws-eks-eksctl.md
+nextPage: ./src/posts/k8s-tutorial/ingress/ingress-nginx.md
 ---
 
 前回に引き続きAWSのKubernetesフルマネージドサービスのEKS(Elastic Kubernetes Service)でクラスタ環境を構築してみましょう。

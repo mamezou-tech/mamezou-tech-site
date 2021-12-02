@@ -10,7 +10,7 @@ date: 2021-10-28
 そこで課題となるのが、暗号化で利用する証明書の管理です。証明書の有効期限切れによる通信障害のニュースもよく耳にします。
 
 KubernetesのIngressは手動では証明書を作成・発行して登録することも可能ですが、前述の通り証明書の運用には課題があります。
-今回はTLS証明書の発行やローテートを自動でやってくれる[Cert Manager](https://github.com/jetstack/cert-manager)を使って実現しましょう。
+そこで、今回はTLS証明書の発行やローテートを自動でやってくれる[Cert Manager](https://github.com/jetstack/cert-manager)を使ってHTTPS通信の環境を構築しましょう。
 
 - 公式ドキュメント: <https://cert-manager.io/docs/>
 
@@ -676,7 +676,7 @@ tls.key:  1679 bytes
 証明書の公開鍵(tls.crt)や秘密鍵(tls.key)が格納されている様子が分かります。
 
 それでは、curlを使ってHTTPS通信でサンプルアプリにアクセスしてみましょう。
-今回は正規の証明書を使っているため、証明書の検証をスキップは不要です。
+今回は正規の証明書を使っているため、証明書の検証スキップ(`-k`オプション)は不要です。
 
 ```shell
 curl https://k8s-tutorial.mamezou-tech.com/app1

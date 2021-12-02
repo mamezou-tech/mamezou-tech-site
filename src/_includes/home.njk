@@ -37,6 +37,9 @@ layout: base.njk
     margin-left: 1rem;
     text-decoration: none;
   }
+  .home-social-plugins {
+    margin: auto;
+  }
 </style>
 <header class="tdbc-hero">
   <div class="tdbc-container">
@@ -57,6 +60,9 @@ layout: base.njk
     <h2 class="tdbc-lead tdbc-content-maxlength tdbc-ink--gray tdbc-mt-md tdbc-mx-auto">
       {{ meta.siteDescription }}
     </h2>
+    <div class="home-social-plugins">
+      {% include 'social-plugins.njk' %}
+    </div>
   </div>
 </header>
 <main class="tdbc-container">

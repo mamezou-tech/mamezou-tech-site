@@ -147,3 +147,31 @@ img.page-title-icon {
     font-size: 1.25rem;
   }
 }
+
+$social-min-height: 30px !default;
+
+.tdbc-social-plugins {
+  ul {
+    list-style-type: none;
+    margin: 0;
+    li {
+      float: left;
+      vertical-align: top;
+      min-height: $social-min-height;
+    }
+  }
+  .tweet {
+  }
+  .fb-recommend {
+    margin-top: -3px;
+    .fb-like {
+      margin: 0 -25px;
+      padding-top: 3px;
+    }
+  }
+  .fb-share-button {
+    span {
+      vertical-align: top !important;
+    }
+  }
+}

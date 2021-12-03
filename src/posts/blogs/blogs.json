@@ -1,5 +1,6 @@
 {
   "tags": ["posts"],
   "layout": "post",
-  "permalink": "/blogs/{{ page.fileSlug }}/"
+  "permalink": "/blogs/{{ page.fileSlug }}/",
+  "pageNavigationTag": "posts"
 }

@@ -2,6 +2,7 @@
 title: クラスタ環境構築 - AWS EKS (eksctl)
 author: noboru-kudo
 date: 2021-10-07
+nextPage: ./src/posts/k8s-tutorial/infra/aws-eks-terraform.md
 ---
 
 AWSのKubernetesフルマネージドサービスのEKS(Elastic Kubernetes Service)でクラスタ環境を構築してみましょう。
@@ -157,7 +158,7 @@ users:
 
 usersセクションを見ると`aws-iam-authenticator`コマンドを利用してIAM認証でEKSにアクセスするように構成されていることが分かります[^4]。
 
-[^4]: aws CLI v1では`aws-iam-authenticator`は不要になったのですが現時点ではeksctlの必須の依存ライブラリになっているようです。
+[^4]: aws CLI v1.16.156以降では`aws-iam-authenticator`は不要になったのですが現時点ではeksctlの必須の依存ライブラリになっているようです。
 
 クラスタ情報を見てみましょう。
 
@@ -392,7 +393,7 @@ eksctlユーザーのターミナルに戻って以下のコマンドで全て�
 eksctl delete cluster --name mz-k8s
 ```
 
-これでVPCやEKSクラスタに加えてServiceリソースのLoadBalancer作成に伴って作成されたELBも削除されます[^7]。
+これでVPCやEKSクラスタに加えて、ServiceリソースのLoadBalancer作成に伴って作成されたELBも削除されます[^7]。
 
 [^7]: 以前はk8s経由で作成したリソースは事前に削除しないと失敗しましたが最近のeksctlは自動で作成されたELB含めて削除してくれるようです。
 

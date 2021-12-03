@@ -38,24 +38,42 @@ layout: base.njk
       </div>
 
       <nav class="post__pagination">
-        {%- set nextPost = collections.posts | getNextCollectionItem(page) %}
-        {%- if nextPost %}
+        {%- if pageNavigationTag %}
 
-          <a href="{{ nextPost.url | url }}">
-            <span>←</span>
-            <span>{{ nextPost.data.title }}</span>
-          </a>
+          {%- set nextPost = collections[pageNavigationTag] | getNextCollectionItem(page) %}
+          {%- if nextPost %}
 
-        {% endif %}
+            <a href="{{ nextPost.url | url }}">
+              <span>←</span>
+              <span>{{ nextPost.data.title }}</span>
+            </a>
 
-        {%- set previousPost = collections.posts | getPreviousCollectionItem(page) %}
-        {%- if previousPost %}
+          {% endif %}
 
-          <a href="{{ previousPost.url | url }}">
-            <span>{{ previousPost.data.title }}</span>
-            <span>→</span>
-          </a>
+          {%- set previousPost = collections[pageNavigationTag] | getPreviousCollectionItem(page) %}
+          {%- if previousPost %}
 
+            <a href="{{ previousPost.url | url }}">
+              <span>{{ previousPost.data.title }}</span>
+              <span>→</span>
+            </a>
+
+          {% endif %}
+        {% else %}
+          {%- if prevPage %}
+            {%- set prevPostPage = collections.all | inputPath(prevPage) %}
+            <a href="{{ prevPostPage.url | url }}">
+              <span>←</span>
+              <span>{{ prevPostPage.data.title }}</span>
+            </a>
+          {% endif %}
+          {%- if nextPage %}
+            {%- set nextPostPage = collections.all | inputPath(nextPage) %}
+            <a href="{{ nextPostPage.url | url }}">
+              <span>{{ nextPostPage.data.title }}</span>
+              <span>→</span>
+            </a>
+          {% endif %}
         {% endif %}
       </nav>
     </aside>

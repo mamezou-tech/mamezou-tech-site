@@ -2,6 +2,8 @@
 title: Ingress - NGINX Ingress Controller
 author: noboru-kudo
 date: 2021-10-10
+prevPage: ./src/posts/k8s-tutorial/infra/aws-eks-terraform.md
+nextPage: ./src/posts/k8s-tutorial/ingress/ingress-aws.md
 ---
 
 Kubernetesで提供されるL7 ロードバランサのIngressリソースを導入しましょう。

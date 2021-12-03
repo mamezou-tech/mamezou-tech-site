@@ -219,25 +219,25 @@ EBSのときとは違い、EFS CSIドライバはControllerとノードそれぞ
 次に、Terraform内で利用するカスタムポリシーのJSONファイルをそれぞれ準備します。
 
 - `efs-controller-policy.json`
-  ```shell
-  curl -o efs-controller-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/docs/iam-policy-example.json
-  ```
+```shell
+curl -o efs-controller-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/docs/iam-policy-example.json
+```
 - `efs-node-policy.json`
-  ```json
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": [
-          "elasticfilesystem:DescribeMountTargets",
-          "ec2:DescribeAvailabilityZones"
-        ],
-        "Resource": "*"
-      }
-    ]
-  }
-  ```
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "elasticfilesystem:DescribeMountTargets",
+        "ec2:DescribeAvailabilityZones"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
 
 これをAWS/k8sクラスタ環境に適用します。
 ```shell

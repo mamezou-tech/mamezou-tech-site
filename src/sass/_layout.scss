@@ -185,3 +185,7 @@ $social-min-height: 30px !default;
   font-family: $tdbc-title-font-family;
   font-size: unquote("min(max(3rem, 8vw), 5rem)");
 }
+
+.tdbc-top-title {
+  font-family: $tdbc-title-font-family;
+}

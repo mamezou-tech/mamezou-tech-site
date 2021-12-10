@@ -1,6 +1,6 @@
 {
   "name": "mamezou-tech-pages",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "memzou-tech public pages",
   "main": "index.js",
   "scripts": {

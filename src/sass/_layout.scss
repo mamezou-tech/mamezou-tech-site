@@ -68,9 +68,10 @@ ul.tdbc-column-container {
   display: grid;
   min-height: 10vh;
   place-content: center;
-  padding-top: 5vh;
-  padding-bottom: 5vh;
+  padding-top: 3vh;
+  padding-bottom: 3vh;
   text-align: center;
+  background-color: #fff;
 }
 
 .tdbc-row {
@@ -109,7 +110,7 @@ table, th, td {
 
 img.page-title-icon {
   display: inline-block;
-  width: 2.5rem;
+  max-width: 50px;
   margin-left: 0.5rem;
 }
 

@@ -1,8 +1,10 @@
 <nav aria-labelledby="tdbc-siteid" class="tdbc-sitenav">
   <div class="tdbc-sitenav__container">
     <div>
-    <img src="/img/logo/mame-kun2.png" />
-    <a id="tdbc-siteid" href="/">{{ meta.siteName }}</a>
+    <a id="tdbc-siteid" href="/">
+      <img src="/img/logo/mz-tech-logo-icon.png" />
+      &nbsp;|&nbsp;{{ meta.siteName }}
+    </a>
     </div>
     <ul class="tdbc-sitenav__navlist tdbc-list-unstyled">
       {%- for page in collections.pages -%}

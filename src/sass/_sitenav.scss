@@ -2,6 +2,7 @@
 
 // stylelint-disable-next-line selector-max-id, selector-max-specificity
 #tdbc-siteid {
+  margin-left: 0.2rem;
   font-size: $tdbc-h4-font-size;
   text-decoration: none;
 }
@@ -45,7 +46,6 @@
 
   img {
     display: inline-block;
-    width: 2.5rem;
     max-width: 100%;
     margin: auto;
     vertical-align: middle;

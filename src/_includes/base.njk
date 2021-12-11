@@ -54,8 +54,13 @@
       name="og:url"
       content="{{ meta.url }}{{ page.url }}"
     />
+    {% if page.fileSlug %}
     <meta property="og:image" content="{{pageSocialImg}}" />
     <meta name="twitter:image" content="{{pageSocialImg}}" />
+    {% else %}
+    <meta property="og:image" content="{{meta.url}}/img/ogp/mamezou-tech-ogp-main.png" />
+    <meta name="twitter:image" content="{{meta.url}}/img/ogp/mamezou-tech-ogp-main.png" />
+    {% endif %}
 
     <link
       rel="alternate"

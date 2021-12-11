@@ -16,7 +16,7 @@
     "build:local": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy social-images",
     "lint": "stylelint 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
     "lint:fix": "stylelint --fix 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
-    "social-images": "eleventy-social-images --outputDir src --dataFile social/pages.json --templatePath social/template.html",
+    "social-images": "eleventy-social-images --outputDir src --dataFile social/pages.json --templatePath social/template.html --stylesPath ogp-style.css --width 1200 --height 630",
     "bump": "npm --no-git-tag-version version"
   },
   "keywords": [],
@@ -26,7 +26,7 @@
     "@11ty/eleventy": "^0.12.1",
     "@11ty/eleventy-plugin-rss": "^1.1.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^3.1.3",
-    "@11tyrocks/eleventy-plugin-social-images": "^0.1.3",
+    "@11tyrocks/eleventy-plugin-social-images": "^0.4.0",
     "autoprefixer": "^9.8.8",
     "cross-env": "^7.0.3",
     "cssnano": "^4.1.11",

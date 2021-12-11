@@ -2,7 +2,7 @@
 title: "コンテナ"
 description: Kubernetesを含むコンテナエコシステムの環境構築や運用ノウハウ
 layout: page.njk
-titleImage: "/img/logo/mameka5.png"
+titleImage: "/img/logo/mameka5_50.png"
 ---
 
 ## Kubernetesチュートリアル

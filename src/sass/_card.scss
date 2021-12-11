@@ -9,6 +9,7 @@
 
   &__title {
     margin-bottom: 1rem;
+    font-family: $tdbc-title-font-family;
     font-size: $tdbc-h4-font-size;
     line-height: 1.15;
     text-decoration: none;
@@ -16,6 +17,7 @@
 
   /* stylelint-disable selector-max-type, selector-no-qualifying-type */
   a.tdbc-card__title {
+    color: #730099;
     &::before {
       position: absolute;
       top: 0;
@@ -31,7 +33,7 @@
       outline: none;
 
       &::before {
-        box-shadow: 0 0 0 3px tdbc-color("primary");
+        box-shadow: 0 0 0 3px #90c;
       }
     }
   }
@@ -65,7 +67,7 @@
   }
 
   &:hover a.tdbc-card__title::before {
-    box-shadow: 0 0 0 3px tdbc-color("primary");
+    box-shadow: 0 0 0 3px #730099;
   }
 
   img:first-child {

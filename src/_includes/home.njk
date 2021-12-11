@@ -5,8 +5,8 @@ layout: base.njk
 
 <style>
   .logo {
-    width: 20vmax;
-    height: 10vmax;
+    max-width: 20vmax;
+    max-height: 5vmax;
     margin: 0 auto 2rem;
   }
   .tdbc-hero {
@@ -43,23 +43,15 @@ layout: base.njk
 </style>
 <header class="tdbc-hero">
   <div class="tdbc-container">
-    <span class="logo">
-      <div class="tdbc-flex-row">
-        <div class="tdbc-flex-column">
-          <a target="_blank" href="https://www.mamezou.com/" rel="noopener noreferrer"><img src="/img/logo/mamezoulogo.png" /></a>
-        </div>
-        <div class="tdbc-flex-column plus-mark">
-          <span>+</span>
-        </div>
-        <div class="tdbc-flex-column">
-          <img src="/img/logo/mame-kun1.png" />
-        </div>
-      </div>
-    </span>
-    <h1 class="tdbc-ink--primary tdbc-mb-none">{{ meta.siteName }}(Beta)</h1>
+    <div class="logo">
+      <img src="/img/logo/mz-tech-logo-small.png" />
+    </div>
+    <div>
+    <h1 class="tdbc-ink--mz tdbc-mb-none tdbc-top-title">{{ meta.siteName }}</h1>
     <h2 class="tdbc-lead tdbc-content-maxlength tdbc-ink--gray tdbc-mt-md tdbc-mx-auto">
       {{ meta.siteDescription }}
     </h2>
+    </div>
     <div class="home-social-plugins">
       {% include 'social-plugins.njk' %}
     </div>
@@ -123,7 +115,7 @@ layout: base.njk
       </article>
     </div>
     <div class="tdbc-flex-column mameka">
-      <img src="/img/logo/mameka.png" />
+      <img src="/img/logo/mameka_280.png" />
     </div>
   </div>
 </main>

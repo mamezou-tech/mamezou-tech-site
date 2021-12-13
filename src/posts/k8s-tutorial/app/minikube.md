@@ -9,7 +9,7 @@ date: 2021-12-19
 チームでKubernetesで動作するアプリケーションを開発する場合に、どうやって各開発者がコンテナ環境で動作するアプリケーションを実装・テストすればよいでしょうか？
 各個人にクラウド上にクラスタ環境を準備するのが理想的ですが、コスト的に難しいというのが一般的かと思います。
 そのような場合は、コンテナ以前の開発ように各ローカルマシンでアプリケーションプロセスを起動して実装や動作確認を行い、実際のクラスタ環境での確認は結合試験等で実施することになります。
-これでもいいのですが[^1]、クイックフィードバックが得られるローカル環境で、コンテナ内のアプリの振る舞いやKubernetesのリソース(DeploymentやService等)の定義を確認できる方が圧倒的に効率的です。
+これでもいいのですが[^1]、クイックフィードバックが得られるローカル環境で、コンテナ内のアプリの振る舞いやKubernetesのリソース(DeploymentやService等)の定義を確認できる方が断然効率的です。
 
 [^1]: ローカルマシンのスペックや企業別のセキュリティポリシー等、様々な制約により実際このような開発スタイルとなることも多いことと思います。
 
@@ -68,6 +68,14 @@ minikube version
 
 minikubeのバージョンが出力されていればインストール完了です。ここでは現時点で最新の`1.24.0`をセットアップしました。
 
+また、今回はDocker Desktopは使用しませんが、コンテナのビルド・ランタイムエンジンとしてDockerを使用しますので、Docker単体は別途インストールしてください。
+
+```shell
+brew install docker
+```
+
+Windowsの場合は、Docker DesktopではなくDocker単体でインストールできませんので、WSLでの利用を検討してください。
+
 ## minikube起動
 
 minikubeを起動する前にminikubeの設定を変更しておきましょう。
@@ -79,43 +87,30 @@ minikube config set driver hyperkit
 minikube config set cpus 4
 # minikubeに割り当てるメモリ。デフォルトは2G。マシンスペックに応じて変更してください
 minikube config set memory 8Gi
-# コンテナランタイム
-minikube config set container-runtime containerd
 ```
 
 後は起動するだけです。以下のコマンドを実行するだけで起動することができます。
-HyperKit以外のドライバーの場合は`--driver`オプションの設定値を変更してください。
 
 ```shell
 minikube start
 ```
 ```
 😄  minikube v1.24.0 on Darwin 12.0.1
+    ▪ MINIKUBE_ACTIVE_PODMAN=minikube
 ✨  Using the hyperkit driver based on user configuration
-💾  Downloading driver docker-machine-driver-hyperkit:
-    > docker-machine-driver-hyper...: 65 B / 65 B [----------] 100.00% ? p/s 0s
-    > docker-machine-driver-hyper...: 8.35 MiB / 8.35 MiB  100.00% 8.12 MiB p/s
-🔑  The 'hyperkit' driver requires elevated permissions. The following commands will be executed:
-
-💿  Downloading VM boot image ...
-    > minikube-v1.24.0.iso.sha256: 65 B / 65 B [-------------] 100.00% ? p/s 0s
-    > minikube-v1.24.0.iso: 225.58 MiB / 225.58 MiB  100.00% 71.41 MiB p/s 3.4s
 👍  Starting control plane node minikube in cluster minikube
-💾  Downloading Kubernetes v1.22.3 preload ...
-    > preloaded-images-k8s-v13-v1...: 919.22 MiB / 919.22 MiB  100.00% 57.01 Mi
 🔥  Creating hyperkit VM (CPUs=4, Memory=8192MB, Disk=20000MB) ...
-📦  Preparing Kubernetes v1.22.3 on containerd 1.4.9 ...
+🐳  Preparing Kubernetes v1.22.3 on Docker 20.10.8 ...
     ▪ Generating certificates and keys ...
     ▪ Booting up control plane ...
     ▪ Configuring RBAC rules ...
-🔗  Configuring bridge CNI (Container Networking Interface) ...
 🔎  Verifying Kubernetes components...
     ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
 🌟  Enabled addons: storage-provisioner, default-storageclass
 🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 ```
 
-minikubeがダウンロードされ、実行されている様子が分かります。
+minikubeが実行されている様子が分かります。
 このときkubectlの認証情報(kubeconfig)も自動で設定されます(`minikube`)ので、このまますぐに使い始めることができます。
 
 ```shell
@@ -130,6 +125,10 @@ CoreDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 
 それではminikubeで起動したKubernetesにサンプルアプリをデプロイしてみましょう。
 ここではDockerHub等のパブリックリポジトリのイメージではなく、実際の作業を想定しカスタムのコンテナイメージをデプロイします。
+
+```shell
+eval $(minikube docker-env)
+```
 
 ```dockerfile
 

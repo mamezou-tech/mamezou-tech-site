@@ -126,7 +126,7 @@ CoreDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 それではminikubeで起動したKubernetesにサンプルアプリをデプロイしてみましょう。
 以前のようにパブリックリポジトリのイメージではなく、実際の開発イメージを掴むためにソースコードからビルドしたコンテナイメージをデプロイするフローで実施します。
 
-今回は動作確認用にアプリケーションはGo言語のREST APIアプリを作成します。任意のディレクトリを作成し、`sample-app.go`というファイルを作成し以下を記述します。
+今回は動作確認用にGo言語のREST APIアプリを作成します。任意のディレクトリに、`main.go`というファイルを作成し、以下を記述します。
 
 ```go
 package main
@@ -144,15 +144,78 @@ func main() {
 }
 ```
 
-リクエストを受けると、`Hello minikube app!!!`というメッセージを返すだけのアプリです。
-次にコンテナのビルドするためのDockerfileを記述します。ソースコードと同じディレクトリに`Dockerfile`というファイルを作成し、以下を記述します。
+8000番ポートでHTTPリクエストを受けると、`Hello minikube app!!!`というメッセージを返すだけのアプリです。
+次にコンテナのビルドするためのDockerfileを記述します。
+ソースコードと同じディレクトリに`Dockerfile`というファイルを作成し以下を記述します。
 
 ```dockerfile
+FROM golang:1.16 as builder
+WORKDIR /src
+COPY main.go /src
+RUN CGO_ENABLED=0 GOOS=linux go build -o sample-app main.go
 
+FROM scratch
+COPY --from=builder /src/sample-app /sample-app
+CMD ["/sample-app"]
 ```
+
+前半でGo言語のコンテナ(`golang:1.16`)でソースファイルをビルドして実行可能ファイル(`sample-app`)を作成し、後半部分でランタイム環境にビルドした実行可能ファイルを配置しています。
+このままコンテナイメージをビルドしてもローカル環境に作成されるだけです。minikubeの仮想環境でビルドするには以下のコマンドを実行します。
 
 ```shell
 eval $(minikube docker-env)
+```
+
+これでdockerコマンドがminikubeの仮想環境で実行されるようになります。
+それではコンテナイメージを作成しましょう。ソースコードとDockerfileが配置されているディレクトリで以下を実行します。
+
+```shell
+docker build -t sample-app .
+```
+```
+Sending build context to Docker daemon  6.068MB
+Step 1/7 : FROM golang:1.16 as builder
+1.16: Pulling from library/golang
+5e0b432e8ba9: Pull complete 
+a84cfd68b5ce: Pull complete 
+e8b8f2315954: Pull complete 
+0598fa43a7e7: Pull complete 
+ae9442ff4ff8: Pull complete 
+dd56cb6d5926: Pull complete 
+0b5f424b4861: Pull complete 
+Digest: sha256:16b78b82eb0ee19c15fdafd98c94f44e307a068933a505ea9c9a9be1fa99f987
+Status: Downloaded newer image for golang:1.16
+ ---> 9a2e805e6c23
+Step 2/7 : WORKDIR /src
+ ---> Running in fdb77c105d4c
+Removing intermediate container fdb77c105d4c
+ ---> 73733132f3c4
+Step 3/7 : COPY main.go /src
+ ---> c7d8e66b8024
+Step 4/7 : RUN CGO_ENABLED=0 GOOS=linux go build -o sample-app main.go
+ ---> Running in 5d2d4950f2f5
+Removing intermediate container 5d2d4950f2f5
+ ---> cc8a6412f24d
+Step 5/7 : FROM scratch
+ ---> 
+Step 6/7 : COPY --from=builder /src/sample-app /sample-app
+ ---> c086559b444f
+Step 7/7 : CMD ["/sample-app"]
+ ---> Running in a53b8171b3a0
+Removing intermediate container a53b8171b3a0
+ ---> 6d6438c79960
+Successfully built 6d6438c79960
+Successfully tagged sample-app:latest
+```
+
+dockerによりコンテナイメージがビルドされていることが確認できます。
+以下のコマンドで実際に作成されたイメージを確認することができます。
+
+```shell
+docker images | grep sample-app
+```
+```
+sample-app                                latest    6d6438c79960   About a minute ago   6.12MB
 ```
 
 ## クリーンアップ

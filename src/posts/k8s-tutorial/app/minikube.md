@@ -124,14 +124,35 @@ CoreDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 ## 動作確認
 
 それではminikubeで起動したKubernetesにサンプルアプリをデプロイしてみましょう。
-ここではDockerHub等のパブリックリポジトリのイメージではなく、実際の作業を想定しカスタムのコンテナイメージをデプロイします。
+以前のようにパブリックリポジトリのイメージではなく、実際の開発イメージを掴むためにソースコードからビルドしたコンテナイメージをデプロイするフローで実施します。
 
-```shell
-eval $(minikube docker-env)
+今回は動作確認用にアプリケーションはGo言語のREST APIアプリを作成します。任意のディレクトリを作成し、`sample-app.go`というファイルを作成し以下を記述します。
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func main() {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello minikube app!!!")
+	})
+	http.ListenAndServe(":8000", nil)
+}
 ```
+
+リクエストを受けると、`Hello minikube app!!!`というメッセージを返すだけのアプリです。
+次にコンテナのビルドするためのDockerfileを記述します。ソースコードと同じディレクトリに`Dockerfile`というファイルを作成し、以下を記述します。
 
 ```dockerfile
 
+```
+
+```shell
+eval $(minikube docker-env)
 ```
 
 ## クリーンアップ

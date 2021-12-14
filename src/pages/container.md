@@ -27,7 +27,7 @@ titleImage: "/img/logo/mameka5_50.png"
 
 ### アプリケーション開発編
 #### ローカル開発環境準備
-1. [Kubernetes(minikube)](/containers/k8s/tutorial/app/minikube)
+1. [実行環境(minikube)](/containers/k8s/tutorial/app/minikube)
 2. [自動化ツール(Skaffold)](/containers/k8s/tutorial/app/skaffold)
 3. [ローカルAWS(localstack)](/containers/k8s/tutorial/app/loalstack)
 

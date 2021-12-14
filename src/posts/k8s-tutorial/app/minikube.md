@@ -1,7 +1,8 @@
 ---
-title: ローカル開発環境準備 - Kubernetes(minikube)
+title: ローカル開発環境準備 - 実行環境(minikube)
 author: noboru-kudo
 date: 2021-12-19
+prevPage: ./src/posts/k8s-tutorial/storage/efs.md
 ---
 
 それではここからはアプリケーションの開発編に入っていきましょう。
@@ -68,13 +69,15 @@ minikube version
 
 minikubeのバージョンが出力されていればインストール完了です。ここでは現時点で最新の`1.24.0`をセットアップしました。
 
-また、今回はDocker Desktopは使用しませんが、コンテナのビルド・ランタイムエンジンとしてDockerを使用しますので、Docker単体は別途インストールしてください。
+また、今回はDocker Desktopは使用しませんが、コンテナのビルド・ランタイムエンジンとしてDockerを使用しますので、Docker CLIは別途インストールしてください[^3]。
+
+[^3]: 未検証ですが、Docker CLIと互換性がある[Podman](https://podman.io/)はminikubeにも対応しています(この場合はランタイムエンジンはcri-oを選択)。
 
 ```shell
 brew install docker
 ```
 
-Windowsの場合は、Docker DesktopではなくDocker単体でインストールできませんので、WSLでの利用を検討してください。
+Windowsの場合は、Docker DesktopではなくDocker CLI単体でインストールできませんので、WSLでの利用を検討してください。
 
 ## minikube起動
 
@@ -156,11 +159,12 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o sample-app main.go
 
 FROM scratch
 COPY --from=builder /src/sample-app /sample-app
+EXPOSE 8000
 CMD ["/sample-app"]
 ```
 
 前半部分でGo言語のコンテナ(`golang:1.16`)でソースファイルをビルドして実行可能ファイル(`sample-app`)を作成し、後半部分でランタイム環境(`scratch`)にビルドした実行可能ファイルを配置しています。
-このままビルドしてもローカル環境のdockerにイメージ作成されるだけで、minikubeにデプロイすることはできません。
+このままビルドしてもローカル環境のdockerにイメージ作成されるだけで、そのままminikubeにデプロイすることはできません。
 minikubeの仮想環境でビルドしてコンテナイメージを配置するには以下のコマンドを実行します。
 
 ```shell
@@ -174,43 +178,37 @@ eval $(minikube docker-env)
 docker build -t sample-app .
 ```
 ```
-Sending build context to Docker daemon  6.068MB
-Step 1/7 : FROM golang:1.16 as builder
-1.16: Pulling from library/golang
-5e0b432e8ba9: Pull complete 
-a84cfd68b5ce: Pull complete 
-e8b8f2315954: Pull complete 
-0598fa43a7e7: Pull complete 
-ae9442ff4ff8: Pull complete 
-dd56cb6d5926: Pull complete 
-0b5f424b4861: Pull complete 
-Digest: sha256:16b78b82eb0ee19c15fdafd98c94f44e307a068933a505ea9c9a9be1fa99f987
-Status: Downloaded newer image for golang:1.16
+Sending build context to Docker daemon  4.608kB
+Step 1/8 : FROM golang:1.16 as builder
  ---> 9a2e805e6c23
-Step 2/7 : WORKDIR /src
- ---> Running in fdb77c105d4c
-Removing intermediate container fdb77c105d4c
- ---> 73733132f3c4
-Step 3/7 : COPY main.go /src
- ---> c7d8e66b8024
-Step 4/7 : RUN CGO_ENABLED=0 GOOS=linux go build -o sample-app main.go
- ---> Running in 5d2d4950f2f5
-Removing intermediate container 5d2d4950f2f5
- ---> cc8a6412f24d
-Step 5/7 : FROM scratch
+Step 2/8 : WORKDIR /src
+ ---> Running in 9ce0ac31d9e4
+Removing intermediate container 9ce0ac31d9e4
+ ---> 914f510587dd
+Step 3/8 : COPY main.go /src
+ ---> d093dbb49063
+Step 4/8 : RUN CGO_ENABLED=0 GOOS=linux go build -o sample-app main.go
+ ---> Running in 8389a9a71749
+Removing intermediate container 8389a9a71749
+ ---> 879b8a48fefe
+Step 5/8 : FROM scratch
  ---> 
-Step 6/7 : COPY --from=builder /src/sample-app /sample-app
- ---> c086559b444f
-Step 7/7 : CMD ["/sample-app"]
- ---> Running in a53b8171b3a0
-Removing intermediate container a53b8171b3a0
- ---> 6d6438c79960
-Successfully built 6d6438c79960
+Step 6/8 : COPY --from=builder /src/sample-app /sample-app
+ ---> 393ff1a44f9c
+Step 7/8 : EXPOSE 8000
+ ---> Running in 6e7dcd74429b
+Removing intermediate container 6e7dcd74429b
+ ---> 6edfaed02a17
+Step 8/8 : CMD ["/sample-app"]
+ ---> Running in 74068b0d42e0
+Removing intermediate container 74068b0d42e0
+ ---> 4405853be83d
+Successfully built 4405853be83d
 Successfully tagged sample-app:latest
 ```
 
 dockerによりコンテナイメージがビルドされていることが確認できます。
-以下のコマンドで実際に作成されたイメージを確認することができます。
+以下のコマンドでdockerに登録されているイメージを確認することができます。
 
 ```shell
 docker images | grep sample-app
@@ -218,6 +216,74 @@ docker images | grep sample-app
 ```
 sample-app                                latest    6d6438c79960   About a minute ago   6.12MB
 ```
+
+sample-appという名前でイメージが作成されています。バージョンには省略時のデフォルト値である`latest`となっていることも確認できます。
+
+では、ここでビルドしたイメージをminikubeにデプロイしましょう。
+まずはk8sのDeployment/Serviceリソースのマニフェストファイルを準備します。ここでは`app.yaml`として作成しました。
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-app
+spec:
+  selector:
+    app: sample-app
+  ports:
+    - port: 80
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-app
+spec:
+  selector:
+    matchLabels:
+      app: sample-app
+  template:
+    metadata:
+      labels:
+        app: sample-app
+    spec:
+      containers:
+        - name: sample-app
+          # ビルドしたコンテナイメージ
+          image: sample-app:latest
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 8000
+```
+
+先程ビルドしたアプリを配置するDeploymentとアクセス経路を定義するServiceを定義しています。
+公開イメージを利用していた以前とは異なり、Deploymentの`containers`フィールドの`image`に、先程ビルドした際に指定したイメージとバージョン(`sample-app:latest`)を指定しています。
+また、`imagePullPolicy`には`Never`を指定しています。これは今回はコンテナレジストリではなく、minikubeでビルドしたイメージを使うためです。
+もちろん実際の運用環境で使う場合はこのような設定ではなく、キャッシュ済みでない場合はコンテナレジストリからpullする`IfNotPresent`を指定します。
+
+さて、これをminikubeに投入しましょう。使用するコマンドは通常のクラスタ環境と同様です。
+
+```shell
+kubectl apply -f app.yaml
+```
+
+実行後はPodの状態を確認しましょう。
+
+```shell
+kubectl get pod
+```
+
+```
+# 一部省略
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/sample-app-69678c555-fbfs4   1/1     Running   0          10m
+
+NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/sample-app   ClusterIP   10.98.148.105   <none>        80/TCP    12m
+```
+
+アプリがデプロイされ、80番ポートで公開されていることが分かります。
 
 ## クリーンアップ
 

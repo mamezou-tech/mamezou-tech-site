@@ -79,6 +79,14 @@ module.exports = function (eleventyConfig) {
       });
   });
 
+  eleventyConfig.addFilter('blogPage', (fileSlug) => {
+    console.log(fileSlug)
+    if (/^[0-9]{4}_.*$/.test(fileSlug)) {
+      return fileSlug.substring(5);
+    }
+    return fileSlug;
+  });
+
   eleventyConfig.addFilter('inputPath', (pages, path) => {
     return pages.find((page) => page.inputPath === path);
   });

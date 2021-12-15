@@ -1,0 +1,6 @@
+{
+  "tags": ["posts"],
+  "layout": "post",
+  "permalink": "/blogs/{{ page.date | date: '%Y/%m/%d' }}/{{ page.fileSlug | blogPage }}/",
+  "pageNavigationTag": "posts",
+}

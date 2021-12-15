@@ -113,8 +113,21 @@ minikube start
 🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 ```
 
-minikubeが実行されている様子が分かります。
-このときkubectlの認証情報(kubeconfig)も自動で設定されます(`minikube`)ので、このまますぐに使い始めることができます。
+minikubeが実行されている様子が分かります。minikubeの実行状況は以下のコマンドで確認できます。
+
+```shell
+minikube status
+```
+```
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+```
+
+`minikube start`実行時には、kubectlの認証情報(kubeconfig)も自動で設定されます(`minikube`)ので、このまますぐに使い始めることができます。
 
 ```shell
 kubectl cluster-info
@@ -124,7 +137,7 @@ Kubernetes control plane is running at https://192.168.64.2:8443
 CoreDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 ```
 
-## 動作確認
+## サンプルアプリのデプロイ
 
 それではminikubeで起動したKubernetesにサンプルアプリをデプロイしてみましょう。
 以前のようにパブリックリポジトリのイメージではなく、実際の開発イメージを掴むためにソースコードからビルドしたコンテナイメージをデプロイするフローで実施します。
@@ -172,6 +185,8 @@ eval $(minikube docker-env)
 ```
 
 これでdockerコマンドがminikubeの仮想環境で実行されるようになります。
+なお、この設定はターミナルごとになりますので別ターミナルで実行する場合は都度実行してください。
+
 それではコンテナイメージを作成しましょう。ソースコードとDockerfileが配置されているディレクトリで以下を実行します。
 
 ```shell
@@ -284,6 +299,63 @@ service/sample-app   ClusterIP   10.98.148.105   <none>        80/TCP    12m
 ```
 
 アプリがデプロイされ、80番ポートで公開されていることが分かります。
+
+## Ingressアドオン有効化
+
+このアプリをIngressでホストOS側からテストしましょう。minikubeは仮想環境上で起動していますので、そのまま`localhost`で利用することはできません[^4]。 
+[^4]: Docker Desktopを利用している場合は、任意のIngress Controllerを導入することで`localhost`でKubernetesクラスタにアクセス可能です。
+
+minikubeは仮想環境のIPアドレスはターミナルから`minikube ip`を利用することで取得することができます。
+したがって、Serviceリソースを[NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)にすれば、仮想環境のIPアドレス経由でアクセス可能ではありますが、Ingress経由でアクセスすることが実態に近く理想的です。
+Ingress経由とする場合、ホスト名とIPアドレスのマッピングを解決するためのDNSが必要となりますが、ローカル環境の場合は`/etc/hosts`等で都度設定が必要です（もしくはリクエストのHostヘッダを修正）。
+minikubeでは、これを容易に実現するためのDNSアドオンが用意されていますので、これを導入しましょう。
+
+まず、ターミナルから`minikube addons`コマンドで以下を実行し、Ingress ControllerとDNSを有効にします。
+
+```shell
+# NGINX Ingress Controller
+minikube addons enable ingress
+# minikube DNS
+minikube addons enable ingress-dns
+```
+
+上記を有効にするとminikube内にNGINX Ingress ControllerとIngress用のDNSがインストールされます。
+Ingress Controllerは以下で確認できます。
+
+```shell
+kubectl get pod -n ingress-nginx
+```
+```
+NAME                                        READY   STATUS      RESTARTS   AGE
+ingress-nginx-admission-create--1-wjqrk     0/1     Completed   0          20h
+ingress-nginx-admission-patch--1-7r44l      0/1     Completed   0          20h
+ingress-nginx-controller-5f66978484-hzjvk   1/1     Running     0          20h
+```
+
+Ingress DNSは以下で確認できます。
+
+```shell
+kubectl get pod -n kube-system -l app=minikube-ingress-dns
+```
+```
+NAME                        READY   STATUS    RESTARTS   AGE
+kube-ingress-dns-minikube   1/1     Running   0          20h
+```
+
+これはminikube内に入ってきたリクエストをIngressに振り向けるためのDNSです。
+
+次にホストOS側のDNSを設定します。以下はMacの場合の設定になります。
+Mac以外の場合は[こちら](https://minikube.sigs.k8s.io/docs/handbook/addons/ingress-dns/#installation)を参考にホストOS側のDNS設定をしてください。
+
+```shell
+sudo mkdir /etc/resolver
+cat << EOF | sudo tee /etc/resolver/minikube-test
+domain local-k8s.dev
+nameserver $(minikube ip)
+search_order 1
+timeout 5
+EOF
+```
 
 ## クリーンアップ
 

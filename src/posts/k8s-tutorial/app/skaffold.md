@@ -7,13 +7,13 @@ prevPage: ./src/posts/k8s-tutorial/app/minikube.md
 
 [前回](/containers/k8s/tutorial/app/minikube/)は、minikubeを使ってローカル環境内でコンテナアプリケーションを実行する環境を整えました。
 
-しかし、サンプルアプリのデプロイを通して、ソースコードのビルドに加えて、コンテナイメージのビルドやKubernetesマニフェストの反映等、手順が煩雑だと感じられた方も多かったのではないでしょうか？
-コンテナ以前のアプリ開発だと、任意のIDEを利用してソースコードを記述後に、IDEまたはコマンドからそのままローカル環境で実行・確認していた方が多いと思います。
+しかし、サンプルアプリのデプロイを通して、ソースコードに加えて、コンテナイメージのビルドやKubernetesマニフェストの反映等、手順が煩雑だと感じられた方も多かったのではないでしょうか？
+コンテナ以前のアプリ開発だと、任意のIDEを利用してソースコードを記述し、IDEまたはコマンドからそのままローカル環境で実行・確認していた方が多いと思います。
 Kubernetesに載せるためには、追加手順としてコンテナのビルドやマニフェスト反映が必要となり、これを手動でやっていては間違いなく開発効率が悪くなることでしょう。
 
 今回はこれを解決するために、Google社で開発・運用しているKubernetes向けの自動化ツールの[Skaffold](https://skaffold.dev/)を導入し、この面倒な手順を自動化してしまいましょう。
 なお、Skaffold自体はローカル環境の自動化だけを目的としてしているツールという訳ではありません。
-今回はローカル環境の自動化を目的として利用していますが、CI/CDパイプラインで実行できるようにビルド、テスト、デプロイといった粒度の細かいコマンドも提供されています。
+今回はローカル環境の自動化を目的として利用していますが、CI/CDパイプラインで実行できるようにビルド、テスト、デプロイといった粒度の細かいコマンドも提供されていますので、興味がある方はそちらも試してみると良いかと思います。
 
 ## 事前準備
 
@@ -23,20 +23,20 @@ Kubernetesに載せるためには、追加手順としてコンテナのビル�
 ### minikube
 minikubeについては[前回](/containers/k8s/tutorial/app/minikube/)を参考にminikubeのインストールとIngressアドオンのセットアップをしてください。
 
-また、未実施の場合はローカル環境のDocker CLIがminikubeのDockerで実行されるようにしておきましょう。
+また、未実施の場合は実行するターミナルのDocker CLIがminikubeのDockerで実行されるようにしておきましょう。
 
 ```shell
 eval $(minikube docker-env)
 ```
 
 ### Docker Desktop
-Docker Desktopの場合は以下を参考にインストールしてください。インストール後は`Preferences->Kubernetes`でKubernetesが有効になっていることを確認してください。
+Docker Desktopの場合は、以下を参考にインストールしてください。インストール後は`Preferences->Kubernetes`でKubernetesが有効になっていることを確認してください。
 - <https://docs.docker.com/get-docker/>
 
 また、以下を参考にNGINX Ingress ControllerをDocker DesktopのKubernetes内に別途セットアップしてください。
 - <https://kubernetes.github.io/ingress-nginx/deploy/#quick-start>
 
-既にセットアップ済みの場合はkubectlのがDocker DesktopのKubernetes(`docker-desktop`コンテキスト)に設定を切り替えておきましょう。
+既にセットアップ済みの場合は、kubectlがDocker DesktopのKubernetes(`docker-desktop`コンテキスト)を利用するように設定を切り替えておきましょう。
 
 ```shell
 kubectl config use-context docker-desktop
@@ -71,13 +71,13 @@ skaffold version
 └── main.go
 ```
 
-まずは以下のコマンドで定義ファイルのテンプレートを作成しましょう。
+以下のコマンドで定義ファイルのテンプレートを作成しましょう。
 
 ```shell
 skaffold init --force
 ```
 
-ディレクトリ直下に、以下の内容で`skaffold.yaml`が作成されました。
+ディレクトリ直下に、以下の内容で`skaffold.yaml`が作成されます。
 
 ```yaml
 apiVersion: skaffold/v2beta26
@@ -99,14 +99,12 @@ deploy:
 Skaffoldがディレクトリ内のファイルを解析して、ビルドステージ(`build`)にはDocker、デプロイステージ(`deploy`)にはkubectlで初期状態として作成してくれます[^1]。
 [^1]: Skaffoldにはビルドとデプロイ以外にもコンテナのテストについてもサポートしています。詳細は[こちら](https://skaffold.dev/docs/pipeline-stages/testers/)を参照してください。
 
-今回はここから修正する必要はありませんので、定義ファイルの作成はこれで完了となります。実運用ではアプリの構成変更に応じて、この定義を変更していくことになります。
-また、Skaffoldには特定の環境に応じて振る舞いを変えるプロファイル機能についてもサポートされています。
-
-- <https://skaffold.dev/docs/environment/profiles/>
+今回はここから修正する必要はありませんので、定義ファイルの作成はこれで完了となります。実運用ではアプリの構成変更に応じて、この定義を修正していくことになります。
+また、Skaffoldには特定の環境に応じて振る舞いを変えるプロファイル機能についてもサポートされていますので、環境に応じて定義を変えたい場合は[こちら](https://skaffold.dev/docs/environment/profiles/)を参照してください。
 
 ## 動作確認
 
-それではSkaffoldでソースコードビルド -> コンテナイメージビルド -> Kubernetesへデプロイを実施してみましょう。
+それではSkaffoldでイメージビルド -> Kubernetesへデプロイを実施してみましょう。
 [前回](/containers/k8s/tutorial/app/minikube/#サンプルアプリのデプロイ)minikubeで既にアプリをデプロイ済みの場合は、以下を実行して削除しておきましょう。
 
 ```shell
@@ -114,14 +112,14 @@ kubectl delete -f ingress.yaml
 kubectl delete -f app.yaml
 ```
 
-Skaffoldでビルドからデプロイまでを実行するのは、`skaffold.yaml`が配置されたディレクトリで以下のコマンドを打つだけです。
+あとは、`skaffold.yaml`が配置されたディレクトリで以下のコマンドを打つだけです。
 
 ```yaml
 skaffold dev
 ```
 
-前回minikubeで手動で実施していた、ソースコード・コンテナビルドやKubernetesマニフェストの反映が、Skaffoldによって実行されていることが分かります(Ingressアドオンのセットアップは除く)。
-この状態で別ターミナルから`curl http://sample-app.minikube.local`[^2]を実行すると期待通りの結果が返ってくることが確認できます。
+前回minikubeで手動で実施していた、イメージビルドやKubernetesマニフェストの反映が、Skaffoldによって実行されていることが分かります(Ingressアドオンのセットアップは除く)。
+この状態で別ターミナルから`curl http://sample-app.minikube.local`[^2]を実行すると期待通りの結果(`Hello minikube app!!!`)が返ってくることが確認できるはずです。
 
 [^2]: Docker Desktopで実施する場合は、minikubeのようにIngress DNSがないため、`/etc/hosts`等で`localhost`を`sample-app.minikube.
 local`にマッピングを追加してください。

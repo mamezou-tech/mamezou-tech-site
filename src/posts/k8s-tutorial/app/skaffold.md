@@ -1,7 +1,7 @@
 ---
 title: ローカル開発環境準備 - 自動化ツール(Skaffold)
 author: noboru-kudo
-date: 2021-12-19
+date: 2021-12-16
 prevPage: ./src/posts/k8s-tutorial/app/minikube.md
 ---
 

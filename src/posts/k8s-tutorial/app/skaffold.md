@@ -3,6 +3,7 @@ title: ローカル開発環境準備 - 自動化ツール(Skaffold)
 author: noboru-kudo
 date: 2021-12-16
 prevPage: ./src/posts/k8s-tutorial/app/minikube.md
+nextPage: ./src/posts/k8s-tutorial/app/localstack.md
 ---
 
 [前回](/containers/k8s/tutorial/app/minikube/)は、minikubeを使ってローカル環境内でコンテナアプリケーションを実行する環境を整えました。

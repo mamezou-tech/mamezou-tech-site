@@ -78,7 +78,7 @@ minikubeのバージョンが出力されていればインストール完了で
 brew install docker
 ```
 
-Windowsの場合は、Docker DesktopではなくDocker CLI単体でインストールできませんので、WSLでの利用を検討してください。
+Windowsの場合は、[Chocolatey](https://community.chocolatey.org/packages/docker-cli)からDocker CLI単体でインストールが実施できます。
 
 ## minikube起動
 

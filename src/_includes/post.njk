@@ -40,25 +40,26 @@ layout: base.njk
       <nav class="post__pagination">
         {%- if pageNavigationTag %}
 
-          {%- set nextPost = collections[pageNavigationTag] | getNextCollectionItem(page) %}
-          {%- if nextPost %}
-
-            <a href="{{ nextPost.url | url }}">
-              <span>←</span>
-              <span>{{ nextPost.data.title }}</span>
-            </a>
-
-          {% endif %}
-
           {%- set previousPost = collections[pageNavigationTag] | getPreviousCollectionItem(page) %}
           {%- if previousPost %}
 
             <a href="{{ previousPost.url | url }}">
+              <span>←</span>
               <span>{{ previousPost.data.title }}</span>
+            </a>
+
+          {% endif %}
+
+          {%- set nextPost = collections[pageNavigationTag] | getNextCollectionItem(page) %}
+          {%- if nextPost %}
+
+            <a href="{{ nextPost.url | url }}">
+              <span>{{ nextPost.data.title }}</span>
               <span>→</span>
             </a>
 
           {% endif %}
+
         {% else %}
           {%- if prevPage %}
             {%- set prevPostPage = collections.all | inputPath(prevPage) %}

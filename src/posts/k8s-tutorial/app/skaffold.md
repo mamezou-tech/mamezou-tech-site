@@ -122,8 +122,10 @@ skaffold dev
 
 前回minikubeで手動で実施していた、ソースコード・コンテナビルドやKubernetesマニフェストの反映が、Skaffoldによって実行されていることが分かります(Ingressアドオンのセットアップは除く)。
 この状態で別ターミナルから`curl http://sample-app.minikube.local`[^2]を実行すると期待通りの結果が返ってくることが確認できます。
+
 [^2]: Docker Desktopで実施する場合は、minikubeのようにIngress DNSがないため、`/etc/hosts`等で`localhost`を`sample-app.minikube.
-local`にマッピングを追加してください(Macの場合は`echo "localhost sample-app.minikube.local" | sudo tee -a /etc/hosts`)。
+local`にマッピングを追加してください。
+Macの場合は`echo "localhost sample-app.minikube.local" | sudo tee -a /etc/hosts`を実行すれば追加できます。
 
 また、Skaffoldではこの状態でソースコードやマニフェストファイルの変更を監視し、変更を検知すると自動で反映までしてくれます。
 試しにアプリが返す固定レスポンスの内容を変更したり、app.yamlでレプリカ数を増やしてみてください。
@@ -141,9 +143,8 @@ skkafold run
 
 ## クリーンアップ
 
-`skaffold dev`で起動したアプリケーションはCtr+Cで終了することで削除されます。
-
-`skaffold run`で起動した場合は、手動で以下を実行すれば関連リソースは削除されます。
+`skaffold dev`で起動した場合は、Ctr+Cでプロセスを終了することでアンデプロイされます。
+一方で、`skaffold run`で起動した場合は、手動で以下を実行する必要があります。
 
 ```shell
 skkafold delete

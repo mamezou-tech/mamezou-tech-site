@@ -22,7 +22,7 @@ prevPage: ./src/posts/k8s-tutorial/storage/efs.md
 - [MicroK8s](https://microk8s.io/)
 - [k3d](https://github.com/rancher/k3d)
 
-上記だとDocker Desktopが最も使いやすく人気があると思いますが、残念ながら2021/8/31より個人やスモールビジネス向けを除き有償化されてしまいました[^2]。
+上記だとDocker Desktopが使いやすく人気があると思いますが、残念ながら2021/8/31より個人やスモールビジネス向けを除き有償化されてしまいました[^2]。
 
 [^2]: <https://www.docker.com/blog/updating-product-subscriptions/>
 
@@ -233,6 +233,9 @@ sample-app                                latest    6d6438c79960   About a minut
 ```
 
 sample-appという名前でイメージが作成されています。バージョンには省略時のデフォルト値である`latest`となっていることも確認できます。
+ここでのビルドの流れをまとめると、以下のようにコンテナイメージを作成しています。
+![](https://i.gyazo.com/99bb5118c805f55e3bf8aaa40bd1c2f7.png)
+
 
 では、ここでビルドしたイメージをminikubeにデプロイしましょう。
 まずはk8sのDeployment/Serviceリソースのマニフェストファイルを準備します。ここでは`app.yaml`として作成しました。
@@ -299,16 +302,35 @@ service/sample-app   ClusterIP   10.98.148.105   <none>        80/TCP    12m
 ```
 
 アプリがデプロイされ、80番ポートで公開されていることが分かります。
+ここではServiceを`ClusterIP`として作成しているため（クラスタ内部からのみアクセス可能）、まだアプリにアクセスすることができません。
+そのような場合は、kubectlのport-forwardコマンドでローカル環境からクラスタ内部にアクセスすることができます。
+
+```shell
+kubectl port-forward svc/sample-app 9000:80
+```
+
+これでローカル環境の9000番ポートをServiceが公開している80番ポートに転送されます。
+別のターミナルを開いてアプリにアクセスしてみましょう。
+
+```shell
+curl http://localhost:9000/
+```
+
+`Hello minikube app!!!`と出力されれば成功です。
 
 ## Ingressアドオン有効化
 
-このアプリをIngressでホストOS側からテストしましょう。minikubeは仮想環境上で起動していますので、そのまま`localhost`で利用することはできません[^4]。 
+このアプリをIngressでホストOS側からテストしましょう。
+先程は`kubectl port-forward`で強引(?)にクラスタ内部のServiceにアクセスしましたが、仮想環境上のminikubeに対してそのまま`localhost`で利用することはもちろんできません[^4]。 
 [^4]: Docker Desktopを利用している場合は、任意のIngress Controllerを導入することで`localhost`でKubernetesクラスタにアクセス可能です。
 
-minikubeは仮想環境のIPアドレスはターミナルから`minikube ip`を利用することで取得することができます。
-したがって、Serviceリソースを[NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)にすれば、仮想環境のIPアドレス経由でアクセス可能ではありますが、Ingress経由でアクセスすることが実態に近く理想的です。
-Ingress経由とする場合、ホスト名とIPアドレスのマッピングを解決するためのDNSが必要となりますが、ローカル環境の場合は`/etc/hosts`等で都度設定が必要です（もしくはリクエストのHostヘッダを修正）。
-minikubeでは、これを容易に実現するためのDNSアドオンが用意されていますので、これを導入しましょう。
+したがって、minikubeが起動している仮想環境のIP経由でアクセスする必要があります。
+minikubeは仮想環境のIPアドレスはターミナルから`minikube ip`を利用することで取得することができますので、Serviceリソースの`type`を[NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)にすれば、仮想環境のIPアドレス経由でアクセス可能です。
+
+しかし、実際にNodePortを使ってクラスタにアクセスすることは稀で、Ingressまたはそれに準ずるGateway経由でアクセスすることが理想的です。
+Ingress経由とする場合、ホスト名とIPアドレスのマッピングを解決するためのDNSが必要となりますが、ローカル環境の場合は`/etc/hosts`等で静的にマッピングの設定をせざるを得ない場合も多いかと思います（もしくはリクエストのHostヘッダを修正）。
+
+minikubeでは、この問題を解決するためのIngress向けのDNSアドオンが用意されていますので、これを導入しましょう。
 
 まず、ターミナルから`minikube addons`コマンドで以下を実行し、Ingress ControllerとDNSを有効にします。
 
@@ -342,20 +364,63 @@ NAME                        READY   STATUS    RESTARTS   AGE
 kube-ingress-dns-minikube   1/1     Running   0          20h
 ```
 
-これはminikube内に入ってきたリクエストをIngressに振り向けるためのDNSです。
+これはminikube内に入ってきたリクエストをIngressにマッピングするためのDNSサービスです。
 
-次にホストOS側のDNSを設定します。以下はMacの場合の設定になります。
-Mac以外の場合は[こちら](https://minikube.sigs.k8s.io/docs/handbook/addons/ingress-dns/#installation)を参考にホストOS側のDNS設定をしてください。
+次にホストOS側のDNSリゾルバの設定をします。
+以下はMacの場合の設定になります。Mac以外の場合は[こちら](https://minikube.sigs.k8s.io/docs/handbook/addons/ingress-dns/#installation)を参考にホストOS側のDNSリゾルバの設定をしてください。
 
 ```shell
-sudo mkdir /etc/resolver
+sudo mkdir -p /etc/resolver
 cat << EOF | sudo tee /etc/resolver/minikube-test
-domain local-k8s.dev
+domain minikube.local
 nameserver $(minikube ip)
 search_order 1
 timeout 5
 EOF
 ```
+
+ここではドメインを`minikube.local`をminikubeの仮想環境(`$(minikube ip)`)で名前解決をするように指定しています。
+ドメイン名は任意のドメインで構いません。別のドメインを指定した場合は、後続の該当部分も変更してください。
+
+## 動作確認
+
+では最後にIngressリソースを投入して、カスタムドメイン経由でアプリにアクセスしてみましょう。
+以下のファイル(ここでは`ingress.yaml`)を用意しましょう。
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sample-app
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: sample-app.minikube.local
+      http:
+        paths:
+          - backend:
+              service:
+                name: sample-app
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+```
+
+`ingressClassName`にNGINX Ingress Controllerを指定し、`minikube.local`のサブドメイン`sample-app.minikube.local`の80番ポートへのアクセスを先程デプロイしたサンプルアプリに転送するようにしています。
+こちらをminikubeに適用しましょう。
+
+```shell
+kubectl apply -f ingress.yaml
+```
+
+あとはサンプルアプリにカスタムドメイン経由でアクセスできるか確認します。
+
+```shell
+curl http://sample-app.minikube.local
+```
+
+ここでも`Hello minikube app!!!`と出力されれば動作確認は終了です。
 
 ## クリーンアップ
 
@@ -366,7 +431,7 @@ minikube stop
 ```
 
 これで次回は`minikube start`で前回の続きから再開することができます。
-完全にクラスタを削除する場合は以下のコマンドです。最初からやり直したい場合に使用します。
+完全にminikubeのクラスタを削除する場合は以下のコマンドを実行します。最初からやり直したい場合に使用します。
 
 ```shell
 minikube delete

@@ -1,7 +1,7 @@
 ---
 title: ローカル開発環境準備 - 実行環境(minikube)
 author: noboru-kudo
-date: 2021-12-19
+date: 2021-12-16
 prevPage: ./src/posts/k8s-tutorial/storage/efs.md
 ---
 
@@ -9,24 +9,24 @@ prevPage: ./src/posts/k8s-tutorial/storage/efs.md
 
 チームでKubernetesで動作するアプリケーションを開発する場合に、どうやって各開発者がコンテナ環境で動作するアプリケーションを実装・テストすればよいでしょうか？
 各個人にクラウド上にクラスタ環境を準備するのが理想的ですが、コスト的に難しいというのが一般的かと思います。
-そのような場合は、コンテナ以前の開発ように各ローカルマシンでアプリケーションプロセスを起動して実装や動作確認を行い、実際のクラスタ環境での確認は結合試験等で実施することになります。
-これでもいいのですが[^1]、クイックフィードバックが得られるローカル環境で、コンテナ内のアプリの振る舞いやKubernetesのリソース(DeploymentやService等)の定義を確認できる方が断然効率的です。
+そのような場合は、コンテナ以前の開発ように各ローカルマシンでアプリケーションプロセスを起動して動作確認を行い、実際のクラスタ環境での確認は結合試験等で実施することになるでしょう。
+これでもいいのですが[^1]、トライ＆エラーでクイックフィードバックが得られるローカル環境で、コンテナ内のアプリの振る舞いやKubernetesのリソース(DeploymentやService等)の定義を確認できる方が断然効率的です。
 
-[^1]: ローカルマシンのスペックや企業別のセキュリティポリシー等、様々な制約により実際このような開発スタイルとなることも多いことと思います。
+[^1]: ローカルマシンのスペックやセキュリティポリシー等、様々な制約により、このような開発スタイルにせざるを得ない場合も多いですが。
 
 ここではローカル環境でスモールバージョンのKubernetesを導入して、実装の段階でより品質の高いコンテナ型アプリケーションを作り込むことを目指していきましょう。
-以下に列挙するように、ローカル環境でKubernetesを動かす方法は多くあります。
+以下に列挙するように、ローカル環境でKubernetesを動かす方法は数多くあります。
 - [Docker DesktopのKubernetes](https://docs.docker.com/desktop/kubernetes/)
 - [kind](https://kind.sigs.k8s.io/)
 - [minikube](https://minikube.sigs.k8s.io/)
 - [MicroK8s](https://microk8s.io/)
 - [k3d](https://github.com/rancher/k3d)
 
-上記だとDocker Desktopが使いやすく人気があると思いますが、残念ながら2021/8/31より個人やスモールビジネス向けを除き有償化されてしまいました[^2]。
+上記の中だとDocker Desktopが使いやすく人気があると思いますが、残念ながら2021/8/31より個人やスモールビジネス向けを除き有償化されてしまいました[^2]。
 
 [^2]: <https://www.docker.com/blog/updating-product-subscriptions/>
 
-これがネックとなり導入が難しい開発現場もあると思いますので、今回は上記の中でDocker Desktopを使用していないminikubeを導入しましょう。
+これがネックとなり導入が難しい開発現場もあると思いますので、今回はDocker Desktopが不要なminikubeを導入しましょう。
 minikubeはKubernetes公式コミュニティ(SIGs)で開発・運用されているソフトウェアで、ローカル環境向けのKubernetesとして最も歴史が古く成熟度の高いツールと言えます。
 
 **なお、ここでの作業はDocker DesktopのKubernetesでも代用可能ですので、Docker Desktop導入済みの場合はスキップしても構いません。**
@@ -36,9 +36,9 @@ minikubeはKubernetes公式コミュニティ(SIGs)で開発・運用されて�
 こちらは以下の公式ドキュメントに従って準備します。
 - <https://minikube.sigs.k8s.io/docs/start/>
 
-ここではMacBook Proを使って説明しますが、minikubeはWindowsにも対応していますので、上記ドキュメントに従ってセットアップしてください(動作は未検証です)。
+ここではローカル環境のOSとしてMacを使って説明しますが、minikubeはWindowsにも対応していますので、上記ドキュメントに従ってセットアップしてください(動作は未検証です)。
 
-まずはminikubeが動作する仮想環境ソフトウェアを導入する必要があります。
+まずは、minikubeが動作する仮想環境ソフトウェアを導入する必要があります。
 ここではHyperKitを選択しますが、Docker等他のドライバーでも可能です。
 [こちら](https://minikube.sigs.k8s.io/docs/drivers/)を参考に任意のドライバーをセットアップしてください。
 
@@ -71,7 +71,7 @@ minikubeのバージョンが出力されていればインストール完了で
 
 また、今回はDocker Desktopは使用しませんが、コンテナのビルド・ランタイムエンジンとしてDockerを使用しますので、Docker CLIは別途インストールしてください[^3]。
 
-[^3]: 未検証ですが、Docker CLIと互換性がある[Podman](https://podman.io/)はminikubeにも対応しています(この場合はランタイムエンジンはcri-oを選択)。
+[^3]: 未検証ですが、Docker CLIと互換性がある[Podman](https://podman.io/)もminikubeに対応しています(この場合はランタイムエンジンはcri-oを選択)。
 
 ```shell
 brew install docker
@@ -81,7 +81,8 @@ Windowsの場合は、Docker DesktopではなくDocker CLI単体でインスト�
 
 ## minikube起動
 
-minikubeを起動する前にminikubeの設定を変更しておきましょう。
+まずはminikubeの設定を変更しておきましょう。
+マシンスペックに応じてminikubeに割り当てるCPU/メモリは変更して構いませんが、メモリはデフォルトが2Giと小さいので、4Gi以上に増やしておくことをお勧めします。
 
 ```shell
 # minikubeを起動するDriver。HyperKit以外のドライバーの場合は設定値を変更してください
@@ -92,7 +93,7 @@ minikube config set cpus 4
 minikube config set memory 8Gi
 ```
 
-後は起動するだけです。以下のコマンドを実行するだけで起動することができます。
+それではminikubeを起動しましょう。ターミナルより以下のコマンドを実行します。
 
 ```shell
 minikube start
@@ -113,7 +114,7 @@ minikube start
 🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 ```
 
-minikubeが実行されている様子が分かります。minikubeの実行状況は以下のコマンドで確認できます。
+minikubeが起動されている様子が分かります。minikubeの状況は以下のコマンドで確認できます。
 
 ```shell
 minikube status
@@ -127,7 +128,8 @@ apiserver: Running
 kubeconfig: Configured
 ```
 
-`minikube start`実行時には、kubectlの認証情報(kubeconfig)も自動で設定されます(`minikube`)ので、このまますぐに使い始めることができます。
+`minikube start`実行時に、kubectlの認証情報(kubeconfig)も自動で設定されますので、このまますぐに使い始めることができます。
+以下のコマンドでクラスタ情報が表示されれば、kubectlからminikubeにアクセスできていることを確認できます。
 
 ```shell
 kubectl cluster-info
@@ -140,9 +142,9 @@ CoreDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/se
 ## サンプルアプリのデプロイ
 
 それではminikubeで起動したKubernetesにサンプルアプリをデプロイしてみましょう。
-以前のようにパブリックリポジトリのイメージではなく、実際の開発イメージを掴むためにソースコードからビルドしたコンテナイメージをデプロイするフローで実施します。
+今回は、以前のようにパブリックリポジトリのイメージそのままではなく、実際の開発イメージを掴むためにソースコードからビルドしたコンテナイメージをデプロイする流れで実施しましょう。
 
-今回は動作確認用にGo言語のREST APIアプリを作成します。任意のディレクトリに、`main.go`というファイルを作成し、以下を記述します。
+まず、動作確認用にGo言語で作成したサンプルアプリを用意します。任意のディレクトリに、`main.go`というファイルを作成し、以下を記述します。
 
 ```go
 package main
@@ -160,7 +162,7 @@ func main() {
 }
 ```
 
-8000番ポートでHTTPリクエストを受けると、`Hello minikube app!!!`というメッセージを返すだけのアプリです。
+8000番ポートでHTTPリクエストを受けると、`Hello minikube app!!!`というメッセージを返すだけのものです。
 次にコンテナのビルドするためのDockerfileを記述します。
 ソースコードと同じディレクトリに`Dockerfile`というファイルを作成し以下を記述します。
 
@@ -176,9 +178,9 @@ EXPOSE 8000
 CMD ["/sample-app"]
 ```
 
-前半部分でGo言語のコンテナ(`golang:1.16`)でソースファイルをビルドして実行可能ファイル(`sample-app`)を作成し、後半部分でランタイム環境(`scratch`)にビルドした実行可能ファイルを配置しています。
-このままビルドしてもローカル環境のdockerにイメージ作成されるだけで、そのままminikubeにデプロイすることはできません。
-minikubeの仮想環境でビルドしてコンテナイメージを配置するには以下のコマンドを実行します。
+前半部分でGo言語のコンテナ(`golang:1.16`)上でソースコードをビルドして実行可能ファイル(`sample-app`)を作成し、後半部分でランタイム環境(`scratch`)にビルドした実行可能ファイル(`sample-app`)を配置しています。
+このままビルドしてもローカル環境のdockerにイメージが作成されるだけで、そのままminikubeにデプロイすることはできません。
+これをminikubeの仮想環境でビルドするには以下のコマンドを実行します。
 
 ```shell
 eval $(minikube docker-env)
@@ -223,7 +225,7 @@ Successfully tagged sample-app:latest
 ```
 
 dockerによりコンテナイメージがビルドされていることが確認できます。
-以下のコマンドでdockerに登録されているイメージを確認することができます。
+ビルドしたイメージは以下のコマンドで確認することができます。
 
 ```shell
 docker images | grep sample-app
@@ -233,7 +235,7 @@ sample-app                                latest    6d6438c79960   About a minut
 ```
 
 sample-appという名前でイメージが作成されています。バージョンには省略時のデフォルト値である`latest`となっていることも確認できます。
-ここでのビルドの流れをまとめると、以下のようにコンテナイメージを作成しています。
+ここまでの流れをまとめると、以下のようにしてコンテナイメージを作成しています。
 ![](https://i.gyazo.com/99bb5118c805f55e3bf8aaa40bd1c2f7.png)
 
 
@@ -276,9 +278,9 @@ spec:
 ```
 
 先程ビルドしたアプリを配置するDeploymentとアクセス経路を定義するServiceを定義しています。
-公開イメージを利用していた以前とは異なり、Deploymentの`containers`フィールドの`image`に、先程ビルドした際に指定したイメージとバージョン(`sample-app:latest`)を指定しています。
+公開されていたイメージを利用していた以前とは異なり、Deploymentの`containers`フィールドの`image`に、先程ビルドした際に指定したイメージとバージョン(`sample-app:latest`)を指定しています。
 また、`imagePullPolicy`には`Never`を指定しています。これは今回はコンテナレジストリではなく、minikubeでビルドしたイメージを使うためです。
-もちろん実際の運用環境で使う場合はこのような設定ではなく、キャッシュ済みでない場合はコンテナレジストリからpullする`IfNotPresent`を指定します。
+もちろん実際の運用環境で使う場合はこのような設定ではなく、(キャッシュ済みでない場合は)コンテナレジストリからpullする`IfNotPresent`を指定します。
 
 さて、これをminikubeに投入しましょう。使用するコマンドは通常のクラスタ環境と同様です。
 
@@ -309,7 +311,7 @@ service/sample-app   ClusterIP   10.98.148.105   <none>        80/TCP    12m
 kubectl port-forward svc/sample-app 9000:80
 ```
 
-これでローカル環境の9000番ポートをServiceが公開している80番ポートに転送されます。
+これでローカル環境の9000番ポートがService(`sample-app`)が公開している80番ポートに転送されます。
 別のターミナルを開いてアプリにアクセスしてみましょう。
 
 ```shell
@@ -320,15 +322,15 @@ curl http://localhost:9000/
 
 ## Ingressアドオン有効化
 
-このアプリをIngressでホストOS側からテストしましょう。
-先程は`kubectl port-forward`で強引(?)にクラスタ内部のServiceにアクセスしましたが、仮想環境上のminikubeに対してそのまま`localhost`で利用することはもちろんできません[^4]。 
+このアプリをIngressで確認しましょう。
+先程はポートフォワードによって強引(?)にクラスタ内部のServiceにアクセスしましたが、仮想環境上のminikubeに対してそのまま`localhost`で利用することはもちろんできません[^4]。 
 [^4]: Docker Desktopを利用している場合は、任意のIngress Controllerを導入することで`localhost`でKubernetesクラスタにアクセス可能です。
 
-したがって、minikubeが起動している仮想環境のIP経由でアクセスする必要があります。
+ホストOS側からアプリにアクセスするには、minikubeが起動している仮想環境のIP経由でアクセスする必要があります。
 minikubeは仮想環境のIPアドレスはターミナルから`minikube ip`を利用することで取得することができますので、Serviceリソースの`type`を[NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)にすれば、仮想環境のIPアドレス経由でアクセス可能です。
 
-しかし、実際にNodePortを使ってクラスタにアクセスすることは稀で、Ingressまたはそれに準ずるGateway経由でアクセスすることが理想的です。
-Ingress経由とする場合、ホスト名とIPアドレスのマッピングを解決するためのDNSが必要となりますが、ローカル環境の場合は`/etc/hosts`等で静的にマッピングの設定をせざるを得ない場合も多いかと思います（もしくはリクエストのHostヘッダを修正）。
+しかし、実際のクラスタ環境ではNodePortを使ってクラスタにアクセスすることは稀で、Ingressまたはそれに準ずるGateway経由でアクセスすることが多いでしょう。
+Ingress経由とする場合、ホスト名とIPアドレスのマッピングを解決するためのDNSが必要となりますが、ローカル環境では`/etc/hosts`等で静的にマッピングの設定をせざるを得ない場合も多いかと思います。
 
 minikubeでは、この問題を解決するためのIngress向けのDNSアドオンが用意されていますので、これを導入しましょう。
 
@@ -430,7 +432,7 @@ minikubeを安全に停止するためには以下のコマンドを実行しま
 minikube stop
 ```
 
-これで次回は`minikube start`で前回の続きから再開することができます。
+これで次に作業をする場合には、`minikube start`で前回の続きから再開することができます。
 完全にminikubeのクラスタを削除する場合は以下のコマンドを実行します。最初からやり直したい場合に使用します。
 
 ```shell

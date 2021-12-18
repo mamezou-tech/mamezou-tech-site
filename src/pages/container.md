@@ -15,7 +15,7 @@ titleImage: "/img/logo/mameka5_50.png"
 1. [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
 2. [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
 
-#### Ingressでアプリケーションへのアクセスを許可
+#### Ingressでアプリケーションへのアクセス経路構築
 1. [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
 2. [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws)
 3. [カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns)
@@ -36,7 +36,7 @@ titleImage: "/img/logo/mameka5_50.png"
 2. バッチアプリケーション(CronJob/Job) <span style="color:red">Coming Soon!</span>
 
 #### クラスタ環境デプロイ
-1. プライベートレジストリ(ECR)導入 <span style="color:red">Coming Soon!</span>
+1. プライベートコンテナレジストリ(ECR) <span style="color:red">Coming Soon!</span>
 2. マニフェストファイル構成管理(Kustomize) <span style="color:red">Coming Soon!</span>
 
 ### 継続的デリバリ編

@@ -161,12 +161,12 @@ $social-min-height: 30px !default;
       min-height: $social-min-height;
     }
   }
-  .tweet {
+  .tdbc-twitter-follow {
+    margin-right: 5px;
   }
-  .fb-recommend {
+  .tdbc-fb-recommend {
     .fb-like {
       margin: 0 -20px;
-      padding-top: 3px;
     }
   }
   .fb-share-button {

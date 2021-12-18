@@ -223,7 +223,7 @@ aws route53 create-hosted-zone \
 いつものようにリポジトリを追加・更新します。
 ```shell
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm update
+helm repo update
 ```
 
 以下のパラメータでexternal-dnsをインストールします。以下は現時点で最新の`5.4.11`のHelm Chartを利用しています。
@@ -237,7 +237,8 @@ helm upgrade external-dns bitnami/external-dns \
   --set aws.zoneType=public \
   --set serviceAccount.create=false \
   --set serviceAccount.name=external-dns \
-  --set domainFilters[0]=mamezou-tech.com
+  --set domainFilters[0]=mamezou-tech.com \
+  --wait
 ```
 
 - `--namespace`でexternal-dnsをインストールするのは事前に作成したnamespaceを指定

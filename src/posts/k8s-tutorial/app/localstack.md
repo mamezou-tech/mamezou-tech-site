@@ -15,10 +15,10 @@ prevPage: ./src/posts/k8s-tutorial/app/skaffold.md
 回避案としてローカル環境はモック/スタブを使うということが考えられますが、これはバグ検出の先送りに過ぎず理想的な解決策とは言えません。
 
 やはりAWSのサービスについても、ローカル環境で動かして確認することが品質面で理想的です。
-今回は(程度はありますが)主要なサービス[^1]に対応している[LocalStack](https://localstack.cloud/)のCommunity Edition[^2]を導入してローカル環境でAWSを利用したアプリケーションの開発をする準備をしましょう。
+今回は(程度はありますが)主要なサービス[^1]に対応している[LocalStack](https://localstack.cloud/)のCommunity Edition[^2]を導入して、ローカル環境でAWSを利用したアプリケーションの開発をする準備をしましょう。
 [^1]: LocalStackで対応しているサービスは[こちら](https://docs.localstack.cloud/aws/feature-coverage/)を参照してください。
 
-LocalStackの実行はDockerが基本となっています。既にminikubeやDocker Desktopでローカル環境でKubernetesが動くようになっていますので、コンテナとしてここで動かしてしまうのが効率的です。
+LocalStackの起動についてはいくつか方法がありますが、既にminikubeやDocker Desktopでローカル環境でKubernetesが動くようになっていますので、個別に起動するのではなくコンテナ(Pod)としてローカルKubernetes内で動かしてしまいましょう。
 
 [^2]: Pro Edition/Enterprise Editionを使用すると利用できるサービスの範囲も広がります。プロジェクトで利用するサービスに応じてこちらの導入を検討するのが良いかと思います。
 

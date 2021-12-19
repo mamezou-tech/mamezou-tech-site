@@ -78,49 +78,36 @@ data:
   03-create-dynamodb-table.sh: |
     #!/bin/bash
     aws dynamodb create-table --table-name localstack-test \
-      --key-schema file:///docker-entrypoint-initaws.d/localstack-test-table-key-schema.json \
-      --attribute-definitions file:///docker-entrypoint-initaws.d/localstack-test-table-attribute-definitions.json \
+      --key-schema  AttributeName=test_key,KeyType=HASH \
+      --attribute-definitions AttributeName=test_key,AttributeType=S \
       --billing-mode PAY_PER_REQUEST \
       --endpoint ${LOCALSTACK_ENDPOINT}
     aws dynamodb list-tables --endpoint ${LOCALSTACK_ENDPOINT} --region local
-  localstack-test-table-key-schema.json: |
-    [
-      {
-        "AttributeName": "test_key",
-        "KeyType": "HASH"
-      }
-    ]
-  localstack-test-table-attribute-definitions.json: |
-    [
-      {
-        "AttributeName": "test_key",
-        "AttributeType": "S"
-      }
-    ]
 ```
 
-ConfigMapリソースの中(`data`フィールド)に5つのファイル(3つのシェルと2つのJSON)を作成しました。
+ConfigMapリソースの中(`data`フィールド)に3つのスクリプトを作成しました。
 
-- 01-credential.sh: AWS CLIの認証情報の初期化スクリプト。これらはAWSを利用する場合に必須のものですが、LocalStackでは任意の値で構いません。
-- 02-create-bucket.sh: LocalStackにS3バケットを作成するスクリプト
-- 03-create-dynamodb-table.sh: LocalStackにDynamoDBテーブルを作成するスクリプト
-- localstack-test-table-key-schema.json/localstack-test-table-attribute-definitions.json: DynamoDBテーブルのスキーマ定義
+スクリプト | 内容
+--------------------------- | ----------------------------
+01-credential.sh            | AWS CLIの認証情報の初期化スクリプト。これらはAWSを利用する場合に必須のものですが、LocalStackでは任意の値で構いません。
+02-create-bucket.sh         | LocalStackにS3バケットを作成するスクリプト
+03-create-dynamodb-table.sh | LocalStackにDynamoDBテーブルを作成するスクリプト
 
-各スクリプトは、AWS CLIの[公式ドキュメント](https://docs.aws.amazon.com/cli/latest/index.html)を参照して作成できます。
+各スクリプト自体の内容は、AWS CLIの[公式ドキュメント](https://docs.aws.amazon.com/cli/latest/index.html)を参照して作成できます。
 
 注意点としては、AWS CLIの各種コマンドでは、必ず`--endpoint`を`http://localhost:4566`とする必要があります。
-このオプションがない場合、AWS CLIは本物のAWSに対してリソースの生成を要求しますので、ネットワークエラーや認証エラーが発生します。
-したがって、ここでエンドポイントをLocalStackの公開エンドポイントの方に振り向けてあげる必要があります(4566番ポートはLocalStackのデフォルト公開ポートです)。
+このオプションがない場合、AWS CLIは本物のAWSに対してリソースの生成を要求しますので、ネットワークエラーや認証エラーが発生してしまいます。
+これを回避するため、ここでエンドポイントをLocalStackの公開エンドポイントの方に振り向けてあげる必要があります(4566番ポートはLocalStackのデフォルト公開ポートです)。
 
-なお、ConfigMapの名前は`<Helmリリース名>-init-scripts-config`とする必要があります(リリース名はインストール時に指定するもの)。
+また、ConfigMapの名前は`<Helmリリース名>-init-scripts-config`とする必要があります(リリース名はインストール時に指定するもの)。
 
-これを事前にローカル環境のKubernetesに適用しましょう。
+インストール前に、これをローカル環境のKubernetesに適用しましょう。
 
 ```shell
 kubectl apply -f localstack-init-scripts-config.yaml
 ```
 
-ここでようやくLocalStackのインストールを行います。
+これでようやくLocalStackのインストール準備が整いました。
 インストールは以下のコマンドを実行します。ここではHelmチャートのバージョンは現時点で最新の`0.3.7`を指定しました。
 
 ```shell
@@ -132,8 +119,8 @@ helm upgrade localstack localstack-charts/localstack \
   --wait
 ```
 
-今回はS3とDynamoDBを利用しますので、`startServices`には起動するサービスを限定しました（指定しない場合は全て起動します）。
-LocalStackで利用可能なサービスは[こちら](https://docs.localstack.cloud/aws/feature-coverage/)から、指定する値の命名ルールは[こちら](https://docs.aws.amazon.com/cli/latest/reference/#available-services)を参照してください。
+今回はS3とDynamoDBを利用しますので、`startServices`には起動するサービスを限定しました（指定しない場合は全てのサービスが起動します）。
+LocalStackで利用可能なサービスは[こちら](https://docs.localstack.cloud/aws/feature-coverage/)、指定する値の命名ルールは[こちら](https://docs.aws.amazon.com/cli/latest/reference/#available-services)を参照してください。
 なお、複数指定する場合は`,`はエスケープする必要があります。
 
 また、先程初期化スクリプトを準備しましたので、`enableStartupScripts`を有効にしています。
@@ -141,12 +128,26 @@ LocalStackで利用可能なサービスは[こちら](https://docs.localstack.c
 LocalStackが正常に起動していかを確認してみましょう。
 
 ```shell
-kubectl get pod -l app.kubernetes.io/name=localstack
+kubectl get pod,svc -l app.kubernetes.io/name=localstack
 ```
 ```
-NAME                          READY   STATUS    RESTARTS   AGE
-localstack-6675bf759b-56tct   1/1     Running   0          36s
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/localstack-6675bf759b-56tct   1/1     Running   0          36s
+
+NAME                 TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                         AGE
+service/localstack   NodePort   10.97.16.164   <none>        4566:30000/TCP,4571:31571/TCP   36s
 ```
+
+LocalStackのPodが実行されていることが分かります。
+また、Serviceリソースとして`localstack`が作成されていることも確認できます。
+このServiceは、Helmチャートのデフォルト値の`NodePort`で作成されていることも分かります[^5]。
+これにより、Kubernetesが実行されているNode(ここでは仮想環境)のポートが開かれ、LocalStackのポートとマッピングされます。
+Serviceの`PORT(S)`の前半部分に着目してください。`4566:30000/TCP`となっています。
+これは、`localstack`Serviceが公開する4566番ポートが、Node(仮想環境)の30000番ポート[^6]にマッピングされていることを意味しています。
+
+[^5]: NodePortではなくIngress経由でのアクセスも可能です。その場合は[こちら](https://github.com/localstack/helm-charts/tree/main/charts/localstack#exposure-parameters)を参考にしてください。
+
+[^6]: ここでは`service.edgeService.nodePort`を指定して、公開ポート番号は固定していますが、省略した場合は30000-32767番からランダムに選択されます。
 
 また、Pod(コンテナ)の起動ログを確認し、初期化スクリプトが正常に実行されたかも確認した方が良いでしょう。
 
@@ -201,9 +202,8 @@ Ready.
 ログの内容から初期化スクリプトが実行されている様子が確認できます。
 
 実際に初期化スクリプトで必要なリソースが作成されたかをローカル環境から確認してみましょう。
-インストール時に`service.edgeService.nodePort=30000`としてLocalStackが外部に公開するポートを30000番ポートを指定していますので、ここからアクセスできます。
+先程確認した`localstack`ServiceはNodePortですので、仮想環境の30000番ポートからアクセスできます。
 なお、LocalStackが公開しているポートは4566ですが、これはクラスタ内部からのみアクセス可能なポートで外部から直接アクセスすることはできません。
-
 
 ```shell
 # minikube: 仮想マシン上のLocalStack
@@ -219,5 +219,83 @@ LocalStack上に作成されたAWSリソースが正常に取得できていれ�
 
 ## 動作確認
 
+先程はローカル環境のホストOSからLocalStackに接続しましたが、実際接続するアプリケーションはホストOSではなく、こちらもローカル環境のKubernetesになります。
 最後に、Kubernetes内のコンテナからLocalStackにアクセスできることを確認しましょう。
 
+一般的にはアプリケーションからAWSのサービスに接続する場合はAWS SDKを利用しますが、ここではAWS CLIを使用して接続してみましょう。
+AWS CLIのコンテナイメージはAWSにより提供されているものがDockerHubに存在しています。
+- <https://hub.docker.com/r/amazon/aws-cli>
+
+これを使ってアプリケーションからのアクセスをシミュレーションしましょう。
+
+```shell
+kubectl run awscli -it --rm --image amazon/aws-cli --command bash
+```
+
+上記を実行すると`awscli`という名前のPodを作成し、その中で`amazon/aws-cli`コンテナが起動し、そのままコンテナにログインした状態となるはずです[^7]。
+[^7]: `-it`オプションではコンテナプロセスにターミナルを割り当て、標準入力の受け付ける状態を継続し、`--rm`オプションでは終了時にはPodを削除するように指定しています。
+
+以降はこの`awscli`Pod上でコマンドを実行していきます。
+
+まずは、LocalStackにアクセスするための認証情報やエンドポイントを準備しましょう。
+
+```shell
+aws configure set aws_access_key_id localstack
+aws configure set aws_secret_access_key localstack
+aws configure set region local
+LOCALSTACK_ENDPOINT="http://localstack:4566"
+```
+
+`aws configure`の部分は、先程の初期化スクリプトの内容(ConfigMap)と揃えます。
+
+`LOCALSTACK_ENDPOINT="http://localstack:4566"`の部分に注目してください。
+初期化スクリプト内では`localhost`、ホストOSの場合はminikubeのIPアドレス(`minikube ip`)または`localhost`を使用しました。
+今回の疑似アプリケーションはKubernetes内の専用コンテナのため、このような指定ではアクセスできません。
+Kubernetesクラスタ内からアクセスするためには、LocalStackのServiceリソース経由でアクセスする必要があります。
+
+ここで利用するのが、先程インストール後に確認した`localstack`Serviceです。
+KubernetesではServiceリソースの作成を検知すると、Kubernetes内部のDNS(CoreDNS)に`localstack.default.svc.cluster.local`というドメインからLocalStack Serviceへのエントリ(Aレコード)を登録します[^8]。
+同一Namespaceからのアクセスの場合は`.default.svc.cluster.local`は省略可能[^9]なため、ここではホスト名を`localstack`のみとしています。
+
+[^8]: もちろんServiceリソースのIPアドレスからでもアクセスは可能ですが、Serviceが再作成されるとIPアドレスは変わりますのでドメイン名からアクセスするのが一般的です。
+[^9]: 別Namespaceの場合でも`localstack.<namespace>`の省略形が利用可能です。
+
+それでは、LocalStack上のS3に任意のファイルを配置してみましょう。
+
+```shell
+# ファイル配置
+touch test.txt
+aws s3 cp test.txt s3://localstack-test-bucket/test.txt \
+  --endpoint ${LOCALSTACK_ENDPOINT}
+# バケット内のオブジェクト参照
+aws s3 ls s3://localstack-test-bucket \
+  --endpoint ${LOCALSTACK_ENDPOINT}
+```
+
+LocalStackのS3上にファイルが配置できていることが確認できているはずです。
+
+続いて、DynamoDBの方を確認してみましょう。
+
+```shell
+# レコード追加
+aws dynamodb put-item --table-name localstack-test \
+  --item '{"test_key": {"S": "test001"}}' \
+  --endpoint ${LOCALSTACK_ENDPOINT}
+# 追加したをレコード取得
+aws dynamodb get-item --table-name localstack-test \
+  --key '{"test_key": {"S": "test001"}}' \
+  --endpoint ${LOCALSTACK_ENDPOINT}
+```
+
+ここでもLocalStack上のDynamoDBにレコード追加・取得ができることが確認できれば終了です。
+そのままターミナルを終了すれば、`awscli`のPodは削除されます。
+
+アクセスの方法がどこからアクセスするかによって変わり、少しややこしい感じがしたと思いますので今回確認した内容を以下にまとめます。
+
+## クリーンアップ
+
+HelmでインストールしたLocalStackを削除する場合は以下のコマンドを実行します。
+
+```shell
+helm delete localstack
+```

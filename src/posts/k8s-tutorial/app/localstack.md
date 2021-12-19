@@ -275,7 +275,7 @@ aws s3 ls s3://localstack-test-bucket \
   --endpoint ${LOCALSTACK_ENDPOINT}
 ```
 
-LocalStackのS3上にファイルが配置できていることが確認できているはずです。
+LocalStackのS3上に、ファイル(`test.txt`)が配置できていることが確認できるはずです。
 
 続いて、DynamoDBの方を確認してみましょう。
 

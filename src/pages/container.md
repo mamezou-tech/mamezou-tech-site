@@ -29,7 +29,7 @@ titleImage: "/img/logo/mameka5_50.png"
 #### ローカル開発環境準備
 1. [実行環境(minikube)](/containers/k8s/tutorial/app/minikube)
 2. [自動化ツール(Skaffold)](/containers/k8s/tutorial/app/skaffold)
-3. ローカルAWS(localstack) <span style="color:red">Coming Soon!</span>
+3. [ローカルAWS(LocalStack)](/containers/k8s/tutorial/app/localstack)
 
 #### アプリケーション用マニフェスト作成
 1. Webアプリケーション(Deployment) <span style="color:red">Coming Soon!</span>

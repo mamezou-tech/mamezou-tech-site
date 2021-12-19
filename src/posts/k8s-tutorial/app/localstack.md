@@ -54,7 +54,7 @@ LocalStackのHelmチャートは、必要なスクリプトをConfigMapリソー
 
 [^3]: AWSリソースの構成管理については、IaCツールの[Terraform](https://www.terraform.io/)でも実行することができます。公式ドキュメントに記載がありますので、ローカル環境でもTerraformを利用する場合は[こちら](https://docs.localstack.cloud/integrations/terraform/)を参考にしてください。
 
-[^4]: 未検証ですがLocalStackでは、ユーザーデータを永続化することもできますので、必要に応じて[こちら](https://github.com/localstack/helm-charts/tree/main/charts/localstack#persistence-parameters)の設定も追加すると良いでしょう。
+[^4]: LocalStackでは、ユーザーデータを永続化することもできますので、必要に応じて[こちら](https://github.com/localstack/helm-charts/tree/main/charts/localstack#persistence-parameters)の設定も追加すると良いでしょう。手元の環境で試したところ、DynamoDBは再起動後も登録データが引き続き残っていましたが、S3の方は消えていました。S3でデータ永続化が必要な場合は、S3互換の[MinIO](https://min.io/)の利用を検討した方が良さそうです。
 
 ```yaml
 apiVersion: v1

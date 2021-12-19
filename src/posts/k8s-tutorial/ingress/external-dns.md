@@ -28,6 +28,7 @@ Alphaステータスのものが多いですが、対応するDNSプロバイダ
 Route53でのドメイン取得については[こちら](https://docs.aws.amazon.com/ja_jp/Route53/latest/DeveloperGuide/domain-register.html)の公式ドキュメントを参照してください。
 ここでは本サイト同様に`mamezou-tech.com`（Route53で購入）のサブドメインを使用します。
 
+[[TOC]]
 
 ## 事前準備
 以下のいずれかの方法で事前にEKS環境を作成しておいてください。

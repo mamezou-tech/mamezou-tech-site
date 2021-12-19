@@ -30,6 +30,9 @@ LocalStackの起動についてはいくつか方法がありますが、既にm
 また、LocalStackのインストールには[helm](https://helm.sh/)を利用します。
 未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください。
 
+ローカル環境からの動作確認ではAWS CLIも使用します。
+未セットアップの場合は[こちら](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/install-cliv2.html)を参考にインストールしてください。
+
 ## LocalStackインストール
 
 LocalStackにはHelmチャートが用意されていますので、迷わずこちらを使いましょう。

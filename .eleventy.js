@@ -1,4 +1,4 @@
-const { DateTime } = require("luxon");
+const {DateTime} = require("luxon");
 const socialImages = require("@11tyrocks/eleventy-plugin-social-images");
 const emojiRegex = require("emoji-regex");
 const slugify = require("slugify");
@@ -7,8 +7,14 @@ const pluginRss = require("@11ty/eleventy-plugin-rss");
 const markdownIt = require("markdown-it");
 const markdownItAnchor = require("markdown-it-anchor");
 const markdownItFootNote = require("markdown-it-footnote");
+const markdownItTableOfContents = require("markdown-it-table-of-contents")
 const packageVersion = require("./package.json").version;
 const readingTime = require("eleventy-plugin-reading-time");
+
+// for Node.js 14
+String.prototype.replaceAll = (from, to) => {
+  return from.replace(new RegExp(from, "g"), to)
+};
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(socialImages);
@@ -54,11 +60,11 @@ module.exports = function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter('htmlDateString', (dateObj) => {
-    return dateObj ? DateTime.fromJSDate(dateObj, { zone: 'Asia/Tokyo' }).toFormat('yyyy-LL-dd') : "";
+    return dateObj ? DateTime.fromJSDate(dateObj, {zone: 'Asia/Tokyo'}).toFormat('yyyy-LL-dd') : "";
   });
 
   eleventyConfig.addFilter('readableDate', (dateObj) => {
-    return DateTime.fromJSDate(dateObj, { zone: 'Asia/Tokyo' }).toFormat(
+    return DateTime.fromJSDate(dateObj, {zone: 'Asia/Tokyo'}).toFormat(
       'yyyy-LL-dd'
     );
   });
@@ -97,7 +103,7 @@ module.exports = function (eleventyConfig) {
         return item.data.layout === 'post';
       }
       return false;
-    }).sort((a, b) => a.date - b.date );
+    }).sort((a, b) => a.date - b.date);
   });
 
   eleventyConfig.addCollection('tagList', (collection) => {
@@ -143,7 +149,12 @@ module.exports = function (eleventyConfig) {
         .toLowerCase()
         .replace(/[\s+~\/]/g, "-")
         .replace(/[().`,%·'"!?¿:@*]/g, ""),
-  }).use(markdownItFootNote);
+  }).use(markdownItFootNote)
+    .use(markdownItTableOfContents, {
+      containerClass: "post__toc",
+      containerHeaderHtml: '<div class="toc-container-header"><p>Contents</p></div>'
+    });
+
   eleventyConfig.setLibrary("md", markdownLibrary);
 
   return {

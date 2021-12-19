@@ -5,7 +5,7 @@ date: 2021-12-19
 prevPage: ./src/posts/k8s-tutorial/app/skaffold.md
 ---
 
-これまでローカルでKubernetesを実行する環境として[minikube](https://minikube.sigs.k8s.io/)、開発からデプロイまでを自動化するツールとして[Skaffold](https://skaffold.dev/)を導入し、いよいよ開発が始められる状況が整ってきました。
+これまでローカルでKubernetesを実行する環境として[minikube](https://minikube.sigs.k8s.io/)、開発からデプロイまでを自動化するツールとして[Skaffold](https://skaffold.dev/)を導入し、いよいよ開発が始められる準備が整ってきました。
 
 最後にアプリケーションが外部プロダクトに依存する場合を考えてみましょう。
 一般的にアプリケーションはそれのみで完結することはほとんどなく、DBやキャッシュ等他のプロダクトを利用することが大半です。
@@ -20,7 +20,7 @@ prevPage: ./src/posts/k8s-tutorial/app/skaffold.md
 
 LocalStackの起動についてはいくつか方法がありますが、既にminikubeやDocker Desktopでローカル環境でKubernetesが動くようになっていますので、個別に起動するのではなくコンテナ(Pod)としてローカルKubernetes内で動かしてしまいましょう。
 
-[^2]: Pro Edition/Enterprise Editionを使用すると利用できるサービスの範囲も広がります。プロジェクトで利用するサービスに応じてこちらの導入を検討するのが良いかと思います。
+[^2]: Pro Edition/Enterprise Editionを使用すると、利用できるサービスの範囲も広がります。プロジェクトで利用するサービスに応じて、こちらの導入を検討するのが良いかと思います。
 
 ## 事前準備
 
@@ -54,7 +54,7 @@ LocalStackのHelmチャートは、必要なスクリプトをConfigMapリソー
 
 [^3]: AWSリソースの構成管理については、IaCツールの[Terraform](https://www.terraform.io/)でも実行することができます。公式ドキュメントに記載がありますので、ローカル環境でもTerraformを利用する場合は[こちら](https://docs.localstack.cloud/integrations/terraform/)を参考にしてください。
 
-[^4]: 未検証ですがLocalStackではユーザーデータを永続化することもできますので、必要に応じて[こちら](https://github.com/localstack/helm-charts/tree/main/charts/localstack#persistence-parameters)の設定も追加すると良いでしょう。
+[^4]: 未検証ですがLocalStackでは、ユーザーデータを永続化することもできますので、必要に応じて[こちら](https://github.com/localstack/helm-charts/tree/main/charts/localstack#persistence-parameters)の設定も追加すると良いでしょう。
 
 ```yaml
 apiVersion: v1
@@ -208,7 +208,7 @@ Ready.
 ```shell
 # minikube: 仮想マシン上のLocalStack
 LOCALSTACK_ENDPOINT="http://$(minikube ip):30000"
-# Docker Desktopの場合
+# Docker Desktop: HostOSで実行されているDocker(localhost)
 LOCALSTACK_ENDPOINT="http://localhost:30000"
 
 aws s3api list-buckets --endpoint ${LOCALSTACK_ENDPOINT}
@@ -249,7 +249,7 @@ LOCALSTACK_ENDPOINT="http://localstack:4566"
 `aws configure`の部分は、先程の初期化スクリプトの内容(ConfigMap)と揃えます。
 
 `LOCALSTACK_ENDPOINT="http://localstack:4566"`の部分に注目してください。
-初期化スクリプト内では`localhost`、ホストOSの場合はminikubeのIPアドレス(`minikube ip`)または`localhost`を使用しました。
+初期化スクリプト内では`localhost`、ホストOSの場合は仮想環境のIPアドレス(minikubeのIPアドレス(`minikube ip`)または`localhost`(Docker Desktop))を使用しました。
 今回の疑似アプリケーションはKubernetes内の専用コンテナのため、このような指定ではアクセスできません。
 Kubernetesクラスタ内からアクセスするためには、LocalStackのServiceリソース経由でアクセスする必要があります。
 
@@ -290,12 +290,31 @@ aws dynamodb get-item --table-name localstack-test \
 ここでもLocalStack上のDynamoDBにレコード追加・取得ができることが確認できれば終了です。
 そのままターミナルを終了すれば、`awscli`のPodは削除されます。
 
-アクセスの方法がどこからアクセスするかによって変わり、少しややこしい感じがしたと思いますので今回確認した内容を以下にまとめます。
+アクセスの方法がどこからアクセスするかによって変わり、少しややこしい感じがしたと思いますので、今回確認した内容を以下に整理します。
+
+![](https://i.gyazo.com/bf4de250d5bf9ba528687fbc53105476.png)
+
+番号 | 実行場所 | AWSエンドポイント
+---- | ---- | -----
+① | localstackのPod内(VolumeとしてMount) | `http://localhost:4566`
+② | ホストOSのAWS CLI| `http://$(minikube ip):30000` or `http://localhost:30000`
+③ | 疑似アプリ(コンテナ) | `http://localstack.default.svc.cluster.local:4566` or `http://localstack:4566`(同一Namespace)
 
 ## クリーンアップ
 
-HelmでインストールしたLocalStackを削除する場合は以下のコマンドを実行します。
+HelmでインストールしたLocalStackを削除する場合は、以下のコマンドを実行します。
 
 ```shell
 helm delete localstack
 ```
+
+初期化スクリプトはConfigMapで作成しているので、以下のコマンドで削除します。
+
+```shell
+kubectl delete -f localstack-init-scripts-config.yaml
+```
+
+---
+参照資料
+
+- LocalStackドキュメント: <https://docs.localstack.cloud/overview/>

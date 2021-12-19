@@ -93,6 +93,22 @@ module.exports = function (eleventyConfig) {
     return fileSlug;
   });
 
+  eleventyConfig.addShortcode('shortDesc', function (collections, page, defaultValue) {
+    if (!page.inputPath) return defaultValue;
+    const { inputPath } = page;
+    if (!inputPath) return defaultValue;
+
+    const isPost = inputPath.includes('/posts/')
+    if (!isPost) return defaultValue;
+
+    const post = collections.find(el => el.url === page.url)
+    if (!post) return defaultValue;
+    const content = post.templateContent.toString()
+      .replace(/(<([^>]+)>)/gi, "")
+      .replace(/[\r\n]/gi, "");
+    return content.substr(0, content.lastIndexOf("。", 200)) + "...";
+  });
+
   eleventyConfig.addFilter('inputPath', (pages, path) => {
     return pages.find((page) => page.inputPath === path);
   });

@@ -301,7 +301,7 @@ aws dynamodb get-item --table-name localstack-test \
 ---- | ---- | -----
 ① | localstackのPod内(VolumeとしてMount) | `http://localhost:4566`
 ② | ホストOSのAWS CLI| `http://$(minikube ip):30000` or `http://localhost:30000`
-③ | 疑似アプリ(コンテナ) | `http://localstack:4566`(同一Namespace)
+③ | 疑似アプリ(コンテナ) | `http://localstack:4566`(同一Namespaceの場合の省略形)
 
 ## クリーンアップ
 

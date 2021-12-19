@@ -38,7 +38,7 @@ LocalStackの起動についてはいくつか方法がありますが、既にm
 LocalStackにはHelmチャートが用意されていますので、迷わずこちらを使いましょう。
 - <https://github.com/localstack/helm-charts/tree/main/charts/localstack>
 
-まずはHelmのリポジトリを追加します。
+まずは、Helmチャートのリポジトリを追加します。
 
 ```shell
 helm repo add localstack-charts https://localstack.github.io/helm-charts
@@ -222,11 +222,11 @@ LocalStack上に作成されたAWSリソースが正常に取得できていれ�
 
 ## 動作確認
 
-先程はローカル環境のホストOSからLocalStackに接続しましたが、実際接続するアプリケーションはホストOSではなく、こちらもローカル環境のKubernetesになります。
+先程はローカル環境のホストOSからLocalStackに接続しましたが、実際AWSを利用するアプリケーションはホストOSのプロセスではなく、ローカル環境のKubernetesにデプロイされたコンテナになります。
 最後に、Kubernetes内のコンテナからLocalStackにアクセスできることを確認しましょう。
 
-一般的にはアプリケーションからAWSのサービスに接続する場合はAWS SDKを利用しますが、ここではAWS CLIを使用して接続してみましょう。
-AWS CLIのコンテナイメージはAWSにより提供されているものがDockerHubに存在しています。
+一般的にはアプリケーションからAWSのサービスに接続する場合はAWS SDKを利用しますが、ここでは簡易的にAWS CLIを使用して接続してみましょう。
+AWS CLIのコンテナイメージは、AWSにより提供されているものがDockerHubに存在しています。
 - <https://hub.docker.com/r/amazon/aws-cli>
 
 これを使ってアプリケーションからのアクセスをシミュレーションしましょう。
@@ -235,7 +235,7 @@ AWS CLIのコンテナイメージはAWSにより提供されているものがD
 kubectl run awscli -it --rm --image amazon/aws-cli --command bash
 ```
 
-上記を実行すると`awscli`という名前のPodを作成し、その中で`amazon/aws-cli`コンテナが起動し、そのままコンテナにログインした状態となるはずです[^7]。
+上記を実行すると、`amazon/aws-cli`コンテナを実行する`awscli`という名前のPodが作成され、そのままコンテナにログインした状態となるはずです[^7]。
 [^7]: `-it`オプションではコンテナプロセスにターミナルを割り当て、標準入力の受け付ける状態を継続し、`--rm`オプションでは終了時にはPodを削除するように指定しています。
 
 以降はこの`awscli`Pod上でコマンドを実行していきます。
@@ -254,11 +254,11 @@ LOCALSTACK_ENDPOINT="http://localstack:4566"
 `LOCALSTACK_ENDPOINT="http://localstack:4566"`の部分に注目してください。
 初期化スクリプト内では`localhost`、ホストOSの場合は仮想環境のIPアドレス(minikubeのIPアドレス(`minikube ip`)または`localhost`(Docker Desktop))を使用しました。
 今回の疑似アプリケーションはKubernetes内の専用コンテナのため、このような指定ではアクセスできません。
-Kubernetesクラスタ内からアクセスするためには、LocalStackのServiceリソース経由でアクセスする必要があります。
+Kubernetesクラスタ内からアクセスするためには、先程確認した`localstack`Serviceリソース経由でアクセスする必要があります。
 
-ここで利用するのが、先程インストール後に確認した`localstack`Serviceです。
-KubernetesではServiceリソースの作成を検知すると、Kubernetes内部のDNS(CoreDNS)に`localstack.default.svc.cluster.local`というドメインからLocalStack Serviceへのエントリ(Aレコード)を登録します[^8]。
-同一Namespaceからのアクセスの場合は`.default.svc.cluster.local`は省略可能[^9]なため、ここではホスト名を`localstack`のみとしています。
+Kubernetesでは、サービスディスカバリの仕組みとしてServiceリソースの作成を検知すると、静的エンドポイントとなるIPアドレスに加えて`<service-name>.<namespace>.svc.cluster.local`というドメインを割り当て、内部のDNS(CoreDNS)にエントリ(Aレコード)を追加するようになっています。
+したがって、クラスタ内部ではIPアドレスではなく、このドメインを使うことが望ましいでしょう[^8]。
+ここでは`localstack.default.svc.cluster.local`というドメインを使ってアクセスしますが、同一Namespaceからのアクセスの場合は`.default.svc.cluster.local`の部分は省略可能[^9]なため、`localstack`をエンドポイントとして利用している形になります。
 
 [^8]: もちろんServiceリソースのIPアドレスからでもアクセスは可能ですが、Serviceが再作成されるとIPアドレスは変わりますのでドメイン名からアクセスするのが一般的です。
 [^9]: 別Namespaceの場合でも`localstack.<namespace>`の省略形が利用可能です。

@@ -9,7 +9,6 @@ const markdownItAnchor = require("markdown-it-anchor");
 const markdownItFootNote = require("markdown-it-footnote");
 const markdownItTableOfContents = require("markdown-it-table-of-contents")
 const packageVersion = require("./package.json").version;
-const readingTime = require("eleventy-plugin-reading-time");
 
 // for Node.js 14
 String.prototype.replaceAll = (from, to) => {
@@ -20,7 +19,6 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(socialImages);
   eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.addPlugin(pluginRss);
-  eleventyConfig.addPlugin(readingTime);
 
   eleventyConfig.addWatchTarget("./src/sass/");
 
@@ -62,6 +60,22 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter('htmlDateString', (dateObj) => {
     return dateObj ? DateTime.fromJSDate(dateObj, {zone: 'Asia/Tokyo'}).toFormat('yyyy-LL-dd') : "";
   });
+
+  eleventyConfig.addFilter('readingTime', (postOrContent) => {
+    const htmlContent =
+      typeof postOrContent === 'string'
+        ? postOrContent
+        : postOrContent.templateContent;
+
+    if (!htmlContent) {
+      return "0 min";
+    }
+
+    const normalized = htmlContent
+      .replace(/(<([^>]+)>)/gi, "");
+    return `${(Math.ceil(normalized.length / 1000))} min`
+  });
+
 
   eleventyConfig.addFilter('readableDate', (dateObj) => {
     return DateTime.fromJSDate(dateObj, {zone: 'Asia/Tokyo'}).toFormat(

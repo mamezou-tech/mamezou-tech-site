@@ -12,24 +12,24 @@ titleImage: "/img/logo/mameka5_50.png"
 
 ### 環境構築編
 #### クラウド環境にKubernetesクラスタを構築
-1. [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
-2. [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
+1. [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
+2. [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
 #### Ingressでアプリケーションへのアクセス経路構築
-1. [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
-2. [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws)
-3. [カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns)
-4. [HTTPS通信(Cert Manager)](/containers/k8s/tutorial/ingress/https)
+1. [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx/)
+2. [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws/)
+3. [カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns/)
+4. [HTTPS通信(Cert Manager)](/containers/k8s/tutorial/ingress/https/)
 
 #### ストレージ(CSI)を導入してデータ永続化
-1. [AWS EBS](/containers/k8s/tutorial/storage/ebs)
-2. [AWS EFS](/containers/k8s/tutorial/storage/efs)
+1. [AWS EBS](/containers/k8s/tutorial/storage/ebs/)
+2. [AWS EFS](/containers/k8s/tutorial/storage/efs/)
 
 ### アプリケーション開発編
 #### ローカル開発環境準備
-1. [実行環境(minikube)](/containers/k8s/tutorial/app/minikube)
-2. [自動化ツール(Skaffold)](/containers/k8s/tutorial/app/skaffold)
-3. [ローカルAWS(LocalStack)](/containers/k8s/tutorial/app/localstack)
+1. [実行環境(minikube)](/containers/k8s/tutorial/app/minikube/)
+2. [自動化ツール(Skaffold)](/containers/k8s/tutorial/app/skaffold/)
+3. [ローカルAWS(LocalStack)](/containers/k8s/tutorial/app/localstack/)
 
 #### アプリケーション用マニフェスト作成
 1. Webアプリケーション(Deployment) <span style="color:red">Coming Soon!</span>
@@ -56,7 +56,7 @@ titleImage: "/img/logo/mameka5_50.png"
 5. ログ収集 <span style="color:red">Coming Soon!</span>
 
 #### バックアップ・リストアで重要なデータ保護
-1. [Velero による Kubernetes クラスタのバックアップ・リストア](/containers/k8s/tutorial/ops/velero-backup)
+1. [Velero による Kubernetes クラスタのバックアップ・リストア](/containers/k8s/tutorial/ops/velero-backup/)
 
 {% comment %}
 ### サービスメッシュ実践
@@ -75,4 +75,4 @@ titleImage: "/img/logo/mameka5_50.png"
 ### 応用編
 1. カスタムリソース(CRD)(Kubernetes Operators) <span style="color:red">Coming Soon!</span>
 1. ポリシー管理(OPA) <span style="color:red">Coming Soon!</span>
-1. [Argo Workflows](/containers/k8s/tutorial/advanced/argo-workflows)
+1. [Argo Workflows](/containers/k8s/tutorial/advanced/argo-workflows/)

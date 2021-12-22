@@ -10,20 +10,20 @@ titleImage: "/img/logo/mame-kun4_50.png"
 ここでは汎用性の高いCI/CDプラグインのOSSについてご紹介します。
 
 ### Github Actions
-* [setup-helmfile](/oss-intro/setup-helmfile)
+* [setup-helmfile](/oss-intro/setup-helmfile/)
 
   Github Actionsで [helmfile](https://github.com/roboll/helmfile) を setup する Action。
 
-* [buildpacks-action](/oss-intro/buildpacks-action)
+* [buildpacks-action](/oss-intro/buildpacks-action/)
 
   GitHub Actions で [Cloud Native Buildpacks](https://buildpacks.io) によるコンテナイメージビルドを実行する Action。
 
-* [monorepo-update-checker](/oss-intro/monorepo-update-checker)
+* [monorepo-update-checker](/oss-intro/monorepo-update-checker/)
 
   Monorepo内の変更有無を配下のプロジェクト（リポジトリ）ごとにチェックできる Action。
 
 ### Concourse CI
-* [concourse-k8s-resource](/oss-intro/concourse-k8s-resource)
+* [concourse-k8s-resource](/oss-intro/concourse-k8s-resource/)
 
   Go言語製のConcourse CIのKubernetes向けカスタムリソース。
 
@@ -31,6 +31,6 @@ titleImage: "/img/logo/mame-kun4_50.png"
 
 ## ツール
 
-* [sbgraph](/oss-intro/sbgraph)
+* [sbgraph](/oss-intro/sbgraph/)
 
   [Scrapbox](https://scrapbox.io) のページ間リンクを可視化するための CLI

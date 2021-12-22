@@ -30,8 +30,8 @@ NGINX Ingress ControllerはおそらくIngress Controllerでもっともよく�
 
 以下のいずれかの方法で事前にEKS環境を作成しておいてください。
 
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
 また、Ingress Controllerのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。
 ローカル環境に[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください[^1]。

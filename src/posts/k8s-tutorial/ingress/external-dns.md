@@ -33,16 +33,16 @@ Route53でのドメイン取得については[こちら](https://docs.aws.amazo
 ## 事前準備
 以下のいずれかの方法で事前にEKS環境を作成しておいてください。
 
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
 また、external-dnsのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください。
 
 次にIngress Controllerをインストールします。
 以下のいずれかをインストールしてください(以降はAWS Load Balancer Controllerをインストールしたものとして記載していますがIngressClassNameの指定以外は変わりません)。
 
-- [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws)
-- [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
+- [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws/)
+- [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx/)
 
 ## external-dnsのアクセス許可設定
 external-dnsがRoute53に対してレコード操作ができるようにIAM PolicyとIAM Roleを作成します。

@@ -5,7 +5,7 @@ date: 2021-11-14
 prevPage: ./src/posts/k8s-tutorial/storage/ebs.md
 ---
 
-[前回](/containers/k8s/tutorial/storage/ebs)はAWS EBSを使ってコンテナにストレージをマウントすることで、Podの再起動時にもデータを消失することなく継続して利用することができました。
+[前回](/containers/k8s/tutorial/storage/ebs/)はAWS EBSを使ってコンテナにストレージをマウントすることで、Podの再起動時にもデータを消失することなく継続して利用することができました。
 
 今回はNFSプロトコルを利用する共有ファイルストレージサービスである[AWS EFS](https://aws.amazon.com/jp/efs/)を使って複数Pod間でのファイル共有を実現します。
 EFSはAZ内でのみ利用可能なEBSと異なり、同一リージョン内の複数AZに冗長化されるため、AZ障害が発生しても別のAZのノードから引き続き利用することが可能です。
@@ -22,8 +22,8 @@ EFSについても[CSI(Container Storage Interface)](https://github.com/containe
 ## 事前準備
 以下のいずれかの方法で事前にEKS環境を作成しておいてください。
 
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
 CSIドライバのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。
 未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください。
@@ -357,7 +357,7 @@ eksctlで環境を構築している場合はマネジメントコンソール[^
 ### Terraform
 
 こちらはIaCツールのTerraformでEFSを作成します。
-まず[AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)で作成したTerraform実行ユーザー(`terraform`)にEFS作成のポリシーを追加しましょう。
+まず[AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)で作成したTerraform実行ユーザー(`terraform`)にEFS作成のポリシーを追加しましょう。
 今回はマネジメントコンソールより追加しますが、AWS CLI等でも構いません。
 
 マネジメントコンソールよりIAMサービス -> ユーザーを選択し、`terraform`ユーザーを表示し、「インラインポリシーの追加」をクリックします[^4]。

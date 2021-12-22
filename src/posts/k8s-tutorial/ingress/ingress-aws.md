@@ -6,7 +6,7 @@ prevPage: ./src/posts/k8s-tutorial/ingress/ingress-nginx.md
 nextPage: ./src/posts/k8s-tutorial/ingress/external-dns.md
 ---
 
-[前回](/containers/k8s/tutorial/ingress/ingress-nginx)はNginxをIngress Controllerとして利用しました。
+[前回](/containers/k8s/tutorial/ingress/ingress-nginx/)はNginxをIngress Controllerとして利用しました。
 Nginxはロードバランサーとして利用可能なプロキシサーバーで、実績のある成熟したミドルウェアと言えます。
 しかし、AWSにはロードバランサーのフルマネージドサービスとしてELB(Elastic Load Balancing)が存在しますので、あえてNginxを入れなくても、ロードバランサー機能として同等のことができます。
 
@@ -37,8 +37,8 @@ Ingress ControllerがIngressの投入を検知(API Serverから通知)すると�
 ## 事前準備
 以下のいずれかの方法で事前にEKS環境を作成しておいてください。
 
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
 また、Ingress Controllerのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください。
 

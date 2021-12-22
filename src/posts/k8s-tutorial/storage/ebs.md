@@ -38,8 +38,8 @@ k8sクラスタ環境のストレージ利用については以下の2種類が�
 ## 事前準備
 以下のいずれかの方法で事前にEKS環境を作成しておいてください。
 
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
 CSIドライバのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。
 未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください。

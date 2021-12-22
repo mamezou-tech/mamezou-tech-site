@@ -16,7 +16,7 @@ KubernetesのIngressは手動では証明書を作成・発行して登録する
 
 - 公式ドキュメント: <https://cert-manager.io/docs/>
 
-AWS Load Balancer ControllerつまりALB(Application Load Balancer)をIngressとして利用する場合(詳細は[こちら](/containers/k8s/tutorial/ingress/ingress-nginx)参照)は、[AWS Certificate Manager(ACM)](https://aws.amazon.com/jp/certificate-manager/)という証明書管理のマネージドサービスがありますのでこれを使う形になります（現時点でALBはACM以外の証明書を使う術はありません）[^1]。
+AWS Load Balancer ControllerつまりALB(Application Load Balancer)をIngressとして利用する場合(詳細は[こちら](/containers/k8s/tutorial/ingress/ingress-nginx/)参照)は、[AWS Certificate Manager(ACM)](https://aws.amazon.com/jp/certificate-manager/)という証明書管理のマネージドサービスがありますのでこれを使う形になります（現時点でALBはACM以外の証明書を使う術はありません）[^1]。
 
 [^1]: AWS Load Balancer ControllerでHTTPSを使う場合は[こちら](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/tasks/ssl_redirect/)が参考になります。
 
@@ -38,8 +38,8 @@ Cert ManagerはCRD(Custom Resource Definitions)として提供されるIssuerと
 ## 事前準備
 以下のいずれかの方法で事前にEKS環境を作成しておいてください。
 
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
 また、Cert Managerのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。
 未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3.3[^2]以降のバージョンをセットアップしてください。
@@ -49,7 +49,7 @@ Cert ManagerはCRD(Custom Resource Definitions)として提供されるIssuerと
 EKS環境構築後はクラスタにIngress Controllerをインストールします。
 今回はNGINX Ingress Controllerを使用します。以下手順で事前にセットアップしてください。
 
-- [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx)
+- [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx/)
 
 また、Let's Encryptを利用する場合は証明書の発行にドメイン検証が必要なため、正規のドメインが必要となります。
 以下の手順を実施して、ドメイン準備とDNSへのレコード登録を自動化するexternal-dnsのセットアップも実施してください。
@@ -57,7 +57,7 @@ EKS環境構築後はクラスタにIngress Controllerをインストールし�
 
 なお、今回はAWS Load Balancer ControllerではなくNGINX Ingress Controllerを使用しますので、以下手順に記載されている事前準備のAWS Load Balancer Controllerのインストールはスキップして構いません。
 
-- [カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns)
+- [カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns/)
 
 ## Cert Managerインストール
 

@@ -29,10 +29,10 @@ Kubernetes のオブジェクトは Key-Value store である etcd に保存さ�
 ## 事前準備
 以下のいずれかの方法で事前にEKS環境を作成しておいてください。
 
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
-[ストレージ - AWS EBS](/containers/k8s/tutorial/storage/ebs) では、EBS CSI ドライバーを導入しましたが、Velero は最新の v1.7 でも EBS CSI ドライバーで作成される PV をサポートしていません[^1]。そこで、in-tree のドライバーで作成される PV と VolumeSnapshot を利用するため、StorageClass は gp2 を利用します。
+[ストレージ - AWS EBS](/containers/k8s/tutorial/storage/ebs/) では、EBS CSI ドライバーを導入しましたが、Velero は最新の v1.7 でも EBS CSI ドライバーで作成される PV をサポートしていません[^1]。そこで、in-tree のドライバーで作成される PV と VolumeSnapshot を利用するため、StorageClass は gp2 を利用します。
 
 [^1]: 2022 年にリリースされる v1.8 で対応される予定です。[velero/ROADMAP.md at main · vmware-tanzu/velero](https://github.com/vmware-tanzu/velero/blob/main/ROADMAP.md)
 
@@ -192,7 +192,7 @@ NAME                                   STATUS   VOLUME                          
 persistentvolumeclaim/ebs-volume-pvc   Bound    pvc-e5021405-4313-4ab6-ac6e-f55884cb605f   10Gi       RWO            gp2            30s
 ```
 
-[ストレージ - AWS EBS](/containers/k8s/tutorial/storage/ebs) のハンズオンと同じように Pod にマウントされたパスにファイルを作成します。
+[ストレージ - AWS EBS](/containers/k8s/tutorial/storage/ebs/) のハンズオンと同じように Pod にマウントされたパスにファイルを作成します。
 
 ```
 $ POD=$(kubectl -n vs-test get pod -o jsonpath='{.items[0].metadata.name}' -l app=app)

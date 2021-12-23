@@ -67,11 +67,11 @@ ul.tdbc-column-container {
 .tdbc-hero {
   display: grid;
   min-height: 10vh;
-  place-content: center;
   padding-top: 3vh;
   padding-bottom: 3vh;
-  text-align: center;
   background-color: #fff;
+  text-align: center;
+  place-content: center;
 }
 
 .tdbc-row {
@@ -100,8 +100,8 @@ hr {
 }
 
 table {
-  border-collapse: collapse;
   margin: 1rem;
+  border-collapse: collapse;
 }
 
 table, th, td {
@@ -129,8 +129,8 @@ img.page-title-icon {
     padding: 1rem 0.5rem;
     float: left;
     color: black;
-    text-decoration: none;
     font-size: 1.25rem;
+    text-decoration: none;
   }
 
   a.active {
@@ -156,9 +156,9 @@ $social-min-height: 30px !default;
     list-style-type: none;
     margin: 0;
     li {
+      min-height: $social-min-height;
       float: left;
       vertical-align: top;
-      min-height: $social-min-height;
     }
   }
   .tdbc-twitter-follow {
@@ -189,4 +189,14 @@ $social-min-height: 30px !default;
 
 .tdbc-top-title {
   font-family: $tdbc-title-font-family;
+}
+
+.tooltipped {
+  &::before {
+    color: #fcf !important;
+  }
+  &::after {
+    background-color: #fcf !important;
+    color: #303 !important;
+  }
 }

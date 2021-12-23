@@ -8,11 +8,12 @@ const markdownIt = require("markdown-it");
 const markdownItAnchor = require("markdown-it-anchor");
 const markdownItFootNote = require("markdown-it-footnote");
 const markdownItTableOfContents = require("markdown-it-table-of-contents")
+const markdownItCustomRenderer = require("./markdown-it-custom-renderer")
 const packageVersion = require("./package.json").version;
 
 // for Node.js 14
-String.prototype.replaceAll = (from, to) => {
-  return from.replace(new RegExp(from, "g"), to)
+String.prototype.replaceAll = function (from, to) {
+  return this.replace(new RegExp(from, "g"), to)
 };
 
 module.exports = function (eleventyConfig) {
@@ -183,7 +184,8 @@ module.exports = function (eleventyConfig) {
     .use(markdownItTableOfContents, {
       containerClass: "post__toc",
       containerHeaderHtml: '<div class="toc-container-header"><p>Contents</p></div>'
-    });
+    })
+    .use(markdownItCustomRenderer);
 
   eleventyConfig.setLibrary("md", markdownLibrary);
 

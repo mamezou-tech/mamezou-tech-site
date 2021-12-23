@@ -1,7 +1,7 @@
 const copyButtonOptions = {
-  iconStyle: 'font-size: 15px; opacity: 0.4;',
+  iconStyle: 'font-size: 15px; opacity: 0.8;',
   iconClass: 'mdi mdi-content-copy',
-  buttonStyle: 'position: absolute; top: 7.5px; right: 6px; cursor: pointer; outline: none;',
+  buttonStyle: 'position: absolute; top: 7.5px; right: 6px; cursor: pointer; outline: none; opacity: 0.8;',
   buttonClass: ''
 };
 

@@ -41,23 +41,25 @@ WebアプリケーションはVue.jsで作成されたユーザーインター�
 
 ### Service
 
-Serviceは一群のPodが安定して機能を提供するために、主に以下の仕組みを提供します[^1]。
+Serviceは一群のPodが安定して機能を提供するために、主に以下の仕組みが実装されています[^1]。
 [^1]: Serviceの詳細はKubernetesの[公式ドキュメント](https://kubernetes.io/docs/concepts/services-networking/service/)を参照してください。
 
 - 静的エンドポイント提供：Pod群(つまりService)に対して静的なIPアドレス/ドメインを割り当てる
 - サービスディカバリー：バックエンドのPod群に対してトラフィックを負荷分散する(kube-proxy)
+- クラスタ外部への公開(ServiceType)：NodePortやLoadBalancer等を利用してサービスをクラスタ外部に公開する[^2]
 
 これは主に内部DNS、ラベルセレクターによるルーティング先Podの動的管理、実際の負荷分散を担うkube-proxy等によって実現されています。
+[^2]: 今回はIngressを使用するため、ここでは触れませんが、これを利用することで様々な形でクラスタ外部からのリクエストに応えることができます。詳細は[こちら](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)を参照してください。
 
 具体的にはServiceの生成が検知されると、Kubernetes内では以下のような動きをします(3PodをService(`foo`)で管理する例)。
 
 ![](https://i.gyazo.com/e5ab50458eca53982548a6698fb3c1c1.png)
 
-1. ServiceのドメインをControl Planeの内部DNSにServiceのエントリ(Aレコード/SRVレコード)を追加する[^2]
+1. ServiceのドメインをControl Planeの内部DNSにServiceのエントリ(Aレコード/SRVレコード)を追加する[^3]
 2. Serviceのラベルセレクターからルーティング対象のPodをルックアップして、PodのIPアドレス等をEndpointとして登録する
 3. 各ノードに配置されているkube-proxy(Control Plane)は、Service/Endpointの情報からルーティングルールを更新する（実際にクライアントからリクエストがあった場合は、これを利用して各Podに負荷分散）。
 
-[^2]: これについてはLocalStack構築時の[動作確認](/containers/k8s/tutorial/app/localstack/#動作確認)でも触れています。
+[^3]: これについてはLocalStack構築時の[動作確認](/containers/k8s/tutorial/app/localstack/#動作確認)でも触れています。
 
 kube-proxyで使われる負荷分散は、デフォルトではLinuxのiptablesが使われており、ランダムアルゴリズムでルーティングされます。
 この仕組みは初回のみでなく、関連するリソースに変更があった場合はループするようになっています(Control LoopとかReconciliation Loopと呼ばれます)。

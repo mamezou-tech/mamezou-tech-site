@@ -3,6 +3,7 @@ title: ローカル開発環境準備 - ローカルAWS(LocalStack)
 author: noboru-kudo
 date: 2021-12-19
 prevPage: ./src/posts/k8s-tutorial/app/skaffold.md
+nextPage: ./src/posts/k8s-tutorial/app/web-app.md
 ---
 
 これまでローカルでKubernetesを実行する環境として[minikube](https://minikube.sigs.k8s.io/)、開発からデプロイまでを自動化するツールとして[Skaffold](https://skaffold.dev/)を導入し、いよいよ開発が始められる準備が整ってきました。

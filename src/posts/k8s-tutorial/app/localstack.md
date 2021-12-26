@@ -200,8 +200,6 @@ Ready.
         "localstack-test"
     ]
 }
-/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initaws.d/localstack-test-table-attribute-definitions.json
-/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initaws.d/localstack-test-table-key-schema.json
 ```
 
 ログの内容から初期化スクリプトが実行されている様子が確認できます。
@@ -258,11 +256,11 @@ LOCALSTACK_ENDPOINT="http://localstack:4566"
 今回の疑似アプリケーションはKubernetes内の専用コンテナのため、このような指定ではアクセスできません。
 Kubernetesクラスタ内からアクセスするためには、先程確認した`localstack`Serviceリソース経由でアクセスする必要があります。
 
-Kubernetesでは、サービスディスカバリの仕組みとしてServiceリソースの作成を検知すると、静的エンドポイントとなるIPアドレスに加えて`<service-name>.<namespace>.svc.cluster.local`というドメインを割り当て、内部のDNS(CoreDNS)にエントリ(Aレコード)を追加するようになっています。
-したがって、クラスタ内部ではIPアドレスではなく、このドメインを使うことが望ましいでしょう[^8]。
+KubernetesではServiceリソースの作成を検知すると、静的エンドポイントとなるIPアドレスに加えて`<service-name>.<namespace>.svc.cluster.local`というドメインを割り当て、内部のDNS(CoreDNS)にエントリ(Aレコード)を追加するようになっています。
+このため、クライアントからはIPアドレスではなく、このドメインを使うことが望ましいでしょう[^8]。
 ここでは`localstack.default.svc.cluster.local`というドメインを使ってアクセスしますが、同一Namespaceからのアクセスの場合は`.default.svc.cluster.local`の部分は省略可能[^9]なため、`localstack`をエンドポイントとして利用している形になります。
 
-[^8]: もちろんServiceリソースのIPアドレスからでもアクセスは可能ですが、Serviceが再作成されるとIPアドレスは変わりますのでドメイン名からアクセスするのが一般的です。
+[^8]: もちろんServiceリソースのIPアドレスからでもアクセスは可能ですが、Serviceを再作成するとIPアドレスは変わりますのでドメイン名からアクセスするのが一般的です。
 [^9]: 別Namespaceの場合でも`localstack.<namespace>`の省略形が利用可能です。
 
 それでは、LocalStack上のS3に任意のファイルを配置してみましょう。

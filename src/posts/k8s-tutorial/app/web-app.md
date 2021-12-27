@@ -99,7 +99,7 @@ Deploymentは主に以下の機能を提供します。
 もう1つのデプロイ戦略で選択できるRecreateは、旧バージョンのPodを全て削除した後で、新バージョンのデプロイを開始します。
 この場合はダウンタイムは発生しますが、アプリが複数バージョン並行で実行できない場合はこちらを選択するとよいでしょう（デフォルトはRollingUpdateのため明示的に指定が必要です）。
 
-[^7]: Deploymentは極力レプリカ数を維持しながら順次アップデートをしていいきますので、一時的に指定したレプリカ数を超えるPod(新+旧)が起動することになります。多くのメモリやCPUを必要とするPodでRollingUpdateをする場合は、ノードのキャパシティに余裕をもたせる必要があります。
+[^7]: RollingUpdateは新バージョンが正常に起動してから、旧バージョンを終了するように動作しますので、一時的に指定したレプリカ数を超えるPod(新+旧)が起動することになります。多くのメモリやCPUを必要とするPodでRollingUpdateをする場合は、ノードのキャパシティに余裕をもたせる必要があります。
 
 DeploymentはこのReplicaSetを履歴として管理していますので、過去のデプロイ履歴参照やロールバックは以下のコマンドで実行することが可能です。
 
@@ -298,6 +298,10 @@ LocalStack上のAWSリソースについては、これで準備完了です。
 [^9]: Vue.jsに限らず昨今のUI向けのフレームワークはローカル向けの開発支援機能が完備されているため、これをそのまま利用した方が良いと思います。
 
 [^10]: 商用環境においてもUIはコンテナ化せずに、CDNやホスティングサービス等を使うことの方が多いかと思います。
+
+完成形のイメージは以下のようになります。
+
+![](https://i.gyazo.com/a0e7c5043a62f25feea3976891dcb56b.png)
 
 ### ConfigMap
 
@@ -527,7 +531,55 @@ skaffold dev
 # minikube
 curl -v task.minikube.local/api/tasks?userName=test
 # docker desktop
-curl -v localhost/api/tasks?userName=test
+# curl -v localhost/api/tasks?userName=test
 ```
 
+ここでは200レスポンスが返ってきていれば問題ありません。
+このAPIは後続の作業でも引き続き使用しますのでこのままの状態にしておいてください(Ctl+Cを押すとアンデプロイされます)。
 
+### UIリソース(web)
+
+最後にUIを起動して、先程デプロイしたAPIに接続しましょう。
+まずは、`web`ディレクトリに移動して関連モジュールをインストールしましょう。
+
+```shell
+# app/webディレクトリ直下
+npm install
+```
+
+次にUIからAPIへのアクセス方法を確認します。
+`web/vue.config.js`でUIからAPIへのアクセスのエンドポイントを指定する設定があります。
+ここでminikubeの場合は、Ingressアドオンで指定したドメイン[^14]、Docker Desktopの場合は`localhost`を指定してください。
+
+[^14]: minikubeの導入の[こちら](/containers/k8s/tutorial/app/minikube/#ingressアドオン有効化)で設定しているドメインです。
+
+```js
+module.exports = {
+  devServer: {
+    port: 8080,
+    proxy: {
+      "/api": {
+        // for minikube
+        target: "http://task.minikube.local",
+        // for docker-desktop
+        // target: "http://localhost",
+        changeOrigin: true,
+      },
+    },
+  },
+};
+```
+
+最後に以下のコマンドを実行すれば、ローカル環境でUIを起動(開発モード)できます。
+
+```shell
+npm run serve
+```
+
+Vue.jsのリソースが開発モードでビルドされ、デフォルトでは8080番ポートで公開されます。
+ブラウザから`http://localhost:8080`にアクセスしてUIが表示されることを確認しましょう。
+
+TODO: UIのスクショ or 動画を貼り付ける
+
+任意のユーザー名を入力し、タスク管理ツールを起動し、タスクの登録、表示、完了更新ができれば動作確認は終了です。
+引き続き次回はバッチアプリケーションの作成に入ります。

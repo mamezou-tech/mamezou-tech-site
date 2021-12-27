@@ -301,7 +301,7 @@ LocalStack上のAWSリソースについては、これで準備完了です。
 
 完成形のイメージは以下のようになります。
 
-![](https://i.gyazo.com/a0e7c5043a62f25feea3976891dcb56b.png)
+![](https://i.gyazo.com/6e46c73c6e74ea6f51191c23278055e8.png)
 
 ### ConfigMap
 

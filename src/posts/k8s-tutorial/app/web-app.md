@@ -48,34 +48,65 @@ Serviceは一群のPodが安定して機能を提供するために、主に以�
 - サービスディカバリー：バックエンドのPod群に対してトラフィックを負荷分散する(kube-proxy)
 - クラスタ外部への公開(ServiceType)：NodePortやLoadBalancer等を利用してサービスをクラスタ外部に公開する[^2]
 
-これは主に内部DNS、ラベルセレクターによるルーティング先Podの動的管理、実際の負荷分散を担うkube-proxy等によって実現されています。
+これは内部DNS、ラベルセレクターによるルーティング先Podの動的管理、実際の負荷分散を担うkube-proxy等によって実現されています。
 [^2]: 今回はIngressを使用するため、ここでは触れませんが、これを利用することで様々な形でクラスタ外部からのリクエストに応えることができます。詳細は[こちら](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)を参照してください。
 
-具体的にはServiceの生成が検知されると、Kubernetes内では以下のような動きをします(3PodをService(`foo`)で管理する例)。
+具体的にはServiceの生成が検知されると、Kubernetes内では以下のような動きをします(Service`foo`で3Podを管理する例)。
 
-![](https://i.gyazo.com/e5ab50458eca53982548a6698fb3c1c1.png)
+![](https://i.gyazo.com/bb8d4ca6846ef8cf57fa051420bfdb3a.png)
 
 1. ServiceのドメインをControl Planeの内部DNSにServiceのエントリ(Aレコード/SRVレコード)を追加する[^3]
 2. Serviceのラベルセレクターからルーティング対象のPodをルックアップして、PodのIPアドレス等をEndpointとして登録する
-3. 各ノードに配置されているkube-proxy(Control Plane)は、Service/Endpointの情報からルーティングルールを更新する（実際にクライアントからリクエストがあった場合は、これを利用して各Podに負荷分散）。
+3. 各ノードに配置されているkube-proxy(Control Plane)は、Service/Endpointの情報からルーティングルール[^4]を更新する（実際にクライアントからリクエストがあった場合は、これを利用して各Podに負荷分散）。
 
 [^3]: これについてはLocalStack構築時の[動作確認](/containers/k8s/tutorial/app/localstack/#動作確認)でも触れています。
 
-kube-proxyで使われる負荷分散は、デフォルトではLinuxのiptablesが使われており、ランダムアルゴリズムでルーティングされます。
+[^4]: kube-proxyで使われる負荷分散は、デフォルトではLinuxのiptablesが使われており、ランダムアルゴリズムでルーティングされます。
+
 この仕組みは初回のみでなく、関連するリソースに変更があった場合はループするようになっています(Control LoopとかReconciliation Loopと呼ばれます)。
 配下のPodが新規生成や削除された場合は、この動作が再度実施されて常に最新状態に保たれるようになっています。
 
-Serviceでは、もう1つ重要な点としてReadinessProbeというヘルスチェックがあります。これは以下のように動きます。
-1. Podに何かしらの障害が発生する。
-2. ReadinessProbeのヘルスチェックがしきい値を超えて失敗する。
-3. 上記の②の部分で障害が発生しているPodがEndpointから除外される(正確にはnotReadyAddressになる)。
-4. この情報がkube-proxyに伝えられルーティングルールが更新される。これにより障害中のPodにはルーティングから除外される。
-5. その後Podが再起動等で回復する。
-6. 再びループが始まりEndpointが更新され、kube-proxyのルーティングルールが更新される。これにより該当Podは再度トラフィックを受け付ける
+Serviceのもう1つ重要な役割として、ルーティングルールを正常なPodのみで構成する機能があります。これは以下のように動きます。
+![](https://i.gyazo.com/7de15bfaba007e423a085813e306b372.png)
 
-このようにして、正常なPodのみにトラフィックがルーティングされるようにするのもServiceリソースな役割です。
+このように、ServiceリソースはPodに定義されたReadinessProbeのヘルスチェックの結果を監視し、異常を検知したPodはトラフィックルーティングから除外されます。
+もちろんその後Podが復旧した場合は逆の動きをします(ルーティングルールに追加)。
 
 ### Deployment
+
+Deploymentはアプリケーションの更新を宣言的に行うためのリソースです[^5]。
+
+[^5]: 他にもStatefulSetやDaemonSetが存在します。詳細は[こちら(StatefulSet)](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)や[こちら(DaemonSet)](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)を参照してください。
+
+DeploymentがなくてもPod単体でデプロイすることは可能ですが、新バージョンをリリースする場合にどうすればよいでしょうか？
+最もシンプルな方法は旧バージョンを削除して新バージョンをデプロイすれば良いですが、ダウンタイムをなくすためには、Blue-Greenデプロイを使って旧バージョンと並行して新バージョンをリリースし、正常に動作確認が取れたら旧バージョンを削除する等の工夫が必要になるでしょう。
+また、アプリケーションが複数レプリカで動作させる場合には、さらに複雑なデプロイ作業が必要になるでしょう。
+
+Deploymentを導入することで、マニフェストに期待する状態を記載するだけで、それ以降のオペレーションはKubernetesに任せることができます。
+Deploymentは主に以下の機能を提供します。
+
+- レプリカ管理：Podで必要なレプリカ数を維持する。内部的にはReplicaSetを使用する。
+- デプロイ：デプロイ戦略として順次更新(RollingUpdate)/と再生性(Recreate)を提供する。
+- リビジョン管理：デプロイしたアプリケーションのバージョン管理を行い、ロールバック・デプロイ中断等の機能を提供する。
+
+下図はRollingUpdateでアプリケーションをバージョンアップ(v1->v2)する例です。
+
+![](https://i.gyazo.com/92b91ef9da86f34cdeadd78be91b95ae.png)
+
+図では分かりにくいですが、Deploymentで新しいバージョンをデプロイすると、新バージョンのPodが少しずつ(デフォルトはレプリカ数の25%)起動し、ヘルスチェックが通って正常に起動すると今度は旧バージョンのPodがアンデプロイされていくようになります[^6]。
+
+[^6]: Deploymentは極力レプリカ数を維持しながら順次アップデートをしていいきますので、一時的に指定したレプリカ数を超えるPod(新+旧)が起動することになります。多くのメモリやCPUを必要とするPodでRollingUpdateをする場合は、ノードのキャパシティに余裕をもたせる必要があります。
+
+DeploymentはこのReplicaSetを履歴として管理していますので、過去のデプロイ履歴参照やロールバックは以下のコマンドで実行することが可能です。
+
+```shell
+# デプロイ履歴を一覧表示
+kubectl rollout history deploy <deployment-name>
+# 特定のリビジョンのデプロイ内容を詳細表示
+kubectl rollout history deploy <deployment-name> --revision <rev-number>
+# 特定のリビジョンのデプロイにロールバック
+kubectl rollout undo deploy <deployment-name> --to-revision <rev-number>
+```
 
 ### ConfigMap
 

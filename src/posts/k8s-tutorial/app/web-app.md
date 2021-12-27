@@ -96,7 +96,7 @@ Deploymentは主に以下の機能を提供します。
 
 図では分かりにくいですが、Deploymentで新しいバージョンをデプロイすると、新バージョンのPodが少しずつ(デフォルトはレプリカ数の25%)起動し、ヘルスチェックが通って正常に起動すると今度は旧バージョンのPodがアンデプロイされていくようになります[^7]。
 
-もう1つのデプロイ戦略で選択できるRecreateは、一旦旧バージョンのPodを全て削除した後で、新バージョンのデプロイを開始します。
+もう1つのデプロイ戦略で選択できるRecreateは、旧バージョンのPodを全て削除した後で、新バージョンのデプロイを開始します。
 この場合はダウンタイムは発生しますが、アプリが複数バージョン並行で実行できない場合はこちらを選択するとよいでしょう（デフォルトはRollingUpdateのため明示的に指定が必要です）。
 
 [^7]: Deploymentは極力レプリカ数を維持しながら順次アップデートをしていいきますので、一時的に指定したレプリカ数を超えるPod(新+旧)が起動することになります。多くのメモリやCPUを必要とするPodでRollingUpdateをする場合は、ノードのキャパシティに余裕をもたせる必要があります。
@@ -116,12 +116,12 @@ kubectl rollout undo deploy <deployment-name> --to-revision <rev-number>
 
 ConfigMapはアプリケーション内の設定を外部リソースとして分離します。
 設定情報は環境によって異なるものが多いですが、アプリケーション内に持たせるとその都度ビルドが必要になります。
-ConfigMapを使うことで、それらを外部化し、同じコンテナイメージで環境によって設定を切り替えることを可能となります。
+ConfigMapを使うことで、同一イメージで、複数環境に応じて設定を切り替えることが可能となります。
 
 ConfigMapはキーバリュー型で記述し、環境変数またはボリュームとしてPodにマウントすることで利用可能となります。
-アプリケーションで使う設定ファイルをそのまま値として記述し、これをそのままボリュームとしてマウントしてアプリケーションで参照可能にするやり方はよく使われます。
+アプリケーションで使う設定ファイルをそのまま値として記述し、これをそのままボリュームとしてマウントして、アプリケーションで参照するやり方はよく使われます。
 
-例えばSpring Bootのapplication.ymlは以下のようになります。
+例えば、Spring Bootのapplication.ymlの場合は以下のようになります。
 
 ```yaml
 apiVersion: v1
@@ -149,8 +149,385 @@ Secretを使うことで、Kubernetes内(etcd)での暗号化や、ボリュー�
 [^8]: とはいえ、kubectlでSecretを参照(`kubectl get secret -o yaml <secret-name>`)し、値をbase64デコードすれば中身が見れますので、SecretリソースはRBACでアクセス不可とするのが望ましいでしょう。
 
 ## 環境セットアップ
-### LocalStack
+
+では、ここからローカル環境でアプリケーションをデプロイしていきましょう。
+本チュートリアルではアプリケーションの実装自体が目的ではありませんので、ソースコードについては事前にGitHubに用意しました。
+以下のリポジトリをクローンしてローカル環境に配置してください。
+
+- <https://github.com/mamezou-tech/k8s-tutorial>
+
+`app`ディレクトリ配下が対象のソースコードになります。
+今回利用する部分は以下のとおりです(それ以外については無視してください)。
+
+```
+.
+├── apis
+│   └── task-service -> API(Node.js+Express)ソースコード
+├── k8s
+│   └── v1 -> Kubernetesマニフェスト(ローカル向け)
+└── web -> UIリソース(Vue.js)
+```
+
+アプリケーションマニフェスト作成前に、LocalStack上のAWSリソース作成しておきましょう。
+[こちら](/containers/k8s/tutorial/app/localstack/)を済ませた方は、既にローカル環境でLocalStackが動作しているはずです。
+
+このときは、初期化スクリプトでサンプルのAWSリソースとしてDynamoDBとS3を作成しましたが、今回はDynamoDBのみで構いません。
+`app/k8s/v1/localstack`を作成し、`localstack-init-scripts-config.yaml`を配置しましょう。
+以下の内容でConfigMapのリソースを記述してください。
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: localstack-init-scripts-config
+data:
+  # AWS Credential情報初期化
+  01-credential.sh: |
+    #!/bin/bash
+    aws configure set aws_access_key_id localstack
+    aws configure set aws_secret_access_key localstack
+    aws configure set region local
+    export LOCALSTACK_ENDPOINT=http://localhost:4566
+  # DynamoDBテーブル作成
+  02-create-task-table.sh: |
+    #!/bin/bash
+    aws dynamodb create-table --table-name tasks \
+      --key-schema  AttributeName=task_id,KeyType=HASH \
+      --attribute-definitions file:///docker-entrypoint-initaws.d/02-task-attr-definitions.json \
+      --global-secondary-indexes file:///docker-entrypoint-initaws.d/02-task-gsi.json \
+      --billing-mode PAY_PER_REQUEST \
+      --endpoint ${LOCALSTACK_ENDPOINT}
+    aws dynamodb list-tables --endpoint ${LOCALSTACK_ENDPOINT} --region local
+  02-task-attr-definitions.json: |
+    [
+      {
+        "AttributeName": "task_id",
+        "AttributeType": "S"
+      },
+      {
+        "AttributeName": "start_at",
+        "AttributeType": "N"
+      },
+      {
+        "AttributeName": "updated_at",
+        "AttributeType": "N"
+      },
+      {
+        "AttributeName": "user_name",
+        "AttributeType": "S"
+      },
+      {
+        "AttributeName": "status",
+        "AttributeType": "S"
+      }
+    ]
+  02-task-gsi.json: |
+    [
+      {
+        "IndexName": "user_index",
+        "KeySchema": [
+          {
+             "AttributeName": "user_name",
+             "KeyType": "HASH"
+          },
+          {
+             "AttributeName": "start_at",
+             "KeyType": "RANGE"
+          }
+        ],
+        "Projection": {
+            "ProjectionType": "ALL"
+        }
+      },
+      {
+        "IndexName": "status_index",
+        "KeySchema": [
+          {
+             "AttributeName": "status",
+             "KeyType": "HASH"
+          },
+          {
+             "AttributeName": "updated_at",
+             "KeyType": "RANGE"
+          }
+        ],
+        "Projection": {
+            "ProjectionType": "ALL"
+        }
+      }
+    ]
+```
+
+前回と違ってだいぶ複雑になりましたが、やっていることはDynamoDBのテーブルとインデックス(Global Secondary Index)を作成しているだけです。
+スキーマ定義が若干複雑になりましので、別途JSONファイルとして作成し、初期化スクリプト(`02-create-task-table.sh`)はそこからテーブルやインデックスを作成するようにしています。
+
+ConfigMapで言及した通り、ここではConfigMap内にファイル自体(シェルやJSON)を値として設定していますので、これをボリュームとしてPodにマウントすれば、LocalStackは初期化スクリプトとして認識します。
+
+これをローカル環境のKubernetesに投入しましょう。
+
+```shell
+kubectl apply -f k8s/v1/localstack/localstack-init-scripts-config.yaml
+```
+
+これを認識させるためにLocalStackを再起動しましょう。Helmチャートの中でLocalStackはDeploymentとして作成されています。
+Deployment配下のPodを全て再起動するには、以下のコマンドを実行します。
+
+```shell
+kubectl rollout restart deploy localstack
+```
+
+実際に作成されたかについては、[LocalStackでの動作確認](/containers/k8s/tutorial/app/localstack/#動作確認)を参考にチェックしてみてください。
+LocalStack上のAWSリソースについては、これで準備完了です。
+
+## マニフェストファイル作成
+
+それではKubernetesのマニフェストファイルを作成していきましょう。
+今回作成するリソースは以下です。
+
+- ConfigMap: APIの設定情報
+- Deployment: API(task-service)を実行するコンテナ
+- Service: Deploymentで管理するPod群に対するエンドポイント
+- Ingress: クラスタ外からAPIへのルーティングルール
+
+なお、UIリソース(`web`ディレクトリ配下)については、ここではコンテナ化しませんでした。
+もちろん、これについてもローカルのKubernetes上でコンテナとして動作させることができます。
+しかし、UIは見た目や振る舞いを試すために、Try&Errorのフィードバック速度が重要です。
+一般的にUIフレームワーク(この場合はVue CLI)の開発支援機能にはこの辺りが備わっており、これを利用する方が開発効率が良い場合が多いです。[^9]。
+このため、UIについてはここではVue CLIの開発支援機能を用いてKubernetesとは別プロセスで動作させます[^10]。
+
+[^9]: Vue.jsに限らず昨今のUI向けのフレームワークはローカル向けの開発支援機能が完備されているため、これをそのまま利用した方が良いと思います。
+
+[^10]: 商用環境においてもUIはコンテナ化せずに、CDNやホスティングサービス等を使うことの方が多いかと思います。
+
+### ConfigMap
+
+それでは、ConfigMapから作成しましょう。
+`app/k8s/v1/task-service`を作成し、`configmap.yaml`を配置しましょう。
+こちらはアプリケーションの設定を記述します。以下のようになります。
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: task-service-config
+data:
+  STAGE: localstack
+  NODE_ENV: development
+  TZ: Asia/Tokyo
+  TASK_TABLE_NAME: tasks
+  AWS_ENDPOINT: http://localstack:4566
+  AWS_DEFAULT_REGION: local
+  AWS_ACCESS_KEY_ID: localstack
+  AWS_SECRET_ACCESS_KEY: localstack
+```
+
+アプリケーションで利用するもののほかに、AWS関連の認証情報を設定しました。今回はLocalStackのためAWS認証情報はLocalStackの初期化スクリプトに合わせます(アクセスキー、シークレット等は任意の値で構いません)。
+今回アプリケーションはNode.jsのため、これらを`process.env.xxxxxx`で参照できるようにしたいところですね。
+
+### Deployment
+
+続いてDeploymentの方に入ります。同ディレクトリ内に`deployment.yaml`を作成しましょう。
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-service
+spec:
+  replicas: 2
+  # ReplicaSetのラベルセレクター
+  selector:
+    matchLabels:
+      app: task-service
+  template:
+    metadata:
+      # Podのラベル
+      labels:
+        app: task-service
+    spec:
+      containers:
+        - name: task-service
+          # アプリケーションコンテナ
+          image: task-service
+          # LocalなのでImagePullはしない
+          imagePullPolicy: Never
+          # Podの公開ポート
+          ports:
+            - name: http
+              containerPort: 3000
+          # ConfigMapから環境変数を指定
+          envFrom:
+            - configMapRef:
+                name: task-service-config
+          # 各種ヘルスチェック
+          readinessProbe:
+            httpGet:
+              port: 3000
+              path: /health/readiness
+          livenessProbe:
+            httpGet:
+              port: 3000
+              path: /health/liveness
+          startupProbe:
+            httpGet:
+              port: 3000
+              path: /health/startup
+```
+
+重要な点については上記のコメントに記載していますが、2点着目してほしい部分があります。
+
+1点目は`envFrom`の部分です。
+LocalStackの初期化スクリプトは、ファイル自体をマウントしましたが、ここではConfigMapの内容をそのままコンテナの環境変数に取り込んでいます。
+こうすることで、ConfigMapがそのままコンテナの環境変数として取り込むことができ、アプリケーション内では`process.env.STAGE`のようにしてConfigMapの内容を参照することが可能になります。
+今回はConfigMap全てを取り込みましたが、以下のように個別の値としても環境変数に取り込むことが可能です。
+
+```yaml
+    spec:
+      containers:
+        - name: task-service
+          # 省略
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: task-service-config
+                  key: NODE_ENV
+```
+
+2点目は`readinessProbe`/`livenessProbe`/`startupProbe`の部分です。
+ReadinessProbeは[Service](/containers/k8s/tutorial/app/web-app/#service)のところで触れましたが、指定したヘルスチェックがしきい値(デフォルトは10秒間隔で3回)を超えて失敗すると、ルーティングルールより除外されます。
+LivenessProbeの場合は、しきい値(デフォルトはReadinessProbeと同じ)を超えて失敗すると、コンテナが再起不能と判断されて再起動されます。
+
+StartupProbeは比較的新しいもの(v1.18からデフォルト有効)で、起動の遅いアプリケーションの場合、起動前にLivenessProbeによる再起動ループが発生することがあります[^11]。
+StartupProbeは起動時のみにチェックされ、これが成功した後で、ReadinessProbe/LivenessProbeの実行が開始されるため、このような状況を回避することができます[^12]。
+
+これらのヘルスチェックはKubernetesを正しく運用する上でとても重要です。詳細は[公式ガイド](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)を参照してください。
+
+[^11]: 以前は再起動ループに陥らないようにLivenessProbe/ReadinessProbeの`initialDelaySeconds`で調整していまいた。
+
+[^12]: 今回作成したアプリケーションは高速に起動するため、StartupProbeは指定しなくても問題はありません。
+
+### Service
+
+そして次はServiceです。同ディレクトリ内に`service.yaml`を作成しましょう。
+こちらは最もシンプルな最小構成になります。
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-service
+spec:
+  selector:
+    app: task-service
+  ports:
+    - port: 3000
+      targetPort: http
+```
+
+ラベルセレクターで`app: task-service`とし、先程Deploymentで指定したPodのラベルと合わせます。
+こうすることで、このServiceはDeploymentで作成された2つのPodに対して、負荷分散してトラフィックルーティングを行うようになります。
+
+`ports`ではこのServiceが公開するポート番号を指定します。こちらはPodに合わせて3000番ポートを指定しました。
+`targetPort`は`http`としています。ここにはPod側のポートを指定しますが、Deploymentで指定した`ports`の`name`を指定することもできます(Named Portと言われます)。
+こうすることで、Serviceはルーティングする対象のポートの名前だけ知っていれば、具体的なポート番号は知る必要がなく、Podとの結合度を下げることができます。
+
+### Ingress
+
+最後にIngressで、クラスタ外部からのリクエストを受け付けるようにします。
+`app/k8s/v1/ingress`を作成し、`ingress.yaml`を配置しましょう。
+こちらも非常にシンプルです。
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: task.minikube.local
+      http:
+        paths:
+          - backend:
+              service:
+                name: task-service
+                port:
+                  number: 3000
+            path: /api
+            pathType: Prefix
+```
+
+上記はminikubeを前提としているものです。
+`http://task.minikube.local/api` へのアクセスについてAPIのServiceにルーティングするように指定しています。
+Docker Desktopの場合は、localhostへのアクセスのため`host`部分を削除してください(任意のホスト名が許可されます)。
+
+## 動作確認
+
+では、ここまで作成したら実際にローカル環境のKubernetesで動かしてみましょう。
 
 ### Skaffold
 
-## 動作確認
+まずはSkaffoldの定義ファイルを作成しましょう。
+Skaffoldについては事前準備で[こちら](/containers/k8s/tutorial/app/skaffold/)でインストール済みかと思います。
+
+[セットアップ時](/containers/k8s/tutorial/app/skaffold/#skaffold定義ファイルの作成)に実施したようにskaffold.yamlを作成しましょう。
+appディレクトリ上で以下を実行しましょう。
+
+```shell
+skaffold init --artifact=apis/task-service/Dockerfile.local=task-service \
+  --kubernetes-manifest=k8s/v1/task-service/*.yaml \
+  --kubernetes-manifest=k8s/v1/ingress/*.yaml \
+  --force
+```
+
+実行が終わると、`app`直下に`skaffold.yaml`というファイルが作成されているはずです。
+以下のような内容になります。
+
+```yaml
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: app
+build:
+  artifacts:
+  - image: task-service
+    context: apis/task-service
+    docker:
+      dockerfile: Dockerfile.local
+deploy:
+  kubectl:
+    manifests:
+    - k8s/v1/task-service/*.yaml
+    - k8s/v1/ingress/*.yaml
+```
+
+buildステージで`apis/task-service`配下のDockerfile.localからイメージをビルドし、deployステージでkubectlでマニフェストをKubernetesに適用するようになっていることが分かります。
+
+今回はビルドスピードをあげるために`dockerfile`にローカル専用のDockerfileの`Dockerfile.local`を指定しています[^13]。
+
+[^13]: 商用環境向けにはWebpackでのビルドを用意していますが、ローカル環境で都度実行するのは時間がかかるため、ts-nodeコマンドから実行しています。
+
+実行する前に、事前に`app/apis/task-service`配下で依存モジュールをインストールしてください。これらはコンテナビルド時にコピーされて再利用されます。
+
+```shell
+npm install
+```
+
+では、こちらをデプロイしましょう。`app`ディレクトリ直下に移動して以下のSkaffoldコマンドを起動します。
+
+```shell
+skaffold dev
+```
+
+コンテナビルドとKubernetesへのデプロイが始まっていることが分かります。
+以下のコマンドでレスポンスが返ってくることを確認しましょう。
+
+```shell
+# minikube
+curl -v task.minikube.local/api/tasks?userName=test
+# docker desktop
+curl -v localhost/api/tasks?userName=test
+```
+
+

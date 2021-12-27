@@ -33,7 +33,7 @@ choco install docker
 Docker デーモンを WSL2 にインストールし公開している場合は、環境変数 `DOCKER_HOST` を次のように設定します。
 
 コマンドプロンプトの場合
-```
+```shell
 set DOCKER_HOST=tcp://localhost:2375
 ```
 
@@ -45,7 +45,7 @@ $Env:DOCKER_HOST="tcp://localhost:2375"
 リモートサーバで公開している場合は Linux の Docker デーモンのホストまたは IP アドレス (例では 192.168.1.3) を環境変数 `DOCKER_HOST` に設定します。
 
 コマンドプロンプトの場合
-```
+```shell
 set DOCKER_HOST=tcp://192.168.1.3:2375
 ```
 
@@ -58,6 +58,6 @@ $Env:DOCKER_HOST="tcp://192.168.1.3:2375"
 
 以下のコマンドの実行が成功すれば、リモートの Docker デーモンへの接続できています。
 
-```
+```powershell
 docker run -it --rm hello-world
 ```

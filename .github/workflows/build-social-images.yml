@@ -7,30 +7,45 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: browser-actions/setup-chrome@latest
 
       - name: Set up Node.js environment
         uses: actions/setup-node@v2
         with:
           node-version: '16'
 
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.OS }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+
       - name: Install
-        run: npm install
+        run: npm ci
         
       - name: Build static resouces
+        id: build-static-resources
         run: |
           set -eu
-          npm build:local
+          npm run build:local
           git add src/previews
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"
+            git status -sb
             echo "::set-output name=changed::true"
           fi
         
       - name: Commit images
-        if: steps.update-tag.outputs.changed == 'true'
+        if: steps.build-static-resources.outputs.changed == 'true'
         run: |
           set -eu
           git config --local user.email "github-actions@mamezou.com"
@@ -38,14 +53,14 @@ jobs:
           git commit -m "Add OGP images for social media"
           
       - name: Push image tag to source branch
-        if: steps.update-tag.outputs.changed == 'true'
+        if: steps.build-static-resources.outputs.changed == 'true'
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref }}
 
       - name: Post PR comments
-        if: steps.update-tag.outputs.changed == 'true'
+        if: steps.build-static-resources.outputs.changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           URL: ${{ github.event.pull_request.comments_url }}
@@ -53,7 +68,7 @@ jobs:
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
-               -d "{\"body\": \"${SOURCE_BRANCH}にOGPイメージを追加しました!! \"}" \
+               -d "{\"body\": \"${SOURCE_BRANCH}のOGPイメージを最新化しました \"}" \
                ${URL}
       
           

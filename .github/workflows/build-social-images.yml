@@ -29,17 +29,19 @@ jobs:
         run: npm install
         
       - name: Build static resouces
+        id: build-static-resources
         run: |
           set -eu
           AWS_LAMBDA_FUNCTION_NAME=trickpuppeteer npm run build:local
           git add src/previews
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"
+            git status
             echo "::set-output name=changed::true"
           fi
         
       - name: Commit images
-        if: steps.update-tag.outputs.changed == 'true'
+        if: steps.build-static-resources.outputs.changed == 'true'
         run: |
           set -eu
           git config --local user.email "github-actions@mamezou.com"
@@ -47,14 +49,14 @@ jobs:
           git commit -m "Add OGP images for social media"
           
       - name: Push image tag to source branch
-        if: steps.update-tag.outputs.changed == 'true'
+        if: steps.build-static-resources.outputs.changed == 'true'
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref }}
 
       - name: Post PR comments
-        if: steps.update-tag.outputs.changed == 'true'
+        if: steps.build-static-resources.outputs.changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           URL: ${{ github.event.pull_request.comments_url }}

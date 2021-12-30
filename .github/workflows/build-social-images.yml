@@ -16,13 +16,22 @@ jobs:
         with:
           node-version: '16'
 
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.OS }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+
       - name: Install
         run: npm install
         
       - name: Build static resouces
         run: |
           set -eu
-          npm run build:local
+          AWS_LAMBDA_FUNCTION_NAME=trickpuppeteer npm run build:local
           git add src/previews
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"

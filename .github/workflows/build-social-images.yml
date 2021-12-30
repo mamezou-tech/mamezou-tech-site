@@ -7,14 +7,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
-
-      - uses: nanasess/setup-chromedriver@v1.0.1
-      - run: export DISPLAY=:99
 
       - name: Set up Node.js environment
         uses: actions/setup-node@v2
@@ -37,7 +34,7 @@ jobs:
         id: build-static-resources
         run: |
           set -eu
-          npm run build:local
+          AWS_LAMBDA_FUNCTION_NAME=trickpuppeteer npm run build:local
           git add src/previews
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"

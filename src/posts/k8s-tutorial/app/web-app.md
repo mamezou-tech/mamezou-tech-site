@@ -1,17 +1,17 @@
 ---
 title: Kubernetesマニフェスト作成 - Webアプリケーション
 author: noboru-kudo
-date: 2021-12-28
+date: 2021-12-30
 prevPage: ./src/posts/k8s-tutorial/app/localstack.md
 ---
 
 ここまででローカル環境で開発する準備が整いました。
 ここからは、実際に動くアプリケーションをローカル環境にデプロイしましょう。
 
-このチュートリアルでは一般的によくあるであろうシンプルなWebアプリケーションとバッチアプリケーションを例に見ていきます。
+このチュートリアルでは、一般的によくあるであろうシンプルなWebアプリケーションとバッチアプリケーションを例に見ていきます。
 題材としてはタスク管理ツールとします。このツールの機能としては以下になります。
 
-- ユーザー向けに、Webブラウザからタスク登録、完了更新する機能（UI+API）
+- ユーザー向けに、Webブラウザからタスク登録、更新と表示機能（UI+API）
 - 管理者向けに、日次で前日完了したタスクをレポートする機能(バッチジョブ)
 
 これらを2回に分けて実装していきます。今回は1つ目のWebアプリケーションの方を見ていきましょう。
@@ -19,7 +19,8 @@ prevPage: ./src/posts/k8s-tutorial/app/localstack.md
 
 ![](https://i.gyazo.com/f0b5f99296d14d9dc1dfeb33f91b02c9.png)
 
-WebアプリケーションはVue.jsで作成されたユーザーインターフェースから、タスク管理API(task-service)を通じてバックエンドのDynamoDBにタスク情報を登録できるような非常にシンプルなものです。
+WebアプリケーションはVue.jsで作成されたユーザーインターフェースです。
+これがタスク管理API(task-service)を通じて、バックエンドのDynamoDBにタスク情報を登録、照会するものです。
 
 [[TOC]]
 
@@ -35,31 +36,31 @@ WebアプリケーションはVue.jsで作成されたユーザーインター�
 
 また、UI/アプリケーションはNode.jsを利用します。こちらも別途インストールしてください。今回は現時点で最新の安定版である`v16.13.1`を利用しています。
 
-- https://nodejs.org/en/download/
+- <https://nodejs.org/en/download/>
 
 ## 利用するKubernetesリソース
 
 さて、ここからすぐに作業に着手したいところですが、まずはアプリ開発で抑えておくべきKubernetesのリソース(オブジェクト)についての概要を説明します。
 これまでも何度か出てきており、無意識に理解しているかもしれませんが、ここをきちんと理解するとできることの幅が広がります。
-既に理解している場合はスキップして構いません。
+既に詳細を把握していて今更感がある場合はスキップしても構いません。
 
 ### Service
 
 Serviceは一群のPodが安定して機能を提供するために、主に以下の仕組みが実装されています[^1]。
 [^1]: Serviceの詳細はKubernetesの[公式ドキュメント](https://kubernetes.io/docs/concepts/services-networking/service/)を参照してください。
 
-- 静的エンドポイント提供：Pod群(つまりService)に対して静的なIPアドレス/ドメインを割り当てる
+- 静的エンドポイント提供：Pod群に対して静的なIPアドレス/ドメインを割り当てる
 - サービスディカバリー：バックエンドのPod群に対してトラフィックを負荷分散する(kube-proxy)
-- クラスタ外部への公開(ServiceType)：NodePortやLoadBalancer等を利用してサービスをクラスタ外部に公開する[^2]
+- クラスタ外部からアクセス制御(ServiceType)：NodePortやLoadBalancer等を利用してサービスをクラスタ外部に公開する[^2]
 
-これは内部DNS、ラベルセレクターによるルーティング先Podの動的管理、実際の負荷分散を担うkube-proxy等によって実現されています。
+これらは主に内部DNSサービスであるCoreDNS、ラベルセレクターによるルーティング先Podの動的管理、実際の負荷分散を担うkube-proxyによって実現されています。
 [^2]: 今回はIngressを使用するため、ここでは触れませんが、これを利用することで様々な形でクラスタ外部からのリクエストに応えることができます。詳細は[こちら](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)を参照してください。
 
 具体的にはServiceの生成が検知されると、Kubernetes内では以下のような動きをします(Service`foo`で3Podを管理する例)。
 
 ![](https://i.gyazo.com/bb8d4ca6846ef8cf57fa051420bfdb3a.png)
 
-1. ServiceのドメインをControl Planeの内部DNSにServiceのエントリ(Aレコード/SRVレコード)を追加する[^3]
+1. ServiceのドメインをControl PlaneのCoreDNSにServiceのエントリ(Aレコード/SRVレコード)を追加する[^3]
 2. Serviceのラベルセレクターからルーティング対象のPodをルックアップして、PodのIPアドレス等をEndpointとして登録する
 3. 各ノードに配置されているkube-proxy(Control Plane)は、Service/Endpointの情報からルーティングルール[^4]を更新する（実際にクライアントからリクエストがあった場合は、これを利用して各Podに負荷分散）。
 
@@ -67,14 +68,13 @@ Serviceは一群のPodが安定して機能を提供するために、主に以�
 
 [^4]: kube-proxyで使われる負荷分散は、デフォルトではLinuxのiptablesが使われており、ランダムアルゴリズムでルーティングされます。
 
-この仕組みは初回のみでなく、関連するリソースに変更があった場合はループするようになっています(Control LoopとかReconciliation Loopと呼ばれます)。
-配下のPodが新規生成や削除された場合は、この動作が再度実施されて常に最新状態に保たれるようになっています。
+この仕組みは初回のみでなく、関連するリソースが追加、変更、削除された場合は、この動作が再度実施され、常に最新状態(期待する状態)が保たれるようになっています(Control LoopとかReconciliation Loopと呼ばれます)。
 
-Serviceのもう1つ重要な役割として、ルーティングルールを正常なPodのみで構成する機能があります。これは以下のように動きます。
+Serviceのもう1つ重要な役割として、正常なPodのみでルーティングルールを維持する機能があります。例えば、Podの1つに障害が発生した場合は以下のようなイメージで動きます。
 ![](https://i.gyazo.com/7de15bfaba007e423a085813e306b372.png)
 
-このように、ServiceリソースはPodに定義されたReadinessProbeのヘルスチェックの結果を監視し、異常を検知したPodはトラフィックルーティングから除外されます。
-もちろんその後Podが復旧した場合は逆の動きをします(ルーティングルールに追加)。
+このように、ServiceリソースはPodに定義されたReadinessProbeのヘルスチェックの結果を監視し、異常を検知したPodはルーティングルールから除外されます。
+もちろんその後Podが復旧した場合は逆の動きをします。
 
 ### Deployment
 
@@ -83,8 +83,9 @@ Deploymentはアプリケーションの更新を宣言的に行うためのリ�
 [^5]: 他にもStatefulSetやDaemonSetが存在します。詳細は[こちら(StatefulSet)](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)や[こちら(DaemonSet)](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)を参照してください。
 
 DeploymentがなくてもPod単体でデプロイすることは可能ですが、新バージョンをリリースする場合にどうすればよいでしょうか？
-最もシンプルな方法は旧バージョンを削除して新バージョンをデプロイすれば良いですが、ダウンタイムをなくすためには、Blue-Greenデプロイを使って旧バージョンと並行して新バージョンをリリースし、正常に動作確認が取れたら旧バージョンを削除する等の工夫が必要になるでしょう。
-また、アプリケーションが複数レプリカで動作させる場合には、さらに複雑なデプロイ作業が必要になるでしょう。
+最もシンプルな方法は旧バージョンを削除して新バージョンをデプロイすれば良いですが、その場合はダウンタイムは避けられません。
+これを防ぐためには、Blue-Greenデプロイを使って旧バージョンと並行して新バージョンをリリースし、正常に動作確認が取れたら旧バージョンを削除する等の工夫が必要になるでしょう。
+また、アプリケーションが複数レプリカで動作させる場合には、一定数のレプリカを維持するためにさらに複雑なデプロイ作業が必要になるでしょう。
 
 Deploymentを導入することで、マニフェストに期待する状態を記載するだけで、それ以降のオペレーションはKubernetesに任せることができます[^6]。
 [^6]: 一般的にPod単体でデプロイすることは、デバッグ等の一時的な利用を除いてまずありません。
@@ -98,7 +99,7 @@ Deploymentは主に以下の機能を提供します。
 
 ![](https://i.gyazo.com/39e353754e0e09f9b74285088987b5d2.png)
 
-図では分かりにくいですが、Deploymentで新しいバージョンをデプロイすると、新バージョンのPodが少しずつ(デフォルトはレプリカ数の25%)起動し、ヘルスチェックが通って正常に起動すると今度は旧バージョンのPodがアンデプロイされていくようになります[^7]。
+図では分かりにくいですが、Deploymentで新しいバージョンをデプロイすると、新バージョンのPodが少しずつ(デフォルトはレプリカ数の25%)起動し、正常実行が確認されると今度は旧バージョンのPodがアンデプロイされていくようになります[^7]。
 
 もう1つのデプロイ戦略で選択できるRecreateは、旧バージョンのPodを全て削除した後で、新バージョンのデプロイを開始します。
 この場合はダウンタイムは発生しますが、アプリが複数バージョン並行で実行できない場合はこちらを選択するとよいでしょう（デフォルトはRollingUpdateのため明示的に指定が必要です）。
@@ -120,9 +121,9 @@ kubectl rollout undo deploy <deployment-name> --to-revision <rev-number>
 
 ConfigMapはアプリケーション内の設定を外部リソースとして分離します。
 設定情報は環境によって異なるものが多いですが、アプリケーション内に持たせるとその都度ビルドが必要になります。
-ConfigMapを使うことで、同一イメージで、複数環境に応じて設定を切り替えることが可能となります。
+ConfigMapを使うことで、同一イメージで、複数環境に応じて設定を切り替えることが容易になります。
 
-ConfigMapはキーバリュー型で記述し、環境変数またはボリュームとしてPodにマウントすることで利用可能となります。
+ConfigMapはキーバリューの形式で記述し、環境変数またはボリュームとしてPodにマウントして利用することが一般的です。
 アプリケーションで使う設定ファイルをそのまま値として記述し、これをそのままボリュームとしてマウントして、アプリケーションで参照するやり方はよく使われます。
 
 例えば、Spring Bootのapplication.ymlの場合は以下のようになります。
@@ -146,7 +147,7 @@ data:
 そして、これをPodにボリュームとしてマウントすれば、Spring Bootにこの設定を`application.yml`ファイルとして読み込ませることが可能になります。
 
 今回は利用しませんが、多くのアプリケーションは通常は認証用パスワードやAPIトークン等、センシティブ情報も設定情報として持っています。
-このようなリソースをConfigMapに持たせてしまうと、ConfigMapのGit管理やRBAC、暗号化等の情報管理が煩雑になります。
+このようなリソースをConfigMapに持たせてしまうと、ConfigMapのGit管理方法やRBAC、実際の値の暗号化等の情報管理が煩雑になります。
 この場合は、ConfigMapではなく[Secret](https://kubernetes.io/docs/concepts/configuration/secret/)リソースを使ってください（Vault等外部のプロダクトを使う場合は除く）。
 Secretを使うことで、Kubernetes内(etcd)での暗号化や、ボリュームマウントのインメモリ(tempfs)化等の多くのセキュリティ上のメリットを享受することができます[^8]。
 
@@ -175,9 +176,9 @@ Secretを使うことで、Kubernetes内(etcd)での暗号化や、ボリュー�
 アプリケーションマニフェスト作成前に、LocalStack上のAWSリソース作成しておきましょう。
 [こちら](/containers/k8s/tutorial/app/localstack/)を済ませた方は、既にローカル環境でLocalStackが動作しているはずです。
 
-このときは、初期化スクリプトでサンプルのAWSリソースとしてDynamoDBとS3を作成しましたが、今回はDynamoDBのみで構いません。
-`app/k8s/v1/localstack`を作成し、`localstack-init-scripts-config.yaml`を配置しましょう。
-以下の内容でConfigMapのリソースを記述してください。
+今回のアプリケーションで使用するDynamoDBの初期化スクリプトを作成しましょう。
+`app/k8s/v1/localstack`ディレクトリを作成し、`localstack-init-scripts-config.yaml`を配置しましょう。
+以下の内容で、ConfigMapのリソースを記述してください。
 
 ```yaml
 apiVersion: v1
@@ -273,7 +274,7 @@ ConfigMapで言及した通り、ここではConfigMap内にファイル自体(�
 kubectl apply -f k8s/v1/localstack/localstack-init-scripts-config.yaml
 ```
 
-これを認識させるためにLocalStackを再起動しましょう。Helmチャートの中でLocalStackはDeploymentとして作成されています。
+このスクリプトファイルを認識させるために、LocalStackを再起動しましょう。Helmチャートの中でLocalStackはDeploymentとして作成されています。
 Deployment配下のPodを全て再起動するには、以下のコマンドを実行します。
 
 ```shell
@@ -281,7 +282,7 @@ kubectl rollout restart deploy localstack
 ```
 
 実際に作成されたかについては、[LocalStackでの動作確認](/containers/k8s/tutorial/app/localstack/#動作確認)を参考にチェックしてみてください。
-LocalStack上のAWSリソースについては、これで準備完了です。
+LocalStack上のAWSリソース作成については、これで完了です。
 
 ## マニフェストファイル作成
 
@@ -289,9 +290,9 @@ LocalStack上のAWSリソースについては、これで準備完了です。
 今回作成するリソースは以下です。
 
 - ConfigMap: APIの設定情報
-- Deployment: API(task-service)を実行するコンテナ
-- Service: Deploymentで管理するPod群に対するエンドポイント
-- Ingress: クラスタ外からAPIへのルーティングルール
+- Deployment: API(task-service)本体
+- Service: APIで管理するPod群のエンドポイント
+- Ingress: クラスタ外からAPIへのルーティング
 
 なお、UIリソース(`web`ディレクトリ配下)については、ここではコンテナ化しませんでした。
 もちろん、これについてもローカルのKubernetes上でコンテナとして動作させることができます。
@@ -330,7 +331,7 @@ data:
 ```
 
 アプリケーションで利用するもののほかに、AWS関連の認証情報を設定しました。今回はLocalStackのためAWS認証情報はLocalStackの初期化スクリプトに合わせます(アクセスキー、シークレット等は任意の値で構いません)。
-今回アプリケーションはNode.jsのため、これらを`process.env.xxxxxx`で参照できるようにしたいところですね。
+アプリケーションはNode.jsのため、これらを`process.env.xxxxxx`で参照できるようにしたいところです（後述）。
 
 ### Deployment
 
@@ -387,7 +388,7 @@ spec:
 1点目は`envFrom`の部分です。
 LocalStackの初期化スクリプトは、ファイル自体をマウントしましたが、ここではConfigMapの内容をそのままコンテナの環境変数に取り込んでいます。
 こうすることで、ConfigMapがそのままコンテナの環境変数として取り込むことができ、アプリケーション内では`process.env.STAGE`のようにしてConfigMapの内容を参照することが可能になります。
-今回はConfigMap全てを取り込みましたが、以下のように個別の値としても環境変数に取り込むことが可能です。
+今回はConfigMap全てを取り込みましたが、以下のように個別の値として環境変数に取り込むことも可能です。
 
 ```yaml
     spec:
@@ -404,7 +405,7 @@ LocalStackの初期化スクリプトは、ファイル自体をマウントし�
 
 2点目は`readinessProbe`/`livenessProbe`/`startupProbe`の部分です。
 ReadinessProbeは[Service](/containers/k8s/tutorial/app/web-app/#service)のところで触れましたが、指定したヘルスチェックがしきい値(デフォルトは10秒間隔で3回)を超えて失敗すると、ルーティングルールより除外されます。
-LivenessProbeの場合は、しきい値(デフォルトはReadinessProbeと同じ)を超えて失敗すると、コンテナが再起不能と判断されて再起動されます。
+LivenessProbeのヘルスチェックも似ていますが、しきい値(デフォルトはReadinessProbeと同じ)を超えて失敗すると、コンテナが再起動されます。メモリリーク等はこれで(暫定ではありますが)回復できるでしょう。
 
 StartupProbeは比較的新しいもの(v1.18からデフォルト有効)で、起動の遅いアプリケーションの場合、起動前にLivenessProbeによる再起動ループが発生することがあります[^11]。
 StartupProbeは起動時のみにチェックされ、これが成功した後で、ReadinessProbe/LivenessProbeの実行が開始されるため、このような状況を回避することができます[^12]。
@@ -434,11 +435,11 @@ spec:
 ```
 
 ラベルセレクターで`app: task-service`とし、先程Deploymentで指定したPodのラベルと合わせます。
-こうすることで、このServiceはDeploymentで作成された2つのPodに対して、負荷分散してトラフィックルーティングを行うようになります。
+こうすることで、このServiceはDeploymentで作成された2つのPodに対して、負荷分散してルーティングを行うようになります。
 
 `ports`ではこのServiceが公開するポート番号を指定します。こちらはPodに合わせて3000番ポートを指定しました。
 `targetPort`は`http`としています。ここにはPod側のポートを指定しますが、Deploymentで指定した`ports`の`name`を指定することもできます(Named Portと言われます)。
-こうすることで、Serviceはルーティングする対象のポートの名前だけ知っていれば、具体的なポート番号は知る必要がなく、Podとの結合度を下げることができます。
+こうすることで、Serviceはルーティングする対象のポートの名前だけ知っていれば良くなるため、Podとの結合度を下げることができます(具体的なPodのポート番号は知る必要がない)。
 
 ### Ingress
 
@@ -473,6 +474,20 @@ Docker Desktopの場合は、localhostへのアクセスのため`host`部分を
 ## アプリケーションのデプロイ
 
 では、ここまで作成したら実際にローカル環境のKubernetesで動かしてみましょう。
+ここまでで、`app/k8s/v1`ディレクトリ配下は以下のようになっているはずです。
+```
+k8s
+ └── v1
+     ├── ingress
+     │   └── ingress.yaml
+     ├── localstack
+     │   └── localstack-init-scripts-config.yaml -> 環境セットアップで反映済み
+     └── task-service
+         ├── configmap.yaml
+         ├── deployment.yaml
+         └── service.yaml
+```
+
 今回は`kubectl apply`ではなくSkaffoldを使ってデプロイしましょう。
 
 Skaffoldについては事前準備で[こちら](/containers/k8s/tutorial/app/skaffold/)でインストール済みかと思います。
@@ -519,14 +534,14 @@ buildステージで`apis/task-service`配下のDockerfile.localからイメー�
 npm install
 ```
 
-こちらをデプロイしましょう。`app`ディレクトリ直下に戻って、以下のSkaffoldコマンドを起動します。
+それでは、APIをデプロイしましょう。`app`ディレクトリ直下に戻って、以下のSkaffoldコマンドを実行します。
 
 ```shell
 skaffold dev
 ```
 
 コンテナビルドとKubernetesへのデプロイが始まっていることが分かります。
-コンソール上でデプロイが終わったことを確認したら、kubectlで実際にデプロイされたものを確認してみましょう。
+コンソール上でデプロイが終わったことを確認したら、別のターミナルを開いてkubectlで実際にデプロイされたものを確認してみましょう（`skaffold dev`コマンドのターミナルは、Ctrl+Cを押すとアンデプロイされてしまいますので、注意してください）。
 
 ```shell
 kubectl get deploy,rs,pod,cm,svc,ing
@@ -558,7 +573,7 @@ ingress.networking.k8s.io/app-ingress   nginx   task.minikube.local   localhost 
 Deploymentから2つのPodのレプリカが作成され、それをReplicaSet/Serviceのラベルセレクターにより管理されています。
 ここでは実施しませんが、`kubectl describe`で各リソースの詳細が見れますので、実際に確認してみると良いでしょう。
 
-別のターミナルを開き、以下のコマンドで確認しましょう。
+また、以下のコマンドで、実際にAPIにアクセスしてみましょう。
 
 ```shell
 # minikube
@@ -568,7 +583,7 @@ curl -v task.minikube.local/api/tasks?userName=test
 ```
 
 ここでは200レスポンスが返ってきていれば問題ありません。
-このAPIは後続の作業でも引き続き使用しますのでこのままの状態にしておいてください(Ctrl+Cを押すとアンデプロイされてしまいます)。
+このAPIは、後続の作業でも引き続き使用しますので、このままの状態にしておいてください。
 
 ## 動作確認
 
@@ -613,12 +628,12 @@ npm run serve
 
 Vue.jsのリソースが開発モードでビルドされ、デフォルトの8080番ポートで公開されます(Ctrl+Cを押すと終了します)。
 ブラウザから`http://localhost:8080`にアクセスしてUIが表示されることを確認しましょう。
-表示されたら、任意のユーザー名を入力し、タスク管理ツールを起動し、タスクの登録、表示、完了更新ができれば動作確認は終了です。
+表示されたら、任意のユーザー名を入力し、タスク管理ツールを起動します。その後、UI上でタスクの登録、表示、完了更新ができれば動作確認は終了です。
 
 ![](https://i.gyazo.com/e5171c0ecd3f54217f0702553c4ceddf.gif)
 
-この状態でUI/APIともにファイル変更監視がされていて、ソースコード修正をすると、すぐに実際のアプリケーションにも反映されます。
-ここでは実施しませんが、実際にソースコードを変更し、変更内容が反映できることを確認してみてください。
+この状態ではUI/APIともにファイル変更監視がされています。ソースコード修正をすると、すぐに実際のアプリケーションにも反映されます。
+実際にソースコードを変更し、変更内容が反映できることを確認してみてください。
 
 また、kubectlで先程デプロイしたものを見ると、以下のようにRollingUpdateが実行されていることが確認できるはずです。
 
@@ -626,7 +641,7 @@ Vue.jsのリソースが開発モードでビルドされ、デフォルトの80
 
 ## まとめ
 
-ここでは、ローカル環境でKubernetesを起ち上げて、以下のことを実施してきました。
+ここでは、ローカル環境のKubernetesで、以下のことを実施してきました。
 
 - 仮想のAWSリソースとしてLocalStack(DynamoDB)を使用
 - タスク管理APIとしてDeployment/ConfigMap/Serviceを作成

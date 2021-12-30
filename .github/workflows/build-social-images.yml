@@ -22,7 +22,7 @@ jobs:
       - name: Build static resouces
         run: |
           set -eu
-          npm build:local
+          npm run build:local
           git add src/previews
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"

@@ -28,7 +28,7 @@ jobs:
             ${{ runner.OS }}-
 
       - name: Install
-        run: npm install
+        run: npm ci
         
       - name: Build static resouces
         id: build-static-resources

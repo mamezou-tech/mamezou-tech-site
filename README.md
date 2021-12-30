@@ -104,6 +104,7 @@ npm run build:local
 ```
 
 PR作成時に**GitHub Actionsで実施**するようになりましたのでこの手順は不要になりました！
+このため、PRにコミットを重ねるときは、その前にFeatureブランチを最新化(`git pull -r`でgithub-actionsのコミットを取り込む)してください。
 
 ### 6. レビュー&マージ依頼
 

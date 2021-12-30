@@ -68,7 +68,7 @@ jobs:
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
-               -d "{\"body\": \"${SOURCE_BRANCH}にOGPイメージを追加しました!! \"}" \
+               -d "{\"body\": \"${SOURCE_BRANCH}のOGPイメージを最新化しました \"}" \
                ${URL}
       
           

@@ -90,7 +90,7 @@ Deploymentは主に以下の機能を提供します。
 - デプロイ：デプロイ戦略として順次更新(RollingUpdate)/と再作成(Recreate)を提供する。
 - リビジョン管理：デプロイしたアプリケーションのバージョン管理を行い、ロールバック・デプロイ中断等の機能を提供する。
 
-下図はRollingUpdateでアプリケーションをバージョンアップ(v1->v2)する例です。
+以下はRollingUpdateでアプリケーションをバージョンアップ(v1->v2)するイメージです。
 
 ![](https://i.gyazo.com/39e353754e0e09f9b74285088987b5d2.png)
 
@@ -291,7 +291,7 @@ LocalStack上のAWSリソースについては、これで準備完了です。
 
 なお、UIリソース(`web`ディレクトリ配下)については、ここではコンテナ化しませんでした。
 もちろん、これについてもローカルのKubernetes上でコンテナとして動作させることができます。
-しかし、UIは見た目や振る舞いを試すために、Try&Errorのフィードバック速度が重要です。
+しかし、UIは見た目や振る舞いを試すために、トライ&エラーのフィードバック速度が重要です。
 一般的にUIフレームワーク(この場合はVue CLI)の開発支援機能にはこの辺りが備わっており、これを利用する方が開発効率が良い場合が多いです。[^9]。
 このため、UIについてはここではVue CLIの開発支援機能を用いてKubernetesとは別プロセスで動作させます[^10]。
 
@@ -466,16 +466,13 @@ spec:
 `http://task.minikube.local/api` へのアクセスについてAPIのServiceにルーティングするように指定しています。
 Docker Desktopの場合は、localhostへのアクセスのため`host`部分を削除してください(任意のホスト名が許可されます)。
 
-## 動作確認
+## アプリケーションのデプロイ
 
 では、ここまで作成したら実際にローカル環境のKubernetesで動かしてみましょう。
+今回は`kubectl apply`ではなくSkaffoldを使ってデプロイしましょう。
 
-### Skaffold
-
-まずはSkaffoldの定義ファイルを作成しましょう。
 Skaffoldについては事前準備で[こちら](/containers/k8s/tutorial/app/skaffold/)でインストール済みかと思います。
-
-[セットアップ時](/containers/k8s/tutorial/app/skaffold/#skaffold定義ファイルの作成)に実施したようにskaffold.yamlを作成しましょう。
+[セットアップ時](/containers/k8s/tutorial/app/skaffold/#skaffold定義ファイルの作成)に実施したように、Skaffoldの初期化コマンドでskaffold.yamlを作成しましょう。
 appディレクトリ上で以下を実行しましょう。
 
 ```shell
@@ -512,20 +509,52 @@ buildステージで`apis/task-service`配下のDockerfile.localからイメー�
 
 [^13]: 商用環境向けにはWebpackでのビルドを用意していますが、ローカル環境で都度実行するのは時間がかかるため、ts-nodeコマンドから実行しています。
 
-実行する前に、事前に`app/apis/task-service`配下で依存モジュールをインストールしてください。これらはコンテナビルド時にコピーされて再利用されます。
+実行する前に、事前に`app/apis/task-service`配下に移動して依存モジュールをインストールしてください。これらはコンテナビルド時にコピーされて再利用されます。
 
 ```shell
 npm install
 ```
 
-では、こちらをデプロイしましょう。`app`ディレクトリ直下に移動して以下のSkaffoldコマンドを起動します。
+こちらをデプロイしましょう。`app`ディレクトリ直下に戻って、以下のSkaffoldコマンドを起動します。
 
 ```shell
 skaffold dev
 ```
 
 コンテナビルドとKubernetesへのデプロイが始まっていることが分かります。
-以下のコマンドでレスポンスが返ってくることを確認しましょう。
+コンソール上でデプロイが終わったことを確認したら、kubectlで実際にデプロイされたものを確認してみましょう。
+
+```shell
+kubectl get deploy,rs,pod,cm,svc,ing
+```
+
+以下関連のある部分のみ抜粋します。
+
+```
+NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/task-service   2/2     2            2           2m7s
+
+NAME                                      DESIRED   CURRENT   READY   AGE
+replicaset.apps/task-service-6c897c899b   2         2         2       2m7s
+
+NAME                                READY   STATUS    RESTARTS   AGE
+pod/task-service-6c897c899b-5z5f4   1/1     Running   0          2m7s
+pod/task-service-6c897c899b-qpqw5   1/1     Running   0          2m7s
+
+NAME                                       DATA   AGE
+configmap/task-service-config              8      2m7s
+
+NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+service/task-service   ClusterIP   10.111.193.252   <none>        3000/TCP                        2m7s
+
+NAME                                    CLASS   HOSTS                 ADDRESS     PORTS   AGE
+ingress.networking.k8s.io/app-ingress   nginx   task.minikube.local   localhost   80      2m7s
+```
+
+Deploymentから2つのPodのレプリカが作成され、それをReplicaSet/Serviceのラベルセレクターにより管理されています。
+ここでは実施しませんが、`kubectl describe`で各リソースの詳細が見れますので、実際に確認してみると良いでしょう。
+
+別のターミナルを開き、以下のコマンドで確認しましょう。
 
 ```shell
 # minikube
@@ -535,7 +564,9 @@ curl -v task.minikube.local/api/tasks?userName=test
 ```
 
 ここでは200レスポンスが返ってきていれば問題ありません。
-このAPIは後続の作業でも引き続き使用しますのでこのままの状態にしておいてください(Ctl+Cを押すとアンデプロイされます)。
+このAPIは後続の作業でも引き続き使用しますのでこのままの状態にしておいてください(Ctrl+Cを押すとアンデプロイされてしまいます)。
+
+## 動作確認
 
 ### UIリソース(web)
 
@@ -576,10 +607,30 @@ module.exports = {
 npm run serve
 ```
 
-Vue.jsのリソースが開発モードでビルドされ、デフォルトでは8080番ポートで公開されます。
+Vue.jsのリソースが開発モードでビルドされ、デフォルトの8080番ポートで公開されます(Ctrl+Cを押すと終了します)。
 ブラウザから`http://localhost:8080`にアクセスしてUIが表示されることを確認しましょう。
+表示されたら、任意のユーザー名を入力し、タスク管理ツールを起動し、タスクの登録、表示、完了更新ができれば動作確認は終了です。
 
-TODO: UIのスクショ or 動画を貼り付ける
+![](https://i.gyazo.com/e5171c0ecd3f54217f0702553c4ceddf.gif)
 
-任意のユーザー名を入力し、タスク管理ツールを起動し、タスクの登録、表示、完了更新ができれば動作確認は終了です。
-引き続き次回はバッチアプリケーションの作成に入ります。
+この状態でUI/APIともにファイル変更監視がされていて、ソースコード修正をすると、すぐに実際のアプリケーションにも反映されます。
+ここでは実施しませんが、実際にソースコードを変更し、変更内容が反映できることを確認してみてください。
+
+また、kubectlで先程デプロイしたものを見ると、以下のようにRollingUpdateが実行されていることが確認できるはずです。
+
+![](https://i.gyazo.com/2efcfd6cb386c6fb5daa20d267231da0.png)
+
+## まとめ
+
+ここでは、ローカル環境でKubernetesを起ち上げて、以下のことを実施してきました。
+
+- 仮想のAWSリソースとしてLocalStack(DynamoDB)を使用
+- タスク管理APIとしてDeployment/ConfigMap/Serviceを作成
+- 外部からのAPIのルーティングにIngress作成(NGINX Ingress Controllerを利用)
+- SkaffoldでKubernetesリソースをデプロイ
+- Kubernetesとは別プロセスでUIを起動し、ブラウザから動作確認
+
+また、Skaffoldにより、コンテナビルドやKubernetesマニフェストの反映が自動化されていることも確認しました。
+クラウド環境がなくとも、ここまでのレベルでローカルでKubernetesの環境で開発ができることが実感できたかと思います。
+
+次回は、引き続きバッチアプリケーションの作成に入っていきます。

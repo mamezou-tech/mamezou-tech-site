@@ -13,8 +13,8 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - uses: browser-actions/setup-chrome@latest
-      - run: chrome --version
+      - uses: nanasess/setup-chromedriver@v1.0.1
+      - run: export DISPLAY=:99
 
       - name: Set up Node.js environment
         uses: actions/setup-node@v2

@@ -15,6 +15,7 @@
 }
 
 @import url("https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/Primer/19.1.1/tooltips.min.css");
 @import "theme";
 @import "reset";
 @import "layout";
@@ -26,5 +27,3 @@
 @import "utilities";
 @import "post";
 @import "post-list";
-@import "../../node_modules/@primer/css/tooltips/index.scss";
-@import "../../node_modules/@primer/css/utilities/index.scss";

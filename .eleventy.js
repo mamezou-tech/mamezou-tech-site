@@ -8,8 +8,8 @@ const markdownIt = require("markdown-it");
 const markdownItAnchor = require("markdown-it-anchor");
 const markdownItFootNote = require("markdown-it-footnote");
 const markdownItTableOfContents = require("markdown-it-table-of-contents")
-const markdownItCustomRenderer = require("./markdown-it-custom-renderer")
 const packageVersion = require("./package.json").version;
+const codeClipboard = require("eleventy-plugin-code-clipboard");
 
 // for Node.js 14
 String.prototype.replaceAll = function (from, to) {
@@ -20,6 +20,9 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(socialImages);
   eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.addPlugin(pluginRss);
+  eleventyConfig.addPlugin(codeClipboard, {
+    buttonClass: "tdbc-copy-button"
+  });
 
   eleventyConfig.addWatchTarget("./src/sass/");
 
@@ -165,7 +168,7 @@ module.exports = function (eleventyConfig) {
   });
 
   /* Markdown Overrides */
-  let markdownLibrary = markdownIt({
+  const markdownLibrary = markdownIt({
     html: true,
     breaks: true,
   }).use(markdownItAnchor, {
@@ -185,7 +188,7 @@ module.exports = function (eleventyConfig) {
       containerClass: "post__toc",
       containerHeaderHtml: '<div class="toc-container-header"><p>Contents</p></div>'
     })
-    .use(markdownItCustomRenderer);
+    .use(codeClipboard.markdownItCopyButton);
 
   eleventyConfig.setLibrary("md", markdownLibrary);
 

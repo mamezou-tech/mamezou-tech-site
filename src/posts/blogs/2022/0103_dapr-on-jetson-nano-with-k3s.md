@@ -4,9 +4,9 @@ author: shigeki-shoji
 date: 2022-01-03
 ---
 
-認証認可やログのような横断的関心事 (cross-cutting concern) をアプリケーションのコードとして実装すると、特にマイクロサービスそれぞれに組み込むことは冗長で、異なる言語やフレームワークを採用する場合に移植が必要になり最新化への足かせともなります。
+マイクロサービスのように、Plyglot programming (多言語プログラミング) が前提の環境では、認証認可やログのような横断的関心事 (cross-cutting concern) をアプリケーションのコードとして実装すると、各言語やフレームワークごとに移植が必要となり最新化への足かせとなります。
 
-この記事では、分散アプリケーションランタイムの [Dapr](https://dapr.io/) によって [OpenID Connect](https://openid.net/connect/) の ID トークンの有効性の確認という横断的関心事の処理をアプリケーションコードの外側で実行するサンプルについて説明します。
+この記事では、分散アプリケーションランタイムの [Dapr](https://dapr.io/) によって [OpenID Connect](https://openid.net/connect/) の ID トークンの有効性の確認という横断的関心事の処理をアプリケーションコードの外側で実行するサンプルについて説明します。Jetson Nano のような IoT デバイス向けの Kubernetes としてフットプリントの軽い Rancher の [K3S](https://k3s.io/) を利用します。
 
 # 準備
 

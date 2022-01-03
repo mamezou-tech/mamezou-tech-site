@@ -33,7 +33,7 @@ titleImage: "/img/logo/mameka5_50.png"
 
 #### アプリケーション用マニフェスト作成
 1. [Webアプリケーション(Deployment)](/containers/k8s/tutorial/app/web-app/)
-2. バッチアプリケーション(CronJob/Job) <span style="color:red">Coming Soon!</span>
+2. [バッチアプリケーション(CronJob/Job)](/containers/k8s/tutorial/app/batch/)
 
 #### クラスタ環境デプロイ
 1. プライベートコンテナレジストリ(ECR) <span style="color:red">Coming Soon!</span>

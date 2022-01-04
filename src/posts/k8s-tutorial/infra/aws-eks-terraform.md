@@ -8,7 +8,7 @@ nextPage: ./src/posts/k8s-tutorial/ingress/ingress-nginx.md
 
 前回に引き続きAWSのKubernetesフルマネージドサービスのEKS(Elastic Kubernetes Service)でクラスタ環境を構築してみましょう。
 
-[前回](/containers/k8s/tutorial/env/aws-eks-eksctl/)は[eksctl](https://eksctl.io/)を利用してクラスタ環境を構築しましたが、今回はIaCツールとして高い人気を誇る[Terraform](https://www.terraform.io/)を使います。
+[前回](/containers/k8s/tutorial/infra/aws-eks-eksctl/)は[eksctl](https://eksctl.io/)を利用してクラスタ環境を構築しましたが、今回はIaCツールとして高い人気を誇る[Terraform](https://www.terraform.io/)を使います。
 
 TerraformはHashiCorp社で開発されたマルチクラウド対応のIaCツールで、AWSだけでなくAzure、GCP等にも対応します。
 [Terraform Language](https://www.terraform.io/docs/language/index.html)(拡張子が`.tf`)という独自の構成記述言語を採用しており、YAML/JSONを使うCloudFormationよりも高い表現力で簡潔に設定を記述することが可能です。
@@ -470,7 +470,7 @@ CoreDNS is running at https://xxxxxxxxxxxxxxxxxxxxxxxx.sk1.ap-northeast-1.eks.am
 
 最後に作成したEKSクラスタにコンテナをデプロイして動作確認を行いましょう。
 
-[eksctlで環境構築](/containers/k8s/tutorial/env/aws-eks-eksctl/#動作確認)した際には`kubectl run`コマンドでアドホックにPodを作成しましたが、通常の実運用では事前にGitでバージョン管理されたマニフェストファイルを準備します。
+[eksctlで環境構築](/containers/k8s/tutorial/infra/aws-eks-eksctl/#動作確認)した際には`kubectl run`コマンドでアドホックにPodを作成しましたが、通常の実運用では事前にGitでバージョン管理されたマニフェストファイルを準備します。
 今回はDeploymentリソースのマニフェストファイルを用意してNginxを起動します。
 
 以下のYAMLファイルを用意しましょう。

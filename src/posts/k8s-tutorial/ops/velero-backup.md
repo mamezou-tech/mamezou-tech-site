@@ -346,8 +346,8 @@ Velero uninstalled ⛵
 ```
 
 最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl#クリーンアップ)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/env/aws-eks-terraform#クリーンアップ)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform#クリーンアップ)
 
 ## まとめ
 以上のように Velero を使用すると、Kubernetes のオブジェクトと PV のデータを同時にバックアップ・リストアすることが可能です。バックアップ先も S3 など各クラウド提供のストレージを簡単に利用できます。この記事では触れていませんが、定期バックアップも Kubernetes のスケジューリング機能を利用して簡単に実行できますし、世代の指定も可能です。この記事のようなネームスペース単位だけでなく、オブジェクトのラベルなどでバックアップ対象をきめ細かく指定することもできます。

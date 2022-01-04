@@ -703,8 +703,8 @@ helm uninstall -n ingress-nginx ingress-nginx
 ```
 
 クラスタ環境については環境構築編のクリーンアップ手順を参照してください。
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/env/aws-eks-eksctl#クリーンアップ)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/env/aws-eks-terraform#クリーンアップ)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform#クリーンアップ)
 
 ---
 参照資料

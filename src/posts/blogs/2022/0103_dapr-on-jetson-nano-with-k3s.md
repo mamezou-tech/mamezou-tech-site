@@ -4,13 +4,13 @@ author: shigeki-shoji
 date: 2022-01-03
 ---
 
-マイクロサービスのように、Plyglot programming (多言語プログラミング) が前提の環境では、認証認可やログのような横断的関心事 (cross-cutting concern) をアプリケーションのコードとして実装すると、各言語やフレームワークごとに移植が必要となり最新化への足かせとなります。
+マイクロサービスのように、多言語プログラミング (polyglot programming) が前提の環境では、認証認可やログのような横断的関心事 (cross-cutting concern) をアプリケーションのコードとして実装すると、各言語やフレームワークごとに移植が必要となり最新化への足かせとなります。
 
 この記事では、分散アプリケーションランタイムの [Dapr](https://dapr.io/) によって [OpenID Connect](https://openid.net/connect/) の ID トークンの有効性の確認という横断的関心事の処理をアプリケーションコードの外側で実行するサンプルについて説明します。Jetson Nano のような IoT デバイス向けの Kubernetes としてフットプリントの軽い Rancher の [K3S](https://k3s.io/) を利用します。
 
 # 準備
 
-NVIDIA の [Jetson Nano Developer Kit](https://developer.nvidia.com/embedded/jetson-nano-developer-kit) に軽量な Kubernetes である [K3S](https://k3s.io/) をインストールします。
+NVIDIA の [Jetson Nano Developer Kit](https://developer.nvidia.com/embedded/jetson-nano-developer-kit) に [K3S](https://k3s.io/) をインストールします。
 
 その前に、まず `sudo` 時にパスワードの入力が不要になるように、`/etc/sudoers` を編集しておくと良さそうです。 ユーザ名が `user` の場合は次の行を追加します:
 

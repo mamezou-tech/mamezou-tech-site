@@ -32,7 +32,7 @@ titleImage: "/img/logo/mameka5_50.png"
 3. [ローカルAWS(LocalStack)](/containers/k8s/tutorial/app/localstack/)
 
 #### アプリケーション用マニフェスト作成
-1. Webアプリケーション(Deployment) <span style="color:red">Coming Soon!</span>
+1. [Webアプリケーション(Deployment)](/containers/k8s/tutorial/app/web-app/)
 2. バッチアプリケーション(CronJob/Job) <span style="color:red">Coming Soon!</span>
 
 #### クラスタ環境デプロイ

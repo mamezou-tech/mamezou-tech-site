@@ -1,6 +1,5 @@
 {
   "tags": ["container","k8s","tutorial"],
   "layout": "post",
-  "permalink": "/containers/k8s/tutorial/advanced/{{ page.fileSlug }}/",
-  "pageNavigationTag": "container"
+  "permalink": "/containers/k8s/tutorial/advanced/{{ page.fileSlug }}/"
 }

@@ -57,6 +57,15 @@ src/imgに配置した画像へのリンク
 
 なお、目次は表示範囲の狭いモバイルではCSSで非表示にしています。
 
+#### 校正
+文章を[textlint](https://github.com/textlint/textlint)で校正してください。
+
+```shell
+npm run textlint -- src/posts/path/to/article.md
+```
+
+スペルミスや句読点モレなど単純に対応できるものは対応し、それ以外の指摘についても検討・対応すると文章の質が向上します。
+
 ### 3. ローカルで動作確認
 
 作成した記事はローカル環境で確認できます。

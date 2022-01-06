@@ -6,7 +6,8 @@ titleImage: "/img/logo/mame-kun4_50.png"
 
 ## CI/CD
 以前はJenkins一択だったCI/CDツールも最近は様々なものが登場し、プロジェクトで採用できる選択肢が広がっています。  
-各CI/CDツールはそのシステム特性に応じて様々な拡張ポイントが用意されていて、これをうまく使うことでプロジェクトに合った実用性の高いパイプラインを構築することが可能です。
+各CI/CDツールはそのシステム特性に応じて様々な拡張ポイントが用意されています。
+これをうまく使うことでプロジェクトに合った実用性の高いパイプラインを構築できます。
 ここでは汎用性の高いCI/CDプラグインのOSSについてご紹介します。
 
 ### Github Actions
@@ -34,3 +35,11 @@ titleImage: "/img/logo/mame-kun4_50.png"
 * [sbgraph](/oss-intro/sbgraph/)
 
   [Scrapbox](https://scrapbox.io) のページ間リンクを可視化するための CLI
+
+---
+
+## 各種プラグイン
+
+* [eleventy-plugin-code-clipboard](/oss-intro/eleventy-plugin-code-clipboard/)
+
+  静的サイトジェネレータの[eleventy(11ty)](https://www.11ty.dev/)で作成したマークダウンのコードブロックにクリップボードボタンを適用するプラグイン。

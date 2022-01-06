@@ -42,7 +42,7 @@ Jobを利用することで、リトライやタイムアウト、並列実行�
 
 | パラメータ | 内容
 | -------- | ------------------------------------------
-| backoffLimit | リトライ回数。指定した回数Podリトライされ、全て失敗するとジョブは`Failed`ステータスになります(デフォルトは6回)。
+| backoffLimit | リトライ回数。失敗したPodは指定した回数(デフォルトは6回)リトライされ、全て失敗するとジョブは`Failed`ステータスになります。
 | activeDeadlineSeconds | Jobの開始から指定した秒数を経過しても終了しない場合に、Podを強制終了させます。
 | completions | 指定した回数実行します。`completionMode: Indexed`と併用すれば、環境変数`JOB_COMPLETION_INDEX`から現在の実行中のPodのインデックスを識別できます。
 | parallelism | 指定数分のPodが並列に実行されます。`completions`と組み合わせて利用します。

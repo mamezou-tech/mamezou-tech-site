@@ -47,7 +47,7 @@ echo "show clipboard button on code block"
 
 11tyでは[Shortcode](https://www.11ty.dev/docs/shortcodes/)と呼ばれるテンプレートエンジンを拡張する仕組みがあります。
 このプラグインでは`initClipboardJS`というShortcodeを提供しています。
-これはHTMLロード時に、クリップボードライブラリ([clipboard.js](https://clipboardjs.com/))を初期化し、ボタンクリック時にクリップボードコピーをするソースコードを生成します。
+これは、HTMLロード時にクリップボードライブラリ([clipboard.js](https://clipboardjs.com/))を初期化し、ボタンクリック時にクリップボードコピーをするソースコードを生成します。
 また、クリップボードコピーに成功するとツールチップメッセージ(デフォルトは`Copied!`)を表示します。
 
 使い方は以下の通りです。下記は[Nunjucks](https://mozilla.github.io/nunjucks/)テンプレートを利用しています（他のテンプレートも使えるはずですが未検証です）。

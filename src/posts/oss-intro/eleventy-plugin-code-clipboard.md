@@ -106,8 +106,42 @@ echo "show clipboard button on code block"
 
 見やすさのために圧縮前のものを載せていますが、実際にはJavaScriptソースコード部分は[UglifyJS](https://github.com/mishoo/UglifyJS)で圧縮されたものになります。
 
----
+## 導入方法
+
+基本的にはプロジェクトの`devDependencies`へのプラグインインストールと、`.eleventy.js`に以下を追加するだけで利用可能になります。
+具体的な設定については、リポジトリの[example](https://github.com/mamezou-tech/eleventy-plugin-code-clipboard/tree/main/example)を参照してください。
+
+```javascript
+const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
+const codeClipboard = require('eleventy-plugin-code-clipboard');
+const markdownIt = require('markdown-it');
+
+module.exports = function (eleventyConfig) {
+  eleventyConfig.addPlugin(syntaxHighlight); // 必須ライブラリ
+  eleventyConfig.addPlugin(codeClipboard); // プラグイン有効化
+
+  eleventyConfig.addPassthroughCopy('./src/css');
+
+  // その他の設定
+  
+  /* Markdown Overrides */
+  const markdownLibrary = markdownIt({
+    html: true,
+    breaks: true,
+  }).use(codeClipboard.markdownItCopyButton); // プラグインのカスタムレンダラー設定
+
+  eleventyConfig.setLibrary('md', markdownLibrary);
+
+  return {
+    passthroughFileCopy: true,
+    dir: {
+      input: 'src',
+    },
+  };
+};
+```
+
+上記の他にも、外部CSSライブラリ(アイコン/ツールチップ)のセットアップが必要になります。
+詳しくは [README](https://github.com/mamezou-tech/eleventy-plugin-code-clipboard/blob/main/README.md) を参照してください。
 
 本サイト向けに作成したものをnpmパッケージ化しただけで、まだまだ汎用性が低いですが、時間を見つけて改善していきたいと思います。
-
-上記の他にもCSS(Tooltip等)の設定が必要になります。詳しくは [README](https://github.com/mamezou-tech/eleventy-plugin-code-clipboard/blob/main/README.md) を参照してください。

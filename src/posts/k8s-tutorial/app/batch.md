@@ -169,14 +169,17 @@ data:
   STAGE: localstack
   NODE_ENV: development
   TZ: Asia/Tokyo
-  REPORTING_BUCKET: completed-task-report-bucket
+  TASK_TABLE_NAME: tasks
+  REPORT_BUCKET: completed-task-report-bucket
+  TARGET_OFFSET_DAYS: "0"
   AWS_ENDPOINT: http://localstack:4566
   AWS_DEFAULT_REGION: local
   AWS_ACCESS_KEY_ID: localstack
   AWS_SECRET_ACCESS_KEY: localstack
 ```
 
-記述内容もWebアプリケーションで作成したものとほぼ同じですが、S3のバケット名を追加設定しています。
+記述内容もWebアプリケーションで作成したものとほぼ同じですが、S3のバケット名(`REPORT_BUCKET`)と対象とするデータのオフセット(`TARGET_OFFSET_DAYS`)を追加で設定しています。
+オフセットは、商用運用では前日分の`1`を想定していますが、ローカル環境では動作確認のため当日分を表す`0`を指定しています。
 
 ### CronJob
 
@@ -383,7 +386,7 @@ pod/test1--1-4v8d2   0/1     Completed   0          69m
 
 Job、Podが生成され、その後完了してる様子が確認できます。
 
-前日の完了タスクがないとジョブは空振りになりますので、WebUI（`http://localhost:8080`)から何件かタスク情報を前日分として登録して、完了にしてください(`全てのタスクを表示する`リンクをクリックすると前日分を表示することができます)。
+前日の完了タスクがないとジョブは空振りになりますので、WebUI（`http://localhost:8080`)から何件かタスク情報を登録して、完了にしてください(`全てのタスクを表示する`リンクをクリックすると前日分を表示することができます)。
 
 完了にしたら、再度ジョブを作成しましょう。
 
@@ -391,8 +394,8 @@ Job、Podが生成され、その後完了してる様子が確認できます�
 kubectl create job test2 --from cj/task-reporter
 ```
 
-Skaffoldのログから、DynamoDBから完了タスク情報を抽出してS3にアップロードしている様子が確認できます。
-アップロードされたファイルを確認してみましょう。
+Skaffoldのターミナルを見ると、DynamoDBから完了タスク情報を抽出してS3にアップロードしている様子が確認できるはずです。
+ローカル環境から、AWS CLIでアップロードされたファイルについても確認してみましょう。
 
 ```shell
 # minikube: 仮想マシン上のLocalStack
@@ -400,9 +403,21 @@ LOCALSTACK_ENDPOINT="http://$(minikube ip):30000"
 # Docker Desktop: HostOSで実行されているDocker(localhost)
 LOCALSTACK_ENDPOINT="http://localhost:30000"
 
-aws s3 ls s3://completed-task-report-bucket --endpoint ${LOCALSTACK_ENDPOINT}
-aws s3 cp s3://completed-task-report-bucket/undone-tasks-2022-01-08.csv . --endpoint ${LOCALSTACK_ENDPOINT}
+# Bucket内を表示
+aws s3 ls s3://completed-task-report-bucket \
+  --endpoint ${LOCALSTACK_ENDPOINT}
+# ファイルをローカルにコピー
+aws s3 cp s3://completed-task-report-bucket/completed-tasks-20xx-xx-xx.csv . \
+  --endpoint ${LOCALSTACK_ENDPOINT}
 ```
+
+ローカル環境のカレントディレクトリにコピーしたファイルの内容を見ると、以下のようにCSVで完了タスクが出力されているのが確認できると思います。
+
+```
+
+```
+
+何もレコードが出力されていない場合はタスクが登録されていないか、完了ステータスに更新されていないことが考えられます。
 
 ## まとめ
 

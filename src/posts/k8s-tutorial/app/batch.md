@@ -141,7 +141,7 @@ kubectl rollout restart deploy localstack
 
 LocalStackのログを参照すると対象のS3バケットが生成されていることが分かるはずです。確認できればLocalStackの準備は完了です。
 
-また、Webアプリケーションのときに作成した`k8s/v1/ingress`/`k8s/v1/task-service`ディレクトリについてもそのまま使用しますので`v2`ディレクトリにコピーしておきましょう。
+また、Webアプリケーションのときに作成した`k8s/v1/ingress`/`k8s/v1/task-service`ディレクトリについても、そのまま使用しますので`v2`ディレクトリにコピーしておきましょう。
 
 ## マニフェストファイル作成
 
@@ -247,9 +247,9 @@ spec:
 
 CronJobではCronJob自体の設定に加えて、Job、Podの設定を記述する3段階ネストした形になっていることが分かります。
 それぞれのフィールドの説明は前述の通りで、インラインで内容を記載しています。
-注意点としては、`schedule`には15:00に起動するように指定しています。ここで指定する時刻はUTC時刻で日本時間の24:00という意味になりますので注意してください（おそらくほとんどのクラウド環境のタイムゾーンはUTCになっているかと思います）。
+注意点としては、`schedule`には15:00に起動するように指定しています。ここで指定する時刻はUTC時刻で、日本時間では24:00という意味になりますので注意してください（おそらくほとんどのクラウド環境のタイムゾーンはUTCになっているかと思います）。
 
-また、Volumeとして`emptyDir`をマウントしています。これはアプリでS3にアップロードする前に一時的に使用する領域として使用しています(環境変数`TEMP_DIR`としてアプリに通知)。
+また、ボリュームとして`emptyDir`をマウントしています。これはアプリでS3にアップロードする前に一時的に使用する領域として使用しているためです(環境変数`TEMP_DIR`としてアプリに通知)。
 これはPod起動時に作成され、削除されるとこのボリュームも削除されます。`emptyDir`ボリュームの詳細は[公式ドキュメント](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir)を参照してください。
 
 ## アプリケーションのデプロイ
@@ -315,7 +315,84 @@ deploy:
 skaffold dev
 ```
 
-Webアプリケーション同様にバッチアプリケーションのコンテナビルド
+Skaffoldによって、Webアプリケーションに加えて、バッチアプリケーションのコンテナビルドが実行され、デプロイされている様子が確認できるはずです。
+失敗する場合はディレクトリ構成やSkaffoldの定義を再確認してください。
+
+以下のコマンドでCronJobの内容を確認しましょう。
+
+```shell
+kubectl describe cj task-reporter
+```
+以下抜粋です。
+```
+Name:                          task-reporter
+Namespace:                     default
+Labels:                        app=task-reporter
+Schedule:                      0 15 * * *
+Concurrency Policy:            Allow
+Suspend:                       False
+Successful Job History Limit:  3
+Failed Job History Limit:      3
+Starting Deadline Seconds:     <unset>
+Selector:                      <unset>
+Parallelism:                   1
+Completions:                   1
+Active Deadline Seconds:       3600s
+Pod Template:
+  Labels:  app=task-reporter
+  Containers:
+   task-reporter:
+    Image:      task-reporter:88298b9f6127ed2f1eeb79830b6a732f9b5c6fcc2abfeb1a6343a767cd614166
+    Environment Variables from:
+      task-reporter-config  ConfigMap  Optional: false
+    Environment:
+      TEMP_DIR:  /var/app/temp
+    Mounts:
+      /var/app/temp from app-temp-dir (rw)
+  Volumes:
+   app-temp-dir:
+    Type:            EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:          
+    SizeLimit:       10Gi
+```
+
+CronJobのマニフェストが反映されていることが分かります。
+今回完了タスクレポートは24:00に起動するようにしていますが、ローカル環境の動作確認でこれを待つ訳にもいきません。
+KubernetesではCronJobのスケジュールを無視して、アドホックに実行することができます。
+別ターミナルを起動し、以下のコマンドを実行してください。
+
+```shell
+kubectl create job test1 --from cj/task-reporter
+```
+
+`test1`の部分はCronJobから作成されるJobの名前です。繰り返し実行する場合は、前のJobを削除(`kubectl delete job <job-name>`)するか、生成時に任意の名前に変更してください。
+こちらを実行すると、Jobが実行されている様子がSkaffoldのターミナルの方から確認できるはずです。
+
+kubectlからも確認してみましょう。
+
+```shell
+kubectl get job,pod -l app=task-reporter
+```
+```shell
+NAME              COMPLETIONS   DURATION   AGE
+job.batch/test1   1/1           8s         69m
+
+NAME                 READY   STATUS      RESTARTS   AGE
+pod/test1--1-4v8d2   0/1     Completed   0          69m
+```
+
+Job、Podが生成され、その後完了してる様子が確認できます。
+
+前日の完了タスクがないとジョブは空振りになりますので、WebUI（`http://localhost:8080`)から何件かタスク情報を前日分として登録して、完了にしてください(`全てのタスクを表示する`リンクをクリックすると前日分を表示することができます)。
+
+完了にしたら、再度ジョブを作成しましょう。
+
+```shell
+kubectl create job test2 --from cj/task-reporter
+```
+
+Skaffoldのログから、DynamoDBから完了タスク情報を抽出してS3にアップロードしている様子が確認できます。
+アップロードされたファイルを確認してみましょう。
 
 ```shell
 # minikube: 仮想マシン上のLocalStack

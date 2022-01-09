@@ -1,7 +1,7 @@
 ---
 title: Kubernetesマニフェスト作成 - バッチアプリケーション
 author: noboru-kudo
-date: 2022-01-30
+date: 2022-01-09
 prevPage: ./src/posts/k8s-tutorial/app/web-app.md
 ---
 
@@ -42,14 +42,14 @@ Jobでよく使われるパラメータには、主に以下があります。
 
 | パラメータ | 内容
 | -------- | ------------------------------------------
-| backoffLimit | リトライ回数。失敗したPodは指定した回数(デフォルトは6回)リトライされ、全て失敗するとジョブは`Failed`ステータスになります。
+| backoffLimit | リトライ回数。失敗したPodは指定した回数(デフォルトは6回)リトライされます。
 | activeDeadlineSeconds | Jobの開始から指定した秒数を経過しても終了しない場合に、Podを強制終了させます。
 | completions | 指定した回数Podを作成・実行します。`completionMode: Indexed`と併用すれば、環境変数`JOB_COMPLETION_INDEX`から現在の実行中のPodのインデックスを識別できます。
-| parallelism | 指定数分のPodが並列に実行されます。`completions`と組み合わせて利用します。
+| parallelism | 指定数分のPodを並列実行します。トータル実行回数の`completions`と組み合わせて利用します。
 | ttlSecondsAfterFinished | ジョブの実行完了(成功、失敗ともに)後にJobと配下のPodを残す時間。この間は完了したPodのログ等を確認できます。
 
-マスタデータの取り込みや、データエクスポート等、単純なものはほとんどがこれで賄えますが、組織によってバッチアプリケーションは様々な要件があると思います[^2]。
-Jobの実装パターンは、公式ドキュメントで整理されていますので、プロジェクトにあったバッチ方式を検討する上で参考にすると良いでしょう。
+マスタデータの取り込みや、データエクスポート等、単純なものはほとんどがこれで賄えますが、一般的にバッチアプリケーションはプロジェクトによって様々な要件があると思います[^2]。
+Jobの実装パターンは、公式ドキュメントで整理されていますので、プロジェクトにあった方式を検討する際の参考資料とすると良いでしょう。
 
 - <https://kubernetes.io/docs/concepts/workloads/controllers/job/#job-patterns>
 
@@ -66,7 +66,7 @@ Jobはその生成時に一度実行しますが、CronJobでラップするこ�
 
 ![](https://i.gyazo.com/2b62038e063d321e410cd82425b1a093.png)
 
-このようにCronJobは指定されたスケジュールでJobを作成ます。JobはPodを作成してバッチ処理を指定された並列度で実行します。
+このようにCronJobは指定されたスケジュールでJobを生成し、Jobは指定された並列度でPodを実行します。
 バッチ処理が失敗した場合は、指定された回数再実行（新しいPodを生成）します。
 
 CronJob固有のものだと、以下のパラメータがよく利用されます。
@@ -77,7 +77,7 @@ CronJob固有のものだと、以下のパラメータがよく利用されま�
 | concurrencyPolicy       | 前のジョブが実行中のまま次のジョブ実行時間が到来した場合のポリシー(`Forbid`/`Allow`/`Replace`)を指定します。
 | failedJobsHistoryLimit  | 失敗したJobを残す世代数を指定します。
 | successfulJobsHistoryLimit | 成功したJobを残す世代数を指定します。
-| startingDeadlineSeconds | ジョブが指定した時刻に起動できなかった場合にどのくらいの時刻超過での起動を許容するかを指定します。
+| startingDeadlineSeconds | ジョブが指定した時刻に起動できなかった場合に、どのくらいの超過時間での起動を許容するかを指定します。
 | suspend                 | 障害等で一時的にバッチ処理を停止したい場合に`true`を指定します。
 
 ## 環境セットアップ
@@ -257,7 +257,8 @@ CronJobではCronJob自体の設定に加えて、Job、Podの設定を記述す
 
 ## アプリケーションのデプロイ
 
-では、これをLocalStackにデプロイしましょう。
+では、これをLocalStackにデプロイしましょう。Skaffoldが起動中(`skaffold dev`)の場合は一旦終了して、アンインストールしてください。
+
 ここまでくると`k8s`ディレクトリは以下の状態になっているはずです。
 
 ```
@@ -306,7 +307,7 @@ deploy:
     - k8s/v2/task-reporter/*.yaml
 ```
 
-`build`ステージに、バッチアプリとして`jobs/task-reporter`ディレクトリのDockerfileでコンテナをビルドする指定をしています。
+`build`ステージに、バッチアプリとして`jobs/task-reporter`ディレクトリの`Dockerfile.local`でコンテナをビルドする指定をしています。
 また、`deploy`ステージでは、先程作成したCronJobやConfigMapのマニフェストを指定しました。
 
 ## 動作確認
@@ -321,7 +322,7 @@ skaffold dev
 Skaffoldによって、Webアプリケーションに加えて、バッチアプリケーションのコンテナビルドが実行され、デプロイされている様子が確認できるはずです。
 失敗する場合はディレクトリ構成やSkaffoldの定義を再確認してください。
 
-以下のコマンドでCronJobの内容を確認しましょう。
+Skaffoldとは別のターミナルを起動し、以下のコマンドでCronJobの内容を確認しましょう。
 
 ```shell
 kubectl describe cj task-reporter
@@ -363,9 +364,9 @@ CronJobのマニフェストが反映されていることが分かります。
 
 ### Jobの手動実行
 
-今回完了タスクレポートは24:00に起動するようにしていますが、ローカル環境の動作確認でこれを待つ訳にもいきません。
+今回Jobは24:00に起動するようにしていますが、ローカル環境の動作確認でこれを待つ訳にもいきません。
 KubernetesではCronJobのスケジュールを無視して、アドホックに実行することができます。
-別ターミナルを起動し、以下のコマンドを実行してください。
+以下のコマンドを実行してください。
 
 ```shell
 kubectl create job test1 --from cj/task-reporter
@@ -389,7 +390,9 @@ pod/test1--1-4v8d2   0/1     Completed   0          69m
 
 Job、Podが生成され、その後実行したバッチ処理が正常終了(`Completed`)している様子が確認できます。
 
-前日の完了タスクがないとジョブは空振りになりますので、WebUI（`http://localhost:8080`)から何件かタスク情報を登録して、完了にしてください。
+当日[^4]の完了タスクがないとジョブは空振りになりますので、WebUI（`http://localhost:8080`)から何件かタスク情報を登録して、完了にしてください。
+
+[^4]: 前日分を想定していますが、今回はローカル環境での確認用に当日完了タスクを指定しました(ConfigMapの`TARGET_OFFSET_DAYS`)。
 
 タスクの登録・更新が完了したら、再度ジョブを作成しましょう。
 
@@ -397,7 +400,7 @@ Job、Podが生成され、その後実行したバッチ処理が正常終了(`
 kubectl create job test2 --from cj/task-reporter
 ```
 
-Skaffoldのターミナルのコンテナログを見ると、DynamoDBから完了タスク情報を抽出してS3にアップロードしている様子が確認できるはずです。
+Skaffoldのターミナルのコンテナログを見ると、DynamoDBから完了タスク情報を抽出して、S3にアップロードしている様子が確認できるはずです。
 ローカル環境から、AWS CLIでアップロードされたファイルについても確認してみましょう。
 
 ```shell
@@ -427,8 +430,8 @@ bfc1df33-a37e-4c64-b141-ac0636b2e0df,kudoh,10:02,"デザインレビュー"
 
 ### Jobのリトライ確認
 
-次にJobを失敗させてリトライがされていることを確認しましょう。LocalStackへの接続エラーを擬似的に実施します。
-以下を実行して、LocalStackのService公開ポート4566を一時的に変更してみましょう。
+次に、Jobを失敗させてリトライがされていることを確認しましょう。LocalStackへの接続エラーを擬似的に実施します。
+以下を実行して、LocalStackのService公開ポート4566を一時的に変更(4567等)してみましょう。
 
 ```shell
 kubectl edit svc localstack
@@ -459,7 +462,7 @@ test3--1-mpqwm   1/1     Running   0          3s
 ```
 
 LocalStackの接続に失敗するようになりますので、Podが失敗してリトライが繰り返されていることが確認できます。
-今回はJobの設定で`backoffLimit`を10として指定しましたので、10回失敗すると、Jobは失敗状態となり以降のリトライは中断されます。
+今回はJobの設定で`backoffLimit`を10として指定しましたので、10回リトライに失敗すると、Jobは失敗状態となり以降のリトライは行われません。
 
 10回失敗する前に、再度`kubectl edit svc localstack`を実行し、先程変更したポート番号を4566に戻しましょう。
 もう一度少し待ってから、Podの状態を確認すると、以下のようにリトライが成功(Completed)していることが分かります。
@@ -477,10 +480,10 @@ test3--1-r6wxc   0/1     Completed   0          23s
 ### CronJobのスケジュール確認
 
 これまでJobを手動で作成していましたので、CronJobのスケジュールを利用して実行していません。
-最後に、CronJobの`schedule`を`*/3 * * * *`(3分間隔)に変更して、スケジュール通りに実行されていることを確認しましょう。
+最後に、CronJobの`schedule`を`*/3 * * * *`(3分間隔)に変更して、スケジュール通りに実行されるかをみてみましょう。
 
 Skaffoldのターミナルで、3分毎にJobが実行されていることが確認できるはずです。
-Jobの内容からも実行履歴が確認できます。今回は`successfulJobsHistoryLimit: 3`と設定していますので3世代分が履歴として残ります。
+Jobの内容からも実行履歴が確認できます。今回は`successfulJobsHistoryLimit: 3`と設定していますので直近3世代分が履歴として残ります。
 
 ```shell
 kubectl get job -l app=task-reporter --sort-by status.startTime \
@@ -520,5 +523,5 @@ Webアプリケーション同様に、バッチアプリケーションにつ�
 
 アプリ自体については、Skaffoldのプロセスを終了(Ctrl+C)するだけでアンデプロイします。
 
-LocalStackのアンインストールについては[こちら](/containers/k8s/tutorial/app/localstack/#クリーンアップ)を参照してください。
+LocalStackのアンインストールは[こちら](/containers/k8s/tutorial/app/localstack/#クリーンアップ)を参照してください。
 ローカルKubernetesのminikubeは[こちら](/containers/k8s/tutorial/app/minikube/#クリーンアップ)を参照してください。

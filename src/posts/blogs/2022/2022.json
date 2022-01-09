@@ -1,6 +1,7 @@
 {
-  "tags": ["posts"],
+  "tags": ["posts", "2022年"],
   "layout": "post",
   "permalink": "/blogs/{{ page.date | date: '%Y/%m/%d' }}/{{ page.fileSlug | blogPage }}/",
-  "pageNavigationTag": "posts"
+  "pageNavigationTag": "posts",
+  "category": "ブログ"
 }

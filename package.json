@@ -33,7 +33,7 @@
     "cross-env": "^7.0.3",
     "cssnano": "^4.1.11",
     "dotenv": "^8.6.0",
-    "eleventy-plugin-code-clipboard": "0.0.3",
+    "eleventy-plugin-code-clipboard": "0.0.5",
     "emoji-regex": "^9.2.2",
     "luxon": "^1.28.0",
     "markdown-it": "^11.0.1",

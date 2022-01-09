@@ -102,10 +102,13 @@ hr {
 table {
   margin: 1rem;
   border-collapse: collapse;
+  width: 98%;
+  word-break: break-word;
 }
 
 table, th, td {
   border: 1px solid grey;
+  padding: 3px;
 }
 
 img.page-title-icon {

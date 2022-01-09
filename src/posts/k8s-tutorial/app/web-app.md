@@ -3,6 +3,7 @@ title: Kubernetesマニフェスト作成 - Webアプリケーション
 author: noboru-kudo
 date: 2021-12-30
 prevPage: ./src/posts/k8s-tutorial/app/localstack.md
+nextPage: ./src/posts/k8s-tutorial/app/batch.md
 ---
 
 ここまででローカル環境で開発する準備が整いました。

@@ -212,8 +212,8 @@ Ready.
 ```shell
 # minikube: 仮想マシン上のLocalStack
 LOCALSTACK_ENDPOINT="http://$(minikube ip):30000"
-# Docker Desktop: HostOSで実行されているDocker(localhost)
-LOCALSTACK_ENDPOINT="http://localhost:30000"
+# Docker Desktopの場合
+# LOCALSTACK_ENDPOINT="http://localhost:30000"
 
 aws s3api list-buckets --endpoint ${LOCALSTACK_ENDPOINT}
 aws dynamodb describe-table --table-name localstack-test --region local --endpoint ${LOCALSTACK_ENDPOINT}

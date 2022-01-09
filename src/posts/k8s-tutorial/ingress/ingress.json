@@ -1,5 +1,6 @@
 {
   "tags": ["container","k8s","tutorial"],
   "layout": "post",
-  "permalink": "/containers/k8s/tutorial/ingress/{{ page.fileSlug }}/"
+  "permalink": "/containers/k8s/tutorial/ingress/{{ page.fileSlug }}/",
+  "category": "Kubernetesチュートリアル - 環境構築編 - Ingress Controller"
 }

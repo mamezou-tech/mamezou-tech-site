@@ -13,3 +13,10 @@ div.title {
   font-size: 2rem;
   text-align: center;
 }
+
+div.category {
+  margin: 20px 20px 20px 20px;
+  color: #4F4350;
+  font-size: 1.5rem;
+  text-align: center;
+}

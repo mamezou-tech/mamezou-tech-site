@@ -6,6 +6,7 @@ pagination:
   reverse: true
 layout: page.njk
 permalink: "/{{ page.fileSlug }}/{% if pagination.pageNumber > 0 %}{{ pagination.pageNumber }}/{% endif %}"
+hideCategory: true
 ---
 <nav class="tdbc-pagination" aria-labelledby="tdbc-pagination">
   {% if page.url != pagination.href.first %}<a href="{{ pagination.href.first }}">&laquo;</a>{% else %}<span>&laquo;</span>{% endif %}

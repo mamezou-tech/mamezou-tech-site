@@ -10,6 +10,10 @@
             <time datetime="{{ post.date | htmlDateString }}">
               {{ post.date | readableDate }}
             </time>
+            {%- if (post.data.category) and (not hideCategory) -%}
+            <span> | </span>
+            <span class="Label">{{ post.data.category }}</span>
+            {% endif %}
             <span> | </span>
             <span>{{ post | readingTime }} read</span>
           </div>

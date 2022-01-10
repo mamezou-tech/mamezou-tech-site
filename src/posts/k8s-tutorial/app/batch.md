@@ -498,7 +498,7 @@ task-reporter-27361770   2022-01-09T05:30:00Z   2022-01-09T05:30:08Z
 task-reporter-27361773   2022-01-09T05:33:00Z   2022-01-09T05:33:08Z
 ```
 
-また、CronJobのスケジュールを一旦停止したい場合は、以下のように`suspend: false`に変更すると中断できます。
+また、CronJobのスケジュールを一旦停止したい場合は、以下のように`"suspend": true`に変更すると中断できます。
 
 ```shell
 kubectl patch cj task-reporter --patch '{"spec": {"suspend": true}}'

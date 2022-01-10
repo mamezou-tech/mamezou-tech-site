@@ -3,6 +3,7 @@ title: Kubernetesマニフェスト作成 - バッチアプリケーション
 author: noboru-kudo
 date: 2022-01-09
 prevPage: ./src/posts/k8s-tutorial/app/web-app.md
+nextPage: ./src/posts/k8s-tutorial/app/container-registry.md
 ---
 
 [前回](/containers/k8s/tutorial/app/web-app/)は、ローカル環境のKubernetesでタスク管理ツールのWebアプリケーションを動かすことができました。

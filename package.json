@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "mamezou developer site contents",
   "main": "index.js",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "scripts": {
     "watch:sass": "sass  --no-source-map --watch src/sass:public/css",
     "watch:eleventy": "eleventy --serve",

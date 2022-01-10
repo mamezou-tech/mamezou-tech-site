@@ -1,13 +1,13 @@
 {
   "name": "mamezou-tech-pages",
   "version": "1.0.0",
-  "description": "memzou-tech public pages",
+  "description": "mamezou developer site contents",
   "main": "index.js",
   "scripts": {
     "watch:sass": "sass  --no-source-map --watch src/sass:public/css",
     "watch:eleventy": "eleventy --serve",
-    "build:sass-site": "sass  --no-source-map src/sass/style.scss public/css/style.css",
-    "build:sass-social": "sass  --no-source-map src/sass/social.scss social/style.css",
+    "build:sass-site": "sass --no-source-map src/sass/style.scss public/css/style.css",
+    "build:sass-social": "sass --no-source-map src/sass/social.scss social/style.css",
     "build:sass": "npm-run-all --parallel build:sass-site",
     "build:eleventy": "eleventy",
     "postbuild": "postcss public/css/*.css -u autoprefixer cssnano -r",

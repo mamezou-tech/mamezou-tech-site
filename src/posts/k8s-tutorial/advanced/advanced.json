@@ -2,5 +2,4 @@
   "tags": ["container","k8s","tutorial"],
   "layout": "post",
   "permalink": "/containers/k8s/tutorial/advanced/{{ page.fileSlug }}/",
-  "category": "Kubernetesチュートリアル - 応用編"
-}
+  "category": "コンテナ - Kubernetesチュートリアル"}

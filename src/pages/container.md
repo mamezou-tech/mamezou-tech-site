@@ -36,7 +36,7 @@ titleImage: "/img/logo/mameka5_50.png"
 2. [バッチアプリケーション(CronJob/Job)](/containers/k8s/tutorial/app/batch/)
 
 #### クラスタ環境デプロイ
-1. [プライベートコンテナレジストリ(ECR)](/containers/k8s/tutorial/app/container-registry/)
+1. [コンテナレジストリ(ECR)](/containers/k8s/tutorial/app/container-registry/)
 2. マニフェストファイル構成管理(Kustomize) <span style="color:red">Coming Soon!</span>
 
 ### 継続的デリバリ編

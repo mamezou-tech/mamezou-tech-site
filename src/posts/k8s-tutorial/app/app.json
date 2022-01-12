@@ -2,6 +2,6 @@
   "tags": ["container","k8s","tutorial"],
   "layout": "post",
   "permalink": "/containers/k8s/tutorial/app/{{ page.fileSlug }}/",
-  "category": "Kubernetesチュートリアル - アプリケーション開発編"
+  "category": "コンテナ - Kubernetesチュートリアル"
 }
 

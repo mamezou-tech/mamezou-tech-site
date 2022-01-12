@@ -2,5 +2,5 @@
   "tags": ["container","k8s","tutorial"],
   "layout": "post",
   "permalink": "/containers/k8s/tutorial/storage/{{ page.fileSlug }}/",
-  "category": "Kubernetesチュートリアル - 環境構築編 - CSI"
+  "category": "コンテナ - Kubernetesチュートリアル"
 }

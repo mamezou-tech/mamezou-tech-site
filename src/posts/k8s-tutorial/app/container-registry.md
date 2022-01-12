@@ -1,5 +1,5 @@
 ---
-title: クラスタ環境デプロイ - プライベートコンテナレジストリ(ECR)
+title: クラスタ環境デプロイ - コンテナレジストリ(ECR)
 author: noboru-kudo
 date: 2022-01-15
 prevPage: ./src/posts/k8s-tutorial/app/batch.md
@@ -43,7 +43,7 @@ Docker Hub以外にも、コンテナレジストリには多くのサービス�
 
 ## 事前準備
 
-コンテナとしてビルド対象のアプリケーションのソースコードやDockerfileは前回同様にGitHubにあげていますので、未実施の場合はクローンしてください。
+コンテナとしてビルド対象のアプリケーションのソースコードやDockerfileは前回同様にGitHubに用意していますので、未実施の場合はクローンしてください。
 
 ```shell
 git clone https://github.com/mamezou-tech/k8s-tutorial.git

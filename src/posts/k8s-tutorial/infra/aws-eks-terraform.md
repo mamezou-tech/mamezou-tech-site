@@ -519,7 +519,7 @@ spec:
       targetPort: http
 ```
 
-Deploymentリソースは、デプロイを管理するKubernetesのリソースで、ステートレスなアプリケーションで高い頻度で使われます。
+Deploymentリソースは、デプロイを管理するKubernetesのリソースで、主にステートレスなアプリケーションで使われます。
 このDeploymentリソースを使うとデプロイはバージョン管理され、ロールバックや一時停止等を行うことが可能になります。
 Deploymentの詳細は[こちら](/containers/k8s/tutorial/app/web-app/#deployment)を参照してください。
 ここでは、`nginx:latest`イメージを2台構成(`replicas: 2`)で常時起動するように指示しています。
@@ -562,7 +562,7 @@ Deployment/ReplicaSet/Pod/Serviceリソースが作成されていることが�
 
 ![](https://i.gyazo.com/960d92b1bad70006fc663fd806ddec9b.png)
 
-Serviceリソースで指定した80番ポートで外部からのトラフィックを受付け、Kubernetesのノードにルーティングしている様子が分かります。
+Serviceリソースで指定した80番ポートから外部トラフィックを受付け、Kubernetesのノードにルーティングしている様子が分かります。
 
 ブラウザからURLにアクセスしてみましょう。
 
@@ -580,7 +580,7 @@ Serviceリソースが削除されたことを検知すると、EKSは不要に�
 kubectl delete -f nginx.yaml
 ```
 
-ELBが削除されたことを確認したら、terraformユーザーのターミナルに戻り、以下のコマンドでTerraformで管理している全てのリソースを削除ましょう。
+ELBが削除されたことを確認したら、terraformユーザーのターミナルに戻り、以下のコマンドでTerraformが管理している全てのリソースを削除ましょう。
 
 ```shell
 terraform destroy

@@ -7,7 +7,7 @@ prevPage: ./src/posts/k8s-tutorial/infra/aws-eks-eksctl.md
 nextPage: ./src/posts/k8s-tutorial/ingress/ingress-nginx.md
 ---
 
-前回に引き続きAWSのKubernetesフルマネージドサービスのEKS(Elastic Kubernetes Service)でクラスタ環境を構築してみましょう。
+前回に引き続き、AWSのKubernetesフルマネージドサービスのEKS(Elastic Kubernetes Service)でクラスタ環境を構築してみましょう。
 
 [前回](/containers/k8s/tutorial/infra/aws-eks-eksctl/)は[eksctl](https://eksctl.io/)を利用してクラスタ環境を構築しましたが、今回はIaCツールとして高い人気を誇る[Terraform](https://www.terraform.io/)を使います。
 
@@ -52,21 +52,21 @@ export AWS_DEFAULT_REGION=ap-northeast-1
 
 ## リモートステート用のバケット作成
 
-IaCツールであるTerraformは、適用した現在の状態をどこかに保管する必要があります。
-特に何も指定しなければローカル(`terraform.tfstate`)に保管されますが、このままでは実行するマシンが限定されてしまい、複数人で管理したり、パイプライン等での運用に向きません。
+IaCツールであるTerraformは、適用状態をどこかに保管する必要があります。
+特に何も指定しなければローカル(`terraform.tfstate`)に保管されますが、このままでは実行するマシンが限定されてしまい、チーム開発やパイプラインでの運用に向きません。
 したがって、各クラウドプロバイダーが提供するクラウドストレージ上にその状態を保管するのが一般的です(リモートステートといいます)。
 
-今回はローカルステートでも良いのですが、ベストプラクティスに従いAWSのS3に保管します。
+今回はローカルステートでも良いのですが、ベストプラクティスに従い、AWSのS3に保管します。
 
 事前にTerraform専用のS3バケットを作成しておきましょう(デフォルトの設定のままで構いません)。
 
 ![](https://i.gyazo.com/a211baaf7dd1fdd8176bc0c2b624248b.png)
 
-ここでは`mz-terraform`という名前のバケットを作成しました。バケット名はグローバルで一意である必要がありますので任意の名前に変更してください。
+ここでは`mz-terraform`という名前のバケットを作成しました。バケット名はグローバルで一意である必要がありますので、任意の名前に変更してください。
 
 ## EKSクラスタ構成情報の記述(Terraform Language)
 
-ここまで準備ができたらEKSクラスタ環境を作成していきましょう。
+ここまで準備ができたら、EKSクラスタ環境を作成していきましょう。
 
 Terraformには[Module](https://www.terraform.io/docs/language/modules/index.html)という仕組みがあり、実績のあるサードパーティや社内で作成した設定を再利用する形で利用できます。
 ここでは、以下のAWS Moduleを利用してクラスタ環境を構築します。
@@ -111,11 +111,11 @@ terraform {
 
 まず最初に`terraform`ブロックにはTerraform自体の設定を記述します。公式ガイドは[こちら](https://www.terraform.io/docs/language/settings/index.html)です。
 
-Terraformはバージョンアップでシンタックス等の互換性のない変更が頻繁に発生しますので`required_version`でTerraform CLIのバージョンを指定しておくことをお勧めします。
+Terraformはバージョンアップで互換性のない変更が頻繁に発生しますので`required_version`でTerraform CLIのバージョンを指定しておくことをお勧めします。
 
 `backend`ブロックではリモートステート(今回はS3バケット)の情報を記述します。
-通常は適用する環境によってリモートステートは異なりますので別ファイルに記述してCLIの入力とすることが多いかと思います([Partial Configuration](https://www.terraform.io/docs/language/settings/backends/configuration.html#partial-configuration)参照)。
-ここでは先程作成したリモートステート用のS3バケットを`bucket`/`region`に指定します。`key`についてはバケット内で重複しなければ任意の名前で構いません。
+今回はここに直接記述していますが、通常は適用する環境によってリモートステートは異なりますので、別ファイルに記述してCLIの入力とすることが多いかと思います([Partial Configuration](https://www.terraform.io/docs/language/settings/backends/configuration.html#partial-configuration)参照)。
+ここでは、先程作成したリモートステート用のS3バケットを`bucket`/`region`に指定します。`key`についてはバケット内で重複しなければ任意の名前で構いません。
 
 `required_providers`ブロックでは利用するTerraformの[Provider](https://www.terraform.io/docs/language/providers/index.html)のバージョンを記述します。
 利用できるProviderは[Terraform Registry](https://registry.terraform.io/browse/providers)で管理されています。
@@ -123,7 +123,7 @@ ProviderはAWS、Azure等のクラウドリソースだけでなく、SaaS/ミ�
 このため、対象Providerがあれば、Terraform内でクラウドリソースと合わせて構成管理対象にできます。
 また、Terraform同様に、Providerについても頻繁にアップデートされていきますので、バージョンはある程度固定することが望ましいです。
 指定するバージョンはレンジ指定も可能です([こちら](https://www.terraform.io/docs/language/expressions/version-constraints.html#version-constraint-syntax)参照)。
-今回はVPC/EKSの構築用に[AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest)と[Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest)を利用しますのでこちらのバージョン情報を設定しています。
+今回はVPC/EKSの構築用に[AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest)と[Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest)を利用しますので、こちらの情報を設定しています。
 
 ### AWS Provider
 
@@ -133,8 +133,8 @@ provider "aws" {}
 
 Terraformブロックでバージョン条件を記述しましたが、ここで実際に利用するProviderを`provider`ブロックで指定します[^3]。
 この定義を記述することで、EC2やVPC等AWSインフラが提供する様々なリソースを作成・更新できます。
-今回は、事前にAWS CLIでアクセスキー等の環境変数を指定していますので、上記例ではシンプルにProviderの定義のみで中身は空で問題ありません。
-そうでない場合は、ここにAWSへのアクセス情報を記述する必要があります。必要な場合は[公式ガイド](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)を参照して記述を追加してください。
+今回は、事前にAWS CLIでアクセスキー等の環境変数を指定していますので、上記例ではシンプルにProviderの定義のみで問題ありません。
+そうでない場合は、ここにAWSへのアクセス設定を記述する必要があります。必要に応じて[公式ガイド](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)を参照して設定を追記してください。
 
 [^3]: Terraformの以前のバージョンではここでバージョンを指定していましたが、現在はterraformブロックで指定していますので`provider`ブロックでのバージョン指定は不要です。
 
@@ -157,14 +157,14 @@ module "vpc" {
 }
 ```
 
-続いてEKSリソースを作成するためのネットワークリソースを作成します。
-AWS Providerで提供されている各種AWSリソースを用いて作成する必要がありますが、1からネットワークリソースを作成するのはそれなりのAWSインフラの知識が必要です。
+続いて、EKSリソースを作成するためのネットワークリソースを作成します。
+AWS Providerで提供されている各種リソースを用いて作成する必要がありますが、1からネットワークリソースを作成するのはそれなりのAWSインフラの知識が必要です。
 誤った設定で構築するとネットワークアクセスができなかったり、セキュリティホールになったりするため、それなりの労力が必要になります。
 前述の通り、ここはTerraformのAWS向けのModuleである[terraform-aws-module/vpc](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)を活用して簡単に構築しています。
 
 Moduleを利用するには`module`ブロックを配置し、その中に`source`としてterraform-aws-modulesのVPCを指定し、そこにModuleのパラメータを指定してます。
 
-上記指定だけで、東京リージョンの3つのAZそれぞれにプライベートサブネット、パブリックサブネットを配置したネットワークを作成できます。
+上記指定だけで、東京リージョンの3つのAZそれぞれにプライベートサブネット、パブリックサブネットを配置したプライベートネットワークを作成できます。
 他にも多数のオプションが指定可能ですので、[公式ドキュメント](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)を参照してカスタマイズしてください。
 
 ### EKSリソース
@@ -191,16 +191,16 @@ output "aws_auth_config_map" {
 }
 ```
 
-ここで先程構築したVPCの上にEKSリソースを配置します。
+ここで、先程構築したVPCの上にEKSリソースを配置します。
 EKSリソースについても1から作成するにはかなりの労力が必要なため、EKS用のTerraform Moduleの[terraform-aws-modules/eks](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)を使うのが便利です。
 先程と同様に`module`ブロックを配置し、EKSのTerraform Moduleを`source`に指定し、EKSの設定情報を記述していきます。
 
-- `cluster_version`で作成するk8sのバージョンを指定できますので、こちらは今後のバージョンアップ運用のためにも指定しておくようにしましょう。利用可能なk8sのバージョンは[こちら](https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/kubernetes-versions.html)から確認できます。
+- `cluster_version`で作成するKubernetesのバージョンを指定できます。こちらは今後のバージョンアップ運用のためにも指定しておくようにしましょう。利用可能なバージョンは[こちら](https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/kubernetes-versions.html)から確認できます。
 - `cluster_name`は必須です。任意のクラスタ名を指定してください(ここでは`mz-k8s`を指定)。
-- `vpc_id`/`subnets`の部分で作成したVPCリソースのVPC IDとプライベートサブネットを指定し、その上にEKSクラスタを配置するように指示します(値参照のシンタックスは[こちら](https://www.terraform.io/docs/language/expressions/references.html)参照)。
+- `vpc_id`/`subnet_ids`の部分で作成したVPCリソースのVPC IDとプライベートサブネットを指定し、その上にEKSクラスタを配置するように指示します(値参照のシンタックスは[こちら](https://www.terraform.io/docs/language/expressions/references.html)参照)。
 - `enable_irsa`はIRSA(IAM Role for ServiceAccount)を有効化しています。これはPodレベルでAWSリソースへのアクセス許可を制限するEKSの機能です。
-- `node_group`ブロックを指定することでEKSのマネージドノードグループを作成することを指定しています。他にもセルフマネージドやFargateでのノード構築にも対応しています。
-今回はノード数2で`m5.large`のインスタンスタイプでノードを作成するように指定しています。
+- `eks_managed_node_groups`でEKSのマネージドノードグループを作成することを指定しています。他にもセルフマネージドやFargateにも対応しています。 今回はノード数2で`m5.large`のインスタンスタイプでノードを作成するように指定しています。
+
 また`output`として`aws_auth_config_map`を指定しました。これは開発者のEKSへのアクセス許可を設定するのために必要なもので後で使用します。
   
 それ以外にも多数の[オプション](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)が用意されていますので、必要に応じてカスタマイズしてください。
@@ -224,16 +224,16 @@ provider "kubernetes" {
 }
 ```
 
-ここでTerraformからEKSクラスタへのアクセスを設定しています。
+ここでは、TerraformからEKSクラスタへのアクセス設定をしています。
 `data`ブロックでEKS関連のリソースを取得して、`provider`ブロックで[Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest)のEKSクラスタへの認証情報を設定しています。
 
-今回はKubernetesリソースを作成しませんが、後の作業でこの設定を使用します。
+今回はKubernetesリソースを作成しませんが、後のチュートリアルではこの設定を使用していきます。
 Kubernetes Providerで作成可能なリソースは[公式ドキュメント](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs)に記載されていますが、ほぼ全てのリソースがTerraformで管理可能なことが分かります。
 NamespaceやNetworkPolicy等のインフラリソースは、クラスタ環境構築のこの段階で作成しておくとよいでしょう。
 
 ## Kubernetesクラスタ環境構築
 
-ここまでできると後はTerraform CLIを実行してEKSリソースを作成するだけです。
+ここまででくると、後はTerraform CLIを実行してEKSリソースを作成するだけです。
 
 先程作成したRoot Moduleディレクトリに移動して以下の手順でコマンドを実行します[^4]。
 
@@ -241,7 +241,7 @@ NamespaceやNetworkPolicy等のインフラリソースは、クラスタ環境�
 
 ### terraform init
 
-まずは利用するProvider/Moduleを初期化する必要があります。以下のコマンドを実行します。
+まずは、利用するProvider/Moduleを初期化する必要があります。以下のコマンドを実行します。
 
 ```shell
 terraform init
@@ -306,12 +306,12 @@ Terraform will perform the following actions:
  # 以下省略
 ```
 
-今回は新規構築なので新規作成(`+ create`)のみですが、変更時にはTerraformが変更点に対してどのようなオペレーション(更新や削除・新規作成等)で行うかを示してくれます。
+今回は新規構築なので新規作成(`+ create`)のみですが、変更時にはTerraformが変更点に対してどのようなオペレーション(更新や削除・新規作成等)を行うかを示してくれます。
 変更内容に問題ないか必ずチェックするようにしましょう。
 
 ### terraform apply
 
-ここまでくると実際にEKSリソースを作成するのみになります。以下のコマンドを実行します。
+それでは、実際にEKSリソースを作成しましょう。以下のコマンドを実行します。
 
 ```shell
 terraform apply
@@ -328,20 +328,10 @@ module.vpc.aws_vpc.this[0]: Creating...
 module.eks.aws_iam_role.cluster[0]: Creating...
 module.vpc.aws_eip.nat[0]: Creation complete after 0s [id=eipalloc-08d6b0d113dbca0ab]
 module.vpc.aws_vpc.this[0]: Creation complete after 1s [id=vpc-045a2061b8154696e]
-module.vpc.aws_internet_gateway.this[0]: Creating...
-module.vpc.aws_subnet.private[1]: Creating...
-module.vpc.aws_route_table.private[0]: Creating...
-module.vpc.aws_subnet.public[1]: Creating...
-module.vpc.aws_subnet.public[0]: Creating...
-module.vpc.aws_subnet.private[0]: Creating...
-module.vpc.aws_subnet.public[2]: Creating...
-module.vpc.aws_subnet.private[2]: Creating...
-module.vpc.aws_route_table.private[0]: Creation complete after 1s [id=rtb-0d134263386f370c9]
-module.vpc.aws_route_table.public[0]: Creating...
 (以下省略)
 ```
 
-TerraformがAWS Provider/Kubernetes Providerを利用して各リソース作成が始まっていることが分かります。
+Terraformが各リソース作成を行っている様子が確認できます。
 作成が完了するまでしばらく待ちましょう(手元の環境だと15分程で完了しました)。
 
 作成が完了すると、以下のようにマネジメントコンソールからEKSクラスタの情報を参照できます。
@@ -385,7 +375,7 @@ data:
 ```
 
 上記のように`mapUsers`セクションを追加し、開発者向けのIAMユーザーのARNを`userarn`、対応するユーザー名を`username`に指定してください。
-前回同様に管理者権限の`system:masters`を指定していますが、クラスタ構築後に必要に応じて権限を見直すのがよいでしょう。
+前回同様に管理者権限の`system:masters`を指定していますが、必要に応じて権限を見直してください。
 スイッチロール等IAM Roleで利用する場合は`mapRoles`の方に同様の記述を追加してください。
 
 そして、現在のTerraformユーザのkubectlの接続設定(kubeconfig)を更新します。
@@ -400,12 +390,12 @@ aws eks update-kubeconfig --name mz-k8s
 kubectl apply -f aws-auth-configmal.yaml
 ```
 
-これで、構築したEKSクラスタに任意のIAMユーザーが利用できるようになります。
+これで、構築したEKSクラスタに指定したIAMユーザーが利用できるようになります。
 
 ## クラスタ環境への接続
 
 それでは、作成したEKSクラスタ環境に、kubectlからアクセスしてみましょう。
-IAMユーザーの認証情報は登録済みですので、ローカルの接続情報のkubeconfig(`~/.kube/config`)を更新するのみです。
+先程、ConfigMapに開発者のIAMユーザーを登録済みですので、開発者側でkubectl接続情報を更新するのみです。
 これはAWS CLIで実施します。手順はeksctl同様です。以下はTerraform CLIを実行したものとは別のターミナルから実行してください。
 
 ```shell
@@ -525,8 +515,7 @@ Deploymentの詳細は[こちら](/containers/k8s/tutorial/app/web-app/#deployme
 ここでは、`nginx:latest`イメージを2台構成(`replicas: 2`)で常時起動するように指示しています。
 
 一方で、ServiceリソースはPodへのアクセスに対して静的なエンドポイントを提供する役目を果たします。
-ここでは`type`としてLoadBalancerを指定しています。これにより、AWS上にELBリソースを作成し、外部からのトラフィックを指定したPod(`selector`で指定)にルーティングします。
-`type`を指定しない場合は、デフォルトのClusterIPとなり、クラスタ内部からしかアクセスできなくなりますので注意してください。
+ここでは`type`としてLoadBalancerを指定しています。これにより、AWS上にELBリソースを作成し、外部からのトラフィックを受付けてNginxのPodにルーティングします。
 
 これを`kubectl apply`コマンドを利用して作成します。`-f`オプションで作成したファイル(ここでは`nginx.yaml`というファイルで作成)を指定します。
 
@@ -562,7 +551,7 @@ Deployment/ReplicaSet/Pod/Serviceリソースが作成されていることが�
 
 ![](https://i.gyazo.com/960d92b1bad70006fc663fd806ddec9b.png)
 
-Serviceリソースで指定した80番ポートから外部トラフィックを受付け、Kubernetesのノードにルーティングしている様子が分かります。
+80番ポートからトラフィックを受付け、Kubernetesのノードにルーティングしている様子が分かります。
 
 ブラウザからURLにアクセスしてみましょう。
 
@@ -573,7 +562,7 @@ NginxのWelcomeページが表示されれば成功です。
 
 ## クリーンアップ
 
-まず先程作成したリソースを削除します(`-f`オプションのYAMLファイルは先程と同じものを指定)。
+まず、先程作成したNginx関連のリソースを削除します。
 Serviceリソースが削除されたことを検知すると、EKSは不要になったELBも削除します。
 
 ```shell
@@ -599,4 +588,4 @@ terraform destroy
 ---
 更新情報
 
-- 2022-01-12: Terraform EKSモジュールのv18で大きくインターフェースが変更されたため、本文修正しました。
+- 2022-01-12: Terraform EKSモジュールのv18で大きくインターフェースが変更されたため、本文の内容と構成を見直しました。

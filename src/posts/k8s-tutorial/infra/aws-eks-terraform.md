@@ -352,7 +352,7 @@ terraform output aws_auth_config_map > aws-auth-configmal.yaml
 ```
 
 このファイルを編集し、任意のIAMユーザーを追加しましょう(出力内容から先頭(`<<EOT`)と最後(`EOT`)は削除してください)。
-
+{% raw %}
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -373,6 +373,7 @@ data:
       groups:
         - system:masters
 ```
+{% endraw %}
 
 上記のように`mapUsers`セクションを追加し、開発者向けのIAMユーザーのARNを`userarn`、対応するユーザー名を`username`に指定してください。
 前回同様に管理者権限の`system:masters`を指定していますが、必要に応じて権限を見直してください。

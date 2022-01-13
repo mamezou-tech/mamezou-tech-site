@@ -180,7 +180,7 @@ module "eks" {
   enable_irsa             = true
   eks_managed_node_groups = {
     mz_node = {
-      desired_capacity = 2
+      desired_size = 2
       instance_types   = ["m5.large"]
     }
   }

@@ -2,5 +2,5 @@
   "tags": ["container","k8s","tutorial"],
   "layout": "post",
   "permalink": "/containers/k8s/tutorial/ops/{{ page.fileSlug }}/",
-  "category": "Kubernetesチュートリアル - クラスタ運用編"
+  "category": "コンテナ - Kubernetesチュートリアル"
 }

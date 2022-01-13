@@ -2,5 +2,5 @@
   "tags": ["container","k8s","tutorial"],
   "layout": "post",
   "permalink": "/containers/k8s/tutorial/infra/{{ page.fileSlug }}/",
-  "category": "Kubernetesチュートリアル - 環境構築編 - EKSクラスタ"
+  "category": "コンテナ - Kubernetesチュートリアル"
 }

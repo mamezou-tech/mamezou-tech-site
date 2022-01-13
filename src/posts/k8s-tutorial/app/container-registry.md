@@ -297,8 +297,8 @@ Events:
   Type    Reason     Age   From               Message
   ----    ------     ----  ----               -------
   Normal  Scheduled  114s  default-scheduler  Successfully assigned default/task-service-7fc98b5ffb-nqctl to minikube
-  Normal  Pulling    113s  kubelet            Pulling image "446197467950.dkr.ecr.ap-northeast-1.amazonaws.com/mamezou-tech/task-service:test-v1"
-  Normal  Pulled     105s  kubelet            Successfully pulled image "446197467950.dkr.ecr.ap-northeast-1.amazonaws.com/mamezou-tech/task-service:test-v1" in 8.173489005s
+  Normal  Pulling    113s  kubelet            Pulling image "xxxxxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/mamezou-tech/task-service:test-v1"
+  Normal  Pulled     105s  kubelet            Successfully pulled image "xxxxxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/mamezou-tech/task-service:test-v1" in 8.173489005s
   Normal  Created    105s  kubelet            Created container task-service
   Normal  Started    105s  kubelet            Started container task-service
 ```

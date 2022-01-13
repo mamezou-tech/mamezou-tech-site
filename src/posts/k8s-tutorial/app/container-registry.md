@@ -31,7 +31,7 @@ Docker Hubは最も古いコンテナレジストリで、パブリックなリ�
 - [Red Hat Quay.io](https://quay.io/)
 - [GitHub Packages](https://github.com/features/packages)
 - [GitLab Container Registry](https://docs.gitlab.com/ee/user/packages/container_registry/)
-- [Nexus SonarType](https://www.sonatype.com/)
+- [Sonatype Nexus](https://www.sonatype.com/)
 - [JFrog Artifactory](https://jfrog.com/artifactory/)
 - [Harbor](https://goharbor.io/)
 

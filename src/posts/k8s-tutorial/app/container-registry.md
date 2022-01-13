@@ -1,7 +1,7 @@
 ---
 title: クラスタ環境デプロイ - コンテナレジストリ(ECR)
 author: noboru-kudo
-date: 2022-01-15
+date: 2022-01-13
 prevPage: ./src/posts/k8s-tutorial/app/batch.md
 ---
 
@@ -11,9 +11,10 @@ prevPage: ./src/posts/k8s-tutorial/app/batch.md
 その前に、アプリケーションをEKSにデプロイする際、コンテナイメージはどこで管理すべきでしょうか？
 今まではコンテナのビルドと実行が同一環境(ローカル環境)のため、イメージビルド後にそのまま実行できていました[^1]。
 ローカル環境での開発はこれで問題ありませんが、その後のテスト・商用環境では、イメージのビルドはCI/CDパイプラインで、その実行はKubernetesと分離することが一般的です。
+これを実現するには、ビルドしたイメージを保管・配布する仕組みが必要になります。
 
-ここで必要になるのがコンテナレジストリです。コンテナレジストリはコンテナイメージをバージョン管理し、必要なイメージを各実行環境に配布する役割を担います[^2]。
-まずコンテナレジストと聞いて、[Docker Hub](https://hub.docker.com/)を思いつく方が多いでしょう。
+これを担うのがコンテナレジストリです。コンテナレジストリを導入することで、ビルドしたイメージをバージョン管理し、各実行環境で取得(Pull)できるようになります[^2]。
+まずコンテナレジストリと聞いて、[Docker Hub](https://hub.docker.com/)を思いつく方が多いでしょう。
 Docker Hubは最も古いコンテナレジストリで、パブリックなリポジトリは無料で作成できますし、利用方法も簡単で今でも最も多く利用されているであろうと思います[^3]。
 
 [^1]: Podのマニフェストで`imagePullPolicy`を`Never`にしていました。
@@ -22,7 +23,7 @@ Docker Hubは最も古いコンテナレジストリで、パブリックなリ�
 
 [^3]: 2020-11-20よりDockerHubからイメージのPULLにはRateLimitがかけられるようになりました。詳細は[こちら](https://www.docker.com/increase-rate-limits)を参照してください。
 
-Docker Hub以外にも、コンテナレジストリには多くのサービスやプロダクトがあり、よく知られているものだけでも以下のようなものがあります。
+その一方で、Docker Hub以外にもコンテナレジストリには多くのサービスやプロダクトがあり、よく知られているものだけでも以下のようなものがあります。
 
 - [Amazon Elastic Container Registry(ECR)](https://aws.amazon.com/ecr/)
 - [Google Container Registry(GCR)](https://cloud.google.com/container-registry/) / [Google Artifact Registry(GAR)](https://cloud.google.com/artifact-registry/)
@@ -34,7 +35,7 @@ Docker Hub以外にも、コンテナレジストリには多くのサービス�
 - [JFrog Artifactory](https://jfrog.com/artifactory/)
 - [Harbor](https://goharbor.io/)
 
-このように現状多くの選択肢がありますが、プライベートのコンテナレジストリが必要であれば、組織的な制約がない限り、各クラウドプロバイダで提供されているものを利用するのが手っ取り早いでしょう。
+このように多くの選択肢がありますが、プライベートのコンテナレジストリが必要であれば、組織的な制約がない限り、各クラウドプロバイダで提供されているものを利用するのが手っ取り早いでしょう。
 今回はAWS EKSをアプリケーションのホスティング先として選択しますので、AWSマネージドサービスであるコンテナレジストリのECRを使用します[^4]。
 
 [^4]: ECRを使うメリットとして、リポジトリへのアクセス許可(Pull/Push)にIAMを利用できますので、他のAWSリソースのアクセスポリシーとの一貫性を確保できます。
@@ -79,14 +80,13 @@ AWSマネジメントコンソールに、任意のS3バケットを作成して
 ## リポジトリ作成
 
 では、ECRにコンテナイメージのリポジトリを作成しましょう。
-作成するタスク管理ツールのイメージのリポジトリ名は、以下のようにします。
+対象のタスク管理ツールのイメージのリポジトリ名は、以下のようにします。
 
 1. タスク管理API: `mamezou-tech/task-service`
 2. タスク管理ツールUI: `mamezou-tech/task-web`
 3. 完了タスク出力レポートバッチ: `mamezou-tech/task-reporter`
 
-`2.`のタスク管理ツールのUIはローカル環境ではコンテナ化せずに、Vue CLIの開発支援機能を使うため通常のnpmプロセスとして起動しました。
-ここでは、コンテナ化してEKSの中にホスティングすることとします[^6]。
+`2.`のタスク管理ツールのUIは、ローカル環境ではコンテナ化せずに、Vue CLIを使って起動しました。ここでは、コンテナ化してEKS上にホスティングすることとします[^6]。
 
 [^6]: AWSだと静的リソースはS3にホスティングし、CloudFront(CDN)で配信するというスタイルが一般的ですが、本題ではないため触れません。
 
@@ -113,7 +113,7 @@ terraform {
 provider "aws" {}
 ```
 
-ここではリモートステートとしてS3を使用し、[AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)を使用してリソースを作成する設定を指定します。
+ここではリモートステートとしてS3を使用し、リソースの作成には[AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)を使用する設定を指定しています。
 `backend`の`bucket`は自分のリモートステート用のS3バケット名に置き換えてください。
 
 次に、ECRの作成です。以下を追記してください。
@@ -153,7 +153,7 @@ terraform apply
 
 今回は実施しませんでしたが、不要なイメージが溜まり続けると、ECRのストレージ費用が高くなります。
 実際にプロジェクトでECRを運用する場合は、ライフサイクルポリシーを必ず設定して、定期的に不要なイメージを削除してください。
-AWS公式ドキュメントは[こちら](https://docs.aws.amazon.com/ja_jp/AmazonECR/latest/userguide/LifecyclePolicies.html)で、Terraformでは[ecr_lifecycle_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_lifecycle_policy)リソースを追加することでライフサイクルポリシーを作成できます。
+AWS公式ドキュメントは[こちら](https://docs.aws.amazon.com/ja_jp/AmazonECR/latest/userguide/LifecyclePolicies.html)を参照してください。Terraformでは[ecr_lifecycle_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_lifecycle_policy)リソースを追加することでライフサイクルポリシーを作成できます。
 
 これ以外にも、ECRには[レプリケーション](https://docs.aws.amazon.com/AmazonECR/latest/userguide/replication.html)や[Pull Through Cache](https://docs.aws.amazon.com/AmazonECR/latest/userguide/pull-through-cache.html)等、実用的な機能が数多くありますので、興味のある方は一度[公式ドキュメント](https://docs.aws.amazon.com/ecr/index.html)を眺めてみるとよいでしょう。
 
@@ -173,14 +173,14 @@ aws ecr get-login-password --region <aws-region> | \
 正常にログインできると、`Login Succeeded`というメッセージが出力されます。
 
 エラーとなる場合は、利用しているIAMユーザー(またはRole)でECR認証トークン取得(`ecr:GetAuthorizationToken`)が許可されているかを確認してください。
-実行している現在のIAMユーザーは、以下を実行されると参照できます。
+実行している現在のIAMユーザーは、以下を実行すると参照できます。
 
 ```shell
 aws sts get-caller-identity
 ```
 
 ### タスク管理API
-それでは、まずタスク管理APIのリポジトリ(`mamezou-tech/task-service`)をビルドして、ECRにプッシュしてみましょう。
+それでは、まずタスク管理APIのイメージ(`mamezou-tech/task-service`)をビルドして、ECRにプッシュしてみましょう。
 タスク管理APIのソースコードは`app/apis/task-service`に格納されています。
 
 イメージのビルドはDocker CLIで以下のようにします。
@@ -226,8 +226,8 @@ docker push <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/mamezou-tech/tas
 
 ### プッシュしたイメージ確認
 
-マネジメントコンソールからECRに登録されたイメージを見てみましょう。
-各リポジトリに`test-v1`というタグでイメージがプッシュされていることが確認できるはずです。
+マネジメントコンソールから、ECRに登録されたイメージを見てみましょう。
+各リポジトリに、`test-v1`というタグでイメージがプッシュされていることが確認できるはずです。
 以下はタスク管理APIの例です。
 
 ![](https://i.gyazo.com/88470233da87669e9eeecb2c794f1458.png)
@@ -237,16 +237,15 @@ docker push <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/mamezou-tech/tas
 プッシュしたイメージが取得できることを確認しましょう。
 今回はタスク管理API(`mamezou-tech/task-service`)のみ確認します（もちろんバッチの方でも確認できます）。
 
-その前にローカル環境のKubernetesを起動し、LocalStackをセットアップしておきましょう。なお、Skaffoldのアプリケーションの起動は不要です。
+その前にローカル環境のKubernetesを起動しておきましょう。
 
 - [ローカル開発環境準備 - 実行環境(minikube)](/containers/k8s/tutorial/app/minikube/)
-- [Kubernetesマニフェスト作成 - Webアプリケーション](/containers/k8s/tutorial/app/web-app/)
 
-KubernetesがイメージをPULLするためには、事前にSecretとしてECRの情報を設定する必要があります[^7]。
+KubernetesがイメージをPULLするためには、事前にSecretとしてECRの認証情報を設定する必要があります[^7]。
 
-[^7] EKSにデプロイする場合は、EKS自身のIAMで制御されるため、ここでのSecret登録は不要です。なお、トークンの有効期限は12時間で、期限切れの場合は再度Secretを作成する必要があります。
+[^7]: EKSにデプロイする場合は、EKS自身のIAMで制御されるため、ここでのSecret登録は不要です。なお、トークンの有効期限は12時間で、期限切れの場合は再度Secretを作成する必要があります。
 
-以下を実行して、ECRの認証情報をSecretとして登録しておきましょう。
+以下を実行して、Secretを登録しておきましょう。
 
 ```shell
 ECR_PASSWORD=$(aws ecr get-login-password)
@@ -283,7 +282,7 @@ spec:
 - `image`をプッシュしたイメージのリポジトリ名とタグ`test-v1`
 - `imagePullPolicy`を`Never`から`IfNotPresent`を指定（ノードにキャッシュされていなければ、コンテナレジストリから取得）。
 
-こうすることで、このイメージはローカルではなくECRからPULLされるようになります。
+こうすることで、このイメージはECRからPULLされるようになります。
 これをデプロイしましょう。今回はSkaffoldではなくkubectlで直接反映します。
 
 ```shell
@@ -304,14 +303,14 @@ Events:
 ```
 
 このように、ECRからイメージをPULLしている様子が出力されていれば、動作確認は完了です。
-IngressやLocalStackもセットアップ済みであれば、Ingressを追加デプロイし、curlやUI等からAPIコールしてください。
+IngressやLocalStackもセットアップ済みであれば、Ingressを追加デプロイし、curlやUI等から確認してみてください。
 今までローカル環境でやってきたように動作するはずです。
 
 ## まとめ
 
 今まではローカル環境でビルドしたイメージをそのまま実行してきました。
-ローカル環境ではこれで問題ありませんが、実際のKubernetesクラスタ環境では、イメージのビルドと実行は別プロセスとなるため、この方法は使用できません。
+ローカル環境ではこれで問題ありませんが、実際のKubernetesクラスタ環境では、イメージのビルドと実行は別になるため、この方法は使用できません。
 
 ここでは、プライベートなコンテナレジストリを導入し、ここにビルドしたイメージを登録(Push)し、それを実行環境で取得(Pull)できるところまで確認しました。
 
-次回は、アプリケーションをローカル環境のKubernetesに加えて、実際のEKS上で実行するようにします。
+次回は、アプリケーションをローカル環境のKubernetesに加えて、実際のクラウド環境(EKS)上で実行できるようにします。

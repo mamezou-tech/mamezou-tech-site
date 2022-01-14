@@ -184,6 +184,17 @@ module "eks" {
       instance_types   = ["m5.large"]
     }
   }
+  # デフォルト設定だとAdmissionWebhookが動作しないので追加指定
+  node_security_group_additional_rules = {
+    admission_webhook = {
+      description = "Admission Webhook"
+      protocol    = "tcp"
+      from_port   = 0
+      to_port     = 0
+      type        = "ingress"
+      source_cluster_security_group = true
+    }
+  }
 }
 
 output "aws_auth_config_map" {

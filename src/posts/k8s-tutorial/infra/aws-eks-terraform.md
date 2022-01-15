@@ -184,8 +184,9 @@ module "eks" {
       instance_types   = ["m5.large"]
     }
   }
-  # デフォルト設定だとAdmissionWebhookが動作しないので追加指定
+  # デフォルトのSecurityGroupでは動作しないため以下を追加
   node_security_group_additional_rules = {
+    # AdmissionWebhookが動作しないので追加指定
     admission_webhook = {
       description = "Admission Webhook"
       protocol    = "tcp"
@@ -193,6 +194,23 @@ module "eks" {
       to_port     = 65535
       type        = "ingress"
       source_cluster_security_group = true
+    }
+    # Node間通信を許可
+    ingress_node_communications = {
+      description = "Ingress Node to node"
+      protocol    = "tcp"
+      from_port   = 0
+      to_port     = 65535
+      type        = "ingress"
+      self        = true
+    }
+    egress_node_communications = {
+      description = "Egress Node to node"
+      protocol    = "tcp"
+      from_port   = 0
+      to_port     = 65535
+      type        = "egress"
+      self        = true
     }
   }
 }

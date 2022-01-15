@@ -190,7 +190,7 @@ module "eks" {
       description = "Admission Webhook"
       protocol    = "tcp"
       from_port   = 0
-      to_port     = 0
+      to_port     = 65535
       type        = "ingress"
       source_cluster_security_group = true
     }

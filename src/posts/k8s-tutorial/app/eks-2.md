@@ -461,4 +461,21 @@ kustomize build ${PROJECT_ROOT}/app/k8s/v3-ans/overlays/prod | kubectl apply -f-
 
 ## 動作確認
 
+```shell
+kubectl create job test1 --from cj/prod-task-reporter
+```
+
+## クリーンアップ
+```shell
+kubectl delete -k ${PROJECT_ROOT}/app/k8s/v3-ans/overlays/prod
+helm uninstall cert-manager -n cert-manager
+helm uninstall external-dns -n external-dns
+helm uninstall ingress-nginx -n ingress-nginx
+
+aws s3 rm s3://task-tool-prod-completed-task-report-bucket --recursive
+
+cd ${PROJECT_ROOT}/app/terraform-ans
+terraform destroy -var env=prod -var oidc_provider_url=${OIDC_PROVIDER_URL}
+```
+
 ## まとめ

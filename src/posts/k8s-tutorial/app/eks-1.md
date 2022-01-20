@@ -32,9 +32,11 @@ Kustomizeは共通部分(base)に対して、各環境固有のパッチを当�
 Kustomize以外は今まで実施してきたものです。未セットアップの場合は以下を準備してください。
 
 ### EKSクラスタ環境
-今回は商用環境としてEKSを利用します。事前にEKSクラスタを準備してください。利用ツールはeksctl、Terraformのどちらでも構いません。
+今回は商用環境としてEKSを利用します。事前にEKSクラスタを準備してください。
+利用ツールはeksctl、Terraformのどちらでも構いません。
 
 - [クラスタ環境構築 - AWS EKS (eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
+  - Kubernetesのバージョンをv1.21以上にしてください(`eksctl create cluster`の引数で`--version 1.21`以上を指定)
 - [クラスタ環境構築 - AWS EKS (Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
 次に、構築したEKSクラスタへの外部通信環境を整えるために、以下のプロダクトをセットアップしてください。

@@ -3,7 +3,7 @@ title: クラスタ環境デプロイ - コンテナレジストリ(ECR)
 author: noboru-kudo
 date: 2022-01-13
 prevPage: ./src/posts/k8s-tutorial/app/batch.md
-nextPage: ./src/posts/k8s-tutorial/app/cluster-deploy.md
+nextPage: ./src/posts/k8s-tutorial/app/eks-1.md
 ---
 
 さて、ここまででWeb・バッチアプリケーションの開発が終わり、ローカル環境で動作確認ができました。

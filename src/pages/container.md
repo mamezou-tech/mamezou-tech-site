@@ -37,7 +37,8 @@ titleImage: "/img/logo/mameka5_50.png"
 
 #### クラスタ環境デプロイ
 1. [コンテナレジストリ(ECR)](/containers/k8s/tutorial/app/container-registry/)
-2. [EKS](/containers/k8s/tutorial/app/cluster-deploy/)
+2. [EKSクラスタ(前編)](/containers/k8s/tutorial/app/eks-1/)
+3. [EKSクラスタ(後編)](/containers/k8s/tutorial/app/eks-2/)
 
 ### 継続的デリバリ編
 1. Flux <span style="color:red">Coming Soon!</span>

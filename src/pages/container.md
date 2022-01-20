@@ -31,13 +31,13 @@ titleImage: "/img/logo/mameka5_50.png"
 2. [自動化ツール(Skaffold)](/containers/k8s/tutorial/app/skaffold/)
 3. [ローカルAWS(LocalStack)](/containers/k8s/tutorial/app/localstack/)
 
-#### アプリケーション用マニフェスト作成
+#### Kubernetesマニフェスト作成
 1. [Webアプリケーション(Deployment)](/containers/k8s/tutorial/app/web-app/)
 2. [バッチアプリケーション(CronJob/Job)](/containers/k8s/tutorial/app/batch/)
 
 #### クラスタ環境デプロイ
 1. [コンテナレジストリ(ECR)](/containers/k8s/tutorial/app/container-registry/)
-2. EKSデプロイ <span style="color:red">Coming Soon!</span>
+2. [EKS](/containers/k8s/tutorial/app/cluster-deploy/)
 
 ### 継続的デリバリ編
 1. Flux <span style="color:red">Coming Soon!</span>

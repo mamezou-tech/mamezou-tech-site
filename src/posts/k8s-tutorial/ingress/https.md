@@ -41,6 +41,29 @@ Cert ManagerはCRD(Custom Resource Definitions)として提供されるIssuerと
 - [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
 - [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
+なお、Cert Managerは証明書発行時のドメイン検証(ACME)で、自身に対してhttp通信（セルフチェック）を行います。
+Terraform EKSモジュールのv18以降では、以下SecurityGroupを追加してこの通信を許可する必要があります。
+
+```hcl
+module "eks" {
+  source               = "terraform-aws-modules/eks/aws"
+  version              = "18.0.5"
+  # (省略)
+  node_security_group_additional_rules = {
+    # (省略)
+    # cert-manager require ACME self check using http protocol
+    egress_http_internet = {
+      description = "Egress HTTP to internet"
+      protocol    = "tcp"
+      from_port   = 80
+      to_port     = 80
+      type        = "egress"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+}
+```
+
 また、Cert Managerのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。
 未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3.3[^2]以降のバージョンをセットアップしてください。
 

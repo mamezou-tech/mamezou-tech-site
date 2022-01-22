@@ -187,7 +187,9 @@ data:
 ### CronJob
 
 続いてCronJobです。
-`app/k8s/v2/task-reporter`ディレクトリ内に`cronjob.yaml`を作成しましょう。
+`app/k8s/v2/task-reporter`ディレクトリ内に`cronjob.yaml`を作成しましょう[^4]。
+
+[^4]: 現状Docker Desktopは、Kubernetesのバージョンが古かったため(執筆時v1.19)、apiVersionを`batch/v1beta1`にする必要がありました。
 
 ```yaml
 apiVersion: batch/v1
@@ -392,9 +394,9 @@ pod/test1--1-4v8d2   0/1     Completed   0          69m
 
 Job、Podが生成され、その後実行したバッチ処理が正常終了(`Completed`)している様子が確認できます。
 
-当日[^4]の完了タスクがないとジョブは空振りになりますので、WebUI(`http://localhost:8080`)から何件かタスク情報を登録して、完了にしてください。
+当日[^5]の完了タスクがないとジョブは空振りになりますので、WebUI(`http://localhost:8080`)から何件かタスク情報を登録して、完了にしてください。
 
-[^4]: 前日分を想定していますが、今回はローカル環境での確認用に当日完了タスクを指定しました(ConfigMapの`TARGET_OFFSET_DAYS`)。
+[^5]: 前日分を想定していますが、今回はローカル環境での確認用に当日完了タスクを指定しました(ConfigMapの`TARGET_OFFSET_DAYS`)。
 
 タスクの登録・更新が完了したら、再度ジョブを作成しましょう。
 

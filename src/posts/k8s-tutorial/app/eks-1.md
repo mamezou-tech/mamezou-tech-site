@@ -1,5 +1,5 @@
 ---
-title: クラスタ環境デプロイ - EKSクラスタ(前編)
+title: クラスタ環境デプロイ - EKSクラスタ(AWS環境準備)
 author: noboru-kudo
 date: 2022-01-23
 prevPage: ./src/posts/k8s-tutorial/app/container-registry.md
@@ -13,8 +13,8 @@ nextPage: ./src/posts/k8s-tutorial/app/eks-2.md
 また、各環境で外部システムとの接続先等の環境固有の設定/構成が必要だったり、コストの関係で全て同等のスペックで準備することが難しいといったケースがほとんどです。
 これらの構成は、各KubernetesリソースのYAMLファイルとして記述してきましたが、環境毎にフルセットを準備するのは気が引けることでしょう。
 
-これを解決する手段として、環境差分を吸収する仕組みを導入する必要があります。Kubernetesでは、現状は[Kustomize](https://kustomize.io/)または[Helm](https://helm.sh/)を使うことが一般的かと思います。
-両者はアプローチの仕方が異なり、どちらも一長一短があります。
+これを解決する手段として、環境差分を吸収する仕組みを導入する必要があります。
+Kubernetesでは、現状は[Kustomize](https://kustomize.io/)または[Helm](https://helm.sh/)を使うことが一般的かと思います。両者はアプローチの仕方が異なり、どちらも一長一短があります。
 
 Kustomizeは共通部分(base)に対して、各環境固有のパッチを当てるというスタイルです。マニフェストファイルの知識さえあれば簡単に作成できます。
 一方で、HelmはGoのテンプレート言語でマニフェストファイルを記述し、Helmチャートとしてパッケージング・配布する方式を採用しています。このテンプレート言語を習得するためのコストは高いですが、Kustomizeより高い柔軟性を持っているため、不特定多数のユーザーへ提供するプロダクトに向いています。
@@ -64,11 +64,13 @@ Kustomize以外は今まで実施してきたものです。未セットアッ�
 - [クラスタ環境デプロイ - コンテナレジストリ(ECR)](/containers/k8s/tutorial/app/container-registry/)
 
 ### Kustomize
-現在Kustomizeはkubectl(v1.14以降)に組み込まれいるので、通常は別途インストールする必要がありません。
+現在Kustomizeはkubectl(v1.14以降)に組み込まれいるので、通常は別途インストールする必要がありません[^3]。
 ですが、今回ローカル環境へのデプロイに使用する[Skaffold](https://skaffold.dev/)で、Kustomizeを使う場合は、別途インストールが必要です。
 公式ドキュメントを参考に、Kustomizeをインストールしてください。
 
 - [https://skaffold.dev/docs/install/](https://skaffold.dev/docs/install/)
+
+[^3]: kubectlのバージョンによって、組み込まれているKustomizeのバージョンは大きく異なりますので注意してください。バージョンマッピングは[こちら](https://github.com/kubernetes-sigs/kustomize#kubectl-integration)を参照してください。
 
 ## AWSリソースの作成
 
@@ -82,8 +84,8 @@ Kustomize以外は今まで実施してきたものです。未セットアッ�
 
 タスク情報を永続化するDynamoDBテーブル(含むインデックス)と、レポート出力先のS3バケットを作成します。
 ローカル環境でLocalStack上に構築した際は、[初期化スクリプト](https://github.com/mamezou-tech/k8s-tutorial/blob/main/app/k8s/v2-ans/localstack/localstack-init-scripts-config.yaml)をコンテナ起動時に実行していましたが、今回は本物のAWSです。
-AWSリソース管理にはIaCツールのTerraform[^3]を利用して作成しています。
-[^3]: CloudFormation等の他のIaCツールを使っても構築できますので、実運用では組織・プロジェクトの方針によって利用ツールは変わってきます。
+AWSリソース管理にはIaCツールのTerraform[^4]を利用して作成しています。
+[^4]: CloudFormation等の他のIaCツールを使っても構築できますので、実運用では組織・プロジェクトの方針によって利用ツールは変わってきます。
 
 以下のようになります。
 
@@ -158,9 +160,9 @@ Namespace名については`var.env`として、外部からパラメータと�
 
 ### Podアクセス許可(IRSA)
 LocalStackの場合はアクセス許可は不要でしたが、AWSリソースを利用する場合は、セキュリティ上IAMで必要最小限のアクセスに制限するのが望ましいです。
-EKSでは[IRSA(IAM Roles for Service Account)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)という仕組みが用意されており、Podの単位でIAM Roleを割り当てることが可能です[^4]。
+EKSでは[IRSA(IAM Roles for Service Account)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)という仕組みが用意されており、Podの単位でIAM Roleを割り当てることが可能です[^5]。
 
-[^4]: External DNS等のAWSリソースにアクセスするインフラ系のOSS導入時にも、専用のIAMのRoleを作成し、それをServiceAccount経由でPodに割り当ててきました。
+[^5]: External DNS等のAWSリソースにアクセスするインフラ系のOSS導入時にも、専用のIAMのRoleを作成し、それをServiceAccount経由でPodに割り当ててきました。
 
 今回作成したアプリケーションについても、DynamoDBやS3といったAWSネイティブのサービスを利用しますので、この仕組みでアクセス権限を管理するのが望ましいでしょう。
 以下はタスク管理API(task-service)の部分のみ抜粋します。
@@ -224,19 +226,19 @@ resource "kubernetes_service_account" "task_service" {
 
 ここでは以下のことを実施しています。
 
-1. DynamoDBに読み書きできるポリシードキュメントを定義
-2. これをもとにIAM Policy(`DynamoDBTaskTablePolicy`)を作成
-3. Terraformの[IAMモジュール](https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest/submodules/iam-assumable-role-with-oidc)を使って、IAM PolicyをアタッチするIAM Role(`TaskService`)を作成。また、これの引受可能な対象としてKubernetesのServiceAccount(`system:serviceaccount:${var.env}:task-service`)を指定。
-4. ServiceAccount`task-service`を作成し、`annotations`に上記IAM Roleを指定。
+1. DynamoDBの読み書き可能なポリシードキュメントを定義
+2. 上記のIAM Policy(`DynamoDBTaskTablePolicy`)を作成
+3. 上記IAM PolicyをアタッチするIAM Role(`TaskService`)を作成(Terraformの[IAMモジュール](https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest/submodules/iam-assumable-role-with-oidc)使用)。このRoleの引受可能な対象にKubernetesのServiceAccount(`system:serviceaccount:${var.env}:task-service`)を指定
+4. 上記IAM Roleを指定に紐づくServiceAccount`task-service`を作成
 
-レポート出力バッチ(`task-reporter`)の方も同様で、こちらはDynamoDBに加えて、S3のポリシーについても追加します[^5]。
+レポート出力バッチ(`task-reporter`)の方も同様で、こちらはDynamoDBに加えて、S3のポリシーについても追加します[^6]。
 中身はタスク管理APIとほとんど同じです。具体的な内容は[こちら](https://github.com/mamezou-tech/k8s-tutorial/blob/main/app/terraform/main.tf)を参照してください。
 
-[^5]: DynamoDBについてはタスク管理APIと同じポリシーにしていますが、ここは読み取りのみですので本来はさらに必要最小限とするのが望ましいです。
+[^6]: DynamoDBについてはタスク管理APIと同じポリシーにしていますが、ここは読み取りのみですので本来はさらに必要最小限とするのが望ましいです。
 
 ### AWS/EKS反映
 
-ではこれらをAWS/EKSに反映しましょう。
+では、これらをAWS/EKSに反映しましょう。
 Terraform側で必要なアクセス許可ポリシーは、以下に整理していますので、必要に応じて実行するユーザーに指定してください。
 
 - [ECR](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/app/terraform/ecr-policy.json)
@@ -253,7 +255,7 @@ eksctl create iamidentitymapping --cluster mz-k8s \
 ```
 
 もう1つ、EKSのIRSAを利用するには、EKS OIDCプロバイダのURLが必要です。
-こちらはマネジメントコンソールより確認できます。トップページから`EKS -> クラスター -> 設定`と進むと、以下に記載されています。
+こちらはマネジメントコンソールより確認できます。トップページからEKS -> クラスター -> クラスター選択 -> 設定と進むと、以下に記載されています。
 
 ![](https://i.gyazo.com/f1a6885d27ca21f5182fa771f13bc763.png)
 
@@ -292,4 +294,4 @@ task-service    1         5m43s
 
 全て確認できれば、AWS/EKS側の準備は完了です。
 
-以降は[クラスタ環境デプロイ - EKSクラスタ(後編)](/containers/k8s/tutorial/app/eks-2/)へと続きます。
+以降は[クラスタ環境デプロイ - EKSクラスタ(Kustomize導入)](/containers/k8s/tutorial/app/eks-2/)へと続きます。

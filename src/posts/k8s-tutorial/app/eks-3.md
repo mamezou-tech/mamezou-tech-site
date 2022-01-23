@@ -351,8 +351,9 @@ prod-task-web-5db579755d-mzhx5       1/1     Running   0          55m
 prod-task-web-5db579755d-ttbnd       1/1     Running   0          55m
 ```
 
-全てのPodが正常に実行されていることが確認できます。
-最後にブラウザから`https://your.custom-domain.com/`にアクセスし、ローカル環境同様にUIが操作できることを確認してください。
+ローカル環境ではタスク管理APIのみでしたが、今回はUI(`prod-task-web`)についても実行されていることが分かります。
+このように、全てのPodが正常に実行されていることが確認できたら、ブラウザから`https://your.custom-domain.com/` にアクセスし、ローカル環境同様にUIが操作できることを確認してください。
+
 HTTPS関連のエラーが表示される場合は、HTTPSの証明書が発行されていない可能性があります。
 初めての環境構築する場合はDNSの伝搬に時間がかかりますので、しばらく待ってから再度アクセスしてみてください。
 それでもアクセスできない場合は、`kubectl describe challenge -n prod` を実行して証明書が発行できない理由を確認し、Cert Managerの設定やネットワーク構成等を見直してください。
@@ -376,6 +377,7 @@ helm uninstall ingress-nginx -n ingress-nginx
 ```
 
 S3はファイルが存在すると、削除に失敗しますので事前に空にしておきます(マネジメントコンソールから手動削除でも構いません)。
+
 ```shell
 aws s3 rm s3://<task-report-bucket-name> --recursive
 ```
@@ -398,6 +400,6 @@ terraform destroy -var env=prod -var oidc_provider_url=${OIDC_PROVIDER_URL}
 
 また、ローカル環境とEKSクラスタの環境差分を吸収するために、Kustomizeを導入し、差分のみを記述して両環境に対応可能な仕組みとしました。
 
-ここまでできると、独力で環境構築からアプリ開発、デプロイまでをできるようになっているはずです。
+ここまでできると、独力でKubernetesの環境構築から、その上に載るコンテナアプリ開発、デプロイまでをできるようになっているはずです。
 
 次回は継続的デリバリのツールを導入し、デプロイの自動化に取り組んでいきます。

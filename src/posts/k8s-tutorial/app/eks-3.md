@@ -8,9 +8,9 @@ prevPage: ./src/posts/k8s-tutorial/app/eks-2.md
 本記事は、[クラスタ環境デプロイ - EKSクラスタ(Kustomize導入)](/containers/k8s/tutorial/app/eks-2/)からの続きです。
 
 これまで、DynamoDBやS3等のAWSリソース準備し、ローカル、商用の環境差分を吸収するために、Kustomizeを導入しました。
-ここからは、仮想商用環境のEKS向けにアプリケーションをデプロイします。
+ここからは、仮想の商用環境としてAWS EKSにアプリケーションをデプロイします。
 
-これには前回ローカル環境向けにパッチファイルを準備したように、EKS環境向けにパッチファイルを用意します。
+まずは、前回ローカル環境向けにパッチファイルを準備したように、EKS環境向けにパッチファイルを用意します。
 こちらを対応して、構築したEKSにアプリケーションをリリースしましょう。
 
 [[TOC]]
@@ -54,21 +54,21 @@ spec:
 
 #### serviceAccountName
 `serviceAccountName: task-service`を追加しています。これはIRSA(IAM Role for Service Account)を有効にするために必要なものです。
-以前[こちら]で
-(/containers/k8s/tutorial/app/eks-1/#podアクセス許可irsa)Pod用のIAM RoleとServiceAccountを作成しました。Podが使用するServiceAccountにこれを指定することで、Podにセッショントークンが割り当てられ、AWSサービスが使用できるようになります。
+以前[こちら]
+(/containers/k8s/tutorial/app/eks-1/#podアクセス許可irsa)でPod用のIAM RoleとServiceAccountを作成しました。PodがこのServiceAccountを使用するように指定することで、Pod生成時にセッショントークンが割り当てられ、AWSサービスが使用できるようになります。
 
 #### imagePullPolicy
-ローカル環境ではコンテナレジストリを使用しないため、`Never`としましたが、今回は使用するため、キャッシュ済みでない場合はコンテナレジストリからPullする`IfNotPresent`を指定します。
+ローカル環境では、コンテナレジストリを使用しないため`Never`としましたが、今回はキャッシュ済みでない場合はコンテナレジストリからPullする`IfNotPresent`を指定します。
 
 #### resource.requests/limits
-`resources`フィールド配下にこのコンテナが利用可能なCPU・メモリのスペック(`requests`)とリミット(`limists`)を指定します。
+`resources`フィールド配下にこのコンテナが利用可能なCPU・メモリのスペック(`requests`)とリミット(`limits`)を指定します。
 
-`requests`はPodのスケジューリングに影響します。Kubernetesのスケジューラは、`requests`に指定されたスペックを満たすNodeに対してのみPodを配置するように動きます。これを適切に指定することで、余力のないNodeに配置されることを防止することができます[^1]。
+`requests`はPodのスケジューリングに影響します。Kubernetesのスケジューラは、`requests`に指定されたスペックを満たすNodeに対してのみPodを配置するように動きます。これを適切に指定することで、余力のないNodeにPodが配置されることを防止することができます[^1]。
 
 `limits`で、コンテナが利用可能なCPU・メモリについて制限するために使用します。
 コンテナは隔離された環境で実行されているとはいえ、実際にはCPUやメモリ等のリソースを共有しています。
-1つのコンテナでNodeのCPUやメモリを使い切って、他のアプリケーションに迷惑を掛けないためにも`limits`を指定することが望ましいでしょう[^2]。
-注意点としてリミットを超えてメモリを使用しようとすると、KubernetesはコンテナにOOMKillerが送信し、コンテナは再生成されます(CPUの場合は再起動しません)。
+1つのコンテナでNodeのCPUやメモリを使い切って、他のアプリケーションに迷惑を掛けないためにも`limits`を指定することが望ましいです[^2]。
+注意点として、コンテナがリミットを超えてメモリを使用しようとすると、KubernetesはOOMKillerを送信して強制終了させます。その後は通常は再起動[^3]します(CPUの場合は再起動しません)。
 アプリケーションの特性を踏まえた適切な値の設定と、定期的なモニタリングによる見直しを心掛けるようにしましょう。
 
 `requests`/`limits`の詳細は[公式ドキュメント](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits)を参照しくてださい。
@@ -76,6 +76,8 @@ spec:
 [^1]: スケジューラは実際の空き容量を見ている訳ではなく、Nodeのキャパシティと配置されたPodの`requests`の総量で判断しています。そのため、`requests`を必要以上に大きくしすぎると、未使用のリソースが増えてリソース効率が悪化する原因となります。
 
 [^2]: ただし、起動時に多くのCPUを消費するようなアプリケーション(Java等)の場合は、通常時に合わせてCPUを制限すると起動が遅くなり、LivenssProbeの再起動ループに陥ったことがあります。この時は、起動後はほとんど消費しないため、あえて`limits.cpu`を指定しないという選択をしました。
+
+[^3]: 再起動するかは`restartPlicy`の設定次第ですが、デフォルトは`Always`で終了時は再起動します。
 
 最後は設定ファイルです。同ディレクトリに`.env`を配置して、以下を記述します。
 
@@ -119,7 +121,7 @@ spec:
 ```
 
 変更内容についてはタスク管理API(`task-service`)と同じです。
-バッチ処理のため`resources/limits`は少し大きめに取りました。
+バッチ処理のため、`resources/limits`は少し大きめに取りました。
 
 最後は、設定ファイルです。同ディレクトリに`.env`を配置して、以下を記述します。
 
@@ -141,7 +143,7 @@ Webリソースもコンテナ化して、タスク管理API同様にPodとし�
 
 こちらは新規リソースのため、パッチファイルではなく完全な形で用意する必要があります。
 マニフェストファイル自体はシンプルな内容で、特に説明が必要な部分はありません。
-以下に用意しましたので、`app/k8s/v3/prod/task-web`を作成して反映してください。
+`app/k8s/v3/prod/task-web`ディレクトリを作成して、以下のファイルを追加してください。
 
 - [deployment.yaml](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/app/k8s/v3-ans/overlays/prod/task-web/deployment.yaml)
 - [service.yaml](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/app/k8s/v3-ans/overlays/prod/task-web/service.yaml)
@@ -149,7 +151,7 @@ Webリソースもコンテナ化して、タスク管理API同様にPodとし�
 ### Cert Manager - Let's Encrypt Issuer
 
 今回は商用環境想定ですので、HTTPS通信が必須です。
-こちらも`base`にはありませんので、完全なマニフェストファイルとして用意する必要があります。
+こちらも`base`にはありませんので、パッチではなく、完全なマニフェストファイルとして用意する必要があります。
 以下を参考に、Cert ManagerのLet's Encrypt向けIssuerを作成し、`app/k8s/v3/prod/lets-encrypt-issuer.yaml`として配置してください(ほぼそのまま使用できます)。
 
 - [Ingress - HTTPS通信(Cert Manager)](/containers/k8s/tutorial/ingress/https/#正規の証明書でhttps通信)
@@ -266,11 +268,11 @@ images:
 URLについてはAWSマネジメントコンソールのECRメニューより確認できます。
 [こちら](/containers/k8s/tutorial/app/container-registry/)を参考に、正しいURLを設定してください
 
-`newTag`にはコンテナのタグを設定します。今回は初めてのリリースのため`1.0.0`を設定します[^3]。
+`newTag`にはコンテナのタグを設定します。今回は初めてのリリースのため`1.0.0`を設定します[^4]。
 
 また、UIリリース(`task-web`)についても今回はコンテナ化しますので、エントリーとして新規追加します。
 
-[^3]: ローカル環境では`latest`と入れていましたが、実際にはSkaffoldによって上書きされていましたので、このタグは使われていません。
+[^4]: ローカル環境では`latest`と入れていましたが、実際にはSkaffoldによって上書きされていましたので、このタグは使われていません。
 
 ここまで終わると、`app/k8s/v3/overlays/prod`配下は以下の構成になります。
 
@@ -298,14 +300,14 @@ k8s/v3-ans/overlays/prod/
 
 ビルドとプッシュについては[こちら](/containers/k8s/tutorial/app/container-registry/#イメージビルド-プッシュ)で説明している通りです。
 ビルド前に、UI(`task-web`)リソースについて変更が必要です。
-変更ファイルは`app/web/.env.production`で、`VUE_APP_API_ENDPOINT`[^4]を、EKSで公開するカスタムドメインに変更してください。
+変更ファイルは`app/web/.env.production`で、`VUE_APP_API_ENDPOINT`[^5]を、EKSで公開するカスタムドメインに変更してください。
 
 ```
 NODE_ENV=production
 VUE_APP_API_ENDPOINT=https://your.custom-domain.com/api <- 変更!!
 ```
 
-[^4]: Ingressで公開するタスク管理APIのエンドポイントとして使用しています。
+[^5]: Ingressで公開するタスク管理APIのエンドポイントとして使用しています。
 
 ファイル修正後はタグを`1.0.0`として、ビルドとECRへのプッシュをしてください。
 

@@ -16,12 +16,12 @@ nextPage: ./src/posts/k8s-tutorial/app/eks-2.md
 
 - <https://github.com/mamezou-tech/k8s-tutorial>
 
-以前([Kubernetesマニフェスト作成](/containers/k8s/tutorial/app/batch/#アプリケーションのデプロイ))に、`app/k8s/v2`ディレクトリ配下にKubernetesマニフェストを作成しました[^1]。
+以前([Kubernetesマニフェスト作成](/containers/k8s/tutorial/app/batch/#アプリケーションのデプロイ))は、`app/k8s/v2`ディレクトリ配下にKubernetesマニフェストを作成しました[^1]。
 今回は`app/k8s/v3`ディレクトリ配下に作成していきましょう。
 
 [^1]: 未実施の場合は`app/k8s/v2-ans`ディレクトリを参照してください。
 
-Kustomizeでは、環境共通リソース用の`base`と各環境固有のリソース・パッチファイル(`variants`)用の`overlays`という2つの構成を用意するのが一般的です。以下のディレクトリ構成を作成してください。
+Kustomizeでは、環境共通リソース用の`base`と各環境固有のリソース・パッチファイル(`variants`)用の`overlays`という2つのディレクトリ構成を用意するのが一般的です。以下の構成を作成してください。
 
 ```
 .
@@ -33,7 +33,7 @@ Kustomizeでは、環境共通リソース用の`base`と各環境固有のリ�
         └── patches
 ```
 
-最終的に、Kustomizeはこの2つ(`base`/`overleays`)を以下の方式でマージして完全なマニフェストを生成する形になります。
+最終的に、Kustomizeはこの2つ(`base`/`overleays`)を以下のいずれかの方法でマージして完全なマニフェストを生成する形になります。
 
 1. [Strategic merge patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/)
 2. [JSON Patch](https://datatracker.ietf.org/doc/html/rfc6902)
@@ -356,7 +356,7 @@ resources:
 `resources`にローカル環境で対象とするリソースを指定します[^2]。
 ここでは先程の環境共通の`base`ディレクトリを指定しました。
 
-[^2]: Kustomizeの2.1.0までは`bases`フィールドで共通部分を指定する必要がありましたが、現在はresourcesに統合されました。
+[^2]: Kustomizeの2.1.0までは`bases`フィールドで共通部分を指定する必要がありましたが、現在は`resources`に統合されました。
 
 続いて、パッチ部分を追記します。
 
@@ -374,7 +374,7 @@ patches:
 Ingressのパッチファイルでは、どのリソースに対して適用するのかを指定していません。したがって、上記のように`target`フィールドで対象を明示する必要があります。
 `target`フィールドは単一リソースだけでなく、複数指定することも可能です。詳細は[公式ドキュメント](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patches/)を参照してください。
 
-次はConfigMapの生成部分を追記します。
+次はConfigMapの生成を追記します。
 
 ```yaml
 configMapGenerator:
@@ -387,6 +387,9 @@ configMapGenerator:
     envs:
       - patches/task-reporter/.env
 ```
+
+`behavior: merge`としている点に注目してください。こうすることで`base`に定義したConfigMapとマージするようにしています。
+
 
 最後は利用するコンテナイメージの定義を追記します。
 

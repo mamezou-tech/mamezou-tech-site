@@ -116,6 +116,7 @@ resource "aws_dynamodb_table" "tasks" {
 }
 
 resource "aws_s3_bucket" "task_reports" {
+  # 要変更。
   bucket = "task-tool-${var.env}-completed-task-report-bucket"
 }
 ```
@@ -124,6 +125,8 @@ resource "aws_s3_bucket" "task_reports" {
 
 - [aws_dynamodb_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table)
 - [aws_s3_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket)
+
+S3のバケット名はグローバルで一意である必要がありますので、任意の名前に変更してください
 
 ### Kubernetes
 

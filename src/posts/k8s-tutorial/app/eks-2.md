@@ -243,7 +243,7 @@ base
     └── service.yaml
 ```
 
-## ローカル環境設定(overlays/local)
+## ローカル環境向けのパッチ作成(overlays/local)
 
 共通部分の作成が終わりましたので、ローカル環境についてこれを利用するように設定を変更しましょう。
 
@@ -336,7 +336,7 @@ AWS_SECRET_ACCESS_KEY=localstack
 ### Kustomizationファイル
 
 最後に`overlays/local`配下に`kustomizton.yaml`を作成します。
-まずは以下を記述します。
+まずは、以下を記述します。
 
 ```yaml
 commonLabels:

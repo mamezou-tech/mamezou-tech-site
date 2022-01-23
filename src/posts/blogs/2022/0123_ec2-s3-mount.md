@@ -56,7 +56,7 @@ EC2のIAMロールにS3への読み書き権を追加しておきます。
 # ２．s3fsのインストール
 EC2にS3をマウントできるようにするため、EC2にs3fsをインストールします。
 
-以下をEC2のコマンドラインでroot権限で実行します。(sudo - root)
+以下をEC2のコマンドラインからroot権限で実行します。(sudo - root)
 
 ```shell
 # yumアップデート(不要かも)
@@ -94,8 +94,7 @@ FTPユーザーのホームディレクトリがS3のマウントポイント以
 
 参考：[セキュアなSSHサーバの設定](https://qiita.com/comefigo/items/092137ac40f319cb14fa)
 
-
-```
+```shell
 # FTPユーザーのホームディレクトリ作成
 mkdir /mnt/sftp/home
 # グループ追加
@@ -134,7 +133,7 @@ echo ftpuser1:pass1 | chpasswd
 ```
 
 # ６．FTP接続確認
-FTP接続し、recv以下のみ書き込みできることを確認します。
+FTP接続し、recvフォルダ以下のみ書き込みできることを確認します。
 ```shell
 sftp ftpuser1@ftp-server1
 パスワード：***

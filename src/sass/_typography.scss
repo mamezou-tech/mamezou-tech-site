@@ -136,14 +136,13 @@ $text-lg: 1.125rem !default;
 $text-xl: 1.25rem !default;
 $text-2xl: 1.5rem !default;
 $text-3xl: 1.875rem !default;
-$text-4xl: 2.25rem !default;
-$text-5xl: 3rem !default;
-$text-6xl: 5rem !default;
+$text-4xl: 2.00rem !default;
+$text-5xl: 2.25rem !default;
 $accent: #0074d9 !default;
 
 .post {
   h1 {
-    font-size: $text-4xl;
+    font-size: $text-5xl;
   }
 
   h2 {

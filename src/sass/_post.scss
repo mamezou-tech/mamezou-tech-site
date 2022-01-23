@@ -19,6 +19,10 @@
 
 .post__content {
   word-wrap: break-word;
+  h1 {
+    margin-top: 4rem;
+    font-size: $text-4xl;
+  }
 }
 
 .post__toc {

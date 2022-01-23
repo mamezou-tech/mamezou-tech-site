@@ -1,7 +1,7 @@
 ---
 title: クラスタ環境デプロイ - EKSクラスタ(Kustomize導入)
 author: noboru-kudo
-date: 2022-01-23
+date: 2022-01-27
 prevPage: ./src/posts/k8s-tutorial/app/eks-1.md
 nextPage: ./src/posts/k8s-tutorial/app/eks-2.md
 ---
@@ -416,13 +416,13 @@ overlays/local
 ├── kustomization.yaml
 └── patches
     ├── ingress
-    │   └── ingress.yaml
+    │   └── ingress.patch.yaml
     ├── task-reporter
     │   ├── .env
-    │   └── cronjob.yaml
+    │   └── cronjob.patch.yaml
     └── task-service
         ├── .env
-        └── deployment.yaml
+        └── deployment.patch.yaml
 ```
 
 ## ローカル動作確認

@@ -1,7 +1,7 @@
 ---
 title: クラスタ環境デプロイ - EKSクラスタ(デプロイ)
 author: noboru-kudo
-date: 2022-01-23
+date: 2022-01-27
 prevPage: ./src/posts/k8s-tutorial/app/eks-2.md
 ---
 
@@ -61,7 +61,7 @@ spec:
 ローカル環境ではコンテナレジストリを使用しないため、`Never`としましたが、今回は使用するため、キャッシュ済みでない場合はコンテナレジストリからPullする`IfNotPresent`を指定します。
 
 #### resource.requests/limits
-`resources`フィールド配下にこのコンテナが利用可能なCPU・メモリのスペックとリミットを指定します。
+`resources`フィールド配下にこのコンテナが利用可能なCPU・メモリのスペック(`requests`)とリミット(`limists`)を指定します。
 
 `requests`はPodのスケジューリングに影響します。Kubernetesのスケジューラは、`requests`に指定されたスペックを満たすNodeに対してのみPodを配置するように動きます。これを適切に指定することで、余力のないNodeに配置されることを防止することができます[^1]。
 
@@ -70,6 +70,8 @@ spec:
 1つのコンテナでNodeのCPUやメモリを使い切って、他のアプリケーションに迷惑を掛けないためにも`limits`を指定することが望ましいでしょう[^2]。
 注意点としてリミットを超えてメモリを使用しようとすると、KubernetesはコンテナにOOMKillerが送信し、コンテナは再生成されます(CPUの場合は再起動しません)。
 アプリケーションの特性を踏まえた適切な値の設定と、定期的なモニタリングによる見直しを心掛けるようにしましょう。
+
+`requests`/`limits`の詳細は[公式ドキュメント](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits)を参照しくてださい。
 
 [^1]: スケジューラは実際の空き容量を見ている訳ではなく、Nodeのキャパシティと配置されたPodの`requests`の総量で判断しています。そのため、`requests`を必要以上に大きくしすぎると、未使用のリソースが増えてリソース効率が悪化する原因となります。
 
@@ -270,9 +272,29 @@ URLについてはAWSマネジメントコンソールのECRメニューより�
 
 [^3]: ローカル環境では`latest`と入れていましたが、実際にはSkaffoldによって上書きされていましたので、このタグは使われていません。
 
+ここまで終わると、`app/k8s/v3/overlays/prod`配下は以下の構成になります。
+
+```
+k8s/v3-ans/overlays/prod/
+├── kustomization.yaml
+├── lets-encrypt-issuer.yaml
+├── patches
+│   ├── ingress
+│   │   └── ingress.patch.yaml
+│   ├── task-reporter
+│   │   ├── .env
+│   │   └── cronjob.patch.yaml
+│   └── task-service
+│       ├── .env
+│       └── deployment.patch.yaml
+└── task-web
+    ├── deployment.yaml
+    └── service.yaml
+```
+
 ## コンテナイメージのビルド
 
-ここまででデプロイの準備が整いましたので、EKSから取得(Pull)できるようにコンテナイメージをビルドしてECRにプッシュしましょう。
+続いて、EKSから取得(Pull)できるように、コンテナイメージをビルドしてECRにプッシュしましょう。
 
 ビルドとプッシュについては[こちら](/containers/k8s/tutorial/app/container-registry/#イメージビルド-プッシュ)で説明している通りです。
 ビルド前に、UI(`task-web`)リソースについて変更が必要です。
@@ -351,7 +373,7 @@ helm uninstall external-dns -n external-dns
 helm uninstall ingress-nginx -n ingress-nginx
 ```
 
-S3はファイルが存在すると、削除に失敗しますので事前に空にしておきます。
+S3はファイルが存在すると、削除に失敗しますので事前に空にしておきます(マネジメントコンソールから手動削除でも構いません)。
 ```shell
 aws s3 rm s3://<task-report-bucket-name> --recursive
 ```

@@ -13,6 +13,10 @@ prevPage: ./src/posts/k8s-tutorial/app/eks-2.md
 まずは、前回ローカル環境向けにパッチファイルを準備したように、EKS環境向けにパッチファイルを用意します。
 こちらを対応して、構築したEKSにアプリケーションをリリースしましょう。
 
+最終的には以下の構成となります。
+
+![](https://i.gyazo.com/bfb19af214cdbf34f1342a84a869f943.png)
+
 [[TOC]]
 
 ## EKS向けのパッチ・マニフェスト作成(overlays/prod)

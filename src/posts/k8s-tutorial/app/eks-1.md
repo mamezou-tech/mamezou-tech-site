@@ -11,7 +11,7 @@ nextPage: ./src/posts/k8s-tutorial/app/eks-2.md
 
 一般的なプロジェクトでは商用環境だけでなく、結合テスト、受け入れテスト等、様々なフェーズに応じた環境が準備されています。
 また、各環境で外部システムとの接続先等の環境固有の設定/構成が必要だったり、コストの関係で全て同等のスペックで準備することが難しいといったケースがほとんどです。
-これらの構成は、各KubernetesリソースのYAMLファイルとして記述してきましたが、環境毎にフルセットを準備するのは気が引けることでしょう。
+これらの構成は、各KubernetesリソースのYAMLファイルとして記述してきましたが、このままでは、環境毎にフルセットを準備する必要があります。
 
 これを解決する手段として、環境差分を吸収する仕組みを導入する必要があります。
 Kubernetesでは、現状は[Kustomize](https://kustomize.io/)または[Helm](https://helm.sh/)を使うことが一般的かと思います。両者はアプローチの仕方が異なり、どちらも一長一短があります。
@@ -29,14 +29,14 @@ Kustomizeは共通部分(base)に対して、各環境固有のパッチを当�
 
 ## 事前準備
 
-Kustomize以外は今まで実施してきたものです。未セットアップの場合は以下を準備してください。
+Kustomize以外は今まで実施してきたものです。
 
 ### EKSクラスタ環境
 今回は商用環境としてEKSを利用します。事前にEKSクラスタを準備してください。
 利用ツールはeksctl、Terraformのどちらでも構いません。
 
 - [クラスタ環境構築 - AWS EKS (eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
-  - Kubernetesのバージョンをv1.21以上にしてください(`eksctl create cluster`の引数で`--version 1.21`以上を指定)
+  - 実行するマニフェストはKubernetesのv1.21互換です。`eksctl create cluster`の引数で`--version 1.21`以上を指定してください。
 - [クラスタ環境構築 - AWS EKS (Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
 次に、構築したEKSクラスタへの外部通信環境を整えるために、以下のプロダクトをセットアップしてください。
@@ -75,8 +75,8 @@ Kustomize以外は今まで実施してきたものです。未セットアッ�
 ## AWSリソースの作成
 
 まずは、アプリケーションで必要なAWSリソースを作成します。
-前回ECRを作成したTerraformの設定(`main.tf`)に、DynamoDBやS3、およびアプリケーションへのアクセス許可ポリシー等を追加します。
-ここに掲載すると長くなりますので、必要な部分のみを抜粋します。全体のファイル内容については、以下のGitHubリポジトリを参照してください。
+前回ECRを作成したTerraformの設定(`main.tf`)に、DynamoDBやS3、およびアプリケーションのアクセス許可ポリシーを追加します。
+ここに掲載すると長くなりますので、必要な部分のみを抜粋します。全体のファイルは、以下のGitHubリポジトリを参照してください。
 
 - <https://github.com/mamezou-tech/k8s-tutorial/tree/main/app/terraform>
 
@@ -84,7 +84,8 @@ Kustomize以外は今まで実施してきたものです。未セットアッ�
 
 タスク情報を永続化するDynamoDBテーブル(含むインデックス)と、レポート出力先のS3バケットを作成します。
 ローカル環境でLocalStack上に構築した際は、[初期化スクリプト](https://github.com/mamezou-tech/k8s-tutorial/blob/main/app/k8s/v2-ans/localstack/localstack-init-scripts-config.yaml)をコンテナ起動時に実行していましたが、今回は本物のAWSです。
-AWSリソース管理にはIaCツールのTerraform[^4]を利用して作成しています。
+AWSリソース管理にはIaCツールのTerraform[^4]を利用して作成します。
+
 [^4]: CloudFormation等の他のIaCツールを使っても構築できますので、実運用では組織・プロジェクトの方針によって利用ツールは変わってきます。
 
 以下のようになります。
@@ -116,7 +117,7 @@ resource "aws_dynamodb_table" "tasks" {
 }
 
 resource "aws_s3_bucket" "task_reports" {
-  # 要変更。
+  # グローバルで一意な名称に変更
   bucket = "task-tool-${var.env}-completed-task-report-bucket"
 }
 ```
@@ -126,12 +127,11 @@ resource "aws_s3_bucket" "task_reports" {
 - [aws_dynamodb_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table)
 - [aws_s3_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket)
 
-S3のバケット名はグローバルで一意である必要がありますので、任意の名前に変更してください
+なお、S3のバケット名はグローバルで一意である必要がありますので、任意の名前に変更してください。
 
 ### Kubernetes
 
-次に、Kubernetes側のセットアップです。
-これには、Terraformの[Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs)を使用します。
+次に、Kubernetes側のセットアップです。 Terraformの[Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs)を使用します。
 
 ```hcl
 data "aws_eks_cluster" "eks" {
@@ -155,20 +155,22 @@ resource "kubernetes_namespace" "this" {
 }
 ```
 
-まずKubernetes Providerの認証設定を行い、Namespaceを作成しています。
-今まではデフォルトのNamespaceを使っていましたが、今回はアプリ用に専用のNamespaceを設けます。
+Kubernetesの認証設定を行い、アプリケーション用のNamespaceを作成しています。
+今まではデフォルトのNamespaceを使っていましたが、今回は専用のNamespaceを設けます。
 
 Namespace名については`var.env`として、外部からパラメータとして受け取れるようにしています。
 パラメータについては、別ファイル(`variables.tf`)で定義しています。全てのパラメータは[こちら](https://github.com/mamezou-tech/k8s-tutorial/blob/main/app/terraform/variables.tf)を参照してください。
 
+Terraformのパラメータ(variable)の使い方は、[公式ドキュメント](https://www.terraform.io/language/values/variables)を参照しくてださい。
+
 ### Podアクセス許可(IRSA)
-LocalStackの場合はアクセス許可は不要でしたが、AWSリソースを利用する場合は、セキュリティ上IAMで必要最小限のアクセスに制限するのが望ましいです。
+AWSリソースを利用する場合は、セキュリティ上IAMで必要最小限のアクセスに制限するのが望ましいです。
 EKSでは[IRSA(IAM Roles for Service Account)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)という仕組みが用意されており、Podの単位でIAM Roleを割り当てることが可能です[^5]。
 
 [^5]: External DNS等のAWSリソースにアクセスするインフラ系のOSS導入時にも、専用のIAMのRoleを作成し、それをServiceAccount経由でPodに割り当ててきました。
 
-今回作成したアプリケーションについても、DynamoDBやS3といったAWSネイティブのサービスを利用しますので、この仕組みでアクセス権限を管理するのが望ましいでしょう。
-以下はタスク管理API(task-service)の部分のみ抜粋します。
+今回作成したアプリケーションについても、DynamoDBやS3といったAWSネイティブのサービスを利用しますので、この仕組みでアクセスポリシーを管理します。
+以下タスク管理API(task-service)の部分のみ抜粋します。
 
 ```hcl
 data "aws_iam_policy_document" "app_task_table" {
@@ -230,19 +232,19 @@ resource "kubernetes_service_account" "task_service" {
 ここでは以下のことを実施しています。
 
 1. DynamoDBの読み書き可能なポリシードキュメントを定義
-2. 上記のIAM Policy(`DynamoDBTaskTablePolicy`)を作成
-3. 上記IAM PolicyをアタッチするIAM Role(`TaskService`)を作成(Terraformの[IAMモジュール](https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest/submodules/iam-assumable-role-with-oidc)使用)。このRoleの引受可能な対象にKubernetesのServiceAccount(`system:serviceaccount:${var.env}:task-service`)を指定
-4. 上記IAM Roleを指定に紐づくServiceAccount`task-service`を作成
+2. IAM Policy(`DynamoDBTaskTablePolicy`)を作成
+3. IAM PolicyをアタッチするIAM Role(`TaskService`)を作成(Terraformの[IAMモジュール](https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest/submodules/iam-assumable-role-with-oidc)使用)。このRoleの引受可能な対象にKubernetesのServiceAccount(`system:serviceaccount:${var.env}:task-service`)を指定
+4. IAM Roleを指定に紐づくServiceAccount`task-service`を作成
 
-レポート出力バッチ(`task-reporter`)の方も同様で、こちらはDynamoDBに加えて、S3のポリシーについても追加します[^6]。
-中身はタスク管理APIとほとんど同じです。具体的な内容は[こちら](https://github.com/mamezou-tech/k8s-tutorial/blob/main/app/terraform/main.tf)を参照してください。
+レポート出力バッチ(`task-reporter`)の方も同様で、こちらはDynamoDBに加えて、S3のポリシーについても追加します。
+中身はタスク管理APIとほとんど同じです。具体的な内容は[こちら](https://github.com/mamezou-tech/k8s-tutorial/blob/main/app/terraform/main.tf)を参照してください[^6]。
 
-[^6]: DynamoDBについてはタスク管理APIと同じポリシーにしていますが、ここは読み取りのみですので本来はさらに必要最小限とするのが望ましいです。
+[^6]: レポート出力バッチのDynamoDBポリシーはタスク管理APIと同じものにしていますが、ここは読み取りのみですので本来は別途専用のポリシーを作成する方が良いです。
 
 ### AWS/EKS反映
 
 では、これらをAWS/EKSに反映しましょう。
-Terraform側で必要なアクセス許可ポリシーは、以下に整理していますので、必要に応じて実行するユーザーに指定してください。
+Terraform側で必要なアクセス許可ポリシーは、以下に整理していますので、必要に応じて実行するユーザーに追加してください。
 
 - [ECR](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/app/terraform/ecr-policy.json)
 - [DynamoDB/S3](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/app/terraform/app-resources-policy.json)
@@ -257,12 +259,13 @@ eksctl create iamidentitymapping --cluster mz-k8s \
   --username terraform
 ```
 
-もう1つ、EKSのIRSAを利用するには、EKS OIDCプロバイダのURLが必要です。
+もう1つ、EKSのIRSAを利用するには、EKS OIDCプロバイダのURL(`var.oidc_provider_url`)が必要です。
 こちらはマネジメントコンソールより確認できます。トップページからEKS -> クラスター -> クラスター選択 -> 設定と進むと、以下に記載されています。
 
+TODO: イメージ置き換え！！k8sバージョンが1.20になってるよ
 ![](https://i.gyazo.com/f1a6885d27ca21f5182fa771f13bc763.png)
 
-後は実行するだけです。以下を実行します。
+後は実行するだけです。パラメータは構築済みのEKSの設定に置き換えてください。
 
 ```shell
 # EKS OIDCプロバイダ。取得したEKSのOIDCプロバイダURLに置換してください
@@ -273,9 +276,13 @@ CLUSTER_NAME=mz-k8s
 # module初期化
 terraform init
 # 追加内容チェック
-terraform plan -var env=prod -var oidc_provider_url=${OIDC_PROVIDER_URL} -var eks_cluster_name=${CLUSTER_NAME}
+terraform plan -var env=prod \
+  -var oidc_provider_url=${OIDC_PROVIDER_URL} \
+  -var eks_cluster_name=${CLUSTER_NAME}
 # AWS/EKSに変更適用
-terraform apply -var env=prod -var oidc_provider_url=${OIDC_PROVIDER_URL} -var eks_cluster_name=${CLUSTER_NAME}
+terraform apply -var env=prod \
+  -var oidc_provider_url=${OIDC_PROVIDER_URL} \
+  -var eks_cluster_name=${CLUSTER_NAME}
 ```
 
 マネジメントコンソールから、DynamoDBやS3のリソースが期待通りに作成されていることを確認してください。

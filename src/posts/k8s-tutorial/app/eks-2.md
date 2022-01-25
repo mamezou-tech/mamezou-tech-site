@@ -3,14 +3,14 @@ title: クラスタ環境デプロイ - EKSクラスタ(Kustomize導入)
 author: noboru-kudo
 date: 2022-01-27
 prevPage: ./src/posts/k8s-tutorial/app/eks-1.md
-nextPage: ./src/posts/k8s-tutorial/app/eks-2.md
+nextPage: ./src/posts/k8s-tutorial/app/eks-3.md
 ---
 
 本記事は、[クラスタ環境デプロイ - EKSクラスタ(AWS環境準備)](/containers/k8s/tutorial/app/eks-1/)からの続きです。
 
 [[TOC]]
 
-ここでは、Kubernetesのマニフェストファイルを、Kustomizeに対応した構成に見直していきます。
+ここでは、Kubernetesのマニフェストファイルを、Kustomizeに対応した構成へと見直していきます。
 
 ソースコードについては、以下リポジトリを使用します。
 
@@ -38,7 +38,7 @@ Kustomizeでは、環境共通リソース用の`base`と各環境固有のリ�
 1. [Strategic merge patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/)
 2. [JSON Patch](https://datatracker.ietf.org/doc/html/rfc6902)
 
-好みの問題ですが、基本路線としては宣言的に記述するStrategic merge patch、複雑なパッチの場合は、JSON Patchを使用した方が簡潔になると思います。
+どちらを利用するかは好みの問題ですが、基本路線としては宣言的に記述するStrategic merge patch、複雑なパッチの場合は、JSON Patchを使用した方が簡潔になると思います。
 
 ## 共通(base)
 
@@ -94,12 +94,12 @@ spec:
 クラスタ環境ではコンテナレジストリより取得する必要があり、この指定では動作しません。
 したがって、この項目は環境固有値として`overlays`で設定する必要があると判断できますので、ここでは削除しました。
 
-同様に起動するレプリカ数も、ローカル環境とクラウド環境では異なることが一般的と考えられますので、削除しました。
+同様に起動するレプリカ数も、ローカル環境とクラウド環境では要件が異なりますので削除しました。
 
 続いてServiceですが、こちらは環境別の差分はありません。
 `app/k8s/v2/task-service/service.yaml`をそのまま`app/k8s/v3/task-service`にコピーしてください。
 
-最後にConfigMapです。以前はYAML形式で記述しましたが、KustomizeにはenvファイルからConfigMapを生成する機能(configMapGenerator)がありますので、こちらを利用します(後述)。
+最後にConfigMapです。以前はConfigMapのYAML形式で記述しましたが、KustomizeにはConfigMapを生成する機能(configMapGenerator)がありますので、こちらを利用します(後述)。
 ここではシンプルにキーバリュー形式で設定ファイルを用意します。`app/k8s/v2/task-service/.env`を作成し、以下を記述します。
 
 ```text
@@ -111,7 +111,7 @@ TZ=Asia/Tokyo
 
 ### task-reporter
 
-続いてタスクレポート出力バッチです。以下のようになります。
+続いてタスクレポート出力バッチです。
 `app/k8s/v3/task-reporter`ディレクトリを作成し、`app/k8s/v2/task-reporter/cronjob.yaml`を移植します。
 
 ```yaml
@@ -160,11 +160,11 @@ spec:
                 sizeLimit: 10Gi
 ```
 
-こちらも`imagePullPolicy`は削除しました(今回はJobのため`replicas`は不要)。
+こちらもタスク管理APIと同様の理由で`imagePullPolicy`は削除しました。
 
 ### Ingress
 
-Ingressは以下のようになります。
+`app/k8s/v3/ingress/ingress.yaml`を作成し、以下を記述します。
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -185,12 +185,12 @@ spec:
             pathType: Prefix
 ```
 
-ホスト名(`host`)は、通常環境によって変える必要があるため、定義を削除しました。
+ホスト名(`host`)は、通常環境によって変える必要があるため削除しました。
 今回はどの環境でも、Ingress ControllerにNGINXを使うため、`ingressClassName`はbase側に記述しました。環境(ローカル:Nginx, 商用:ALB等)によって変わるようであれば、こちらもoverlays側に記述するのが良いでしょう。
 
 ### Kustomizationファイル
 
-これまで定義してきたマニフェストファイルをKustomizationファイルとしてここで1つにまとめます。
+これまで定義してきたマニフェストファイルを、ここでKustomizationファイルとして1つにまとめます。
 Kustomizeを使う場合は、このファイルが必須になります。
 
 詳細な内容は[公式ドキュメント](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/)を参照してください。
@@ -218,13 +218,13 @@ configMapGenerator:
 ```
 
 `commonLabels`フィールドに全てのリソース共通のラベル(`metadata.labels`)を定義しています。
-ここに掲載しているもの以外でも[本家Kubernetesの公式ドキュメント](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/)に推奨ラベルが掲載されていますので、参考にするとよいでしょう。
+ここに掲載しているもの以外でも、[本家Kubernetesの公式ドキュメント](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/)に推奨ラベルが掲載されていますので、参考にするとよいでしょう。
 他にも共通アノテーションを定義する`commonAnnotations`フィールドもあります。
 
-`resources`フィールドでは、先程作成したリソースのマニフェストファイルを定義します。ここに定義しなかったものは取り込まれませんので注意してください。
+`resources`フィールドでは、先程作成したリソースのマニフェストファイルを指定します。ここに指定しなかったものは、マニフェストファイルがあっても取り込まれないので注意してください。
 
 `configMapGenerator`フィールドで、`.env`ファイルからConfigMapを生成する指定をしています。
-Kustomizeではこれ以外にも固定値(`literals`)やファイル自身(`files`)でConfigMapを作成することが可能です。
+これ以外にも、固定値(`literals`)やファイル自身(`files`)からConfigMapを作成可能です。
 詳細は[公式ドキュメント](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/configmapgenerator/)を参照してください。
 
 ここまで終わると、`app/k8s/v3/base`配下は以下の構成になります。
@@ -245,10 +245,10 @@ base
 
 ## ローカル環境向けのパッチ作成(overlays/local)
 
-共通部分の作成が終わりましたので、ローカル環境についてこれを利用するように設定を変更しましょう。
+共通部分の作成が終わりましたので、ローカル環境(`overlays/local`)のパッチを作成しましょう。
 
 ### task-service
-まずはタスク管理サービス(task-service)のDeploymentに対するパッチを作成します。
+まずは、タスク管理サービス(`task-service`)のDeploymentに対するパッチを作成します。
 `app/k8s/v3/overlays/local/patches`配下に`task-service`ディレクトリを作成します。
 ここに、`deployment.patch.yaml`を配置し、以下を記述します。
 
@@ -266,11 +266,10 @@ spec:
           imagePullPolicy: Never
 ```
 
-ここは共通部分(`base`)からの差分のみを記述します。今回はローカル環境としてレプリカ数2、イメージはローカルビルドしたものを使用(`imagePullPolicy: Never`)するように設定しました。
-通常はこれだけでは不完全なマニフェストですが、`base`と組み合わせることによって完全なものになります。
+ここは共通部分(`base`)からの差分を記述します。今回はローカル環境としてレプリカ数2、イメージはローカルビルドしたものを使用(`imagePullPolicy: Never`)するように設定しました。
+これだけでは不完全なマニフェストですが、Kustomizeで`base`とマージされることによって完全なものになります。
 
-続いて設定ファイルです。
-ここでも`.env`ファイルを作成し、以下を記述します。
+続いて設定ファイルです。 ここでも`.env`ファイルを作成し、以下を記述します。
 
 ```text
 STAGE=localstack
@@ -286,7 +285,7 @@ AWS_SECRET_ACCESS_KEY=localstack
 
 ### task-reporter
 続いて、タスクレポート出力バッチ(task-reporter)のCronJobに対するパッチを作成します。
-`app/k8s/v3/overlays/local/patches`配下に`task-report`ディレクトリを作成します。
+`app/k8s/v3/overlays/local/patches`配下に`task-reporter`ディレクトリを作成します。
 ここに、`cronjob.patch.yaml`を配置し、以下を記述します。
 
 ```yaml
@@ -306,7 +305,7 @@ spec:
 
 ここでは、先程同様に`imagePullPolicy`を`Never`とし、ローカルビルドしたイメージを使うように指定します。
 
-設定ファイルの方も同様です。ローカル環境固有のもので`.env`ファイルを作成します。
+設定ファイルの方も同様です。`.env`ファイルを作成し、以下を記述します。
 
 ```text
 STAGE=localstack
@@ -320,6 +319,8 @@ AWS_ACCESS_KEY_ID=localstack
 AWS_SECRET_ACCESS_KEY=localstack
 ```
 
+`base`に定義した`TZ`以外のものをここに定義します。
+
 ### Ingress
 `app/k8s/v3/overlays/local/patches`配下に`ingress`ディレクトリを作成します。
 ここに、`ingress.patch.yaml`を配置し、以下を記述します。
@@ -330,12 +331,14 @@ AWS_SECRET_ACCESS_KEY=localstack
   value: task.minikube.local
 ```
 
-今までは、Kubernetes固有のStrategic merge patchでパッチファイルを作成しましたが、今回はJSON Patchを使用しました。
-上記ではIngressのホスト(`host`)して、minikubeのドメイン`task.minikube.local`を設定(`replace`)するようにしています。
+今までは、KubernetesのStrategic merge patchでパッチファイルを作成しましたが、今回はJSON Patchを使用しました。
+上記ではIngressのホスト(`host`)に、minikubeのドメイン`task.minikube.local`を設定(`replace`)するようにしています。
+
+なお、ローカル環境のKubernetesにDocker Desktopを使用している場合は、このファイルの作成は不要です。
 
 ### Kustomizationファイル
 
-最後に`overlays/local`配下に`kustomizton.yaml`を作成します。
+最後に、`overlays/local`配下に`kustomizton.yaml`を作成します。
 まずは、以下を記述します。
 
 ```yaml
@@ -348,13 +351,13 @@ resources:
   - ../../base
 ```
 
-`commonLabels`はローカル環境では`env`に`local`と入れるようにしました。複数環境を1つのクラスタに配置する際は、こうしておくとラベルで絞り込むときに便利です。
+`commonLabels`はローカル環境では`env`に`local`と入れるようにしました。複数環境を1つのクラスタに配置する際は、こうしておくとラベルで絞り込むときに便利です。この設定は`base`の同フィールドとマージされます。
 
 `namePrefix`には`local-`としました。こうすると、Kustomizeで作成する全てのリソースの名前に対してこのプレフィックスが付与されます。
-`kubectl get`コマンドでリソースを参照すると、名前ですぐにどの環境を見ているかが分かりやすくなりますので、誤操作による事故を防ぐために、この設定を入れることをお勧めします。
+`kubectl get`コマンドでリソースを参照すると、名前ですぐにどの環境を見ているかが分かるようになります。誤操作による事故を防ぐために、この設定を入れることをお勧めします。
 
 `resources`にローカル環境で対象とするリソースを指定します[^2]。
-ここでは先程の環境共通の`base`ディレクトリを指定しました。
+ここでは、先程の環境共通の`base`ディレクトリを指定しました。
 
 [^2]: Kustomizeの2.1.0までは`bases`フィールドで共通部分を指定する必要がありましたが、現在は`resources`に統合されました。
 
@@ -372,9 +375,9 @@ patches:
 
 ここでは、先程作成したパッチファイルをそれぞれ適用しています。
 Ingressのパッチファイルでは、どのリソースに対して適用するのかを指定していません。したがって、上記のように`target`フィールドで対象を明示する必要があります。
-`target`フィールドは単一リソースだけでなく、複数指定することも可能です。詳細は[公式ドキュメント](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patches/)を参照してください。
+`target`フィールドは単一リソースだけでなく、複数リソースも指定可能です。詳細は[公式ドキュメント](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patches/)を参照してください。
 
-次はConfigMapの生成を追記します。
+次はConfigMap(`configMapGenerator`)です。
 
 ```yaml
 configMapGenerator:
@@ -405,9 +408,9 @@ images:
 
 ここでタスク管理サービス(`task-service`)、タスクレポート出力バッチ(`task-reporter`)のそれぞれで、上書き対象の名前(`newName`)とタグ(`newTag`)を指定します。
 こうすることで、DeploymentやCronJobのイメージを変えなくても、Kustomizeがこの定義に従って上書きしてくれるようになります。
-つまり、各環境別でどのバージョンのアプリケーションが動作しているかは、Gitで管理されているこのフィールドを見れば把握することができるようになります。
+つまり、各環境別でどのバージョンのアプリケーションが動作しているかは、Gitで管理されているこのフィールドを見れば把握できるようになります。
 
-詳細は[公式ドキュメント](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/images/)を参照してください。
+`images`の詳細は[公式ドキュメント](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/images/)を参照してください。
 
 ここまで終わると、`app/k8s/v3/overlays/local`配下は以下の構成になります。
 
@@ -427,7 +430,7 @@ overlays/local
 
 ## ローカル動作確認
 
-マニフェストの構成をKustomizeに移行しましたので、ローカル環境で動作するかを確認しましょう。
+マニフェストの構成をKustomizeに移行しましたので、ローカル環境で引き続き動作するかを確認しましょう。
 ローカル環境にデプロイするには、KustomizeでデプロイするようにSkaffoldの設定変更が必要です。
 `skaffold.yaml`を以下のように修正しましょう。
 

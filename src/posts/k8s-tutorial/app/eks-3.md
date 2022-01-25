@@ -51,28 +51,27 @@ spec:
               memory: 512Mi
 ```
 
-ローカル環境時より少し増えました。
+ローカル環境時より少し複雑になりました。
 
 #### replicas
-クラウド環境での実行のため、リソースに余裕があります。このため、レプリカ数を3に増やしました。
+今回はクラウド環境での実行でリソースに余裕があります。このためレプリカ数を2から3に増やしました。
 
 #### serviceAccountName
-`serviceAccountName: task-service`を追加しています。これはIRSA(IAM Role for Service Account)を有効にするために必要なものです。
-以前[こちら]
-(/containers/k8s/tutorial/app/eks-1/#podアクセス許可irsa)でPod用のIAM RoleとServiceAccountを作成しました。PodがこのServiceAccountを使用するように指定することで、Pod生成時にセッショントークンが割り当てられ、AWSサービスが使用できるようになります。
+`serviceAccountName: task-service`を追加しています。これはIRSA(IAM Role for Service Account)を有効化するのに必要なものです。
+以前TerraformでPod用のIAM RoleとServiceAccountを作成しました([こちら](/containers/k8s/tutorial/app/eks-1/#podアクセス許可irsa)参照)。PodがこのServiceAccountを使用するように指定することで、Pod生成時にセッショントークンが割り当てられ、AWSサービスが使用できるようになります。
 
 #### imagePullPolicy
-ローカル環境では、コンテナレジストリを使用しないため`Never`としましたが、今回はキャッシュ済みでない場合はコンテナレジストリからPullする`IfNotPresent`を指定します。
+ローカル環境では、コンテナレジストリを使用しないため`Never`としましたが、今回はキャッシュ済みでない場合にコンテナレジストリからPullする`IfNotPresent`を指定します。
 
 #### resource.requests/limits
-`resources`フィールド配下にこのコンテナが利用可能なCPU・メモリのスペック(`requests`)とリミット(`limits`)を指定します。
+`resources`フィールド配下にこのコンテナが利用可能なCPU・メモリの要求スペック(`requests`)とリミット(`limits`)を指定します。
 
-`requests`はPodのスケジューリングに影響します。Kubernetesのスケジューラは、`requests`に指定されたスペックを満たすNodeに対してのみPodを配置するように動きます。これを適切に指定することで、余力のないNodeにPodが配置されることを防止することができます[^1]。
+`requests`は、Podのスケジューリングに影響します。Kubernetesのスケジューラは、`requests`に指定されたスペックを満たすNodeに対してPodを配置するように動きます。これを適切に指定することで、余力のないNodeにPodが配置されることを防止できます[^1]。
 
-`limits`で、コンテナが利用可能なCPU・メモリについて制限するために使用します。
+`limits`は、コンテナが利用可能なCPU・メモリを制限するために使用します。
 コンテナは隔離された環境で実行されているとはいえ、実際にはCPUやメモリ等のリソースを共有しています。
 1つのコンテナでNodeのCPUやメモリを使い切って、他のアプリケーションに迷惑を掛けないためにも`limits`を指定することが望ましいです[^2]。
-注意点として、コンテナがリミットを超えてメモリを使用しようとすると、KubernetesはOOMKillerを送信して強制終了させます。その後は通常は再起動[^3]します(CPUの場合は再起動しません)。
+TODO: ただし、メモリを指定する際には注意が必要です。コンテナがリミットを超えてメモリを使用しようとすると、KubernetesはOOMKillerを送信して強制終了させるため、低すぎる値を指定するとコンテナが頻繁に再起動[^3]することになります。
 アプリケーションの特性を踏まえた適切な値の設定と、定期的なモニタリングによる見直しを心掛けるようにしましょう。
 
 `requests`/`limits`の詳細は[公式ドキュメント](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits)を参照しくてださい。
@@ -270,7 +269,7 @@ images:
 
 `newName`にはコンテナレジストリ(ECR)のURLとリポジトリ名を記述します。
 URLについてはAWSマネジメントコンソールのECRメニューより確認できます。
-[こちら](/containers/k8s/tutorial/app/container-registry/)を参考に、正しいURLを設定してください
+[こちら](/containers/k8s/tutorial/app/container-registry/)を参考に、正しいURLを設定してください。
 
 `newTag`にはコンテナのタグを設定します。今回は初めてのリリースのため`1.0.0`を設定します[^4]。
 
@@ -380,7 +379,7 @@ helm uninstall external-dns -n external-dns
 helm uninstall ingress-nginx -n ingress-nginx
 ```
 
-S3はファイルが存在すると、削除に失敗しますので事前に空にしておきます(マネジメントコンソールから手動削除でも構いません)。
+S3バケットは中にファイルが存在すると、削除に失敗しますので空にしておきます(マネジメントコンソールから手動削除でも構いません)。
 
 ```shell
 aws s3 rm s3://<task-report-bucket-name> --recursive
@@ -401,8 +400,7 @@ terraform destroy -var env=prod -var oidc_provider_url=${OIDC_PROVIDER_URL}
 ## まとめ
 
 今回は今までローカル環境のKubernetesで確認してきたものを、仮想商用環境としてEKSにリリースしてきました。
-
-また、ローカル環境とEKSクラスタの環境差分を吸収するために、Kustomizeを導入し、差分のみを記述して両環境に対応可能な仕組みとしました。
+また、ローカル環境とEKSクラスタの環境差分を吸収するために、Kustomizeで1つのマニフェスト(`base`)とそのパッチ(`overlays`)で両環境に対応可能な仕組みとしました。
 
 ここまでできると、独力でKubernetesの環境構築から、その上に載るコンテナアプリ開発、デプロイまでをできるようになっているはずです。
 

@@ -56,7 +56,7 @@ spec:
 
 #### serviceAccountName
 `serviceAccountName: task-service`を追加しています。これはIRSA(IAM Role for Service Account)を有効化するのに必要なものです。
-以前TerraformでPod用のIAM RoleとServiceAccountを作成しました([こちら](/containers/k8s/tutorial/app/eks-1/#podアクセス許可irsa)参照)。PodがこのServiceAccountを使用することで、Pod生成時にAWSのセッショントークンがコンテナに割り当てられ、AWSサービスにアクセスできるようになります。
+以前TerraformでPod用のIAM RoleとServiceAccountを作成しました([こちら](/containers/k8s/tutorial/app/eks-1/#podアクセス許可irsa)参照)。PodがこのServiceAccountを使用することで、Pod生成時にAWSのセッショントークンがコンテナに割り当てられ、AWSサービスへアクセスできるようになります。
 
 #### imagePullPolicy
 ローカル環境では、コンテナレジストリを使用しないため`Never`としましたが、今回はコンテナレジストリからPullする`IfNotPresent`を指定します。

@@ -7,25 +7,24 @@ prevPage: ./src/posts/k8s-tutorial/app/eks-2.md
 
 本記事は、[クラスタ環境デプロイ - EKSクラスタ(Kustomize導入)](/containers/k8s/tutorial/app/eks-2/)からの続きです。
 
-これまで、DynamoDBやS3等のAWSリソース準備し、ローカル、商用の環境差分を吸収するために、Kustomizeを導入しました。
+これまで、DynamoDBやS3等のAWSリソースを準備し、環境差分を吸収するために、Kustomizeを導入しました。
 ここからは、仮想の商用環境としてAWS EKSにアプリケーションをデプロイします。
 
-まずは、前回ローカル環境向けにパッチファイルを準備したように、EKS環境向けにパッチファイルを用意します。
-こちらを対応して、構築したEKSにアプリケーションをリリースしましょう。
+まずは、前回ローカル環境向けにパッチファイルを準備したように、EKS環境向けの`overlays`を用意します。
 
-最終的には以下の構成となります。
+最終的には、以下の構成となります。
 
 ![](https://i.gyazo.com/bfb19af214cdbf34f1342a84a869f943.png)
 
 [[TOC]]
 
-## EKS向けのパッチ・マニフェスト作成(overlays/prod)
+## EKS環境向けのパッチ・マニフェスト作成(overlays/prod)
 
 `app/k8s/v3/overlays/prod`配下に、各種パッチ及びマニフェストファイルを準備します。
 
 ### task-service
 
-ローカル環境のパッチ作成と同様に、`app/k8s/v3/overlays/prod/patches`配下に`task-service`ディレクトリを作成します。
+`app/k8s/v3/overlays/prod/patches`配下に`task-service`ディレクトリを作成します。
 ここに、`deployment.patch.yaml`を配置し、以下を記述します。
 
 ```yaml
@@ -37,7 +36,6 @@ spec:
   replicas: 3
   template:
     spec:
-      # IRSA
       serviceAccountName: task-service
       containers:
         - name: task-service
@@ -51,32 +49,33 @@ spec:
               memory: 512Mi
 ```
 
-ローカル環境時より少し複雑になりました。
+ローカル環境のパッチより少し複雑になりました。
 
 #### replicas
-今回はクラウド環境での実行でリソースに余裕があります。このためレプリカ数を2から3に増やしました。
+今回は、クラウド環境での実行です。レプリカ数を2から3に増やします。
 
 #### serviceAccountName
 `serviceAccountName: task-service`を追加しています。これはIRSA(IAM Role for Service Account)を有効化するのに必要なものです。
-以前TerraformでPod用のIAM RoleとServiceAccountを作成しました([こちら](/containers/k8s/tutorial/app/eks-1/#podアクセス許可irsa)参照)。PodがこのServiceAccountを使用するように指定することで、Pod生成時にセッショントークンが割り当てられ、AWSサービスが使用できるようになります。
+以前TerraformでPod用のIAM RoleとServiceAccountを作成しました([こちら](/containers/k8s/tutorial/app/eks-1/#podアクセス許可irsa)参照)。PodがこのServiceAccountを使用することで、Pod生成時にAWSのセッショントークンがコンテナに割り当てられ、AWSサービスにアクセスできるようになります。
 
 #### imagePullPolicy
-ローカル環境では、コンテナレジストリを使用しないため`Never`としましたが、今回はキャッシュ済みでない場合にコンテナレジストリからPullする`IfNotPresent`を指定します。
+ローカル環境では、コンテナレジストリを使用しないため`Never`としましたが、今回はコンテナレジストリからPullする`IfNotPresent`を指定します。
 
 #### resource.requests/limits
-`resources`フィールド配下にこのコンテナが利用可能なCPU・メモリの要求スペック(`requests`)とリミット(`limits`)を指定します。
+`resources`フィールド配下に、このコンテナが利用可能なCPU・メモリの要求スペック(`requests`)とリミット(`limits`)を指定します。
 
-`requests`は、Podのスケジューリングに影響します。Kubernetesのスケジューラは、`requests`に指定されたスペックを満たすNodeに対してPodを配置するように動きます。これを適切に指定することで、余力のないNodeにPodが配置されることを防止できます[^1]。
+`requests`は、Podのスケジューリングに影響します。Kubernetesのスケジューラは、`requests`に指定されたスペックを満たすNodeにPodを配置するように動きます。これを適切に指定することで、余力のないNodeにPodが配置されることを防止できます[^1]。
+とはいえ、`requests`を必要以上に大きくすると、Nodeで未使用のリソースが増えて、利用効率が悪化する原因となりますので注意してください。
 
 `limits`は、コンテナが利用可能なCPU・メモリを制限するために使用します。
-コンテナは隔離された環境で実行されているとはいえ、実際にはCPUやメモリ等のリソースを共有しています。
+コンテナは隔離された環境で実行されているとはいえ、物理的にはCPUやメモリ等のリソースを共有しています。
 1つのコンテナでNodeのCPUやメモリを使い切って、他のアプリケーションに迷惑を掛けないためにも`limits`を指定することが望ましいです[^2]。
-TODO: ただし、メモリを指定する際には注意が必要です。コンテナがリミットを超えてメモリを使用しようとすると、KubernetesはOOMKillerを送信して強制終了させるため、低すぎる値を指定するとコンテナが頻繁に再起動[^3]することになります。
-アプリケーションの特性を踏まえた適切な値の設定と、定期的なモニタリングによる見直しを心掛けるようにしましょう。
+ただし、メモリを指定する際には注意が必要です。コンテナがリミットを超えてメモリを使用しようとすると、KubernetesはOOMKillerを送信して強制終了させるため、低すぎる値は頻繁な再起動[^3]を招きます。
 
+アプリケーションの特性を踏まえた適切な値の設定と、定期的なモニタリングによる見直しを心掛けるようにしましょう。
 `requests`/`limits`の詳細は[公式ドキュメント](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits)を参照しくてださい。
 
-[^1]: スケジューラは実際の空き容量を見ている訳ではなく、Nodeのキャパシティと配置されたPodの`requests`の総量で判断しています。そのため、`requests`を必要以上に大きくしすぎると、未使用のリソースが増えてリソース効率が悪化する原因となります。
+[^1]: スケジューラは実際の空き容量を見ている訳ではなく、Nodeのキャパシティと配置されたPodの`requests`の総量で判断しています。
 
 [^2]: ただし、起動時に多くのCPUを消費するようなアプリケーション(Java等)の場合は、通常時に合わせてCPUを制限すると起動が遅くなり、LivenssProbeの再起動ループに陥ったことがあります。この時は、起動後はほとんど消費しないため、あえて`limits.cpu`を指定しないという選択をしました。
 
@@ -92,7 +91,7 @@ AWS_DEFAULT_REGION=ap-northeast-1
 ```
 
 各設定を商用環境向けに設定しました。
-IRSAにより、コンテナ生成時にEKSでAWS認証が設定されるため、ローカル環境で設定していたアクセスキーやシークレットは不要になります。
+EKSでAWS認証情報が設定されるため、ローカル環境で設定していたアクセスキーやシークレットは不要になります。
 
 ### task-reporter
 
@@ -141,12 +140,10 @@ AWS_DEFAULT_REGION=ap-northeast-1
 
 ### task-web(UI)
 
-ローカル環境では、UIはVue CLIでHTTPサーバーをプロセスを起動しましたが、多数の人が利用する実運用でそのようなことはできません。
-Webリソースもコンテナ化して、タスク管理API同様にPodとしてデプロイしましょう。
-
+ローカル環境では、UIは別途プロセスを起動しましたので、マニフェストは不要でした。EKS環境ではUIもコンテナ化して、Podとしてデプロイします。
 こちらは新規リソースのため、パッチファイルではなく完全な形で用意する必要があります。
 マニフェストファイル自体はシンプルな内容で、特に説明が必要な部分はありません。
-`app/k8s/v3/prod/task-web`ディレクトリを作成して、以下のファイルを追加してください。
+`app/k8s/v3/overlays/prod/task-web`ディレクトリを作成して、以下のファイルを追加してください。
 
 - [deployment.yaml](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/app/k8s/v3-ans/overlays/prod/task-web/deployment.yaml)
 - [service.yaml](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/app/k8s/v3-ans/overlays/prod/task-web/service.yaml)
@@ -164,23 +161,23 @@ Webリソースもコンテナ化して、タスク管理API同様にPodとし�
 `app/k8s/v3/overlays/prod/patches`配下に`ingress`ディレクトリを作成します。
 ここに、`ingress.patch.yaml`を配置し、以下を記述します。
 
-なお、ドメイン部分(`task.mamezou-tech.com`)は自身で取得したドメインに置き換えてください。
+なお、ドメイン部分は自身で取得したドメインに置き換えてください。
 
 ```yaml
 - op: add
   path: /metadata/annotations
   value:
-    external-dns.alpha.kubernetes.io/hostname: task.mamezou-tech.com
+    external-dns.alpha.kubernetes.io/hostname: <your.custom-domain.com>
     cert-manager.io/issuer: "prod-letsencrypt-issuer"
 - op: add
   path: /spec/tls
   value:
     - hosts:
-        - task.mamezou-tech.com
+        - <your.custom-domain.com>
       secretName: letsencrypt-cert
 - op: replace
   path: /spec/rules/0/host
-  value: task.mamezou-tech.com
+  value: <your.custom-domain.com>
 - op: add
   path: /spec/rules/0/http/paths/-
   value:
@@ -198,14 +195,14 @@ Webリソースもコンテナ化して、タスク管理API同様にPodとし�
 - [Ingress - カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns/#ingressリソース作成)
 - [Ingress - HTTPS通信(Cert Manager)](/containers/k8s/tutorial/ingress/https/#正規の証明書でhttps通信)
 
-2つ目でTLSの設定をしています。ここでCert ManagerがLet's Encryptで発行した証明書のSecretを参照するようにしています。
+2つ目でTLSの設定をしています。ここでCert ManagerがLet's Encryptで発行した証明書のSecret(`letsencrypt-cert`)を参照するようにしています。
 
 最後は、IngressのパスマッピングにUIリソースを追加しています。
-APIに加えて、UI用のエントリを追加して、ブラウザからWebリソースを取得できるようにします。
+UI用のエントリを追加して、APIに加えて、ブラウザから静的Webリソースを取得できるようにします。
 
 ### Kustomizationファイル
 
-ここまで作成したパッチ、またはマニフェストをKustomizationファイルとしてまとめましょう。
+ここまで作成したパッチ及びマニフェストファイルをKustomizationファイルとしてまとめましょう。
 
 まずは、以下を記述します。
 
@@ -269,7 +266,7 @@ images:
 
 `newName`にはコンテナレジストリ(ECR)のURLとリポジトリ名を記述します。
 URLについてはAWSマネジメントコンソールのECRメニューより確認できます。
-[こちら](/containers/k8s/tutorial/app/container-registry/)を参考に、正しいURLを設定してください。
+[こちら](/containers/k8s/tutorial/app/container-registry/#プッシュしたイメージ確認)を参考に、正しいURLを設定してください。
 
 `newTag`にはコンテナのタグを設定します。今回は初めてのリリースのため`1.0.0`を設定します[^4]。
 
@@ -299,7 +296,7 @@ k8s/v3-ans/overlays/prod/
 
 ## コンテナイメージのビルド
 
-続いて、EKSから取得(Pull)できるように、コンテナイメージをビルドしてECRにプッシュしましょう。
+続いて、コンテナイメージをEKSから取得(Pull)できるように、ビルドしてECRにプッシュしましょう。
 
 ビルドとプッシュについては[こちら](/containers/k8s/tutorial/app/container-registry/#イメージビルド-プッシュ)で説明している通りです。
 ビルド前に、UI(`task-web`)リソースについて変更が必要です。
@@ -307,18 +304,18 @@ k8s/v3-ans/overlays/prod/
 
 ```
 NODE_ENV=production
-VUE_APP_API_ENDPOINT=https://your.custom-domain.com/api <- 変更!!
+VUE_APP_API_ENDPOINT=https://<your.custom-domain.com>/api <- 変更!!
 ```
 
 [^5]: Ingressで公開するタスク管理APIのエンドポイントとして使用しています。
 
 ファイル修正後はタグを`1.0.0`として、ビルドとECRへのプッシュをしてください。
 
-プッシュ後はマネジメントコンソールから、3つのコンテナイメージそれぞれが、以下のようにECRに保管されていることを確認してください。
+プッシュ後はマネジメントコンソールから、3つのコンテナイメージそれぞれが、ECRに保管されていることを確認してください。
 
 ![](https://i.gyazo.com/ca63d89fc55f42e00dce6302e10f88ab.png)
 
-## EKSにデプロイ
+## EKS環境にデプロイ
 
 これで全ての準備が整いました。あとはデプロイするだけです。
 
@@ -334,12 +331,12 @@ aws eks update-kubeconfig --name mz-k8s
 # PROJECT_ROOTはクローンしたディレクトリを指定してください(以下同様)。相対パスでも構いません。
 
 # kubectlビルトインのkustomizeでデプロイ
-kubectl apply -k ${PROJECT_ROOT}/app/k8s/v3-ans/overlays/prod
+kubectl apply -k ${PROJECT_ROOT}/app/k8s/v3/overlays/prod
 # kustomizeビルドしたマニフェストをkubectlでデプロイ
-kustomize build ${PROJECT_ROOT}/app/k8s/v3-ans/overlays/prod | kubectl apply -f-
+kustomize build ${PROJECT_ROOT}/app/k8s/v3/overlays/prod | kubectl apply -f-
 ```
 
-デプロイ後はいつものようにPodの状態を確認しましょう。
+デプロイ後は。いつものようにPodの状態を確認しましょう。
 
 ```shell
 kubectl get pod -n prod
@@ -355,7 +352,7 @@ prod-task-web-5db579755d-ttbnd       1/1     Running   0          55m
 ```
 
 ローカル環境ではタスク管理APIのみでしたが、今回はUI(`prod-task-web`)についても実行されていることが分かります。
-このように、全てのPodが正常に実行されていることが確認できたら、ブラウザから`https://your.custom-domain.com/` にアクセスし、ローカル環境同様にUIが操作できることを確認してください。
+このように、全てのPodが正常に実行されていることが確認できたら、ブラウザから`https://<your.custom-domain.com>/` にアクセスし、ローカル環境同様にタスクの登録や更新等ができることを確認してください。
 
 HTTPS関連のエラーが表示される場合は、HTTPSの証明書が発行されていない可能性があります。
 初めての環境構築する場合はDNSの伝搬に時間がかかりますので、しばらく待ってから再度アクセスしてみてください。
@@ -363,7 +360,7 @@ HTTPS関連のエラーが表示される場合は、HTTPSの証明書が発行�
 
 ## クリーンアップ
 
-今回の環境の削除は以下の手順で実施します。
+EKS環境の削除は、以下の手順で実施します。
 
 まずはアプリケーションをアンデプロイします。
 

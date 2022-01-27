@@ -8,23 +8,29 @@ nextPage: ./src/posts/k8s-tutorial/app/eks-3.md
 
 本記事は、[クラスタ環境デプロイ - EKSクラスタ(AWS環境準備)](/containers/k8s/tutorial/app/eks-1/)からの続きです。
 
-[[TOC]]
-
 ここでは、Kubernetesのマニフェストファイルを、Kustomizeに対応した構成へと見直していきます。
 
-ソースコードについては、以下リポジトリを使用します。
+Kustomizeはbaseと呼ばれる環境共通部分にパッチを当てることで、各環境の完全なマニフェストを生成します。
+以下のようなフローで最終的にデプロイする形になります。
 
-- <https://github.com/mamezou-tech/k8s-tutorial>
+![](https://i.gyazo.com/9ed3c14fd248d6851f1b472adc2cc4fe.png)
+
+Kustomizeのパッチは、以下の方法をサポートしています。
+
+1. [Strategic merge patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/)
+2. [JSON Patch](https://datatracker.ietf.org/doc/html/rfc6902)
+
+どちらを利用するかは好みの問題ですが、基本路線としては宣言的に記述するStrategic merge patch、複雑なパッチの場合は、JSON Patchを使用した方が簡潔になると思います。
 
 以前([Kubernetesマニフェスト作成](/containers/k8s/tutorial/app/batch/#アプリケーションのデプロイ))は、`app/k8s/v2`ディレクトリ配下にKubernetesマニフェストを作成しました[^1]。
-今回は`app/k8s/v3`ディレクトリ配下に作成していきましょう。
+今回は、`app/k8s/v3`ディレクトリ配下に作成していきましょう。
 
 [^1]: 未実施の場合は`app/k8s/v2-ans`ディレクトリを参照してください。
 
-Kustomizeでは、環境共通リソース用の`base`と各環境固有のリソース・パッチファイル(`variants`)用の`overlays`という2つのディレクトリ構成を用意するのが一般的です。以下の構成を作成してください。
+事前に以下の構成を作成しておいてください。
 
 ```
-.
+app/k8s/v3
 ├── base
 └── overlays
     ├── local
@@ -33,16 +39,11 @@ Kustomizeでは、環境共通リソース用の`base`と各環境固有のリ�
         └── patches
 ```
 
-最終的に、Kustomizeはこの2つ(`base`/`overleays`)を以下のいずれかの方法でマージして完全なマニフェストを生成する形になります。
+[[TOC]]
 
-1. [Strategic merge patch](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/)
-2. [JSON Patch](https://datatracker.ietf.org/doc/html/rfc6902)
+## base
 
-どちらを利用するかは好みの問題ですが、基本路線としては宣言的に記述するStrategic merge patch、複雑なパッチの場合は、JSON Patchを使用した方が簡潔になると思います。
-
-## 共通(base)
-
-それでは、`base`配下にローカル環境、商用環境共通のリソースを配置していきましょう。 基本的な作業は`app/k8s/v2`をコピーして、環境固有部分を消していけば作成できます。
+それでは、`base`配下にローカル環境、商用環境のbaseリソースを配置していきましょう。 基本的な作業は`app/k8s/v2`をコピーして、環境固有部分を消していけば作成できます。
 
 ### task-service
 
@@ -106,7 +107,7 @@ spec:
 TZ=Asia/Tokyo
 ```
 
-今回は共通の定義として、Node.jsのタイムゾーンを指定する`TZ`のみを定義しました。
+今回はbaseの定義として、Node.jsのタイムゾーンを指定する`TZ`のみを定義しました。
 基本的にConfigMapは環境固有のものが多いため、`base`で記述できるものは限られてくるはずです。
 
 ### task-reporter
@@ -245,7 +246,7 @@ base
 
 ## ローカル環境向けのパッチ作成(overlays/local)
 
-共通部分の作成が終わりましたので、ローカル環境(`overlays/local`)のパッチを作成しましょう。
+base部分の作成が終わりましたので、ローカル環境(`overlays/local`)のパッチを作成しましょう。
 
 ### task-service
 まずは、タスク管理サービス(`task-service`)のDeploymentに対するパッチを作成します。
@@ -266,7 +267,7 @@ spec:
           imagePullPolicy: Never
 ```
 
-ここは共通部分(`base`)からの差分を記述します。今回はローカル環境としてレプリカ数2、イメージはローカルビルドしたものを使用(`imagePullPolicy: Never`)するように設定しました。
+ここはbaseからの差分を記述します。今回はローカル環境としてレプリカ数2、イメージはローカルビルドしたものを使用(`imagePullPolicy: Never`)するように設定しました。
 これだけでは不完全なマニフェストですが、Kustomizeで`base`とマージされることによって完全なものになります。
 
 続いて設定ファイルです。 ここでも`.env`ファイルを作成し、以下を記述します。
@@ -356,10 +357,9 @@ resources:
 `namePrefix`には`local-`としました。こうすると、Kustomizeで作成する全てのリソースの名前に対してこのプレフィックスが付与されます。
 `kubectl get`コマンドでリソースを参照すると、名前ですぐにどの環境を見ているかが分かるようになります。誤操作による事故を防ぐために、この設定を入れることをお勧めします。
 
-`resources`にローカル環境で対象とするリソースを指定します[^2]。
-ここでは、先程の環境共通の`base`ディレクトリを指定しました。
+`resources`にローカル環境で対象とするリソースを指定します[^2]。 ここでは、先程作成した`base`ディレクトリのみを指定します。
 
-[^2]: Kustomizeの2.1.0までは`bases`フィールドで共通部分を指定する必要がありましたが、現在は`resources`に統合されました。
+[^2]: Kustomizeの2.1.0までは`bases`フィールドでbaseリソースを指定する必要がありましたが、現在は`resources`に統合されました。
 
 続いて、パッチ部分を追記します。
 
@@ -473,7 +473,7 @@ kubectl config use-context docker-desktop
 skaffold dev
 ```
 
-動作確認の方法は以下を参照してください。以前と同じように操作ができれば問題ありません。
+動作確認の方法は以下を参照してください。以前と同じように操作できれば問題ありません。
 
 - [Kubernetesマニフェスト作成 - Webアプリケーション](/containers/k8s/tutorial/app/web-app/#動作確認)
 - [Kubernetesマニフェスト作成 - バッチアプリケーション](/containers/k8s/tutorial/app/batch/#動作確認)

@@ -16,7 +16,7 @@ nextPage: ./src/posts/k8s-tutorial/app/eks-2.md
 これを解決する手段として、環境差分を吸収する仕組みを導入する必要があります。
 Kubernetesでは、現状は[Kustomize](https://kustomize.io/)または[Helm](https://helm.sh/)を使うことが一般的かと思います。両者はアプローチの仕方が異なり、どちらも一長一短があります。
 
-Kustomizeは共通部分(base)に対して、各環境固有のパッチを当てるというスタイルです。マニフェストファイルの知識さえあれば簡単に作成できます。
+Kustomizeは共通部分(base)に対して、各環境固有のパッチを当てるというスタイルです。Kubernetesのマニフェストファイルの知識さえあれば簡単に作成できることが大きなメリットです。
 一方で、HelmはGoのテンプレート言語でマニフェストファイルを記述し、Helmチャートとしてパッケージング・配布する方式を採用しています。このテンプレート言語を習得するためのコストは高いですが、Kustomizeより高い柔軟性を持っているため、不特定多数のユーザーへ提供するプロダクトに向いています。
 このような特性から、HelmはKubernetesのパッケージマネージャとして認知されています。有名どころのKubernetesのプロダクトのほとんどは、Helmチャートとして提供されており、[Artifact Hub](https://artifacthub.io/)から検索できます[^1]。
 
@@ -262,8 +262,7 @@ eksctl create iamidentitymapping --cluster mz-k8s \
 もう1つ、EKSのIRSAを利用するには、EKS OIDCプロバイダのURL(`var.oidc_provider_url`)が必要です。
 こちらはマネジメントコンソールより確認できます。トップページからEKS -> クラスター -> クラスター選択 -> 設定と進むと、以下に記載されています。
 
-TODO: イメージ置き換え！！k8sバージョンが1.20になってるよ
-![](https://i.gyazo.com/f1a6885d27ca21f5182fa771f13bc763.png)
+![](https://i.gyazo.com/7f2984db4fc659ec5e0769f04170258a.png)
 
 後は実行するだけです。パラメータは構築済みのEKSの設定に置き換えてください。
 

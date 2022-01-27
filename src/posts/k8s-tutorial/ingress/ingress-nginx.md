@@ -93,7 +93,7 @@ helm upgrade ingress-nginx ingress-nginx/ingress-nginx \
 
 [^5]: バージョン情報はIngressControllerのGithubや[ArtifactHub](https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx)でも確認できます。
 
-NginxのIngress Controllerが起動すると、Helmコマンドで状態を確認できます(内部的には作成したNamespaceのConfigMapに保存されます)。
+NginxのIngress Controllerが起動すると、Helmコマンドで状態を確認できます(内部的には作成したNamespaceのSecretに保存されます)。
 
 ```shell
 helm list -n ingress-nginx

@@ -6,9 +6,9 @@ prevPage: ./src/posts/k8s-tutorial/ingress/ingress-aws.md
 nextPage: ./src/posts/k8s-tutorial/ingress/https.md
 ---
 
-前回まではアプリケーションにアクセスする際にはIngressに登録したホスト名をHostヘッダを直接指定することでDNSで名前解決がされた体で確認していました。
+前回までは、Ingressに登録したホスト名をHostヘッダを直接指定することで、DNSで名前解決がされた体で確認ました。
 当然ですが、実運用でこのようなことをすることはなく、DNSサーバにIngressとのマッピングを追加する必要があります。
-もちろん手動でDNSサーバにレコードを追加して実現することはできますが、Ingressにホストを追加する度に別途DNSで作業する必要が出てきますし、DNSは設定ミスがあるとその被害は大きくなるのが通例です(それ故にネットワーク管理者のみがアクセス可能な組織も多いでしょう)。
+これを手動で実施すると、Ingressに新しいホストを追加する度に別途DNSで作業する必要が出てきます。DNSは設定ミスがあるとその被害は大きくなるのが通例です(それ故にネットワーク管理者のみがDNSにアクセス可能な組織が多いでしょう)。
 
 今回はこれを自動化してしまいましょう。
 このためのツールとしてKubernetesコミュニティ(Special Interest Groups:SIGs)で開発・運用されているexternal-dnsを利用します。
@@ -39,16 +39,18 @@ Route53でのドメイン取得については[こちら](https://docs.aws.amazo
 また、external-dnsのインストールにk8sパッケージマネージャーの[helm](https://helm.sh/)を利用します。未セットアップの場合は[こちら](https://helm.sh/docs/intro/install/) を参考にv3以降のバージョンをセットアップしてください。
 
 次にIngress Controllerをインストールします。
-以下のいずれかをインストールしてください(以降はAWS Load Balancer Controllerをインストールしたものとして記載していますがIngressClassNameの指定以外は変わりません)。
+以下のいずれかをインストールしてください。以降はAWS Load Balancer Controllerをインストールしたものとして記載していますが、NGINXでもIngressClassNameの指定以外は変わりません。
 
 - [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws/)
 - [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx/)
 
 ## external-dnsのアクセス許可設定
-external-dnsがRoute53に対してレコード操作ができるようにIAM PolicyとIAM Roleを作成します。
+external-dnsが、Route53に対してレコード操作ができるようにIAM PolicyとIAM Roleを作成します。
 必要なアクセス許可は以下に記載されています。
+
 <https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#iam-policy>
-ここでは上記をJSONファイル(`external-dns-policy.json`)として保存して利用します。
+
+ここでは、上記をJSONファイル(`external-dns-policy.json`)として保存して利用します。
 
 ### eksctl
 環境構築にeksctlを利用している場合は[Ingress Controllerセットアップ](/containers/k8s/tutorial/ingress/ingress-aws#eksctl)同様にeksctlのサブコマンドを利用します。
@@ -74,17 +76,17 @@ eksctl create iamserviceaccount \
   --approve
 ```
 
-これを実行するとeksctlがCloudFormationスタックを実行し、AWS上にIAM Role、k8s上に対応するServiceAccountが作成されます。
-こちらについてもマネジメントコンソールで確認してみましょう。
+これを実行すると、eksctlがCloudFormationスタックを実行し、AWS上にIAM Role、k8s上に対応するServiceAccountが作成されます。
+こちらについても、マネジメントコンソールで確認してみましょう。
 
 - CloudFormation
   ![](https://i.gyazo.com/b4352477e391fef4ef73aed134e2e93e.png)
 - IAM Role
   ![](https://i.gyazo.com/a8b15ff17ed076f113fe83df2b14def7.png)
 
-ServiceAccountについてはkubectlで確認します[^1]。
+ServiceAccountについては、kubectlで確認します[^1]。
 
-[^1]: Namespaceについては存在しない場合はeksctlが作成してくれます。
+[^1]: Namespaceについては、存在しない場合はeksctlが作成してくれます。
 
 ```shell
 kubectl get sa external-dns -n external-dns -o yaml
@@ -190,12 +192,12 @@ secrets:
 
 ## DNSホストゾーンの登録
 
-external-dnsの管理範囲とするホストゾーンをRoute53に事前に登録します。
+external-dnsが管理するホストゾーンをRoute53に登録します。
 
 Route53で購入した場合は、既にそのドメインでホストゾーンが作成されていますので、新たに作成する必要はありません[^2]。この手順はスキップ可能です。
 [^2]: とはいえ複数のAWSアカウントで管理する環境ですと環境ごとにサブドメインでホストゾーンを作成し、親ドメイン側（マスターアカウント）はサブドメイン側のホストゾーンに移譲する方法がよく使われると思います。
 
-Route53で購入していない場合場合は、マネジメントコンソールより「Route53 -> ホストゾーンの作成」を選択して自分で用意したドメインを入力・作成してください。
+Route53で購入していない場合は、マネジメントコンソールより「Route53 -> ホストゾーンの作成」を選択して自分で用意したドメインを入力・作成してください。
 タイプはデフォルトの「パブリックホストゾーン」のままにしてください。
 ![](https://i.gyazo.com/6502e899fe5594fa84157a34e1be79c4.png)
 
@@ -209,7 +211,7 @@ aws route53 create-hosted-zone \
 
 次に、ドメインレジストラ側で、作成したRoute53のホストゾーンに名前解決を移譲するように変更します。
 ドメインレジストラで用意されている管理ページで、このホストゾーンに割り当てられたネームサーバーを利用するように設定をしてください。
-指定するネームサーバーはマネジメントコンソールのNSレコードの内容から確認できます。
+指定するネームサーバーは、マネジメントコンソールのNSレコードの内容から確認できます。
 ![](https://i.gyazo.com/f0381c4581351f0c37eb1a7bbdb1e0ef.png)
 
 例としてGoogle Domainsで購入したものは、以下のようにカスタムネームサーバーとして上記内容を設定します。
@@ -218,7 +220,7 @@ aws route53 create-hosted-zone \
 
 ## external-dnsインストール
 それでは準備が整いましたので、今回主役のexternal-dnsをセットアップしましょう。
-以下にHelm Chartが準備されていますので今回もHelmを使ってインストールします。
+以下にHelm Chartが準備されていますので、今回もHelmを使ってインストールします。
 - <https://github.com/bitnami/charts/tree/master/bitnami/external-dns>
 
 いつものようにリポジトリを追加・更新します。
@@ -249,7 +251,7 @@ helm upgrade external-dns bitnami/external-dns \
 - `serviceAccount`/`serviceAccount.name`は事前に作成したものを指定
 - `domainFilters[0]`で対象とするドメイン(ホストゾーン)を指定。自分で用意したドメインに変更してください。
 
-external-dnsにはその他にも多数のパラメータが用意されています。必要に応じて追加してください。
+external-dnsには、その他にも多数のパラメータが用意されています。必要に応じて追加してください。
 利用可能なパラメータは[こちら](https://github.com/bitnami/charts/tree/master/bitnami/external-dns#parameters)を参照してください。
 
 デプロイが正常に終了しているかを確認しましょう。
@@ -489,7 +491,7 @@ spec:
             pathType: Prefix
 ```
 `annotations`部分に注目してください。
-`external-dns.alpha.kubernetes.io/hostname`に、ルーティングルールの`host`で指定した`k8s-tutorial.mamezou-tech.com`を設定しています(複数の場合はカンマ区切り)。
+`external-dns.alpha.kubernetes.io/hostname`に、ルーティングルールの`host`で指定したカスタムドメインを設定しています(複数の場合はカンマ区切り)。こちらは自分で取得したドメインに置き換えてください。
 external-dnsはこれを検知してRoute53と同期します。
 
 なお、NGINX Ingress Controllerを使用する場合は`ingressClassName`に`nginx`と指定してください。
@@ -524,7 +526,7 @@ Events:
   ----    ------                  ----  ----     -------
   Normal  SuccessfullyReconciled  53s   ingress  Successfully reconciled
 ```
-前回と同じように`Address`に外部公開用のURL(AWSで自動生成されたもの)が割り当てられ、バックエンドとしてパスベースのルーティングでapp1/app2が設定済みであることが確認できます。
+前回と同じように、`Address`に外部公開URL(AWSで自動生成されたもの)が割り当てられ、バックエンドとしてapp1/app2が設定されています。
 また、Annotationsにexternal-dnsのドメインが指定されていることも確認できます。
 
 AWSのマネジメントコンソールからRoute53の状態を見てみましょう。サービスからRoute53を選択し、自分のドメインのホストゾーンに登録されているレコードを見てみましょう。
@@ -549,6 +551,7 @@ time="2021-10-17T07:09:39Z" level=info msg="2 record(s) in zone mamezou-tech.com
 レコード追加が完了したら、実際に名前解決ができるのかをdigコマンドで確認します。Windowsの場合はnslookupコマンドで代用してください。
 
 ```shell
+# ドメインは自身で取得したものに置き換えてください
 dig k8s-tutorial.mamezou-tech.com
 ```
 
@@ -580,11 +583,11 @@ k8s-tutorial.mamezou-tech.com. 60 IN	A	xxx.xxx.xxx.xxx
 
 ## 動作確認
 
-最後にアプリにアクセスしてみましょう。
-前回まではcurlでエンドポイントはAWSで自動生成されたものを使い、そのHostヘッダにIngressのホスト名を指定してDNSの名前解決を擬似的に行っていましたが、今回はそのようなことは不要なはずです。
-実際に使うドメインは自分のものに置き換えてアクセスしてください。
+最後にアプリへアクセスしてみましょう。
+前回までは、curlでエンドポイントはAWSで自動生成されたものを使い、HostヘッダにIngressのホスト名を指定していましたが、今回はDNS設定をしましたので不要です。
 
 ```shell
+# ドメインは、自身で取得したものに置き換えてください。
 # app1
 curl k8s-tutorial.mamezou-tech.com/app1
 # app2
@@ -601,7 +604,7 @@ app2-b6dc558b5-5zb69: hello sample app!
 
 ## クリーンアップ
 
-最後に不要になったリソースを削除しましょう。
+各リソースは以下の手順で削除します。
 
 ```shell
 # app1/app2
@@ -613,13 +616,14 @@ helm uninstall -n external-dns external-dns
 helm uninstall -n kube-system aws-load-balancer-controller
 ```
 
-また、external-dnsはデフォルトでは安全のためにRoute53のレコードを削除しません(helmインストール時に`policy`に`sync`を指定すれば可能です)。
+また、external-dnsはデフォルトでRoute53のレコードを削除しません[^4]。
 マネジメントコンソールから不要になったレコード(A/Txt)は手動で削除しておきましょう(**誤って利用中のものを削除しないよう注意してください**)。
 
 最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
 - [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl#クリーンアップ)
 - [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform#クリーンアップ)
 
+[^4]: helmインストール時に`policy`を`sync`とすれば削除可能です。
 
 ---
 

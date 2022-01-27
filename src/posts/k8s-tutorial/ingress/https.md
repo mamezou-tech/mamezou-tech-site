@@ -6,37 +6,33 @@ prevPage: ./src/posts/k8s-tutorial/ingress/external-dns.md
 nextPage: ./src/posts/k8s-tutorial/storage/ebs.md
 ---
 
-今回はIngressにTLS証明書をセットアップし、サンプルアプリに対してセキュアに通信できるようにしてみましょう。
+今回は、IngressにTLS証明書をセットアップし、セキュアに外部と通信できるようにしましょう。
 
 ゼロトラストネットワークの考え方が普及し、今や開発・テスト環境でも通信のTLS化が当たり前の時代になりました(もちろん暗号化は通信だけではだめですが)。
 そこで課題となるのが、暗号化で利用する証明書の管理です。証明書の有効期限切れによる通信障害のニュースもよく耳にします。
 
-KubernetesのIngressは手動では証明書を作成・発行して登録することも可能ですが、前述の通り証明書の運用には課題があります。
-そこで、今回はTLS証明書の発行やローテートを自動でやってくれる[Cert Manager](https://github.com/jetstack/cert-manager)を使ってHTTPS通信の環境を構築しましょう。
+もちろん、KubernetesのIngressはHTTPS通信ができますが、前述の通り証明書の運用には課題があります。
+そこで、今回はTLS証明書の発行やローテートを自動でやってくれる[Cert Manager](https://github.com/jetstack/cert-manager)を使ってHTTPS通信の環境を整えましょう。
 
-- 公式ドキュメント: <https://cert-manager.io/docs/>
+今回は、NGINX Ingress Controllerを使って、証明書の管理を自動化していきます[^1]。
 
-AWS Load Balancer ControllerつまりALB(Application Load Balancer)をIngressとして利用する場合(詳細は[こちら](/containers/k8s/tutorial/ingress/ingress-nginx/)参照)は、[AWS Certificate Manager(ACM)](https://aws.amazon.com/jp/certificate-manager/)という証明書管理のマネージドサービスがありますのでこれを使う形になります（現時点でALBはACM以外の証明書を使う術はありません）[^1]。
+[^1]: AWS Load Balancer ControllerでALBをIngressとして利用する場合([こちら](/containers/k8s/tutorial/ingress/ingress-nginx/)参照)は、[AWS Certificate Manager(ACM)](https://aws.amazon.com/jp/certificate-manager/)を使う形になります。現時点でALBはACM以外の証明書を使う術はありません。AWS Load Balancer ControllerでHTTPSを使う場合は[こちら](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/tasks/ssl_redirect/)が参考になります。
 
-[^1]: AWS Load Balancer ControllerでHTTPSを使う場合は[こちら](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/tasks/ssl_redirect/)が参考になります。
-
-今回はNginxをIngressとして使うNGINX Ingress Controllerを使って、証明書の管理を自動化していきます。
-
-Cert ManagerはCRD(Custom Resource Definitions)として提供されるIssuerとCertificateリソースを使って証明書の管理をしています。
+Cert Managerは、CRD(Custom Resource Definitions)として提供されるIssuerとCertificateリソースを使って証明書の管理をしています。
 - Issuer/ClusterIssuer
-  Cert Managerが証明書の発行リクエストを行う証明書発行機関です。サポート対象の発行機関の種類は[こちら](https://cert-manager.io/docs/configuration/#supported-issuer-types)から確認できます。
+  Cert Managerが証明書の発行要求を行う認証局です。サポート対象の認証局の種類は[こちら](https://cert-manager.io/docs/configuration/#supported-issuer-types)から確認できます。
 - Certificate
-  Issuerより発行された証明書リソース。Ingressリソースが定義されるとCert Managerが作成します。ここで有効期限の管理にも使われています。
+  Issuerより発行された証明書リソース。Ingressリソースが定義されるとその情報をもとにCert Managerが作成します。これは有効期限の管理にも使われています。
 
-今回は自己署名(いわゆるオレオレ証明書)と無料で証明書発行ができる[Let's Encrypt](https://letsencrypt.org/)を使ってIngressのHTTPS通信を実現してみましょう。
-完成イメージは以下のようになります。
+今回は自己署名(いわゆるオレオレ証明書)と、無料で証明書発行ができる[Let's Encrypt](https://letsencrypt.org/)を使ってIngressのHTTPS通信を実現してみましょう。
+完成イメージは、以下のようになります。
 
 ![](https://i.gyazo.com/fa39261af82bfefe43878d5f31e4b638.png)
 
 [[TOC]]
 
 ## 事前準備
-以下のいずれかの方法で事前にEKS環境を作成しておいてください。
+以下のいずれかの方法で、事前にEKS環境を作成しておいてください。
 
 - [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
 - [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
@@ -78,7 +74,7 @@ EKS環境構築後はクラスタにIngress Controllerをインストールし�
 以下の手順を実施して、ドメイン準備とDNSへのレコード登録を自動化するexternal-dnsのセットアップも実施してください。
 本チュートリアルでは`mamezou-tech.com`（Route53で購入）のサブドメインを使用しますが、都度自分のドメインに置き換えてください。
 
-なお、今回はAWS Load Balancer ControllerではなくNGINX Ingress Controllerを使用しますので、以下手順に記載されている事前準備のAWS Load Balancer Controllerのインストールはスキップして構いません。
+なお、今回はNGINX Ingress Controllerを使用します。以下手順のAWS Load Balancer Controllerのインストールはスキップして構いません。
 
 - [カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns/)
 
@@ -327,8 +323,8 @@ Status:
   Renewal Time:            2021-12-19T06:35:31Z
 ```
 
-証明書の現在の状態や有効期限を確認することができます。Cert Managerはこの情報をもとに証明書のローテートを自動で実施してくれます。
-最後に証明書を確認しましょう。上記`Secret Name`の出力のとおり証明書は`selfsigning-cert`というSecretリソースに格納されています（これはIngressリソースで指定したものです）。
+証明書の現在の状態や有効期限を確認できます。Cert Managerは、この情報をもとに証明書のローテートを自動で実施してくれます。
+最後に証明書を確認しましょう。上記`Secret Name`の出力のとおり、証明書は`selfsigning-cert`というSecretリソースに格納されています（これはIngressリソースで指定したものです）。
 こちらも確認してみましょう。
 
 ```shell
@@ -348,9 +344,9 @@ tls.crt:  1046 bytes
 tls.key:  1679 bytes
 ```
 
-証明書の公開鍵(tls.crt)や秘密鍵(tls.key)が格納されている様子が分かります。Ingress(ここでの実態はNginx)はこの情報をもとに通信の暗号化・復号化を行う形になります。
+証明書(tls.crt)や秘密鍵(tls.key)が格納されている様子が分かります。Ingress(ここではNGINX)は、この情報を利用してHTTPS通信する形になります。
 
-最後にcurlを使ってHTTPS通信でサンプルアプリにアクセスしてみましょう。
+最後に、curlを使ってHTTPS通信でサンプルアプリにアクセスしてみましょう。
 今回は自己署名の証明書のため、証明書の検証をスキップする`-k`オプションを指定する必要があります。
 
 ```shell
@@ -365,7 +361,7 @@ app2-b6dc558b5-g9m99: hello sample app!
 
 HTTP通信でサンプルアプリにアクセスできていることが分かります。DNS設定の反映には時間がかかりますので、名前解決に失敗する場合はしばらく待ってから試してみてください。
 
-ちなみにですが、試しにHTTPでアクセスしてみると以下のようにHTTPSのURLにリダイレクトされます。
+ちなみに、試しにHTTPでアクセスしてみると以下のようにHTTPSのURLにリダイレクトされます。
 
 ```shell
 curl -k -v http://k8s-tutorial.mamezou-tech.com/app1
@@ -390,14 +386,14 @@ curl -k -v http://k8s-tutorial.mamezou-tech.com/app1
 (省略)
 ```
 
-これはNGINX Ingress Controllerのデフォルト仕様([公式ドキュメント](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-side-https-enforcement-through-redirect))のためIngress Controllerの実装に何を使うかによって変わってきます。
+これはNGINX Ingress Controllerのデフォルト仕様([公式ドキュメント](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-side-https-enforcement-through-redirect))です。Ingress Controllerの実装に何を使うかによってこの挙動は変わってきます。
 
 ## 正規の証明書でHTTPS通信
 
-次に自己署名ではなく正規の証明書を使って動作確認をしてみましょう。
-今回は証明書の発行を無料で実施できる[Let's Encrypt](https://letsencrypt.org/)を認証局[^5]として使用します。
+次に自己署名ではなく、正規の証明書を使って動作確認をしてみましょう。
+今回は、証明書の発行を無料で実施できる[Let's Encrypt](https://letsencrypt.org/)を認証局[^5]として使用します。
 
-[^5]: Let's Encryptは証明書の自動発行を行うACME(Automated Certificate Management Environment)プロトコルをサポートしており、個人レベルでも簡単に証明書を発行することが可能です。
+[^5]: Let's Encryptは、証明書を自動発行するACME(Automated Certificate Management Environment)プロトコルをサポートしており、個人でも簡単に証明書を発行できます。
 
 Let's Encrypt用のIssuerリソースのYAMLファイルは以下のようになります。ここでは`lets-encrypt-issuer.yaml`として作成しました。
 
@@ -477,8 +473,8 @@ Events:                    <none>
 Statusの部分を見るとACMEアカウントとしてLet's Encryptにメールアドレスが登録されていることが確認できます。
 この時点では、Ingressリソースを作成していませんので証明書は発行されません。
 
-それでは実際に証明書を発行してみましょう。
-サンプルアプリについては自己署名のときに使用したものをそのまま使いますが、前回作成したIngressリソースについては削除しておきましょう。
+それでは、実際に証明書を発行してみましょう。
+サンプルアプリは自己署名のときに使用したものをそのまま使いますが、前回作成したIngressリソースについては削除しておきましょう。
 
 ```shell
 kubectl delete -f ingress-self-signing.yaml
@@ -524,7 +520,7 @@ spec:
             pathType: Prefix
 ```
 
-先程の自己署名のときに作成したものとほとんど同じですが、`cert-manager.io/issuer`に指定するIssuerを先程Let's Encrypt向けに作成したものに変更しています。
+自己署名のときに作成したものとほとんど同じですが、`cert-manager.io/issuer`に指定するIssuerを先程Let's Encrypt向けに作成したものへ変更しています。
 また、証明書のSecretリソースは自己署名のものと区別するため、別の名前にしています。こちらも他のSecretと重複しない限り任意で構いません。
 
 ではIngressリソースを作成しましょう。
@@ -565,10 +561,10 @@ Events:
 Eventsに注目すると、Cert Managerが`letsencrypt-cert`という証明書を作成していることが分かります。
 実際に証明書が作成されるには、先程のLet's Encryptのドメイン所有者の検証(Challenge)をクリアする必要がありますのでタイムラグがあります[^8]。
 
-[^8]: 初めてのドメインは場合は、external-dnsによって作成されたRoute53のDNSレコードが有効になるまで名前解決ができませんのでかなり待ちます。
+[^8]: 初めてのドメインを作成する場合は、external-dnsによって作成されたRoute53のDNSレコードが伝搬されるまでドメイン検証ができません。
 
-内部ではCert Managerがドメイン所有者の検証するために一時的なエンドポイントを作成し、Let's Encryptに対して、証明書の発行要求を行うという動きをします。
-k8sのイベントログを見ると次のようになっています。
+内部では、Cert Managerがドメイン所有者の検証するために、一時的なエンドポイントを作成し、Let's Encryptに対して証明書の発行要求を行う動きをします。
+Kubernetesのイベントログを見ると次のようになっています。
 
 ```shell
 kubectl get ev
@@ -594,7 +590,7 @@ kubectl get ev
 6m17s       Normal    Issuing             certificate/letsencrypt-cert                                   The certificate has been successfully issued
 ```
 
-このようにCert Managerは証明書を発行するために、HTTP-01に対応するために専用のIngress/Pod作成(これらは一時的で成功すると削除されます)や、その後の証明書発行要求と証明書のSecretリソースへの保存といった、様々な処理をユーザーの代わりに実施してくれていることが分かります。
+Cert Managerが様々な処理をユーザーの代わりに実施してくれていることが分かります。HTTP-01のドメイン検証用にIngress/Pod作成(これらは一時的で成功すると削除されます)や、その後の証明書発行と証明書のSecretの保存等を実施しています。
 前回同様にCertificateリソースについても確認しましょう。
 
 ```shell
@@ -640,8 +636,8 @@ Events:
   Normal  Issuing    23m   cert-manager  The certificate has been successfully issued
 ```
 
-こちらも自己署名同様に証明書の状態が確認できます。
-自分で署名した前回と違い、今回は認証局に対して証明書の発行要求をしています。これはOrderリソースで確認できます。
+自己署名の時と同様に、証明書の状態が確認できます。
+前回と違い、今回は認証局に対して証明書の発行要求をしています。これはOrderリソースで確認できます。
 
 ```shell
 kubectl get order
@@ -651,11 +647,11 @@ NAME                               STATE   AGE
 letsencrypt-cert-lkpg9-182064821   valid   30m
 ```
 
-長いのでここでは省略しますが、これを`kubectl describe order <order-name>`で見ると証明書発行要求の詳細を確認することができます。
+長いのでここでは省略しますが、これを`kubectl describe order <order-name>`で見ると、証明書発行の詳細を確認できます。
 
 また、ドメインの所有者検証の情報はChallengeリソースで確認できます。このリソースはLet's Encryptとのドメイン検証の都度作成され、成功すると削除されます。
-証明書が発行されない場合はこのリソースの存在を確認し、存在する場合は失敗の原因を探ることができます(`kubectl describe challenge <challenge-name>`)。
-例えば名前解決に失敗している場合は以下のような出力になります。
+証明書が発行されない場合は、このリソースの存在を確認し、失敗の原因を探ることができます(`kubectl describe challenge <challenge-name>`)。
+例えば、名前解決に失敗している場合は以下のような出力になります。
 
 ```
 Name:         letsencrypt-cert-l5mlt-129283757-1181534344
@@ -680,9 +676,9 @@ Status:
   State:       pending
 ```
 
-StatusのReasonでHTTP-01実施する上でのセルフチェックで名前解決に失敗している様子を確認できます(しばらく待つとDNSが伝播されてこの状態は解消されますが)。
+StatusのReasonで、HTTP-01のセルフチェックで名前解決に失敗している様子を確認できます(しばらく待つとDNSが伝播されてこの状態は解消されます)。
 
-最後に前回同様に証明書のSecretリソースを確認しましょう。
+最後に、前回同様に証明書のSecretリソースを確認しましょう。
 
 ```shell
 kubectl describe secret letsencrypt-cert
@@ -700,7 +696,7 @@ tls.crt:  5632 bytes
 tls.key:  1679 bytes
 ```
 
-証明書の公開鍵(tls.crt)や秘密鍵(tls.key)が格納されている様子が分かります。
+証明書(tls.crt)や秘密鍵(tls.key)が格納されている様子が分かります。
 
 それでは、curlを使ってHTTPS通信でサンプルアプリにアクセスしてみましょう。
 今回は正規の証明書を使っているため、証明書の検証スキップ(`-k`オプション)は不要です。
@@ -734,3 +730,8 @@ helm uninstall -n cert-manager cert-manager
 最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
 - [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl#クリーンアップ)
 - [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform#クリーンアップ)
+
+---
+参考資料
+
+- Cert Manager: <https://cert-manager.io/docs/>

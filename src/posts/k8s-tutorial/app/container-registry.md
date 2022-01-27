@@ -3,6 +3,7 @@ title: クラスタ環境デプロイ - コンテナレジストリ(ECR)
 author: noboru-kudo
 date: 2022-01-13
 prevPage: ./src/posts/k8s-tutorial/app/batch.md
+nextPage: ./src/posts/k8s-tutorial/app/eks-1.md
 ---
 
 さて、ここまででWeb・バッチアプリケーションの開発が終わり、ローカル環境で動作確認ができました。
@@ -84,7 +85,7 @@ AWSマネジメントコンソールに、任意のS3バケットを作成して
 
 1. タスク管理API: `mamezou-tech/task-service`
 2. タスク管理ツールUI: `mamezou-tech/task-web`
-3. 完了タスク出力レポートバッチ: `mamezou-tech/task-reporter`
+3. 完了タスクレポート出力バッチ: `mamezou-tech/task-reporter`
 
 `2.`のタスク管理ツールのUIは、ローカル環境ではコンテナ化せずに、Vue CLIを使って起動しました。ここでは、コンテナ化してEKS上にホスティングすることとします[^6]。
 
@@ -127,7 +128,7 @@ resource "aws_ecr_repository" "task_service" {
 resource "aws_ecr_repository" "task_web" {
   name = "mamezou-tech/task-web"
 }
-# 完了タスク出力レポートバッチ
+# 完了タスクレポート出力バッチ
 resource "aws_ecr_repository" "task_reporter" {
   name = "mamezou-tech/task-reporter"
 }

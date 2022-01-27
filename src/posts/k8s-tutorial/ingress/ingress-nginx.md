@@ -6,22 +6,23 @@ prevPage: ./src/posts/k8s-tutorial/infra/aws-eks-terraform.md
 nextPage: ./src/posts/k8s-tutorial/ingress/ingress-aws.md
 ---
 
-Kubernetesで提供されるL7 ロードバランサのIngressリソースを導入しましょう。
+KubernetesのIngressリソースを導入しましょう。
 
-Ingressとはクラス環境内にデプロイされたアプリに対してL7のロードバランシングを行うKubernetesの機能のことです([こちら](https://kubernetes.io/docs/concepts/services-networking/ingress/)参照)。
+Ingressとは、クラス環境内にデプロイされたアプリ(Pod)に対して、ロードバランシングを行うKubernetesの機能です([こちら](https://kubernetes.io/docs/concepts/services-networking/ingress/)参照)。
 
-環境構築編では動作確認用にServiceリソースをLoadBalancerとして定義することでL4ロードバランサーを作成(実態はELB)しましたが、この方法はルーティング機能が貧弱だったり、クラスタ環境が成長して様々なアプリケーションで利用されるようになるとエンドポイントごとにロードバランサーを配置する必要がある等、柔軟性やコストの観点で劣ります。
-Ingressを利用すると、Ingressのマニフェストにルーティングのルールを記述することで、1つのロードバランサーで様々なアプリケーションへのエンドポイントを提供することが可能となります。
-実際のプロジェクトでもこのIngressリソースを利用して外部にアプリケーションを公開することが多いかと思います。
+環境構築編では、動作確認用にServiceリソースをLoadBalancerとして定義することでL4ロードバランサーを作成(実態はELB)しました。
+この方法はシンプルですが、ルーティング機能が貧弱(L4)で、様々なアプリケーションがデプロイされると、エンドポイントごとにロードバランサーを配置する必要がある等、柔軟性やコストの観点で劣ります。
+Ingressを導入し、Ingressのマニフェストにルーティングのルールを反映すると、1つのロードバランサーで様々なアプリケーションへのエンドポイントを提供することが可能となります。
+実際のプロジェクトでも、Ingressを利用して外部にアプリケーションを公開することが多いかと思います。
 
-Ingressリソース自体はインターフェース(マニフェスト構造)のみを規定していて、その実装であるIngress Controller(Kubernetesのカスタムコントローラ)が実際のトラフィックルーティングを担います。
+Ingressリソース自体は、インターフェース(マニフェスト構造)のみを規定し、その実装であるIngress Controller(カスタムコントローラ)が実際のトラフィックルーティングを担います。
 Ingress Controllerは様々なものがあり、利用可能なものは以下の公式ドキュメントに記載されています。
 - <https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/>
 
 今回はKubernetesが公式サポートする[NGINX Ingress Controller](https://github.com/kubernetes/ingress-nginx)を導入してIngress機能を確認します。
-NGINX Ingress ControllerはおそらくIngress Controllerでもっともよく知られているもので、その名の通り[Nginx](https://nginx.org/en/docs/)をロードバランサーとして利用して各アプリケーションへのルーティングを実現します。
+NGINX Ingress Controllerは、おそらくIngress Controllerで最もよく知られているもので、その名の通り[Nginx](https://nginx.org/en/docs/)をロードバランサーとして利用します。
 
-完成形は以下のようなイメージになります。
+完成形は、以下のようなイメージになります。
 ![](https://i.gyazo.com/78e1811be6831f6e561f781b2bd513c0.png)
 
 [[TOC]]
@@ -58,10 +59,10 @@ helm repo update
 
 [^3]: `helm show values ingress-nginx/ingress-nginx`コマンドでも参照できます。
 
-ほとんどのものはデフォルトで構いませんが、Nginxは2台のレプリカ、AWSリソースとしてNLB(Network LoadBalancer)[^4]を使うようにセットアップしましょう。
+ほとんどのものはデフォルトで構いませんが、Nginxは2つのレプリカ、AWSリソースとしてNLB(Network LoadBalancer)[^4]を使うようにセットアップしましょう。
 任意の名前(ここでは`values.yaml`)でYAMLファイルを作成し、以下の内容を記述します。
 
-[^4]: 何も指定しない場合は前世代のELBであるCLB(Classic LoadBalancer)として作成されます。L7レイヤの機能はNginxが担うため、AWSのELBとしてはNLBを使うのが望ましいでしょう。
+[^4]: 何も指定しない場合は、前世代のELBであるCLB(Classic LoadBalancer)として作成されます。L7レイヤの機能はNginxが担うため、AWSのELBとしてはNLBを使うのが望ましいでしょう。
 
 ```yaml
 controller:
@@ -86,13 +87,13 @@ helm upgrade ingress-nginx ingress-nginx/ingress-nginx \
   --wait
 ```
 
-上記コマンドでhelmはHelmチャートのテンプレートとパラメータファイル(`--values`)からk8sのマニフェストを生成し、クラスタ環境に反映します。
-また、作成するNamespaceは`ingress-nginx`で、存在しない場合は新たに作成するように指定しています(`--namespace`/`--create-namespace`)。
+上記コマンドで、helmはHelmチャートのテンプレートとパラメータファイル(`--values`)からk8sのマニフェストを生成し、クラスタ環境に反映します。
+また、作成するNamespaceは`ingress-nginx`で、存在しない場合は作成するように指定しています(`--namespace`/`--create-namespace`)。
 `--version`ではNGINX Ingress ControllerのHelmチャートのバージョンを指定しています。Helmチャートは時間とともにバージョンアップされていきますので、予期しないアップデート(デフォルトは最新)を避けるために必ずバージョン[^5]を指定しておくようにするのが望ましいでしょう。
 
 [^5]: バージョン情報はIngressControllerのGithubや[ArtifactHub](https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx)でも確認できます。
 
-NginxのIngress Controllerが起動するとHelm上で状態を確認することができます(内部的には作成したNamespaceのConfigMapに保存されます)。
+NginxのIngress Controllerが起動すると、Helmコマンドで状態を確認できます(内部的には作成したNamespaceのSecretに保存されます)。
 
 ```shell
 helm list -n ingress-nginx
@@ -103,9 +104,9 @@ NAME         	NAMESPACE    	REVISION	UPDATED                             	STATUS
 ingress-nginx	ingress-nginx	1       	2021-10-10 13:07:27.980349 +0900 JST	deployed	ingress-nginx-4.0.5	1.0.3      
 ```
 
-リリース名(`ingress-nginx`)がファーストリビジョンとしてデプロイされたことが分かります。
+`ingress-nginx`がファーストリビジョンとしてデプロイされたことが分かります。
 
-それでは作成されたKubernetesリソースを確認してみましょう。
+それでは、作成されたKubernetesリソースを確認してみましょう。
 
 ### Service
 
@@ -121,12 +122,11 @@ ingress-nginx-controller             LoadBalancer   10.100.149.143   xxxxxxxxxxx
 ingress-nginx-controller-admission   ClusterIP      10.100.248.171   <none>                                                                               443/TCP                      5m56s
 ```
 
-`ingress-nginx-controller`が外部に公開するIngress Controllerのエンドポイントになります。
-`ingress-nginx-controller-admission`はIngressリソースのバリデーションをする際に使われる内部的なServiceリソースで、ここでは気にする必要はありません[^6]。
+`ingress-nginx-controller`が、外部に公開するIngress Controllerのエンドポイントになります。
+`ingress-nginx-controller-admission`は、Ingressリソースのバリデーションをする際に使われる内部的なServiceリソースで、ここでは気にする必要はありません[^6]。
 
-`ingress-nginx-controller`の`EXTERNAL-IP`に外部公開用のエンドポイント(`xxxxxx.elb.ap-northeast-1.amazonaws.com`)が設定されていることが分かります。
-これがこのIngress Controllerにアクセスする際に利用するエンドポイントになります。
-実際の運用を行う際にはこれをそのまま使うのではなく、別途ドメインの作成と該当エンドポイントに対してRoute53等のDNSにマッピングレコードを追加することが一般的でしょう。
+`EXTERNAL-IP`に、外部公開用のエンドポイント(`xxxxxx.elb.ap-northeast-1.amazonaws.com`)が設定されていることが分かります。これがIngress Controllerのエンドポイントになります。
+実際に運用する際は、これをそのまま使うのではなく、別途ドメインの作成と該当エンドポイントに対して、DNSレコードを追加することが一般的です。
 
 [^6]: <https://kubernetes.github.io/ingress-nginx/how-it-works/#avoiding-outage-from-wrong-configuration>
 
@@ -151,8 +151,8 @@ ingress-nginx-controller-646d5d4d67-4rdt2   1/1     Running   0          42m
 ingress-nginx-controller-646d5d4d67-wzdmn   1/1     Running   0          47s
 ```
 
-レプリカ数として指定した2つのPodが実行中であることが分かります。
-1つのPodのコンテナイメージで何が使われているのか見てみましょう[^7]。
+レプリカ数として指定した2つのPodが、実行中であることが分かります。
+1つのPodのコンテナイメージで、何が使われているのか見てみましょう[^7]。
 
 ```shell
 kubectl get pod -n ingress-nginx $(kubectl get pod -n ingress-nginx -o jsonpath='{.items[0].metadata.name}') \
@@ -205,9 +205,9 @@ NGINX Ingress Controllerがクラスタ構成で起動している様子が分�
 
 ## サンプルアプリのデプロイ
 
-それでは作成したIngress経由でアプリケーションに対してリクエストがルーティングできるのかを試してみましょう。
-まずはアプリケーションを用意する必要があります。
-本来はソースコード記述、コンテナイメージビルド、レジストリプッシュ等の手順を踏む必要がありますが、今回の本題ではありませんのでConfigMap上にNode.jsのスクリプトを保管し、それをNode.jsの公式コンテナで直接実行するようにします。
+それでは、作成したIngress経由でアプリケーションに対して、リクエストがルーティングできることを試してみましょう。
+まずは、アプリケーションを用意する必要があります。
+本来はソースコード記述、イメージビルド、プッシュ等の手順を踏む必要がありますが、今回の本題ではありませんので簡略化します。ConfigMap上にNode.jsのスクリプトを保管し、それをNode.jsの公式コンテナで直接実行するようにします。
 また、ルーティングの確認をするために、2種類のアプリケーション(ソースコードは同じ)を準備します。
 任意の名前(ここでは`app.yaml`としました)でYAMLファイルを作成し、以下の内容を記述しましょう。
 
@@ -333,23 +333,23 @@ spec:
 少し長いですが内容は非常に単純です。前述の通りここの内容については重要ではありませんのでコピペで構いません。
 
 ### ConfigMap(`server`)
-Node.jsのスクリプト本体。Node.jsのサーバーを起動し、リクエストが来た際には環境変数に保存されたPod名と固定文字列を返します。
+Node.jsのスクリプト本体です。今回はここにソースコードを記述しています。
+Node.jsのサーバーを起動し、リクエストが来た際には環境変数に保存されたPod名と固定文字列を返します。
 
 ### Deployment(`app1`/`app2`)
-2種類のアプリケーションそれぞれをDeploymentリソースとして作成します。ポイントは以下のとおりです。
+2種類のアプリケーションそれぞれを、Deploymentリソースとして作成します。ポイントは以下のとおりです。
 
 - レプリカ数2の冗長構成(`replicas`)
-- 先程のConfigMapをマウント(`volueme`/`volumeMounts`)
+- ConfigMapをマウント(`volueme`/`volumeMounts`)
 - Pod起動時にNode.jsの`node`コマンド(Deploymentリソースの`command`フィールド参照)でスクリプト実行
 - 環境変数としてPod名を設定(`env`フィールド)
 
 ### Service(`app1`/`app2`)
 最後に上記をServiceリソースとして公開しています。前回のクラスタ環境構築と違う点として`type`を指定していません。
 これにより、そのServiceはクラスタ内でのみアクセス可能なエンドポイントを提供するClusterIPとして作成されます。
-もちろん`EXTERNAL-IP`は設定されませんので、`type=LoadBalancer`としたときのようにELBが生成されることはありません。
-このように外部公開用のServiceはエッジ部分のみに限定して、通常のServiceはClusterIPとして公開することが多くなります。
+この場合は、もちろん`EXTERNAL-IP`は設定されませんので、`type=LoadBalancer`としたときのようにELBが生成されることはありません。
 
-kubectlでこれらのリソースをデプロイしましょう。
+これらのリソースをデプロイしましょう。
 
 ```shell
 kubectl apply -f app.yaml
@@ -385,7 +385,7 @@ app1/app2でそれぞれPodが2つずつ起動して実行中であることが�
 
 ## Ingressリソース作成
 
-では、作成した2つの素晴らしい(?)アプリを外部に公開するためのIngressリソースを作成しましょう。
+では、作成した2つのアプリを外部に公開するためのIngressリソースを作成しましょう。
 今回はドメインやDNSは作成せずに、任意のドメインに対して動作シミュレーションするようにします。
 
 任意のYAMLファイル(ここでは`ingress.yaml`としました)を作成し、以下の内容を記述します。
@@ -425,11 +425,12 @@ spec:
 `apiVersion: networking.k8s.io/v1`/`kind: Ingress`と記述することでIngressリソースのマニフェストになります。
 注意点として`ingressClassName`フィールドに`nginx`と記述する必要があります。対応するIngressClassリソースはNGINX Ingress Controllerのインストール時に既に作成されています[^8][^9]。
 最も重要な部分はその下の`rules`フィールド配下です。ここにホスト名、パスに対してルーティングするServiceの名前を記述します。
-これにもとづいてIngress ControllerはNginxの設定ファイル(nginx.conf)を更新し、アプリケーションへのリクエストを転送するようになります。
-上記では2つのホスト名(`sample-app1.mamezou-tech.com`/`sample-app2.mamezou-tech.com`)に対してそれぞれapp1/app2へとリクエストを流すように指定しています。
-もちろんNginxはこれだけでなくリバースプロキシーとして数多くの機能を持っていますので、別途`annotations`フィールド[^10]やConfigMap[^11]を更新することで様々なカスタマイズを行うことができます。
+これにもとづいて、Ingress ControllerはNginxの設定ファイル(nginx.conf)を更新します。
+上記では、2つのホストに対して、それぞれapp1/app2へとリクエストを流すように指定しています。
 
-[^8]: Ingress Controllerは複数配置することもありますので、以前は`annotations`でどのIngress Controllerを使用するかを指定していましたが、k8s 1.19からは新たに`IngressClass`というリソースが追加され、これを指定するように変更されています。
+もちろん、Nginxはこれ以外にもリバースプロキシーとして数多くの機能を持っています。別途`annotations`フィールド[^10]やConfigMap[^11]を更新することで様々なカスタマイズを行うことができます。
+
+[^8]: Ingress Controllerは複数配置することもあります。以前は`annotations`でどのIngress Controllerを使用するかを指定していましたが、k8s 1.19からは新たに`IngressClass`というリソースが追加されています。
 [^9]: 対応するIngressClassが存在しない場合(`kubectl get ingressClass -n ingress-nginx`)は、[こちら](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/)を参考に別途作成してください。
 [^10]: <https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/>
 [^11]: <https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/>
@@ -466,10 +467,15 @@ Events:
   Normal  Sync    53m (x2 over 53m)  nginx-ingress-controller  Scheduled for sync
 ```
 
-Rulesのセクションを確認するとそれぞれのホスト・パスがService(app1は`app1:80`)およびその背後のPod(app1は`192.168.29.81:8080,192.168.52.46:8080`)に対してのルーティングが設定されていることが分かります。
+`Rules`を確認すると、以下のようにルーティング設定されていることが分かります。
 
-Nginxに詳しい方は実際のnginx.confの中身が気になるところでしょう。
-以下のようにIngress ControllerのPod内の`/etc/nginx/nginx.conf`を見ると実際のNginxの設定ファイルを参照することができます。
+ホスト | パス | Service | Pod(IP:Port)
+--------------------------- | -- | ----- | -----------------------------
+sample-app1.mamezou-tech.com | / | app1:80 | 192.168.29.81:8080 <br />192.168.52.46:8080
+sample-app2.mamezou-tech.com | / | app2:80 | 192.168.29.81:8080 <br />192.168.52.46:8080
+
+Nginxに詳しい方は、実際のnginx.confの中身が気になるところでしょう。
+以下のように、Ingress ControllerのPod内の`/etc/nginx/nginx.conf`を見ると、実際のNginxの設定ファイルを参照できます。
 
 ```shell
 kubectl exec -n ingress-nginx \
@@ -478,17 +484,17 @@ kubectl exec -n ingress-nginx \
 ```
 
 非常に長いので内容は省略しますが、ルーティングルールがnginx.confに反映されている様子が分かります。
-このファイルはIngress Controllerがイベントループの中でIngressリソースの変更を検知して更新していくものですので直接更新はしないでください。
+このファイルは、Ingress ControllerがIngressリソースの変更を検知して更新していくものですので、直接変更しないでください。
 
 ## 動作確認
 
 それでは実際にIngress経由でアプリにアクセスしてみましょう。
-Ingressはホスト名(Hostヘッダ)に基づいてルーティングを行いますので、Ingressリソースのルールに指定したホスト名と実際のエンドポイント(NLB/Ingress ControllerのURL)について、DNSに登録する必要があります。
+Ingressはホスト名(Hostヘッダ)に基づいてルーティングを行います。このため通常は、Ingressリソースのルールに指定したホスト名とエンドポイント(NLB/Ingress ControllerのURL)をDNSに登録する必要があります。
 
-こちらについては今回の本題ではありませんので、curlでHostヘッダを指定してシミュレーションしましょう。
+こちらは今回の本題ではありませんので、curlでHostヘッダを指定してシミュレーションしましょう。
 実際のアクセス先については、`kubectl get svc ingress-nginx-controller -n ingress-nginx`コマンドのEXTERNAL-IPを確認してください。
 
-今回はIngressのエンドポイント事前に変数に設定しておきます。
+今回はIngressのエンドポイントを事前に設定しておきます。
 
 ```shell
 INGRESS_URL=$(kubectl get svc ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
@@ -509,10 +515,9 @@ app1-7ff67dc549-rlw7x: hello sample app!
 app2-b6dc558b5-q6cq2: hello sample app!
 ```
 
-app1/app2のそれぞれのPodに対してリクエストが送信できていることが分かります(`app1-xxxxxx`がapp1、`app2-xxxxxx`がapp2に対応します)。
-接続できない場合はマニフェストの設定に誤りがある可能性がありますので見直してみてください。
+出力内容から、app1/app2それぞれのPodに対して、ルーティングされていることが分かります。
 
-最後に冗長構成で作成したPodに対して負荷分散が正しく行われているかを確認してみましょう。
+最後に、冗長構成のPodに対して、負荷分散が正しく行われているかを確認してみましょう。
 app1に対して10回リクエストを連続で送信してみます。
 
 ```shell
@@ -535,14 +540,15 @@ app1-7ff67dc549-dttr8: hello sample app!
 
 ## セッション維持(Session Affinity)
 
-一般的にコンテナやサーバーレスアーキテクチャで実行するアプリはステートレスが原則です。
-とは言ってもインメモリのHttpSessionを使うようなレガシーなアプリをリフト&シフトで移行する場合に、同一クライアントからのリクエストは全て同じPodに振り向けるようにする必要があることも多いでしょう。
-今回はこの要件に対応するためにNginxのセッション維持機能を導入してみましょう[^12]。
+一般的にコンテナやサーバーレスアーキテクチャで実行するアプリは、ステートレスが原則です。
+とは言っても、インメモリのHttpSessionを使うようなレガシーアプリをリフト&シフトで移行する場合に、同一クライアントからのリクエストは全て同じPodに振り向ける必要があることも多いでしょう。
+今回は、この要件に対応できるようNginxのセッション維持機能を導入してみましょう[^12]。
 
 [^12]: と言ってもオンプレと違い、コンテナ環境ではPodだけでなくNodeについても頻繁に増減させるため、これは完全な代替とはなりません。アプリをステートレスにできるのであればそうすべきです。
 
-NginxではCookieによるセッション維持をサポートしていますのでこれを利用します。
+Nginxでは、Cookieによるセッション維持をサポートしていますのでこれを利用します。
 先程のファイルに以下を追記します。
+
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -560,13 +566,13 @@ spec:
 
 他にもCookieに関して指定できるオプションがありますので、詳細は[こちら](https://kubernetes.github.io/ingress-nginx/examples/affinity/cookie/)を参照してください。
 
-こちらについて先程のIngressを更新しましょう。
+こちらで先程のIngressを更新しましょう。
 
 ```shell
 kubectl apply -f ingress.yaml
 ```
 
-こちらで再度リクエストを送ってレスポンスヘッダを確認してみましょう。
+再度リクエストを送って、レスポンスヘッダを確認してみましょう。
 
 ```shell
 curl -i -H 'Host:sample-app1.mamezou-tech.com' $INGRESS_URL
@@ -583,7 +589,7 @@ Set-Cookie: INGRESSCOOKIE=1633856612.574.32.257509|84b1c2de93d4453da32050254a7bc
 app1-7ff67dc549-rlw7x: hello sample app!
 ```
 
-`Set-Cookie`ヘッダにIngressリソースで指定した`INGRESSCOOKIE`が設定されていることが分かります。
+`Set-Cookie`ヘッダに、Ingressリソースで指定した`INGRESSCOOKIE`が設定されていることが分かります。
 
 ブラウザの動作をシミュレートして、先程のCookieの値をリクエストに指定して10回連続で送信してみましょう。
 
@@ -605,11 +611,11 @@ app1-7ff67dc549-rlw7x: hello sample app!
 app1-7ff67dc549-rlw7x: hello sample app!
 ```
 
-レスポンスのPod名を見ると、全て最初のリクエストと同じPodにリクエストが送信されていることが確認できSession Affinityが有効になっていることが分かります。
+全て最初のリクエストと同じPod(app1-xxx)に、ルーティングされていることが確認できます。
 
 ## 流量制御(Rate Limiting)
 
-最後にDDoSアタック対策としてNginxのRate Limitingによる流量制御を行ってみましょう。
+最後に、DDoS攻撃対策としてNginxのRate Limitingによる流量制御をかけてみましょう。
 同一クライアントに対して1秒あたりのリクエスト数(RPS: Request Per Seconds)を10に制限してみましょう。
 
 変更点は以下の通りです。
@@ -627,20 +633,20 @@ spec:
 # 以下は変更なし
 ```
 
-先程のSession Affinityと同様に`annotations`に`nginx.ingress.kubernetes.io/limit-rps: "5"`を指定しただけですね(今回はSession Affinityは無効化してください)。
+先程のSession Affinityと同様に、`annotations`に`nginx.ingress.kubernetes.io/limit-rps: "5"`を指定しました。
 
-注意点としてこの設定はNginx Ingress ControllerのPodごとに反映されるため、これにreplicas数を乗じてRPSを計算する必要があります(今回はレプリカ数2のため5x2=10RPSでPodにルーティングされる)。
-また、NginxではLeaky bucketアルゴリズムを採用しており、バーストトラフィックに備えてキューイングする点(デフォルトではRPS Limitの5倍)についても考慮する必要があります(今回のサンプルだと5x5x2=100のキューがあります)。
+注意点として、この設定はNginx Ingress ControllerのPodごとに反映されるため、これにreplicas数を乗じてRPSを計算する必要があります。今回はレプリカ数2のため5x2=10RPSでPodにルーティングされます。
+また、NginxはLeaky bucketアルゴリズムで、バーストトラフィックに備えてキューイングする点(デフォルトではRPS Limitの5倍)も考慮する必要があります。今回のサンプルだと5x5x2=100のキューがあります。
 
-いつものようにこちらも反映させましょう。
+こちらも反映させましょう。
 
 ```shell
 kubectl apply -f ingress.yaml
 ```
 
-今回は負荷テストツールとしてNode.jsの[loadtest](https://www.npmjs.com/package/loadtest)を利用しますが、他の負荷試験ツールでも構いません。
+今回は、負荷テストツールとしてNode.jsの[loadtest](https://www.npmjs.com/package/loadtest)を利用します。
 事前に`npm install -g loadtest`でインストールしておいてください。
-ここでは設定値を超えるように1000リクエストをRPS50で投げてみました。
+ここでは、1000リクエストをRPS50で投げてみました。
 
 ```shell
 loadtest -n 1000 --rps 50 -H 'Host:sample-app1.mamezou-tech.com' http://$INGRESS_URL
@@ -659,7 +665,7 @@ Errors: 151, accumulated errors: 324, 45.9% of total requests
 Requests: 956 (96%), requests per second: 50, mean latency: 20.8 ms
 Errors: 150, accumulated errors: 474, 49.6% of total requests
 
-Target URL:          http://a2f875134edf94076b8ca6906ba8c105-af5122787977356e.elb.ap-northeast-1.amazonaws.com
+Target URL:          http://xxxxxxxxxx-xxxxxxxx.elb.ap-northeast-1.amazonaws.com
 Max requests:        1000
 Concurrency level:   1
 Agent:               none
@@ -683,8 +689,8 @@ Percentage of the requests served within a certain time
   503:   501 errors
 ```
 
-時間経過と共にキュー(Bucket)が溢れてリクエストがエラーになっていく様子が分かります。
-最終的には501/1000と約50%のリクエストが、PodにルーティングされることなくNGINX Ingress Controllerで503(ServiceUnavailable)エラー[^13]を返されました。
+時間経過と共にキュー(Bucket)が溢れて、リクエストがエラーになっていく様子が分かります。
+最終的には、501/1000と約50%のリクエストが、Podにルーティングされることなく503(ServiceUnavailable)エラー[^13]を返しました。
 
 [^13]: 429(Too Many Requests)にしたいところですね。こちらはConfigMapの方で対応可能です。[こちら](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#limit-req-status-code)を参照してください。
 

@@ -13,7 +13,7 @@ nextPage: ./src/posts/k8s-tutorial/app/eks-3.md
 Kustomizeはbaseと呼ばれる環境共通部分にパッチを当てることで、各環境の完全なマニフェストを生成します。
 以下のようなフローで最終的にデプロイする形になります。
 
-![](https://i.gyazo.com/9ed3c14fd248d6851f1b472adc2cc4fe.png)
+![](https://i.gyazo.com/e5c0205b0647026a26df19803c25b6dd.png)
 
 Kustomizeのパッチは、以下の方法をサポートしています。
 

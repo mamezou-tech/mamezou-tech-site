@@ -307,7 +307,7 @@ LocalStack上のAWSリソース作成については、これで完了です。
 
 完成形のイメージは以下のようになります。
 
-![](https://i.gyazo.com/6e46c73c6e74ea6f51191c23278055e8.png)
+![](https://i.gyazo.com/3536ebf524b3cfdbfa17c0f6b16226f6.png)
 
 ### ConfigMap
 

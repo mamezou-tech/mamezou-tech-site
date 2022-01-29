@@ -277,7 +277,7 @@ URLについてはAWSマネジメントコンソールのECRメニューより�
 ここまで終わると、`app/k8s/v3/overlays/prod`配下は以下の構成になります。
 
 ```
-k8s/v3-ans/overlays/prod/
+k8s/v3/overlays/prod/
 ├── kustomization.yaml
 ├── lets-encrypt-issuer.yaml
 ├── patches

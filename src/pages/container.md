@@ -8,7 +8,7 @@ titleImage: "/img/logo/mameka5_50.png"
 ## Kubernetesチュートリアル
 コンテナオーケストレーションツールとしてデファクトスタンダードとなったKubernetesは、今やクラウド環境のみならずオンプレ環境でも利用が進んでおり、コンテナ実行基盤としての確固たる地位を築いています。
 アプリケーション開発する上で、アプリ内のことだけでなくコンテナ実行基盤について理解することは、拡張性や耐障害性といったコンテナメリットを活かす上で非常に重要な要素であると考えています。
-ここではそんなKubernetesの環境構築から開発・運用までで必要な作業をハンズオン形式で実施することで初心者レベルからの脱却を目指します。
+ここでは、そんなKubernetesの環境構築から開発・運用までで必要な作業をハンズオン形式で実施することで、初心者レベルからの脱却を目指します。
 
 ### 環境構築編
 #### クラウド環境にKubernetesクラスタを構築
@@ -42,7 +42,7 @@ titleImage: "/img/logo/mameka5_50.png"
 4. [EKSクラスタ(デプロイ)](/containers/k8s/tutorial/app/eks-3/)
 
 ### 継続的デリバリ編
-1. Flux <span style="color:red">Coming Soon!</span>
+1. [Flux](/containers/k8s/tutorial/delivery/flux/)
 2. ArgoCD <span style="color:red">Coming Soon!</span>
 
 ### クラスタ運用編
@@ -68,9 +68,6 @@ titleImage: "/img/logo/mameka5_50.png"
 1. フォールトトレランス編 <span style="color:red">Coming Soon!</span>
 1. セキュリティ編 <span style="color:red">Coming Soon!</span>
 1. モニタリング編 <span style="color:red">Coming Soon!</span>
-
-#### AWS App Mesh
-1. T.B.D
 
 {% endcomment %}
 

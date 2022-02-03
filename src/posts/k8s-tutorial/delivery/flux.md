@@ -1,7 +1,7 @@
 ---
 title: 継続的デリバリ - Flux
 author: noboru-kudo
-date: 2022-02-10
+date: 2022-02-03
 prevPage: ./src/posts/k8s-tutorial/app/eks-3.md
 ---
 

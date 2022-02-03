@@ -16,7 +16,7 @@ prevPage: ./src/posts/k8s-tutorial/app/eks-3.md
 
 ![](https://i.gyazo.com/63abb38d54406943dac3399beb53c9c7.png)
 
-各Fluxは、以下を行うコンポーネント群(GitOps Toolkit)です。
+Fluxは、以下を行うコンポーネント群(GitOps Toolkit)です。
 ① GitHubよりクラスタ構成(マニフェストファイル)リポジトリを取得。
 ② 構成変更を実行環境のKubernetesに反映。
 ③ コンテナレジストリのイメージプッシュを検知。

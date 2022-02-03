@@ -654,8 +654,6 @@ flux delete image repository task-service -s
 flux delete image policy task-service -s
 flux delete kustomization task-tool -s
 flux delete source git task-tool -s
-# Fluxがデプロイしたアプリケーション
-kubectl delete -k ${CONFIG_ROOT}/app/overlays/prod
 # Fluxコンポーネント
 flux uninstall -s
 ```

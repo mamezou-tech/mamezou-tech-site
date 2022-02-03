@@ -3,6 +3,7 @@ title: クラスタ環境デプロイ - EKSクラスタ(デプロイ)
 author: noboru-kudo
 date: 2022-01-27
 prevPage: ./src/posts/k8s-tutorial/app/eks-2.md
+nextPage: ./src/posts/k8s-tutorial/delivery/flux.md
 ---
 
 本記事は、[クラスタ環境デプロイ - EKSクラスタ(Kustomize導入)](/containers/k8s/tutorial/app/eks-2/)からの続きです。

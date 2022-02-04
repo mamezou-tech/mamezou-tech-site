@@ -412,7 +412,7 @@ flux bootstrap github \
   --components-extra=image-reflector-controller,image-automation-controller
 ```
 
-先程のコマンドに加えて、`--components-extra=image`に追加コンポーネントとして、reflector-controllerとimage-automation-controllerを指定しました。
+先程のコマンドに加えて、`--components-extra`に追加コンポーネントとして、reflector-controllerとimage-automation-controllerを指定しました。
 これで`./clusters/prod/flux-system`配下に、追加のFluxコンポーネントが配置されます。
 `kubectl get pod -n flux-system`を実行すると、追加したコンポーネントが起動しているはずです。
 

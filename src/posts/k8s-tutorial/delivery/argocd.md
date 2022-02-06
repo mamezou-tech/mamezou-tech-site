@@ -10,14 +10,14 @@ prevPage: ./src/posts/k8s-tutorial/delivery/flux.md
 今回はもう1つのGitOpsツールとして人気を集める[ArgoCD](https://argoproj.github.io/cd/)を導入します。
 Flux同様に、ArgoCDもGitOpsを体現したツールですが、最も大きな違いとして、ArgoCDはリッチなWeb UIを組み込みで持っています[^1]。
 このUIにより、Gitとクラスタ環境の同期状況が視覚的に把握可能です。また、このUIにはリリース履歴、ログ参照や差分チェック等、多彩な機能が搭載されており、kubectlを理解していなくてもクラスタ運用できる点が、ArgoCDの大きなメリットでしょう。
-弊社の社内システムでも、ArgoCDを利用して継続的デリバリを実現しています。
+弊社の社内システムでも、ArgoCDを利用して継続的デリバリ環境を構築しています。
 
 [^1]: Fluxでも開発中のものはありますが、正式版ではありません。<https://github.com/fluxcd/webui>
 
 最終的には、以下のような構成となります。
 ![](https://i.gyazo.com/1a26ae34d82f3d6db4024c4dfcab9f68.png)
 
-大雑把ですが、ArgoCDの各コンポーネントは、継続的に以下を実施します。
+主要部分のみですが、ArgoCDの各コンポーネントは、継続的に以下を実施します。
 ① GitHubリソースよりマニフェスト生成(キャッシュ)。
 ② 差分検知とKubernetes環境への反映。
 ③ UI/CLI等へのAPI提供。
@@ -50,38 +50,6 @@ Flux同様に、ArgoCDもGitOpsを体現したツールですが、最も大き�
 - [コンテナイメージのビルド](/containers/k8s/tutorial/app/eks-3/#コンテナイメージのビルド)
 
 ## ArgoCDのセットアップ
-
-### マニフェスト用のGitリポジトリ作成
-
-ご自身のGitHubアカウントまたは組織(Organization)に、事前にマニフェスト用のGitリポジトリを作成してください。
-ここには、各種Kubernetesのマニフェストを配置します。
-こちらも、[Flux](/containers/k8s/tutorial/delivery/flux/)で既に作成済みであれば、新たに作成は不要です。
-ここでは`task-tool-cluster-config`というプライベートリポジトリを作成していることを前提とします。
-別のリポジトリ名で作成した場合は、以降は該当箇所を置き換えてください。
-
-作成したリポジトリは、ローカル環境にクローンしておきましょう。
-
-```shell
-git clone https://github.com/${GITHUB_USER}/task-tool-cluster-config.git
-cd task-tool-cluster-config
-export CONFIG_ROOT=$(pwd)
-```
-
-以降は、この`CONFIG_ROOT`配下で作業することを前提としています。
-
-### GitHubトークン発行
-
-Flux同様にArgoCDも期待する状態の管理にGitを利用するため、Gitのクライアント認証の設定が必要です。
-まず、GitHubにログインして、アクセストークンを発行してください。許可するスコープは`repo`のみで構いません。
-
-- [Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
-
-自分のGitHubユーザーと発行したトークンを、環境変数に保存しておきましょう。
-
-```shell
-export GITHUB_USER=<github-user-name>
-export GITHUB_TOKEN=<github-token>
-```
 
 ### ArgoCDインストール
 
@@ -118,6 +86,25 @@ argocd-server-84d6b447b4-j8kfr                  1/1     Running   0          3m5
 
 ArgoCDの各種コンポーネントが実行中になっていればインストール完了です。
 
+### マニフェスト用のGitリポジトリ作成
+
+自分のGitHubアカウントまたは組織(Organization)に、事前にマニフェスト用のGitリポジトリを作成してください。
+ここには、各種Kubernetesのマニフェストを配置します。
+なお、[Flux](/containers/k8s/tutorial/delivery/flux/)チュートリアルで既に作成済みであれば、新たに作成は不要です。
+
+ここでは`task-tool-cluster-config`というプライベートリポジトリを作成していることを前提とします。
+別のリポジトリ名で作成した場合は、以降は該当箇所を置き換えてください。
+
+作成したリポジトリは、ローカル環境にクローンしておきましょう。
+
+```shell
+git clone https://github.com/<github-user>/task-tool-cluster-config.git
+cd task-tool-cluster-config
+export CONFIG_ROOT=$(pwd)
+```
+
+以降は、この`CONFIG_ROOT`配下で作業することを前提としています。
+
 ### Web UI向けのIngress作成
 
 前述の通り、ArgoCDにはリッチなUIが備わっています。
@@ -130,7 +117,7 @@ ArgoCDの各種コンポーネントが実行中になっていればインス�
 
 ```yaml
 ---
-# HTTPS証明書のLet's Encrypt Issuer
+# TLS証明書のLet's Encrypt Issuer
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
@@ -231,7 +218,7 @@ kubectl apply -f argocd/argocd-ingress.yaml
 ![](https://i.gyazo.com/3b9024369ae836e735f6a3ed843a1673.png)
 
 このようにログインページが表示されていれば問題ありません。
-HTTPS証明書の発行には時間がかかりますので、表示されない場合はもう少し待ってみましょう。待っても表示されない場合は、[こちら](/containers/k8s/tutorial/ingress/https/#正規の証明書でhttps通信)を参考にCert Manager側の状態を確認してください。
+TLS証明書の発行には時間がかかりますので、表示されない場合はもう少し待ってみましょう。待っても表示されない場合は、[こちら](/containers/k8s/tutorial/ingress/https/#正規の証明書でhttps通信)を参考にCert Manager側の状態を確認してください。
 
 それでは、ArgoCD組み込みの管理者ユーザー`admin`でログインしましょう。
 パスワードは、以下で取得できます。
@@ -297,22 +284,30 @@ cp -r ${PROJECT_ROOT}/app/k8s/v3/overlays ${CONFIG_ROOT}/app
 `app/overlays/prod/kustomization.yaml`の`images`に指定したタグが、初期バージョンの`1.0.0`となっていることを確認してください。
 
 #### 注意事項
-現時点でArgoCD(2.2.4)に含まれるKustomizeのバージョンが4.2.0と、Kubernetes1.21のCronJobのapiVersion(`batch/v1`)に未対応でした。
+現時点でArgoCD(2.2.4)に含まれるKustomizeのバージョンが4.2.0と、Kubernetes1.21のCronJob(`batch/v1`)に未対応でした。
 このため、CronJobマニフェストのapiVersionを`batch/v1beta1`にする必要がありました。
-なお、ここでは実施しませんが、カスタムのバージョンのKustomizeセットアップも可能です。
+なお、ここでは実施しませんが、カスタムバージョンのKustomizeセットアップも可能です。
 Kustomizeのバージョンアップ(v4.3.0~)で対応する場合は、[こちら](https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/#custom-kustomize-versions)を参照してください。
 
 ## ArgoCDからGitHubへの認証設定
 
 GitリポジトリにArgoCDがアクセスできるよう、認証情報をクラスタに設定しましょう。
-ArgoCDのUIからも作成可能ですが、ここではSecretリソース経由で実施します。
+
+まず、GitHubにログインして、アクセストークンを発行してください。許可するスコープは`repo`のみで構いません。
+なお、Fluxのチュートリアルで発行作成済みでしたら、同じものを利用して構いません。
+
+- [Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+
+ArgoCDの認証設定は、Web UIからも作成可能ですが、ここではSecretリソース経由で実施します。
 
 以下のコマンドでSecretリソースを作成し、専用のラベルをつけます。
 
 ```shell
+# 以下は発行したアクセストークンに置き換えてください
+export GITHUB_TOKEN=<github-token>
 kubectl create secret generic task-tool-cluster-config-cred -n argocd \
   --from-literal url=https://github.com/${GITHUB_USER}/task-tool-cluster-config \
-  --from-literal username=${GITHUB_USER} \
+  --from-literal username=<github-user> \
   --from-literal password=${GITHUB_TOKEN} \
   --from-literal name=task-tool-cluster-config
 kubectl label secret task-tool-cluster-config-cred argocd.argoproj.io/secret-type=repository -n argocd

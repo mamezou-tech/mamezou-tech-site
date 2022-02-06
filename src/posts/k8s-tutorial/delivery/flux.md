@@ -3,6 +3,7 @@ title: 継続的デリバリ - Flux
 author: noboru-kudo
 date: 2022-02-03
 prevPage: ./src/posts/k8s-tutorial/app/eks-3.md
+nextPage: ./src/posts/k8s-tutorial/delivery/argocd.md
 ---
 
 アプリケーション開発編では、お手製のアプリをローカル環境やクラウド環境(AWS EKS)にデプロイしてきました。

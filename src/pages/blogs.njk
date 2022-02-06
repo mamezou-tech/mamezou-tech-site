@@ -1,10 +1,13 @@
 ---
+title: "ブログ"
+description: "豆蔵メンバーの技術ブログ"
+layout: page.njk
+titleImage: "/img/logo/mame-kun3_50.png"
 pagination:
   data: collections.posts
   size: 10
   alias: blog
   reverse: true
-layout: page.njk
 permalink: "/{{ page.fileSlug }}/{% if pagination.pageNumber > 0 %}{{ pagination.pageNumber }}/{% endif %}"
 hideCategory: true
 ---

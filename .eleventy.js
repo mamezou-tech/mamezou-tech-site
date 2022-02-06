@@ -10,6 +10,7 @@ const markdownItFootNote = require("markdown-it-footnote");
 const markdownItTableOfContents = require("markdown-it-table-of-contents")
 const packageVersion = require("./package.json").version;
 const codeClipboard = require("eleventy-plugin-code-clipboard");
+// const UpgradeHelper = require("@11ty/eleventy-upgrade-help");
 
 // for Node.js 14
 String.prototype.replaceAll = function (from, to) {
@@ -17,6 +18,7 @@ String.prototype.replaceAll = function (from, to) {
 };
 
 module.exports = function (eleventyConfig) {
+  // eleventyConfig.addPlugin(UpgradeHelper);
   eleventyConfig.addPlugin(socialImages);
   eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.addPlugin(pluginRss);

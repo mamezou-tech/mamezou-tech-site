@@ -15,7 +15,7 @@ Flux同様に、ArgoCDもGitOpsを体現したツールですが、最も大き�
 [^1]: Fluxでも開発中のものはありますが、正式版ではありません。<https://github.com/fluxcd/webui>
 
 最終的には、以下のような構成となります。
-![](https://i.gyazo.com/1a26ae34d82f3d6db4024c4dfcab9f68.png)
+![](https://i.gyazo.com/d01fe3395b35148bc88d46a0b4329f7c.png)
 
 主要部分のみですが、ArgoCDの各コンポーネントは、継続的に以下を実施します。
 ① GitHubリソースよりマニフェスト生成(キャッシュ)。

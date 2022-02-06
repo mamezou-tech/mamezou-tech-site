@@ -43,7 +43,7 @@ titleImage: "/img/logo/mameka5_50.png"
 
 ### 継続的デリバリ編
 1. [Flux](/containers/k8s/tutorial/delivery/flux/)
-2. ArgoCD <span style="color:red">Coming Soon!</span>
+2. [ArgoCD](/containers/k8s/tutorial/delivery/argocd/)
 
 ### クラスタ運用編
 #### スケーリング/スケジューラを使った柔軟なデプロイ戦略

@@ -283,11 +283,12 @@ cp -r ${PROJECT_ROOT}/app/k8s/v3/overlays ${CONFIG_ROOT}/app
 
 `app/overlays/prod/kustomization.yaml`の`images`に指定したタグが、初期バージョンの`1.0.0`となっていることを確認してください。
 
-#### 注意事項
+:::info
 現時点でArgoCD(2.2.4)に含まれるKustomizeのバージョンが4.2.0と、Kubernetes1.21のCronJob(`batch/v1`)に未対応でした。
 このため、CronJobマニフェストのapiVersionを`batch/v1beta1`にする必要がありました。
 なお、ここでは実施しませんが、カスタムバージョンのKustomizeセットアップも可能です。
 Kustomizeのバージョンアップ(v4.3.0~)で対応する場合は、[こちら](https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/#custom-kustomize-versions)を参照してください。
+:::
 
 ## ArgoCDからGitHubへの認証設定
 

@@ -203,3 +203,10 @@ $social-min-height: 30px !default;
     color: #303 !important;
   }
 }
+
+/* override primer core */
+ul {
+  padding-inline-start: 30px;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}

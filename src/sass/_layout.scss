@@ -27,6 +27,7 @@ article {
     margin-left: auto;
   }
 }
+
 // stylelint-enable
 
 .tdbc-container {
@@ -128,6 +129,7 @@ img.page-title-icon {
 
 .tdbc-pagination {
   display: inline-block;
+
   a {
     padding: 1rem 0.5rem;
     float: left;
@@ -158,20 +160,24 @@ $social-min-height: 30px !default;
   ul {
     list-style-type: none;
     margin: 0;
+
     li {
       min-height: $social-min-height;
       float: left;
       vertical-align: top;
     }
   }
+
   .tdbc-twitter-follow {
     margin-right: 5px;
   }
+
   .tdbc-fb-recommend {
     .fb-like {
       margin: 0 -20px;
     }
   }
+
   .fb-share-button {
     span {
       vertical-align: top !important;
@@ -198,9 +204,25 @@ $social-min-height: 30px !default;
   &::before {
     color: #fcf !important;
   }
+
   &::after {
     background-color: #fcf !important;
     color: #303 !important;
+  }
+}
+
+.flash {
+  padding: 16px 12px;
+  .flash-title {
+    color: #383838;
+    font-size: 1rem;
+    min-height: 25px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  p {
+    font-size: 0.9rem;
   }
 }
 

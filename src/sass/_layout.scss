@@ -203,6 +203,7 @@ $social-min-height: 30px !default;
 .tooltipped {
   &::before {
     color: #fcf !important;
+    border-bottom-color: #fcf !important;
   }
 
   &::after {

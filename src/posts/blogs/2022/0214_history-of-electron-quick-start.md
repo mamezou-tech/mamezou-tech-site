@@ -294,7 +294,7 @@ Electron 16.0.5 に更新されました。inline CSS を 許可する PR がマ
 ```
 
 ## まとめ
-以上、electron-quick-start の変更を通して、Electron プログラミングモデルの変遷を見てきました。ここ数年で初期のプロセスモデルから renderer プロセスを Node.js から分離しブラウザでの実行モデルに近づけたと言えるでしょう。
+以上、electron-quick-start の変更から Electron プログラミングモデルの変遷を見てきました。ここ数年で renderer プロセスは Node.js から分離されたブラウザでの JavaScript 実行モデルに近づいたと言えるでしょう。
 
 electron-quick-start のコードは最小限なもので、実開発でどのようにコードを書くべきというところまでは示していませんが、標準的な構成を示すという意味で重要な存在です。
 

@@ -20,7 +20,7 @@ Electron が1.0に到達する以前の2015年からメンテナンスされて�
 - index.html
 - main.js
 
-index.html。 Node.js や Electron のバージョンをレンダリングしています。最初は、node.js じゃなく io.js を使ってました。なつかしいですね[^1]。Electron のバージョンは不明です。script タグでナチュラルに Node.js の process API が使われています。シンプルですが Electron のコンセプトがよくわかるサンプルになっています。
+index.html で 使用している OSS バージョンを表示しています。最初は Node.js ではなく io.js を使ってました。なつかしいですね[^1]。script タグでナチュラルに io.js の process API が使われています。シンプルですが Electron のコンセプトがよくわかるサンプルになっています。Electron のバージョンは不明です。
 
 [^1]: [Node v4.0.0 (Current) | Node.js](https://nodejs.org/en/blog/release/v4.0.0/)
 

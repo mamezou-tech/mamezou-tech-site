@@ -2,6 +2,7 @@
 title: "buildpacks-action"
 description: '豆蔵社員が開発するOSS紹介 buildpacks-action 編'
 date: 2021-11-26
+tags: [container, CI/CD]
 ---
 
 [buildpacks-action](https://github.com/mamezou-tech/buildpacks-action) は GitHub Actions で [Cloud Native Buildpacks](https://buildpacks.io) を使ってコンテナイメージビルドを実行するための Action です。

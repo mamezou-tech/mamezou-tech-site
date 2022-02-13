@@ -1,7 +1,6 @@
 ---
 title: 「豆蔵デベロッパーサイト」ローンチのお知らせ
 author: masahiro-kondo
-tags: posts
 date: 2021-11-29
 ---
 

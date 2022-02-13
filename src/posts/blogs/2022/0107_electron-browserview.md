@@ -2,6 +2,7 @@
 title: "Electron - WebView から BrowserView に移行する"
 author: masahiro-kondo
 date: 2022-01-07
+tags: electron
 ---
 
 Electron には Web コンテンツを表示する仕組みとして当初から WebView が提供されており、多くのアプリで採用されています。現在 WebView のドキュメント冒頭には使用を避けるよう警告が書かれています。

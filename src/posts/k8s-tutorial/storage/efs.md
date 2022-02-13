@@ -2,6 +2,7 @@
 title: ストレージ - AWS EFS
 author: noboru-kudo
 date: 2021-11-14
+tags: [aws]
 prevPage: ./src/posts/k8s-tutorial/storage/ebs.md
 ---
 

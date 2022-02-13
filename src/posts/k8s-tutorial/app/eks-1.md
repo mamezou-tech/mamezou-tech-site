@@ -2,6 +2,7 @@
 title: クラスタ環境デプロイ - EKSクラスタ(AWS環境準備)
 author: noboru-kudo
 date: 2022-01-27
+tags: [aws]
 prevPage: ./src/posts/k8s-tutorial/app/container-registry.md
 nextPage: ./src/posts/k8s-tutorial/app/eks-2.md
 ---

@@ -2,6 +2,7 @@
 title: 継続的デリバリ - Flux
 author: noboru-kudo
 date: 2022-02-03
+tags: [CI/CD, GitOps]
 prevPage: ./src/posts/k8s-tutorial/app/eks-3.md
 nextPage: ./src/posts/k8s-tutorial/delivery/argocd.md
 ---

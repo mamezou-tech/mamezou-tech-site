@@ -2,6 +2,7 @@
 title: クラスタ環境デプロイ - EKSクラスタ(デプロイ)
 author: noboru-kudo
 date: 2022-01-27
+tags: [aws]
 prevPage: ./src/posts/k8s-tutorial/app/eks-2.md
 nextPage: ./src/posts/k8s-tutorial/delivery/flux.md
 ---

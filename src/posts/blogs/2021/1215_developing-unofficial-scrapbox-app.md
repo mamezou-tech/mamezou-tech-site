@@ -2,6 +2,7 @@
 title: "非公式 Scrapbox アプリを開発している話"
 author: masahiro-kondo
 date: 2021-12-15
+tags: scrapbox
 ---
 
 これは、[Scrapbox Advent Calendar 2021 - Adventar](https://adventar.org/calendars/7106) 15日目の記事です。

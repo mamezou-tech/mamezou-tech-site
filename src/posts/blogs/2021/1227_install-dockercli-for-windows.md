@@ -2,6 +2,7 @@
 title: Windows への Docker CLI のインストール 
 author: shigeki-shoji
 date: 2021-12-27
+tags: [container, docker]
 ---
 
 Docker は背後で Docker デーモンが実行されて、Docker コマンドは Unix ドメインソケット (Linux や macOS の場合) または tcp ソケットで Docker デーモンと通信します。

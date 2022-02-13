@@ -2,6 +2,7 @@
 title: Karpenterのオートスケールを試してみました
 author: noboru-kudo
 date: 2022-02-13
+tags: [k8s, container, aws]
 ---
 
 2021/11/29に、AWSは[Karpenter](https://karpenter.sh/)というKubernetesのオートスケーラーをGAリリースしました。

@@ -4,13 +4,13 @@ author: noboru-kudo
 date: 2022-02-13
 ---
 
-2021/11/29に、AWSは[Karpenter](https://karpenter.sh/)という新たなオートスケーラーをGAリリースしました。
+2021/11/29に、AWSは[Karpenter](https://karpenter.sh/)というKubernetesのオートスケーラーをGAリリースしました。
 
 - [Introducing Karpenter – An Open-Source High-Performance Kubernetes Cluster Autoscaler](https://aws.amazon.com/jp/blogs/aws/introducing-karpenter-an-open-source-high-performance-kubernetes-cluster-autoscaler/)
 
 これは有料のサービスではなく、OSSとしての提供です。現在はAWSのみに対応していますが、構造上はそれ以外のクラウドプロバイダーでも使えるものになっています。
 
-Kubernetesには、Nodeレベルのオートスケーラーとして[Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)という仕組みがあります。
+Kubernetesには、既にNodeレベルのオートスケーラーとして[Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)という仕組みがあります。
 AWS EKSの場合は、Auto Scaling Group(ASG)の希望のサイズ(Desired Number)を増減させることで、Node(EC2)のスケールアウト・ダウンを実現します。
 
 KarpenterはASG経由ではなく、直接NodeとなるEC2インスタンスをプロビジョニングします。
@@ -65,7 +65,7 @@ NAME                                               STATUS   ROLES    AGE   VERSI
 ip-192-168-88-26.ap-northeast-1.compute.internal   Ready    <none>   24m   v1.21.5-eks-9017834
 ```
 
-eksctlでASGは1台のみの構成にしましたので、Kubernetes上でも1Nodeのみが認識されています。
+eksctlでASGは1台のみの構成にしましたので、Kubernetes上でも、1Nodeのみが認識されています。
 Nodeの詳細を確認してみます。
 
 ```shell
@@ -133,11 +133,11 @@ spec:
   ttlSecondsUntilExpired: 1800
 ```
 
-`requirements`には、Karpenterが作成するNode(EC2)の条件を指定します。今回は安価に利用可能なスポットインスタンスでの生成を許可するようにしました。
-これ以外にもEC2のインスタンスタイプやAZを限定する等の指定も可能です。指定可能なオプションの詳細は[こちら](https://karpenter.sh/v0.6.1/provisioner/)をご確認ください。
+`requirements`には、Karpenterが作成するNode(EC2)の条件を指定します。今回は安価に利用可能なスポットインスタンスの作成を許可するようにしました。
+これ以外にも、EC2のインスタンスタイプやAZを限定する等の指定も可能です。指定可能なオプションの詳細は、[こちら](https://karpenter.sh/v0.6.1/provisioner/)をご確認ください。
 
-`provider`には、EC2インスタンスを起動する際のサブネットやセキュリティグループに何を使うかを指定しました。
-これはクラスタ作成時にeksctlで指定したタグを設定しています。
+`provider`には、EC2インスタンスを起動する際のサブネットやセキュリティグループを指定します。
+ここでは、クラスタ作成時にeksctlで指定したタグを設定しています。
 AWSがサポートされるようになると、ここにクラウドプロバイダー固有の設定が入ると思います。
 
 `ttlSecondsAfterEmpty`/`ttlSecondsUntilExpired`はNodeのスケールダウンに関する設定です。
@@ -145,11 +145,11 @@ AWSがサポートされるようになると、ここにクラウドプロバ�
 `ttlSecondsAfterEmpty`は、Node内にPodが起動していない場合のタイムアウト値です。ここでは、Podがない場合には30秒経過後に対象Nodeを終了するようにしました。
 
 `ttlSecondsUntilExpired`を指定すると、Podの起動有無に関係なく、この時間を超えるとNodeは削除されます。
-ここで削除されたPodを収容する空き容量が他のNodeにない場合は、結果的にをKarpenterが必要なインスタンスタイプを再計算して、Nodeが再作成されます。
+ここで削除されたPodを収容する空き容量が他のNodeにない場合は、結果的にKarpenterが必要なインスタンスタイプを再計算して、Nodeが再作成されます(つまり再スケールアウト)。
 今回は、スケールダウンを確認するために、30分とかなり短い値を設定しました。
-この指定だと頻繁にPodが再スケジュールされることになるため、実運用では日単位で指定した方が良いかと思います。
-とはいえ、これを設定することで現在のクラスタ状態に見合ったインスタンスタイプで継続的に更新できます。
-一時的なバーストによるオーバースペックのNode(=高コスト)をいつまでも残しておかないよう、一定のサイクルで更新するようにしておいた方が良いでしょう。
+この指定だと、頻繁にPodが再スケジュールされることになるため、実運用では日単位で指定した方が良いかと思います。
+とはいえ、これを設定することで、現在のクラスタ状態に見合ったインスタンスタイプで定期的に見直しできます。
+一時的なバーストによるオーバースペックのNode(=高コスト)をいつまでも残しておかないよう、一定のサイクルで更新するようにしておいた方が良さそうです。
 
 スケールダウンの詳細は[こちら](https://karpenter.sh/v0.6.1/tasks/deprovisioning/#how-karpenter-nodes-are-deprovisioned)を参照してください。
 
@@ -193,7 +193,7 @@ spec:
 ```
 
 初期状態はレプリカ数を1としました。
-また、コンテナの`resources.requests`で`cpu: 500, memory: 512Mi`としています(もちろん必要以上に大きな値です)。
+また、コンテナのスペックは`cpu: 500, memory: 512Mi`としています(もちろん必要以上に大きな値です)。
 これは現状のクラスタ構成にギリギリ収まる範囲です。
 
 サンプルアプリをデプロイします。
@@ -208,7 +208,7 @@ Podの状態を確認します。
 kubectl get pod -o wide
 ```
 
-以下必要フィールドに編集して掲載します(以降同様)。
+以下必要なフィールドを抜粋して掲載します(以降同様)。
 
 ```
 NAME                   READY   STATUS    RESTARTS   AGE   NODE
@@ -219,7 +219,7 @@ app-6ffb6f8dcd-2kn9r   1/1     Running   0          10s   ip-192-168-88-26.ap-no
 
 ## スケールアウト
 
-それでは、サンプルアプリをスケールアウトさせて、Karpenterのオートースケールを見ていきます。
+それでは、サンプルアプリをスケールアウトさせて、Karpenterの動きを見ていきます。
 
 その前に、別のターミナルでNodeの状態を常時ウォッチしておきます。
 
@@ -286,7 +286,7 @@ app-6ffb6f8dcd-zr8dn   1/1     Running   0          2m20s   ip-192-168-122-149.a
 ```
 
 NODE列から、Karpenterによって作成された新しいNode(`ip-192-168-122-149...`)でPodが実行中となっています。
-ここでは表現できませんでしたが、Nodeが作成されると(`Ready`前でも)Podはすぐにスケジューリングされているようでした(`CotainerCreating`ステータスに変化)。
+ここでは表現できませんでしたが、Nodeが作成されると(`Ready`前でも)、PodはすぐにそのNodeにスケジューリングされました(`CotainerCreating`ステータスに変化)。
 
 Karpenterによって作成されたNodeのスペックを確認します。
 
@@ -519,7 +519,7 @@ app-6ffb6f8dcd-vlh8q   1/1     Terminating   0          2m32s   ip-192-168-162-9
 ```
 
 とはいえ、現在Node2は4Podしかデプロイされておらず、オーバースペックの状態です。
-Nodeの状態は以下のようになっています。
+Nodeの状態は、以下のようになっています。
 
 ```
 Name:               ip-192-168-162-96.ap-northeast-1.compute.internal
@@ -580,7 +580,7 @@ Allocated resources:
   attachable-volumes-aws-ebs  0            0
 ```
 
-今回はインスタンスタイプ`c4.xlarge`でNodeが作成されていました。
+今回はインスタンスタイプ`c4.xlarge`と、先程よりワンランク下のNodeが作成されていました。
 CPU使用率も54%と先程のオーバースペック状態が緩和され、身の丈にあったNodeのスペックになりました。
 
 ![karpenter5](https://i.gyazo.com/e96a12c23e43f6ffa085f4b47767ae53.png)
@@ -608,7 +608,7 @@ NAME                                               STATUS   ROLES    AGE    VERS
 ip-192-168-88-26.ap-northeast-1.compute.internal   Ready    <none>   175m   v1.21.5-eks-9017834
 ```
 
-もうPodが起動していないので、Karpenterは不要になったNode(EC2)を全てシャットダウンして、初期状態に戻りました。
+全てのPodが起動していないので、Karpenterは不要になったNode(EC2)を全てシャットダウンして、初期状態に戻りました。
 
 ## まとめ
 

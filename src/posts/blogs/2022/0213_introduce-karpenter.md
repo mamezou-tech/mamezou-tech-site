@@ -476,7 +476,7 @@ app-6ffb6f8dcd-zr8dn   0/1     Terminating   0          31m   ip-192-168-122-149
 app-6ffb6f8dcd-9xxc7   0/1     Terminating   0          20m   ip-192-168-122-149.ap-northeast-1.compute.internal
 app-6ffb6f8dcd-wsc6q   0/1     Terminating   0          20m   ip-192-168-122-149.ap-northeast-1.compute.internal
 app-6ffb6f8dcd-lqjkq   0/1     Terminating   0          20m   ip-192-168-122-149.ap-northeast-1.compute.internal
-↓ Node1
+↓ Node2
 app-6ffb6f8dcd-6hm5h   1/1     Running       0          20m   ip-192-168-162-96.ap-northeast-1.compute.internal
 app-6ffb6f8dcd-7f64h   1/1     Running       0          20m   ip-192-168-162-96.ap-northeast-1.compute.internal
 ↓ 以下再スケジューリング(Node1 -> Node2)

@@ -130,7 +130,7 @@ spec:
       karpenter.sh/discovery: mz-karpenter
   # 作成したNodeでPodが30秒起動してなければ削除
   ttlSecondsAfterEmpty: 30
-  # 10分で削除。-> 必要なリソースを再計算してNode作成
+  # Nodeの有効期限(30分)
   ttlSecondsUntilExpired: 1800
 ```
 

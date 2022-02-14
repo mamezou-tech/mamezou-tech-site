@@ -323,7 +323,7 @@ Labels:             beta.kubernetes.io/arch=amd64
 以降、このNodeを`Node1`と表記します。
 現在は以下のイメージの状態になっています。
 
-![karpenter1](https://i.gyazo.com/71bf4054d257914c98369bb6d224b89b.png)
+![karpenter1](https://i.gyazo.com/7610b6febb8b592a3ed8d439c82d7f5a.png)
 
 ## さらにスケールアウト
 
@@ -560,7 +560,7 @@ ip-192-168-124-93.ap-northeast-1.compute.internal   NotReady                   <
 ip-192-168-124-93.ap-northeast-1.compute.internal   Ready                      <none>   90s    v1.21.5-eks-9017834
 ```
 
-今回は、Karpenterは削除だけでなく、スケジュールできなくなったPodのために、新たなNode(`ip-192-168-124-93...`)を作成していることが分かります。
+今回Karpenterは削除だけでなく、スケジュールできなくなったPodのために、新たなNode(`ip-192-168-124-93...`)を作成していることが分かります。
 この新しいNodeのスペックとCPU利用率は以下になっていました。
 
 ```

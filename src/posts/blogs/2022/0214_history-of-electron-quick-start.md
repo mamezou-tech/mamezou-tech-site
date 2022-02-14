@@ -2,6 +2,7 @@
 title: electron-quick-start のコミット履歴で見る Electron プログラミングモデルの変遷
 author: masahiro-kondo
 date: 2022-02-14
+tags: [electron]
 ---
 
 electron-quick-start は Electron でのプロジェクトのひな形となるアプリのリポジトリです。

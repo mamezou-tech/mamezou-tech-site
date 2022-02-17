@@ -1,7 +1,7 @@
 ---
 title: Mermaid Sample
 eleventyExcludeFromCollections: true
-permalink: /mermaid-examples/
+permalink: /mermaid-sample/
 ---
 
 <https://mermaid-js.github.io/mermaid/#/>

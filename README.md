@@ -85,6 +85,12 @@ src/imgに配置した画像へのリンク
 
 ![](https://i.gyazo.com/1fc814a21ef286e98c79b1ba582c08da.png)
 
+#### Mermaid
+
+[Mermaid](https://mermaid-js.github.io/mermaid/#/)で図を書きたい！という通なあなたはこちらを参考にしてください。
+
+- [/src/pages/mermaid-sample.md](/src/pages/mermaid-sample.md)
+
 #### 校正
 文章を[textlint](https://github.com/textlint/textlint)で校正してください。
 

@@ -11,6 +11,7 @@ const markdownItTableOfContents = require("markdown-it-table-of-contents");
 const markdownItContainer = require("markdown-it-container");
 const packageVersion = require("./package.json").version;
 const codeClipboard = require("eleventy-plugin-code-clipboard");
+const pluginMermaid = require("@kevingimbel/eleventy-plugin-mermaid");
 
 // for Node.js 14
 String.prototype.replaceAll = function (from, to) {
@@ -55,6 +56,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(codeClipboard, {
     buttonClass: "tdbc-copy-button"
   });
+  eleventyConfig.addPlugin(pluginMermaid);
 
   eleventyConfig.addWatchTarget("./src/sass/");
 

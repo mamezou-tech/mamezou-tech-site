@@ -12,6 +12,9 @@
 #  command = "AWS_LAMBDA_FUNCTION_NAME=trickpuppeteer npm run build"
   command = "npm run build:netlify"
 
+  [build.environment]
+    NODE_VERSION=14
+
   [[redirects]]
     from = "/feed/"
     to = "/feed/feed.xml"

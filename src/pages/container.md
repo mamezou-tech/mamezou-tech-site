@@ -60,18 +60,9 @@ titleImage: "/img/logo/mameka5_50.png"
 #### バックアップ・リストアで重要なデータ保護
 1. [Velero による Kubernetes クラスタのバックアップ・リストア](/containers/k8s/tutorial/ops/velero-backup/)
 
-{% comment %}
-### サービスメッシュ実践
-#### Istio
-1. 導入編 <span style="color:red">Coming Soon!</span>
-1. ルーティング編 <span style="color:red">Coming Soon!</span>
-1. フォールトトレランス編 <span style="color:red">Coming Soon!</span>
-1. セキュリティ編 <span style="color:red">Coming Soon!</span>
-1. モニタリング編 <span style="color:red">Coming Soon!</span>
+## Kubernetes活用編
+Kubernetes活用例をサイト内の記事、ブログから抜粋しました。Kubernetesを様々なユースケースに適用してみましょう。
 
-{% endcomment %}
-
-### 応用編
-1. カスタムリソース(CRD)(Kubernetes Operators) <span style="color:red">Coming Soon!</span>
-1. ポリシー管理(OPA) <span style="color:red">Coming Soon!</span>
-1. [Argo Workflows](/containers/k8s/tutorial/advanced/argo-workflows/)
+1. [Kubernetes ネイティブなワークフローエンジン Argo Workflows](/containers/k8s/tutorial/advanced/argo-workflows/)
+2. [Karpenterのオートスケールを試してみました](/blogs/2022/02/13/introduce-karpenter/)
+3. [Dapr on Jetson Nano with k3s](/blogs/2022/01/03/dapr-on-jetson-nano-with-k3s/)

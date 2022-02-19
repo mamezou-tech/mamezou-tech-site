@@ -358,6 +358,7 @@ flowchart TD
     C -->|current > desired| E{"5分経過?"}
     C -->|current = desired| B
     E -->|Yes| F["Scale Down\n(100%)"] --> B
+    E -->|No| B
 ```
 
 この辺りのしきい値を、最初に決めるのはかなり難しいので、負荷試験や実運用を通して継続的に見直していくことが望ましいでしょう。

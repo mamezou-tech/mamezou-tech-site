@@ -361,6 +361,21 @@ flowchart TD
 
 この辺りのしきい値を、最初に決めるのはかなり難しいので、負荷試験や実運用を通して継続的に見直していくことが望ましいでしょう。
 
+## クリーンアップ
+
+今回作成したリソースは以下の手順で削除します。
+
+```shell
+kubectl delete -f app.yaml
+kubectl delete -f app-hpa.yaml
+
+helm uninstall metrics-server -n metrics-server
+```
+
+最後にクラスタ環境を削除します。以下のクリーンアップ手順を参照してください。
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform#クリーンアップ)
+
 ## まとめ
 
 オートスケールはシステム全体の利用効率を高めるためには必須の機能と言えます。

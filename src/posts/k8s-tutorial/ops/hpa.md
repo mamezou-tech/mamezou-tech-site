@@ -1,8 +1,8 @@
 ---
-title: オートースケーリング - HPA
+title: オートースケーリング - Horizontal Pod Autoscaler(HPA)
 author: noboru-kudo
 prevPage: ./src/posts/k8s-tutorial/delivery/argocd.md
-date: 2022-02-19
+date: 2022-02-20
 ---
 
 商用環境で実際にサービスが運用されると、時間帯やイベント等、様々な要因によってトラフィックが変動し、それに合わせてシステム負荷も増減します。

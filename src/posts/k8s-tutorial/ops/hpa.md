@@ -1,5 +1,5 @@
 ---
-title: オートースケーリング - Horizontal Pod Autoscaler(HPA)
+title: オートスケーリング - Horizontal Pod Autoscaler(HPA)
 author: noboru-kudo
 prevPage: ./src/posts/k8s-tutorial/delivery/argocd.md
 date: 2022-02-19

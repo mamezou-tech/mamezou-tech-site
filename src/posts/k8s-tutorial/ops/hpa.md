@@ -2,12 +2,12 @@
 title: オートースケーリング - Horizontal Pod Autoscaler(HPA)
 author: noboru-kudo
 prevPage: ./src/posts/k8s-tutorial/delivery/argocd.md
-date: 2022-02-20
+date: 2022-02-19
 ---
 
 商用環境で実際にサービスが運用されると、時間帯やイベント等、様々な要因によってトラフィックが変動し、それに合わせてシステム負荷も増減します。
 コンテナ以前の従来のシステムでは、あらかじめ最大のスループットを見積もり、それに合わせてサーバーのサイジングをすることが一般的でした。
-ただ、これはほとんどのケースでオーバースペックで、費用対効果が良いとは言えない状況でした。
+ただ、これはほとんどのケースでオーバースペックとなり、費用対効果が良いとは言えない状況でした。
 また、いざサーバーを増やすとなると調達やセットアップ等のリードタイムがかかり、変化の激しいビジネス要求に追従していくのが難しい状況でした。
 
 この状況はコンテナ技術の登場で大きく変わりました。
@@ -16,28 +16,28 @@ date: 2022-02-20
 Kubernetesには、以下の2種類のオートスケーリング機能があります。
 
 #### Cluster Auto Scaling
-Cluster Auto ScalingはPodがスケジュールできない状況になったときに、クラウドプロバイダが提供するAPIを通して自動でNodeを追加します。
+Cluster Auto ScalingはPodがスケジュールできない状況になったとき、クラウドプロバイダが提供するAPIを通して自動でNodeを追加します。
 また、負荷状況が改善され、NodeがオーバースペックとなったらNodeを削減します。
-Kubernetesでは公式の[Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)が利用できます。
+Kubernetesでは、公式の[Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)が利用できます。
 主要なクラウドプロバイダに対応していますので、対応したクラウド環境を利用している場合は、別途導入しておくと良いでしょう。
 
 :::info
 AWSは2021/11に[Karpenter](https://karpenter.sh/)という新しい仕組みのOSSをGAリリースしました。
-これはCluster Autoscalerよりも高速スケール可能で、より柔軟な設定が可能となっています。AWS EKSでの利用の場合はこちらを第一候補とすると良いかと思います。
+これはCluster Autoscalerを超える高速スケールに加えて、クラウドプロバイダの提供する機能をフル活用できる柔軟性を備えています。AWS EKSでの利用の場合はこちらを第一候補とすると良いかと思います。
 Karpenterについては、別の記事で紹介していますので、興味がある方は[こちら](/blogs/2022/02/13/introduce-karpenter/)を参照してください。
 :::
 
 #### Pod Auto Scaling
-もう1つのPod Auto Scalingは、CPU使用率等の各メトリクスを収集し、Podレベルでスケーリングします。
+もう1つのPod Auto Scalingは、CPU使用率等のメトリクスを収集し、Podレベルでスケーリングします。
 水平方向か垂直方向かで2種類のオートスケール機能が提供されています。
 
 1. Horizontal Pod Autoscaler(HPA)
 2. Vertical Pod Autoscaler(VPA)
 
 Horizontal Pod Autoscaler(HPA)は、その名の通り水平方向のオートスケーラです。
-デフォルトではPodのCPUやメモリの使用率を監視し、Pod全体の使用率がしきい値を超えた場合にPodのレプリカ数を増やしてスケールアウトさせます。
-逆に、一定期間しきい値を下回った場合Podのレプリカ数を下げて、オーバースペックにならないよう調整します。
-CPU、メモリ以外にも[Prometheus](https://prometheus.io/)等のメトリクスからスケーリングすることも可能です。
+CPUやメモリの使用率等のメトリクスを監視し、しきい値を超えた場合にPodのレプリカ数を増やしてスケールアウトさせます。
+逆に、しきい値を下回った場合はレプリカ数を下げて、オーバースペックにならないよう調整します。
+使用するメトリクスは[Prometheus](https://prometheus.io/)等、多様なメトリクスも利用できます。
 
 [Vertical Pod Autoscaler(VPA)](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler)はレプリカ数ではなく、Podのリソーススペック(`resources.requests`)を調整します。
 こちらは、長らくBetaステータスで、別途VPAコントローラの導入が必要です[^1]。
@@ -49,7 +49,7 @@ CPU、メモリ以外にも[Prometheus](https://prometheus.io/)等のメトリ�
 [[TOC]]
 
 ## 事前準備
-ここではAWS EKSで実施しますが、HPAはローカル環境(minikube等)でも実行可能です。
+ここではAWS EKSで実施しますが、HPAはビルトインで組み込まれていますのでminikube等のローカル環境でも実行可能です。
 
 - [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
 - [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
@@ -62,7 +62,7 @@ CPU、メモリ以外にも[Prometheus](https://prometheus.io/)等のメトリ�
 ## メトリクスサーバー導入
 
 HPAはメトリクスを収集して、Podのオートスケールを行います。
-今回はCPU使用率にもとづいたスケールをします。
+今回はCPU使用率にもとづいたオートスケールをします。
 まずは、メトリクスを収集するための仕組みを事前に入れておく必要があります。
 これに対応する[Metrics Server](https://github.com/kubernetes-sigs/metrics-server)を導入しましょう。
 
@@ -198,8 +198,8 @@ kubectl apply -f app.yaml
 ```
 
 デプロイ後はNGINXを通してアクセスできるかを確認しましょう。
-今回はカスタムドメインは使用せずに、AWSで自動生成されたドメインでアクセスします(AWS ELBが作成されるまで割当に少し時間がかかります)。
-以下を実行して変数に設定しておきましょう。
+今回は、カスタムドメインを使用せずに、AWSで自動生成されたドメインでアクセスします(AWS ELBが作成されるまで割当に少し時間がかかります)。
+以下を実行して、変数にエンドポイントを設定しておきましょう。
 
 ```shell
 # ADDRESSが割り当てられたことを確認
@@ -216,7 +216,7 @@ curl -I ${APP_ENDPOINT}/get
 
 `HTTP/1.1 200 OK`が返ってきていれば、問題ありません。
 
-## HPAリソース作成
+## HorizontalPodAutoscaler(HPA)リソース作成
 
 それでは作成したアプリに対するオートスケール設定を追加しましょう。
 HorizontalPodAutoscalerというリソースを作成します(以下HPAと略します)。
@@ -256,17 +256,17 @@ spec:
 
 `scaleTargetRef`でオートスケール対象のリソースを指定します。ここで先程作成したアプリを指定します。
 
-最後に`metrics`にオートスケール対象のしきい値を指定します。
+最後に、`metrics`にオートスケール対象のしきい値を指定します。
 ここでは`type: Resource`として、Podのリソースフィールド(`resources`)のCPU使用率を対象に、平均50%と指定しています。
-これによりCPU使用率の全Pod平均値が50%を超えるとオートスケールが起動します。
+これにより、CPU使用率の全Pod平均値が50%を超えるとオートスケールが起動します。
 
-これ以外にもスループット等のカスタムメトリクスを指定することも可能です。
+これ以外にもスループット等のカスタムメトリクスも指定可能です。
 カスタムメトリクスの詳細は、[こちら](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics)を参照してください。
 
-なお、複数メトリクスを指定した場合は、それぞれ評価され、算出されたレプリカ数の多い方のしきい値でオートスケールします。
+なお、複数メトリクスを指定した場合は、それぞれ評価され、算出されたレプリカ数の大きいしきい値でオートスケールします。
 
 `behavior`を指定するとメトリクス収集間隔やスケールダウン/アップの調整可能です。
-上記では、スケールダウンの様子を把握するために、負荷が減って1分経過すると、20%ずつ緩やかにスケールダウンするように調整しました。
+上記では、スケールダウンの様子を把握するために、負荷が減って1分経過すると、20%ずつ緩やかにスケールダウンするよう調整しました。
 詳細は[こちら](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#configurable-scaling-behavior)を参照してください。
 
 :::alert
@@ -336,7 +336,7 @@ kubectl get hpa app-hpa -w
 loadtest -c 50 -t 180 -k http://${APP_ENDPOINT}/delay/1
 ```
 
-別ターミナルでウォッチしていた、HPAの状態は以下のようになります。
+別ターミナルでウォッチしていたHPAの状態は、以下のようになります。
 
 ![](https://i.gyazo.com/4bb233b700bdafca726665c595f811b2.png)
 
@@ -348,7 +348,7 @@ HPAのレプリカ数評価式は以下のようになります(引用元は[こ
 
 例えば上記2行目は`1 * (190 / 50)`となり`3.8`切り上げて4レプリカが望ましいレプリカ数として算出し、Deployment/ReplicaSet経由でPodを増やしています。
 なお、デフォルトでは、現在のレプリカの2倍を上限としてスケールするようになります(この値はHPAの`behavior`で変更可能)。
-また、今回スケールダウンは徐々に減るように、カスタム調整しましたが、デフォルトは5分経過後に、負荷がない状態であれば一気にスケールダウンします。
+また、今回スケールダウンは徐々に減るようにカスタム調整しましたが、デフォルトは5分経過後に負荷がない状態であれば一気にスケールダウンします。
 `behavior`を指定しない場合のデフォルトでは以下のようになります。
 ```mermaid
 flowchart TD
@@ -380,18 +380,19 @@ helm uninstall metrics-server -n metrics-server
 ## まとめ
 
 オートスケールはシステム全体の利用効率を高めるためには必須の機能と言えます。
-ここでは実施しませんでしたが、これにNodeレベルのオートスケーリングを組み合わせることで、現在の負荷状況に応じて臨機応変にスケールさせることが可能です。
+もちろん、HPAはPodレベルのため、オートスケールはNodeのキャパシティ内という制約があります。
+これを解消するためには、Nodeレベルのオートスケーリングを組み合わせることで、現在の負荷状況に応じて臨機応変にシステム全体を調整可能です。
 
 ここで重要なことは、アプリケーションの廃棄容易性です。
 オートスケールを利用すると、アプリケーションが頻繁にスケジューリングされることになります。
-オートスケールだけが要因ではありませんが、アプリケーションのデプロイ・アンデプロイの頻度は確実に増えることになります。
+つまり、アプリケーションのデプロイ・アンデプロイの頻度は確実に増えることになります(もちろん、オートスケールだけが要因とは限りません)。
 このため、まずはアプリケーションに安全に停止可能にすることが大切です。突然の停止でデータ不整合等を起こしては意味がありません。
-これには[The Twelve-Factor App](https://12factor.net/)の[Disposability](https://12factor.net/ja/disposability)を参考に、これを言語・フレームワークに合うように実装するのが良いでしょう。
-また、Podのライフサイクルフック(preStop)を利用して、単純にスリープしてアプリケーションのシャットダウン処理に時間的猶予を与えたりや、個別にシャットダウン処理を実行するなども考えられます。
+これには[The Twelve-Factor App](https://12factor.net/)の[Disposability](https://12factor.net/ja/disposability)を参考に、使用している言語・フレームワークに合うように実装するのが良いでしょう。
+また、Podのライフサイクルフック(preStop)を利用して、単純にスリープしてアプリケーションのシャットダウン処理に時間的猶予を与えたり、個別にシャットダウン処理を実行するなども考えられます。
 
 - <https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/>
 
-さらに、高速なスケールアウトのためには、起動速度も重要です。これには以下の要素について検討すると良いでしょう。
+さらに、高速なスケールアウトのためには、起動速度も重要です。これには以下の要素を考慮すると良いでしょう。
 
 - コンテナイメージを軽量に保つ(不要なものは入れない)
 - 起動時のフットプリントが小さい言語/フレームワークを選択する

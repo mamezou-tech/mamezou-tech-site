@@ -214,12 +214,14 @@ $social-min-height: 30px !default;
 
 .flash {
   padding: 16px 12px;
+  margin: 15px 0;
   .flash-title {
     color: #383838;
     font-size: 1rem;
     min-height: 25px;
     display: inline-flex;
     align-items: center;
+    margin-bottom: 0.3rem;
   }
 
   p {

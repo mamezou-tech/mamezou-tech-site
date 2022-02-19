@@ -47,7 +47,7 @@ titleImage: "/img/logo/mameka5_50.png"
 
 ### クラスタ運用編
 #### スケーリング/スケジューラを使った柔軟なデプロイ戦略
-1. オートスケーリング <span style="color:red">Coming Soon!</span>
+1. [オートスケーリング(HPA)](/containers/k8s/tutorial/ops/hpa/)
 2. カスタムスケジューリング <span style="color:red">Coming Soon!</span>
 
 #### アプリケーションのログ、メトリクスのモニタリング

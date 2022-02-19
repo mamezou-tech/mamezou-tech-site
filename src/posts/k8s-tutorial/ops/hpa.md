@@ -353,9 +353,10 @@ HPAのレプリカ数評価式は以下のようになります(引用元は[こ
 ```mermaid
 flowchart TD
     A[Start] --> B["desired replica計算(15秒間隔)"]
-    B --> C{current > desired?}
-    C -->|Yes| D["Scale Out\n(2倍 or 4Pod)"] --> B
-    C -->|No| E{"5分経過?"}
+    B --> C{check}
+    C -->|current < desired| D["Scale Out\n(2倍 or 4Pod)"] --> B
+    C -->|current > desired| E{"5分経過?"}
+    C -->|current = desired| B
     E -->|Yes| F["Scale Down\n(100%)"] --> B
 ```
 

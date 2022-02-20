@@ -2,6 +2,7 @@
 title: GitHub Actions ワークフローにおけるジョブ制御
 author: masahiro-kondo
 date: 2022-02-20
+tags: [CI/CD]
 ---
 
 GitHub Actions ワークフローでは、複数のジョブを順次・並列・条件実行できます。各ジョブは異なるマシン(Runner) もしくは コンテナイメージで実行されます。それぞれ具体的に見ていきましょう[^1]。

@@ -151,10 +151,9 @@ PR作成時に**GitHub Actionsで実施**するようになりましたのでこ
 
 ### 6. レビュー&マージ依頼
 
-R&Dグループに対して内容のチェックを依頼してください。  
-以下メーリングリストに対してPRへのURLを添えて公開依頼してください。
+以下のSlackチャンネルで、PRのチェックを依頼してください。
 
-R&Dグループメーリングリスト: <dept-bs-randd@mamezou.com>
+Slackチャンネル: [#developer-site](https://app.slack.com/client/T04HZJZ9U/C034MCKP4M6)
 
 ### 7. 公開
 

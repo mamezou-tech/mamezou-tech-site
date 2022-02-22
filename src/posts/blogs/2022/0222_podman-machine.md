@@ -104,7 +104,7 @@ podman-machine-default*  qemu        14 hours ago  Currently running  1         
 % podman machine rm
 ```
 
-- イメージファイルの削除を行う場合、以下の形式で名前やオプションを指定して削除することも可能です。詳細は [公式ドキュメント](https://docs.podman.io/en/latest/markdown/podman-machine-rm.1.html) を参照してください。
+- イメージファイルの削除する場合、以下の形式で名前やオプションを指定して削除することも可能です。詳細は [公式ドキュメント](https://docs.podman.io/en/latest/markdown/podman-machine-rm.1.html) を参照してください。
 ```shell
 % podman machine rm [options][name]
 ```

@@ -1,7 +1,7 @@
 ---
 title: macOS 上で Podman を動かす
 author: satoshi-kawasaki
-date: 2022-02-22
+date: 2022-02-23
 tags: [container]
 ---
 2022年1月31日で Docker Desktop の移行期間が終了し、企業での使用は無償使用の条件に該当しない限り全て有償化されました。 
@@ -9,26 +9,13 @@ tags: [container]
 
 そこで Docker Desktop の代替となるツールの候補として、Podman について調査してみました。
 
-## 目次
+[[TOC]]
 
-1. [検証環境](#anchor1)
-2. [Podman のインストール方法](#anchor2)
-3. [Podman machine の初期設定](#anchor3)
-4. [Podman machine の起動](#anchor4)
-5. [Podman machine の停止](#anchor5)
-6. [Podman machine の削除](#anchor6)
-7. [起動する Linux 仮想マシンのリソース設定](#anchor7)
-8. [Linux 仮想マシンに ssh 接続する](#anchor8)
-9. [Podman を実行する](#anchor9)
-10. [参考記事](#anchor10)
-
-<a id="anchor1"></a>
-## 検証環境
+## 検証環境 
 - MacBook Pro (14 inch 2022 M1 Pro)
 - macOS Monterey
 - zsh
 
-<a id="anchor2"></a>
 ## Podman のインストール方法
 - Homebrew にてインストール可能です。
 ```shell
@@ -39,11 +26,10 @@ podman version 3.4.4
 
 - このインストールにより、podman, podman-remote, gvproxy コマンドが `$(brew --prefix)/bin/` にリンクされます。
 
-<a id="anchor3"></a>
 ## Podman machine の初期設定
 - Podman を実行する前に、Linux 仮想環境である Podman machine を起動します。
 - Podman 自体は Linux 上で動作することが前提条件です。従って Linux 以外の OS で動作させる場合、Linux 仮想マシンを実行する機能は別途必要となってきます。
-- しかしながら macOS では Windows の WSL2 のような OS 標準で提供されている Linux 実行環境がありません。Podman を macos 上で動作させる為に必要な Linux 仮想環境が Podman machine となります。
+- しかしながら macOS では Windows の WSL2 のような OS 標準で提供されている Linux 実行環境がありません。Podman を macOS 上で動作させる為に必要な Linux 仮想環境が Podman machine となります。
 
 - まずは初期化を実行します。初回実行時は Mac 上で動かす Linux の 仮想マシンのイメージをダウンロードします。
 ```shell
@@ -68,7 +54,6 @@ NAME                     VM TYPE     CREATED        LAST UP        CPUS        M
 podman-machine-default*  qemu        3 minutes ago  3 minutes ago  1           2.147GB     10.74GB
 ```
 
-<a id="anchor4"></a>
 ## Podman machine の起動
 - Podman machine を起動します。
 ```shell
@@ -89,14 +74,12 @@ podman-machine-default*  qemu        14 hours ago  Currently running  1         
 
 - LAST UP の項目が`Currently running`になっていれば正常に起動している状態となります。
 
-<a id="anchor5"></a>
 ## Podman machine の停止
 - podman machine の停止する場合は以下のコマンドを実行してください。
 ```shell
 % podman machine stop
 ```
 
-<a id="anchor6"></a>
 ## Podman machine の削除
 - ダウンロードした  Linux 仮想マシンの削除を行いたい場合、以下のコマンドを実行します。
 ```shell
@@ -111,7 +94,6 @@ podman-machine-default*  qemu        14 hours ago  Currently running  1         
 
 - `podman machine rm`を実行した後は、ローカル環境で起動するイメージファイルが削除される為、再度`podman machine init`を実行する必要があります。
 
-<a id="anchor7"></a>
 ## 起動する Linux 仮想マシンのリソース設定
 - `podman machine init`コマンドで初期化を行った場合、デフォルトで 2 GB のメモリと 1 コアの CPU が Linux 仮想マシンに割り当てられています。
 - 使用する CPU のコア数やメモリサイズを調整するには、`podman machine init`で初期設定を行う際にオプションを指定する必要があります。設定可能な項目については、[Podman machine の公式ドキュメント](https://docs.podman.io/en/latest/markdown/podman-machine-init.1.html) を参照してください。
@@ -126,14 +108,12 @@ podman-machine-default*  qemu        14 hours ago  Currently running  1         
 % podman machine init --cpus 2 --memory 2048 podman-machine-2
 ```
 
-<a id="anchor8"></a>
 ## Linux 仮想マシンに ssh 接続する
 - 起動している Linux 仮想マシンは ssh コマンドでログインできます。
 ```shell
 % podman machine ssh
 ```
 
-<a id="anchor9"></a>
 ## Podman を実行する
 - nginx の Docker イメージを pull して動作を確認します。
 ```shell
@@ -176,7 +156,6 @@ Commercial support is available at
 - [Podman の公式サイト](https://podman.io/) では、今まで Docker で使用していたコマンド`docker`を`podman`に置き換えるだけでコンテナの操作が可能との記載がありました。
 - > What is Podman? Podman is a daemonless container engine for developing, managing, and running OCI Containers on your Linux System. Containers can either be run as root or in rootless mode. Simply put: alias docker=podman.  
 
-<a id="anchor10"></a>
 ## 参考記事
 本稿を執筆するにあたり、以下のサイトを参考にさせて頂きました。
 とても参考になりました。心よりお礼申し上げます。

@@ -28,10 +28,9 @@ podman version 3.4.4
 
 ## Podman machine の初期設定
 - Podman を実行する前に、Linux 仮想環境である Podman machine を起動します。
-- Podman 自体は Linux 上で動作することが前提条件です。従って Linux 以外の OS で動作させる場合、Linux 仮想マシンを実行する機能は別途必要となってきます。
-- しかしながら macOS では Windows の WSL2 のような OS 標準で提供されている Linux 実行環境がありません。Podman を macOS 上で動作させる為に必要な Linux 仮想環境が Podman machine となります。
-
-- まずは初期化を実行します。初回実行時は Mac 上で動かす Linux の 仮想マシンのイメージをダウンロードします。
+Podman 自体は Linux 上で動作することが前提条件です。従って Linux 以外の OS で動作させる場合、Linux 仮想マシンを実行する機能は別途必要となってきます。
+しかしながら macOS では Windows の WSL2 のような OS 標準で提供されている Linux 実行環境がありません。Podman を macOS 上で動作させる為に必要な Linux 仮想環境が Podman machine となります。
+まずは初期化を実行します。初回実行時は Mac 上で動かす Linux の 仮想マシンのイメージをダウンロードします。
 ```shell
 % podman machine init
 ```
@@ -46,8 +45,7 @@ total 4492056
 ```
 
 - Fedora-coreOS の仮想マシン・イメージがダウンロードされました。
-
-- 以下のサンプルのように、初期化が完了したらリストを出して Linux 仮想マシンのイメージがダウンロードされている事を確認することができます。
+以下のサンプルのように、初期化が完了したらリストを出して Linux 仮想マシンのイメージがダウンロードされている事を確認することができます。
 ```shell
 % podman machine list
 NAME                     VM TYPE     CREATED        LAST UP        CPUS        MEMORY      DISK SIZE
@@ -96,13 +94,13 @@ podman-machine-default*  qemu        14 hours ago  Currently running  1         
 
 ## 起動する Linux 仮想マシンのリソース設定
 - `podman machine init`コマンドで初期化を行った場合、デフォルトで 2 GB のメモリと 1 コアの CPU が Linux 仮想マシンに割り当てられています。
-- 使用する CPU のコア数やメモリサイズを調整するには、`podman machine init`で初期設定を行う際にオプションを指定する必要があります。設定可能な項目については、[Podman machine の公式ドキュメント](https://docs.podman.io/en/latest/markdown/podman-machine-init.1.html) を参照してください。
+使用する CPU のコア数やメモリサイズを調整するには、`podman machine init`で初期設定を行う際にオプションを指定する必要があります。設定可能な項目については、[Podman machine の公式ドキュメント](https://docs.podman.io/en/latest/markdown/podman-machine-init.1.html) を参照してください。
 ```shell
 % podman machine init --cpus 2 --memory 2048
 ```
 
 - 既にLinux 仮想マシンのイメージがダウンロードされている場合、上記のコマンドを実行してもエラーとなります。
-- 仮想マシンイメージの削除コマンドを実行するか、仮想マシンのイメージに別名を付けて初期化してください。
+仮想マシンイメージの削除コマンドを実行するか、仮想マシンのイメージに別名を付けて初期化してください。
 ```shell
 # 別名を付けて仮想マシンイメージを保存
 % podman machine init --cpus 2 --memory 2048 podman-machine-2
@@ -125,7 +123,7 @@ CONTAINER ID  IMAGE                           COMMAND               CREATED     
 ```
 
 - Nginx の Docker イメージが pull され、ローカル環境で起動しています。
-- 起動した Docker イメージにアクセスして動作を確認します。
+起動した Docker イメージにアクセスして動作を確認します。
 ```shell
 % curl http://127.0.0.1:8080
 <!DOCTYPE html>
@@ -154,7 +152,7 @@ Commercial support is available at
 ```
 
 - [Podman の公式サイト](https://podman.io/) では、今まで Docker で使用していたコマンド`docker`を`podman`に置き換えるだけでコンテナの操作が可能との記載がありました。
-- > What is Podman? Podman is a daemonless container engine for developing, managing, and running OCI Containers on your Linux System. Containers can either be run as root or in rootless mode. Simply put: alias docker=podman.  
+> What is Podman? Podman is a daemonless container engine for developing, managing, and running OCI Containers on your Linux System. Containers can either be run as root or in rootless mode. Simply put: alias docker=podman.  
 
 ## 参考記事
 本稿を執筆するにあたり、以下のサイトを参考にさせて頂きました。

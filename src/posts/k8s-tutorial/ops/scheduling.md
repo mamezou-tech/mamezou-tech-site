@@ -541,9 +541,9 @@ kubectl taint nodes ${NODE_NAME} compute-optimized=:NoSchedule
 Taintsの指定の構文は`kubectl taint nodes <node-name> key=value:<effect>`で、`value`は省略可能です。
 ここではキー(`compute-optimized`)のみを指定しました。
 `effect`には`NoSchedule`の他に、`NoExecute`/`PreferNoSchedule`が指定可能です。
-`NoSchedule`はNodeAffinityと同じで、スケジュール時のみ有効で、Taintsをつけたときに既にPod実行中のものは無視します。
-`NoExecute`の場合は、NodeAffinityにはないもので、既に実行中のPodでもTolerationがない場合は、別のNodeに再スケジューリングされます(Evict)。
-`PreferNoSchedule`は原則スケジュールされませんが、他に空きがない場合はこのNodeへのスケジューリングを許容します(Scoringによる優先順位付け)。
+`NoSchedule`はNodeAffinityと同じで、スケジュール時のみ有効で、Taintsをつけたときに既に実行中のPodは無視します。
+`NoExecute`の場合は、NodeAffinityにはないもので、既に実行中のPodでもTolerationがない場合は、別のNodeに再スケジュールされます(Evict)。
+`PreferNoSchedule`は原則スケジュールされませんが、他に空きがない場合はこのNodeへのスケジュールを許容します(Scoringによる優先順位付け)。
 
 Taintsの動きを確認するために、マニフェストを以下のように修正します。
 
@@ -605,9 +605,9 @@ ap-northeast-1c-app-7c6858695b-v2hr2   ip-192-168-72-28.ap-northeast-1.compute.i
 ```
 
 先程Taints(`compute-optimized`)をつけた`c5.xlarge`のNode(`ip-192-168-60-243...`)は、AZが`ap-northeast-1a`に配置されているにも係わらず、どのPodも実行されていないことが確認できます。
-これは、PodでこのTaintsを許容しないため、NodeがFilteringでスケジュール対象から除外されているためです。
+これは、PodでこのTaintsを許容しないため、FilteringでこのNodeがスケジュール対象から除外されているためです。
 
-次に、新規にCPUリソース要求の高いと仮定するPodを追加し、これにはTaintsを許容(Toleration)するようにしてみましょう。
+次に、仮定として高いCPUスペックを要求するPodを新規追加し、これにはTaintsを許容(Toleration)するようにしてみましょう。
 
 以下のマニフェストファイルを作成します(`app-cpu.yaml`)。
 
@@ -678,6 +678,8 @@ app-cpu-5b465cd668-gfp99               ip-192-168-60-243.ap-northeast-1.compute.
 新しく追加したPod(`app-cpu...`)が、Taintsをつけたインスタンスタイプ`c5.xlarge`のNode(`ip-192-168-60-243...`)にスケジュールされていることが分かります。
 
 ## クリーンアップ
+
+デプロイしたPodは以下で削除します。
 
 ```shell
 kubectl delete deploy --all

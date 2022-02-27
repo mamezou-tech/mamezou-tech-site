@@ -5,18 +5,18 @@ prevPage: ./src/posts/k8s-tutorial/ops/hpa.md
 date: 2022-02-27
 ---
 
-Kubernetesで作成したPodは、Kubernetesが認識するNode[^1]で実行されます。
-Nodeは、多数のVMでクラスタ構成され、データセンター障害に備えて物理的に分散して配置されることが実運用では一般的です。
-また、コスト最適化や各ワークロード要件を満たすために、コア数やメモリ容量だけでなく、OS種類やCPU/GPU、SSD/HDD等様々なスペックを持っていることもあるでしょう。
+Kubernetesで作成したPodは、実行Node[^1]が割り当てられ、コンテナランタイムを通して実行されます。
+Nodeは、多数のVMでクラスタ構成され、データセンター障害に備えて物理的に分散して配置されることが一般的です。
+また、コスト最適化やワークロード要件を満たすために、コア数やメモリ容量だけでなく、OS種類やCPU/GPU、SSD/HDD等様々なスペックを持っていることもあるでしょう。
 
-[^1]: KubeletとCRI準拠のコンテナランタイムがセットアップされたマシンは、API Server経由でNodeとして登録されます。
+[^1]: kubeletとCRI準拠のコンテナランタイムがセットアップされたマシンは、API Server経由でNodeとして登録されます。
 
-PodはどのようにしてNodeにスケジュールされるでしょうか？
-これを担うKubernetesのスケジューラは、主にFilteringとScoringの機能で構成されています。これらは以下の流れで動作します。
+PodはどのようにしてNodeに割り当てられるでしょうか？
+これを担うKubernetesのスケジューラは、主にFilteringとScoringのステージで構成されています。これらは以下の流れで動作します。
 
 ![](https://i.gyazo.com/3ca11c7cc2d887a934fd69e3ae46e7bf.png)
 
-まず、Filteringでスケジュール候補からNodeを除外し、その後にScoringで残った候補Nodeのスコアを計算し、優先順位付けを行います。
+まず、Filteringで条件に満たないNodeを除外し、その後にScoringで残ったNodeのスコアを計算し、優先順位付けを行います。
 ここで最高スコアとなったNodeが、スケジュール対象として登録(Bind)されます[^2]。
 Filtering/Scoringはプラグインとして実装されており、以下のようなものがあります。
 
@@ -31,7 +31,7 @@ Scoringでは最もPodのリソース割当が少ないNodeに高いスコアを
 
 #### PodTopologySpread(Scoring / Filtering)
 各Topology(Nodeのラベル)でPodが分散してスケジュールされるよう除外または重み付けをします。
-デフォルトでは各Node、AZ(Availability Zone)にPodを分散させますが[^3]、Podの指定(`topologySpreadConstraints`)で変更可能です。
+デフォルトでは各Node、AZ(Availability Zone)に偏りがないようにPodを分散させますが[^3]、Podの指定(`topologySpreadConstraints`)で変更可能です。
 
 詳細は[公式ドキュメント](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)を参照しくてださい。
 
@@ -49,7 +49,7 @@ Podのコンテナイメージをキャッシュ済みのNodeにより高いス�
 他にも多数のプラグインがあります。詳細は[公式リファレンス](https://kubernetes.io/docs/reference/scheduling/config/#scheduling-plugins)を参照してください。
 
 今回はこの仕組みを利用して、Podのスケジューリングを調整してみましょう。
-ここではNodeAffinityとTaintTolerationプラグインの動きを確認します。
+ここでは、NodeAffinityとTaintTolerationプラグインの動きを確認します。
 
 :::info
 Filteringでスケジュール対象のNodeがなくなった場合、PodはPending状態になります。
@@ -537,7 +537,12 @@ NODE_NAME=$(kubectl get node -l node.kubernetes.io/instance-type=c5.xlarge -o js
 kubectl taint nodes ${NODE_NAME} compute-optimized=:NoSchedule
 ```
 
-ここではキー(`compute-optimized`)のみを指定しましたが、`compute-optimized=<value>:NoSchedule`のように値の指定もできます。
+Taintsの指定の構文は`kubectl taint nodes <node-name> key=value:<effect>`で、`value`は省略可能です。
+ここではキー(`compute-optimized`)のみを指定しました。
+`effect`には`NoSchedule`の他に、`NoExecute`/`PreferNoSchedule`が指定可能です。
+`NoSchedule`はNodeAffinityと同じで、スケジュール時のみ有効で、Taintsをつけたときに既にPod実行中のものは無視します。
+`NoExecute`の場合は、NodeAffinityにはないもので、既に実行中のPodでもTolerationがない場合は、別のNodeに再スケジューリングされます(Evict)。
+`PreferNoSchedule`は原則スケジュールされませんが、他に空きがない場合はこのNodeへのスケジューリングを許容します(Scoringによる優先順位付け)。
 
 Taintsの動きを確認するために、マニフェストを以下のように修正します。
 

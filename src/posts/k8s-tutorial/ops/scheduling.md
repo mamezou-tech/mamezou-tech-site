@@ -72,8 +72,8 @@ eksctlでEKSクラスタ環境を準備しておきましょう[^4]。
 
 [^4]: 今回はeksctlを使って環境を準備しますが、同様のことは[Terraform](/containers/k8s/tutorial/infra/aws-eks-terraform/)を使っても可能です。
 
-ただし、スケジューラの検証のために今回はNode構成を変えます。デフォルトのLinuxに加えて、Windowsを搭載したNodeも用意します。
-事前に`cluster.yaml`として、以下のeksctlの設定ファイルを作成します。
+ただし、スケジューラの検証のために今回はNode構成を変えます。
+事前に以下のeksctlの設定ファイルを作成します(ここでは`cluster.yaml`とします)。
 
 ```yaml
 apiVersion: eksctl.io/v1alpha5
@@ -84,19 +84,19 @@ metadata:
   version: "1.21"
 
 managedNodeGroups:
-  - name: ap-northeast-1a-ng
+  - name: ap-northeast-1a-general-ng
     availabilityZones: [ap-northeast-1a]
-    instanceName: ap-northeast-1a-node
+    instanceName: ap-northeast-1a-general-node
     instanceType: m5.large # 汎用インスタンス
     desiredCapacity: 2
-  - name: ap-northeast-1c-ng
+  - name: ap-northeast-1c-general-ng
     availabilityZones: [ap-northeast-1c]
-    instanceName: ap-northeast-1c-node
+    instanceName: ap-northeast-1c-general-node
     instanceType: m5.large # 汎用インスタンス
     desiredCapacity: 2
-  - name: ap-northeast-1a-arm-ng
+  - name: ap-northeast-1a-cpu-ng
     availabilityZones: [ap-northeast-1a]
-    instanceName: ap-northeast-1a-arm-node
+    instanceName: ap-northeast-1a-cpu-node
     instanceType: c5.xlarge # コンピューティング最適化
     desiredCapacity: 1
 
@@ -104,13 +104,13 @@ iam:
   withOIDC: true
 ```
 
-以下の構成で、NodeGroupを指定しています。
+以下のようにAZやインスタンスタイプを変えて、複数のNodeGroupを指定しています。
 
 | NodeGroup | AZ | Node数 | インスタンスタイプ | 用途 |
-| --------- | -- | ------ | --------------- | --- |
-| ap-northeast-1a-ng | ap-northeast-1a | 2 | m5.large | 汎用 |
-| ap-northeast-1c-ng | ap-northeast-1c | 2 | m5.large | 汎用 |
-| ap-northeast-1a-gpu-ng | ap-northeast-1a | 1 | c5.xlarge | 計算速度重視 |
+| -------------------------- | -- | ------ | --------------- | --- |
+| ap-northeast-1a-general-ng | ap-northeast-1a | 2 | m5.large | 汎用 |
+| ap-northeast-1c-general-ng | ap-northeast-1c | 2 | m5.large | 汎用 |
+| ap-northeast-1a-cpu-ng     | ap-northeast-1a | 1 | c5.xlarge | 計算速度重視 |
 
 こちらでEKSクラスタ環境を作成します。
 
@@ -128,18 +128,18 @@ kubectl get node -L topology.kubernetes.io\/zone,node.kubernetes.io\/instance-ty
 以下必要部分のみ抜粋します。
 ```
 NAME                                                STATUS   ZONE              INSTANCE-TYPE
-ip-192-168-34-122.ap-northeast-1.compute.internal   Ready    ap-northeast-1a   m5.large
-ip-192-168-41-178.ap-northeast-1.compute.internal   Ready    ap-northeast-1a   m5.large
-ip-192-168-60-243.ap-northeast-1.compute.internal   Ready    ap-northeast-1a   c5.xlarge
-ip-192-168-72-28.ap-northeast-1.compute.internal    Ready    ap-northeast-1c   m5.large
-ip-192-168-77-172.ap-northeast-1.compute.internal   Ready    ap-northeast-1c   m5.large
+ip-192-168-34-122.ap-northeast-1.compute.internal   Ready    ap-northeast-1a   m5.large -> ap-northeast-1a-general-ng
+ip-192-168-41-178.ap-northeast-1.compute.internal   Ready    ap-northeast-1a   m5.large -> ap-northeast-1a-general-ng
+ip-192-168-60-243.ap-northeast-1.compute.internal   Ready    ap-northeast-1a   c5.xlarge -> ap-northeast-1a-cpu-ng
+ip-192-168-72-28.ap-northeast-1.compute.internal    Ready    ap-northeast-1c   m5.large -> ap-northeast-1c-general-ng
+ip-192-168-77-172.ap-northeast-1.compute.internal   Ready    ap-northeast-1c   m5.large -> ap-northeast-1c-general-ng
 ```
 
 Nodeが指定したAZ、インスタンスタイプで配置されていることが確認できます。
 
 :::info
 今回はスケジューラの検証のため、minikubeやDocker Desktopでは実施できません。
-ローカル環境で試す場合は[kind](https://kind.sigs.k8s.io/)の利用をお勧めします。こちらはマルチNod構成を簡単に組むことができます。
+ローカル環境で試す場合は[kind](https://kind.sigs.k8s.io/)の利用をお勧めします。このようなマルチNodでのクラスタ構成を簡単に組むことができます。
 :::
 
 ## マニフェストファイルの準備

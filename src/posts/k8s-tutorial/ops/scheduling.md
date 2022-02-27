@@ -652,7 +652,6 @@ TolerationはあくまでもTaintsを許容できるかを指定しているも�
 このPodを追加でデプロイします。
 
 ```shell
-kubectl delete deploy --all
 kubectl apply -f app-cpu.yaml
 ```
 

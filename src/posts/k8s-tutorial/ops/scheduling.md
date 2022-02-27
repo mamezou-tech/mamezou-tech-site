@@ -655,10 +655,11 @@ TolerationはあくまでもTaintsを許容できるかを指定しているも�
 kubectl apply -f app-cpu.yaml
 ```
 
+PodのNode配置状況を確認してみましょう。
+
 ```shell
 kubectl get pod -o custom-columns=NAME:metadata.name,NODE:spec.nodeName
 ```
-
 ```
 NAME                                   NODE
 ap-northeast-1a-app-644f5bb54-8sknq    ip-192-168-34-122.ap-northeast-1.compute.internal -> m5.large

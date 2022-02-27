@@ -645,7 +645,9 @@ spec:
 
 `tolerations`でNodeに指定したTaints(`compute-optimized`)を許可するように指定しています。
 ここではtaintsが存在しているかのみ(`Exists`)を指定していますが、`Equal`でTaintsの値に合致するかも指定可能です。
-また、`nodeSelector`でインスタンスタイプを指定しています。これを指定しない場合は、このPodはTaintsを許容するものの、それ以外(つまり`m5.large`のNode)に対してもスケジュールされます。
+
+また、`nodeSelector`でインスタンスタイプを指定する必要もあります。これを指定しない場合は、このPodは全てのNodeに対してスケジュールされてしまいます。
+TolerationはあくまでもTaintsを許容できるかを指定しているもので、NodeAffinityのようにスケジュールする(したい)Nodeを限定するものではありません。
 
 このPodを追加でデプロイします。
 

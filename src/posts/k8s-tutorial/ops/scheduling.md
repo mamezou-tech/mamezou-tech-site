@@ -221,7 +221,7 @@ ap-northeast-1c-app-d95f68684-tr4gb   ip-192-168-77-172.ap-northeast-1.compute.i
 
 ## Node Affinity
 
-それではスケジューラのNodeAffinityプラグインの動きを確認してみましょう。
+それでは、スケジューラのNodeAffinityプラグインの動きを確認してみましょう。
 このプラグインは以下2つの指定方法があります。
 
 - NodeSelector
@@ -265,7 +265,7 @@ spec:
       # (省略)
 ```
 
-`nodeSelector`フィールドを追加し、そこにNodeが持つラベル(`topology.kubernetes.io/zone`)を指定するように変更しています。
+`nodeSelector`フィールドを追加し、そこにNodeが持つラベル(`topology.kubernetes.io/zone`)を指定します。
 このラベルは`Well-Known Labels`と言われ、Kubernetesで一般的に使用するラベルで、EKS等のクラウドプロバイダ側で設定されることも多いです。
 `Well-Known Labels`の詳細は[こちら](https://kubernetes.io/docs/reference/labels-annotations-taints/)を参照してください。
 もちろん、`Well-Known Labels`ではなく、Nodeに独自のラベルをつけて、それにもとづいたNodeSelectorの設定もできます。
@@ -354,8 +354,8 @@ spec:
 NodeSelectorの記述方法と比較して複雑になっていますが、より柔軟な指定が可能になっていることが推測できます。
 まずは、`requiredDuringSchedulingIgnoredDuringExecution`です。長いフィールド名ですが、`requiredDuringScheduling`と`IgnoredDuringExecution`の2つに分割すると意味が分かると思います。つまり、スケジューリング時に必須で、既に実行中のPodは無視するということになります。
 
-これ以外に、`preferredDuringSchedulingIgnoredDuringExecution`もあります。これは該当Nodeにスケジューリングされるのが望ましいが、必須ではないという形になります。
-スケジューラの実行ステージでいうと、`requiredDuringScheduling`はFilteringで、`preferredDuringScheduling`はScoringになります。
+これ以外に、`preferredDuringSchedulingIgnoredDuringExecution`もあります。これは該当Nodeにスケジューリングされるのが望ましいが、必須ではないという意味になります。
+つまり、スケジューラの実行ステージでいうと、`requiredDuringScheduling`はFilteringで、`preferredDuringScheduling`はScoringになります。
 なお、現時点では`IgnoredDuringExecution`については1択で、Nodeのラベルが変わっても、実行中Podの再スケジューリングは発生しません。
 
 `operator`には、ラベルの合致条件を指定します。上記で指定しているIn以外にもNotIn/Exists/DoesNotExists/Gt/Ltが指定できます。
@@ -492,7 +492,7 @@ ap-northeast-1c-app-7c6858695b-dsdpb   1/1     Running   0          65s
 ap-northeast-1c-app-7c6858695b-f8f6h   1/1     Running   0          65s
 ```
 
-今度は全てのレプリカが正常に起動しました。
+今回は全てのレプリカが正常に起動しました。
 実際にどのNodeにスケジュールされたかを確認しましょう。
 
 ```shell
@@ -508,7 +508,7 @@ ap-northeast-1a-app-77bc9684f6-q82bx   ip-192-168-41-178.ap-northeast-1.compute.
 (ap-northeast-1c-appは省略)
 ```
 
-1つのPodが`c5.xlarge`のインスタンスタイプで実行されています。これは`m5.large`インスタンスのNodeの空きがなくなったためです。
+1つのPodが`c5.xlarge`のインスタンスタイプで実行されています。
 このように、`preferredDuringScheduling...`を指定することで、ベストエフォート方式で条件を調節できます。
 
 :::info

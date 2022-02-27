@@ -542,7 +542,7 @@ Taintsの指定の構文は`kubectl taint nodes <node-name> key=value:<effect>`�
 ここではキー(`compute-optimized`)のみを指定しました。
 `effect`には`NoSchedule`の他に、`NoExecute`/`PreferNoSchedule`が指定可能です。
 `NoSchedule`はNodeAffinityと同じで、スケジュール時のみ有効で、Taintsをつけたときに既に実行中のPodは無視します。
-`NoExecute`の場合は、NodeAffinityにはないもので、既に実行中のPodでもTolerationがない場合は、別のNodeに再スケジュールされます(Evict)。
+`NoExecute`は、NodeAffinityにはないもので、既に実行中のPodでもTolerationがない場合は、別のNodeに再スケジュールされます(Evict)。
 `PreferNoSchedule`は原則スケジュールされませんが、他に空きがない場合はこのNodeへのスケジュールを許容します(Scoringによる優先順位付け)。
 
 Taintsの動きを確認するために、マニフェストを以下のように修正します。

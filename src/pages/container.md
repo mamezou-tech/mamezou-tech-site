@@ -11,17 +11,17 @@ titleImage: "/img/logo/mameka5_50.png"
 ここでは、そんなKubernetesの環境構築から開発・運用までで必要な作業をハンズオン形式で実施することで、初心者レベルからの脱却を目指します。
 
 ### 環境構築編
-#### クラウド環境にKubernetesクラスタを構築
+#### Kubernetesクラスタを構築
 1. [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
 2. [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
-#### Ingressでアプリケーションのゲートウェイ導入
+#### Ingress導入
 1. [NGINX Ingress Controller](/containers/k8s/tutorial/ingress/ingress-nginx/)
 2. [AWS Load Balancer Controller](/containers/k8s/tutorial/ingress/ingress-aws/)
 3. [カスタムドメイン管理(external-dns)](/containers/k8s/tutorial/ingress/external-dns/)
 4. [HTTPS通信(Cert Manager)](/containers/k8s/tutorial/ingress/https/)
 
-#### ストレージ(CSI)を導入してデータ永続化
+#### ストレージ(CSI)導入
 1. [AWS EBS](/containers/k8s/tutorial/storage/ebs/)
 2. [AWS EFS](/containers/k8s/tutorial/storage/efs/)
 
@@ -46,18 +46,18 @@ titleImage: "/img/logo/mameka5_50.png"
 2. [ArgoCD](/containers/k8s/tutorial/delivery/argocd/)
 
 ### クラスタ運用編
-#### スケーリング/スケジューラを使った柔軟なデプロイ戦略
+#### スケーリング/スケジューラ
 1. [オートスケーリング(HPA)](/containers/k8s/tutorial/ops/hpa/)
-2. カスタムスケジューリング <span style="color:red">Coming Soon!</span>
+2. [Podスケジューリング](/containers/k8s/tutorial/ops/scheduling/)
 
-#### アプリケーションのログ、メトリクスのモニタリング
+#### モニタリング
 1. メトリクス収集 <span style="color:red">Coming Soon!</span>
 2. アラート <span style="color:red">Coming Soon!</span>
 3. 可視化 <span style="color:red">Coming Soon!</span>
 4. トレーシング/APM <span style="color:red">Coming Soon!</span>
 5. ログ収集 <span style="color:red">Coming Soon!</span>
 
-#### バックアップ・リストアで重要なデータ保護
+#### バックアップ・リストア
 1. [Velero による Kubernetes クラスタのバックアップ・リストア](/containers/k8s/tutorial/ops/velero-backup/)
 
 ## Kubernetes活用編

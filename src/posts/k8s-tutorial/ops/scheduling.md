@@ -683,10 +683,7 @@ kubectl delete deploy --all
 ## まとめ
 
 NodeAffinityやTaintTolerationを使うことで、柔軟にKubernetesのスケジューラを調整できることが実感できたと思います。
-
-ここでは触れませんでしたが、Podに優先度をつけて、スケジュール可能なNodeがない場合に優先度が低いものをクラスタから退避させる(preempt/evict)ことも可能です。
-こちらの詳細は[公式ドキュメント](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/)を参照してください。
-
+通常意識することは少ないかと思いますが、スケジューラを理解することで、様々なワークロードでKubernetesを活用することが可能となります。
 
 ---
 参考資料

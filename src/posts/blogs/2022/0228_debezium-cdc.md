@@ -1,6 +1,6 @@
 ---
 title: Debezium によるチェンジデータキャプチャー
-author: 近藤正裕
+author: masahiro-kondo
 date: 2022-02-28
 ---
 

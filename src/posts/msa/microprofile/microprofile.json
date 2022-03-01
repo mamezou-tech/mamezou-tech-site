@@ -1,0 +1,6 @@
+{
+  "layout": "post",
+  "permalink": "/msa/mp/{{ page.fileSlug }}/",
+  "category": "マイクロサービス - MicroProfile",
+  "tags": ["mp"]
+}

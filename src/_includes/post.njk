@@ -63,17 +63,21 @@ layout: base.njk
         {% else %}
           {%- if prevPage %}
             {%- set prevPostPage = collections.all | inputPath(prevPage) %}
-            <a href="{{ prevPostPage.url | url }}">
-              <span>←</span>
-              <span>{{ prevPostPage.data.title }}</span>
-            </a>
+            {%- if prevPostPage %}
+              <a href="{{ prevPostPage.url | url }}">
+                <span>←</span>
+                <span>{{ prevPostPage.data.title }}</span>
+              </a>
+            {% endif %}
           {% endif %}
           {%- if nextPage %}
             {%- set nextPostPage = collections.all | inputPath(nextPage) %}
-            <a href="{{ nextPostPage.url | url }}">
-              <span>{{ nextPostPage.data.title }}</span>
-              <span>→</span>
-            </a>
+            {%- if nextPostPage %}
+              <a href="{{ nextPostPage.url | url }}">
+                <span>{{ nextPostPage.data.title }}</span>
+                <span>→</span>
+              </a>
+            {% endif %}
           {% endif %}
         {% endif %}
       </nav>

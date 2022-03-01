@@ -5,7 +5,7 @@ date: 2022-03-10
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn02-what-mp.md
 nextPage: ./src/posts/msa/microprofile/cntrn04-spec-ranking.md
-eleventyExcludeFromCollections: false
+eleventyExcludeFromCollections: true
 ---
 
 [前回](/msa/mp/cntrn02-what-mp/)まではMicroProfile全体に関する軟らかめの話をさせていただきましたが、今回からはそれぞれの仕様でどのようなことができるのか？そしてそれはどのように使うのか？など、主に実装的な側面のお話をさせていただきます。

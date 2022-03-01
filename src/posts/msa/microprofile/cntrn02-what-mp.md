@@ -5,7 +5,7 @@ date: 2022-03-10
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn01-what-mp.md
 nextPage: ./src/posts/msa/microprofile/cntrn03-sampleapp-helidon.md
-eleventyExcludeFromCollections: false
+eleventyExcludeFromCollections: true
 ---
 
 前回はMicroProfileの登場からMicroProfileが目指すものまで説明させていただきました。今回はMicroProfileの実際の中身であるMicroProfileの仕様と実装について、私見も交えながら説明させていただきたいと思います。若干長い説明となりますが、最後まで目を通していただけたら幸いです。

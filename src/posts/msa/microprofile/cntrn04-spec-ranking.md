@@ -4,7 +4,7 @@ author: toshio-ogiwara
 date: 2022-03-10
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn03-sampleapp-helidon.md
-eleventyExcludeFromCollections: false
+eleventyExcludeFromCollections: true
 ---
 
 MicroProfileはトップレベルの仕様以外も含めると大小様々な仕様が存在しています。 前回紹介したサンプルアプリのレンタル品予約システムにMicroProfileの各機能を組み込んでフィット感を試してみた結果、MicroProfileを採用するのであれば『これは抑えておくベキ、もしくは使っておくベキ』と言える仕様がいくつかありました。今回はその中から厳選した3つの仕様を紹介したいと思います。

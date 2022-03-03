@@ -119,7 +119,7 @@ metadata:
 `labels`部分がPSAの設定です[^2]。
 `pod-security.kubernetes.io/<MODE>: <LEVEL>`のポリシーレベルとポリシー違反時のアクション(モード)を指定します。
 
-ポリシーレベルはPSSで規定されているものです。以下の3つのものが指定可能です。
+ポリシーレベルはPSSでプロファイルとして規定されているものです。以下の3つのものが指定可能です。
 
 - `privileged`: 最も緩いポリシー(制限なし)。システム系のPod以外では使用しないのが望ましい。
 - `baseline`: 中間のポリシー。rootコンテナ、一部のシステムコマンド実行やホストリソースの利用が可能。
@@ -141,7 +141,7 @@ metadata:
 
 では、Podを実際にデプロイしてPSAの動作を確認します。
 
-### 問題がないPod
+### 違反なし
 
 まずは、Namespaceに指定したPSS/PSAの要件を満たすPodをデプロイします。
 以下のマニフェストを準備します(`non-root-deployment.yaml`)。
@@ -178,7 +178,7 @@ spec:
           type: RuntimeDefault
 ```
 
-コンテナ、Podレベルの`securityContext`でPSSの基準を満たすように設定しました。
+コンテナ、Podレベルの`securityContext`でPSSの`restricted`基準を満たすように設定しました。
 
 ```shell
 kubectl apply -f non-root-deployment.yaml
@@ -260,7 +260,7 @@ Pod生成イベントのアノテーション部分のみ抜粋します。
 
 ### 特権コンテナ
 
-最後に特権モードでコンテナを起動するように指定してみます。
+最後に特権モードでコンテナを起動するように指定してみます。これはPSSの`baseline`レベルのポリシーに違反しています。
 以下のマニフェストを準備します(`privileged-deployment.yaml`)。
 
 ```yaml

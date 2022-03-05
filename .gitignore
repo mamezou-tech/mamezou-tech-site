@@ -15,6 +15,7 @@ social
 
 #IDE
 .idea
+.vscode
 
 # textlint cache
 kvs-node-localstorage

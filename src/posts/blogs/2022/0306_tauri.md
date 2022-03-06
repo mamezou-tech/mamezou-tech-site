@@ -46,7 +46,7 @@ Node.js も最新安定版[^3]をインストールしておきます。
 
 
 ```shell
-$ npx npx create-tauri-app
+$ npx create-tauri-app
 
 Need to install the following packages:
   create-tauri-app
@@ -175,7 +175,7 @@ Windows でも同様です。
 
 初回はパッケージダウンロードとビルドで時間がかかりますが、ビルド結果は、src-tauri/target にキャッシュされるため2回目以降はすぐに起動します。
 
-[公式ドキュメント](https://tauri.studio/docs/about/architecture/)には HTML/CSS/TS/JS など UI 部分のコードを変更すると、devserver が instant hot module reloading で即時反映するとあります。Vanilla.js だとホットリロードは効きませんでした。試しに create-tauri-app で Svelte を選択すると、[Svelte 公式のアプリ生成コマンド](https://github.com/sveltejs/template)により Svelte アプリの雛型が作成されました。そして tauri-svelte というモジュールが rollup で Svelte のコードをバンドル、Tauri アプリ内で Svelte アプリをホストしてホットリロードが可能になりました。
+[公式ドキュメント](https://tauri.studio/docs/about/architecture/)には HTML/CSS/TS/JS など UI 部分のコードを変更すると devserver が instant hot module reloading で即時反映するとあります。Vanilla.js だとホットリロードは効きませんでした。試しに create-tauri-app で Svelte を選択すると、[Svelte 公式のアプリ生成コマンド](https://github.com/sveltejs/template)により Svelte アプリの雛型が作成されました。そして tauri-svelte というモジュールが rollup で Svelte のコードをバンドル、Tauri アプリ内で Svelte アプリをホストしてホットリロードが可能になりました。
 
 ```shell
 $ npm run tauri dev 
@@ -252,7 +252,7 @@ HTML/JS から Tauri の機能を利用するため、tauri.conf.json の build 
   },
 ```
 
-dist/index.html を以下のコードで置き換え。カウントアップ用のボタンと値を表示するだけの UI です。ボタンのクリックイベントで、`window.__TAURI__`　オブジェクトを使って Rust 側の処理を invoke して結果を表示しています。
+dist/index.html を以下のコードで置き換え。カウントアップ用のボタンと値を表示するだけの UI です。ボタンのクリックイベントで `window.__TAURI__` オブジェクトを使って Rust 側の処理を invoke し、結果を表示しています。
 
 ```html
 <!DOCTYPE html>

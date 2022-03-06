@@ -4,7 +4,7 @@ author: masahiro-kondo
 date: 2022-03-06
 ---
 
-Tauri クロスプラットフォームデスクトップアプリのための Rust によるフレームワークです。Electron と同様 Web 技術でアプリの UI を構築します。
+Tauri はクロスプラットフォームデスクトップアプリのための Rust によるフレームワークです。Electron と同様 Web 技術でアプリの UI を構築します。
 
 [Build smaller, faster, and more secure desktop applications with a web frontend | Tauri Studio](https://tauri.studio/)
 
@@ -16,7 +16,7 @@ Electron と比べて、インストーラーのサイズ、メモリ消費量�
 
 [https://github.com/tauri-apps/tauri#comparison-between-tauri-and-electron](https://github.com/tauri-apps/tauri#comparison-between-tauri-and-electron)
 
-Electron では main プロセスを Node.js、UI を Chrome という構成でアプリケーションを実行します。Tauiri は Electron の main プロセスに相当する部分を Rust で、UI は wry という各 OS 標準の WebView でレンダリングするライブラリを使用します。
+Electron では main プロセスを Node.js、UI を Chrome という構成でアプリケーションを実行します。Tauiri は Electron の main プロセスに相当する部分を Rust、UI は各 OS 標準の WebView でレンダリングする wry というライブラリを使用します。
 
 [GitHub - tauri-apps/wry: Cross-platform WebView library in Rust for Tauri.](https://github.com/tauri-apps/wry)
 
@@ -27,7 +27,7 @@ macOS では、WebKit、Windows では、WebViwe2[^1]、Linux では WebKitGTK �
 簡単なアプリケーションを作って開発体験を見てみます。
 
 :::info
-記事執筆時点では、M1 Mac ではビルドがうまくできず、Intel Mac と Windows 10 で確認しました。
+記事執筆時点では M1 Mac ではビルドがうまくできず、Intel Mac と Windows 10 で確認しました。
 :::
 
 まず Rust を最新版に更新します。[^2]
@@ -173,7 +173,7 @@ Windows でも同様です。
 
 ![](https://i.gyazo.com/34ad47fd5de2b924f85040fb328f9c4c.png)
 
-初回はパッケージダウンロードとビルドで時間がかかりますが、ビルド結果は、src-tauri/target にキャッシュされるため2回目移行はすぐに起動します。
+初回はパッケージダウンロードとビルドで時間がかかりますが、ビルド結果は、src-tauri/target にキャッシュされるため2回目以降はすぐに起動します。
 
 [公式ドキュメント](https://tauri.studio/docs/about/architecture/)には HTML/CSS/TS/JS など UI 部分のコードを変更すると、devserver が instant hot module reloading で即時反映するとあります。Vanilla.js だとホットリロードは効きませんでした。試しに create-tauri-app で Svelte を選択すると、[Svelte 公式のアプリ生成コマンド](https://github.com/sveltejs/template)により Svelte アプリの雛型が作成されました。そして tauri-svelte というモジュールが rollup で Svelte のコードをバンドル、Tauri アプリ内で Svelte アプリをホストしてホットリロードが可能になりました。
 
@@ -227,7 +227,7 @@ create-tauri-app では、メジャーなフロントエンドのフレームワ
 tauri build を実行すると実行したプラットフォーム用のインストーラーが生成されます。
 
 ```shell
-$ npm run tauri build
+npm run tauri build
 ```
 
 生成された macOS 用の dmg ファイル、Windows 用の MSI ファイルは共に 4MB 弱でした。確かに Electron の 100MB 弱と比べると格段に小さいですね。
@@ -292,7 +292,7 @@ dist/index.html を以下のコードで置き換え。カウントアップ用�
 </html>
 ```
 
-src/main.rs を以下のコードで置き換えます。`tauri::command` のアトリビュートが付与された関数群(connect, disconnect, connection_send, increment_counter) が定義されています。tauri との通信設定と UI から invoke される  increment_counter の実装です。
+src/main.rs を以下のコードで置き換えます。`tauri::command` のアトリビュートが付与された関数群を定義しています。UI から invoke される increment_counter 以外に UI との通信設定が実装されています。
 
 ```rust
 #![cfg_attr(

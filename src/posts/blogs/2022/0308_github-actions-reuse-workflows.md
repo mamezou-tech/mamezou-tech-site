@@ -62,7 +62,7 @@ jobs:
 ```yaml
 jobs:
   Reuse1:
-    uses: mamezou-tech/reuable-flows/.github/workflows/reuse1.yml@main
+    uses: mamezou-tech/reusable-flows/.github/workflows/reuse1.yml@main
   Reuse2:
     uses: mamezou-tech/reusable-flows/.github/workflows/reuse2.yml@v1
 ```

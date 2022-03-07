@@ -1,7 +1,7 @@
 ---
 title: 第3回 使った、作った、Helidonで！ - サンプルアプリの紹介
 author: toshio-ogiwara
-date: 2022-03-08
+date: 2022-03-07
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn02-what-mp.md
 nextPage: ./src/posts/msa/microprofile/cntrn04-spec-ranking.md

@@ -9,7 +9,7 @@ nextPage: ./src/posts/msa/microprofile/cntrn04-spec-ranking.md
 
 [前回](/msa/mp/cntrn02-what-mp/)まではMicroProfile全体に関する軟らかめの話でしたが、今回からはMicroProfileでどのようなことができるか？そして使うのか？などの実装的な側面の話をしていきます。
 
-その初回となる今回は、まずは動くものを見てもらう意味を込めMicroProfileを使ったサンプルアプリを紹介し、その後にMicroProfile実装として利用しているHelidonを説明します。サンプルアプリの中身は以降の回をとおして説明するため、今回はこんなのが有りますよ程度の説明に留めます。
+その初回となる今回は、まずは動くものを見てもらう意味も含めMicroProfileを使ったサンプルアプリを紹介し、その後にMicroProfile実装として利用しているHelidonを説明します。サンプルアプリの中身は以降の回をとおして説明するため、今回はこんなのが有りますよ程度の説明に留めます。
 
 [[TOC]]
 

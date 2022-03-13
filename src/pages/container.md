@@ -51,11 +51,12 @@ titleImage: "/img/logo/mameka5_50.png"
 2. [Podスケジューリング](/containers/k8s/tutorial/ops/scheduling/)
 
 #### モニタリング
-1. メトリクス収集 <span style="color:red">Coming Soon!</span>
-2. アラート <span style="color:red">Coming Soon!</span>
-3. 可視化 <span style="color:red">Coming Soon!</span>
-4. トレーシング/APM <span style="color:red">Coming Soon!</span>
-5. ログ収集 <span style="color:red">Coming Soon!</span>
+1. メトリクス可視化(Prometheus) <span style="color:red">Coming Soon!</span>
+2. メトリクス可視化(AWS Distro for OpenTelemetry) <span style="color:red">Coming Soon!</span>
+3. ログ(AWS OpenSearch) <span style="color:red">Coming Soon!</span>
+4. ログ(Cloud Watch Logs) <span style="color:red">Coming Soon!</span>
+5. アラート <span style="color:red">Coming Soon!</span>
+6. 分散トレーシング <span style="color:red">Coming Soon!</span>
 
 #### バックアップ・リストア
 1. [Velero による Kubernetes クラスタのバックアップ・リストア](/containers/k8s/tutorial/ops/velero-backup/)

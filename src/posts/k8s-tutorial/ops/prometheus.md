@@ -357,7 +357,7 @@ netdataにでPrometheusを選択し、Importをクリックすれば完成です
 ## クリーンアップ
 
 ```shell
-helm uninstall aws-otel-ds -n kube-system
+helm uninstall kube-prometheus-stack -n prometheus
 ```
 
 それ以外のリリース削除については、以下を参照してください。

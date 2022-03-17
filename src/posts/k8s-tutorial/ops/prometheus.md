@@ -318,7 +318,7 @@ prometheus-api-metrics向けのダッシュボードも公開されています�
 
 ![Node.js Dashboard](https://i.gyazo.com/1d30e31a44ba9e22c05656359c330c70.png)
 
-使い方は簡単です。上記のIDをもとにGrafanaのUIからダッシュボードを作成するだけです。
+使い方は簡単です。上記のダッシュボードに付与されているIDをもとにダッシュボードをインポートするだけです。
 Grafana UIのサイドバーからCreate -> Importを選択します。
 
 ![Grafana Menu](https://i.gyazo.com/a29dc9911ba4dede6ba2ff7dc515ceb1.png)
@@ -326,7 +326,7 @@ Grafana UIのサイドバーからCreate -> Importを選択します。
 ダッシュボードのIDを入力し、Loadをクリックします。
 ![Grafana Load](https://i.gyazo.com/e48dd003157230f8b31010b9154e5cdc.png)
 
-netdataにでPrometheusをセットアップし、Importをクリックすれば完成です(Name等は必要に応じて変更してください)。
+netdataにでPrometheusを選択し、Importをクリックすれば完成です(Name等は必要に応じて変更してください)。
 
 ![Grafana Import](https://i.gyazo.com/b364fb2adca7b5d4fdde2dd151f543c5.png)
 

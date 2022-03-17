@@ -227,7 +227,7 @@ kubectl get pod -n prod
 :::
 
 :::info
-prometheus-api-metricsは、デフォルトでpackage.jsonからバージョン情報をメトリクスを取得していますので、イメージ内にpackage.jsonを含める必要があります。
+prometheus-api-metricsは、デフォルトでpackage.jsonからバージョン情報をメトリクスとして取得していますので、イメージ内にpackage.jsonを含める必要があります。
 ここでは、task-serviceのDockerfileに以下を追加しました。
 ```dockerfile
 COPY --from=builder /src/package.json ./

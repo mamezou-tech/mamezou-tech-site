@@ -51,8 +51,8 @@ titleImage: "/img/logo/mameka5_50.png"
 2. [Podスケジューリング](/containers/k8s/tutorial/ops/scheduling/)
 
 #### モニタリング
-1. メトリクス可視化(Prometheus) <span style="color:red">Coming Soon!</span>
-2. メトリクス可視化(AWS Distro for OpenTelemetry) <span style="color:red">Coming Soon!</span>
+1. [メトリクス収集・可視化(Prometheus / Grafana)](/containers/k8s/tutorial/ops/prometheus/)
+2. メトリクス収集・可視化(AWS Distro for OpenTelemetry) <span style="color:red">Coming Soon!</span>
 3. ログ(AWS OpenSearch) <span style="color:red">Coming Soon!</span>
 4. ログ(Cloud Watch Logs) <span style="color:red">Coming Soon!</span>
 5. アラート <span style="color:red">Coming Soon!</span>
@@ -67,3 +67,4 @@ Kubernetes活用例をサイト内の記事、ブログから抜粋しました�
 1. [Kubernetes ネイティブなワークフローエンジン Argo Workflows](/containers/k8s/tutorial/advanced/argo-workflows/)
 2. [Karpenterのオートスケールを試してみました](/blogs/2022/02/13/introduce-karpenter/)
 3. [Dapr on Jetson Nano with k3s](/blogs/2022/01/03/dapr-on-jetson-nano-with-k3s/)
+4. [KubernetesのPod Security(PSS/PSA)](/blogs/2022/03/03/pss-psa/)

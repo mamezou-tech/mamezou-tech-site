@@ -3,7 +3,7 @@ title: メトリクス収集・可視化 - Prometheus / Grafana
 author: noboru-kudo
 prevPage: ./src/posts/k8s-tutorial/ops/scheduling.md
 nextPage: ./src/posts/k8s-tutorial/ops/opentelemetry.md
-date: 2022-03-27
+date: 2022-03-17
 ---
 今回のテーマはモニタリングです。
 アプリケーションの運用が開始されると、ピーク時間帯や各種イベントに応じてシステム負荷は大きく変動します。

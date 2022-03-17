@@ -224,7 +224,11 @@ $social-min-height: 30px !default;
     margin-bottom: 0.3rem;
   }
 
-  p {
+  ul {
+    padding-inline-start: 20px;
+  }
+
+  p, li {
     font-size: 0.9rem;
   }
 }

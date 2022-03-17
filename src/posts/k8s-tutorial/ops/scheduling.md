@@ -2,6 +2,7 @@
 title: Podスケジューリング - NodeAffinity / TaintToleration
 author: noboru-kudo
 prevPage: ./src/posts/k8s-tutorial/ops/hpa.md
+nextPage: ./src/posts/k8s-tutorial/ops/prometheus.md
 date: 2022-02-27
 ---
 

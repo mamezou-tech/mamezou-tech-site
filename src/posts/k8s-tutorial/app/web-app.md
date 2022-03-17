@@ -427,6 +427,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: task-service
+  labels:
+    app: task-service
 spec:
   selector:
     app: task-service

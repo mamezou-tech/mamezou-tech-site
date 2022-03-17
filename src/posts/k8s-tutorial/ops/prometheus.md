@@ -92,7 +92,7 @@ prometheus-kube-prometheus-stack-prometheus-0              1/2     Running   0  
 
 `prometheus`NamespaceにPrometheus関連の各コンポーネントと、可視化ツールのGrafanaが実行されています。
 
-## コンテナメトリクス収集・可視化
+## Kubernetesメトリクス収集・可視化
 
 kube-prometheus-stackでは、デフォルトでデータソース(=Prometheus)の設定に加えて、Kubernetesのコンテナ関連のメトリクス収集やGrafanaのダッシュボードがセットアップされています。
 したがって、インストールした時点で既に各種メトリクス収集が始まり、Grafanaダッシュボードをメトリクスを確認できます。

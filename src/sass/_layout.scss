@@ -231,6 +231,11 @@ $social-min-height: 30px !default;
   p, li {
     font-size: 0.9rem;
   }
+
+  code[class*="language-"],
+  pre[class*="language-"] {
+    font-family: Consolas, "Ubuntu Mono", monospace;
+  }
 }
 
 /* override primer core */

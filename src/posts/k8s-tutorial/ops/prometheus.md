@@ -356,6 +356,8 @@ netdataにでPrometheusを選択し、Importをクリックすれば完成です
 
 ## クリーンアップ
 
+kube-prometheus-stackはhelmコマンドでアンインストールしてください。
+
 ```shell
 helm uninstall kube-prometheus-stack -n prometheus
 ```
@@ -372,6 +374,15 @@ kube-prometheus-stackが必要な初期設定をあらかじめしてくれま�
 
 Prometheus自体は可視化やアラートだけではなく、[オートスケーリング - Horizontal Pod Autoscaler(HPA)](/containers/k8s/tutorial/ops/hpa/)でも触れたように、オートスケールのメトリクスとしても利用可能です。
 これをうまく使うことで、より利用するシステムの特性に適したスケーラビリティを手に入れることができるはずです。
+
+また、ここでは触れませんでしたが、AWSはマネージドサービスとしてのPrometheusやGrafanaも提供しています。
+- <https://aws.amazon.com/jp/prometheus/>
+- <https://aws.amazon.com/jp/grafana/>
+
+こちらを採用する場合は、マネージドサービスで得られる可用性に加えて、サービス課金を自前で構築する場合の運用コストと比較して決定すると良いでしょう。
+個人的な感覚ですが、近年はKubernetes Operatorの普及に伴って安定した運用が可能となり、両者に大きな差はなくなってきたのではと感じます。
+一度自前で運用してみてから、マネージドサービスに切り替えるかを判断するのも良いと思います。
+なお、Prometheusのマネージドサービスは、メトリクス量に応じて課金されますので、切替える場合は必要なメトリクスを絞るなどの工夫も必要になってくるでしょう。
 
 ---
 参考資料

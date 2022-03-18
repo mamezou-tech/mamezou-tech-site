@@ -235,7 +235,7 @@ $social-min-height: 30px !default;
 
   code[class*="language-"],
   pre[class*="language-"] {
-    font-family: Consolas, "Ubuntu Mono", monospace;
+    max-width: calc(100vw - 3rem);
   }
 }
 

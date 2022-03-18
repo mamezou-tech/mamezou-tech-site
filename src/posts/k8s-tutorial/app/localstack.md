@@ -254,7 +254,7 @@ LOCALSTACK_ENDPOINT="http://localstack:4566"
 `aws configure`の部分は、先程の初期化スクリプトの内容(ConfigMap)と揃えます。
 
 `LOCALSTACK_ENDPOINT="http://localstack:4566"`の部分に注目してください。
-初期化スクリプト内では`localhost`、ホストOSの場合は仮想環境のIPアドレス(minikubeのIPアドレス(`minikube ip`)または`localhost`(Docker Desktop))を使用しました。
+初期化スクリプト内では`localhost`、ホストOSの場合は仮想環境のIPアドレス(minikubeのIPアドレス(`minikube ip`)または`localhost`(Docker Desktop)を使用しました。
 今回の疑似アプリケーションはKubernetes内の専用コンテナのため、このような指定ではアクセスできません。
 Kubernetesクラスタ内からアクセスするためには、先程確認した`localstack`Serviceリソース経由でアクセスする必要があります。
 

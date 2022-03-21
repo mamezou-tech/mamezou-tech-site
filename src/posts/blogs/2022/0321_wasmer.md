@@ -110,7 +110,7 @@ wasienv を使うと C/C++ から簡単に WASI 対応の Wasm を生成でき�
 
 [GitHub - wasienv/wasienv: Wasienv: WASI Development Toolchain for C/C++](https://github.com/wasienv/wasienv)
 
-現在 C/C++, Swift をサポートしています。Wasmer とは直接依存していませんが、[ブログ](https://medium.com/wasmer/wasienv-wasi-development-workflow-for-humans-1811d9a50345)をみると Wasmer のコンパニオンプロジェクト的な位置づけでしょうか。WASI SDK のインストールや既存プロジェクトを移植するためのツール統合を簡単にするため開発されているようです。Rust には WASI 対応の Wasm 生成機能[^2]がありますが、ユーザの多い C/C++ からの移植が簡単になれば、Wasm の利用が促進されるでしょう。
+現在 C/C++, Swift をサポートしています。Wasmer とは直接依存していませんが、[ブログ](https://medium.com/wasmer/wasienv-wasi-development-workflow-for-humans-1811d9a50345)によると Wasmer のコンパニオンプロジェクト的な位置づけでしょうか。WASI SDK のインストールや既存プロジェクトを移植するためのツール統合を簡単にするため開発されているようです。Rust には WASI 対応の Wasm 生成機能[^2]がありますが、ユーザの多い C/C++ からの移植が簡単になれば、Wasm の利用が促進されるでしょう。
 
 [^2]: ビルドターゲットに wasm32-wasi を指定してビルドします。
 

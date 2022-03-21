@@ -98,7 +98,7 @@ name = "cowthink"
 module = "cowsay"
 ```
 
-NPM の npx コマンドのような Wasm パッケージを直接実行できる wax コマンドも利用できます。これにより、Wasm パッケージをグルーバルインストールしなくても簡単に実行できます。
+NPM の npx コマンドのような Wasm パッケージを直接実行できる wax コマンドも利用できます。これにより、Wasm パッケージをグローバルインストールしなくても簡単に実行できます。
 
 ```shell
 wax cowsay hello          

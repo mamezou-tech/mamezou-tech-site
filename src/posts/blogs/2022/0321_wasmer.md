@@ -130,7 +130,7 @@ wasienv install-sdk unstable
 
 [Compile C/C++ to Wasm WASI - Wasmer Docs](https://docs.wasmer.io/ecosystem/wasienv/compile-c-c++-to-wasm-wasi)
 
-wasicc コマンドでコンパイルします。いくつか warining が出ますが、example.wasm が生成されます。
+wasicc コマンドでコンパイルします。いくつか warning が出ますが、example.wasm が生成されます。
 
 ```shell
 wasicc example.c -o example.wasm

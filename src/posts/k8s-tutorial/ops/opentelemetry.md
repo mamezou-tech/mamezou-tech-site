@@ -11,17 +11,17 @@ date: 2022-03-20
 [[TOC]]
 
 ## OpenTelemetryとは？
-OpenTelemetryはメトリクス、トレース、ログ(現状はドラフト版)等のテレメトリー[^1]情報のインターフェースを規定する仕様です。
-OpenTelemetryには言語非依存のAPIに加えて、各言語に対応したSDK、プロトコル(OTLP:OpenTelemetry Line Protocol)が含まれています。
+OpenTelemetryはメトリクス、トレース、ログ等のテレメトリー[^1]情報のやりとりに関するインターフェースを規定する仕様です(現状はログはまだドラフトです)。
+OpenTelemetryには言語非依存のAPIに加えて、各言語に特化したSDK、プロトコル(OTLP:OpenTelemetry Line Protocol)が含まれています。
 
-OpenTelemetryの仕様の詳細やステータスについては[公式ドキュメント](https://opentelemetry.io/docs/reference/specification/)を参照してください。
+詳細な仕様や現在のステータスについては、[公式ドキュメント](https://opentelemetry.io/docs/reference/specification/)を参照してください。
 
-また、OpenTelemetryのテレメトリー情報収集には、ベンダー中立のCollectorと呼ばれる仕組みを利用することが推奨されています。
+また、必須ではありませんがOpenTelemetryのテレメトリー情報収集には、ベンダー中立のCollectorと呼ばれる仕組みを利用することが推奨されています。
 CollectorはReceiver / Processor / Exporterの3つのコンポーネントで構成されます。
 
 [^1]: OpenTelemetryの仕様では収集対象のメトリクスやトレース、ログのことを`Signals`と呼んでいますが、ここではOpenTelemetryの名前からテレメトリーと訳します。
 
-以下はOpenTelemetry公式サイトから抜粋したCollectorのパイプラインイメージです。
+以下は、OpenTelemetry公式サイトに掲載されているCollectorのパイプラインイメージです。
 ![OpenTelemetry Collector Pipeline](https://i.gyazo.com/0454384c2b94f87d72dfef0c5fbad10f.png)
 引用元：<https://opentelemetry.io/docs/collector/>
 
@@ -31,8 +31,8 @@ CollectorはReceiver / Processor / Exporterの3つのコンポーネントで構
 
 これらはプラグイン形式となっており、利用するツールにあったものを組み合わせてパイプラインを構成可能です。
 
-OpenTelemetryエコシステムでは、知名度のあるフレームワークやサービスに対応したReceiver/Exporterや自動構成ライブラリ(auto-instrumentation)等が提供されてます。
-導入の際は、まず以下を参照して、対応しているものがあるかを確認すると良いでしょう。
+また、OpenTelemetryエコシステムでは、知名度のあるフレームワークやツールに対応したReceiver/Exporterや自動構成ライブラリ(auto-instrumentation)等が提供されてます。
+OpenTelemetry導入を検討する際は、まず以下を参照して、対応しているものがあるかを確認すると良いでしょう。
 
 - <https://opentelemetry.io/registry/>
 

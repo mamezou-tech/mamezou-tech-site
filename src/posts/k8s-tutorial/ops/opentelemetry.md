@@ -14,7 +14,7 @@ date: 2022-03-20
 OpenTelemetryはメトリクス、トレース、ログ等のテレメトリー[^1]情報のやりとりに関するインターフェースを規定する仕様です(現状はログはまだドラフトです)。
 OpenTelemetryには言語非依存のAPIに加えて、各言語に特化したSDK、プロトコル(OTLP:OpenTelemetry Line Protocol)が含まれています。
 
-詳細な仕様や現在のステータスについては、[公式ドキュメント](https://opentelemetry.io/docs/reference/specification/)を参照してください。
+詳細な仕様や現在のステータスについては、[公式ドキュメント](https://opentelemetry.io/docs/reference/specification/)を確認してください。
 
 また、必須ではありませんがOpenTelemetryのテレメトリー情報収集には、ベンダー中立のCollectorと呼ばれる仕組みを利用することが推奨されています。
 CollectorはReceiver / Processor / Exporterの3つのコンポーネントで構成されます。
@@ -29,7 +29,7 @@ CollectorはReceiver / Processor / Exporterの3つのコンポーネントで構
 1. Processor: データのフィルタリングや変換等を行う（任意）
 1. Exporter: Prometheus、Datadog等のバックエンドにテレメトリー情報を送信する
 
-これらはプラグイン形式となっており、利用するツールにあったものを組み合わせてパイプラインを構成可能です。
+これらはプラグイン形式となっており、利用するツールにあったものを組み合わせてパイプラインを構成できます。
 
 また、OpenTelemetryエコシステムでは、知名度のあるフレームワークやツールに対応したReceiver/Exporterや自動構成ライブラリ(auto-instrumentation)等が提供されてます。
 OpenTelemetry導入を検討する際は、まず以下を参照して、対応しているものがあるかを確認すると良いでしょう。
@@ -44,17 +44,17 @@ OpenTelemetry導入を検討する際は、まず以下を参照して、対応�
 
 AWSでは、AWS環境での利用に特化したOpenTelemetryのディストリビューションとして[AWS Distro for OpenTelemetry](https://aws-otel.github.io/)(以下ADOT)を無償提供しています。
 ADOTの実態は、AWS環境に必要な設定やコンポーネントをセットアップしたOpenTelemetry Collectorのカスタマイズバージョンです。
-これを利用することで、EKSだけでなく、ECSやLambda、EC2からのメトリクスを、様々なバックエンドサービス(CloudWatch、AWS X-Ray等)に送信できます。
+これを利用することで、EKS、ECSからLambda、EC2までの各種メトリクスを、様々なバックエンドサービス(CloudWatch、AWS X-Ray、Prometheus等)に送信できます。
 
 - [公式ホームページ](https://aws-otel.github.io)
 - [GitHubリポジトリ](https://github.com/aws-observability/aws-otel-collector)
 
-ADOTに組み込まれているコンポーネントは、GitHubリポジトリのReadmeファイルより確認できます。
+ADOTに組み込まれているコンポーネントは、GitHubリポジトリのREADMEファイルより確認できます。
 
 - [ADOT Collector Built-in Components](https://github.com/aws-observability/aws-otel-collector#adot-collector-built-in-components)
 
 それでは、ADOTを使ってメトリクスを収集・可視化してみましょう。
-なお、今回はメトリクス収集のバックエンドサービスとして、AWSのマネージドサービスである[CloudWatch](https://aws.amazon.com/jp/cloudwatch/)を使います。
+なお、今回はメトリクス収集・可視化のバックエンドサービスには、AWSのマネージドサービスである[CloudWatch](https://aws.amazon.com/jp/cloudwatch/)を使います。
 
 ## 事前準備
 前回の続きになります。必要な環境(EKS/アプリ等)については以下を参照してください。
@@ -69,7 +69,7 @@ helm uninstall kube-prometheus-stack -n prometheus
 
 ## アクセス許可ポリシー作成(Kubernetesメトリクス向け)
 
-まずはKubernetesメトリクスを収集する設定をします。
+まずは、Kubernetesメトリクスを収集する設定をします。
 これには、ADOTがメトリクス収集のためにKubernetesのNodeであるEC2や、メトリクス送信先であるCloudWatchにアクセスできる必要があります。
 必要なIAMポリシーは、AWSのマネージドポリシーであるCloudWatchAgentServerPolicyが用意されていますので、改めて作成する必要はありません。
 
@@ -106,7 +106,7 @@ resource "kubernetes_service_account" "adot_collector" {
 まず、IAMロール(`ADOTCollector`)を作成し、これにAWSマネージドポリシーのCloudWatchAgentServerPolicyを紐付けます。
 そして、KubernetesのNamespace`amzn-cloudwatch-metrics`と、IAMロールを紐付けたServiceAccount(`adot-collector`)を作成しています。
 
-これをTerraformに反映(`terraform apply`)しておきましょう。反映の仕方は以下を参照しくてださい。
+これをTerraformでAWS環境に反映(`terraform apply`)しておきましょう。反映の仕方は以下を参照しくてださい。
 
 - [クラスタ環境デプロイ - EKSクラスタ(AWS環境準備) - AWS/EKS反映](/containers/k8s/tutorial/app/eks-1/#aws-eks反映)
 
@@ -122,7 +122,7 @@ helm repo update
 ```
 
 TODO: バージョンアップしないと動かないよ
-そしてhelmコマンドでインストールします。ここでは現時点で最新の`0.x.x`を指定しました。
+helmコマンドでインストールします。ここでは現時点で最新の`0.x.x`を指定しました。
 
 ```shell
 helm upgrade aws-otel-ds aws-otel/adot-exporter-for-eks-on-ec2 \
@@ -137,7 +137,7 @@ helm upgrade aws-otel-ds aws-otel/adot-exporter-for-eks-on-ec2 \
     --wait
 ```
 
-`clusterName`/`awsRegion`のパラメータは環境に合ったものを指定してください。
+`clusterName`/`awsRegion`の各パラメータは、自身の環境に合ったものを指定してください。
 先程TerraformでServiceAccountやNamespaceを作成しましたので、`adotCollector.daemonSet.xxx`にはそれを利用するようにしています。
 
 また、今回ログ収集はスコープ外としていますので、FluentBitも無効にしています(`fluentbit.enabled=false`)。
@@ -153,13 +153,13 @@ adot-collector-daemonset-47qfb   1/1     Running   0          1h12m
 adot-collector-daemonset-mdd9d   1/1     Running   0          1h12m
 ```
 
-ここでは、ADOTはDaemonSetとして導入しています。
-クラスタのノード数に合った数のPodが起動していれば問題ありません（今回は2ノード構成のため2レプリカ）。
+ここでは、ADOT CollectorをDaemonSetとして導入しています。
+クラスタのノード数と同じ数のPodが起動していれば問題ありません（上記は2ノード構成のため2レプリカとなっています）。
 
 ## Kubernetesメトリクス可視化
 
-これでDaemonSetとしてデプロイしたADOTがノードからメトリクスの収集を開始しているはずです。
-しばらくしてから、AWSマネジメントコンソールから確認してみましょう。
+これでDaemonSetとしてデプロイしたADOT CollectorがKubernetesクラスタのメトリクスの収集を開始しているはずです。
+しばらく時間を置いてから、AWSマネジメントコンソールを確認してみましょう。
 サービスとしてCloudWatchを選択し、サイドメニューより`インサイト -> Container Insights`と進みます。
 
 ![container-insights resources](https://i.gyazo.com/7555bbb364a0bfdfa02918136a7e9e8d.png)
@@ -169,7 +169,7 @@ Kubernetesリソースの一覧が表示され、コンテナの平均CPUや平�
 
 ![](https://i.gyazo.com/e856dd6abf08a975b50d6b2de3a55b6f.png)
 
-これらはPod単位だけでなく、ServiceやNode単位でも参照可能です。
+これらはPod単位だけでなく、ServiceやNode単位でも参照できます。
 また、プルダウンメニューから`コンテナマップ`を選択すると、以下のようにリソース間の関連性を可視化できます。
 
 ![](https://i.gyazo.com/ac3cc0c82dca3471963ef8873db096c7.png)

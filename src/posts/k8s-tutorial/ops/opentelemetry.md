@@ -243,25 +243,25 @@ module "task_service" {
 既に`task-service`のロールは作成済みですので、それに対してADOT Collectorのポリシーを紐付けるだけです。
 
 これを先程同様にAWS環境に反映(`terraform apply`)しましょう。
-これで`task-service`のサイドカーコンテナではCloudWatchへのメトリクス送信ができるようになります。
+これで、`task-service`のサイドカーコンテナでCloudWatchへのメトリクス送信ができるようになります。
 
 ## ADOT サイドカーコンテナのセットアップ
-これで準備が整ったので、ADOTのサイドカーコンテナをアプリケーションに組み込んでいきます。
+これで準備が整いました。ADOTのサイドカーコンテナをアプリケーションに組み込んでいきましょう。
 
-ここで1度立ち止まってみましょう。
-前回はアプリケーションに対してPrometheusクライアントライブラリ(prometheus-api-metrics/prom-client)を導入しました。
-これによってメトリクスの自動収集が行われて`/metrics`エンドポイントが公開され、Prometheusが取得可能となります。
+[前回](/containers/k8s/tutorial/ops/prometheus)は、アプリケーションに対してPrometheusクライアントライブラリ(prometheus-api-metrics/prom-client)を導入しました。
+これにより、アプリケーション内でメトリクス自動収集と`/metrics`エンドポイント公開が行われ、ここからPrometheusがメトリクスを取得(PULL)していました。
 
 ![prometheus-architecture](https://i.gyazo.com/064fbe7f6fdf65b0831b7ced8d5d10fe.png)
 
-しかし、ADOTのデフォルトではOpenTelemetryプロトコル(OTLP)でのメトリクスが送られることを待っています。このため、このPrometheus用のエンドポイントに対してメトリクスを収集しにくることはありません。
+しかし、ADOTデフォルトではOpenTelemetryプロトコル(OTLP)でメトリクスが送信されてくることを待っています(PUSH型)。
+このため、単純に置き換えるだけではPrometheus用のエンドポイントからメトリクスが収集されません。
 
 ![prom-adot-mismatch](https://i.gyazo.com/8b0b55b2e17c790b4e51abf6b4c0e192.png)
 
 アプリケーションをOTLPに対応すること自体は可能ですが、現時点ではprometheus-api-metricsのようにNode.jsのメトリクスを自動収集するライブラリは存在しません（トレーシングのみ）。
-このため、アプリケーション内でNode.jsやExpressに関するメトリクス生成機能を実装する必要がありますが、これを正確に行うのはかなりハードルが高いと言えます。
-これに対する解決策としては、OpenTelemetry Collector側の設定をカスタマイズすることです。
-前述の通りOpenTelemetry Collectorはプラグイン形式で組み替えることが可能で、今回利用しているADOTでも、ReceiverコンポーネントとしてPrometheusをサポートしています。
+このため、アプリケーション内でNode.jsやExpressに関するメトリクス収集機能を実装する必要がありますが、これを正確に行うのはかなりハードルが高いと言えます。
+これに対する解決策としては、ADOTつまりOpenTelemetry Collectorの設定をカスタマイズすることです。
+前述の通り、OpenTelemetry Collectorはプラグイン形式で組み替えることが可能です。今回利用しているOpenTelemetryディストリビューションのADOTでも、ReceiverコンポーネントとしてPrometheusをサポートしています。
 今回はアプリケーション側では前回と同じくPrometheus用のエンドポイントを公開し、ADOT側ではこのエンドポイントからメトリクスを収集(PULL)するようにチューニングを行うこととします。
 
 ![prom-adot-adapt](https://i.gyazo.com/557dafc4f912dce392bf8a8e65df7f09.png)
@@ -273,7 +273,8 @@ Node.jsはメジャーなランタイム環境ですので、そう遠くない�
 :::
 
 では、アプリケーションのKubernetesのマニフェストを修正してサイドカーコンテナを組み込みましょう。
-`app/k8s/v3`の内容をコピーした`app/k8s/otel`ディレクトリを作成し、ここに対して修正を加えていきます[^2]。
+ここでは、`app/k8s/otel`ディレクトリを作成し、アプリケーション開発編で作成した`app/k8s/v3`の内容をコピーします。
+ここに対してOpenTelemetryの修正を加えていきます[^2]。
 
 [^2]: 完成イメージを見たい場合は、[こちら](https://github.com/mamezou-tech/k8s-tutorial/tree/main/app/k8s/otel-ans)を参照してください。
 
@@ -315,24 +316,23 @@ service:
 ```
 
 ポイントは`receivers`の部分です。デフォルトだと`otlp`、つまりOpenTelemetryプロトコルですが、ADOTに組み込まれている`prometheus`を使うよう指定します。
+
 そして、`conifig`配下にPrometheusの設定を記述します。この部分はPrometheusの設定ファイルと同一フォーマットとなります。
-ここでは、メトリクス収集のエンドポイントは固定設定(`static_configs`)としています。
+ここでは、メトリクス収集のエンドポイントは固定設定(`static_configs`)とし、アクセス先である`targets`は、ローカルアクセスの`localhost:3000`とします[^3]。
 これは、ADOTはサイドカーコンテナで、アプリケーションと同じPod内での実行(ネットワーク共有)となるためです。
-もちろん、実際のエンドポイントを指定する`targets`は、ローカルの`localhost:3000`とします[^3]。
 
 [^3]: 通常のPrometheusの場合は、`static_configs`ではなく`kubernetes_sd_configs`（サービスディスカバリ）を利用し、`relabel_configs`でフィルタリングすることが多いです。
 
 なお、この設定ファイルの詳細については、OpenTelemetryの[公式ドキュメント](https://opentelemetry.io/docs/collector/configuration/)を参照してください。
 
 :::alert
-OpenTelemetryのPrometheusレシーバーコンポーネントは、現在まだ**開発中ステータス**です。
+OpenTelemetryのReceiverコンポーネントのPrometheusは、現時点ではまだ**開発中ステータス**です。
 実際に利用する際はGitHubリポジトリを参照し、最新の状態を確認してください。
 
 - <https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/prometheusreceiver>
 :::
 
-この設定ファイルをKustomizeのConfigMapジェネレータに追加しましょう。
-これには、`app/k8s/otel/overlays/prod/kustomization.yaml`を修正します。
+この設定ファイルをKustomizeのConfigMapジェネレータに追加しましょう。`app/k8s/otel/overlays/prod/kustomization.yaml`を修正します。
 以下追加部分を抜粋します。
 
 ```yaml
@@ -407,6 +407,25 @@ spec:
 今までは`containers`配下はアプリケーション用のコンテナ1つでしたが、ADOTのサイドカーコンテナを追加しています。
 また、`voluemes`として先程作成したConfigMapをボリュームとして作成し、コンテナの`volumeMounts`でそのボリュームをサイドカーコンテナ側の`/config`にマウントします。
 これを実施することで、ADOTはOpenTelemetry Collectorの設定ファイルとして認識します。
+
+最終的に`app/k8s/otel/overlays/prod`は以下のような構成となります。
+
+```
+app/otel/overlays/prod/
+├── kustomization.yaml <- OpenTelemetryの設定ファイルをConfigMap化
+├── lets-encrypt-issuer.yaml
+├── patches
+│ ├── ingress
+│ │ └── ingress.patch.yaml
+│ ├── task-reporter
+│ │ └── cronjob.patch.yaml
+│ └── task-service
+│     ├── deployment.patch.yaml <- サイドカーコンテナを追加し、ConfigMapをマウント
+│     └── otel-config.yaml <- OpenTelemetry設定ファイル配置
+└── task-web
+├── deployment.yaml
+└── service.yaml
+```
 
 これで準備完了です。後はこれをKubernetesに反映しましょう。
 デプロイはいつもと同じ手順です。

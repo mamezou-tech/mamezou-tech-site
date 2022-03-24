@@ -223,7 +223,7 @@ Kubernetesリソースの一覧が表示され、コンテナの平均CPUや平�
 これに従い、別途アプリケーションPodのサイドカーコンテナとしてADOTを導入しましょう。
 
 まず、サイドカーコンテナ用に別途アクセス許可を設定する必要があります。
-今回はNode(EC2)へのアクセスは不要で、CloudWatchへのメトリクス送信のみがあれば問題ありません。必要なポリシーファイルはGitHubの[こちら](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/ops/otel/otel-collector-policy.json)に用意しました。
+今回はNode(EC2)へのアクセスは不要で、CloudWatchへのメトリクス送信のみがあれば問題ありません。必要なポリシーファイルはGitHubの[こちら](https://github.com/mamezou-tech/k8s-tutorial/blob/main/ops/otel/otel-collector-policy.json)に用意しました。
 このファイルを`app/terraform`に配置してください(`otel-collector-policy.json`としました)。
 
 ```shell

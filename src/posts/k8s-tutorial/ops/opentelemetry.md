@@ -558,10 +558,10 @@ OpenTelemetryという標準プロトコルを利用し、任意のバックエ�
 カスタムメトリクスは、意外にコストが高い印象ですので、各サービスの課金体系は事前にチェックしておきましょう。
 最初は全量取得するとしても、その後の運用を通して不要なメトリクスをそぎ落としていく等の工夫が必要となることも多いと思います。
 
-また、ここでは触れませんでしたが、CloudWatchでは、ADOTを使わずともPrometheusメトリクスの収集が可能になっています。
+また、ここでは触れませんでしたが、CloudWatchでは、ADOTを使わずともPrometheusに蓄積したメトリクスの収集が可能になっています。
 - [Container Insights Prometheus metrics monitoring](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus.html)
 
-現在既にメトリクスの収集にPrometheusを使っていて、より簡単にCloudWatchに移行したい場合は、こちらを検討するのも良いかと思います。
+現在既にメトリクスの収集にPrometheusを使っていて、可視化部分を簡単にCloudWatchに移行したい場合は、こちらを検討するのも良いかと思います。
 
 ---
 参照資料

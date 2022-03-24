@@ -421,7 +421,7 @@ spec:
 今までは`containers`配下はアプリケーション用のコンテナ1つでしたが、ADOTのサイドカーコンテナを追加しています。
 
 また、`voluemes`として先程作成したConfigMapをボリュームとして作成し、`volumeMounts`でそのボリュームをサイドカーコンテナ側の`/config`にマウントします。
-ADOT実行時には、マウントしたConfigMap内の設定ファイルを引数(`args`)に渡すようにしています。
+ADOT実行時には、マウントしたConfigMap内の設定ファイルを引数(`args`)に渡すよう指定しています。
 これを実施することで、ADOTはカスタムの設定ファイル(Prometheus Receiver)を認識します。
 
 最終的に`app/k8s/otel/overlays/prod`は以下のような構成となります。

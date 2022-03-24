@@ -29,7 +29,7 @@ CollectorはReceiver / Processor / Exporterの3つのコンポーネントで構
 1. Processor: データのフィルタリングや変換等を行う（任意）
 1. Exporter: Prometheus、Datadog等のバックエンドにテレメトリー情報を送信する
 
-これらはプラグイン形式となっており、利用するツールにあったものを組み合わせてパイプラインを構成できます。
+これらはプラグイン形式となっており、利用環境にあったものを組み合わせてパイプラインを構成できます。
 
 また、OpenTelemetryエコシステムでは、知名度のあるフレームワークやツールに対応したReceiver/Exporterや自動構成ライブラリ(auto-instrumentation)等が提供されてます。
 OpenTelemetry導入を検討する際は、まず以下を参照して、対応しているものがあるかを確認すると良いでしょう。
@@ -117,7 +117,7 @@ helm upgrade aws-otel-ds aws-otel/adot-exporter-for-eks-on-ec2 \
     --wait
 ```
 `clusterName`/`awsRegion`の各パラメータは、自身の環境に合ったものを指定してください。
-また、今回ログ収集はスコープ外としていますので、FluentBitも無効にしています(`fluentbit.enabled=false`)。
+また、今回ログ収集はスコープ外としていますので、FluentBitは無効にしています(`fluentbit.enabled=false`)。
 
 ここで、インストールされたADOT Collectorを修正します。これは、Helmチャートの`0.1.0`のテンプレートには設定不備や機能不足があるためです。
 まず、作成されたClusterRoleの参照リソース名が不正になっています。これを正しい値に修正ます。

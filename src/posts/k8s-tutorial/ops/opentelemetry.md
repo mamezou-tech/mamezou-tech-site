@@ -11,7 +11,7 @@ date: 2022-03-24
 [[TOC]]
 
 ## OpenTelemetryとは？
-OpenTelemetryはメトリクス、トレース、ログ等のテレメトリー[^1]情報のやりとりに関するインターフェースを規定する仕様です(現状はログはまだドラフトです)。
+OpenTelemetryは、メトリクス、トレース、ログ等のテレメトリー[^1]情報のやりとりに関するインターフェースを規定する仕様です(現状ログはまだドラフトです)。
 OpenTelemetryには言語非依存のAPIに加えて、各言語に特化したSDK、プロトコル(OTLP:OpenTelemetry Line Protocol)が含まれています。
 
 詳細な仕様や現在のステータスについては、[公式ドキュメント](https://opentelemetry.io/docs/reference/specification/)を確認してください。
@@ -145,7 +145,7 @@ kubectl rollout restart ds adot-collector-daemonset -n amzn-cloudwatch-metrics
 :::alert
 今回インストール後に各種変更をしていますが、望ましいやり方ではありません。
 既にHelmチャートのソースコード上では修正版がマージされており、次のリリースバージョンでは`helm upgrade/install`で対応可能となる見込みです。
-このようにOpenTelemetryエコシステムは、まだ安定していないプロダクトが多く、ソースコードやIssueの確認が欠かせないところが難点です。
+このようにOpenTelemetryエコシステムは、まだ安定していないプロダクトが多く、ソースコードやIssueの確認が欠かせません。
 :::
 
 以下を実行して、Podの状態を確認しましょう。

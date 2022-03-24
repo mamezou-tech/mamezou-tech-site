@@ -215,12 +215,12 @@ Kubernetesリソースの一覧が表示され、コンテナの平均CPUや平�
 ## アクセス許可ポリシー作成(アプリケーションメトリクス向け)
 ここまででインフラレイヤーのメトリクス収集と可視化を実践してきました。ここからはアプリケーションレイヤーについても対応していきましょう。
 
-アプリケーションメトリクスの収集についても、チューニングが必要ですが先程のDaemonSetを利用可能です。
+アプリケーションメトリクスの収集についても、先程のDaemonSetを利用可能です。
 しかし、ADOTの公式ドキュメントによると、DaemonSetではなく、フル機能をサポートするサイドカーコンテナによるデプロイが推奨されています。
 
 - [AWS Distro for OpenTelemetry Collector Deployment Types](https://aws-otel.github.io/docs/getting-started/collector/sidecar-vs-service)
 
-これに従い、アプリケーションPodのサイドカーコンテナとして別途ADOTを導入しましょう。
+これに従い、別途アプリケーションPodのサイドカーコンテナとしてADOTを導入しましょう。
 
 まず、サイドカーコンテナ用に別途アクセス許可を設定する必要があります。
 今回はNode(EC2)へのアクセスは不要で、CloudWatchへのメトリクス送信のみがあれば問題ありません。必要なポリシーファイルはGitHubの[こちら](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/ops/otel/otel-collector-policy.json)に用意しました。
@@ -253,11 +253,11 @@ module "task_service" {
 }
 ```
 
-ここでは、前回メトリクス収集を実施するよう修正した`task-service`Podに対してのみ適用します。
-既に`task-service`のロールは作成済みですので、それに対してADOT Collectorのポリシーを紐付けるだけです。
+ここでは、前回同様`task-service`Podのみに適用します。
+既に`task-service`のロールは作成済みですので、それに対してADOT Collectorのポリシーを紐付けるだけです(`role_policy_arns`)。
 
 これを先程同様にAWS環境に反映(`terraform apply`)しましょう。
-これで、`task-service`のサイドカーコンテナでCloudWatchへのメトリクス送信ができるようになります。
+これで、サイドカーコンテナ(ADOT)からCloudWatchへのメトリクス送信ができるようになります。
 
 ## ADOT サイドカーコンテナのセットアップ
 これで準備が整いました。ADOTのサイドカーコンテナをアプリケーションに組み込んでいきましょう。
@@ -276,7 +276,7 @@ module "task_service" {
 このため、アプリケーション内でNode.jsやExpressに関するメトリクス収集機能を実装する必要がありますが、これを正確に行うのはかなりハードルが高いと言えます。
 これに対する解決策としては、ADOTつまりOpenTelemetry Collectorの設定をカスタマイズすることです。
 前述の通り、OpenTelemetry Collectorはプラグイン形式で組み替えることが可能です。今回利用しているOpenTelemetryディストリビューションのADOTでも、ReceiverコンポーネントとしてPrometheusをサポートしています。
-今回はアプリケーション側では前回と同じくPrometheus用のエンドポイントを公開し、ADOT側ではこのエンドポイントからメトリクスを収集(PULL)するようにチューニングを行うこととします。
+今回は、アプリケーションは前回と同じくPrometheus用のエンドポイントを公開し、ADOT側でこのエンドポイントからメトリクスを収集(PULL)するようにチューニングを行うこととします。
 
 ![prom-adot-adapt](https://i.gyazo.com/557dafc4f912dce392bf8a8e65df7f09.png)
 
@@ -329,13 +329,13 @@ service:
       exporters: [awsemf]
 ```
 
-ポイントは`receivers`の部分です。デフォルトだと`otlp`、つまりOpenTelemetryプロトコルですが、ADOTに組み込まれている`prometheus`を使うよう指定します。
+ポイントは`receivers`の部分です。ここでADOTに組み込まれている`prometheus`を使うよう指定します。
 
 そして、`conifig`配下にPrometheusの設定を記述します。この部分はPrometheusの設定ファイルと同一フォーマットとなります。
 ここでは、メトリクス収集のエンドポイントは固定設定(`static_configs`)とし、アクセス先である`targets`は、ローカルアクセスの`localhost:3000`とします[^3]。
 これは、ADOTはサイドカーコンテナで、アプリケーションと同じPod内での実行(ネットワーク共有)となるためです。
 
-[^3]: 通常のPrometheusの場合は、`static_configs`ではなく`kubernetes_sd_configs`（サービスディスカバリ）を利用し、`relabel_configs`でフィルタリングすることが多いです。
+[^3]: 通常のPrometheusの場合は、`static_configs`ではなく`kubernetes_sd_configs`（サービスディスカバリ）を利用し、`relabel_configs`でフィルタリングすることが多いでしょう。
 
 なお、この設定ファイルの詳細については、OpenTelemetryの[公式ドキュメント](https://opentelemetry.io/docs/collector/configuration/)を参照してください。
 
@@ -365,7 +365,7 @@ configMapGenerator:
       - patches/task-service/otel-config.yaml
 ```
 
-OpenTelemetryの設定ファイルをotel-configという名前のConfigMapで作成します(デプロイ時はプレフィックス`prod-`がつきます)。
+OpenTelemetryの設定ファイルを、otel-configという名前のConfigMapリソースとして作成するよう指定しました(デプロイ時はプレフィックス`prod-`がつきます)。
 
 最後にサイドカーコンテナの設定です。
 `task-service`のDeploymentリソースに対応するKustomizeパッチファイルが、`app/k8s/otel/overlays/prod/patches/task-service/deployment.patch.yaml`にあるはずです。
@@ -419,8 +419,10 @@ spec:
 ```
 
 今までは`containers`配下はアプリケーション用のコンテナ1つでしたが、ADOTのサイドカーコンテナを追加しています。
-また、`voluemes`として先程作成したConfigMapをボリュームとして作成し、コンテナの`volumeMounts`でそのボリュームをサイドカーコンテナ側の`/config`にマウントします。
-これを実施することで、ADOTはOpenTelemetry Collectorの設定ファイルとして認識します。
+
+また、`voluemes`として先程作成したConfigMapをボリュームとして作成し、`volumeMounts`でそのボリュームをサイドカーコンテナ側の`/config`にマウントします。
+ADOT実行時には、マウントしたConfigMap内の設定ファイルを引数(`args`)に渡すようにしています。
+これを実施することで、ADOTはカスタムの設定ファイル(Prometheus Receiver)を認識します。
 
 最終的に`app/k8s/otel/overlays/prod`は以下のような構成となります。
 
@@ -501,9 +503,9 @@ PrometheusのReceiverが構成され、アプリケーションメトリクス�
 
 ## アプリケーションメトリクス可視化
 
-アプリケーションのメトリクス収集ができましたので、CloudWatchでこれを可視化します。
-AWSマネジメントコンソールより、アプリケーションのメトリクスを確認しましょう。
-CloudWatchメニューより`メトリクス -> すべのメトリクス`を選択します。
+最後に、アプリケーションのメトリクスをCloudWatchで可視化してみましょう。
+
+AWSマネジメントコンソールのCloudWatchメニューより`メトリクス -> すべのメトリクス`を選択します。
 
 ![cloudwatch metrics namespaces](https://i.gyazo.com/f9a15020869ce7d26e5a2a4fc41e2e5a.png)
 
@@ -523,12 +525,13 @@ CloudWatchメニューより`メトリクス -> すべのメトリクス`を選�
 もちろんCloudWatchでも、Grafanaのようにダッシュボード機能があります。
 しかし、事前に使えるものは一部のマネージドサービスのものだけで、prometheus-api-metricsのように綺麗なダッシュボードテンプレートがありませんので、自前で作成する必要があります。
 
-ダッシュボードのサンプルとして、以下のようになります(表示をナイトモードに切り替えるてGrafanaのUIに近くしています)。
+ここでやり方を説明するよりも、実際に[公式ドキュメント](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Dashboards.html)を参照し、自分で任意のダッシュボードを作成してみましょう。
+
+サンプルとして以下のようなものが作成できます(表示をナイトモードに切り替えてGrafanaのUIに近くしています)。
 
 ![](https://i.gyazo.com/c06ca683beb5c087cb185946fc877197.png)
 
-実際に[公式ドキュメント](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Dashboards.html)を参照し、自分で任意のダッシュボードを作成してみましょう。
-複雑なグラフには個別にクエリ(メトリクスインサイト)記述もできますし、見た目のチューニングもある程度は対応可能です。
+複雑なグラフには個別にクエリ(メトリクスインサイト)記述もできますし、見た目のチューニングもある程度対応できることが分かります。
 
 ## クリーンアップ
 
@@ -555,8 +558,8 @@ OpenTelemetryという標準プロトコルを利用し、任意のバックエ�
 カスタムメトリクスは、意外にコストが高い印象ですので、各サービスの課金体系は事前にチェックしておきましょう。
 最初は全量取得するとしても、その後の運用を通して不要なメトリクスをそぎ落としていく等の工夫が必要となることも多いと思います。
 
-また、ここでは触れませんでしたが、CloudWatchではPrometheusメトリクスの収集も可能になっています。
-- <https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus.html>
+また、ここでは触れませんでしたが、CloudWatchでは、ADOTを使わずともPrometheusメトリクスの収集が可能になっています。
+- [Container Insights Prometheus metrics monitoring](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus.html)
 
 現在既にメトリクスの収集にPrometheusを使っていて、より簡単にCloudWatchに移行したい場合は、こちらを検討するのも良いかと思います。
 

@@ -2,7 +2,7 @@
 title: メトリクス収集・可視化 - OpenTelemetry / CloudWatch
 author: noboru-kudo
 prevPage: ./src/posts/k8s-tutorial/ops/prometheus.md
-date: 2022-03-20
+date: 2022-03-24
 ---
 
 [前回](/containers/k8s/tutorial/ops/prometheus)はPrometheusとGrafanaを利用して、Kubernetesおよびアプリケーションに関するメトリクスの収集・可視化を行いました。
@@ -85,26 +85,9 @@ module "adot_collector" {
   role_policy_arns              = ["arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"] # AWS managed policy
   oidc_fully_qualified_subjects = ["system:serviceaccount:amzn-cloudwatch-metrics:adot-collector"]
 }
-
-resource "kubernetes_namespace" "cloudwatch_metrics" {
-  metadata {
-    name = "amzn-cloudwatch-metrics"
-  }
-}
-
-resource "kubernetes_service_account" "adot_collector" {
-  metadata {
-    namespace = kubernetes_namespace.cloudwatch_metrics.metadata[0].name
-    name = "adot-collector"
-    annotations = {
-      "eks.amazonaws.com/role-arn" = module.adot_collector.iam_role_arn
-    }
-  }
-}
 ```
 
 まず、IAMロール(`ADOTCollector`)を作成し、これにAWSマネージドポリシーのCloudWatchAgentServerPolicyを紐付けます。
-そして、KubernetesのNamespace`amzn-cloudwatch-metrics`と、IAMロールを紐付けたServiceAccount(`adot-collector`)を作成しています。
 
 これをTerraformでAWS環境に反映(`terraform apply`)しておきましょう。反映の仕方は以下を参照しくてださい。
 
@@ -121,28 +104,51 @@ helm repo add aws-otel https://aws-observability.github.io/aws-otel-helm-charts
 helm repo update
 ```
 
-TODO: バージョンアップしないと動かないよ
-helmコマンドでインストールします。ここでは現時点で最新の`0.x.x`を指定しました。
+helmコマンドでインストールします。ここでは現時点で最新の`0.1.0`を指定しました。
 
 ```shell
 helm upgrade aws-otel-ds aws-otel/adot-exporter-for-eks-on-ec2 \
     --install --version 0.1.0 \
     --namespace kube-system \
+    --set adotCollector.daemonSet.serviceAccount.name=adot-collector \
     --set clusterName=mz-k8s \
     --set awsRegion=ap-northeast-1 \
-    --set adotCollector.daemonSet.serviceAccount.create=false \
-    --set adotCollector.daemonSet.serviceAccount.name=adot-collector \
-    --set adotCollector.daemonSet.createNamespace=false \
     --set fluentbit.enabled=false \
     --wait
 ```
-
 `clusterName`/`awsRegion`の各パラメータは、自身の環境に合ったものを指定してください。
-先程TerraformでServiceAccountやNamespaceを作成しましたので、`adotCollector.daemonSet.xxx`にはそれを利用するようにしています。
-
 また、今回ログ収集はスコープ外としていますので、FluentBitも無効にしています(`fluentbit.enabled=false`)。
 
-インストールが終わったら、以下を実行してみましょう。
+ここで、インストールされたADOT Collectorを修正します。これは、Helmチャートの`0.1.0`のテンプレートには設定不備や機能不足があるためです。
+まず、作成されたClusterRoleの参照リソース名が不正になっています。これを正しい値に修正ます。
+
+```shell
+kubectl patch clusterrole adot-collector-role --type=json \
+  -p '[{"op": "replace", "path": "/rules/5/resourceNames/0", "value": "otel-container-insight-clusterleader"}]'
+```
+
+次に、作成されたDaemonSetのServiceAccountに、Terraformで作成したIAMロールを紐付けます。
+これは、Helmチャート`0.1.0`ではインストール時にServiceAccountのannotationsを指定できないためです。
+
+```shell
+# AWSアカウントIDは自身のものに置き換えてください
+kubectl patch sa adot-collector -n amzn-cloudwatch-metrics \
+  -p '{"metadata": {"annotations": {"eks.amazonaws.com/role-arn": "arn:aws:iam::<aws-account-id>:role/ADOTCollector"}}}'
+```
+
+変更が終わったら、IRSA(IAM Role for ServiceAccount)を有効にするため、一度Podを再起動します。
+
+```shell
+kubectl rollout restart ds adot-collector-daemonset -n amzn-cloudwatch-metrics
+```
+
+:::alert
+今回インストール後に各種変更をしていますが、望ましいやり方ではありません。
+既にHelmチャートのソースコード上では修正版がマージされており、次のリリースバージョンでは`helm upgrade/install`で対応可能となる見込みです。
+このようにOpenTelemetryエコシステムは、まだ安定していないプロダクトが多く、ソースコードやIssueの確認が欠かせないところが難点です。
+:::
+
+以下を実行して、Podの状態を確認しましょう。
 
 ```shell
 kubectl get pod -n amzn-cloudwatch-metrics
@@ -153,8 +159,16 @@ adot-collector-daemonset-47qfb   1/1     Running   0          1h12m
 adot-collector-daemonset-mdd9d   1/1     Running   0          1h12m
 ```
 
-ここでは、ADOT CollectorをDaemonSetとして導入しています。
-クラスタのノード数と同じ数のPodが起動していれば問題ありません（上記は2ノード構成のため2レプリカとなっています）。
+ここでは、ADOT CollectorをDaemonSetとして導入していますので、クラスタのノード数と同じ数のPodが起動していることを確認します（上記は2ノード構成のため2レプリカとなっています）。
+
+また、Podのログも確認し(`kubectl logs`)、エラーがないことも確認しておきましょう。
+
+:::info
+ここではEC2上に構築したEKSを対象としていますが、2022/2/17よりFargateサポートが追加されています。
+Fargateを使ってEKSを構築している場合は、以下を参照してください。
+
+- <https://aws-otel.github.io/docs/getting-started/container-insights/eks-fargate>
+:::
 
 ## Kubernetesメトリクス可視化
 

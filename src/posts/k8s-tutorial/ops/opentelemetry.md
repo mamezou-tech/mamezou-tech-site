@@ -1,6 +1,7 @@
 ---
 title: メトリクス収集・可視化 - OpenTelemetry / CloudWatch
 author: noboru-kudo
+tags: [aws]
 prevPage: ./src/posts/k8s-tutorial/ops/prometheus.md
 date: 2022-03-24
 ---
@@ -420,7 +421,7 @@ spec:
 
 今までは`containers`配下はアプリケーション用のコンテナ1つでしたが、ADOTのサイドカーコンテナを追加しています。
 
-また、`voluemes`として先程作成したConfigMapをボリュームとして作成し、`volumeMounts`でそのボリュームをサイドカーコンテナ側の`/config`にマウントします。
+また、`volumes`として先程作成したConfigMapをボリュームとして作成し、`volumeMounts`でそのボリュームをサイドカーコンテナ側の`/config`にマウントします。
 ADOT実行時には、マウントしたConfigMap内の設定ファイルを引数(`args`)に渡すよう指定しています。
 これを実施することで、ADOTはカスタムの設定ファイル(Prometheus Receiver)を認識します。
 

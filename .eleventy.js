@@ -26,19 +26,21 @@ const icons = {
 };
 
 const containerOptions = {
-  validate: (params) => (/^(info|alert|stop|check)\s*.*$/.test(params.trim())),
+  validate: (params) => (/^(info|alert|stop|check|column)[\s:]*.*$/.test(params.trim())),
   render: (tokens, idx) => {
-    const expression = tokens[idx].info.trim();
+    const [type, title] = tokens[idx].info.trim().split(":");
     if (tokens[idx].nesting === 1) {
-      switch (expression) {
+      switch (type) {
         case "info":
-          return `<div class="flash"><span class="flash-title">${icons.info} Information</span>`;
+          return `<div class="flash"><span class="flash-title">${icons.info} ${title || "Information"}</span>`;
         case "alert":
-          return `<div class="flash flash-warn"><span class="flash-title">${icons.alert} Warning</span>`;
+          return `<div class="flash flash-warn"><span class="flash-title">${icons.alert} ${title || "Caution"}</span>`;
         case "stop":
-          return `<div class="flash flash-error"><span class="flash-title">${icons.stop} Warning</span>`;
+          return `<div class="flash flash-error"><span class="flash-title">${icons.stop} ${title || "Warning"}</span>`;
         case "check":
-          return `<div class="flash flash-success"><span class="flash-title">${icons.check} Information</span>`;
+          return `<div class="flash flash-success"><span class="flash-title">${icons.check} ${title || "Information"}</span>`;
+        case "column":
+          return `<div class="flash flash-column"><span class="flash-title">${icons.info} ${title || "Column"}</span>`;
         default:
           return '<div class="flash">'
       }

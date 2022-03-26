@@ -5,11 +5,13 @@ date: 2022-03-26
 tags: [aws]
 ---
 
-[Envoy proxy](https://www.envoyproxy.io/) を使った S3 上の静的コンテンツのホスティングについて説明した2022年2月16日の前回の記事「[S3 の静的 Web サイトを Envoy でホスティング](https://developer.mamezou-tech.com/blogs/2022/02/16/hosting-a-static-website-using-s3-with-envoy/)」では、説明を簡略化するために S3 バケットのパブリックアクセスを有効にしていました。
+モダンな UI のフレームワークは静的なコンテンツとしてパッケージングされることが主流となっています。これは変化の激しい UI とそれと比較すれば比較的変化のスピードが遅くてよいバックエンドとの関係で理にかなっています。UI のこうした静的なコンテンツの配信では多くの SaaS 製品で CloudFront のような CDN が利用されています。しかし、エンタープライズで利用されるフロントエンドの場合には VPN を通じたアクセスのみを許可している場合が多くあります。このような場合にまで世界中の多数のユーザに低レイテンシーな配信を目的としている CDN を利用することは本来の用途外であるというだけでなく、セキュリティ要件のために CDN の利点を失わせる方向で無用な修正やオーバーヘッドを加えることにもつながります。
 
-実際の運用ではパブリックアクセスを無効にする場合がほとんどだと考えています。
+2022年2月16日の前回の記事「[S3 の静的 Web サイトを Envoy でホスティング](https://developer.mamezou-tech.com/blogs/2022/02/16/hosting-a-static-website-using-s3-with-envoy/)」では、説明を簡略化するために S3 バケットのパブリックアクセスを有効にして [Envoy proxy](https://www.envoyproxy.io/) を使った S3 上の静的コンテンツのホスティングについて説明しました。
 
-そこで、今回は、VPC 内で Envoy proxy のコンテナイメージを [AWS Fargate](https://aws.amazon.com/fargate/) で実行するようにし、[Amazon S3](https://aws.amazon.com/s3/) へのアクセスには、[AWS PrivateLink](https://aws.amazon.com/privatelink/) の VPC エンドポイント (Gateway) を利用することで通信をインターネットに公開しないようにします。
+この記事でも、本来はパブリックアクセスを許可せず、VPC 内に閉じて運用すると説明したものの、そのための方法について踏み込むことはしませんでした。
+
+そこで、今回は、VPC 内で Envoy proxy のコンテナイメージを [AWS Fargate](https://aws.amazon.com/fargate/) で実行するようにし、[Amazon S3](https://aws.amazon.com/s3/) へのアクセスには、[AWS PrivateLink](https://aws.amazon.com/privatelink/) の VPC エンドポイント (Gateway) を利用することで通信をインターネットに公開しないようにした構成で説明します。
 
 ブラウザから VPC 内のこれらリソースにアクセスするために、[Application Load Balancer](https://aws.amazon.com/elasticloadbalancing/application-load-balancer/) を利用することとします。
 

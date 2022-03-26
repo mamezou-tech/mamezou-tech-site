@@ -191,8 +191,11 @@ curl -X GET http://localhost:7001/api/persons?name=x -w ':%{http_code}\n'
 うまく動きましたでしょうか？サンプルアプリのイメージが掴めたら準備は完了です。次からはこのサンプルアプリにMP OpenAPIを使ってAPI仕様を定義していきましょう！
 
 
-### （コラム）Helidonにおける利用機能のON/OFF
-`情報: Helidon MP 2.4.2 features: [CDI, Config, Fault Tolerance, ...]`の起動ログから分かるとおり、サンプルアプリはHelidonのすべての機能(feature)が起動します。Helidonは起動時にfeatureに対するbootstrapクラスをclasspathから検索し、見つかったbootstrapクラスからfeatureの起動を行います。よって、利用したいfeatureがある場合、そのjarをclasspathに含めればよいだけです。また、Helidonにbootstrapなるクラスがある訳ではなく、その多くはCDIコンテナ起動時に実行される`jakarta.enterprise.inject.spi.Extension`で実装されています。このExtension実装はhelidon-microprofile-cdiのように概ねartifactIdがhelidon-microprofile-\<featureName\>となっているjarに格納されています[^2]。ですので、利用したいfeatureが起動時に組み込まれていない場合は、classpathに該当するjarが含まれているか確認してみてください。
+:::column:Helidonにおける利用機能のON/OFF
+`情報: Helidon MP 2.4.2 features: [CDI, Config, Fault Tolerance, ...]`の起動ログから分かるとおり、サンプルアプリはHelidonのすべての機能(feature)が起動します。Helidonは起動時にfeatureに対するbootstrapクラスをclasspathから検索し、見つかったbootstrapクラスからfeatureの起動を行います。よって、利用したいfeatureがある場合、そのjarをclasspathに含めればよいだけです。
+
+また、Helidonにbootstrapなるクラスがある訳ではなく、その多くはCDIコンテナ起動時に実行される`jakarta.enterprise.inject.spi.Extension`で実装されています。このExtension実装はhelidon-microprofile-cdiのように概ねartifactIdがhelidon-microprofile-\<featureName\>となっているjarに格納されています[^2]。ですので、利用したいfeatureが起動時に組み込まれていない場合は、classpathに該当するjarが含まれているか確認してみてください。
+
 とは言うもののfeatureを起動させるjarを1つずつ調べながらpomにdependencyを追加していくのはかなり骨が折れます。まずはお試しで動かしてみたいと言った場合は、Helidon MPのすべての機能が組み込まれる次のartifactを利用するのがお勧めです。サンプルアプリもこの全部入りartifactを利用しているため、すべてのfeatureが起動するようになっています。
 ```xml
 <dependency>
@@ -202,6 +205,7 @@ curl -X GET http://localhost:7001/api/persons?name=x -w ':%{http_code}\n'
 ```
 
 ただし、この全部入りartifactは便利ですがその反面、利用しないfeatureに関連する大量のjarも含まれてくるため実開発での利用はお勧めしません[^3]。Helidonに限らず開発では必要なjarだけに依存を留めるのが大原則です。
+:::
 
 [^2]: 機能の有効方法やExtension実装がどのjarに入っているかは公式ページにも記載がありません。ですので必要なjarだけがclasspathに乗るようにしたいと言った場合、嗅覚を働かせてtry&errorしてみるしかないのが実際のところです。
 
@@ -277,6 +281,13 @@ paths:
 
 `/openapi`のレスポンスとしてそのサーバが公開しているRESTのエンドポイントやパラメータ、DTOの構造などREST APIに関する仕様がYAMLで返ってきます。
 
+::: info
+OASとMP OpenAPIの詳細については次の公式ページを確認ください
+- OpenAPI Specification: <https://spec.openapis.org/oas/v3.1.0>
+- MicroProfile OpenAPI: <https://download.eclipse.org/microprofile/microprofile-open-api-1.2/microprofile-openapi-spec-1.2.html>
+:::
+
+
 これだけでもある程度OASの詳細を知らなくともAPI仕様を読み解くはできますが、より分かりやすくするため、次は`/openapi`のレスポンスをReDocを使って見てみます。
 
 ReDocはMP OpenAPIに関係なくOASドキュメントをビジュアル化するSPAアプリです。OASドキュメントをビジュアル化するツールはSwagger UIやStoplightなど他にもいくつかありますが、サンプルアプリではCDNから取得したjsファイル1つで手軽に利用できるReDocを仕込んでありますのでブラウザから次のURLにアクセスしてみてください。
@@ -290,14 +301,8 @@ ReDocはMP OpenAPIに関係なくOASドキュメントをビジュアル化す�
 
 以降の説明ではReDocについて再度触れませんが、API仕様を確認する際はReDocを使って確認してみてくだい。
 
-::: info
-OASとMP OpenAPIの詳細については次の公式ページを確認ください
-- OpenAPI Specification: <https://spec.openapis.org/oas/v3.1.0>
-- MicroProfile OpenAPI: <https://download.eclipse.org/microprofile/microprofile-open-api-1.2/microprofile-openapi-spec-1.2.html>
-:::
 
-
-### (コラム)サンプルアプリにおけるReDocの利用
+:::column:サンプルアプリにおけるReDocの利用
 HTTPサーバの機能としてHelidonにはREST APIの公開以外にも静的コンテンツを公開する[Serving Static Content](https://helidon.io/docs/v2/#/mp/jaxrs/04_static-content)機能があります。今回はこの機能を利用しjar内に格納したredoc.htmlを公開しています。
 サンプルアリのjar内の配置と公開に関する[Serving Static Content](https://helidon.io/docs/v2/#/mp/jaxrs/04_static-content)の設定は次のとおりになっています。
 
@@ -331,6 +336,7 @@ server.static.classpath.welcome = redoc.html
 ```
 
 こうすることで常にMP OpenAPIが動的に生成したフレッシュなOASドキュメントを参照してもらうことができます。
+:::
 
 
 # アプリケーション情報を定義してみよう！
@@ -382,9 +388,11 @@ info:
   version: 0.0.1-SNAPSHOT
 ```
 
-### (コラム)OASドキュメントの生成ではJandexが使われる
+:::column:OASドキュメントの生成ではJandexが使われる
 MP OpenAPIアノテーションからOASドキュメントを生成する際、Helidonでは[Jandex](https://github.com/wildfly/jandex)が利用されます。Jandexはアノテーションなどクラスのメタ情報を解析し、結果を独自のindexファイルに格納しておく機能となります。
+
 クラスのメタ情報は通常実行時に必要になった都度解析されますが、メタ情報の解析は比較的コストの高い処理となります。そこで、このデメリットをカバーするものとしてJandexが登場します。
+
 MP OpenAPIはクラスに付けられているアノテーションなどを元に動的にOASドキュメントを生成しますが、HelidonではこのOASドキュメントの生成時にJandexのインデックスフィルを参照することで処理を高速化しています。このJandexファイルはサンプルではビルド時[^4]に作成されるようpom.xmlに次のように設定しています。また、インデックスファイルはJandexプライグインのデフォルトで`target/classes/META-INF/jandex.idx`に作成されています。
 ```xml
 <build>
@@ -401,6 +409,7 @@ MP OpenAPIはクラスに付けられているアノテーションなどを元�
   ...
 </build>
 ```
+:::
 
 :::alert
 classpathにjandex.idxが見つからない場合、HelidonのMP OpenAPI実装では実行時にクラスのメタ情報を解析しますが、反対にclasspath上に1つでもjandex.idxがある場合、実行時のメタ情報の解析は一切行われません。
@@ -708,10 +717,15 @@ components:
 
 API仕様を見て分かるとおり`@Schema`で定義した説明や制約がレスポンスに反映されています。また、このcomponents/schemas定義は各API仕様の`$ref`から参照される実体となります。ですので、データクラスを参照する側のすべてが自ずと同じ内容となることが担保されます（One Fact in One Placeですね）。
 
-### （コラム）信頼できる唯一の情報源の起点
-OASを使った開発スタイルとして、プラットフォームや実装にニュートラルなAPIスキーマ(要はAPI仕様)をまずOASで定義し、クライアントやサーバ間で合意したそのAPIスキーマを「信頼できる唯一の情報源」(Single Source of Truth)として開発を進めていく「スキーマファースト」がよく知られています。これに対しMP OpenAPIを使った開発は、JavaのインタフェースでAPI仕様を定義しそこから取得したAPIスキーマをクライアントとサーバ間の「信頼できる唯一の情報源」として開発を進めて行きます。
+:::column:信頼できる唯一の情報源の起点
+OASを使った開発スタイルとして、プラットフォームや実装にニュートラルなAPIスキーマ(要はAPI仕様)をまずOASで定義し、クライアントやサーバ間で合意したそのAPIスキーマを「信頼できる唯一の情報源」(Single Source of Truth)として開発を進めていく「スキーマファースト」がよく知られています。
+
+これに対しMP OpenAPIを使った開発は、JavaのインタフェースでAPI仕様を定義しそこから取得したAPIスキーマをクライアントとサーバ間の「信頼できる唯一の情報源」として開発を進めて行きます。
+
 どちらもOASによるAPIスキーマを「信頼できる唯一の情報源」として扱うことに変わりはないですが、スキーマファーストの開発スタイルがトップダウンアプローチであるのに対し、MP OpenAPIを使った開発は実装を起点としたボトムアップアプローチとなり、同じOASを使った開発でもスタイルが異なります。
+
 これは一義的にどちらがいい悪いではなく、あくまでもスタイルですので、開発対象や組織、文化により適するものを選択すべきです。筆者としては今回のMP OpenAPIを使った開発スタイルは、当然ですがサーバサイドがJavaでかつ仕様が比較的軽量なプロセスで決定する小規模な開発でその効力が発揮されるのではないかと考えています。
+:::
 
 # リファレンスアプリでの利用例
 [第3回](/msa/mp/cntrn03-sampleapp-helidon/)で紹介したMicroProfileを使った[リファレンスアプリ(RMS)](https://github.com/extact-io/rms)では[(コラム)サンプルアプリにおけるReDocの利用](#コラムサンプルアプリにおけるredocの利用)と同じ方法でAPI仕様を公開しています。このAPI仕様を定義している実際のコードとそこから生成されるAPI仕様をReDocで公開したものは以下になります。

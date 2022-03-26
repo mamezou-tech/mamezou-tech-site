@@ -17,7 +17,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - [第2回 MicroProfileってなにそれ？ - MicroProfileの仕様と実装](/msa/mp/cntrn02-what-mp/)
 - [第3回 使った、作った、Helidonで！ - サンプルアプリの紹介](/msa/mp/cntrn03-sampleapp-helidon/)
 - [第4回 使って分かった！お勧めMicroProfile仕様厳選3選](/msa/mp/cntrn04-spec-ranking/)
-- 第5回 コードが仕様の源泉MicroProfile OpenAPI <span style="color:red">Coming Soon!</span>
+- [第5回 コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)
 - 第6回 お手軽便利MicroProfile Config <span style="color:red">Coming Soon!</span>
 - 第7回 らくらくMicroProfile RestClient <span style="color:red">Coming Soon!</span>
 

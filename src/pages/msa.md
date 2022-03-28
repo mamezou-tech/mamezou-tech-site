@@ -21,4 +21,9 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - 第6回 お手軽便利MicroProfile Config <span style="color:red">Coming Soon!</span>
 - 第7回 らくらくMicroProfile RestClient <span style="color:red">Coming Soon!</span>
 
+（番外編）
+- [Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)
+- Helidon Tips - Helidon MP Testing with JUnit5を使ってみる <span style="color:red">Coming Soon!</span>
+
+
 以降もまだまだ続きます。こうご期待

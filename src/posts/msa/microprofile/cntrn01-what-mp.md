@@ -62,11 +62,8 @@ MicroProfileプロジェクトの設立目的は[公式ページ](https://projec
 [^6]: 原文はMicroProfileの公式プロジェクトページ: <https://projects.eclipse.org/projects/technology.microprofile>
 
 
-### （コラム）MicroProfileのバージョンアップサイクル
-
+:::column:MicroProfileのバージョンアップサイクル
 プロジェクト設立時の目標の1つに短いサイクルでリリースしていくとありましたが、これが実際にどうなったかについて、ver3.1以降のリリース年表をもとに見てみたいと思います。
-
-- リリース年表
 
 | バージョン | リリース | 補足 |
 | - | :-: | - |
@@ -81,6 +78,8 @@ MicroProfileプロジェクトの設立目的は[公式ページ](https://projec
 MicroProfileは予定機能がすべて揃った段階でリリースするfeature boxed releaseではなく、予定していた期間で出来たものをリリースするtime boxed releaseを基本とし、v1.1からv3.3のリリースはすべてクォーター(Quarter)ごと行われてきました。
 
 ただ、年表から分かる通り、v3.3からv4.0とv4.0からv4.1の間は期間が3クォータ空いています。これはJakarta EEへの移行に時間が要したものと思われます。それでもJava EEのバージョンアップサイクルの3年～4年に比べれば十分短く、MicroProfileの目標に1つである短いサイクルでのリリースは、今のところ十分に達成されていると思います。
+:::
+
 
 ## まとめ - MicroProfileとはなにか
 

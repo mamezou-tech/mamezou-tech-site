@@ -413,7 +413,7 @@ MP OpenAPIはクラスに付けられているアノテーションなどを元�
 
 :::alert
 classpathにjandex.idxが見つからない場合、HelidonのMP OpenAPI実装では実行時にクラスのメタ情報を解析しますが、反対にclasspath上に1つでもjandex.idxがある場合、実行時のメタ情報の解析は一切行われません。
-jandex.idxの生成が行われない非Maven環境のIDEから起動している場合、実装時にメタ情報が解析されることを期待したくなりますが、Helidonから提供されるjarにはjandex.idxを内包しているものもがあり、そのjandex.idxが検索されることで実行時のクラス解析が行われず、結果ソースコードの修正が反映されない場合があります。このため、MP OpenAPIの動作を確認する際はソースコードの修正の都度Mavenでビルドを行い`java`コマンドからアプリを起動する方が無難です。
+jandex.idxの生成が行われない非Maven環境のIDEから起動している場合、実行時にメタ情報が解析されることを期待したくなりますが、Helidonから提供されるjarにはjandex.idxを内包しているものもがあり、そのjandex.idxが検索されることで実行時のクラス解析が行われず、結果ソースコードの修正が反映されない場合があります。このため、MP OpenAPIの動作を確認する際はソースコードの修正の都度Mavenでビルドを行い`java`コマンドからアプリを起動する方が無難です。
 :::
 
 :::check
@@ -728,7 +728,7 @@ OASを使った開発スタイルとして、プラットフォームや実装�
 :::
 
 # リファレンスアプリでの利用例
-[第3回](/msa/mp/cntrn03-sampleapp-helidon/)で紹介したMicroProfileを使った[リファレンスアプリ(RMS)](https://github.com/extact-io/rms)では[(コラム)サンプルアプリにおけるReDocの利用](#コラムサンプルアプリにおけるredocの利用)と同じ方法でAPI仕様を公開しています。このAPI仕様を定義している実際のコードとそこから生成されるAPI仕様をReDocで公開したものは以下になります。
+[第3回](/msa/mp/cntrn03-sampleapp-helidon/)で紹介したMicroProfileを使った[リファレンスアプリ(RMS)](https://github.com/extact-io/rms)では上述の「(コラム)サンプルアプリにおけるReDocの利用」と同じ方法でAPI仕様を公開しています。このAPI仕様を定義している実際のコードとそこから生成されるAPI仕様をReDocで公開したものは以下になります。
 
 - API仕様を定義しているソースコード
   - [ApplicationConfig.java](https://github.com/extact-io/rms/blob/main/rms-server/src/main/java/io/extact/rms/external/webapi/ApplicationConfig.java)

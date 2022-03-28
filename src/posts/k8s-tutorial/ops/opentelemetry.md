@@ -498,7 +498,7 @@ kubectl logs ${POD_NAME} -c aws-otel-collector -n prod
 PrometheusのReceiverが構成され、アプリケーションメトリクスの収集が始まっていることが分かります。
 
 エラーが発生して、メトリクスが収集できない場合は、以下の観点で確認してください。
-- マネージドサービスコンソールから、IAMロール(`TaskService`)にアクセス許可(`ADOTCollector`ポリシー)が設定されているか
+- IAMロール(`TaskService`)にアクセス許可(`ADOTCollector`ポリシー)が追加設定されているか
 - サイドカーコンテナのパッチファイルが正しいか（特にボリュームマウント周辺）
 - OpenTelemetryの設定ファイル(`otel-config.yaml`)のシンタックスが正しいか
 

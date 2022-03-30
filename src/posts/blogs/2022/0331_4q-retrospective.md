@@ -92,7 +92,7 @@ Kubernetes チュートリアルを執筆している工藤さんがサイト自
   - 当月の記事紹介
   - 新しく執筆陣に加わった人をフィーチャー
   - Google Analytics、Google Search Console、Twitter Analytics サマリー
-  - 月次レポートは Slack の #rondom チャネルで宣伝
+  - 月次レポートは Slack の #random チャネルで宣伝
 - Slack に誰でも入れるデベロッパーサイト専用チャネルを作成
   - 記事執筆時のレビュー依頼や意見交換、新着記事の通知などに活用
 - 社内イベントに参加して宣伝

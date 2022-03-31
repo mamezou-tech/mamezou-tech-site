@@ -25,7 +25,7 @@ Kubernetes チュートリアルが、環境構築編、開発編を経て運用
 
 このカテゴリーの皮切りとしてマイクロサービスフレームワーク MicroProfile についての連載が開始されました。Spring と違って情報の少ない Jakarta EE ベースのフレームワークを扱っていて、エンタープライズシステム構築を支援している弊社らしいユニークなコンテンツだと思います。
 
-[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](http://localhost:8081/tags/逆張りのMicroProfile//)
+[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](http://developer.mamezou-tech.com/tags/逆張りのMicroProfile//)
 
 連載記事以外のブログは30本に達しました。
 

@@ -23,7 +23,7 @@ Kubernetes チュートリアルが、環境構築編、開発編を経て運用
 
 [マイクロサービス | 豆蔵デベロッパーサイト](https://developer.mamezou-tech.com/msa/)
 
-このカテゴリの皮切りとしてマイクロサービスフレームワーク MicroProfile についての連載が開始されました。Spring と違って情報の少ない Jakarta EE ベースのフレームワークを扱っていて、エンタープライズシステム構築を支援している弊社らしいユニークなコンテンツだと思います。
+このカテゴリーの皮切りとしてマイクロサービスフレームワーク MicroProfile についての連載が開始されました。Spring と違って情報の少ない Jakarta EE ベースのフレームワークを扱っていて、エンタープライズシステム構築を支援している弊社らしいユニークなコンテンツだと思います。
 
 [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](http://localhost:8081/tags/逆張りのMicroProfile//)
 
@@ -53,10 +53,10 @@ Google の検索ランキングもかなり上がって、クリック数も上�
 - 公開直後にデザインリニューアル。豆蔵のキャラクター「豆くん」をシルエットにしたロゴも新調
 - ソーシャルボタン追加
 - 長い記事を読みやすく構造化するための目次機能の追加
-- ベータ版から使用している SSG の [eleventy](https://www.11ty.dev/) を GA バージョンに移行
+- ベータ版から使用している SSG の [Eleventy](https://www.11ty.dev/) を GA バージョンに移行
   - このサイトは [Netlify](https://www.netlify.com/) でホストしてますが [Eleventy が Netlify のスポンサーを受けた](https://www.11ty.dev/blog/eleventy-oss/)ようですね。今後の継続と発展に期待できます。
 - 記事内のコードスニペットをクリップボードコピーする機能の追加
-  - これは 独立した eleventy プラグインとして OSS 化されました。
+  - これは 独立した Eleventy プラグインとして OSS 化されました。
     - [eleventy-plugin-code-clipboard](https://www.npmjs.com/package/eleventy-plugin-code-clipboard)
 - 記事タイトルから OGP イメージを自動生成する機能の追加
   - 記事投稿の Pull Request を作成すると GitHub Actions でイメージが生成されます。
@@ -69,13 +69,13 @@ Google の検索ランキングもかなり上がって、クリック数も上�
 Kubernetes チュートリアルを執筆している工藤さんがサイト自体の改善も中心にやってくれています。読者・執筆者双方の体験がよくなってきていると思います。
 
 # 社外アピール
-公式 Twitter アカウント [@MamezouDev](https://twitter.com/MamezouDev) を開設しました。RSS フィードからの自動投稿のほか、時折フォローアップな内容をツイートしています。
+公式 Twitter アカウント [@MamezouDev](https://twitter.com/MamezouDev) を開設しました。RSS フィードからの自動投稿のほか、時折フォローアップ的なツイートをしています。
 
 豆蔵本家のトップページにもバナーを置いています。
 
 [ホーム | 株式会社豆蔵](https://www.mamezou.com/)
 
-月次でホームページのニュースでも人気記事を集計して発信するようにしました。
+月次でホームページのニュースでも人気記事を集計して紹介するようにしました。
 
 [ニュース | 株式会社豆蔵](https://www.mamezou.com/news)
 

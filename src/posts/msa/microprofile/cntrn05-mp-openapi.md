@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-03-25
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn04-spec-ranking.md
+nextPage: ./src/posts/msa/microprofile/cntrn06-mp-config.md
 ---
 
 勝手に選んだMicroProfile厳選3仕様を紹介する初回はMicroProfile OpenAPI(MP OpenAPI)です。MP OpenAPIは[前回](/msa/mp/cntrn04-spec-ranking/)の概要編でも説明したとおり、API仕様の取得リクエストに対しソースコード上のアノテーション情報をもとに動的にOAS（OpenAPI Specification）ドキュメントを生成しレスポンスとして返す一連の仕組みを定めた仕様です。仕様にはMP OpenAPIランタイムの開発ベンダー視点の仕様も含まれますが、ここでは利用する側の視点でその利用方法を説明します。
@@ -435,9 +436,9 @@ CDIコンテナ実装のWeldでも起動の高速化を目的にJandexが利用�
 - レスポンスデータの構造
 - エラー発生条件と返却されるステータスコード
 
-## PesonResource#getのAPI仕様を定義してみる
+## PersonResource#getのAPI仕様を定義してみる
 これらの情報をMP OpenAPIを使ってどのよう定義するかアノテーションを付けた例をもとに見ていきます。
-まずは一番シンプルなPesonResource#getは次のようになります。
+まずは一番シンプルなPersonResource#getは次のようになります。
 
 ```java
 @GET            // JAX-RS
@@ -537,13 +538,13 @@ MP OpenAPIではコードやJAX-RSのアノテーションから解釈できる�
 このように、MP OpenAPIを使うことで、少ない定義量でリッチなOASドキュメントを生成することができるとともに実際に動作するコードからかなりの情報が生成されるため（typoなどのない）精度の高いAPI仕様を公開することができます。
 
 
-## PesonResource#addのAPI仕様を定義してみる
-この勢いでPesonResource#addのAPI仕様も定義してみましょう。
-PesonResource#getではPersonが戻り値で使われていましたが、PesonResource#addではこれが引数で使われている点がAPI的な主な違いとなります。他の点は概ね同じとなるため今回はこの点に着目して説明します。
+## PersonResource#addのAPI仕様を定義してみる
+この勢いでPersonResource#addのAPI仕様も定義してみましょう。
+PersonResource#getではPersonが戻り値で使われていましたが、PersonResource#addではこれが引数で使われている点がAPI的な主な違いとなります。他の点は概ね同じとなるため今回はこの点に着目して説明します。
 
 アノテーションを付けたコード例とそこから出力されたAPI仕様は次のようになります。API仕様は[先ほどと同じ手順](#ビルド＆実行とapi仕様の取得)で取得します。
 
-- API仕様を定義したPesonResource#add実装
+- API仕様を定義したPersonResource#add実装
 ```java
 @POST // JAX-RS
 @Consumes(MediaType.APPLICATION_JSON) // JAX-RS
@@ -567,7 +568,7 @@ PesonResource#getではPersonが戻り値で使われていましたが、PesonR
 Person add(Person person);
 ```
 
-- 生成されたPesonResource#addのAPI仕様
+- 生成されたPersonResource#addのAPI仕様
 ```yaml
 /api/persons:
   post:
@@ -593,17 +594,17 @@ Person add(Person person);
             example: Conflict
 ```
 
-`@Parameter`でパラメータを定義しますが、PesonResource#getと同様にメソッドの引数からPersonインスタンスであることが補完され、そのスキーマ情報への参照(`$ref`)が出力されます。また、データ形式(`application/json`)についても同様にJAX-RSの`@Consumes`から補完され出力されます。
+`@Parameter`でパラメータを定義しますが、PersonResource#getと同様にメソッドの引数からPersonインスタンスであることが補完され、そのスキーマ情報への参照(`$ref`)が出力されます。また、データ形式(`application/json`)についても同様にJAX-RSの`@Consumes`から補完され出力されます。
 
-PesonResource#getの戻り値とPesonResource#addの引数と戻り値には同じPersonクラスが使われていますが、いずれも同じ実体（#/components/schemas/Person）が参照されるようになっています。
+PersonResource#getの戻り値とPersonResource#addの引数と戻り値には同じPersonクラスが使われていますが、いずれも同じ実体（#/components/schemas/Person）が参照されるようになっています。
 
-## PesonResource#findByNameのAPI仕様を定義してみる
-最後はPesonResource#findByNameです。
+## PersonResource#findByNameのAPI仕様を定義してみる
+最後はPersonResource#findByNameです。
 今までのAPIとの大きな違いは戻り値がArrayである点とパラメータがQueryStringとなる2点です。この2点はともにメソッド定義から解釈できるため、MP OpenAPIのアノテーションは付けなくてもコードから情報が補完されます。
 
 では、コード例とAPI仕様を見てみましょう。API仕様は[先ほどと同じ手順](#ビルド＆実行とapi仕様の取得)で取得します。
 
-- API仕様を定義したPesonResource#findByName実装
+- API仕様を定義したPersonResource#findByName実装
 ```java
 @GET  // JAX-RS
 @Produces(MediaType.APPLICATION_JSON) // JAX-RS
@@ -621,7 +622,7 @@ PesonResource#getの戻り値とPesonResource#addの引数と戻り値には同�
 List<Person> findByName(@QueryParam("name") String name);
 ```
 
-- 生成されたPesonResource#findByNameのAPI仕様
+- 生成されたPersonResource#findByNameのAPI仕様
 ```yaml
 /api/persons:
   get:
@@ -685,7 +686,7 @@ public class Person {
 }
 ```
 
-- 生成されたPesonのAPI仕様
+- 生成されたPersonのAPI仕様
 ```yaml
 components:
   schemas:

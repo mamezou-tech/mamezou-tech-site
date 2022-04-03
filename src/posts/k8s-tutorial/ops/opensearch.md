@@ -411,7 +411,7 @@ kubectl get pod -n prod
 
 以下のように、収集した全てのログが表示されていることが分かります。
 
-![opensearch discovery](https://i.gyazo.com/447cfb61b604e1ce815bf8be9f782676.png)
+![opensearch discovery](https://i.gyazo.com/0c4f47af73240bcd29aee28d90c91878.png)
 
 このままでは分かりにくいので、`task-service`コンテナに絞ったり不要なログをフィルタリングすると以下のようになります。
 

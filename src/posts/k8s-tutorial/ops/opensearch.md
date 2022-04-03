@@ -13,7 +13,7 @@ date: 2022-04-03
 マイクロサービスのような分散アーキテクチャを採用した場合、1つのアプリケーションは複数のサービスで構成されることになります。
 このため、管理対象ログファイルの数は以前と比較すると飛躍的に多くなり、ファイルレベルでなく、全体のログを一元管理するためのバックエンドサービスは不可欠と言えます。
 また、スケーラビリティや可用性を備えた構成にすると、サービスのインスタンス数は頻繁に増減し、それに伴って収集対象のログファイルも変わっていくことになります。
-このような状況では、従来のシステムのように静的にログファイルを管理することは不可能に近く、動的に管理対象のログを検出・収集する仕組みも必要となります。
+このような状況では、静的にログファイルを管理することは不可能に近く、動的に管理対象のログを検出・収集する仕組みも必要となります。
 
 Kubernetesを実行基盤としたアプリケーションを考えてみましょう。
 コンテナのローカルファイルシステムは一時的なもので、ここにログファイルを出力してもコンテナを再起動すると初期化されてしまいます。
@@ -131,7 +131,7 @@ AWS Providerの`4.9.0`バージョンではOpenSearch用のリソースが新し
 
 Terraform実行前に、マネジメントコンソールからTerraformの実行ユーザーのIAMポリシーにOpenSearchリソース作成の許可を与えるために、`AmazonOpenSearchServiceFullAccess`を追加してください。
 
-これをTerraformでAWS環境に反映(`terraform apply`)します。 具体的な方法は以下を参照しくてださい。
+ポリシーを追加したら、TerraformでAWS環境に反映(`terraform apply`)しましょう。 具体的な方法は以下を参照しくてださい。
 
 - [クラスタ環境デプロイ - EKSクラスタ(AWS環境準備) - AWS/EKS反映](/containers/k8s/tutorial/app/eks-1/#aws-eks反映)
 
@@ -164,7 +164,7 @@ OpenSearch Dashboardsの認証ページが表示されるはずです。ユー�
 
 ## Fluent Bitのアクセス許可設定
 
-次に、コンテナログを収集し、OpenSearchへ転送を行うFluent Bitをセットアップします。
+次に、コンテナログを収集し、OpenSearchへ転送するFluent Bitをセットアップします。
 その前に、Fluent BitがOpenSearchにアクセスできるようにIAM関連リソースとKubernetesのServiceAccountを準備しておきましょう。
 `/app/terraform/main.tf`に以下を追記します。
 
@@ -358,7 +358,7 @@ Helmチャートのデフォルトそのままで明示的に設定ファイル�
 これでログ収集のためのプラットフォームが完成しました。
 後はアプリケーションをデプロイして、そのログをOpenSearch Dashboardsで確認しましょう。
 
-今回`task-service`のアプリケーションを改修して、アクセス時にJSON形式のログを標準出力に出力するようにしました。
+今回`task-service`のアプリケーションを改修して、リクエスト時にJSON形式のログを標準出力へ出力するようにしました。
 
 - <https://github.com/mamezou-tech/k8s-tutorial/tree/main/app/apis/task-service>
 
@@ -393,7 +393,7 @@ kubectl get pod -n prod
 ![opensearch index pattern step1](https://i.gyazo.com/5b2fed9045993bd780a49c903d744094.png)
 
 `index pattern name`に`fluent-bit`と入力すると、下部にマッチするインデックスが表示されます。
-確認したら`Next step`をクリックします。
+これを確認できたら`Next step`をクリックします。
 
 ![opensearch index pattern step2](https://i.gyazo.com/38947ff8134971d88205a7ee37f333fd.png)
 
@@ -419,12 +419,12 @@ kubectl get pod -n prod
 
 レプリカ数に係わらず、`task-service`に関するログが集約して表示できていることが分かります。
 
-ここでOpenSearch Dashboardsの具体的な使い方に言及するよりも、実際に試してみたほうが実感がつかめると思います。
+ここでOpenSearch Dashboardsの具体的な使い方に言及するよりも、実際に自分で試してみたほうが実感できると思います。
 左側の属性からフィルタリングや表示項目を調整したり、直接フィルタリング条件を指定したりしてみましょう。
-直接入力する場合は、以下のOpenSearch Dashboardsの公式ドキュメントを参照してください(`+ Add Filter`リンクより選択しながら指定することもできます)。
+直接入力する場合は、以下のOpenSearch Dashboardsの公式ドキュメントを参照してください(`+ Add Filter`リンクから選択方式で指定もできます)。
 - <https://opensearch.org/docs/latest/dashboards/dql/>
 
-ログだけにとどまらず、Fluent Bitによって収集されたKubernetesのメタ情報や、JSON形式のログの属性等から豊富な検索機能でフィルタリングできることが分かるはずです。
+ログだけにとどまらず、Fluent Bitによって収集されたKubernetesのメタ情報や、JSON形式のログの属性から多角的な視点でログを分析できることが分かるはずです。
 
 :::info
 現状OpenSearch Dashboardsの[ドキュメント](https://opensearch.org/docs/latest/dashboards/index/)はまだ整備されているとは言えない状況です。
@@ -446,7 +446,7 @@ helm uninstall aws-for-fluent-bit -n fluent-bit
 
 ## まとめ
 
-今回はログ収集にFluent Bit、収集したログの一元管理にAWS OpenSearchを使用し、アプリケーションのログ分析基盤を構築しました。
+今回はログ収集にFluent Bit、ログの一元管理と分析にAWS OpenSearchを使用し、アプリケーションのログ分析基盤を構築しました。
 
 OpenSearchのElasticsearch由来の全文検索機能やKibana由来のリッチなUIにより、ログ分析がかなり楽になる印象を持った方も多いでしょう。
 

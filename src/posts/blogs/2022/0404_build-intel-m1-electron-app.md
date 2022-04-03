@@ -93,7 +93,7 @@ export PYTHON_PATH=/usr/local/bin/python
 
 古い macOS からアップグレードした場合は Python 2 がインストールされています。しかし、新規購入の場合や macOS 12.3 をクリーンインストールした場合はインストールされていません。現在は HomeBrew でも Python 2 はインストールできなくなっています。無理矢理入れられなくはないですが、せっかくシステムから駆逐されものを復活させる行為でちょっと(というか、かなり)抵抗があります。
 
-記事執筆時点では Pre-release ですが、electron-builder v23 に Python3 で動かす PR がマージされています。
+記事執筆時点では Pre-release ですが、electron-builder v23 には Python 3 で動かす PR がマージされています。
 
 [fix(dmg-builder): Support python 3 by mmaietta · Pull Request #6617 · electron-userland/electron-builder](https://github.com/electron-userland/electron-builder/pull/6617)
 

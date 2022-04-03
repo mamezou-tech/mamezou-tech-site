@@ -11,7 +11,7 @@ electron-builder は M1 Mac にも対応しており、Intel Mac と M1 Mac で�
 
 [GitHub - electron-userland/electron-builder: A complete solution to package and build a ready for distribution Electron app with “auto update” support out of the box](https://github.com/electron-userland/electron-builder)
 
-Intel Mac でビルドしても M1 Mac 用のバイナリが生成できます(実行はできません)。逆も同様です。
+Intel Mac でビルドしても M1 Mac 用のバイナリが生成できます(実行はできません)。
 
 M1 Mac 用のビルド。
 

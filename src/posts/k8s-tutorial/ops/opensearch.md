@@ -451,7 +451,7 @@ helm uninstall aws-for-fluent-bit -n fluent-bit
 OpenSearchのElasticsearch由来の全文検索機能やKibana由来のリッチなUIにより、ログ分析がかなり楽になる印象を持った方も多いでしょう。
 
 ただし、一般的にログのバックエンドサービスは非常に高いスループットでデータを処理する必要があります。
-これに見合うようにAWS OpenSearchをスペックアップやクラスター構成を設定した場合は、かなりのコストを覚悟する必要があります。
+これに見合うようにAWS OpenSearchのスペックアップやマルチノード構成とした場合は、かなりのコストを覚悟する必要があります。
 このため、運用コストとサービス利用料との兼ね合いによっては、マネージドサービスではなくELK/EFKスタック(Elasticsearch/LogStash(Fluentd)/Kibana)を導入するケースもあるでしょう。
 
 また、OpenSearchのような高機能サービスではなく、それよりは安価なCloudWatchで十分まかなえるケースも多いかと思います。

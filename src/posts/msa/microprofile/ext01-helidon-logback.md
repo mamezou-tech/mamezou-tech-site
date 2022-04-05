@@ -3,6 +3,7 @@ title: Helidon Tips - SLF4J＋LogbackへのLogger切り替え
 author: toshio-ogiwara
 date: 2022-03-28
 tags: ["逆張りのMicroProfile", helidon]
+nextPage: ./src/posts/msa/microprofile/ext02-helidon-testing.md
 ---
 HelidonのLogger実装にはJavaSEのJUL(java.util.logging)が使われています。これは標準を意識しての選択だと思われるためスタンスは理解できるのですが、実際のところJULはちょっと勘弁、、が正直なところかと思います。このため、使い慣れたLogger実装に切り替えたいところですが、SLF4Jなどのブリッジを利用せずコード上で直接`java.util.logging.Logger`を利用する実装となっているため、他のLogger実装への切り替えが一筋縄ではいきません。
 

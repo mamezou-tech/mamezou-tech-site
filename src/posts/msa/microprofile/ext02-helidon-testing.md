@@ -230,7 +230,7 @@ public class PersonServiceStubTest {
 
 上記のアノテーション定義により、テスト実行時に実物のPersonRepositoryImplが検索されなくなり、変わってスタブ実装のPersonRepositoryStubインスタンスがCDI Beanとして登録され、PersonServiceにもインジェクションされるようになります。
 
-このようにHelidon MP Testingでは`@DisableDiscovery`を使ってCDIの検索を無効化し、テスト向けに必要なCDI Beanを`@AddBean`を使って一時的に登録することができるため、classpath上に配置されている依存関係とは別に任意のオブジェクト間の関係を作ることができます。
+このようにHelidon MP Testingでは`@DisableDiscovery`を使ってCDIの検索を無効化し、テスト向けに必要なCDI Beanを`@AddBean`を使って一時的に登録することができるため、クラスパス上に配置されている依存関係とは別に任意のオブジェクト間の関係を作ることができます。
 
 ## 設定を一時的に追加上書きする
 単体テストではテスト条件を作るためにテスト向けの設定を追加したり上書きしたりすることが必要となったりします。Helidon MP Testingではこのような場合には`@AddConfig`を使って次のように簡単に一時的な設定の追加や上書きができます。

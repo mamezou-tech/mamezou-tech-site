@@ -1,0 +1,20 @@
+.link-separator {
+  margin: 1rem 0;
+  border-color: #dbd2e8;
+}
+.links {
+  margin: 0 auto;
+  padding: 5px;
+  .recruit {
+    margin: 3px;
+    display: block;
+    p {
+      font-size: 0.9rem;
+      margin: 0 0 0.2rem;
+    }
+    img {
+      width: auto;
+      display: inline;
+    }
+  }
+}

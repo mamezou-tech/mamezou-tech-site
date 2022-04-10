@@ -3,6 +3,7 @@ title: ログ収集・分析(Fluent Bit / AWS OpenSearch)
 author: noboru-kudo
 tags: [aws]
 prevPage: ./src/posts/k8s-tutorial/ops/opentelemetry.md
+nextPage: ./src/posts/k8s-tutorial/ops/cloudwatch.md
 date: 2022-04-03
 ---
 
@@ -303,13 +304,14 @@ export FLUENTBIT_POD=$(kubectl get pod -n fluent-bit -l app.kubernetes.io/name=a
 kubectl logs ${FLUENTBIT_POD} -n fluent-bit
 ```
 
-特にエラーが発生していなければOKです。エラーが発生する場合はOpenSearchのエンドポイントやアクセス許可が正しく設定できているかを見直してください。
+特にエラーが発生していなければOKです。エラーが発生している場合はOpenSearchのエンドポイントやアクセス許可が正しく設定できているかを見直してください。
 
 最後にFluent Bitの設定ファイルを確認してみましょう。
 ```shell
-kubectl exec ${FLUENTBIT_POD} -n fluent-bit -- cat /fluent-bit/etc/fluent-bit.conf
+kubectl get cm aws-for-fluent-bit -n fluent-bit -o yaml
 ```
 ```
+# fluent-bit.confのみ抜粋
 [SERVICE]
     Parsers_File /fluent-bit/parsers/parsers.conf
 
@@ -348,8 +350,10 @@ kubectl exec ${FLUENTBIT_POD} -n fluent-bit -- cat /fluent-bit/etc/fluent-bit.co
 Helmチャートのデフォルトそのままで明示的に設定ファイルを作成しませんでしたが、以下の内容で動作していることが確認できます。
 
 - `[INPUT]`: Nodeのコンテナログ(標準出力・エラー)を収集
-- `[FILTER]`: ログエントリーにKubernetesのメタデータ付加([Filterドキュメント](https://docs.fluentbit.io/manual/pipeline/filters/kubernetes))
+- `[FILTER]`: ログエントリーにKubernetesのメタデータ付加[^5]
 - `[OUTPUT]`: 作成済みのOpenSearchへログ転送
+
+[^5]: <https://docs.fluentbit.io/manual/pipeline/filters/kubernetes>
 
 なお、Helmチャートのパラメータで、自身の環境に合うようにカスタマイズも可能です。詳細はHelmチャートの[リポジトリ](https://github.com/aws/eks-charts/tree/master/stable/aws-for-fluent-bit)を参照してください。
 
@@ -362,9 +366,8 @@ Helmチャートのデフォルトそのままで明示的に設定ファイル�
 
 - <https://github.com/mamezou-tech/k8s-tutorial/tree/main/app/apis/task-service>
 
-こちらでコンテナイメージを作成して、デプロイします[^5]。
-
-[^5]: ここではtask-serviceのみですが、他のサービスのビルド・デプロイは[アプリケーション開発編](/container/#アプリケーション開発編)を参照してください。
+こちらでコンテナイメージを作成して、デプロイします。
+ここでは`task-service`のみを記載していますが、アプリケーションを動作させるためには、他のサービスのビルドも必要です。詳細は[アプリケーション開発編](/containers/k8s/tutorial/app/container-registry/#イメージビルド-プッシュ)を参照してください。
 
 ```shell
 # PROJECT_ROOTにはリポジトリルートを設定してください

@@ -9,18 +9,19 @@ date: 2022-04-10
 [前回](/containers/k8s/tutorial/ops/opensearch/)はログの収集に[Fluent Bit](https://fluentbit.io/)、その分析に[AWS OpenSearch](https://aws.amazon.com/opensearch-service/)を使用しました。
 
 AWS OpenSearchは、非常に高機能な検索とリッチなUIを提供しますが、デメリットもあります。
-まず、OpenSearch自体のセットアップ作業が別途必要です。特に、高スループットが予想される商用環境では、マルチノードでクラスターを組む必要があり、かなりのコストがかかります。
+まず、OpenSearch自体のセットアップ作業が別途必要です。特に、高スループットが予想される商用環境では、マルチノードでクラスターを組む必要がありますし、構成に応じてかなりのコストが発生します。
 また、前回は簡易的な認証としましたが、実運用では社内SSOやCognitoとの連携などのセキュリティ対策が欠かせません。
 
-今回は、OpenSearchの代替として、AWSのフルマネージドサービスである[Amazon CloudWatch](https://aws.amazon.com/cloudwatch/)をログ分析のバックエンドサービスとして利用してみましょう。
-CloudWatchは統合モニタリングサービスの位置づけで、[メトリクス可視化](/containers/k8s/tutorial/ops/opentelemetry/)で使用しましたが、ログ分析にも使用できます。
-OpenSearchのように構成を考えたり、別途セットアップをする必要はなく、AWSアカウントがあればすぐに使い始めることができます。
+今回は、OpenSearchの代替として、AWSモニタリングのフルマネージドサービスである[Amazon CloudWatch](https://aws.amazon.com/cloudwatch/)をログ分析のバックエンドサービスとして利用してみましょう[^1]。
+CloudWatchは、OpenSearchのように構成を考えたり、別途セットアップをする必要はなく、AWSアカウントがあればすぐに使い始めることができます。
+
+[^1]: CloudWatchは[メトリクス可視化](/containers/k8s/tutorial/ops/opentelemetry/)でも使用しましたが、今回はログ分析に使用します。
 
 [[TOC]]
 
 ## 事前準備
 
-アプリケーションは以下で使用したものを使います。事前にEKS環境を準備し、アプリケーションのセットアップしておきましょう。
+アプリケーションは以下で実装したものを使います。事前にEKS環境を準備し、アプリケーションのセットアップしておきましょう。
 
 - [クラスタ環境デプロイ - コンテナレジストリ(ECR)](/containers/k8s/tutorial/app/container-registry/)
 - [クラスタ環境デプロイ - EKSクラスタ(AWS環境準備)](/containers/k8s/tutorial/app/eks-1/)
@@ -234,10 +235,10 @@ kubectl get cm aws-for-fluent-bit -n fluent-bit -o yaml
 以下の内容で動作していることが確認できます。
 
 - `[INPUT]`: Nodeのコンテナログ(標準出力・エラー)を収集
-- `[FILTER]`: ログエントリーにKubernetesのメタデータ付加[^1]
+- `[FILTER]`: ログエントリーにKubernetesのメタデータ付加[^2]
 - `[OUTPUT]`: CloudWatchへログ転送(ロググループ:`/aws/eks/fluentbit-cloudwatch/logs`)
 
-[^1]: <https://docs.fluentbit.io/manual/pipeline/filters/kubernetes>
+[^2]: <https://docs.fluentbit.io/manual/pipeline/filters/kubernetes>
 
 前回は`[OUTPUT]`の定義で、OpenSearchへログを転送していましたが、今回はCloudWatchとなっています。
 
@@ -305,12 +306,12 @@ fields @timestamp, data.message, kubernetes.pod_name
 
 ![](https://i.gyazo.com/3da4365fae7fd2d6fb00ee3061552764.png)
 
-かなり見やすくなりました[^2]。
+かなり見やすくなりました[^3]。
 ログインサイトのクエリでは、他にも正規表現や集計等、様々なものが利用可能です。詳細は以下のCloudWatchの公式ドキュメントを参照してください。
 
 - [CloudWatch Logs Insights query syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html)
 
-[^2]: ログインサイトはロググループと比較して、若干タイムラグがあります。表示されない場合は少し待ってから試してください。
+[^3]: ログインサイトはロググループと比較して、若干タイムラグがあります。表示されない場合は少し待ってから試してください。
 
 このように、Fluent BitのKubernetesフィルターによって付与されたKubernetesのメタ情報(コンテナ名/Namespace/ホスト等)を利用することで、様々な角度からログを分析できます。
 クエリ作成の際は、以下のように一度利用可能なフィールドをログ全体を眺めて、使いたい属性があるか探してみると良いでしょう。
@@ -356,7 +357,7 @@ helm uninstall aws-for-fluent-bit -n fluent-bit
 
 今回はFluent Bitの出力先としてCloudWatchを使ってログを一元管理できるようにしました。
 OpenSearchと違い、CloudWatchは事前のセットアップが不要で、かなり簡単に始められることがわかったと思います。
-検索機能についてもOpenSearchほどのものはありませんが、これでも実用性に足りると感じた方も多いでしょう[^3]。
+検索機能についてもOpenSearchほどのものはありませんが、これでも実用性に足りると感じた方も多いでしょう[^4]。
 
 ここでは触れませんでしたが、CloudWatchで収集したログをAWS OpenSearchに転送もできます。
 これを利用すれば、CloudWatchでログを一元管理をするものの、高度な分析が必要なものはOpenSearchを利用するハイブリッドな使い方もできます。
@@ -368,7 +369,7 @@ OpenSearchと違い、CloudWatchは事前のセットアップが不要で、か
 特にセッションやトレースID等、一連のトランザクションを特定する識別子をメタ情報として入れておくと、ユーザーの一連の流れをログから追うことができて障害解析に重宝されます。
 コンテナ以前の問題ですが、どういう視点でログ分析をするかを考慮に入れてアプリケーションのログ出力を実装することが何より重要です。
 
-[^3]: 個人的な意見ではありますが、AWSではいきなりOpenSearchを入れるのではなく、まずはCloudWatchで始めるのがお勧めです。
+[^4]: 個人的な意見ではありますが、AWSではいきなりOpenSearchを入れるのではなく、まずはCloudWatchで始めるのがお勧めです。
 
 ---
 参照資料

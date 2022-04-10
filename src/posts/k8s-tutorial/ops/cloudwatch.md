@@ -36,7 +36,7 @@ helm uninstall aws-for-fluent-bit -n fluent-bit
 
 ## Fluent Bitのアクセス許可設定
 
-ログ収集のFluent Bitをインストールする前に、CloudWatchへのアクセス許可を設定しておきます。
+ログ収集のFluent Bitをインストールする前に、CloudWatchへのアクセス許可を設定します。
 `/app/terraform/main.tf`に以下を追記します。
 
 ```hcl
@@ -137,7 +137,7 @@ resource "aws_iam_policy" "fluentbit_log_retention" {
 :::column:ADOTと一緒にFluent Bitを有効にする
 今回は使用しませんでしが、[メトリクス収集・可視化 - OpenTelemetry / CloudWatch](/containers/k8s/tutorial/ops/opentelemetry/)で使用したADOT(AWS Distro for OpenTelemetry)のHelmチャートもFluent Bitに対応しています。
 ADOTを使用するのであれば、ここで一緒にFluent Bitをセットアップしてしまうのが簡単です。
-以下コマンドはADODとFluent Bitを同時にセットアップしています。
+以下コマンドではADOTのHelmチャートを使ってFluent Bitを同時にセットアップする例です。
 ```shell
 # <aws-account-id>の部分は利用しているAWS環境のアカウントIDに置き換えてください
 helm upgrade aws-otel-ds aws-otel/adot-exporter-for-eks-on-ec2 \
@@ -235,7 +235,7 @@ kubectl get cm aws-for-fluent-bit -n fluent-bit -o yaml
 以下の内容で動作していることが確認できます。
 
 - `[INPUT]`: Nodeのコンテナログ(標準出力・エラー)を収集
-- `[FILTER]`: ログエントリーにKubernetesのメタデータ付加[^2]
+- `[FILTER]`: ログエントリーにKubernetesのメタ情報付加[^2]
 - `[OUTPUT]`: CloudWatchへログ転送(ロググループ:`/aws/eks/fluentbit-cloudwatch/logs`)
 
 [^2]: <https://docs.fluentbit.io/manual/pipeline/filters/kubernetes>
@@ -302,7 +302,7 @@ fields @timestamp, data.message, kubernetes.pod_name
 ```
 
 `task-service`のログに絞って、不要なログ(ReadinessProbe/LivenessProbe)を除外しています。
-また、タイムスタンプに加えて、Pod名とログメッセージを出力しています。
+また、タイムスタンプに加えて、ログメッセージとPod名を出力しています。
 
 ![](https://i.gyazo.com/3da4365fae7fd2d6fb00ee3061552764.png)
 
@@ -314,7 +314,7 @@ fields @timestamp, data.message, kubernetes.pod_name
 [^3]: ログインサイトはロググループと比較して、若干タイムラグがあります。表示されない場合は少し待ってから試してください。
 
 このように、Fluent BitのKubernetesフィルターによって付与されたKubernetesのメタ情報(コンテナ名/Namespace/ホスト等)を利用することで、様々な角度からログを分析できます。
-クエリ作成の際は、以下のように一度利用可能なフィールドをログ全体を眺めて、使いたい属性があるか探してみると良いでしょう。
+クエリ作成の際は、一度ロググループのログ全体を眺めて、使いたい属性を探してみると良いでしょう。
 
 ![](https://i.gyazo.com/84edc6f8580bacfb52eaea96f30c3abc.png)
 
@@ -356,10 +356,10 @@ helm uninstall aws-for-fluent-bit -n fluent-bit
 ## まとめ
 
 今回はFluent Bitの出力先としてCloudWatchを使ってログを一元管理できるようにしました。
-OpenSearchと違い、CloudWatchは事前のセットアップが不要で、かなり簡単に始められることがわかったと思います。
-検索機能についてもOpenSearchほどのものはありませんが、これでも実用性に足りると感じた方も多いでしょう[^4]。
+OpenSearchと違い、CloudWatchは事前のセットアップが不要で、簡単に始められることが分かったと思います。
+検索機能についてもOpenSearchほどではありませんが、十分実用性に足りると感じた方も多いでしょう[^4]。
 
-ここでは触れませんでしたが、CloudWatchで収集したログをAWS OpenSearchに転送もできます。
+ここでは触れませんでしたが、CloudWatchで収集したログをAWS OpenSearchに転送も可能です。
 これを利用すれば、CloudWatchでログを一元管理をするものの、高度な分析が必要なものはOpenSearchを利用するハイブリッドな使い方もできます。
 
 - [Streaming CloudWatch Logs data to Amazon OpenSearch Service](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_OpenSearch_Stream.html)

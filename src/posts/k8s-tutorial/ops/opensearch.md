@@ -350,7 +350,7 @@ kubectl get cm aws-for-fluent-bit -n fluent-bit -o yaml
 Helmチャートのデフォルトそのままで明示的に設定ファイルを作成しませんでしたが、以下の内容で動作していることが確認できます。
 
 - `[INPUT]`: Nodeのコンテナログ(標準出力・エラー)を収集
-- `[FILTER]`: ログエントリーにKubernetesのメタデータ付加[^5]
+- `[FILTER]`: ログエントリーにKubernetesのメタ情報付加[^5]
 - `[OUTPUT]`: 作成済みのOpenSearchへログ転送
 
 [^5]: <https://docs.fluentbit.io/manual/pipeline/filters/kubernetes>

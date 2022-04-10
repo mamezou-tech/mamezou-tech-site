@@ -359,7 +359,10 @@ helm uninstall aws-for-fluent-bit -n fluent-bit
 OpenSearchと違い、CloudWatchは事前のセットアップが不要で、簡単に始められることが分かったと思います。
 検索機能についてもOpenSearchほどではありませんが、十分実用性に足りると感じた方も多いでしょう[^4]。
 
-ここでは触れませんでしたが、CloudWatchで収集したログをAWS OpenSearchに転送も可能です。
+注意点として、CloudWatchはAWS OpenSearchと比較するとコスト面では有利とはいえ、データ転送量やストレージ使用量等に応じて課金されます。
+不要なログは極力送信しないよう、アプリケーションのログレベルやFluent Bitの設定を調整していくことは必要となります。
+
+また、ここでは触れませんでしたが、CloudWatchで収集したログをAWS OpenSearchに転送も可能です。
 これを利用すれば、CloudWatchでログを一元管理をするものの、高度な分析が必要なものはOpenSearchを利用するハイブリッドな使い方もできます。
 
 - [Streaming CloudWatch Logs data to Amazon OpenSearch Service](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_OpenSearch_Stream.html)

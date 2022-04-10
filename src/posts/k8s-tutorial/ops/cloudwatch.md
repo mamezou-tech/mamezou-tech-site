@@ -137,7 +137,7 @@ resource "aws_iam_policy" "fluentbit_log_retention" {
 :::column:ADOTと一緒にFluent Bitを有効にする
 今回は使用しませんでしが、[メトリクス収集・可視化 - OpenTelemetry / CloudWatch](/containers/k8s/tutorial/ops/opentelemetry/)で使用したADOT(AWS Distro for OpenTelemetry)のHelmチャートもFluent Bitに対応しています。
 ADOTを使用するのであれば、ここで一緒にFluent Bitをセットアップしてしまうのが簡単です。
-以下コマンドではADOTのHelmチャートを使ってFluent Bitを同時にセットアップする例です。
+以下コマンドはADOTのHelmチャートを使ってFluent Bitを同時にセットアップする例です。
 ```shell
 # <aws-account-id>の部分は利用しているAWS環境のアカウントIDに置き換えてください
 helm upgrade aws-otel-ds aws-otel/adot-exporter-for-eks-on-ec2 \
@@ -271,9 +271,9 @@ kubectl get pod -n prod
 
 デプロイが終わったら、アプリケーションのUIを操作して、いくつかログを出力させておきましょう。
 
-それでは、マネジメントコンソールからCloudWatchを表示し、収集したログを確認していきます。
-
-CloudWatchメニューから`ロググループ`を選択すると、全てのロググループが表示されます。`/aws/eks/fluentbit-cloudwatch/logs`がFluent Bitで転送しているロググループです。
+それでは、CloudWatchでログ分析をしてみましょう。
+まず、マネジメントコンソールのCloudWatchメニューから`ロググループ`を選択します。
+全てのロググループが表示されますが、`/aws/eks/fluentbit-cloudwatch/logs`がFluent Bitで転送しているロググループです。
 
 ![](https://i.gyazo.com/13a3a4a279a52b90f6fbd0dccdb5f03e.png)
 

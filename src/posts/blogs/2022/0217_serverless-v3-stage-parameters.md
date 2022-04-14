@@ -2,7 +2,7 @@
 title: Serverless Framework v3新機能のStage Parameters紹介
 author: noboru-kudo
 date: 2022-02-17
-tags: [aws, serverless]
+tags: [aws, サーバーレス]
 ---
 
 2022/1/27にServerless Frameworkのメジャーアップデート(v3)がありました。

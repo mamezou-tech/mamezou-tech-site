@@ -55,8 +55,9 @@ titleImage: "/img/logo/mameka5_50.png"
 2. [メトリクス収集・可視化(OpenTelemetry / CloudWatch)](/containers/k8s/tutorial/ops/opentelemetry/)
 3. [ログ収集・分析(Fluent Bit / AWS OpenSearch)](/containers/k8s/tutorial/ops/opensearch/)
 4. [ログ収集・分析(Fluent Bit / Cloud Watch)](/containers/k8s/tutorial/ops/cloudwatch/)
-5. 分散トレーシング <span style="color:red">Coming Soon!</span>
-6. アラート <span style="color:red">Coming Soon!</span>
+5. [分散トレーシング(OpenTelemetry / Jaeger)](/containers/k8s/tutorial/ops/jaeger/)
+6. 分散トレーシング(OpenTelemetry / AWS X-Ray) <span style="color:red">Coming Soon!</span>
+7. アラート <span style="color:red">Coming Soon!</span>
 
 #### バックアップ・リストア
 1. [Velero による Kubernetes クラスタのバックアップ・リストア](/containers/k8s/tutorial/ops/velero-backup/)

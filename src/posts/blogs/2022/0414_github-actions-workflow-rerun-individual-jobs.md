@@ -51,9 +51,11 @@ jobs:
     steps:
       - name: Echo site details
         env:
+{% raw %}
           SITE: ${{ matrix.site }}
           DATACENTER: ${{ matrix.datacenter }}
         run: echo $SITE $DATACENTER
+{% endraw %}
 ```
 
 この場合も、実行結果のジョブリストから特定の条件のジョブだけ個別に再実行できます。

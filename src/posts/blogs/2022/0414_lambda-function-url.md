@@ -165,7 +165,7 @@ functions:
 ```
 `cors`をオブジェクト型として、CORSの各種ヘッダを設定します。
 設定可能なCORSヘッダはLambda Function URLの[公式ドキュメント](https://docs.aws.amazon.com/lambda/latest/dg/urls-configuration.html#urls-cors)を参照してください。
-これでデプロイして、curlでpre-flightリクエスト(OPTIONSメソッド)をエミューレートしてみます。
+これでデプロイして、curlでpre-flightリクエスト(OPTIONSメソッド)をエミュレートしてみます。
 
 ```shell
 curl -X OPTIONS --head \

@@ -7,8 +7,8 @@ date: 2022-04-18
 Minikube を使ってコンテナアプリを開発してると、目的別にクラスターを切り替えて使いたくなることがあります。
 
 - ふだんアプリ開発に使っているクラスターと別のクリーンなクラスターで作業をしたい
-- 特定の kubernetes バージョンのクラスターを使いたい
-- Docker 以外のコンテナランタイムを使いたい
+- テストのため、特定のバージョンの  kubernetes でクラスターを構成したい
+- Docker 以外のコンテナランタイムを試したい
 
 など。Minikube はデフォルトで `minikube` というプロファイルでクラスターを起動します。minikube profile コマンドで、現在のプロファイル名や起動構成を確認できます。
 
@@ -25,7 +25,7 @@ $ minikube profile list
 
 Minikube ではプロファイルを指定し start することで異なる環境のクラスターを起動できます。
 
-新しいプロファイル `hoge` でクラスターを作成するにはプロファイル名を指定して minikube start します。プロファイルはでデフォルト構成[^1] を引き継いで起動します。ここでは、kubernetes のバージョン v1.23.3 を指定して起動しています。
+新しいプロファイル `hoge` でクラスターを作成するにはプロファイル名を指定して minikube start します。プロファイルはデフォルト構成[^1] を引き継いで起動します。ここでは、kubernetes のバージョン v1.23.3 を指定して起動しています。
 
 [^1]: 本記事で使用した環境は macOS にインストールした Minikube v1.25.2 です。minikube config で driver `hyperkit` を指定しています。
 
@@ -58,14 +58,14 @@ $ minikube profile list
 |----------|-----------|---------|---------------|------|---------|---------|-------|
 ```
 
-クラスター起動時に、kubectl の config は hoge を指すように構成されますが、Minikube のカレントプロファイルは、minikube のままです。切り替えるには profile コマンドでプロファイル名を指定します。
+クラスター起動時に kubectl の config はプロファイル hoge のクラスターを指すように構成されますが、Minikube のカレントプロファイルは、minikube のままです。切り替えるには profile コマンドでプロファイル名を指定します。
 
 ```shell
 $ minikube profile hoge
 ✅  無事 minikube のプロファイルが hoge に設定されました
 ```
 
-プロファイル hoge のコンテナランタイムに containerd を指定したい場合は、start のオプションで指定します。
+プロファイル hoge のクラスターでコンテナランタイムに containerd を指定したい場合は、start のオプションで指定します。
 
 :::info:minikube config とプロファイル
 minikube config コマンドで指定する起動構成はグローバルなデフォルト値です。プロファイルごとのデフォルト値は指定できません。
@@ -110,7 +110,7 @@ $ minikube start -p hoge --container-runtime=containerd --kubernetes-version=v1.
 🏄  完了しました！ kubectl が「"hoge"」クラスタと「"default"」ネームスペースを使用するよう構成されました
 ```
 
-起動構成の Runtime が hoge と minikube で変わっています。
+プロファイル hoge のコンテナランタイムが conatainerd で構成され起動しました。
 
 ```shell
 $ minikube profile list

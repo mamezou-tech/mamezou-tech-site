@@ -57,14 +57,14 @@ OpenTelemetryはメトリクスの回で紹介しています。
 
 なお、Jaeger自体はAWSに依存するものではありませんので、ローカル環境(minikube等)のKubernetesでも代用できます。
 
-## トレーシング向けのTLS証明書セットアップ(Cert Manager)
+## TLS証明書のセットアップ(Cert Manager)
 
 アプリケーション自体に加えて、以下のインターネット通信はHTTPS化します。
 
 - Jaeger UI(トレース情報の可視化)
 - UI(`task-web`)からトレース情報送信
 
-これらについてTLS証明書を発行するために、事前にCert ManagerのIssuerを用意します。
+これらのTLS証明書を発行するために、事前にCert ManagerのIssuerを用意します。
 以下`tracing-tls-issuer.yaml`を作成します。
 
 ```yaml
@@ -92,16 +92,16 @@ spec:
 kubectl apply -f tracing-tls-issuer.yaml
 ```
 
-実際のTLS証明書は、この後の各Ingressリソース作成時にCert Managerによって自動発行されます。
+実際のTLS証明書は、各Ingressリソース作成時にCert Managerによって自動発行されます。
 
 :::info
 ここではアプリケーションをHTTPSでセットアップ済みのため、トレーシング情報についてもHTTPS化する必要があります。
-Minikube等のローカル環境で試す場合は、本手順は不要で、後続のTLS関連の設定も省略できます。
+Minikube等のローカル環境で試す場合は、本手順は不要です。後続のTLS関連の設定も省略できます。
 :::
 
 ## Jaeger Operatorのインストール
 
-Jaegerをインストールします。Jaegerのインストールは、Kubernetes OperatorであるJaeger Operatorを使います。
+Jaegerをインストールします。Jaegerのインストールは[Jaeger Operator](https://github.com/jaegertracing/jaeger-operator)を使います。
 [Helmチャート](https://github.com/jaegertracing/helm-charts/tree/main/charts/jaeger-operator)が用意されていますので、こちらを利用します。
 
 まずは、Helmチャートのリポジトリを追加します。
@@ -132,9 +132,9 @@ NAME                               READY   STATUS    RESTARTS   AGE
 jaeger-operator-67f8dd68c9-bjjbq   1/1     Running   0          10m
 ```
 
-デフォルトの1つのJaeger OperatorのPodが実行中です。
-この状態ではまだJaeger自体は起動していません。
-Jaegerを実行するには、Jaeger OperatorのカスタムリソースのJaegerリソースを作成する必要があります。
+1つのJaeger OperatorのPodが実行中です。
+この状態では、まだOperatorのみでJaeger自体は実行していません。
+これには、Jaeger OperatorのカスタムリソースのJaegerリソースを作成する必要があります。
 以下のファイルを`jaeger.yaml`として作成します。
 
 ```yaml
@@ -193,10 +193,10 @@ NAME                      READY   STATUS    RESTARTS   AGE
 jaeger-7d987d7488-x9mlx   1/1     Running   0          24m
 ```
 
-Jaeger OperatorがJaegerリソース作成を検知し、Jaegerを実行しています。
+Jaeger OperatorがJaegerリソース作成を検知し、Jaeger本体を作成しています。
 
 では、JaegerのUIを見てみましょう。Jaegerリソース作成時にIngressについても作成済みです。
-Jaegerリソースで指定したドメインにアクセスしてみましょう(上記では`https://jaeger.mamezou-tech.com/`)。
+Jaegerリソースで指定したドメインにHTTPSでアクセスしてみましょう(上記では`https://jaeger.mamezou-tech.com/`)。
 
 ![jaeger top](https://i.gyazo.com/a4396d83123cb6527dbf3526bfa03c4c.png)
 
@@ -205,7 +205,7 @@ DNS伝播やTLS証明書の作成にはタイムラグがありますので、�
 
 :::info
 JaegerのUI自体に認証の仕組みはありませんので、実運用する際にはこの点を別途考慮する必要があります。
-構成例として、Jaegerの公式ブログでKeycloakを使った認証が紹介されていますので、参考にすると良いでしょう。
+構成例として、Jaegerの公式ブログでKeycloakを使った認証が紹介されていますので、実際に導入する際は参考にしてください。
 
 - [Protecting Jaeger UI with an OAuth sidecar Proxy](https://medium.com/jaegertracing/protecting-jaeger-ui-with-an-oauth-sidecar-proxy-34205cca4bb1)
 :::
@@ -217,7 +217,6 @@ JaegerのUI自体に認証の仕組みはありませんので、実運用する
 ### UIトレース情報収集
 
 ブラウザ上で動作しているVue.jsのUI(`task-web`)が送信するトレーシング情報の受け口を作成します。
-これには[OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector)を利用します。
 
 Jaeger同様にOpenTelemetry CollectorもOpenTelemetry Operatorが[Helmチャート](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-operator)として用意されています。
 
@@ -246,7 +245,7 @@ NAME                                                         READY   STATUS    R
 opentelemetry-operator-controller-manager-68f5b47944-qv47h   2/2     Running   0          60s
 ```
 
-今回もJaeger Operator同様にインストールしただけでは、何も動作しません。
+Jaeger Operator同様にインストールしただけでは、何も動作しません。
 OpenTelemetry Operatorインストール時に作成されるカスタムリソースのOpenTelemetryCollectorを作成します。
 以下のファイルを`otel-web.yaml`として作成します。
 
@@ -273,7 +272,6 @@ spec:
       logging:
       jaeger:
         # Jaeger CollectorのgRPCエンドポイント
-        # kubectl get svc jaeger-collector -o yaml -n tracing
         endpoint: jaeger-collector.tracing.svc.cluster.local:14250
         tls:
           insecure: true
@@ -319,8 +317,9 @@ pod/otel-web-collector-69c8d5d7f9-qqkgw   1/1     Running   0          39m
 ```
 
 DeploymentオブジェクトとしてOpenTelemetry Collectorが作成され、1つのレプリカが実行されています。
+また、アクセスポイントとしてServiceリソースが`ClusterIP`タイプで作成されています。
 
-次に、ブラウザ側からここに対してトレーシング情報を送信できるようにします。
+次に、ブラウザ側からこれに対してトレーシング情報を送信できるようにします。
 Jaeger OperatorはIngressも作成してくれますが、OpenTelemetry Collectorは別途作成する必要があります。
 以下のファイルを`otel-web-collector-ingress.yaml`として作成します。
 
@@ -400,7 +399,6 @@ spec:
       logging:
       jaeger:
         # Jaeger CollectorのgRPCエンドポイント
-        # kubectl get svc jaeger-collector -o yaml -n tracing
         endpoint: jaeger-collector.tracing.svc.cluster.local:14250
         tls:
           insecure: true
@@ -412,18 +410,18 @@ spec:
           exporters: [logging, jaeger]
 ```
 
-先程はブラウザからのトレース情報を受け取るため、OTLPのReceiverのプロトコルはHTTPとしましたが、今回はEKS内での通信となりますので、パフォーマンスに優れるgRPCを指定しました[^3]。
+先程はブラウザからのトレース情報を受け取るため、OTLPのReceiverのプロトコルはHTTPとしましたが、今回はKubernetes内での通信となりますので、パフォーマンスに優れるgRPCを指定しました[^3]。
 Exporterについては先程と同じくJaegerのgRPCエンドポイントを指定します。
 
 [^3]: エンドポイントを指定していませんので、Receiverのデフォルト`0.0.0.0:4317`が利用されます。サイドカーコンテナでは、アプリケーションと同じネットワーク空間を共有するのでこれで問題ありません。
+
+こちらもクラスタに反映します。
 
 ```shell
 kubectl apply -f otel-sidecar.yaml
 ```
 
-先程は適用する(`kubectl apply`)とDeploymentリソースが作成されましたが、今回はまだ何も起きません。
-サイドカーコンテナ注入するには、対象であることを示すようPod側に目印となるアノテーションをつける必要があります。
-これについては、クライアント側のセットアップ終了後に行います。
+先程は適用する(`kubectl apply`)とDeploymentリソースが作成されましたが、今回はまだPodを作成していないためこの状態では何も起きません。
 
 ## OpenTelemetryクライアントのセットアップ
 
@@ -460,7 +458,7 @@ const provider = new WebTracerProvider({
   })
 });
 const exporter = new OTLPTraceExporter({
-  url: "https://<ingress-address>/v1/traces",
+  url: "https://otel.mamezou-tech.com/v1/traces",
 })
 provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 provider.register({
@@ -478,7 +476,7 @@ registerInstrumentations({
 WebTracerProviderでOpenTelemetryのProviderを作成し、自動構成ライブラリとして先程の2つのライブラリを登録しています(`registerInstrumentations`)。
 
 また、トレース情報の出力先(OTLPTraceExporter)として、先程作成したOpenTelemetry CollectorのIngressのURLを指定します。
-なお、`<ingress-address>`の部分は自身で設定したIngressのドメインを指定してください。今回の例ではURLは`https://otel.mamezou-tech.com/v1/traces`となります。
+なお、エンドポイントのドメインは自身で設定したIngressのドメインを指定してください。
 ドメインは以下でも取得できます。
 
 ```shell
@@ -549,7 +547,7 @@ provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 先程UI側で追加した内容と大きく変わることはありません。
 `registerInstrumentations`で自動構成ライブラリを追加し、トレース情報をOTLP(OTLPTraceExporter)に送信します。
 先程と違い、出力先URLを指定していません。この場合はデフォルトではローカル環境のエンドポイントが指定されます。
-今回APIはサイドカーコンテナのOpenTelemetry Collectorとネットワーク空間を共有するため、デフォルトの指定で問題ありません。
+今回APIはサイドカーコンテナのOpenTelemetry Collectorとネットワーク空間を共有するため、デフォルト値で問題ありません。
 
 ## コンテナイメージビルド＆プッシュ
 
@@ -561,10 +559,11 @@ provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 
 ## アプリケーションのデプロイ
 
-それでは、OpenTelemetry SDKを組み込んだアプリケーションをデプロイしましょう。
+それでは、OpenTelemetry SDKを組み込んだアプリケーションをEKS環境にデプロイしましょう。
 
-その前に、一部マニフェストファイルの修正が必要です。API側のOpenTelemetry Collectorのサイドカーコンテナは、OperatorによってPod作成時に注入されます。
-このままではOperatorはどのPodにサイドカーコンテナ注入すれば良いのか分かりません。
+その前に、一部マニフェストファイルの修正が必要です。
+API側のOpenTelemetry Collectorのサイドカーコンテナは、OpenTelemetry OperatorによってPod作成時に注入されます。
+しかし、このままではOperatorはどのPodにサイドカーコンテナを注入すれば良いのか分かりません。
 これを示すために、指定されたアノテーションをPodに対して指定する必要があります。
 
 - [OpenTelemetry Operator Helm Chart - Sidecar Mode](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-operator#sidecar-mode)
@@ -669,22 +668,28 @@ UI側に追加したOpenTelemetryの自動構成ライブラリ別にトレー�
 ### ① Webリソース取得(instrumentation-document-load)
 ![instrumentation-document-load](https://i.gyazo.com/268cfb1cc2d8b7d0dc22222767b7a679.png)
 
-Webページを構成する各リソースでどのくらい時間がかかっているのかを確認できます。 表示が遅い場合のパフォーマンス調査に効果を発揮できることが分かります。
+Webページを構成する各リソースのフェッチにかかっている時間を確認できます。 
+表示が遅い場合のパフォーマンス調査に効果を発揮できることが分かります。
 
 ### ② Ajax通信(instrumentation-xml-http-request)
 ![instrumentation-xml-http-request](https://i.gyazo.com/405020f716032d7c325a4834798e2d09.png)
 
 今回はUI(`task-web`)だけでなく、API(`task-service`)側のトレース情報も表示されています。
-これは、OpenTelemetryの各ライブラリがサービス連携時にトレースIDを伝播しているからです。これにより該当トレースIDに所属する1つのトランザクションはサービスを跨っても、同一グループとして可視化できます。
+これは、OpenTelemetryの各ライブラリがサービス連携時にトレースIDを伝播しているからです。
+これにより、1つのトランザクション内で複数サービスを跨っても、同一タイムラインで可視化できます。
 
 後半のAPI(`task-service`)を見ると自動構成ライブラリとして組み込んだExpressやAWS SDKの呼び出しのパフォーマンスも詳細に確認できます。
 特にAWS SDK呼び出しではDynamoDBのクエリまで出力されており、パフォーマンス調査に大きな効果を発揮できそうです。
 
 ## クリーンアップ
 
-HelmでインストールしたJaegerは以下で削除します。
+HelmでインストールしたOpenTelemetry Collector(Deployment)とJaegerは、以下で削除します。
 
 ```shell
+# Operatorで作成したリソース
+kubectl delete jaeger jaeger -n tracing
+kubectl delete opentelemetrycollector otel-web -n tracing
+# Operator自体を削除 
 helm uninstall otel-operator -n tracing
 helm uninstall jaeger-operator -n tracing
 ```
@@ -696,7 +701,7 @@ helm uninstall jaeger-operator -n tracing
 ## まとめ
 
 ここではOpenTelemetryによってエンドツーエンドでトレース情報を収集し、それをJaegerで可視化しました。
-サービスを跨った一連のトランザクションがタイムラインとして表示されるため、パフォーマンス分析に大きく貢献できることが分かったと思います。
+サービスを跨った一連のトランザクションがタイムラインとして表示されるため、パフォーマンス分析に非常に有用なことが分かったと思います。
 
 今回トレース情報を出力するよう各種クライアントライブラリを組み込んでいきましたが、Istio等のサービスメッシュを導入するというやり方もあります。
 サービスメッシュの適用範囲に限定はされますが、これを導入するとアプリケーション側に一切手を入れずに、自動的にトレース情報を取得できます。

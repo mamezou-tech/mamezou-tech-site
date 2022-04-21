@@ -3,7 +3,7 @@ title: 分散トレーシング(OpenTelemetry / Jaeger)
 author: noboru-kudo
 tags: [aws]
 prevPage: ./src/posts/k8s-tutorial/ops/cloudwatch.md
-date: 2022-04-20
+date: 2022-04-21
 ---
 
 今回はアプリケーションのパフォーマンスに焦点を当てます。
@@ -14,8 +14,8 @@ date: 2022-04-20
 マイクロサービスのような分散アーキテクチャでは、1つのトランザクションが複数サービスを跨ることが多く、どのサービスでどれくらいのパフォーマンスが出ているかを可視化することが重要となります。
 
 このような背景から、分散アーキテクチャ対応のトレーシングツールが普及するようになってきました。
-一般的に分散トレーシングツールは、トレース情報をHTTPやDBアクセス等の任意の作業単位(Span)で構成し、これをタイムラインとして可視化する仕組みを持っています。
-これにより、一連のトランザクション内の任意の視点でパフォーマンス調査が可能となり、ボトルネックの発見が容易になります。
+一般的に分散トレーシングツールは、トレース情報をHTTPやDBアクセス等の構成要素(Span)のグラフ構造で保持し、これをタイムラインとして可視化する仕組みを持っています。
+この可視化機能によって、トランザクション全体の俯瞰的なモニタリングが可能となり、ボトルネックの発見を容易にします。
 
 以下のイメージは、分散トレーシングツールのJaegerのドキュメントから引用したものです。
 ![](https://i.gyazo.com/7afb122c2dae5bcaf23fb1d36e615548.png)
@@ -25,11 +25,17 @@ date: 2022-04-20
 今回はこの分散トレーシング環境を構築します。
 分散トレーシングについても2部構成です。それぞれ以下の製品を導入します。
 
-- [Jaeger](https://www.jaegertracing.io/)
-- [AWS X-Ray](https://aws.amazon.com/jp/xray/)
+- [OpenTelemetry](https://opentelemetry.io/) / [Jaeger](https://www.jaegertracing.io/)
+- [OpenTelemetry](https://opentelemetry.io/) / [AWS X-Ray](https://aws.amazon.com/jp/xray/)
 
-まず初回はJaegerを使用します。
-JaegerはUber社が開発した分散トレーシングツールのOSSです。CNCFのホスティングプロジェクトでしたが、現在はGraduatedステータスに昇格し、広く普及している製品の1つです。
+まず初回はOpenTelemetry / Jaegerを使用します。
+OpenTelemetryはメトリクスの回で紹介しています。
+
+- [メトリクス収集・可視化 - OpenTelemetry / CloudWatch](/containers/k8s/tutorial/ops/opentelemetry/#opentelemetryとは？)
+
+今回はOpenTelemetryをメトリクスではなく、トレース情報の収集手段として使用します。
+
+もう1つのJaegerは、Uber社が開発した分散トレーシングツールのOSSです。CNCFのホスティングプロジェクトでしたが、現在はGraduatedステータスに昇格し、広く普及している製品の1つです。今回JaegerはOpenTelemetryで収集したトレース情報の蓄積と可視化ツールとして使用します。
 最終的に以下の構成になります。
 
 ![jaeger summary](https://i.gyazo.com/b0796d81c6b3169fc01ed3fe45f4c7bf.png)
@@ -49,7 +55,7 @@ JaegerはUber社が開発した分散トレーシングツールのOSSです。C
 - [クラスタ環境デプロイ - EKSクラスタ(Kustomize導入)](/containers/k8s/tutorial/app/eks-2/)
 - [クラスタ環境デプロイ - EKSクラスタ(デプロイ)](/containers/k8s/tutorial/app/eks-3/)
 
-なお、Jaeger自体はAWSに依存するものではありませんので、ローカル環境(minikube等)のKubernetesでも代用可できます。
+なお、Jaeger自体はAWSに依存するものではありませんので、ローカル環境(minikube等)のKubernetesでも代用できます。
 
 ## トレーシング向けのTLS証明書セットアップ(Cert Manager)
 

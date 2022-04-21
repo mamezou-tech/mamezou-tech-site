@@ -253,7 +253,7 @@ jobs:
   12:33PM INF client.filesystem."./_build".write | completed    duration=100ms
 ```
 
-従来の GitHub Actions ワークフローでは React アプリのパイプラインを構築するには、setup-node アクションで Runner の VM をプロビジョニングします。そして npm script でビルドやテストを実行します。つまり利用する言語やフレームワークごとにシェルや Action を駆使して構築するわけです。dagger-for-github を使うとそれらのコードは CUE 言語ファイルに隠蔽され、コンテナで実行されます。GitHub Actions ワークフローは単なる起動シェルのような位置付けになっています。これは GitLab や Jenkins で実行するときぼ同様です。詳細はドキュメントを参照してください。
+従来の GitHub Actions ワークフローでは React アプリのパイプラインを構築するには、setup-node アクションで Runner の VM をプロビジョニングします。そして npm script でビルドやテストを実行します。つまり利用する言語やフレームワークごとにシェルや Action を駆使して構築するわけです。dagger-for-github を使うとそれらのコードは CUE 言語ファイルに隠蔽され、コンテナで実行されます。GitHub Actions ワークフローは単なる起動シェルのような位置付けになっています。これは GitLab や Jenkins で実行する場合も同様です。詳細はドキュメントを参照してください。
 
 [Integrating with your CI environment | Dagger](https://docs.dagger.io/1201/ci-environment)
 

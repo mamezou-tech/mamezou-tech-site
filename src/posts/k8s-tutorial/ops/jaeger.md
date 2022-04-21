@@ -38,7 +38,7 @@ OpenTelemetryはメトリクスの回で紹介しています。
 もう1つのJaegerは、Uber社が開発した分散トレーシングツールのOSSです。CNCFのホスティングプロジェクトでしたが、現在はGraduatedステータスに昇格し、広く普及している製品の1つです。今回JaegerはOpenTelemetryで収集したトレース情報の蓄積と可視化ツールとして使用します。
 最終的に以下の構成になります。
 
-![jaeger summary](https://i.gyazo.com/b0796d81c6b3169fc01ed3fe45f4c7bf.png)
+![jaeger summary](https://i.gyazo.com/b2467c0d4b5fbe74d465ba8a8044b1ff.png)
 
 ブラウザ上で動くUI(Vue.js)を起点とし、そのバックエンドのAPI(Node.js)、そして永続化レイヤーのDynamoDBまでのパフォーマンスを可視化します。
 各コンポーネントにはOpenTelemetryのSDK(クライアントライブラリ)を組み込み、イベント発生時にOpenTelemetry Collector経由でJaegerにトレース情報を送信します。

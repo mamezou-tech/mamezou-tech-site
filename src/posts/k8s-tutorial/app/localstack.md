@@ -94,11 +94,11 @@ data:
 
 ConfigMapリソースの中(`data`フィールド)に3つのスクリプトを作成しました。
 
-スクリプト | 内容
---------------------------- | ----------------------------
-01-credential.sh            | AWS CLIの認証情報の初期化スクリプト。これらはAWSを利用する場合に必須のものですが、LocalStackでは任意の値で構いません。
-02-create-bucket.sh         | LocalStackにS3バケットを作成するスクリプト
-03-create-dynamodb-table.sh | LocalStackにDynamoDBテーブルを作成するスクリプト
+| スクリプト                       | 内容                                                                    |
+|-----------------------------|-----------------------------------------------------------------------|
+| 01-credential.sh            | AWS CLIの認証情報の初期化スクリプト。これらはAWSを利用する場合に必須のものですが、LocalStackでは任意の値で構いません。 |
+| 02-create-bucket.sh         | LocalStackにS3バケットを作成するスクリプト                                           |
+| 03-create-dynamodb-table.sh | LocalStackにDynamoDBテーブルを作成するスクリプト                                     |
 
 各スクリプト自体の内容は、AWS CLIの[公式ドキュメント](https://docs.aws.amazon.com/cli/latest/index.html)を参照して作成できます。
 

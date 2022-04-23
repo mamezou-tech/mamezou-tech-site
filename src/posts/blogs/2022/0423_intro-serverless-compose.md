@@ -158,7 +158,7 @@ services:
 ポイントはsample-apiの`params`です。
 ここでsample-apiが参照するSQSのURLを渡しています。ここで指定している値は、sample-consumer側のCloudFormationテンプレートの`Output`に定義しているものです(`queueUrl`)。
 こうすることでServerless Frameworkは両サービスに依存関係があると解釈し、sample-consumer -> sample-apiの順序でデプロイされるようになります（依存関係がない場合は並列にデプロイされます）。
-Docker Composeはもちろん、CloudFormationやTerraform等のIaCツールではお馴染みのものですので、この辺りのツールに慣れている方は直感的かと思います。
+CloudFormationやTerraform等のIaCツールではお馴染みのものですので、この辺りのツールに慣れている方は直感的かと思います。
 
 ここでは暗黙的な依存関係を作成しましたが、以下のように明示的な指定も可能です。
 

@@ -233,6 +233,9 @@ $social-min-height: 30px !default;
     ling-height: 1em;
   }
 
+  pre code:not([class*="language"]) {
+    max-width: calc(100vw - 4rem);
+  }
   code[class*="language-"],
   pre[class*="language-"] {
     max-width: calc(100vw - 3rem);

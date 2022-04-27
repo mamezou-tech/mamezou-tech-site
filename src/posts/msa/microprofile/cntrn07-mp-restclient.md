@@ -1,7 +1,7 @@
 ---
 title: 第7回 らくらくMicroProfile RestClient
 author: toshio-ogiwara
-date: 2022-04-25
+date: 2022-04-27
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn06-mp-config.md
 ---

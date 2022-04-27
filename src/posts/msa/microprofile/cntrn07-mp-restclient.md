@@ -439,19 +439,21 @@ ResponseExceptionMapperが複数登録されている場合、その呼び出し
 
 `getPriority`メソッドはResponseExceptionMapperインターフェースにdefault実装されているため、順序性の考慮が不要な場合は実装する必要はありませんが、順序性の制御が必要な場合は期待する順序になるように`getPriority`メソッドを実装する必要があります。
 
-説明したResponseExceptionMapperが複数登録されている場合の流れをシーケンス図で示すと以下にようになります（REMはResponseExceptionMapperの略）。
+説明した内容を元に優先度が2番目のResponseExceptionMapperがエラーハンドルする場合の流れをシーケンス図で示すと以下にようになります。
 
 ```mermaid
 sequenceDiagram
+    RestClient#058;Proxy->>MicroProfileランタイム: REST API呼出の実行
     MicroProfileランタイム->>MicroProfileランタイム: REST API呼出
     MicroProfileランタイム->>REM#058;優先度1: handles(status, headers)
+    Note right of REM#058;優先度1: REMはResponseExceptionMapperの略
     REM#058;優先度1-->>MicroProfileランタイム: false
     MicroProfileランタイム->>REM#058;優先度2: handles(status, headers)
     REM#058;優先度2-->>MicroProfileランタイム: true
     MicroProfileランタイム->>REM#058;優先度2: toThrowable(response)
     REM#058;優先度2-->>MicroProfileランタイム: 例外
+    MicroProfileランタイム-->>RestClient#058;Proxy: throw 例外
 ````
-
 [^7]: これは依頼に対して処理可能なオブジェクトが現れるまで、依頼を聞き回るGoFの”Chain of Responsibility”パターンを使った典型的な実装と言えます。
 
 ## リファレンスアプリでの利用例

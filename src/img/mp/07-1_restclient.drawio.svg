@@ -1,0 +1,140 @@
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="871px" height="267px" viewBox="-0.5 -0.5 871 267" content="&lt;mxfile&gt;&lt;diagram id=&quot;YVg5XgM7XZu8tcptmRIq&quot; name=&quot;ページ1&quot;&gt;7Vpbb9s2FP41ArKHBrpbfrScpOuQDkE8YO0jI9EWUVo0JDq2++t3KJG6UrbiuV2WJg5i8vAi8pyP30dSMZz5ev8xQ5vkM4sxNWwz3hvOjWHblj/14EtYDqXFtyalYZWRWFaqDQvyHUujKa1bEuO8VZEzRjnZtI0RS1Mc8ZYNZRnbtastGW0/dYNWuGdYRIj2rX+TmCelNbAntf13TFaJejLMuCxZI1VZziRPUMx2DZNzazjzjDFeptb7OabCecovZbu7gdJqYBlO+ZgGrhzyM6JbOTk5MH5Qs83YNo2xaGAaTrhLCMeLDYpE6Q7iC7aErynkLEguWcplwCyRz79hHiWy7ZJQOmeUZUXHztITH9moYS9/RGOesW9YlaQshW7D/hTlrJ9xxvG+YZJT/ojZGvPsAFVkqTuV7pf4C9wyu6uDaQeyStIIpO37EkQSQKuq69rHkJBuHnC594NdPuRlrTeHXH8BL3+wzJNudj2Nm61LuNnuefkBZzlLH3HOtlmEP603tOf3fEfWFFWOWcgSEQREySqFdAQOweCtUDiCACfMZAFnIi5RQmh8jw5sKyaTcxR9U7kwYRn5Dt0iFTkozlTobL9VYyFaykdnOIc6DyoWVsf0Ge1bFe9RzqUhYpSiTU6eimmIhmuUrUgaMs7ZWrMqY7xEW8ortCh6s3v4AbDYM/HpIPBC4PF8p4Wdaj02wGP5GvAoQOmwI5/2CJqA0hX4pH6c04aq5Wkep8Oq3YEqooCOFHEciiWc9xBbzXQUiEdQBfiTN+BJ8ZIPgjMHDiHp6r6oc+PWlkc5IWFi0HZJC1FKSBzjVACLccTRU7UYNoykvJixF8Iv+GVuXnuGBwOaQ96q8/ArqmdAMikACJECERggusMCpkfRN6wJTVyeRp89Gn2HdlRPgc12/z1RWY4myH7hBfVNBOUsBf/b/koWqG/wjSVC0ma318RsrvnObE1ms4I21Vhef/fh6GTRfEvUZrka2Idic4/5FYl/M5xZCekGxssKKI6vNkXRkUpLksbh4U+0xlcp/BE17wmgR66oqpVcRr8mqVYwP4dUK94azapuH3haoPtHcD56+2eelk6cxjNxGoTcE2WClMIY5Umx7xaMAuV3RDyhCA/klEPs9ga87z28J/yLaHftydxX1Qukb/bNzEFmhqMzSDo47pxTJfnXotePhU7SMkwRJ8/tvo6wzINAas0wE7/DaN0AlsOSrZqn0U5HvtvZ9NmdjkBVgB56HZ1BPxVvX0J1Fzh7Ju+i28TxMS45A+kvOHV2zvZaebXevLxqzr+VvJagPSmystooqZV1f0GpPQ33l4qx5vwyfhUckVod6C8itf7Pk1olrB/Ma9MMmtoK+ckIfW2pdAoz/VKNADJfa80W2bqjIndodAuoJuApQd26q80Y4WAZncd1TRH33AGlL5WwCY+fIvW26157bY32vfPEXtOV1enqcnLv6uhwGKMRRXlOojb26kvZ7q2rAKKctoLFoiQmiTQ5EX3hS+46Wotm7L7wKDJ00uRdBiyO25HGc/eFntXpaDpuXwjhRIdGNUn7gwN2bf2Ah8blBPpx1TgtR3A2avtXQ4+3i7/AMnv4ZNx6xtQywrlIBBMjnA1pawPDJ7eda5BM0bzc/A1KplBFtOUslyugB2P1eqFBi403Dhe+UnEmnTg4mj2YqduDXUD+3L78FUG6dYzANmZ3RcIxZlNlcVXClkWhIxNB8P8LoXp/pw437gXi2Qmn5r2Rfkd9gWh6faGooglBnMnYhTcqdnNlmb7HrnDgxDkZPPtHBa/Pl3+gfZa/2lP663jp19+vHr0c96MAPy0HmbwHFQ2gBtFjdRXVmfbh8/Zf++nuxt/YuXn0gamC29hL6hMALEniv3j1B9n6P3tKWNT/H+Xc/gM=&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs>
+        <clipPath id="mx-clip-622-76-222-60-0">
+            <rect x="622" y="76" width="222" height="60"/>
+        </clipPath>
+        <clipPath id="mx-clip-14-76-202-60-0">
+            <rect x="14" y="76" width="202" height="60"/>
+        </clipPath>
+    </defs>
+    <g>
+        <rect x="590" y="0" width="280" height="266" fill="#f5f5f5" stroke="none" pointer-events="all"/>
+        <rect x="0" y="0" width="450" height="166" fill="#f5f5f5" stroke="none" pointer-events="all"/>
+        <path d="M 663 222 L 663 196 L 823 196 L 823 222" fill="rgb(255, 255, 255)" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 663 222 L 663 246 L 823 246 L 823 222" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 663 222 L 823 222" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" text-anchor="middle" font-size="13px">
+            <text x="742.5" y="214.5">
+                PersonResourceImpl
+            </text>
+        </g>
+        <rect x="663" y="222" width="160" height="24" fill="rgb(255, 255, 255)" stroke="#333333" stroke-width="2" pointer-events="none"/>
+        <path d="M 618 71 L 618 31 L 848 31 L 848 71" fill="rgb(255, 255, 255)" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 618 71 L 618 131 L 848 131 L 848 71" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 618 71 L 848 71" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" text-anchor="middle" font-size="13px">
+            <text x="732.5" y="49.5">
+                &lt;&lt;interface&gt;&gt;
+            </text>
+            <text x="732.5" y="65.5">
+                PersonResource
+            </text>
+        </g>
+        <rect x="618" y="71" width="230" height="60" fill="rgb(255, 255, 255)" stroke="#2a2a2a" stroke-width="2" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-622-76-222-60-0)" font-size="13px">
+            <text x="623.5" y="89.5">
+                + get(id):Person
+            </text>
+            <text x="623.5" y="105.5">
+                + add(person):Person
+            </text>
+            <text x="623.5" y="121.5">
+                + findByName(name):List&lt;Person&gt;
+            </text>
+        </g>
+        <path d="M 743 196 L 743 152.24" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="6 6" pointer-events="none"/>
+        <path d="M 743 138.24 L 750 152.24 L 736 152.24 Z" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 10 71 L 10 31 L 220 31 L 220 71" fill="rgb(255, 255, 255)" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 10 71 L 10 131 L 220 131 L 220 71" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 10 71 L 220 71" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" text-anchor="middle" font-size="13px">
+            <text x="114.5" y="49.5">
+                &lt;&lt;interface&gt;&gt;
+            </text>
+            <text x="114.5" y="65.5">
+                PersonService
+            </text>
+        </g>
+        <rect x="10" y="71" width="210" height="60" fill="rgb(255, 255, 255)" stroke="#2a2a2a" stroke-width="2" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-14-76-202-60-0)" font-size="13px">
+            <text x="15.5" y="89.5">
+                + getPerson(id):Person
+            </text>
+            <text x="15.5" y="105.5">
+                + addPerson(person):Person
+            </text>
+            <text x="15.5" y="121.5">
+                + findPerson(name):List&lt;Person&gt;
+            </text>
+        </g>
+        <path d="M 278.72 81.17 L 236.24 81.05" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="6 6" pointer-events="none"/>
+        <path d="M 222.24 81.01 L 236.26 74.05 L 236.22 88.05 Z" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 440 76 L 510 76 Q 520 76 512 82 L 488 100 Q 480 106 490 106 L 601.76 106" fill="none" stroke="#333333" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="6 6" pointer-events="none"/>
+        <path d="M 607.76 106 L 599.76 110 L 601.76 106 L 599.76 102 Z" fill="#333333" stroke="#333333" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 56px; margin-left: 520px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: none; white-space: nowrap;">
+                                REST API呼出
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="520" y="60" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="13px" text-anchor="middle">
+                    REST API呼出
+                </text>
+            </switch>
+        </g>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 10px; margin-left: 245px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 15px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: none; text-decoration: underline; white-space: nowrap;">
+                                RESTクライアント
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="245" y="15" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="15px" text-anchor="middle" text-decoration="underline">
+                    RESTクライアント
+                </text>
+            </switch>
+        </g>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 10px; margin-left: 733px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 15px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: none; text-decoration: underline; white-space: nowrap;">
+                                RESTリソース
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="733" y="15" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="15px" text-anchor="middle" text-decoration="underline">
+                    RESTリソース
+                </text>
+            </switch>
+        </g>
+        <path d="M 280 81 L 280 55 L 440 55 L 440 81" fill="#dae8fc" stroke="#6c8ebf" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 280 81 L 280 105 L 440 105 L 440 81" fill="none" stroke="#6c8ebf" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 280 81 L 440 81" fill="none" stroke="#6c8ebf" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" text-anchor="middle" font-size="13px">
+            <text x="359.5" y="73.5">
+                JaxrsPersonService
+            </text>
+        </g>
+        <rect x="280" y="81" width="160" height="24" fill="#dae8fc" stroke="#6c8ebf" stroke-width="2" pointer-events="none"/>
+    </g>
+    <switch>
+        <g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/>
+        <a transform="translate(0,-5)" xlink:href="https://www.diagrams.net/doc/faq/svg-export-text-problems" target="_blank">
+            <text text-anchor="middle" font-size="10px" x="50%" y="100%">
+                Viewer does not support full SVG 1.1
+            </text>
+        </a>
+    </switch>
+</svg>

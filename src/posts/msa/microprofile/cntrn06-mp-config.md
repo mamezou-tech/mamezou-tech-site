@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-04-01
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn05-mp-openapi.md
+nextPage: ./src/posts/msa/microprofile/cntrn07-mp-restclient.md
 ---
 
 勝手に選んだMicroProfile厳選仕様を紹介していく2回目はMicroProfile Config(MP Config)です。MP Configは[第4回](/msa/mp/cntrn04-spec-ranking/)の概要編で触れたとおりマイクロサービスでの利用が考慮された使い勝手の良い設定機能です。今回はその基本機能から特徴的な機能や応用機能まで実装例をもとに紹介していきます。

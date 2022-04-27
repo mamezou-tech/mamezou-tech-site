@@ -19,11 +19,12 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - [第4回 使って分かった！お勧めMicroProfile仕様厳選3選](/msa/mp/cntrn04-spec-ranking/)
 - [第5回 コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)
 - [第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)
-- 第7回 らくらくMicroProfile RestClient <span style="color:red">Coming Soon!</span>
+- [第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)
 
 （番外編）
 - [Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)
 - [Helidon Tips - Helidon MP Testing with JUnit5を使ってみる](/msa/mp/ext02-helidon-testing/)
+- Helidon Tips - Helidon MP Testing with JUnit5とMicroProfile RestClientを使ったRESTリースのテスト<span style="color:red">Coming Soon!</span>
 
 
 以降もまだまだ続きます。こうご期待

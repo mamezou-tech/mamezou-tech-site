@@ -200,7 +200,7 @@ curl -X GET http://localhost:7001/api/persons?name=x -w ':%{http_code}\n'
 とは言うもののfeatureを起動させるjarを1つずつ調べながらpomにdependencyを追加していくのはかなり骨が折れます。まずはお試しで動かしてみたいと言った場合は、Helidon MPのすべての機能が組み込まれる次のartifactを利用するのがお勧めです。サンプルアプリもこの全部入りartifactを利用しているため、すべてのfeatureが起動するようになっています。
 ```xml
 <dependency>
-    <groupId>io.helidon.microprofile.bundles</groupId>
+    <groupId></groupId>
     <artifactId>helidon-microprofile</artifactId>
 </dependency>
 ```

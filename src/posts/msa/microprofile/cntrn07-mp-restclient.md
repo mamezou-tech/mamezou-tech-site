@@ -214,7 +214,7 @@ public class JaxrsPersonService implements PersonService {
 
 JAX-RSを使った基本的な流れは、
 - REST APIの呼び出し窓口となるjavax.ws.rs.client.Clientを生成[^1]
-- Clientに宛先URLやパラメータ、BODYデータなどを設定し呼び出しを実行
+- Clientに宛先URLやパラメータ、bodyデータなどを設定し呼び出しを実行
 - そして返却されたResponseから結果を取得
 
 となります。
@@ -260,7 +260,7 @@ public interface PersonResource {
 }
 ```
 
-REST APIのHTTPメソッドは`@GET`や`@POST`のアノテーションから、パラメータ送信方法は`@PathParam`や`@QeuryParam`から、そしてボディで受け渡すJSONのデータ構造はメソッドの引数や戻り値の型からといったように、REST API仕様は呼び出す先のRESTリソースクラスの実装から解釈することが可能です。（REST API仕様に沿って実装されたものがRESTリソースとなるため当たり前の話ではありますが）
+REST APIのHTTPメソッドは`@GET`や`@POST`のアノテーションから、パラメータ送信方法は`@PathParam`や`@QeuryParam`から、そしてbodyで受け渡すJSONのデータ構造はメソッドの引数や戻り値の型からといったように、REST API仕様は呼び出す先のRESTリソースクラスの実装から解釈することが可能です。（REST API仕様に沿って実装されたものがRESTリソースとなるため当たり前の話ではありますが）
 
 このJAX-RSのRESTリソース定義からREST API仕様を解釈可能ということをクライアント側で応用したのがMP RestClientとなります。
 

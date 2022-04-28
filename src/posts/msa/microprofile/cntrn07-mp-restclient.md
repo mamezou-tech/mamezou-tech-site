@@ -361,7 +361,7 @@ personClient/mp-rest/url = http://localhost:7001/api
 MP RestClientはRestClientインタフェースをREST API仕様として実装を効率化したものですが、実装の効率化でよく利用される他のREST API仕様の成果物として[OpenAPI Specification](https://spec.openapis.org/oas/v3.1.0)(OAS)があります。
 MP RestClientはREST API仕様に相当するRestClientインタフェースを入力として動的にProxyを生成するソリューションなのに対し、OASを使ったソリューションはOAS成果物を入力としツールでソースコードを自動生成する手法が用いられます。この代表的なツールとしては[OpenAPI Generator](https://github.com/openapitools/openapi-generator)があります。
 
-MP RestClientで必要となるものはRestClientインタフェースのみで後はRestClientインタフェースをもとにすべて動的に解決されるため、強力なソリューションであることに間違いありませんが、クライアントとサーバーともに実装言語がJavaに限定されます。
+MP RestClientで必要となるものはRestClientインタフェースのみで後はRestClientインタフェースをもとにすべて動的に解決されるため、強力なソリューションであることに間違いありませんが、クライアントの実装言語がJavaに限定されます。
 一方のOAS成果物は言語に依らない中立的な成果物であるため、ツールがサポートする言語であれば任意の言語でコードを生成することができます。これに加えクライアント側だけでなくサーバー側のコードも生成可能です。OAS成果物によるソリューションはMP RestClientと比べ生成の手間や生成した成果物を維持管理していく手間が掛かりますが、その代わりにMP RestClientよりも高い柔軟性があります。
 :::
 

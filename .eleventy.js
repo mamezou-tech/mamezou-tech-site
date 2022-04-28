@@ -125,7 +125,12 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter('excerpt', (post) => {
     const content = post.replace(/(<([^>]+)>)/gi, '');
-    return content.substr(0, content.lastIndexOf('。', 200)) + '...';
+    const firstDotPos = content.lastIndexOf('。', 200);
+    if (firstDotPos !== -1) {
+      return content.substring(0, firstDotPos) + '...';
+    } else {
+      return content.substring(0, content.lastIndexOf('、', 200)) + '...';
+    }
   });
 
   eleventyConfig.addFilter('pageTags', (tags) => {

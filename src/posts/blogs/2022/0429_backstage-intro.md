@@ -291,8 +291,8 @@ catalog:
 - `POSTGRES_USER`: PostgreSQLユーザー(`postgres`)
 - `POSTGRES_PASSWORD`: PostgreSQLパスワード
 
-`catalog.locations`の部分はBackstageのUser/Group用に作成したレポジトリを静的に取り込むようにしています。
-`target`の部分は先程作成したUser/Groupエンティティのプライベートレポジトリの`users.yaml`を指定しています。
+`catalog.locations`の部分はBackstageのUser/Group用に作成したユーザー管理用のレポジトリの内容を静的に取り込むようにしています。
+`target`には`users.yaml`のGitHub URLを指定しています。
 
 ## Backstageアプリの起動
 

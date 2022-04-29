@@ -14,15 +14,15 @@ BackstageはSpotify社によって2016年に公開され、大規模組織にお
 
 - [Backstage blog: New release: Backstage 1.0](https://backstage.io/blog/2022/03/17/backstage-1.0)
 
-Backstageは1回の記事で紹介するにはボリュームがありすぎるため、複数回に分けて掲載していく予定です。
-今回は導入編ということで、Backstageを起動して、あらかじめ用意されているサンプルを用いてBackstageのコア機能の一部を見ていきます。
+Backstageを1回の記事で紹介するにはボリュームがありすぎるため、複数回に分けて掲載していく予定です。
+今回は導入編ということで、ローカル環境でBackstageを起動して、あらかじめ用意されているサンプルでBackstageのコア機能の一部を見ていきます。
 
 [[TOC]]
 
 ## 事前準備
 
-今回はVCSとしてGitHubを利用して、ここに登録されるプロジェクトをBackstageで管理していきます。
-このため、OAuthアプリ(ユーザー情報取得)やGitHubトークンを作成します。
+今回はVCSとしてGitHubを利用し、ここに登録されるプロジェクトをBackstageで管理していきます。
+このため、GitHubのOAuthアプリ(ユーザー情報取得)やGitHubのトークンを作成します。
 
 ### GitHub OAuthアプリの作成
 
@@ -119,7 +119,7 @@ helm upgrade postgres --install bitnami/postgresql \
   --set primary.service.nodePorts.postgresql=${POSTGRES_PORT}
 ```
 
-ここでもPostgreSQLの接続情報を環境変数に登録が必要です。これは後続のBackstageの起動時に使用します。
+ここでもPostgreSQLの接続情報を環境変数に設定します。これは後続のBackstageの起動時に使用します。
 
 インストールが終わったら、PostgreSQLの状況を確認します。
 
@@ -270,6 +270,15 @@ auth:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
         clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
 
+# 省略        
+catalog:
+  # 省略
+  locations:
+    # 省略
+    - type: url
+      target: https://github.com/kudoh/backstage-admin/blob/main/users.yaml
+      rules:
+        - allow: [Group, User]
 ```
 
 `app.title`や`organization.name`は任意の名前で構いません。
@@ -281,6 +290,9 @@ auth:
 - `POSTGRES_PORT`: PostgreSQLのポート番号(`30100`)
 - `POSTGRES_USER`: PostgreSQLユーザー(`postgres`)
 - `POSTGRES_PASSWORD`: PostgreSQLパスワード
+
+`catalog`の部分はBackstageのUser/Group用に作成したレポジトリを静的に取り込むようにしています。
+`target`の部分は先程作成したUser/Groupエンティティのプライベートレポジトリの`users.yaml`を指定しています。
 
 ## Backstageアプリの起動
 

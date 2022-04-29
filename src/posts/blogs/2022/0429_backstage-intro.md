@@ -282,7 +282,7 @@ catalog:
 ```
 
 `app.title`や`organization.name`は任意の名前で構いません。
-`auth`の部分がGitHubのOAuthの設定です。GitHubのOAuthアプリのクライアントID/シークレットは先程環境変数(`AUTH_GITHUB_CLIENT_ID` / `AUTH_GITHUB_CLIENT_SECRET`)に設定しますので、このような記述をしておくとBackstageは環境変数より取得してくれます。
+`auth`の部分がGitHubのOAuthの設定です。GitHubのOAuthアプリのクライアントID/シークレットは先程環境変数(`AUTH_GITHUB_CLIENT_ID` / `AUTH_GITHUB_CLIENT_SECRET`)に設定していますので、このような記述をしておくとBackstageはそこから取得してくれます。
 これ以外にも、先程設定済みの以下の環境変数も同様に実行時に環境変数より取得するようになっています。未設定の場合は同ファイルの利用箇所を修正してください。
 
 - `GITHUB_TOKEN`: Backstageが使うGitHubトークン
@@ -291,7 +291,7 @@ catalog:
 - `POSTGRES_USER`: PostgreSQLユーザー(`postgres`)
 - `POSTGRES_PASSWORD`: PostgreSQLパスワード
 
-`catalog`の部分はBackstageのUser/Group用に作成したレポジトリを静的に取り込むようにしています。
+`catalog.locations`の部分はBackstageのUser/Group用に作成したレポジトリを静的に取り込むようにしています。
 `target`の部分は先程作成したUser/Groupエンティティのプライベートレポジトリの`users.yaml`を指定しています。
 
 ## Backstageアプリの起動

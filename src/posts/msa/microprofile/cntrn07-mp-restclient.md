@@ -470,5 +470,5 @@ sequenceDiagram
 
 これらのことからMP RestClientを利用可能な状況において、敢えてJAX-RSのClient APIを選択する理由はありません。本記事を読んでMP RestClientを使ってみたいなと思われた方は是非、積極的に活用していただければと思います。
 
-最後に今回は紹介できなかったRESTリソースのテストを効率的に行うMP RestClientの便利な利用法を「Helidon Tips - Helidon MP Testing with JUnit5とMicroProfile RestClientを使ったRESTリースのテスト」(<span style="color:red">Coming Soon!</span>)として別の記事で紹介~~していますので~~する予定ですので、ご興味がある方はそちらも続けてどうぞ！
+最後に今回は紹介できなかったRESTリソースのテストを効率的に行うMP RestClientの便利な利用法を「[Helidon Tips - MicroProfile RestClientを使ったRESTリースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)」として別の記事で紹介していますので、ご興味がある方はそちらも続けてどうぞ！
 

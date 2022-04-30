@@ -160,7 +160,7 @@ public void setup() throws Exception {
 }
 ```
 
-プログラムによる取得では、例のようにRestClientBuilderのAPIで宛先URLと基にするRestClientインタフェースを指定します。また、この他に`register`メソッドを使ってconveterやfilterなどのProviderも指定することもできます。
+プログラムによる取得では、例のようにRestClientBuilderのAPIで宛先URLと基にするRestClientインタフェースを指定します。また、この他に`register`メソッドを使ってconverterやfilterなどのProviderも指定することもできます。
 では、今回のテスト実装ではなぜ`@Inject`による取得をおこなっていないのでしょう？これはインジェクションによる取得ができないためです。今回、RestClientインタフェースに指定しているのはPersonResourceインタフェースのため、RestClientインタフェースを識別するための` @RegisterRestClient`は当たり前ですがPersonResourceインタフェースには付いていません。また付けてもいけません[^2]。このため、RestClientBuilder APIでRestClientインタフェースを認識させています。
 :::
 
@@ -174,7 +174,7 @@ public void setup() throws Exception {
 
 図から分かるように、実行時にはHelidon MP Testing(@HelidonTest)により、テスト対象のRESTアプリケーション(PersonResourceImpl)が起動し、テストメソッドごとにその実行前(`@BeforeEach`)に、PersonResourceImplを呼び出すRESTクライアントとしてProxyインスタンス(personResourceフィールド)が取得されます。
 
-テスト対象のPersonResouceインタフェースに対する呼び出しは、コード上、単なるメソッドの呼び出しに見えますが、その実体はProxyインスタンスでのため、裏ではlocalhostの7001ポートを経由したREST APIの呼び出しが行われるため、実際にはネットワークを介したテストを行っているのと同じとなります。
+テスト対象のPersonResouceインタフェースに対する呼び出しは、コード上、単なるメソッドの呼び出しに見えますが、その実体はProxyインスタンスであり、裏ではlocalhostの7001ポートを経由したREST APIの呼び出しが行われるため、実際にはネットワークを介したテストを行っているのと同じとなります。
 
 ## リファレンスアプリでの利用例
 [第3回](/msa/mp/cntrn03-sampleapp-helidon/)で紹介したMicroProfileを使った[リファレンスアプリ(RMS)](https://github.com/extact-io/rms)でも今回説明した方法でRESTリソースのテストを行っています。

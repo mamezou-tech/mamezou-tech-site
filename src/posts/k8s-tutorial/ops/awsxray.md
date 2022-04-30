@@ -3,12 +3,12 @@ title: 分散トレーシング(OpenTelemetry / AWS X-Ray)
 author: noboru-kudo
 tags: [aws]
 prevPage: ./src/posts/k8s-tutorial/ops/cloudwatch.md
-date: 2022-04-21
+date: 2022-05-03
 ---
 
 [前回](/containers/k8s/tutorial/ops/jaeger/)は[OpenTelemetry](https://opentelemetry.io/)と[Jaeger](https://www.jaegertracing.io/)を使って、エンドツーエンドでトレース情報を収集・可視化をしました。
-ここで利用したJaegerはOSSプロダクトで高機能ではありますが、実際に運用するとなると、その構成を慎重に検討する必要があります。
-例えば、以下は必須で対応が必要となるでしょう。
+ここで利用したJaegerは分散トレーシングに特化したOSSプロダクトで高機能ではありますが、実際に運用するとなると、その構成を慎重に検討する必要があります。
+例えば、以下の対応が必須で必要となるでしょう。
 
 - UI認証基盤の構築または連携
 - トレース情報の永続化を行うストレージ準備
@@ -39,14 +39,14 @@ OpenTelemetryは特定の製品に依存しない標準仕様ですので、バ�
 
 - [分散トレーシング(OpenTelemetry / Jaeger)](/containers/k8s/tutorial/ops/jaeger/)
 
-前回実施済みの場合は、JaegerやOpenTelemetryは削除しておきましょう。
+前回実施済みの場合は、以下を実行してJaegerやOpenTelemetry Collectorを削除しておきましょう。
 
 ```shell
-# Operatorで作成したリソース
+# Jaeger
 kubectl delete jaeger jaeger -n tracing
+# UI用のOpenTelemetry Collector
 kubectl delete opentelemetrycollector otel-web -n tracing
-# Operator自体を削除 
-helm uninstall otel-operator -n tracing
+# Jaeger Operator削除(OpenTelemetry Operatorは削除不要です) 
 helm uninstall jaeger-operator -n tracing
 ```
 
@@ -119,8 +119,8 @@ resource "kubernetes_service_account" "otel_web_xray_collector" {
 
 ## OpenTelemetry Collectorインストール
 
-それでは、トレース情報を収集し、X-Rayに転送するOpenTelemetry Collectorをインストールします。
-注意点として、OpenTelemetryが提供するOpenTelemetry CollectorにはAWS X-RayのExporterは含まれていません。
+トレース情報を収集し、X-Rayに転送するOpenTelemetry Collectorをインストールします。
+注意点として、OpenTelemetry本体が提供するOpenTelemetry CollectorにはAWS X-RayのExporterは含まれていません。
 AWS向けのOpenTelemetryのディストリビューションである[ADOT(AWS Distro for OpenTelemetry)](https://aws.amazon.com/otel)を使う必要があります。
 
 ### OpenTelemetry Operatorインストール
@@ -131,7 +131,7 @@ Jaegerのときと同様に[OpenTelemetry Operator](https://github.com/open-tele
 
 ### UIトレース情報収集
 
-まずはブラウザからトレース情報を受取るOpenTelemetry Collectorをセットアップします。
+まずは、ブラウザからのトレース情報を収集するOpenTelemetry Collectorをセットアップします。
 以下の内容で`otel-web.yaml`ファイルを作成します。
 
 ```yaml
@@ -307,8 +307,8 @@ const provider = new WebTracerProvider({
 前回アプリケーションをデプロイ済みの場合は、キャッシュが利用されないようビルド時のイメージタグを変更するか、マニフェストの`imagePullPolicy`を`Always`に変更してPodを再起動してください。
 
 ```shell
-# Pod再起動
-kubectl rollout restart deploy/prod-task-service deploy/prod-task-web -n prod
+# task-web Pod再起動
+kubectl rollout restart deploy/prod-task-web -n prod
 ```
 
 デプロイが終わったら、ブラウザよりアプリケーションを操作してトレーシング情報を蓄積しておきましょう。
@@ -316,7 +316,7 @@ kubectl rollout restart deploy/prod-task-service deploy/prod-task-web -n prod
 ## トレーシングデータの確認
 
 それではAWS X-Rayに送信したトレース情報を確認しましょう。
-AWS マネジメントコンソールよりAWS X-Rayのサービスを表示します[^1]。
+AWS マネジメントコンソールにログインし、AWS X-Rayのサービスメニューを表示します[^1]。
 
 [^1]: 現在AWS X-RayはCloudWatchのメニューにも統合されていますので、こちらからでも参照できます。
 
@@ -338,7 +338,7 @@ AWS マネジメントコンソールよりAWS X-Rayのサービスを表示し�
 
 ![](https://i.gyazo.com/92e1d62b5c70e15fa8f4349ff683bf09.png)
 
-Jaegerのように、タイムライン上で各セグメント(Jaegerでいうスパンに該当)の詳細な内容が確認できます。
+Jaegerのように、タイムライン上でトランザクションの詳細な内訳が確認できます。
 このようにService Mapから全体を確認し、その集計結果、さらにはトレース情報の詳細までをドリルダウン形式で確認できます。
 
 ## クリーンアップ
@@ -358,6 +358,18 @@ helm uninstall otel-operator -n tracing
 - [クラスタ環境デプロイ - EKSクラスタ(デプロイ)](/containers/k8s/tutorial/app/eks-3/#クリーンアップ)
 
 ## まとめ
+
+今回はJaegerをAWS X-Rayに置き換えて、エンドツーエンドのトレース情報の収集・可視化を行いました。
+マネージドサービスを使うことで、複雑な構成が検討しなくとも、高機能なトレーシングツールが商用グレードで簡単に手に入れることができると実感できたと思います。
+とはいえ、もちろん対価を支払う必要はありますので、高トラフィックが予想される環境では、必要に応じてトレース情報のサンプリングを調整するなどの対応も必要となってくることもあるでしょう[^2]。
+
+[^2]: AWS X-Rayのデフォルトでは毎秒初回のリクエストと、それ以降は5%のレートでサンプリングされます。
+
+また、標準仕様のOpenTelemetryのおかげで、クライアントコードをほとんど変更することなく、バックエンドサービスの変更ができることが分かったと思います。
+アプリケーション側ではAWS X-RayのSDKは一度も登場していません。
+OpenTelemetryを利用することを前提としておけば、一旦Jaegerを使っておいて、スケーラビリティや運用に問題が発生するようになったらAWS X-Rayに切り替えるといったことも比較的容易にできます。
+OpenTelemetryはトレーシングだけでなく、メトリクスにも使えるものです（まだGAではないですがログも対象）。 
+クラウドベンダーやSaaSベンダー等多くのベンダーがOpenTelemetryをサポートしていますので、ベンダーロックインを避ける意味で、OpenTelemetryを組織標準としておくのが望ましいと思います。
 
 ---
 参照資料

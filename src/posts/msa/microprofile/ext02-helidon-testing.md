@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-04-06
 tags: ["逆張りのMicroProfile", helidon]
 prevPage: ./src/posts/msa/microprofile/ext01-helidon-logback.md
+nextPage: ./src/posts/msa/microprofile/ext03-helidon-rest-testing.md
 ---
 
 CDIのテストはCDIコンテナが必要となる点やアノテーションをもとにした静的な依存解決が中心になることから融通が効きづらく悩ましい点がありました。[Helidon MP Testing With JUnit5](https://helidon.io/docs/v2/#/mp/testing/01_testing)(Helidon MP Testing)は言ってしまえばHelidonを使ってJUnit5からCDIのテストを行えるようにしてくれるだけのライブラリですが、実際に使ってみると非常に便利で悩み多きCDIのテストを激変させる威力を秘めています。

@@ -1,7 +1,6 @@
 ---
 title: 分散トレーシング(OpenTelemetry / Jaeger)
 author: noboru-kudo
-tags: [aws]
 prevPage: ./src/posts/k8s-tutorial/ops/cloudwatch.md
 date: 2022-04-21
 ---
@@ -89,6 +88,7 @@ spec:
 これを反映します。
 
 ```shell
+kubectl create ns tracing
 kubectl apply -f tracing-tls-issuer.yaml
 ```
 
@@ -116,7 +116,7 @@ helmコマンドでインストールします。ここでは`2.29.0`のバー�
 ```shell
 helm upgrade --install jaeger-operator jaegertracing/jaeger-operator \
   --version 2.29.0 \
-  --namespace tracing --create-namespace \
+  --namespace tracing \
   --set rbac.clusterRole=true \
   --wait
 ```
@@ -214,9 +214,7 @@ JaegerのUI自体に認証の仕組みはありませんので、実運用する
 
 ここではトレース情報を収集し、Jaegerに転送する[OpenTelemetry Collector](https://opentelemetry.io/docs/collector/)を導入します。
 
-### UIトレース情報収集
-
-ブラウザ上で動作しているVue.jsのUI(`task-web`)が送信するトレーシング情報の受け口を作成します。
+### OpenTelemetry Operatorインストール
 
 Jaeger同様にOpenTelemetry CollectorもOpenTelemetry Operatorが[Helmチャート](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-operator)として用意されています。
 
@@ -245,8 +243,14 @@ NAME                                                         READY   STATUS    R
 opentelemetry-operator-controller-manager-68f5b47944-qv47h   2/2     Running   0          60s
 ```
 
+OpenTelemetry CollectorのOperatorが動作していることが確認できます。
 Jaeger Operator同様にインストールしただけでは、何も動作しません。
 OpenTelemetry Operatorインストール時に作成されるカスタムリソースのOpenTelemetryCollectorを作成します。
+以降、UI/APIそれぞれでのリソースを作成していきます。
+
+### UIトレース情報収集
+
+ブラウザ上で動作しているVue.jsのUI(`task-web`)が送信するトレーシング情報の受け口を作成します。
 以下のファイルを`otel-web.yaml`として作成します。
 
 ```yaml
@@ -269,7 +273,6 @@ spec:
                 - "https://task.mamezou-tech.com"
     processors:
     exporters:
-      logging:
       jaeger:
         # Jaeger CollectorのgRPCエンドポイント
         endpoint: jaeger-collector.tracing.svc.cluster.local:14250
@@ -281,7 +284,7 @@ spec:
         traces:
           receivers: [otlp]
           processors: []
-          exporters: [logging, jaeger]
+          exporters: [jaeger]
 ```
 `mode: deployment`(デフォルト)とし、DeploymentリソースとしてOpenTelemetry Collectorを作成します。
 ReceiverとしてOTLP(OpenTelemetry Line Protocol)を指定します。また、ブラウザからの通信となりますので、HTTP経由でトレース情報を受け取れるようにしています[^2]。
@@ -688,6 +691,7 @@ HelmでインストールしたOpenTelemetry Collector(Deployment)とJaegerは�
 ```shell
 # Operatorで作成したリソース
 kubectl delete jaeger jaeger -n tracing
+kubectl delete -f otel-web-collector-ingress.yaml
 kubectl delete opentelemetrycollector otel-web -n tracing
 # Operator自体を削除 
 helm uninstall otel-operator -n tracing

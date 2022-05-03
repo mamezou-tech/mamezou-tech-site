@@ -1,8 +1,53 @@
 ---
 title: "CI/CD"
-description: 'CI/CDツールの使い方に関するチュートリアルやTips'
-tags: "no-page"
-eleventyExcludeFromCollections: true
+description: CI/CDツールの紹介や使い方に関するチュートリアルやTips
 ---
 
-まだページがありません。
+ここでは、様々なツールに焦点を当てた記事やチュートリアルをご紹介します。
+
+CI/CDパイプラインは、現代のソフトウェア開発に必要不可欠なものです。
+その背景には、マイクロサービス時代の到来があります。
+目まぐるしく変わるビジネス要求に対して、短いリードタイムで確実にサービスを提供し続ける必要があります。
+このような状況では、ビルドやデプロイを手動で実施していくのは非効率で、すぐに破綻します。パイプラインで自動化されたプロセスが必要不可欠です。
+
+幅広くCI/CDツールを充実させていく予定ですので、ご参考いただければ幸いです。
+
+[[TOC]]
+
+## GitHub Actions
+[GitHub Actions](https://github.com/features/actions)は[GitHub](https://github.com/)が提供するCI/CDサービスです。
+今やGitHubでホスティングされているプロジェクトでは、かなりの割合で利用されているのではないでしょうか？
+制約はありますが、無料で使い始められるところも大きな魅力ですね。
+各種ユースケースに対応したカスタムActionも幅広く公開されており、ほとんどのプロジェクトはこれ1つでカバーできると言っても過言ではないでしょう。
+今後ますますの拡がりが期待できます。
+
+- [GitHub Actions ワークフローにおけるジョブ制御](https://developer.mamezou-tech.com/blogs/2022/02/20/job-control-in-github-actions/)
+- [GitHub Actions - 再利用可能ワークフローを使う](https://developer.mamezou-tech.com/blogs/2022/03/08/github-actions-reuse-workflows/)
+- [GitHub のリリースノート自動生成機能を使う](https://developer.mamezou-tech.com/blogs/2022/03/11/github-automatically-generated-release-notes/)
+- [GitHub Actions ワークフローで個別ジョブのリランが可能に](https://developer.mamezou-tech.com/blogs/2022/04/14/github-actions-workflow-rerun-individual-jobs/)
+
+豆蔵有志でも、特定ユースケースに対応したActionをOSSとして公開しています。
+
+- [buildpacks-action](https://developer.mamezou-tech.com/oss-intro/buildpacks-action/)
+- [monorepo-update-checker](https://developer.mamezou-tech.com/oss-intro/monorepo-update-checker/)
+- [setup-helmfile](https://developer.mamezou-tech.com/oss-intro/setup-helmfile/)
+
+## Flux
+[Flux](https://fluxcd.io/)は、今では様々な領域で普及しているGitOpsのプラクティスを提唱した[Weaveworks](https://www.weave.works/)社が開発した継続的デリバリツールです。
+CIとしての機能はありませんが、KubernetesでGitOpsを実践するなら是非抑えて置きたいツールです。
+
+- [Kubernetesチュートリアル - 継続的デリバリ - Flux](https://developer.mamezou-tech.com/containers/k8s/tutorial/delivery/flux/)
+
+## ArgoCD
+[ArgoCD](https://argoproj.github.io/cd/)はFluxと並んでGitOpsを体現する継続的デリバリツールです。
+直感的なUIが魅力で、GitOpsツールとしてかなり有力な選択肢になっているものです。
+弊社の社内システムでも、ArgoCDを使ったGitOpsを採用しています。
+
+- [Kubernetesチュートリアル - 継続的デリバリ - ArgoCD](https://developer.mamezou-tech.com/containers/k8s/tutorial/delivery/argocd/)
+
+## Dagger
+Docker開発者によって作成されたツールの[Dagger](https://dagger.io/)。
+他のCIツールとは違い、コンテナが動く環境であればどんなパイプラインにも組み込むことが可能です。 例えば、GitHub Actionsで動かすなんてことも可能で、他のCIツールとは一線を画すツールと言えます。
+かなり新しいツールですが、パイプラインの新時代を先取りしてみてはいかがでしょうか？
+
+- [話題の CI/CD ツール Dagger を体験してみる](https://developer.mamezou-tech.com/blogs/2022/04/21/try-running-dagger/)

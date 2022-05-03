@@ -85,7 +85,7 @@ spec:
   profile:
     displayName: noboru-kudo
     email: noboru-kudo@mamezou.com
-  memberOf: [kudoh]
+  memberOf: [mamezou-tech]
 ```
 
 このファイルはKubernetesにデプロイする訳ではありませんが、Kubernetesのマニフェストファイルにそっくりですね。

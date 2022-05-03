@@ -36,7 +36,7 @@ CI/CDパイプラインは、現代のソフトウェア開発に必要不可欠
 
 ## Flux
 [Flux](https://fluxcd.io/)は、今では様々な領域で普及しているGitOpsのプラクティスを提唱した[Weaveworks](https://www.weave.works/)社が開発した継続的デリバリツールです。
-CIとしての機能はありませんが、KubernetesでGitOpsを実践するなら是非抑えて置きたいツールです。
+CIとしての機能はありませんが、KubernetesでGitOpsを実践するなら是非抑えておきたいツールです。
 
 - [Kubernetesチュートリアル - 継続的デリバリ - Flux](https://developer.mamezou-tech.com/containers/k8s/tutorial/delivery/flux/)
 

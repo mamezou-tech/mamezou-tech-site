@@ -11,7 +11,7 @@ date: 2022-05-03
 例えば、以下の対応が必須で必要となるでしょう。
 
 - UI認証基盤の構築または連携
-- トレース情報の永続化を行うストレージ準備
+- トレース情報を永続化するストレージの準備
 - 高トラフィックに耐えるJaegerコンポーネントの構成
 
 AWSには[X-Ray](https://aws.amazon.com/jp/xray/)という分散トレーシングに関するマネージドサービスがあります。
@@ -28,7 +28,7 @@ OpenTelemetryは特定の製品に依存しない標準仕様ですので、バ�
 
 ## 事前準備
 
-アプリケーションは以下で実装したものを使います。事前にEKS環境を準備し、アプリケーションのセットアップしておきましょう。
+アプリケーションは以下で実装したものを使います。事前にEKS環境を準備し、アプリケーションを用意しておきましょう。
 
 - [クラスタ環境デプロイ - コンテナレジストリ(ECR)](/containers/k8s/tutorial/app/container-registry/)
 - [クラスタ環境デプロイ - EKSクラスタ(AWS環境準備)](/containers/k8s/tutorial/app/eks-1/)
@@ -53,11 +53,11 @@ helm uninstall jaeger-operator -n tracing
 ## TLS証明書のセットアップ
 
 今回トレース情報の可視化は、AWSのマネジメントコンソールを使いますが、ブラウザからトレース情報の転送はHTTPS通信で行うため、TLS証明書を発行する必要があります。
-実施する内容はJaegerのときと全く同じですので、以下を参照してください。
+実施する内容はJaegerのときと全く同じです。以下を参照してください。
 
 - [分散トレーシング(OpenTelemetry / Jaeger) - TLS証明書のセットアップ](/containers/k8s/tutorial/ops/jaeger/#tls証明書のセットアップcert-manager)
 
-もちろん前回作成済みの場合は、スキップして構いません。
+既に作成済みの場合は、このステップはスキップして構いません。
 
 ## AWS X-Rayのアクセス許可設定
 
@@ -111,7 +111,7 @@ resource "kubernetes_service_account" "otel_web_xray_collector" {
 以下のIAMロールに対して、AWSのマネージドポリシー(`AWSXRayDaemonWriteAccess`)を指定しています。
 
 - サイドカーコンテナとしてデプロイされるtask-serviceのPod
-- ブラウザからのトレース情報を送信するOpenTelemetry Collector
+- ブラウザからのトレース情報を収集するOpenTelemetry Collector
 
 これをAWS/EKSに反映(`terraform apply`)します。こちらの実施内容は以下を参照してください。
 
@@ -169,9 +169,9 @@ spec:
 ```
 [前回](/containers/k8s/tutorial/ops/jaeger/#uiトレース情報収集)Jaegerのときに実施した内容と以下の点で異なります。
 
-- `spec.image`: ADOTのイメージを指定しています。これで、デフォルトのOpenTelemetry本体ではなく、ADOTが実行されるようになります。
-- `spec.serviceAccount`: Terraformで作成したX-Rayへのトレース情報送信の許可があるServiceAccountを指定しています。
-- `config`: exporterとしてADODに含まれるAWS X-Ray用のExporterを指定しました。
+- `spec.image`: ADOTのイメージを指定します。これで、デフォルトのOpenTelemetry本体のCollectorではなく、ADOTが実行されるようになります。
+- `spec.serviceAccount`: Terraformで作成したX-Rayへのトレース情報送信の許可があるServiceAccountを指定します。
+- `config`: exporterとしてADOTに含まれるAWS X-Ray用のExporterを指定します。
 
 AWS X-RayのExporterについての詳細は以下を参照してください。
 
@@ -215,14 +215,14 @@ public.ecr.aws/aws-observability/aws-otel-collector:v0.17.0
 
 次にブラウザからトレース情報を受け付けるIngressです。こちらは前回と全く同じ内容になります。
 既にIngressを作成済みの場合は同じものが利用可能です。
-未作成の場合は、以下を参照し、Ingressリソースを作成してださい。
+未作成の場合は、以下を参照し、Ingressリソースを作成してください。
 
 - [分散トレーシング(OpenTelemetry / Jaeger) - UIトレース情報収集](/containers/k8s/tutorial/ops/jaeger/#uiトレース情報収集)
 
 ### APIトレース情報収集
 
 次に、API(`task-service`)側のセットアップをします。
-[前回](/containers/k8s/tutorial/ops/jaeger/#apiトレース情報収集)同様にサイドカーコンテナとしてデプロイします。
+[前回](/containers/k8s/tutorial/ops/jaeger/#apiトレース情報収集)同様に、API側はサイドカーコンテナとしてデプロイします。
 
 以下のファイルを`otel-sidecar.yaml`として作成します。
 
@@ -253,8 +253,8 @@ spec:
 ```
 
 UI側と同じようにこちらも`image`はADOTのコンテナイメージを指定します。
-ただし、サイドカーコンテナですので、ServiceAccountの指定は不要です。
-`config`の内容もUI側と全く同じで問題ありません。
+ただし、サイドカーコンテナですので、ServiceAccountの指定は不要です(Podレベルで指定済み)。
+UI側と同様に、`config`のExporterはAWS X-Rayを設定します。
 
 こちらを反映します。
 
@@ -268,9 +268,9 @@ kubectl apply -f otel-sidecar.yaml
 
 次にアプリケーション側の対応です。
 こちらは[前回](/containers/k8s/tutorial/ops/jaeger/#opentelemetryクライアントのセットアップ)既にOpenTelemetryのSDKを組み込み済みです。
-OpenTelemetryの原則でいうと、ここは修正不要なはずですが、残念ながら1点修正が必要です。
+OpenTelemetryの原則でいうと、ここは修正不要なはずですが、残念ながら微調整が必要です。
 AWS X-Rayは、ALBやApplication Gatewayで発行されるトレースID(HTTPヘッダ:`X-Amzn-Trace-Id`)を期待していますが、UI(ブラウザ)で発行するOpenTelemetry SDKのトレースIDはフォーマットが異なります。
-これを解消するため、OpenTelemetryのSDKの拡張ポイントでIDのフォーマットを変更します。
+これを解消するため、OpenTelemetryのSDKの拡張ポイントで、トレースIDのフォーマットをAWS準拠の形に変更します。
 
 `app/web`配下で、以下のライブラリを追加インストールします。
 
@@ -339,7 +339,8 @@ AWS マネジメントコンソールにログインし、AWS X-Rayのサービ�
 ![](https://i.gyazo.com/6def0e9324052d7cb86f91aff7a8b74d.jpg)
 
 Jaegerのように、タイムライン上でトランザクションの詳細な内訳が確認できます。
-このようにService Mapから全体を確認し、その集計結果、さらにはトレース情報の詳細までをドリルダウン形式で確認できます。
+このようにService Mapで全体を俯瞰し、その集計結果、さらには任意のトレース情報の詳細までをドリルダウン形式で調査できます。
+各トレースの詳細はセグメントをクリックするとメタ情報や注釈として確認できます。
 
 ## クリーンアップ
 
@@ -361,7 +362,7 @@ helm uninstall otel-operator -n tracing
 
 今回はJaegerをAWS X-Rayに置き換えて、エンドツーエンドのトレース情報の収集・可視化を行いました。
 マネージドサービスを使うことで、複雑な構成を検討しなくとも、高機能なトレーシングツールが商用グレードで簡単に手に入れることができると実感できたと思います。
-とはいえ、もちろん対価を支払う必要はありますので、高トラフィックが予想される環境では、必要に応じてトレース情報のサンプリングを調整するなどの対応も必要となってくることもあるでしょう[^2]。
+とはいえ、マネージドサービスの利用には、もちろんその対価を支払う必要はあります。高トラフィックが予想される環境では、必要に応じてトレース情報のサンプリングを調整するなどの対応が必要となってくることもあるでしょう[^2]。
 
 [^2]: AWS X-Rayのデフォルトでは毎秒初回のリクエストと、それ以降は5%のレートでサンプリングされます。
 

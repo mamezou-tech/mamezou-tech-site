@@ -479,6 +479,18 @@ PrometheusのReceiverが構成され、アプリケーションメトリクス�
 - サイドカーコンテナのパッチファイルが正しいか（特にボリュームマウント周辺）
 - OpenTelemetryの設定ファイル(`otel-config.yaml`)のシンタックスが正しいか
 
+:::column:OpenTelemetry Operatorで自動的にサイドカーコンテナを注入する
+今回はPodに直接サイドカーコンテナを設定しましたが、OpenTelemetryで用意している[OpenTelemetry Operator](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-operator)を使うとPod作成時にサイドカーコンテナを自動的に追加可能です。
+こちらのアプローチでサイドカーコンテナを注入する方が、マニフェストファイルをクリーンに保つことができます。
+ただし、この場合は利用する`image`にADOTのイメージを設定する必要がありますので注意してください。
+
+OpenTelemetry Operatorでサイドカーコンテナを使う方法は以下を参照してください。
+- [OpenTelemetry Operator - Sidecar Mode](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-operator#sidecar-mode)
+
+AWS X-Rayを使ったトレース情報の収集ではこちらのアプローチを利用していますので、参考にしてください。
+- [分散トレーシング(OpenTelemetry / AWS X-Ray) - APIトレース情報収集](/containers/k8s/tutorial/ops/awsxray/#apiトレース情報収集)
+:::
+
 ## アプリケーションメトリクス可視化
 
 最後に、アプリケーションのメトリクスをCloudWatchで可視化してみましょう。

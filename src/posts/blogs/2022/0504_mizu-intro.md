@@ -31,7 +31,7 @@ mizu version
 
 ## デモアプリのセットアップ
 
-Mizuで解析するアプリケーションは公式ドキュメントでも使っているWeaveworks社が公開しているデモ用マイクロ−サービスを利用します。
+Mizuで解析するアプリケーションは公式ドキュメントでも使っているWeaveworks社が公開しているデモ用マイクロサービスを利用します。
 
 - <https://microservices-demo.github.io/>
 

@@ -1,5 +1,5 @@
 ---
-title: Mizu(水)でマイクロ−サービスのトラフィックを分析する
+title: Mizu(水)でマイクロサービスのトラフィックを分析する
 author: noboru-kudo
 tags: [k8s, container]
 date: 2022-05-04

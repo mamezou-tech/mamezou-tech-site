@@ -91,7 +91,7 @@ mizu tap -n sock-shop
 
 - [Mizu Traffic Validation](https://getmizu.io/docs/mizu/mizu-traffic-validation)
 
-背後ではMizu CLIがKubernetes内に`mizu`というNamespace内にトラフィック収集用のDaemonSetとAPIサーバーを生成し、このUIとやりとりしているようです。
+背後ではMizu CLIがKubernetesの`mizu`というNamespaceにトラフィック収集用のDaemonSetとAPIサーバーを生成し、このUIとやりとりしているようです。
 
 ## トラフィック分析してみる
 

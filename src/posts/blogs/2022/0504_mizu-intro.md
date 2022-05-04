@@ -72,7 +72,7 @@ user-db-b8dfb847c-tgmrl         1/1     Running   0          39m
 
 ## Mizuを起動する
 
-Mizuは利用も簡単です。`mizu tap`だけです。
+Mizuの起動は非常に簡単です。`mizu tap`だけです。
 
 ```shell
 # デモアプリがインストールされているNamespaceに限定
@@ -87,7 +87,7 @@ mizu tap -n sock-shop
 上部のフィルタ機能はかなり細かく設定が可能で、必要なトラフィックに絞り込むことができます。
 
 また、今回何も指定しませんでしたが、`mizu tap`コマンドで対象のPodを正規表現で絞ることもできます。
-さらに、事前にTraffic Validationファイルを用意しておけば、一定のレスポンスタイム以上のものやレスポンス電文の中身でエラーとなったものをピックアップできるようです。
+さらに、事前にTraffic Validationファイルを用意しておけば、一定のレスポンスタイム以上のものやレスポンス電文の中身をチェックし、制約違反となったものをUI上でピックアップできるようです。
 
 - [Mizu Traffic Validation](https://getmizu.io/docs/mizu/mizu-traffic-validation)
 

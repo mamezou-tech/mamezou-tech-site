@@ -1,7 +1,7 @@
 ---
 title: Backstageで開発者ポータルサイトを構築する - カタログ作成
 author: noboru-kudo
-date: 2022-05-06
+date: 2022-05-05
 ---
 
 以前以下のブログで[Backstage](https://backstage.io/)の紹介と導入に関する記事を書きました。
@@ -73,7 +73,7 @@ Component/API/Resourceはコアエンティティと呼ばれるものです。�
 
 各エンティティのフォーマットは[公式ドキュメント](https://backstage.io/docs/features/software-catalog/descriptor-format)を参照してください。
 
-また、ルートに配置した`catalog-info.yaml`に各エンティティを集約しました。
+また、レポジトリルートに`catalog-info.yaml`を配置し、各エンティティの定義ファイルを集約しました。
 以下の内容になります。
 
 ```yaml
@@ -342,7 +342,7 @@ spec:
 この内容はReactコンポーネントとしてユーザーへの入力フィールドに変換されます[^3]。
 
 また、一部のフィールド(`EntityNamePicker`/`OwnerPicker`等)は、ユーザーの入力補助部品としてBackstageのカスタム部品が利用できます。
-これらは`ui:field`と`ui:options`で指定することで有効になります。
+これらは`ui:field`と`ui:options`で指定すると有効になります。
 
 各設定内容の詳細は[公式ドキュメント](https://backstage.io/docs/features/software-templates/writing-templates)を参照してください。
 

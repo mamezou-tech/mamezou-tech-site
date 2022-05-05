@@ -67,7 +67,7 @@ Component/API/Resourceはコアエンティティと呼ばれるものです。�
 | Domain | domains/sales.yaml            | 販売管理ドメイン      |
 | System | systems/sales-management.yaml | 販売管理システム      |
 | Group  | groups/sales-po-team.yaml     | 販売管理システムPOチーム |
-| Group  | groups/sales-unit.yaml        | 業務ユーザ部署       |
+| Group  | groups/sales-unit.yaml        | 営業部門(主管部署)    |
 | Group  | groups/sample-dev-team.yaml   | 開発チーム         |
 | User   | users/kudoh.yaml              | 開発者           |
 
@@ -96,7 +96,7 @@ spec:
 ```
 
 複数ファイルを集約する場合は、このLocationエンティティが利用できます。
-次に、そしてBackstageアプリの`app-config.local.yaml`に、この`catalog-info.yaml`の参照を追加します。
+このファイルの参照を前回作成済みのBackstageアプリの`app-config.local.yaml`に追加します。
 
 ```yaml
 catalog:
@@ -111,7 +111,7 @@ catalog:
 Locationエンティティの参照を追加し、Backstageアプリがここに定義したエンティティを読み込むようにします。
 なお、今回初期セットアップで追加されているサンプルデモ用の参照は全て消しました。
 
-Backstageは、このリソースを定期的にフェッチしていますので、このレポジトリを更新するとBackstageアプリ側のDBも更新されます。
+Backstageは、このリソースを定期的にフェッチしていますので、このレポジトリを更新するとBackstageアプリ側のDBもしばらくすると同期されます。
 Backstageアプリを再起動すると、追加したエンティティが取り込まれていることが分かります。
 例えば、Systemエンティティの`sales-management`は以下のようになります。
 
@@ -215,9 +215,17 @@ spec:
 
 Component/APIエンティティの詳細なフォーマットは、[公式ドキュメント](https://backstage.io/docs/features/software-catalog/descriptor-format#kind-component)を参照してください。
 
+:::info
+今回エンティティ内にOpenAPIの定義を埋め込んでいますが、一般的には別ファイルとして作成することが多いかと思います。 
+この場合、エンティティ定義内に別ファイルの内容(OpenAPI以外も含めて)を取り込むことも可能です。
+詳細は以下公式ドキュメントを参照してください。
+
+- [Backstage - Substitutions In The Descriptor Format](https://backstage.io/docs/features/software-catalog/descriptor-format#substitutions-in-the-descriptor-format)
+:::
+
 ## Templateエンティティを定義する
 
-テンプレート本体の作成が終わりましたが、これだけではBackstageはこの情報を認識しません。
+テンプレート本体の作成が終わりましたが、これだけではBackstageはこのテンプレートを認識しません。
 これを行うにはSoftware Templates機能で提供するTemplateエンティティを作成する必要があります。
 各テンプレートに`template.yaml`を作成します。
 
@@ -349,7 +357,7 @@ spec:
 
 [^4]: ここで使われているビルトインアクションは、Backstageアプリの`/create/actions`から詳細を参照できます(ローカルの場合は`http://localhost:3000/create/actions`)。
 
-`1. template`では、`spec.paramteres`で入力内容を取得し、テンプレートエンジンから実際のソースコードを作成します(`fetch:template`アクションの`values`で受け渡し)。
+`1. template`では、`spec.parameters`で入力内容を取得し、テンプレートエンジンから実際のソースコードを作成します(`fetch:template`アクションの`values`で受け渡し)。
 
 :::info
 Templateエンティティの作成は、現状ドキュメントが充実していない印象です。Backstageのサンプルを参考に作成していくと効率的です。
@@ -380,7 +388,7 @@ spec:
 
 ## テンプレートからコンポーネントを作成する
 
-これで準備は完了しました。BackstageアプリのUIからコンポーネントを作成してみましょう。
+これで準備は完了しました。BackstageアプリのUIからコンポーネントを作成してみます。
 BackstageのUIのメニューより`Create...`をクリックします。
 
 ![](https://i.gyazo.com/885801af8c07d4629d2c9306d8fd1dec.png)

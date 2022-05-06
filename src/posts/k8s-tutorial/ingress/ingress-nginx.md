@@ -618,7 +618,7 @@ app1-7ff67dc549-rlw7x: hello sample app!
 最後に、DDoS攻撃対策としてNginxのRate Limitingによる流量制御をかけてみましょう。
 同一クライアントに対して1秒あたりのリクエスト数(RPS: Request Per Seconds)を10に制限してみましょう。
 
-変更点は以下の通りです。
+変更点は以下のとおりです。
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -635,8 +635,8 @@ spec:
 
 先程のSession Affinityと同様に、`annotations`に`nginx.ingress.kubernetes.io/limit-rps: "5"`を指定しました。
 
-注意点として、この設定はNginx Ingress ControllerのPodごとに反映されるため、これにreplicas数を乗じてRPSを計算する必要があります。今回はレプリカ数2のため5x2=10RPSでPodにルーティングされます。
-また、NginxはLeaky bucketアルゴリズムで、バーストトラフィックに備えてキューイングする点(デフォルトではRPS Limitの5倍)も考慮する必要があります。今回のサンプルだと5x5x2=100のキューがあります。
+注意点として、この設定はNginx Ingress ControllerのPodごとに反映されるため、これにレプリカ数を乗じてRPSを計算する必要があります。今回はレプリカ数2のため5x2=10RPSでPodにルーティングされます。
+また、NginxはLeaky bucketアルゴリズムで、バーストトラフィックに備えてキューイングする点(デフォルトではlimit-rpsの5倍)も考慮する必要があります。今回のサンプルだと5x5x2=50のキューがあります。
 
 こちらも反映させましょう。
 

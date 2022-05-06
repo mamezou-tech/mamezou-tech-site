@@ -68,3 +68,4 @@ Kubernetes活用例をサイト内の記事、ブログから抜粋しました�
 2. [Karpenterのオートスケールを試してみました](/blogs/2022/02/13/introduce-karpenter/)
 3. [Dapr on Jetson Nano with k3s](/blogs/2022/01/03/dapr-on-jetson-nano-with-k3s/)
 4. [KubernetesのPod Security(PSS/PSA)](/blogs/2022/03/03/pss-psa/)
+5. [Mizu(水)でマイクロサービスのトラフィックを分析する](/blogs/2022/05/04/mizu-intro/)

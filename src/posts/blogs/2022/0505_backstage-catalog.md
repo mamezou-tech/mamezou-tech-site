@@ -258,7 +258,7 @@ metadata:
     - recommended
     - express
 spec:
-  owner: mamezou-tech # テンプレートの所有者
+  owner: sample-dev-team # テンプレートの所有者
   type: service # 任意
   # 可変項目。ユーザー入力パラメータ
   parameters:
@@ -270,12 +270,16 @@ spec:
         component_name:
           title: コンポーネント名
           type: string
-          description: ユニークなコンポーネント名を設定してください。
+          description: ユニークなコンポーネント名を指定してください。
           ui:field: EntityNamePicker
         description:
           title: 説明
           type: string
           description: APIコンポーネントの説明を記述してください。
+        system:
+          title: システム名
+          type: string
+          description: システム名を入力してください。
         owner:
           title: 所有者(Owner)
           type: string
@@ -285,6 +289,10 @@ spec:
             allowedKinds:
               - Group
               - User
+        provide_api:
+          title: API提供
+          type: boolean
+          description: API提供はありますか？
     - title: GitHubレポジトリ
       required:
         - repoUrl
@@ -307,7 +315,9 @@ spec:
           component_name: ${{ parameters.component_name }}
           description: ${{ parameters.description }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
+          system: ${{ parameters.system }}
           owner: ${{ parameters.owner }}
+          provide_api: ${{ parameters.provide_api }}
 
     - id: publish
       name: Publish

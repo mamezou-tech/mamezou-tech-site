@@ -140,7 +140,7 @@ public class PersonExceptionMapper implements ExceptionMapper<PersonException> {
 }
 ```
 
-このRESTアプリのポイントは以下となります。これは以降で説明するクライアントアプリの実装を理解する上でもポイントとなりますので、軽く頭に入れておいてください。
+このRESTアプリのポイントは以下となります。以降で説明するクライアントアプリの実装を理解する上でもポイントとなりますので、軽く頭に入れておいてください。
 
 - idに対する該当するPersonインスタンスが存在しない場合、nullではなくを例外(PersonException)を返す。(`PersonResource#get`の実装) 
 - Personインスタンスの登録時に名前の重複チェックを行い、既に登録されている場合はエラーとして例外(PersonException)を返す。(`PersonResource#add`の実装)
@@ -150,7 +150,7 @@ public class PersonExceptionMapper implements ExceptionMapper<PersonException> {
 今回はこのREST APIを呼び出すクライアントアプリをJAX-RSとMP RestClientの双方で実装し、その比較を行っていきます。
 
 ## JAX-RSによる実装
-それでは上で説明したREST APIを呼び出す実装をJAX-RSのClient APIを使って実現する例を見てみましょう。このクラス構造と実装コードは次のとおりになります。
+それではJAX-RSのClient APIを使って上で説明したREST APIを呼び出す実装を見てみましょう。クラス構造と実装コードは次のとおりになります。
 
 - JAX-RSのClient APIによるクライアントアプリケーションの構造
 （薄青色のクラスが本題のクラス）
@@ -214,12 +214,12 @@ public class JaxrsPersonService implements PersonService {
 
 JAX-RSを使った基本的な流れは、
 - REST APIの呼び出し窓口となるjavax.ws.rs.client.Clientを生成[^1]
-- Clientに宛先URLやパラメータ、bodyデータなどを設定し呼び出しを実行
-- そして返却されたResponseから結果を取得
+- 宛先URLやパラメータ、bodyデータなどをClientに設定し呼び出しを実行
+- 返却されたResponseから結果を取得
 
 となります。
 
-サンプルコードから分かるとおり、GETのREST API呼び出しには`get`メソッド、POSTなら`post`メソッドといったようにHTTPメソッドによって実行するメソッドも使い分ける必要があります。加えてパラメータの送信方法によっても設定メソッドは`path`メソッドや`queryParam`メソッドなどと異なり、呼び出したいREST APIは至って単純ですが、実装は煩雑なものとなります。（端的に言うとタルい実装です・・）
+サンプルコードから分かるとおり、GETのREST API呼び出しには`get`メソッド、POSTなら`post`メソッドといったようにHTTPメソッドによって実行するメソッドを使い分ける必要があります。加えてパラメータの送信方法によっても設定メソッドは`path`メソッドや`queryParam`メソッドなどと異なり、呼び出したいREST APIは至って単純ですが、実装は煩雑なものとなります。（端的に言うとタルい実装です・・）
 
 [^1]: javax.ws.rs.client.Clientはスレッドセーフでかつ生成にコストが掛かるため、`@PostConstruct`でCDI Beanの初期化処理で生成したものを使いまわしています。
 
@@ -227,7 +227,7 @@ JAX-RSを使った基本的な流れは、
 REST APIの呼び出しにはクライアントアプリとサーバアプリ（RESTアプリケーション）をそれぞれ別のJavaプロセスで動作させる必要があります。動作方法についてはサンプルコードを格納したGitHubの[こちら](https://github.com/extact-io/contrarian-microprofile-sample/tree/main/01-restclient)を参照ください。
 :::
 :::stop
-Helidonの機能がすべて含まれている`io.helidon.microprofile.bundles:helidon-microprofile`をMavenのdependencyに使っている場合、クライアントアプリでもサーバ機能が起動します。このため、今回のようにサーバアプリも起動し一緒に動作させる場合、サーバアプリがデフォルトの7001ポートを既に掴んでいるため、クライアントアプリの起動が失敗します。このような場合は、エフェメラルポートを使用しサーバアプリとポートが被らないようにするのが一番手っ取り早い回避方法となります[^2]。エフェメラルポートを利用する場合は設定ファイルに以下のように使用ポートに0を指定します。
+Helidonの機能がすべて含まれる`io.helidon.microprofile.bundles:helidon-microprofile`をMavenのdependencyに使っている場合、クライアントアプリでもサーバ機能が起動します。このため、今回のようにサーバアプリも一緒に動作させる場合、サーバアプリがデフォルトの7001ポートを既に掴んでいるため、クライアントアプリの起動が失敗します。このような場合は、エフェメラルポートを使用しサーバアプリとポートが被らないようにするのが一番手っ取り早い回避方法となります[^2]。エフェメラルポートは以下のように設定ファイルに使用ポート0を指定します。
 ```properties
 # any available ephemeral port will be used.
 server.port = 0
@@ -237,7 +237,7 @@ server.port = 0
 [^2]: アプリの依存からサーバ機能を排除するのが本来的な対応ですが、Helidonはサーバアプリでの利用を前提としているためか、サーバ機能の依存を排除するのは一筋縄ではいきません。このため、ここでの説明は割愛していますが、出来ない訳ではありません。リファレンスアプリではクライアント側も最小限の依存にしていますので、実際どのようにやっているかを知りたい方は[こちら](https://github.com/extact-io/rms/blob/main/rms-client-api-remote/pom.xml)を参照ください。
 
 ## MicroProfile RestClientのコンセプト
-このようにJAX-RSを使った実装では、REST API仕様に定義されているHTTPメソッドやパラメータ送信方法などメッセージの送受信仕様に応じて、実装を変える必要があります。ただし、これをよく見ていくと、例えばHTTPメソッドがGETなら実行するメソッドは`get`メソッド、パスパラメータの場合は`path`メソッドでパラメータを設定といったように、その実装はREST APIの仕様から機械的に決定できるものとなっています。これは言い換えるとREST APIの定義情報さえあれば自動的に処理することが可能なことを意味します。
+このようにJAX-RSを使った実装では、REST API仕様に定義されているHTTPメソッドやパラメータ送信方法などに応じて実装を変える必要があります。ただし、これをよく見ていくと、例えばHTTPメソッドがGETなら実行するメソッドは`get`メソッド、パスパラメータの場合は`path`メソッドといったように、その実装はREST APIの仕様から機械的に決定できるものとなっています。これは言い換えるとREST APIの定義情報さえあれば自動的に処理することが可能なことを意味します。
 
 では、このREST APIの定義情報はどこかになかったでしょうか？そうです、RESTリソースの実装がREST APIの定義そのものになります！もう一度お題としているPersonResourceインタフェースを見てみましょう。
 
@@ -265,7 +265,7 @@ REST APIのHTTPメソッドは`@GET`や`@POST`のアノテーションから、�
 このJAX-RSのRESTリソース定義からREST API仕様を解釈可能ということをクライアント側で応用したのがMP RestClientとなります。
 
 ## MicroProfile RestClientによる実装
-MP RestClientは上述のとおりJAX-RSのRESTリソースアノテーションを使いクライアント側でREST API仕様に相当するインタフェースを定義します。MicroProfileランタイムはそのインタフェースをもとにREST APIを実際に呼び出すProxyを動的に生成します。そして利用者はこのインタフェースのメソッドを呼び出しすことでREST APIの呼び出しが可能になります。
+MP RestClientは上述のとおりJAX-RSのRESTリソースアノテーションを使ってクライアント側でREST API仕様に相当するインタフェースを定義し、MicroProfileランタイムはそのインタフェースをもとにREST APIを実際に呼び出すProxyを動的に生成します。これによりインタフェースのメソッド呼び出しによるREST API呼び出しが可能となります。
 
 先ほどはJAX-RSを使いPersonServiceインタフェースを実装しましたが、今度は同じインタフェースをMP RestClientを使って実装してみます。このMP RestClientを使ったクライアントアプリのクラス構造と実装コードは次のとおりになります。
 
@@ -324,7 +324,7 @@ REST APIを呼び出すのに必要なコードは、REST API仕様を定義し�
 ### `@RegisterRestClient`の解説
 `@RegisterRestClient`が付けられたインタフェースは、MicroProfileランタイムによりインタフェースに応じたMP RestClientのProxyインスタンスが動的に生成され、CDI Beanとして登録されます。
 
-このProxyインスタンスのもとになるインタフェースをMP RestClientではRestClientインタフェースと言い、RestClientインタフェースに定義されている`@Path`や`@PathParam`などのJAX-RSのアノテーションやメソッドの引数や戻り値が解析され、その解析結果をもとにProxyインスタンスはREST APIの呼び出しを行います。
+このProxyインスタンスのもとになるインタフェースをMP RestClientでは「RestClientインタフェース」と言い、ProxyインスタンスはRestClientインタフェースに定義されている`@Path`や`@PathParam`などのアノテーションやメソッドの引数や戻り値の解析結果をもとにREST APIの呼び出しを行います。
 
 ここまでの説明で気づかれた方もいるかも知れませんが、RestClientインタフェースは呼び出す先のJAX-RSのResourceインタフェースをクライアントから見ているだけで、結局のところ双方は同じものとなります。事実、RESTアプリケーション側のResourceインタフェースをクライアント側にコピーして`@RegisterRestClient`を付けるだけで動作させることができます[^3]。
 
@@ -362,15 +362,15 @@ MP RestClientはRestClientインタフェースをREST API仕様として実装�
 MP RestClientはREST API仕様に相当するRestClientインタフェースを入力として動的にProxyを生成するソリューションなのに対し、OASを使ったソリューションはOAS成果物を入力としツールでソースコードを自動生成する手法が用いられます。この代表的なツールとしては[OpenAPI Generator](https://github.com/openapitools/openapi-generator)があります。
 
 MP RestClientで必要となるものはRestClientインタフェースのみで後はRestClientインタフェースをもとにすべて動的に解決されるため、強力なソリューションであることに間違いありませんが、クライアントの実装言語がJavaに限定されます。
-一方のOAS成果物は言語に依らない中立的な成果物であるため、ツールがサポートする言語であれば任意の言語でコードを生成することができます。これに加えクライアント側だけでなくサーバー側のコードも生成可能です。OAS成果物によるソリューションはMP RestClientと比べ生成の手間や生成した成果物を維持管理していく手間が掛かりますが、その代わりにMP RestClientよりも高い柔軟性があります。
+一方のOAS成果物は言語に依らない中立的な成果物であるため、ツールがサポートする言語であれば任意の言語でコードを生成することができます。これに加えてクライアント側だけでなくサーバー側のコードも生成可能です。OAS成果物によるソリューションはMP RestClientと比べ生成の手間や生成した成果物を維持管理していく手間が掛かりますが、その代わりにMP RestClientよりも高い柔軟性があります。
 :::
 
 ## MicroProfile RestClientにおけるエラーハンドリング
-同じインタフェースに対するJAX-RSとMP RestClientの実装を見てきましたが、実はRestClientPersonServiceでは未だできていないことがあります。それはエラーハンドリングです。JaxrsPersonServiceではStatusCodeをもとにPersonClientExceptionの送出を行っていますが、RestClientPersonServiceはその点がなにも考慮されていません。このためサーバー側でエラーが発生した場合、クライアント側では意図しないエラーが発生します。
+同じインタフェースに対するJAX-RSとMP RestClientの実装を見てきましたが、RestClientPersonServiceでは未だできていないことが実はあります。それはエラーハンドリングです。JaxrsPersonServiceではStatusCodeをもとにPersonClientExceptionの送出を行っていますが、RestClientPersonServiceはその点がなにも考慮されていません。このためサーバー側でエラーが発生した場合、クライアント側では意図しないエラーが発生します。
 
 では、どのようにエラーハンドリングを行えばよいでしょうか？
 
-それぞれのメソッドでJaxrsPersonServiceのように頑張ってステータスコードをもとに判別することもできますが、MP RestClientではエラーハンドリング専用の仕組みとしてResponseExceptionMapperインタフェースが用意されています。ですので、MP RestClientにおけるエラーハンドリングはResponseExceptionMapperインタフェースを実装して行うのがスマートな方法となります。
+JaxrsPersonServiceのようにそれぞれのメソッドでステータスコードをもとに頑張って判別することもできますが、MP RestClientにはエラーハンドリング専用の仕組みとしてResponseExceptionMapperインタフェースが用意されています。ですので、MP RestClientにおけるエラーハンドリングはResponseExceptionMapperインタフェースを実装して行うのがスマートな方法となります。
 
 ### ResponseExceptionMapperインタフェースの実装
 では早速ResponseExceptionMapperインタフェースを使ったエラーハンドルの実装を見ていきましょう。
@@ -407,7 +407,7 @@ public class PersonClientExceptionMapper
 }
 ```
 
-サンプルはResponseExceptionMapperインタフェースに定義されている、`handles`メソッドと`toThrowable`メソッドの2つを実装しています。
+サンプルはResponseExceptionMapperインタフェースに定義されている`handles`メソッドと`toThrowable`メソッドの2つを実装しています。
 
 `handles`メソッドは引数で渡されたStatusCodeとレスポンスヘッダをもとに自分がハンドルしたいレスポンスかを判断し、ハンドルしたいレスポンスの場合は`true`を返します。`handles`メソッドで`true`を返した場合、続けて`toThrowable`メソッドがコールバックされるため、`toThrowable`メソッドでレスポンスに応じた例外を返却します。
 
@@ -437,7 +437,7 @@ StatusCodeやレスポンスヘッダの内容によって型階層の異なる�
 
 ResponseExceptionMapperが複数登録されている場合、その呼び出し順序は`ResponseExceptionMapper#getPriority`メソッドの返却値により決まり、返却された数値が小さい順にtrueを返すインスタンスが現れるまで登録されたResponseExceptionMapperの`handles`メソッドが呼び出されます[^7]（数値が低い方が優先されるという意味になります）。
 
-`getPriority`メソッドはResponseExceptionMapperインターフェースにdefault実装されているため、順序性の考慮が不要な場合は実装する必要はありませんが、順序性の制御が必要な場合は期待する順序になるように`getPriority`メソッドを実装する必要があります。
+`getPriority`メソッドはResponseExceptionMapperインターフェースにdefault実装されているため、順序性の考慮が不要な場合は実装する必要はありませんが、順序性の制御が必要な場合は期待する順序になるようにそれぞれの`getPriority`メソッドを実装する必要があります。
 
 説明した内容を元に優先度が2番目のResponseExceptionMapperがエラーハンドルする場合の流れをシーケンス図で示すと以下にようになります。
 
@@ -470,5 +470,5 @@ sequenceDiagram
 
 これらのことからMP RestClientを利用可能な状況において、敢えてJAX-RSのClient APIを選択する理由はありません。本記事を読んでMP RestClientを使ってみたいなと思われた方は是非、積極的に活用していただければと思います。
 
-最後に今回は紹介できなかったRESTリソースのテストを効率的に行うMP RestClientの便利な利用法を「[Helidon Tips - MicroProfile RestClientを使ったRESTリースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)」として別の記事で紹介していますので、ご興味がある方はそちらも続けてどうぞ！
+今回は紹介できなかったRESTリソースのテストを効率的に行うMP RestClientの便利な利用法を「[Helidon Tips - MicroProfile RestClientを使ったRESTリースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)」として別の記事で紹介していますので、ご興味がある方はそちらも続けてどうぞ！
 

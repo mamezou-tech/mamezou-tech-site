@@ -20,11 +20,21 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - [第5回 コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)
 - [第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)
 - [第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)
+  
+～ 2022年秋以降連載再開予定 ～
+- MicroProfile OpenTracingの機能と利用
+- MicroProfile Fault Tolerance機能と利用
+- MicroProfile Healthの機能と利用
+- MicroProfile Metricsの機能と利用
+- MicroProfile JWT Authを眺めてみる
 
 （番外編）
 - [Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)
 - [Helidon Tips - Helidon MP Testing with JUnit5を使ってみる](/msa/mp/ext02-helidon-testing/)
 - [Helidon Tips - Helidon MicroProfile RestClientを使ったRESTリースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)
+- Helidon Tips - Configuration Secretsを使ってみる(公開予定)
+- Helidon Tips - CORS in Helidon MPを使ってみる(公開予定)
+- Helidon Tips - Helidon Web Serverで知っておくと便利な設定(公開予定)
+- Helidon Tips - Meta-configuration機能の紹介(公開予定)
 
-
-以降もまだまだ続きます。こうご期待
+番外編は随時公開していきますので、こうご期待

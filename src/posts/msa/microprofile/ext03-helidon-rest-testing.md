@@ -23,7 +23,7 @@ HTTPプロトコルを用いた結合レベルのRESTリソースのテストは
 
 ## MicroProfile RestClient＋Helidon MP Testingでできること
 
-結論的な説明からとなりますが、MicroProfile RestClientとHelidon MP Testingを組み合わせて使うことで
+最初に結論から言うと、MicroProfile RestClientとHelidon MP Testingを組み合わせて使うことで
 - RESTリソースに対するテストを
 - 実際のネットワークを介したHTTPレベルで
 - テスト用のクライアントアプリやテスト向けの特別な設定なしで
@@ -31,9 +31,9 @@ HTTPプロトコルを用いた結合レベルのRESTリソースのテストは
   
 実施ができるようなります。
 
-RESTリソースのテストを簡単にできるようにするポイントはMicroProfile RestClientの利用にあります。「[第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)」で取り上げましたが、RESTリソースのインタフェースがあれば、それをそのままMicroProfile RestClient のRestClientインタフェースとして利用することができます。
+RESTリソースのテストを簡単にするポイントはMicroProfile RestClientの利用にあります。「[第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)」で取り上げましたが、RESTリソースのインタフェースがあれば、それをそのままMicroProfile RestClient のRestClientインタフェースとして利用することができます。
 
-この発想を少し転換させ、RESTリソースが持つPersonResourceインタフェースをRestClientインタフェースに使うようにすると、RESTリソースを呼び出すクライアント（テストドライバ）を簡単に手に入れることができます。つまり、RESTリソースが実装しているインタフェースを使ってHTTPレベルで自分自身のテストができるようになります。
+この発想を少し転換させ、RESTリソースが持つPersonResourceインタフェースをRestClientインタフェースとして使うことで、RESTリソースを呼び出すクライアント（テストドライバ）を簡単に手に入れることができます。つまり、RESTリソースが実装しているインタフェースを使ってHTTPレベルで自分自身のテストができるようになります。
 
 では、実際にどのようにやるかを見てきましょう。
 
@@ -87,10 +87,10 @@ public interface PersonResource {
 }
 ```
 
-クラス図のとおり、RESTリソースの実装（PersonResourceImplクラス）とREST API仕様に相当するインタフェース(PersonResourceインタフェース)は分けて定義されています。したがって、今回例として説明するのはPersonResourceインタフェースを実装したPersonResourceImplに対するHTTPレベルのテストの実装方法となります。
+クラス図のとおり、RESTリソースの実装（PersonResourceImplクラス）とREST APIのインタフェース(PersonResourceインタフェース)は分けて定義しています。ですので、今回例として説明するのはPersonResourceインタフェースを実装したPersonResourceImplに対するHTTPレベルのテストの実装方法となります。
 
 ## テストクラスの実装
-冒頭でも触れましたがHTTPレベルのRESTリソースのテストはMicroProfile RestClientとHelidon MP Testingを使うことで次のように簡単に実現できます。
+HTTPレベルのRESTリソースのテストはMicroProfile RestClientとHelidon MP Testingを使うことで次のように簡単に実現できます。
 
 ```java
 @HelidonTest
@@ -142,7 +142,7 @@ public class PersonResourceTest {
 }
 ```
 
-このテスト実装のポイントはテスト対象に相当するPersonResourceインタフェース自体をMicroProfile RestClientのRestClientインタフェースに指定[^1]してProxyを取得（詳細は後述のInformation欄を参照）しているところになります。
+テスト実装のポイントはテスト対象のPersonResourceインタフェースをMicroProfile RestClientのRestClientインタフェースに指定[^1]し、Proxyを取得（詳細は後述のInformation欄を参照）しているところになります。
 
 [^1]: 今回のテスト対象には予めインタフェースを導出していましたが、JAX-RS的にはRESTリソースに対するインタフェースは必須ではありません。これに対して、今回紹介した方法は、RestClientインタフェースにRESTリソースのインタフェースを用いるため、その作成は必須となります。一見すると手間と制約が増える感じがしますが、インタフェースはいくらあっても設計的にデメリットになることはなく、むしろ多くの場合プラスに作用します。よって、このデメリットは実質的には無視できるものとなります。
 
@@ -160,21 +160,21 @@ public void setup() throws Exception {
 }
 ```
 
-プログラムによる取得では、例のようにRestClientBuilderのAPIで宛先URLと基にするRestClientインタフェースを指定します。また、この他に`register`メソッドを使ってconverterやfilterなどのProviderも指定することもできます。
-では、今回のテスト実装ではなぜ`@Inject`による取得をおこなっていないのでしょう？これはインジェクションによる取得ができないためです。今回、RestClientインタフェースに指定しているのはPersonResourceインタフェースのため、RestClientインタフェースを識別するための` @RegisterRestClient`は当たり前ですがPersonResourceインタフェースには付いていません。また付けてもいけません[^2]。このため、RestClientBuilder APIでRestClientインタフェースを認識させています。
+プログラムによる取得では、RestClientBuilderのAPIで宛先URLと基にするRestClientインタフェースを指定します。この他に`register`メソッドを使ってconverterやfilterなどのProviderも指定することもできます。
+では、今回のテスト実装ではなぜ`@Inject`を使ってないのでしょう？これはインジェクションによる取得ができないためです。今回、RestClientインタフェースに指定しているのはPersonResourceインタフェースですが、RestClientインタフェースを識別するための` @RegisterRestClient`はPersonResourceインタフェースには付いていません。また付けてもいけません[^2]。このため、RestClientBuilder APIでRestClientインタフェースを認識させる方法を採っています。
 :::
 
 [^2]: PersonResourceインタフェースに`@RegisterRestClient`を付けても動作上は問題ありませんが、`@RegisterRestClient`はクライアント側の要素となります。PersonResourceインタフェースはプロダクトコードですので、テストのためだけに不要な依存やコードの追加は厳に避けるべきです。
 
 
 ## テストの仕組み
-テスト実行時にはRESTクライアントとRESTリソース（サーバ）の2つが1つのJavaプロセス内に登場するため若干混乱しますが、この実行時の状況をイメージ図にすると次のようになります。
+テスト実行時にはRESTクライアントとRESTリソース（サーバ）の2つが1つのJavaプロセス内に登場するため若干混乱しますが、実行時の状況をイメージ図にすると次のようになります。
 
 ![](../../../img/mp/ex03_overview.drawio.svg)
 
-図から分かるように、実行時にはHelidon MP Testing(@HelidonTest)により、テスト対象のRESTアプリケーション(PersonResourceImpl)が起動し、テストメソッドごとにその実行前(`@BeforeEach`)に、PersonResourceImplを呼び出すRESTクライアントとしてProxyインスタンス(personResourceフィールド)が取得されます。
+図から分かるように、実行時にはHelidon MP Testing(@HelidonTest)により、テスト対象のRESTアプリケーション(PersonResourceImpl)が起動し、テストメソッドの各実行前(`@BeforeEach`)にProxyインスタンス(personResourceフィールド)が取得されます。
 
-テスト対象のPersonResouceインタフェースに対する呼び出しは、コード上、単なるメソッドの呼び出しに見えますが、その実体はProxyインスタンスであり、裏ではlocalhostの7001ポートを経由したREST APIの呼び出しが行われるため、実際にはネットワークを介したテストを行っているのと同じとなります。
+テスト対象のPersonResouceインタフェースに対する呼び出しは、コード上、単なるメソッドの呼び出しに見えますが、その実体はProxyインスタンスで裏ではlocalhostの7001ポートを経由したREST APIの呼び出しが行われるため、実際にはネットワークを介したテストを行っているのと同じとなります。
 
 ## リファレンスアプリでの利用例
 [第3回](/msa/mp/cntrn03-sampleapp-helidon/)で紹介したMicroProfileを使った[リファレンスアプリ(RMS)](https://github.com/extact-io/rms)でも今回説明した方法でRESTリソースのテストを行っています。

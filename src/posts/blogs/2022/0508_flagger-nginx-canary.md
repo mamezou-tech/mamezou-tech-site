@@ -44,7 +44,7 @@ Flaggerは、[Flux](https://fluxcd.io/)でお馴染みの[Weaveworks](https://ww
 
 IstioやLinkerd、AWS App Mesh等のサービスメッシュやNginx/Traefik等のIngress Controllerといったメジャーな製品はカバーされています。
 
-また、カナリアリリース等を実現するには、メトリクス監視が必須です。カナリアバージョンにエラーやレイテンシ悪化がある場合は、リリースを停止する必要があるでしょう。
+また、カナリアリリース等を用いたデプロイには、メトリクス監視が必須です。カナリアバージョンにエラーやレスポンスタイムの悪化が見られる場合は、リリースを停止する必要があるでしょう。
 このためFlaggerはメトリクスツールとの連携が必要です。連携可能なツール/サービスは以下に記載があります。
 
 - <https://docs.flagger.app/usage/metrics>
@@ -53,7 +53,7 @@ IstioやLinkerd、AWS App Mesh等のサービスメッシュやNginx/Traefik等�
 
 ここではNginxのIngress ControllerとPrometheus(デフォルト)を使って、Flaggerのカナリアリリースを試してみたいと思います。
 
-Kubernetes環境はローカルのMinikubeを使いますが、基本的にどのKubernetesディストリビューションでもできるはずです。
+Kubernetes環境はローカルのMinikubeを使いますが、基本的にどのKubernetesディストリビューションでもFlaggerの使い方は同じはずです。
 
 [[TOC]]
 
@@ -65,7 +65,6 @@ Kubernetes環境はローカルのMinikubeを使いますが、基本的にど�
 既に有効にしている場合は無効にしておきます。
 
 ```shell
-# Ingress-Addon無効化
 minikube addons disable ingress-dns
 minikube addons disable ingress
 ```
@@ -98,7 +97,7 @@ minikube tunnel
 
 ## Flaggerのインストール
 
-Flagger本体をインストールします。
+Flagger本体をインストールします。Flaggerも[Helmチャート](https://github.com/fluxcd/flagger/tree/main/charts/flagger)が公開されていますので、こちらを利用します。
 
 ```shell
 helm repo add flagger https://flagger.app
@@ -111,7 +110,7 @@ helm upgrade --install flagger flagger/flagger \
   --set meshProvider=nginx
 ```
 
-`prometheus.install`を指定してメトリクス収集用のPrometheusを一緒にインストールしました。
+`prometheus.install`を指定して、メトリクス収集用のPrometheusを一緒にインストールしました。
 また、`meshProvider`には今回ルーティング制御で使用する`nginx`を指定しました。
 
 なお、他の用途で既にPrometheus Operatorを実行中の場合、そちらからの収集も可能です。詳細は[公式ドキュメント](https://docs.flagger.app/tutorials/prometheus-operator)を参照してください。
@@ -162,12 +161,12 @@ helm upgrade --install sample-app flagger/podinfo \
   --set image.tag=6.0.0
 ```
 
-今回は簡潔に確認したかったので、HPA等は無効にしました[^2]。
+今回は簡潔にしたかったので、HPAは無効にしました[^2]。
 `test`Namespace内にアプリ(バージョン`6.0.0`)をセットアップしました。中身はDeploymentとConfigMapのみです。この時点ではServiceすらありません。
 
 [^2]: [公式ドキュメント](https://docs.flagger.app/usage/how-it-works#canary-target)によるとHPAはカナリアリリース時のリソース効率を高める上で有用なようです。
 
-次にFlaggerでデプロイしたアプリのメトリクスが収集できるように、負荷テストツールをデプロイしておきます。
+次に、FlaggerでIngressからメトリクスを収集できるように、負荷テストツールをデプロイしておきます。
 
 ```shell
 # https://github.com/fluxcd/flagger/tree/main/charts/loadtester
@@ -179,6 +178,7 @@ helm upgrade --install flagger-loadtester flagger/loadtester \
 
 こちらは必須ではありませんが、メトリクスが収集できないと、Flaggerはリクエスト成功率を計算できずデプロイが失敗したものとみなします。
 そのため、ここでは本気の負荷テストというよりも、メトリクス収集の目的で使用します。
+Flaggerで提供される負荷テストツールは、[公式ドキュメント](https://docs.flagger.app/usage/webhooks#load-testing)を参照しくてださい。httpだけでなく、gRPCにも対応しています。
 
 ここまで実施すると、`test`Namespaceは以下のような状態となります。
 
@@ -193,8 +193,7 @@ sample-app-6cddcb999c-rk78t          1/1     Running   0          32s
 
 ## Ingressの作成
 
-次にIngressリソースを作成します。
-以下`ingress.yaml`を用意しました。
+次にIngressリソースを作成します。 以下`ingress.yaml`を用意しました。
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -230,7 +229,7 @@ kubectl apply -f ingress.yaml
 ## カナリアリリース構成の初期化
 
 サンプルアプリをFlaggerのカナリアリリース構成に初期化します。
-これにはFlaggerのカスタムリソース(CRD)であるCanaryリソースを作成します。
+これには、Flaggerのカスタムリソース(CRD)であるCanaryリソースを作成します。
 
 以下の内容を`canary.yaml`として作成しました。
 
@@ -297,7 +296,7 @@ spec:
 
 ここで、カナリアリリースの対象や各種しきい値、イベントに対応するWebHooks等を設定します。
 ここでは30秒間隔(`interval`)でメトリクスチェックを行い、50%(`maxWeight`)まで10%ずつ(`stepWeight`)カナリアバージョンへのトラフィック量を増やしていくようにしています。
-メトリクスチェックにはFlaggerにビルトインで組み込まれているリクエスト成功率とレスポンスタイムを使用しています[^3]。
+メトリクスチェックには、Flaggerに組み込まれているリクエスト成功率とレスポンスタイムを使用しています[^3]。
 また、このメトリクスチェックは10回の失敗するとカナリアリリースを停止するようにしました(`threshold`)。
 
 [^3]: もちろんカスタムメトリクスでのチェックも可能です。カスタムメトリクスの設定方法は[公式ドキュメント](https://docs.flagger.app/usage/metrics#custom-metrics)を参照しくてださい。
@@ -309,8 +308,8 @@ spec:
 この例だと30秒 * (50% / 10%) = 150秒が最速のリリース時間になります。実際にはもっと長い時間をかけてリリースしていくことになると思います。
 
 `webhooks`はカナリアリリース中の各イベント(`type`)に応じて、アプリケーションをテストします(Flaggerが呼び出します)。
-ここではサンプルアプリの疎通と一定量のアクセスを負荷テストツール(`hey`)でかけるようにしています。
-ここではテストだけでなく、アラートやロールバック時のフックとして利用もできます。正しく利用できれば、より確実なリリースプロセスを構築できそうです。
+ここではサンプルアプリの疎通と一定量のアクセスを負荷テストツール(`hey`コマンド)でかけるようにしています。
+ここではテストだけでなく、アラートやロールバック時のフックとしても利用できます。適切に利用すれば、より確実なリリースパイプラインを構築できそうです。
 利用可能な全てのイベントは[公式ドキュメント](https://docs.flagger.app/usage/webhooks)で確認できます。
 なお、WebHooksの指定は任意ですので、メトリクスチェックだけで十分であれば指定は不要です。
 
@@ -379,9 +378,10 @@ ingress.networking.k8s.io/sample-app-canary   nginx   sample.minikube.local   10
 
 これが平常時の状態になります。
 
-### Deployment
-Stableバージョンの方は、先程作成したDeploymentやConfigMapから複製されました(名前に`-primary`付加)。
-また、下部のカナリアバージョンは、ゼロスケールされた状態になりました（アンデプロイ）。
+### Deployment/ConfigMap
+上部はStableバージョンの構成です。先程作成したDeploymentやConfigMapから複製されました(名前に`-primary`付加)。
+こちらが、アクティブにサービスを提供するものになります。
+下部のカナリアバージョンは、ゼロスケールされた状態になりました（Pod削除）。これは今後のカナリアリリースのために、Flaggerが監視している状態です。
 
 ### Service
 3つのServiceが作成さました。
@@ -392,17 +392,17 @@ Stableバージョンの方は、先程作成したDeploymentやConfigMapから�
 [^4]: Apexドメイン(sample-app)/とプライマリサービス(sample-app-primary)は、どちらを使っても違いはないようでした。この辺りは実装に何を使うかによって、変わってくるようです。
 
 ### Ingress
-先程作成したIngressが複製され、`-canary`バージョンのIngressとしてデプロイされました。
+先程作成したIngressが複製され、`-canary`バージョンのIngressとして作成されました。
 こちらはカナリアバージョンのService(`sample-app-canary`)の方にトラフィックを流すように設定されています。
-なお、Nginx Ingress Controllerのアノテーションでトラフィックのウェイトがゼロに設定されていて、現在はリクエストが流れてきません。
+こちらのIngressは、アノテーションでトラフィックのウェイトがゼロに設定されていて、現在はリクエストが流れてこない状態です。
 
 ## カナリアリリースを試してみる
 
 これで準備はできました。早速Flaggerのカナリアリリースを試してみます。
-Flaggerはカナリアバージョン(DeploymentのPodテンプレート/ConfigMap等)の変更を監視し、変更発生を検知するとカナリアリリースのプロセスを実行します。
 
-サンプルアプリのコンテナバージョンを上げてみます。
-注意点として、`sample-app-primary`側は直接変更してはいけません。こちらはFlaggerが管理しているもので、最終的に全てのメトリクスチェックをクリアした段階で更新されます。
+Flaggerはカナリアバージョン(DeploymentのPodテンプレート/ConfigMap等)の変更を監視し、変更発生を検知するとカナリアリリースのプロセスを実行します。
+ここでは、サンプルアプリのコンテナバージョンを上げてみます。
+注意点として、`sample-app-primary`側は直接変更してはいけません。こちらはFlaggerが管理しているもので、最終的に全てのメトリクスチェックをクリアしたカナリアリリースの最終段階で更新されます。
 
 ```shell
 # image.tagを6.0.0 -> 6.0.1に変更
@@ -430,7 +430,7 @@ metadata:
 
 ![](https://i.gyazo.com/d2bd1b2c3fe0ee9ab700da3cac46e1b9.png)
 
-その後最大のウェイトに到達すると、`sample-app-primary`がカナリアバージョンのものへと置き換えられ、下部のカナリアバージョンの構成は初期状態へと戻りました(ゼロスケール)。
+その後ウェイトが50%まで到達すると、カナリアバージョンの構成がStableバージョンの方に置き換えられ、カナリアバージョンの方は先程と同じ初期状態へと戻りました(ゼロスケール)。
 これらのイベントはCanaryリソースのイベントでも確認できます。
 
 ```shell
@@ -462,8 +462,8 @@ Events:
 具体的な設定方法は[公式ドキュメント](https://docs.flagger.app/usage/alerting)で確認できます。
 :::
 
-最後にカナリアリリース中に、意図的に500エラーを発生させてみます。
-サンプルアプリには意図的に500エラーを返すことができますので、カナリアリリース中に以下のコマンドで大量のエラーを発生させます。
+最後に、カナリアリリース中に意図的に500エラーを発生させてみます。
+サンプルアプリは意図的に500エラーを返すことができますので、カナリアリリース中に以下のコマンドで大量のエラーを発生させます。
 
 ```shell
 LB_IP=$(kubectl get ing sample-app -n test -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
@@ -493,9 +493,9 @@ Events:
   Warning  Synced  2m14s                flagger  (combined from similar events): Halt sample-app.test advancement success rate 9.24% < 99%
 ```
 
-ウェイト20%の時点でサンプルアプリのリクエスト成功率がチェック(99%)をクリアできなくなったため、流量増加プロセスを停止しています。
+ウェイト20%の時点でサンプルアプリのリクエスト成功率がチェック(99%)をクリアできなくなったため、カナリアバージョンへのウェイト増加プロセスを停止しています。
 その後、失敗回数がしきい値で設定した10回に到達すると、Flaggerはカナリアリリース失敗と判断し、ロールバックします。
-具体的には、Ingressのカナリアバージョンへのトラフィックウェイトを0%に戻し、カナリアバージョンのPodを削除(ゼロスケール)しました。
+具体的には、Ingressのカナリアバージョンへのウェイトを0%に戻し、カナリアバージョンのPodを削除(ゼロスケール)しました。
 
 :::info
 失敗したカナリアバージョンを再開する場合は、Flaggerが監視しているサンプルアプリのDeploymentのPodテンプレートやConfigMapを変更します。
@@ -504,7 +504,7 @@ Events:
 
 ## まとめ
 高度なデプロイ戦略を手動でやるのは非常に大変ですが、FlaggerはCanaryリリースを作成するだけで自動化してくれるのは楽ですね。
-メトリクスベースで確実に進めてくれますので、より信頼できるリリースプロセスが実現できそうですね。
+メトリクスベースで確実に進めてくれますので、より信頼できる定量的なリリースパイプラインを構築できます。
 
 とはいえ、Kubernetesにデフォルトで備わっているRollingUpdateもほとんどのユースケースを満たせるはずです。
 全てのアプリケーションで無理に使って構成を複雑化させるよりも、まずはトラフィック量が多いクリティカルなアプリケーションに限定するなど、システム特性に応じて使い分けるのがいいのではと思います。

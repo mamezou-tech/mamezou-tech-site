@@ -29,7 +29,7 @@ Kubernetesにはオートヒーリング機能がありますが、これはあ�
 設定を誤れば、サービスの全面停止を招く可能性もあり、安定したリリースの実現という目的とは真逆の結果を招きます。
 
 今回は、これを自動化する[Flagger](https://flagger.app/)を試します。
-Flaggerは[Flux](https://fluxcd.io/)でお馴染みの[Weaveworks](https://www.weave.works/)社が開発した、デリバリに特化したツールです[^1]。
+Flaggerは、[Flux](https://fluxcd.io/)でお馴染みの[Weaveworks](https://www.weave.works/)社が開発したデリバリに特化したツールです[^1]。
 以下は公式ドキュメントから、Flaggerの概要イメージを引用しました。
 
 [^1]: CNCFのIncubatingプロジェクトとしてホスティングされています。

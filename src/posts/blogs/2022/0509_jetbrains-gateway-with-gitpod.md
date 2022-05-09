@@ -37,17 +37,11 @@ JetBrains Gateway にはこれまで、
 
 [^3]: JetBrains がホストするリモート開発用のサービス
 
-JetBrains Gateway では JetBrains Client というシンクライアントのアプリが起動されます。Gitpod の Theia ベースの IDE は VS Code と同様 Web 技術で動作していますが、JetBrains Client の方は Remote Desktop (RDP) に近いもののようです。FAQ にありました。
+JetBrains Gateway では JetBrains Client というシンクライアントのアプリが起動されます。Gitpod の Theia ベースの IDE は VS Code と同様 Web 技術で動作していますが、JetBrains Client の方は Remote Desktop (RDP) に近いもののようです。
 
-[FAQ about remote development with the thin client | CLion](https://www.jetbrains.com/help/clion/faq-about-remote-development.html#telemetry)
+JetBrains Gateway では IntelliJ IDEA の他に GoLand、PyCharm、PhpStorm が利用できます。
 
-> Q: What mechanism is used to display remote GUI locally?
->
-> A: JetBrains Client that is based on the CLion platform and the Projector technology are used to display remote GUI locally.
-
-CLion (C/C++ の IDE) とリモート GUI のテクノロジーを使っているようです。IntelliJ IDEA の他に GoLand、PyCharm、PhpStorm が利用できます。
-
-と予備知識はこれぐらいにして早速導入してみます。
+と、予備知識はこれぐらいにして早速導入してみます。
 
 JetBrains Gateway のページから使用する環境向けのインストーラを選択してダウンロード・インストールします。
 

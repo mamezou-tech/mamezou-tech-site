@@ -63,11 +63,11 @@ JetBrains Gateway から接続するときは Gitpod 側でアプリ認証が必
 
 ![](https://gyazo.com/ee9970a5388c5e03f4beca182522d15a.png)
 
-作業対象の Spring Boot アプリのリポジトリを選択しました。
+作業対象の Spring Boot アプリのレポジトリを選択しました。
 
 ![](https://i.gyazo.com/29ae23800a08aa6ff494f46a5cdb6311.png)
 
-選択したリポジトリから Gitpod のワークスペースを作ります。
+選択したレポジトリから Gitpod のワークスペースを作ります。
 
 ![](https://gyazo.com/236630e61704cfa9f2bcff6d735f6385.png)
 
@@ -79,7 +79,7 @@ Gitpod 側で開発環境がプロビジョンされます。
 
 ![](https://gyazo.com/8cf314358f940282f887fdbee4762961.png)
 
-ポップアップが開きますので、JetBrains Gateway を開くを選択します。
+ポップアップが開きますので、「JetBrains Gateway を開く」をクリックします。
 
 ![](https://i.gyazo.com/1da3cc1212c535982032d4a21f82c8a2.png)
 
@@ -95,4 +95,4 @@ Gitpod 側で開発環境がプロビジョンされます。
 
 ![](https://i.gyazo.com/1c77e173f4ef14b876156b4ee320eb68.png)
 
-以上のように JetBrains Gateway + Gitpod を使うと、IDE をリモート実行して、作業中のリポジトリで開発作業ができます。ローカルには JetBrains Gateway があればよく Git も IDE も不要というまさにシンクライアントです。非力なラップトップでも馴染みの IDE で作業できるのは素晴らしいですね。今のところ GitHub の Codespaces と違ってブラウザでの動作はできませんが、ローカルと変わらない操作性は一度試す価値はあると思います。
+以上のように JetBrains Gateway + Gitpod を使うと、IDE をリモート実行して、作業中のレポジトリで開発作業ができます。ローカルには JetBrains Gateway があればよく Git も IDE も不要というまさにシンクライアントです。非力なラップトップでも馴染みの IDE で作業できるのは素晴らしいですね。今のところ GitHub の Codespaces と違ってブラウザでの動作はできませんが、ローカルと変わらない操作性は一度試す価値はあると思います。

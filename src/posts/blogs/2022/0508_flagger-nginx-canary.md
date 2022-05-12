@@ -385,11 +385,11 @@ ingress.networking.k8s.io/sample-app-canary   nginx   sample.minikube.local   10
 
 ### Service
 3つのServiceが作成さました。
-名前から分かるように`-primary`の方は現在実行中のStableバージョンを指し、`-canary`の方はカナリアバージョンを指します。
+名前から分かるように`-primary`サフィックスの方は現在実行中のStableバージョン、`-canary`サフィックスの方はカナリアバージョンを指します。
 カナリアバージョンの方は現在Podが存在しないため、ルーティング先がない状態です。
 サフィックスないServiceはApexドメインと呼ばれるもので、常にStableバージョンを指します[^4]。
 
-[^4]: Apexドメイン(sample-app)/とプライマリサービス(sample-app-primary)は、どちらを使っても違いはないようでした。この辺りは実装に何を使うかによって、変わってくるようです。
+[^4]: Apexドメイン(sample-app)とプライマリサービス(sample-app-primary)は、どちらを使っても違いはないようでした。この辺りは実装に何を使うかによって、変わってくるようです。
 
 ### Ingress
 先程作成したIngressが複製され、`-canary`バージョンのIngressとして作成されました。

@@ -38,11 +38,11 @@ GitHub Actions のジョブサマリー機能がリリースされました。
 
 ![](https://i.gyazo.com/b70cc89903aa60c2c449b4bf45ffc010.png)
 
-リッチなサマリーページを作るには、echo コマンドで頑張るのではなく、ジョブサマリー機能を使った Action を利用する想定のようです。そのため、JavaScript Action 作成用NPM パッケージ [@actions/core](https://www.npmjs.com/package/@actions/core) に Markdown 出力用のヘルパーユーティリティが追加された模様です。
+リッチなサマリーページを作るには、echo コマンドで頑張るのではなく、ジョブサマリー機能を使った Action を利用する想定のようです。そのため、JavaScript Action 作成用 NPM パッケージ [@actions/core](https://www.npmjs.com/package/@actions/core) に Markdown 出力用のヘルパーユーティリティが追加された模様です。
 
-上記のブログには、ジョブサマリーでジョブの詳細情報を Markdown のテーブルに出力した画像が掲載されています。
+上記ブログには、ジョブの詳細情報を Markdown のテーブルに出力したサンプル画像が掲載されています。
 
 ![](https://github.blog/wp-content/uploads/2022/05/image-3.png)
 
 今後、ジョブサマリーの機能を使った Action が開発されサマリーページにジョブ実行に関する有益な情報を表示できるようになっていくことでしょう。
-また、そのような Action の登場を待たなくても、echo だけで手軽にサマリーページに付加情報を表示できるので機会があれば利用してみてはいかがでしょうか。
+また、そのような Action の登場を待たなくても echo だけで手軽にサマリーページに付加情報を表示できるので機会があれば利用してみてはいかがでしょうか。

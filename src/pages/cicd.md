@@ -27,6 +27,7 @@ CI/CDパイプラインは、現代のソフトウェア開発に必要不可欠
 - [GitHub Actions - 再利用可能ワークフローを使う](https://developer.mamezou-tech.com/blogs/2022/03/08/github-actions-reuse-workflows/)
 - [GitHub のリリースノート自動生成機能を使う](https://developer.mamezou-tech.com/blogs/2022/03/11/github-automatically-generated-release-notes/)
 - [GitHub Actions ワークフローで個別ジョブのリランが可能に](https://developer.mamezou-tech.com/blogs/2022/04/14/github-actions-workflow-rerun-individual-jobs/)
+- [GitHub Actions ジョブサマリー機能を使う](https://developer.mamezou-tech.com/blogs/2022/05/14/github-actions-job-summaries/)
 
 豆蔵有志でも、特定ユースケースに対応したActionをOSSとして公開しています。
 

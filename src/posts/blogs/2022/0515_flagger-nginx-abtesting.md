@@ -11,7 +11,7 @@ tags: ["k8s", "container", "CI/CD"]
 
 今回はA/Bテストの方を試したいと思います。
 前回のカナリアリリースは徐々にカナリアバージョンのトラフィック量を増やしながら切り替えていく形でした。
-FlaggerのA/Bテストは、一部のユーザーのみにカナリアバージョンを公開し、問題がない場合にのみに全てのリクエストをStableバージョンの方に振り向けます。
+FlaggerのA/Bテストは、一部のユーザーのみにカナリアバージョンを公開し、その後問題がない場合に全てのリクエストを一気にStableバージョンの方に振り向けます。
 
 
 また、前回は完全自動化でStableバージョンへリリースしましたが、今回は最終的なStable環境へのリリースは手動承認(Manual Gating)が必要なユースケースを想定します。
@@ -129,13 +129,13 @@ spec:
 
 ### 反復回数(`iterations`)
 
-A/Bテストの場合は`iterations`を指定し、その代わりに`maxWeight`/`stepWeight`を削除しました。
-`iterations`はメトリクスチェックの回数です。ここで指定した回数分メトリクスチェックは繰り返され、全てチェックをパスするとStableバージョンへの反映が認められます。
-ここでは60秒間隔(`interval`)で5回メトリクスチェックを実施するようにしました。使用するメトリクスは前回同様にステータスコードとレスポンスタイムを指定しました。
+A/Bテストの場合は反復回数(`iterations`)を指定し、その代わりに`maxWeight`/`stepWeight`を削除します。
+`iterations`はメトリクスチェックの回数です。ここで指定した回数分メトリクスチェックが繰り返され、全てのチェックをパスするとカナリアバージョンはStableバージョンへ昇格します。
+ここでは、60秒間隔(`interval`)で3回チェックを実施するようにしました。使用するメトリクスは前回同様にステータスコードとレスポンスタイムです。
 
 ### ルーティング条件(`match`)
-ここではカナリアバージョンにトラフィックを流す条件を指定します。FlaggerではHTTPヘッダとCookieによるルーティングをサポートしています。
-ここではHTTPヘッダとして`X-Canary: insider`またはCookieに`canary=always`のエントリーがある場合、カナリアバージョンへルーティングするようにしています。
+カナリアバージョンにトラフィックを流す条件を指定します。FlaggerではHTTPヘッダとCookieによるルーティングをサポートしています。
+ここでは、HTTPヘッダとして`X-Canary: insider`またはCookieに`canary=always`のエントリーがある場合、カナリアバージョンへルーティングするようにしています。
 
 :::info
 Cookieの値(`always`)はFlaggerの制約ではなく、Nginx Ingress Controllerの仕様です。
@@ -143,8 +143,8 @@ Cookieの値(`always`)はFlaggerの制約ではなく、Nginx Ingress Controller
 Nginx Ingress Controllerの仕様は、[公式ドキュメント](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#canary)を参照しくてださい。
 :::
 
-### イベント処理(`webhooks*`)
-Flaggerのライフサイクルイベントに対応した処理を定義します。*
+### イベント処理(`webhooks`)
+Flaggerのライフサイクルイベントに対応した処理を定義します。
 前回同様に事前の疎通確認と、Flagger Testerでメトリクスを収集するようにしています。
 今回は手動承認(Manual Gating)を有効にするため、これに加えて以下を追加しました。
 
@@ -154,7 +154,7 @@ Flaggerのライフサイクルイベントに対応した処理を定義しま�
 ここで指定したURLが200ステータスを返すと、Stableバージョンへの昇格またはロールバックが実行されます。
 ここではFlagger Testerが備えるREST APIを使用しています。 このAPIはその時点のOpen/Closeの状態を返すものです(デフォルトはClose)。
 
-最後の2つのWebHook(`reset-promotion-gate`/`reset-rollback-gate`)では、リリース終了後(`post-rollout`)は各GateをClose状態に戻しています。これは次回のリリースに備えるためです。
+最後の2つのWebHook(`reset-promotion-gate`/`reset-rollback-gate`)では、リリース終了後(`post-rollout`)に各GateをClose状態に戻しています。これは次回のリリースに備えるためです。
 
 
 これを反映します。
@@ -211,12 +211,12 @@ curl -s -H 'Host: sample.minikube.local' -H 'X-Canary: insider' http://${LB_IP}/
 ```
 
 どちらも`6.0.1`が返ってきます。カナリアバージョンの方にルーティングされています。
-もちろん、HTTPヘッダやCookieを指定しない場合はStableバージョンの`6.0.0`が返ってくることも確認できました。
-以下のように、条件を満たしたリクエストのみがカナリアバージョンに流れている状態です。
+もちろんHTTPヘッダやCookieを指定しない場合は、Stableバージョンの`6.0.0`が返ってくることも確認できました。
+ここでは、以下のように条件を満たしたリクエストのみがカナリアバージョンに流れている状態です。
 
 ![](https://i.gyazo.com/e620b111cae461b1bb3554e3f18bd20c.png)
 
-しばらくして、Canaryリソースの状態を確認すると以下のようになっています。
+全ての反復(`iterations`)が終わり、Canaryリソースの状態を確認すると以下のようになりました。
 ```shell
 NAME         STATUS             WEIGHT   LASTTRANSITIONTIME
 sample-app   WaitingPromotion   0        2022-05-14T07:47:34Z
@@ -244,6 +244,12 @@ sample-app   Promoting   0        2022-05-14T07:54:04Z
 
 `STATUS`が`Promoting`に変わり、カナリアバージョンがStableバージョンへと反映されます。
 この辺りの動きはカナリアリリースと同じです。Stableバージョン昇格後は、カナリアバージョンはゼロスケールされ、初期状態に戻りました。
+Canaryリソースの`STATUS`も`Succeeded`へと変わります。
+
+```shell
+NAME         STATUS      WEIGHT   LASTTRANSITIONTIME
+sample-app   Succeeded   0        2022-05-14T08:04:01Z
+```
 
 ## 手動ロールバック(リリース取消)
 
@@ -256,8 +262,10 @@ kubectl -n test set image deployment/sample-app \
   podinfo=ghcr.io/stefanprodan/podinfo:6.0.2
 ```
 
-再びカナリアバージョンが作成され、メトリクスチェックが開始され、承認待ち状態(`WaitingPromotion`)になります。
+再びカナリアバージョンが作成され、メトリクスチェックが開始され、承認待ち状態(`WaitingPromotion`)になります[^1]。
 今度は承認せずに、Flagger TesterのロールバックGateをOpen状態にするREST APIを呼び出します。
+
+[^1]: ここでは`WaitingPromotion`状態で実施しましたが、ここまで待たずに`Progressing`中にロールバックGateをOpenにするとすぐにロールバックします。
 
 ```shell
 kubectl -n test exec -it ${FLAGGER_TESTER} -- \
@@ -267,7 +275,7 @@ kubectl -n test exec -it ${FLAGGER_TESTER} -- \
 すると、FlaggerはロールバックGateがOpenになったことを検知し、カナリアバージョンのロールバックを実行します。
 具体的にはカナリアバージョンをゼロスケールし、Ingress ControllerのHTTPヘッダやCookieのルーティング条件のアノテーションを削除します。
 
-Canaryリソースは以下のように`Failed`のステータスになりました。
+Canaryリソースを確認すると、以下のように`Failed`のステータスになりました。
 
 ```shell
 NAME         STATUS   WEIGHT   LASTTRANSITIONTIME
@@ -276,14 +284,14 @@ sample-app   Failed   0        2022-05-14T13:40:13Z
 
 ## まとめ
 FlaggerでA/Bテストを利用してアプリのリリースをしてみました。
-また、今回はよくあるパターンとして、自動リリースではなく、手動承認のプロセスも組み合わせました。
+また、今回はよくあるパターンとして、自動リリースではなく、手動承認のプロセスを組み込みました。
 
-商用リリース前に社内ユーザーによる商用動作確認が必須というのはよくあることです。
-今回実施した内容だと、メトリクスベースのチェックに加えて、手動テストも実施可能となり、より確実なリリースプロセスになったと言えます。
-特定のユーザーの場合にHTTPヘッダやCookieに別途専用ヘッダを組み込む工夫は必要になりますが、これの利用価値というか需要は結構あるような気がしています。
+商用リリース前に社内ユーザーによる商用動作確認が必要というのはよくあるケースです。
+今回実施した内容だと、メトリクスベースのチェックに加えて、手動テストも実施できますので、より確実なリリースプロセスになったと言えます。
+特定のユーザーの場合にHTTPヘッダやCookieに別途専用ヘッダを組み込む工夫は必要になりますが、これの利用価値というか需要は結構あるような気がします。
 
-FlaggerのA/Bテストはまるごとルーティング対象を切り替える方式です。
-UI上のコンポーネント切り替えや細かい表示をテストする場合は、やはりGoogle Optimizeのような専用サービスの方が使い勝手がよいかなと思いました。
+FlaggerのA/Bテストはまるごとルーティング対象を切り替える方式で、カナリアリリースの延長線にある機能です。
+UIコンポーネント切り替えや細かい表示をテストする場合は、やはりGoogle Optimizeのような専用サービスの方が使い勝手がよいかなと思いました。
 
 ---
 参照資料

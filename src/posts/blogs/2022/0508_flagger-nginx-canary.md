@@ -410,7 +410,6 @@ kubectl -n test set image deployment/sample-app \
   podinfo=ghcr.io/stefanprodan/podinfo:6.0.1
 ```
 
-
 変更後にカナリアリリース用のIngress(`sample-app-canary`)を見てみると、以下のようにNginx Ingressのカナリアリリース機能を担うアノテーションを調整しています。
 
 ```yaml

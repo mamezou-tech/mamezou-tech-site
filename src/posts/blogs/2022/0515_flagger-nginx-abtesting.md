@@ -10,7 +10,7 @@ tags: ["k8s", "container", "CI/CD"]
 - [Flagger と Ingress Nginx でカナリアリリースをする](/blogs/2022/05/08/flagger-nginx-canary/)
 
 今回はA/Bテストの方を試したいと思います。
-前回のカナリアリリースは徐々にカナリアバージョンのトラフィック量を増やしながら切り替えていく形でした。
+前回のカナリアリリースは、徐々にカナリアバージョンのトラフィック量を増やしながら切り替えていく形でした。
 FlaggerのA/Bテストは、一部のユーザーのみにカナリアバージョンを公開し、その後問題がない場合に全てのリクエストを一気にStableバージョンの方に振り向けます。
 
 
@@ -206,7 +206,9 @@ metadata:
 
 ```shell
 LB_IP=$(kubectl get ing sample-app -n test -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+# Cookie指定
 curl -s -H 'Host: sample.minikube.local' -b 'canary=always' http://${LB_IP}/ | jq .version
+# HTTPヘッダ指定
 curl -s -H 'Host: sample.minikube.local' -H 'X-Canary: insider' http://${LB_IP}/ | jq .version
 ```
 

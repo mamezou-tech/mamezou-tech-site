@@ -21,8 +21,9 @@ docker run -it --rm -v /Volumes/Disk:/mnt ubuntu
 
 [Rancher Desktop の FAQ](https://docs.rancherdesktop.io/faq/) には次のような記述があります。
 
->Q: Does file sharing work similarly to Docker Desktop? Do I have to do any additional configuration to mount volumes to VMs?
->A: Currently, the following directories are shared by default: `/Users/$USER` on macOS, `/home/$USER` on Linux, and `/tmp/rancher-desktop` on both. For Windows, all files are automatically shared via WSL2.
+>Currently, the following directories are shared by default: `/Users/$USER` on macOS, `/home/$USER` on Linux, and `/tmp/rancher-desktop` on both. For Windows, all files are automatically shared via WSL2.
+
+>現在、デフォルトでは次のディレクトリが共有されています。macOS は `/Users/$USER`、Linux は `/home/$USER` と両者で `/tmp/rancher-desktop`。Windows の場合は、WSL2 によりすべてのファイルが自動的に共有されています。
 
 sshfs は ssh プロトコルを使ってリモートのファイルシステムをローカルファイルシステムにマウントします。
 

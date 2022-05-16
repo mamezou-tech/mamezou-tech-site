@@ -73,4 +73,5 @@ sshfs REMOTEUSER@HOST:/PATH MOUNTPOINT
 # 参考
 
 - [Rancher Desktop 紹介](https://developer.mamezou-tech.com/blogs/2022/01/29/rancher-desktop/)
+- [lima 紹介](https://developer.mamezou-tech.com/blogs/2022/01/21/lima/)
 - [Windows への Docker CLI のインストール](https://developer.mamezou-tech.com/blogs/2021/12/27/install-dockercli-for-windows/)

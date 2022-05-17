@@ -4,7 +4,7 @@ author: shigeki-shoji
 date: 2022-05-17
 ---
 
-sshfs について説明する前に、sshfs について調べるきっかけになった背景を説明します。
+この記事では、Windows、macOS で sshfs を使用する手順を説明しますが、この説明の前に、sshfs について調べるきっかけになった背景を記述させてください。
 
 私は Docker Desktop の代替として [Rancher Desktop](https://rancherdesktop.io/) を使っています。macOS 上では Rancher Desktop の仮想 Linux 環境に [lima](https://github.com/lima-vm/lima) が利用されています。
 
@@ -26,6 +26,8 @@ docker run -it --rm -v /Volumes/Disk:/mnt ubuntu
 >現在、デフォルトでは次のディレクトリが共有されています。macOS は `/Users/$USER`、Linux は `/home/$USER` と両者で `/tmp/rancher-desktop`。Windows の場合は、WSL2 によりすべてのファイルが自動的に共有されています。
 
 sshfs は ssh プロトコルを使ってリモートのファイルシステムをローカルファイルシステムにマウントします。
+
+macOS の Rancher Desktop では、上記の FAQ にあるディレクトリを sshfs を使って仮想 Linux 環境 (lima) にマウントすることで、macOS ホストとコンテナでファイルシステムを透過的に利用できるようになっています。 
 
 クラウドコンピューティングでは、ssh でサーバーのインスタンス (EC2 等) にアクセスすることがほとんどでしょう。サーバーのインスタンスとの間でファイルをアップロードやダウンロードする場合に、sshfs を使ってローカルのファイルシステムと同じ感覚で操作できると非常に便利です。
 

@@ -2,6 +2,7 @@
 title: 統計解析ツールjamoviの紹介 
 author: shuichi-takatsu
 date: 2022-05-16
+tags: [Analytics]
 ---
 
 皆様、どんなツールを使ってデータ分析されていますか？   

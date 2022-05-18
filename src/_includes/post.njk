@@ -94,8 +94,11 @@ layout: base.njk
         el.setAttribute("data-pswp-height", img.naturalHeight);
         new PhotoSwipeLightbox({
           gallery: `#${el.id}`,
+          bgOpacity: 0.2,
+          mainClass: 'pswp--custom-bg',
           pswpModule: () => import('/photoswipe/photoswipe.esm.js')
         }).init();
       })
     }
+  </script>
 </main>

@@ -66,6 +66,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("./src/fonts");
   eleventyConfig.addPassthroughCopy("./src/img");
   eleventyConfig.addPassthroughCopy("./src/previews");
+  eleventyConfig.addPassthroughCopy({ "./node_modules/photoswipe/dist": "photoswipe" });
 
   eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`);
   eleventyConfig.addShortcode("packageVersion", () => `v${packageVersion}`);
@@ -125,12 +126,7 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter('excerpt', (post) => {
     const content = post.replace(/(<([^>]+)>)/gi, '');
-    const firstDotPos = content.lastIndexOf('。', 200);
-    if (firstDotPos !== -1) {
-      return content.substring(0, firstDotPos) + '...';
-    } else {
-      return content.substring(0, content.lastIndexOf('、', 200)) + '...';
-    }
+    return chop(content);
   });
 
   eleventyConfig.addFilter('pageTags', (tags) => {
@@ -164,7 +160,7 @@ module.exports = function (eleventyConfig) {
     const content = post.templateContent.toString()
       .replace(/(<([^>]+)>)/gi, "")
       .replace(/[\r\n]/gi, "");
-    return content.substr(0, content.lastIndexOf("。", 200)) + "...";
+    return chop(content);
   });
 
   eleventyConfig.addFilter('inputPath', (pages, path) => {
@@ -231,7 +227,19 @@ module.exports = function (eleventyConfig) {
     .use(codeClipboard.markdownItCopyButton, {
       buttonClass: "tdbc-copy-button"
     })
-    .use(markdownItContainer, "flash", containerOptions);
+    .use(markdownItContainer, "flash", containerOptions)
+    .use((md) => {
+      md.renderer.rules.image = function (tokens, idx, options, env, self) {
+        const imageTag = self.renderToken(tokens, idx, options);
+        const token = tokens[idx];
+        return `
+<a class="image-swipe" id="image-swipe-${idx}" target="_blank" rel="noopener noreferrer" 
+   href="${token.attrs[token.attrIndex("src")][1]}" 
+   data-pswp-width="800" data-pswp-height="600">
+  ${imageTag}
+</a>`;
+      }
+    });
 
   eleventyConfig.setLibrary("md", markdownLibrary);
 
@@ -243,3 +251,12 @@ module.exports = function (eleventyConfig) {
     },
   };
 };
+
+function chop(content) {
+  const firstDotPos = content.lastIndexOf('。', 200);
+  if (firstDotPos !== -1) {
+    return content.substring(0, firstDotPos) + '...';
+  } else {
+    return content.substring(0, content.lastIndexOf('、', 200)) + '...';
+  }
+}

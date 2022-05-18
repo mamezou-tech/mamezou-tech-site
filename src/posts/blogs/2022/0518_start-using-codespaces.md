@@ -86,13 +86,13 @@ VS Code で利用するには GitHub Codespaces 拡張が必要です。
 
 ![](https://i.gyazo.com/0413ff3ce3413fe08f78999bf7ad345b.png)
 
-以上、Go などで CLI アプリを書くのは簡単にできることがわかりました。では、Web アプリのデバッグはどうでしょう。これも Codespaces の自動ポートフォワードによりゼロ設定でできます。
+以上、Go などで CLI アプリを書くのは簡単にできることがわかりました。では、Web アプリのデバッグはどうでしょう。これもポートフォワードにより簡単にできます。
 
-Vue のプロジェクトを Codespaces で開き vue-cli-service でローカルサーバーを実行してみました。Codespace 内でサーバーが8080ポートで起動してきます。
+Vue のプロジェクトを Codespaces で開き vue-cli-service で開発用サーバーを実行してみました。Codespace 内でサーバーが8080ポートで起動してきます。
 
 ![](https://i.gyazo.com/37b22440ac573430aba70ecd2734973a.png)
 
-PORTの一覧に Codespaces で起動している Vue のサーバーの PORT がフォワードされ、Local Address が利用可能になっています。
+PORTの一覧を開くと Codespaces で起動している Vue のサーバーの PORT がフォワードされ、Local Address(Codespaces で発行されたURL) が利用可能になっています。
 
 ![](https://i.gyazo.com/d2fdf2972373efd07a9bf195969d51b4.png)
 
@@ -104,7 +104,7 @@ VS Code で接続している場合は、`Foward Port` でポート番号を指�
 
 ![](https://i.gyazo.com/e39749660db86e338fe77fa024a31811.png)
 
-VS Code の場合のフォワード先アドレスは、127.0.0.1 になります。
+VS Code の場合、フォワード先アドレスは、127.0.0.1 になります。
 
 ![](https://i.gyazo.com/d612fc0d2d376259b0315a0fd65bed97.png)
 

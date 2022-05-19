@@ -86,7 +86,7 @@ layout: base.njk
   </article>
   <script type="module">
     import PhotoSwipeLightbox from '/photoswipe/photoswipe-lightbox.esm.js';
-    window.onload = function() {
+    window.addEventListener('load', function() {
       const anchors = document.querySelectorAll('a.image-swipe');
       anchors.forEach((el) => {
         const img = el.querySelector('img');
@@ -97,6 +97,8 @@ layout: base.njk
           pswpModule: () => import('/photoswipe/photoswipe.esm.js'),
         }).init();
       })
-    }
+    });
   </script>
+  {% initClipboardJS %}
+  {% mermaid_js %}
 </main>

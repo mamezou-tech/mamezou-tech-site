@@ -40,7 +40,7 @@
     "cssnano": "^5.0.16",
     "debug": "^4.3.3",
     "dotenv": "^8.6.0",
-    "eleventy-plugin-code-clipboard": "^0.0.8",
+    "eleventy-plugin-code-clipboard": "^0.0.9",
     "emoji-regex": "^9.2.2",
     "luxon": "^1.28.0",
     "markdown-it": "^12.3.2",

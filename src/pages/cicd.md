@@ -23,34 +23,34 @@ CI/CDパイプラインは、現代のソフトウェア開発に必要不可欠
 各種ユースケースに対応したカスタムActionも幅広く公開されており、ほとんどのプロジェクトはこれ1つでカバーできると言っても過言ではないでしょう。
 今後ますますの拡がりが期待できます。
 
-- [GitHub Actions ワークフローにおけるジョブ制御](https://developer.mamezou-tech.com/blogs/2022/02/20/job-control-in-github-actions/)
-- [GitHub Actions - 再利用可能ワークフローを使う](https://developer.mamezou-tech.com/blogs/2022/03/08/github-actions-reuse-workflows/)
-- [GitHub のリリースノート自動生成機能を使う](https://developer.mamezou-tech.com/blogs/2022/03/11/github-automatically-generated-release-notes/)
-- [GitHub Actions ワークフローで個別ジョブのリランが可能に](https://developer.mamezou-tech.com/blogs/2022/04/14/github-actions-workflow-rerun-individual-jobs/)
-- [GitHub Actions ジョブサマリー機能を使う](https://developer.mamezou-tech.com/blogs/2022/05/14/github-actions-job-summaries/)
+- [GitHub Actions ワークフローにおけるジョブ制御](/blogs/2022/02/20/job-control-in-github-actions/)
+- [GitHub Actions - 再利用可能ワークフローを使う](/blogs/2022/03/08/github-actions-reuse-workflows/)
+- [GitHub のリリースノート自動生成機能を使う](/blogs/2022/03/11/github-automatically-generated-release-notes/)
+- [GitHub Actions ワークフローで個別ジョブのリランが可能に](/blogs/2022/04/14/github-actions-workflow-rerun-individual-jobs/)
+- [GitHub Actions ジョブサマリー機能を使う](/blogs/2022/05/14/github-actions-job-summaries/)
 
 豆蔵有志でも、特定ユースケースに対応したActionをOSSとして公開しています。
 
-- [buildpacks-action](https://developer.mamezou-tech.com/oss-intro/buildpacks-action/)
-- [monorepo-update-checker](https://developer.mamezou-tech.com/oss-intro/monorepo-update-checker/)
-- [setup-helmfile](https://developer.mamezou-tech.com/oss-intro/setup-helmfile/)
+- [buildpacks-action](/oss-intro/buildpacks-action/)
+- [monorepo-update-checker](/oss-intro/monorepo-update-checker/)
+- [setup-helmfile](/oss-intro/setup-helmfile/)
 
 ## Flux
 [Flux](https://fluxcd.io/)は、今では様々な領域で普及しているGitOpsのプラクティスを提唱した[Weaveworks](https://www.weave.works/)社が開発した継続的デリバリツールです。
 CIとしての機能はありませんが、KubernetesでGitOpsを実践するなら是非抑えておきたいツールです。
 
-- [Kubernetesチュートリアル - 継続的デリバリ - Flux](https://developer.mamezou-tech.com/containers/k8s/tutorial/delivery/flux/)
+- [Kubernetesチュートリアル - 継続的デリバリ - Flux](/containers/k8s/tutorial/delivery/flux/)
 
 ## ArgoCD
 [ArgoCD](https://argoproj.github.io/cd/)はFluxと並んでGitOpsを体現する継続的デリバリツールです。
 直感的なUIが魅力で、GitOpsツールとしてかなり有力な選択肢になっているものです。
 弊社の社内システムでも、ArgoCDを使ったGitOpsを採用しています。
 
-- [Kubernetesチュートリアル - 継続的デリバリ - ArgoCD](https://developer.mamezou-tech.com/containers/k8s/tutorial/delivery/argocd/)
+- [Kubernetesチュートリアル - 継続的デリバリ - ArgoCD](/containers/k8s/tutorial/delivery/argocd/)
 
 ## Dagger
 Docker開発者によって作成されたツールの[Dagger](https://dagger.io/)。
 他のCIツールとは違い、コンテナが動く環境であればどんなツールにも組み込むことが可能です。 例えば、GitHub Actions上でDaggerのパイプラインを動かすなんてこともでき、他のCI/CD製品とは一線を画すツールと言えます。
 かなり新しいツールですが、パイプラインの新時代を先取りしてみてはいかがでしょうか？
 
-- [話題の CI/CD ツール Dagger を体験してみる](https://developer.mamezou-tech.com/blogs/2022/04/21/try-running-dagger/)
+- [話題の CI/CD ツール Dagger を体験してみる](/blogs/2022/04/21/try-running-dagger/)

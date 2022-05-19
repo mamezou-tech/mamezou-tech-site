@@ -72,7 +72,8 @@
       title="RSS Feed for {{ meta.siteName }}"
       href="/feed/"
     />
-    <link rel="stylesheet" href="/photoswipe/photoswipe.css">
+    <link rel="preload" href="/photoswipe/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/photoswipe/photoswipe.css"></noscript>
   <body>
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v12.0" nonce="8Wa5XpDX"></script>
@@ -84,7 +85,5 @@
         </div>
       </div>
     </footer>
-    {% initClipboardJS %}
-    {% mermaid_js %}
   </body>
 </html>

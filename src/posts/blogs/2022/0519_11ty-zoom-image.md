@@ -84,7 +84,7 @@ markdown-itのカスタムルールの書き方は、以下のドキュメント
 ```html
   <script type="module">
     import PhotoSwipeLightbox from '/photoswipe/photoswipe-lightbox.esm.js';
-    window.onload = function() {
+    window.addEventListener('load', function() {
       const anchors = document.querySelectorAll('a.image-swipe');
       anchors.forEach((el) => {
         const img = el.querySelector('img');
@@ -95,7 +95,7 @@ markdown-itのカスタムルールの書き方は、以下のドキュメント
           pswpModule: () => import('/photoswipe/photoswipe.esm.js'),
         }).init();
       })
-    }
+    });
   </script>
 ```
 

@@ -229,15 +229,11 @@ module.exports = function (eleventyConfig) {
     })
     .use(markdownItContainer, "flash", containerOptions)
     .use((md) => {
+      const originalRule = md.renderer.rules.image;
       md.renderer.rules.image = function (tokens, idx, options, env, self) {
-        const imageTag = self.renderToken(tokens, idx, options);
+        const imageTag = originalRule(tokens, idx, options, env, self);
         const token = tokens[idx];
-        return `
-<a class="image-swipe" id="image-swipe-${idx}" target="_blank" rel="noopener noreferrer" 
-   href="${token.attrs[token.attrIndex("src")][1]}" 
-   data-pswp-width="800" data-pswp-height="600">
-  ${imageTag}
-</a>`;
+        return `<a id="image-swipe-${idx}" class="image-swipe" href="${token.attrs[token.attrIndex("src")][1]}" target="_blank" rel="noopener noreferrer">${imageTag}</a>`;
       }
     });
 

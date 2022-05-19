@@ -3,6 +3,9 @@ name: build-social-images
 on:
   pull_request:
     branches: [ main ]
+    paths:
+      - 'src/**.md'
+      - 'src/**.njk'
   workflow_dispatch:
 
 jobs:
@@ -52,7 +55,7 @@ jobs:
           git config --local user.name "github-actions"
           git commit -m "Add OGP images for social media"
           
-      - name: Push image tag to source branch
+      - name: Push OGP image to source branch
         if: steps.build-static-resources.outputs.changed == 'true'
         uses: ad-m/github-push-action@v0.6.0
         with:

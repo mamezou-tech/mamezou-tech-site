@@ -2,7 +2,7 @@
 title: "eleventy-plugin-code-clipboard"
 author: noboru-kudo
 date: 2022-01-06
-tags: [SSG]
+tags: [SSG, 11ty]
 ---
 
 [eleventy-plugin-code-clipboard](https://github.com/mamezou-tech/eleventy-plugin-code-clipboard)は、静的サイトジェネレータツールの1つである[eleventy](https://www.11ty.dev/)(以下11ty)のカスタムプラグインです。

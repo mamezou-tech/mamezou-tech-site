@@ -34,6 +34,3 @@
   # optional, deploy the lighthouse report to a path under your site
   [plugins.inputs]
     output_path = "reports/lighthouse.html"
-
-  [[plugins.inputs.audits]]
-    path = "public"

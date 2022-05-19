@@ -84,4 +84,19 @@ layout: base.njk
     </aside>
   {%- include "links.njk" %}
   </article>
+  <script type="module">
+    import PhotoSwipeLightbox from '/photoswipe/photoswipe-lightbox.esm.js';
+    window.onload = function() {
+      const anchors = document.querySelectorAll('a.image-swipe');
+      anchors.forEach((el) => {
+        const img = el.querySelector('img');
+        el.setAttribute('data-pswp-width', img.naturalWidth);
+        el.setAttribute('data-pswp-height', img.naturalHeight);
+        new PhotoSwipeLightbox({
+          gallery: `#${el.id}`,
+          pswpModule: () => import('/photoswipe/photoswipe.esm.js'),
+        }).init();
+      })
+    }
+  </script>
 </main>

@@ -22,8 +22,6 @@
 
 [[plugins]]
   package = "@netlify/plugin-lighthouse"
-  [plugins.inputs]
-    audit = "public"
 
   # optional, fails build when a category is below a threshold
   [plugins.inputs.thresholds]
@@ -36,3 +34,6 @@
   # optional, deploy the lighthouse report to a path under your site
   [plugins.inputs]
     output_path = "reports/lighthouse.html"
+
+  [[plugins.inputs.audits]]
+    path = "public"

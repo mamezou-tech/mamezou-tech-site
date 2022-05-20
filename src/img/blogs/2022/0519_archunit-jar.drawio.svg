@@ -1,0 +1,64 @@
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="610px" height="277px" viewBox="-0.5 -0.5 610 277" content="&lt;mxfile&gt;&lt;diagram id=&quot;gbddh6OPfSD7sD7cjL9f&quot; name=&quot;ページ1&quot;&gt;7VnJcqMwEP0aH8cFkgHnGNtZDjNVqcphkqMCMlYiECXkbb5+JNOY1UtcOMlkbB+gWy0E/V73E3YPj6PVnSTJ7JcIKO8hK1j18KSHkI0tTx+MZ515XA8coWQBBBWOR/aHgtMC75wFNK0EKiG4YknV6Ys4pr6q+IiUYglhcLmp4NVVExLShuPRJ7zp/c0CNcu8Q+QV/nvKwlm+su1eZSMRyYNh6XRGArEsufBND4+lECo7i1Zjyk3y8rxk8253jG5vTNJYHTMBDeE+1Dp/OBroZwUzFrE+jGYq4tqy9SldMfVUOn/W51bfAWtiILZyY50bsZLrp7JRmmXMYtrGqsx7oJJFVFG5dQbXBkJtioTGmeeWcQ7jAUlnNIA7nGr/WHAhN4+Gp475an+qpHijpRF389mO5KhqPEbNlEKWUzGXPiQNYaAhkSGFMDTIfCahpYkAxB0V+rHkWgdIyoliiyq5CHA03MYVMOoTQLIdVYyOQVVzLzEmVIlJxUiKeRxs09eCe4H1c2mkHfcKFJy8UD4i/lu4WSPPfUCnZM6VwUrE6pZEjJvp95QvqGI+gQHoAbYNdnP6IV7shnw/SU6mQneww9QHwfSyyFrl60C7gSaKHad6iYyLMKsgj84SWZfCEhOQ7l7Hs1qXKaiYXbAg5vYRj+Jqnq4F4XNIxZK+kIT1X4ls0DjnbCSCufGNCGehBnvC6dSwIE2Iz+Lw58aaIKsU4WvQTBcZLag0zOLXMBCxINhcq4tuUSanjsw++6hj7oau9hIlB7wKBLKhvywLCbItiJmV5MexOugo+Et0lEJJCvF4rmhHu5L8p51o0BQlbH+WKOV3Uyr0lMoF8+ml0uuVjoefV+ro6nylXt407ix0nPeD5tYPqt+u7iMx+h7l37rf7bonOF9qo+qdjWsnvaDUiOUdekP5R4jV0rx2sOpkDnWvKydtVt3aJsm+QmU+HozH3rDb3a3TEL2EypSlisY+/aFhuKhfXf0GDqpi6HpN9cNu3znTVtdqoPGx+me/V/++S5vqWurcryR1A/t8tPp+v8kcr1i7igIdKop3cajGlzbt6/wHHjyw+lbpY1eValDrdR393OPUFdHB3Sqiu1cRXxNyEcQDgojcltfBMwqi3UBMPwtT6wtQB97btzX6Ee/tA9SAqYfcTR/OjyEXL0TPcUPw5kedB9sg4Qt52Y/WUXXsavlheKc4B6raLP78y7pr8RcqvvkL&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs/>
+    <g>
+        <path d="M 101 73 L 214.53 73" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="6 6" pointer-events="stroke"/>
+        <path d="M 208.76 77 L 216.76 73 L 208.76 69" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 51 98 L 51 179 Q 51 189 61 189 L 213.53 189" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="6 6" pointer-events="stroke"/>
+        <path d="M 207.76 193 L 215.76 189 L 207.76 185" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 11 48 L 101 48 L 101 98 L 11 98 L 11 88 L 1 88 L 1 78 L 11 78 L 11 68 L 1 68 L 1 58 L 11 58 Z" fill="#f5f5f5" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 11 58 L 21 58 L 21 68 L 11 68 M 11 78 L 21 78 L 21 88 L 11 88" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#333333" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="60.5" y="77.5">
+                webapi.jar
+            </text>
+        </g>
+        <path d="M 269 98 L 269 169.53" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="6 6" pointer-events="stroke"/>
+        <path d="M 265 163.76 L 269 171.76 L 273 163.76" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 229 48 L 319 48 L 319 98 L 229 98 L 229 88 L 219 88 L 219 78 L 229 78 L 229 68 L 219 68 L 219 58 L 229 58 Z" fill="#f5f5f5" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 229 58 L 239 58 L 239 68 L 229 68 M 229 78 L 239 78 L 239 88 L 229 88" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#333333" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="278.5" y="77.5">
+                service.jar
+            </text>
+        </g>
+        <path d="M 433 36 L 323.34 62.93" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="6 6" pointer-events="stroke"/>
+        <path d="M 327.99 57.67 L 321.17 63.47 L 329.89 65.44" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 569.5 26 L 591 26 Q 601 26 601 36 L 601 202 Q 601 212 591 211.98 L 323.47 211.51" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="6 6" pointer-events="stroke"/>
+        <path d="M 329.24 207.52 L 321.24 211.5 L 329.23 215.52" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 443 1 L 569.5 1 L 569.5 51 L 443 51 L 443 41 L 433 41 L 433 31 L 443 31 L 443 21 L 433 21 L 433 11 L 443 11 Z" fill="#f5f5f5" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 443 11 L 453 11 L 453 21 L 443 21 M 443 31 L 453 31 L 453 41 L 443 41" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#333333" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="510.75" y="30.5">
+                persistence-file.jar
+            </text>
+        </g>
+        <path d="M 433 113 L 323.35 86.55" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="6 6" pointer-events="stroke"/>
+        <path d="M 329.89 84.01 L 321.17 86.02 L 328.01 91.79" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 501.25 148 L 501.06 177 Q 501 187 491 186.97 L 323.47 186.51" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="6 6" pointer-events="stroke"/>
+        <path d="M 329.25 182.53 L 321.24 186.51 L 329.22 190.53" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 443 98 L 569.5 98 L 569.5 148 L 443 148 L 443 138 L 433 138 L 433 128 L 443 128 L 443 118 L 433 118 L 433 108 L 443 108 Z" fill="#f5f5f5" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 443 108 L 453 108 L 453 118 L 443 118 M 443 128 L 453 128 L 453 138 L 443 138" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#333333" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="510.75" y="127.5">
+                persistence-jpa.jar
+            </text>
+        </g>
+        <path d="M 229 174 L 319 174 L 319 224 L 229 224 L 229 214 L 219 214 L 219 204 L 229 204 L 229 194 L 219 194 L 219 184 L 229 184 Z" fill="#f5f5f5" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 229 184 L 239 184 L 239 194 L 229 194 M 229 204 L 239 204 L 239 214 L 229 214" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#333333" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="278.5" y="203.5">
+                entity.jar
+            </text>
+        </g>
+        <path d="M 503 226 L 593 226 L 593 276 L 503 276 L 503 266 L 493 266 L 493 256 L 503 256 L 503 246 L 493 246 L 493 236 L 503 236 Z" fill="#f5f5f5" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 503 236 L 513 236 L 513 246 L 503 246 M 503 256 L 513 256 L 513 266 L 503 266" fill="none" stroke="#666666" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#333333" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="552.5" y="248.5">
+                &lt;&lt;global&gt;&gt;
+            </text>
+            <text x="552.5" y="262.5">
+                core.jar
+            </text>
+        </g>
+    </g>
+</svg>

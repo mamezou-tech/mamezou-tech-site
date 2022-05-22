@@ -12,6 +12,7 @@ const markdownItContainer = require("markdown-it-container");
 const packageVersion = require("./package.json").version;
 const codeClipboard = require("eleventy-plugin-code-clipboard");
 const pluginMermaid = require("@kevingimbel/eleventy-plugin-mermaid");
+const contributors = require("./src/_data/contributors");
 
 // for Node.js 14
 String.prototype.replaceAll = function (from, to) {
@@ -49,7 +50,6 @@ const containerOptions = {
     }
   }
 };
-
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(socialImages);
@@ -125,6 +125,10 @@ module.exports = function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter('excerpt', (post) => {
+    if (!post) {
+      console.log("Page contents not found!! something wrong...")
+      return "";
+    }
     const content = post.replace(/(<([^>]+)>)/gi, '');
     return chop(content);
   });
@@ -167,13 +171,15 @@ module.exports = function (eleventyConfig) {
     return pages.find((page) => page.inputPath === path);
   });
 
+  eleventyConfig.addFilter('byAuthor', (contributorArticles, author) => {
+    return contributorArticles.filter(contributor => contributor.name === author);
+  });
+  eleventyConfig.addFilter('selectAuthor', (hrefs, author) => {
+    return hrefs.filter(href => href.includes(author));
+  });
+
   eleventyConfig.addCollection('articles', (collection) => {
-    return collection.getAll().filter(item => {
-      if ('layout' in item.data) {
-        return item.data.layout === 'post';
-      }
-      return false;
-    }).sort((a, b) => a.date - b.date);
+    return getPosts(collection);
   });
 
   eleventyConfig.addCollection('tagList', (collection) => {
@@ -199,9 +205,40 @@ module.exports = function (eleventyConfig) {
         }
       }
     });
-
     return [...tagSet];
   });
+
+  eleventyConfig.addCollection('contributorArticles', (collection) => {
+    const authorArticles = {};
+    Object.keys(contributors).forEach(name => {
+      authorArticles[name] = {
+        github: contributors[name],
+        name,
+        articles: [],
+      }
+    })
+    // assign
+    getPosts(collection).forEach((article) => {
+      const author = contributors[article.data.author];
+      if (author) {
+        authorArticles[article.data.author].articles.push(article);
+      }
+    });
+    // pagination
+    const chunkSize = 10;
+    return Object.keys(authorArticles).reduce((state, name) => {
+      const articles = authorArticles[name].articles.sort((a, b) => b.date - a.date);
+      for (let i = 0; i < articles.length; i += chunkSize) {
+        const chunk = articles.slice(i, i + chunkSize);
+        state.push({
+          ...authorArticles[name],
+          pageIndex: i / chunkSize,
+          articles: chunk,
+        });
+      }
+      return state;
+    }, []);
+  })
 
   /* Markdown Overrides */
   const markdownLibrary = markdownIt({
@@ -255,4 +292,13 @@ function chop(content) {
   } else {
     return content.substring(0, content.lastIndexOf('、', 200)) + '...';
   }
+}
+
+function getPosts(collection) {
+  return collection.getAll().filter(item => {
+    if ('layout' in item.data) {
+      return item.data.layout === 'post';
+    }
+    return false;
+  }).sort((a, b) => a.date - b.date);
 }

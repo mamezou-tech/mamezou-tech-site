@@ -17,7 +17,11 @@ layout: base.njk
       </div>
       {%- if author %}
         <span> Author: </span>
+        {%- if contributors[author] %}
+        <a href="/authors/{{ author }}" title="{{ author }} の記事一覧">{{ author | safe }}</a>
+        {% else %}
         <span>{{ author | safe }}</span>
+        {% endif %}
       {% endif %}
 
       <div style="float: right">

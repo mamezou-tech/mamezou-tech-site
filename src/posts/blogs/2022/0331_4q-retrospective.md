@@ -35,7 +35,7 @@ Kubernetes チュートリアルが、環境構築編、開発編を経て運用
 
 - [“CI/CD”タグの記事 | 豆蔵デベロッパーサイト](https://developer.mamezou-tech.com/tags/ci/cd/)
 - [“scrapbox”タグの記事 | 豆蔵デベロッパーサイト](https://developer.mamezou-tech.com/tags/scrapbox/)
-- [“aws”タグの記事 | 豆蔵デベロッパーサイト](https://developer.mamezou-tech.com/tags/aws/)
+- [“AWS”タグの記事 | 豆蔵デベロッパーサイト](https://developer.mamezou-tech.com/tags/aws/)
 
 Google の検索ランキングもかなり上がって、クリック数も上昇してきました。
 

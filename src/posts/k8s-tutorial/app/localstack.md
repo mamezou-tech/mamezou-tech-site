@@ -2,7 +2,7 @@
 title: ローカル開発環境準備 - ローカルAWS(LocalStack)
 author: noboru-kudo
 date: 2021-12-19
-tags: [aws]
+tags: [AWS]
 prevPage: ./src/posts/k8s-tutorial/app/skaffold.md
 nextPage: ./src/posts/k8s-tutorial/app/web-app.md
 ---

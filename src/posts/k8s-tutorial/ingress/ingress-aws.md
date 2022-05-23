@@ -2,7 +2,7 @@
 title: Ingress - AWS Load Balancer Controller
 author: noboru-kudo
 date: 2021-10-17
-tags: [aws]
+tags: [AWS]
 prevPage: ./src/posts/k8s-tutorial/ingress/ingress-nginx.md
 nextPage: ./src/posts/k8s-tutorial/ingress/external-dns.md
 ---

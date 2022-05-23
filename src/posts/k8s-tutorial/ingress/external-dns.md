@@ -2,6 +2,7 @@
 title: Ingress - カスタムドメイン管理(external-dns)
 author: noboru-kudo
 date: 2021-10-17
+tags: [AWS]
 prevPage: ./src/posts/k8s-tutorial/ingress/ingress-aws.md
 nextPage: ./src/posts/k8s-tutorial/ingress/https.md
 ---

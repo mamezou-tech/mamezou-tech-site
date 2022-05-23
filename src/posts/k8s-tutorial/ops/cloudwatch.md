@@ -1,7 +1,7 @@
 ---
 title: ログ収集・分析(Fluent Bit / Amazon CloudWatch)
 author: noboru-kudo
-tags: [aws]
+tags: [AWS]
 prevPage: ./src/posts/k8s-tutorial/ops/opensearch.md
 nextPage: ./src/posts/k8s-tutorial/ops/jaeger.md
 date: 2022-04-10

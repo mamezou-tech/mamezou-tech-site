@@ -2,7 +2,7 @@
 title: EC2にS3をマウントする方法
 author: nozomu-tanaka
 date: 2022-01-23
-tags: [aws]
+tags: [AWS]
 ---
 
 FTPサーバーとして使用しているEC2がファイルを受け取った際に、S3トリガーでLambdaを動かすようにしたときのメモです。

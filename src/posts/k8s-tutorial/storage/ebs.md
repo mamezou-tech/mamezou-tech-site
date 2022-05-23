@@ -2,7 +2,7 @@
 title: ストレージ - AWS EBS
 author: noboru-kudo
 date: 2021-11-07
-tags: [aws]
+tags: [AWS]
 prevPage: ./src/posts/k8s-tutorial/ingress/https.md
 nextPage: ./src/posts/k8s-tutorial/storage/efs.md
 ---

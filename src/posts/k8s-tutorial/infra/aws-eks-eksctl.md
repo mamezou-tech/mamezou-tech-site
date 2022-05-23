@@ -2,7 +2,7 @@
 title: クラスタ環境構築 - AWS EKS (eksctl)
 author: noboru-kudo
 date: 2021-10-07
-tags: [aws]
+tags: [AWS]
 nextPage: ./src/posts/k8s-tutorial/infra/aws-eks-terraform.md
 ---
 

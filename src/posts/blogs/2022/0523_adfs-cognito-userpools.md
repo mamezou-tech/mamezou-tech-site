@@ -5,7 +5,7 @@ date: 2022-05-23
 tags: [aws, "認証/認可"]
 ---
 
-ブラウザなどの UI からアクセスするマイクロサービスでは JWT 認証 ([OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) 等) を利用することが一般的です。AWS を利用している場合には、[Amazon Cognito user pools](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/cognito-user-identity-pools.html) で JWT の発行が可能です。
+ブラウザなどの UI からアクセスするマイクロサービスでは JWT 認証 ([OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) 等) を利用することが一般的です。AWS を利用している場合には、[Amazon Cognito user pools](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/cognito-user-identity-pools.html) (Cognito Userpools) で JWT の発行が可能です。
 
 Cognito Userpools を利用する場合には、システムにアクセスするユーザーをこのサービスに登録する必要があります。しかし、組織内の Active Directory を ADFS ([Active Directory フェデレーションサービス](https://docs.microsoft.com/ja-jp/windows-server/identity/active-directory-federation-services)) を使用して SAML2 の IdP (identity provider) として実行し、Cognito Userpools に ADFS を [ID プロバイダーに追加](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/cognito-user-pools-saml-idp.html)することで、ユーザー情報の移行が不要になります。
 
@@ -71,7 +71,7 @@ AWS の特徴として Lambda を使ってさまざまなイベントに対処�
 
 ## まとめ
 
-この記事では、ADFS と Cognito Userpools で属性の連携について説明しました。[Okta](https://www.okta.com/)、[Auth0](https://auth0.com/)などの IDaaS や [Keycloak](https://www.keycloak.org/) などでも Cognito と同様に属性のマッピング機能を使用可能です。
+この記事では、ADFS と Cognito Userpools で属性の連携について説明しました。[Okta](https://www.okta.com/)、[Auth0](https://auth0.com/) などの IDaaS や [Keycloak](https://www.keycloak.org/) などでも Cognito と同様に属性のマッピング機能を使用可能です。
 
 ## Cognito Userpools の ID プロバイダーに ADFS を設定する方法
 

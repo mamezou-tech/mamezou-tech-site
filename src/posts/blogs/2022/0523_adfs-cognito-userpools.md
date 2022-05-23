@@ -7,7 +7,7 @@ tags: [aws, "認証/認可"]
 
 ブラウザなどの UI からアクセスするマイクロサービスでは JWT 認証 ([OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) 等) を利用することが一般的です。AWS を利用している場合には、[Amazon Cognito user pools](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/cognito-user-identity-pools.html) で JWT の発行が可能です。
 
-Cognito Userpools を利用する場合には、システムにアクセスするユーザーをこのサービスに登録する必要があります。しかし、組織内の Active Directory を ADFS を使用して SAML2 の IdP (identity provider) として実行し、Cognito Userpools に ADFS を [ID プロバイダーに追加](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/cognito-user-pools-saml-idp.html)することで、ユーザー情報の移行が不要になります。
+Cognito Userpools を利用する場合には、システムにアクセスするユーザーをこのサービスに登録する必要があります。しかし、組織内の Active Directory を ADFS ([Active Directory フェデレーションサービス](https://docs.microsoft.com/ja-jp/windows-server/identity/active-directory-federation-services)) を使用して SAML2 の IdP (identity provider) として実行し、Cognito Userpools に ADFS を [ID プロバイダーに追加](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/cognito-user-pools-saml-idp.html)することで、ユーザー情報の移行が不要になります。
 
 この記事では、ADFS と Cognito Userpools の属性の連携について説明します。
 
@@ -44,9 +44,9 @@ ADFS で設定した属性を Cognito Userpools にマッピングする時に�
 
 出力方向の要求の種類に「urn:custom:jobTitle」を使用し、Cognito Userpools にカスタム属性として `custom:jobTitle` を設定している場合は、SAML 属性に `urn:custom:jobTitle`、ユーザープール属性に「custom:jobTitle」を選択します。
 
-## Cognito Userpools のトークン生成前の Lambda トリガーの活用
+:::column:Cognito Userpools のトークン生成前の Lambda トリガーの活用
 
-AWS の特徴は、Lambda を使ってさまざまなイベントに対処できます。Cognito Userpools も例外ではなく、いくつかのイベントに対応する Lambda を定義できます。
+AWS の特徴として Lambda を使ってさまざまなイベントに対処できる点があります。Cognito Userpools も例外ではなく、いくつかのイベントに対応する Lambda を定義できます。
 
 ここでは、その中から「[トークン生成前の Lambda トリガー](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/user-pool-lambda-pre-token-generation.html)」のユースケースを例示します。
 
@@ -67,10 +67,11 @@ AWS の特徴は、Lambda を使ってさまざまなイベントに対処でき
     }
 }
 ```
+:::
 
 ## まとめ
 
-この記事では、ADFS と Cognito Userpools で属性の連携について説明しました。SAML IdP としての動作や連携可能なサービス、プロダクトは IDaaS と分類されている [Okta](https://www.okta.com/) や [Auth0](https://auth0.com/)、OSS では [Keycloak](https://www.keycloak.org/) などさらに他にも多くあります。これらのプロダクトを使用する場合でも、属性のマッピング機能が提供されているためここに書いたアイデアを適用できます。
+この記事では、ADFS と Cognito Userpools で属性の連携について説明しました。[Okta](https://www.okta.com/)、[Auth0](https://auth0.com/)などの IDaaS や [Keycloak](https://www.keycloak.org/) などでも Cognito と同様に属性のマッピング機能を使用可能です。
 
 ## Cognito Userpools の ID プロバイダーに ADFS を設定する方法
 

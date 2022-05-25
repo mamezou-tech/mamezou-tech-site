@@ -20,7 +20,7 @@ Kafka のスケーラビリティはその構成により実現されていま�
 
 Broker クラスターを管理する ZooKeeper というサーバー(これもクラスター構成)があり、Broker の状態を監視し、1つの Broker が使えなくなった時に、他の Broker を割り当てるなどの制御を行っています。
 
-Kafka は、このようなかなり複雑な分散システムです。Kubernetes は Web アプリケーションなどのステートレスなワークロードの運用は得意ですが、このような状態を持つ分散システムの運用は難易度が上がります。
+Kafka はこのように、かなり複雑な分散システムです。Kubernetes は Web アプリケーションなどのステートレスなワークロードの運用は得意ですが、このような状態を持つ分散システムの運用は難易度が上がります。
 
 ## bitnami の Helm Chart によるデプロイ構成
 bitnami から提供されている Helm Chart で Kubernetes 上の Kafka 構成を見てみましょう。
@@ -69,7 +69,7 @@ Broker クラスター、ZooKeeper クラスターは、Kubernetes の StatefulS
 ![](https://i.gyazo.com/9a498097658d54bc327b3e784aa8a44d.png)
 
 ## Topic を作成する(ややメンドウ)
-Helm Chart でデプロイされた Kubernetes 上の Kafka クラスターの操作について考えると、Kafka クラスターを構成する Broke などのオブジェクトは StatefulSet、Pod、Service などで表現されますが、Topic や Partition などについては Kafka 世界の登場人物であるため、Kubernetes のオブジェクトとして表現されず、kubectl などで操作することはできません。
+Helm Chart でデプロイされた Kubernetes 上の Kafka クラスターの操作について考えると、Kafka クラスターを構成する Broker などのオブジェクトは StatefulSet、Pod、Service などで表現されますが、Topic や Partition などについては Kafka 世界の登場人物であるため、Kubernetes のオブジェクトとして表現されず、kubectl などで操作することはできません。
 
 Topic を作成するには、作業用の Kafka Pod を Kafka のクライアントとして起動して、提供されているシェルを使用する方法があります。まず、bitnami の Kafka のコンテナイメージを利用して、Pod を起動します。
 
@@ -465,7 +465,7 @@ hello
 
 Kafka Cluster としてちゃんと動作しているようです。
 
-以上のように topic の追加は Manifest を適用するだけでした。topic の修正も manifest を変更して適用するだけです。
+Topic の追加は Manifest を適用するだけでした。Topic の修正も Manifest を変更して適用するだけです。
 
 kubectl edit で my-topic の partition を4に増やして適用します。
 

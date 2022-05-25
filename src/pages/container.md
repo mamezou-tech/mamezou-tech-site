@@ -71,3 +71,4 @@ Kubernetes活用例をサイト内の記事、ブログから抜粋しました�
 5. [Mizu(水)でマイクロサービスのトラフィックを分析する](/blogs/2022/05/04/mizu-intro/)
 6. [Flagger と Ingress Nginx でカナリアリリースをする](/blogs/2022/05/08/flagger-nginx-canary/)
 7. [Flagger と Ingress Nginx でA/Bテストをする](/blogs/2022/05/15/flagger-nginx-abtesting/)
+8. [Strimzi - Kubernetes で Kafka を運用するための Operators](/blogs/2022/05/25/strimzi-kafka-operators/)

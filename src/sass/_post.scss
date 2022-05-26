@@ -7,6 +7,17 @@
   > * + * {
     margin-top: 2rem;
   }
+  table {
+    margin: 0.5rem;
+    border-collapse: collapse;
+    width: 96%;
+    word-break: break-word;
+  }
+
+  table, th, td {
+    border: 1px solid grey;
+    padding: 3px;
+  }
 }
 
 .mermaid {

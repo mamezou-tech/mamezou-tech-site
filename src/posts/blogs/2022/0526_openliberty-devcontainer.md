@@ -215,8 +215,8 @@ public class PersonResourceIT {
 ## Step6: デバッグの実行
 コンテナ内のLibertyはデバッグモードで起動しているため、デバッカを接続すればいつでもデバッグが可能です。ということで、ここでやっとVSCodeの出番となります。それではVSCodeをLibertyに繋いでみましょう！
 
-### lunch.jsonに接続エントリを追加する
-プロジェクト直下の`/.vscode/launch.json`ファイルに以下の`"type": "java"`をブロックごとを追加します。なお、launch.jsonがない場合はファイルを作成して以下の内容を丸々コピーします。
+### launch.jsonに接続エントリを追加する
+プロジェクト直下の`/.vscode/launch.json`ファイルに以下の`"type": "java"`をブロックごと追加します。なお、launch.jsonがない場合はファイルを作成して以下の内容を丸々コピーします。
 
 ```json
 {
@@ -236,11 +236,11 @@ public class PersonResourceIT {
 デフォルトではローカルホストの7777ポートでデバッグポートがListenされるようになっています。ですので、この設定はデバッグポートにVSCodeのデバッカを接続するという内容になります。
 
 ### コンテナに接続する
-launch.jsonの設定を行った後に [実行とデバッグ]ビューを開くとビューの上部に「▷Attach Liberty in Container」が現れるので、コンテナが起動している状態でその部分をクリックします。VSCodeがコンテナ内のLibertyにアタッチ（接続）されデバッグが可能になります。
+launch.jsonの設定を行った後に [実行とデバッグ]ビューを開くとビューの上部に「▷Attach Liberty in Container」が現れるので、コンテナが起動している状態でこの部分をクリックします。VSCodeがコンテナ内のLibertyにアタッチ（接続）されデバッグが可能になります。
 
 ![image1](https://i.gyazo.com/34adda6f650e457daf4e02cb95835948.png)
 
-デバッグしているアプリはコンテナ内のLiberty上で動作していますが、デバッグはローカルでmianメソッドを起動したアプリと同じように行えます。特別な操作はありませんので、好きなところにブレークポイントを置いてデバッグすることができます。
+デバッグしているアプリはコンテナ内のLiberty上で動作していますが、デバッグはローカルでmainメソッドから起動したアプリと同じように行えます。特別な操作はありませんので、好きなところにブレークポイントを置いてデバッグすることができます。
 
 ![image2](https://i.gyazo.com/57bcfbd84c0afb8118b89881d4f4af6e.png)
 
@@ -249,9 +249,9 @@ launch.jsonの設定を行った後に [実行とデバッグ]ビューを開く
 次からはどんな仕組みで開発環境が動いているのか、そのカラクリについて見ていきます。
 
 ## コンテナイメージのビルドから実行までの仕組み
-`mvn liberty:dev`のコマンドを実行したときのコンソールログを見てみると、コンテナイメージのビルド(docker build)と実行(docker run)が行われているのが分かります。
+`mvn liberty:devc`のコマンドを実行したときのコンソールログを見てみると、コンテナイメージのビルド(docker build)と実行(docker run)が行われているのが分かります。
 
-この時の実行されているビルドコマンドを抜きだすと、以下のようになっており、なにやら「[dockerfileの作成](#dockerfileの作成)」で作成したDockerfileとは別のファイルをもとにイメージをビルドしているのが分かります。
+この時に実行されているビルドコマンドを抜きだすと、以下のようになっており、なにやら「[dockerfileの作成](#step3-dockerfileの作成)」で作成したDockerfileとは別のファイルをもとにイメージをビルドしているのが分かります。
 
 ```shell
 docker build --pull 
@@ -270,7 +270,7 @@ ENV OPENJ9_SCC=false
 RUN configure.sh
 ```
 
-「[dockerfileの作成](#dockerfileの作成)」でも少し触れましたが、このファイルはパスが`\target\.libertyDevc`となっていることからも分かる通り、`./Dockerfile`をもとにliberty-maven-pluginが生成したものとなります。
+「[dockerfileの作成](#step3-dockerfileの作成)」でも少し触れましたが、パスが`\target\.libertyDevc`となっていることからも分かる通り、このファイルは`./Dockerfile`をもとにliberty-maven-pluginが生成したものとなります。
 
 この生成されたファイルと`./Dockerfile`を見比べると`target/*.war `をCOPYしている部分がありません。したがって、イメージにはLibertyやJDKを含めた実行環境と自分たちで準備したserver.xmlが含まれるだけでアプリの実体は含まれていません。では実行するアプリはどうようにしてるのでしょうか？ということで、今度はコンソールログの出力からコンテナイメージを実行しているコマンドを見てみましょう。実行しているコマンドを抜き出すと次のとおりになっています（見やすいように整形しコメントを追加しています）。
 
@@ -318,7 +318,7 @@ lrwxrwxrwx 1 default root 37 May 12 18:47 /config -> /opt/ol/wlp/usr/servers/def
 
 ですので、このボリュームマウント指定はローカルの`./target/.libertyDevc/apps`ディレクトリをコンテナ内のLibertyのアプリケーション配置ディレクトリとしてマウントする指定となり、結果`./target/.libertyDevc/apps`に配置したものがコンテナ内のLibertyにアプリケーションとして認識される仕組みとなっています。
 
-では、ローカル側、つまりliberty-maven-pluginはなにをappsに置いているのでしょうか？ということで`./target/.libertyDevc/apps`を見てみると「[serverxmlの配置](#serverxmlの配置)」でserver.xmlの`webApplication`タグで指定した`openliberty-person-sample.war.xml`が置かれています。そして中身は次のようになっています。
+では、ローカル側、つまりliberty-maven-pluginはなにをappsに置いているのでしょうか？ということで`./target/.libertyDevc/apps`を見てみると「[serverxmlの配置](#step2-serverxmlの配置)」でserver.xmlの`webApplication`タグで指定した`openliberty-person-sample.war.xml`が置かれています。そして中身は次のようになっています。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -339,7 +339,7 @@ lrwxrwxrwx 1 default root 37 May 12 18:47 /config -> /opt/ol/wlp/usr/servers/def
 :::column:VSCode以外のIDEの利用について
 今回はコンテナに接続するデバッガにVSCodeを使用しましたが、EclipseなどリモートデバッグがサポートされているIDEであれば代替は可能です（が、VSCodeが一番簡単にできます）。
 
-参考までに筆者はJavaのコードはEclipseを使って書きます。なんだかんだ言ってもEclipseはリファクタリング機能も含めコードエディタがよくできているため、いまだにガッツリ本気でコードを書く際はEclipseを使ってます。が、、残念ながらそれ以外は昨今のIDEの機能としては少し残念な感じは否めません。特にGitやコンテナに対する支援機能(プラグイン)は業務で利用するには厳しいモノがあります。このため、最近はコードがそこそこ動くような状態になった後はVSCodeで作業をするようになってきました。Dockerの支援機能はコマンド要らずでホボぼストレスなくすべてのことできますし、Git GraphをはじめとしたGitの支援機能は最高の一言です。
+参考までに筆者はJavaのコードはEclipseを使って書きます。なんだかんだ言ってもEclipseはリファクタリング機能も含めコードエディタがよくできているため、いまだにガッツリ本気でコードを書く際はEclipseを使ってます。が、、残念ながらそれ以外は昨今のIDEの機能としては少し残念な感じは否めません。特にGitやコンテナに対する支援機能(プラグイン)は業務で利用するには厳しいモノがあります。このため、最近はコードがそこそこ動くような状態になった後はVSCodeで作業をするようになってきました。Dockerの支援機能はコマンド要らずでホボぼストレスなくすべてのことができますし、Git GraphをはじめとしたGitの支援機能は最高の一言です。
 
 このようなことからコンテナを使った開発環境であればVSCode一択のため記事で取り上げるIDEとしてVSCodeを選択しています。なお、有償も含めるのであればIntelliJ IDEAが間違いなく最上であることは言うまでもありません。
 :::

@@ -80,7 +80,18 @@
     <noscript><link rel="stylesheet" href="/photoswipe/photoswipe.css"></noscript>
   <body>
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v12.0" nonce="8Wa5XpDX"></script>
+    <script>
+      window.addEventListener('load', function() {
+        const script = document.createElement('script');
+        script.async = true;
+        script.defer = true;
+        script.crossorigin = 'anonymous';
+        script.src = 'https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v13.0&appId=625393465273959&autoLogAppEvents=1';
+        script.nonce = 'r6ZSti4e';
+        const fbroot = document.querySelector('#fb-root');
+        fbroot.after(script);
+      });
+    </script>
     {{ content | safe }}
     <footer class="tdbc-background--secondary">
       <div class="tdbc-container tdbc-text-align-center">

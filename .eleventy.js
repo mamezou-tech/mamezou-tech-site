@@ -1,7 +1,5 @@
 const {DateTime} = require("luxon");
 const socialImages = require("@11tyrocks/eleventy-plugin-social-images");
-const emojiRegex = require("emoji-regex");
-const slugify = require("slugify");
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const markdownIt = require("markdown-it");
@@ -12,7 +10,7 @@ const markdownItContainer = require("markdown-it-container");
 const packageVersion = require("./package.json").version;
 const codeClipboard = require("eleventy-plugin-code-clipboard");
 const pluginMermaid = require("@kevingimbel/eleventy-plugin-mermaid");
-const contributors = require("./src/_data/contributors");
+const {getPosts} = require("./11ty/utils");
 
 // for Node.js 14
 String.prototype.replaceAll = function (from, to) {
@@ -61,6 +59,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginMermaid);
 
   eleventyConfig.addWatchTarget("./src/sass/");
+  eleventyConfig.addWatchTarget("./11ty/");
 
   eleventyConfig.addPassthroughCopy("./src/css");
   eleventyConfig.addPassthroughCopy("./src/fonts");
@@ -70,175 +69,26 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`);
   eleventyConfig.addShortcode("packageVersion", () => `v${packageVersion}`);
+  eleventyConfig.addShortcode('shortDesc', require("./11ty/short-desc"));
 
-  eleventyConfig.addFilter("slug", (str) => {
-    if (!str) {
-      return;
-    }
+  eleventyConfig.addFilter("slug", require("./11ty/slug"));
+  eleventyConfig.addFilter('head', require("./11ty/head"));
+  eleventyConfig.addFilter('htmlDateString',
+    (dateObj) => dateObj ? DateTime.fromJSDate(dateObj, {zone: 'Asia/Tokyo'}).toFormat('yyyy-LL-dd') : "");
 
-    const regex = emojiRegex();
-    // Remove Emoji first
-    let string = str.replace(regex, "");
-
-    return slugify(string, {
-      lower: true,
-      replacement: "-",
-      remove: /[*+~·,()'"`´%!?¿:@\/]/g,
-    });
-  });
-
-  eleventyConfig.addFilter('head', (array, n) => {
-    if (!array) {
-      return [];
-    }
-    if (n < 0) {
-      return array.slice(n);
-    }
-
-    return array.slice(0, n);
-  });
-
-  eleventyConfig.addFilter('htmlDateString', (dateObj) => {
-    return dateObj ? DateTime.fromJSDate(dateObj, {zone: 'Asia/Tokyo'}).toFormat('yyyy-LL-dd') : "";
-  });
-
-  eleventyConfig.addFilter('readingTime', (postOrContent) => {
-    const htmlContent =
-      typeof postOrContent === 'string'
-        ? postOrContent
-        : postOrContent.templateContent;
-
-    if (!htmlContent) {
-      return "0 min";
-    }
-
-    const normalized = htmlContent
-      .replace(/(<([^>]+)>)/gi, "");
-    return `${(Math.ceil(normalized.length / 1000))} min`
-  });
-
-
-  eleventyConfig.addFilter('readableDate', (dateObj) => {
-    return DateTime.fromJSDate(dateObj, {zone: 'Asia/Tokyo'}).toFormat(
-      'yyyy-LL-dd'
-    );
-  });
-
-  eleventyConfig.addFilter('excerpt', (post) => {
-    if (!post) {
-      console.log("Page contents not found!! something wrong...")
-      return "";
-    }
-    const content = post.replace(/(<([^>]+)>)/gi, '');
-    return chop(content);
-  });
-
-  eleventyConfig.addFilter('pageTags', (tags) => {
-    const generalTags = ['all', 'nav', 'post'];
-
-    return tags
-      .toString()
-      .split(',')
-      .filter((tag) => {
-        return !generalTags.includes(tag);
-      });
-  });
-
-  eleventyConfig.addFilter('blogPage', (fileSlug) => {
-    if (/^[0-9]{4}_.*$/.test(fileSlug)) {
-      return fileSlug.substring(5);
-    }
-    return fileSlug;
-  });
-
-  eleventyConfig.addShortcode('shortDesc', function (collections, page, defaultValue) {
-    if (!page.inputPath) return defaultValue;
-    const { inputPath } = page;
-    if (!inputPath) return defaultValue;
-
-    const isPost = inputPath.includes('/posts/')
-    if (!isPost) return defaultValue;
-
-    const post = collections.find(el => el.url === page.url)
-    if (!post) return defaultValue;
-    const content = post.templateContent.toString()
-      .replace(/(<([^>]+)>)/gi, "")
-      .replace(/[\r\n]/gi, "");
-    return chop(content);
-  });
-
-  eleventyConfig.addFilter('inputPath', (pages, path) => {
-    return pages.find((page) => page.inputPath === path);
-  });
-
-  eleventyConfig.addFilter('byAuthor', (contributorArticles, author) => {
-    return contributorArticles.filter(contributor => contributor.name === author);
-  });
-  eleventyConfig.addFilter('selectAuthor', (hrefs, author) => {
-    return hrefs.filter(href => href.includes(author));
-  });
-
-  eleventyConfig.addCollection('articles', (collection) => {
-    return getPosts(collection);
-  });
-
-  eleventyConfig.addCollection('tagList', (collection) => {
-    let tagSet = new Set();
-    collection.getAll().forEach(item => {
-      if ('tags' in item.data) {
-        let tags = item.data.tags;
-
-        tags = tags.filter(item => {
-          switch (item) {
-            case 'all':
-            case 'nav':
-            case 'pages':
-            case 'no-page':
-              return false;
-          }
-
-          return true;
-        });
-
-        for (const tag of tags) {
-          tagSet.add(tag);
-        }
-      }
-    });
-    return [...tagSet];
-  });
-
-  eleventyConfig.addCollection('contributorArticles', (collection) => {
-    const authorArticles = {};
-    Object.keys(contributors).forEach(name => {
-      authorArticles[name] = {
-        github: contributors[name],
-        name,
-        articles: [],
-      }
-    })
-    // assign
-    getPosts(collection).forEach((article) => {
-      const author = contributors[article.data.author];
-      if (author) {
-        authorArticles[article.data.author].articles.push(article);
-      }
-    });
-    // pagination
-    const chunkSize = 10;
-    return Object.keys(authorArticles).reduce((state, name) => {
-      const articles = authorArticles[name].articles.sort((a, b) => b.date - a.date);
-      for (let i = 0; i < articles.length; i += chunkSize) {
-        const chunk = articles.slice(i, i + chunkSize);
-        state.push({
-          ...authorArticles[name],
-          pageIndex: i / chunkSize,
-          articles: chunk,
-        });
-      }
-      return state;
-    }, []);
-  })
+  eleventyConfig.addFilter('readingTime', require("./11ty/reading-time"));
+  eleventyConfig.addFilter('readableDate', (dateObj) =>
+    DateTime.fromJSDate(dateObj, {zone: 'Asia/Tokyo'}).toFormat('yyyy-LL-dd'));
+  eleventyConfig.addFilter('excerpt', require("./11ty/excerpt"));
+  eleventyConfig.addFilter('pageTags', require("./11ty/page-tags"));
+  eleventyConfig.addFilter('blogPage', require("./11ty/blog-page"));
+  eleventyConfig.addFilter('inputPath', (pages, path) => pages.find((page) => page.inputPath === path));
+  eleventyConfig.addFilter('byAuthor',
+    (contributorArticles, author) => contributorArticles.filter(contributor => contributor.name === author));
+  eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));
+  eleventyConfig.addCollection('articles', getPosts);
+  eleventyConfig.addCollection('tagList', require("./11ty/tag-list"));
+  eleventyConfig.addCollection('contributorArticles', require("./11ty/contributor-articles"));
 
   /* Markdown Overrides */
   const markdownLibrary = markdownIt({
@@ -284,21 +134,3 @@ module.exports = function (eleventyConfig) {
     },
   };
 };
-
-function chop(content) {
-  const firstDotPos = content.lastIndexOf('。', 200);
-  if (firstDotPos !== -1) {
-    return content.substring(0, firstDotPos) + '...';
-  } else {
-    return content.substring(0, content.lastIndexOf('、', 200)) + '...';
-  }
-}
-
-function getPosts(collection) {
-  return collection.getAll().filter(item => {
-    if ('layout' in item.data) {
-      return item.data.layout === 'post';
-    }
-    return false;
-  }).sort((a, b) => a.date - b.date);
-}

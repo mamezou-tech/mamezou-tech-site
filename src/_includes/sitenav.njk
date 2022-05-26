@@ -1,17 +1,21 @@
 <nav aria-labelledby="tdbc-siteid" class="tdbc-sitenav">
-  <div class="tdbc-sitenav__container">
+  <section class="top-nav">
     <div>
-    <a id="tdbc-siteid" href="/">
-      <img src="/img/logo/mz-tech-logo-icon.png" />
-      &nbsp;|&nbsp;{{ meta.siteName }}
-    </a>
+      <a id="tdbc-siteid" href="/">
+        <img src="/img/logo/mz-tech-logo-icon.png" />
+        &nbsp;|&nbsp;{{ meta.siteName }}
+      </a>
     </div>
-    <ul class="tdbc-sitenav__navlist tdbc-list-unstyled">
+    <input id="menu-toggle" type="checkbox" />
+    <label class="menu-button-container" for="menu-toggle">
+      <div class="menu-button"></div>
+    </label>
+    <ul class="menu">
       {%- for page in collections.pages -%}
       <li>
         <a href="{{ page.url }}">{{ page.data.title }}</a>
       </li>
       {%- endfor -%}
     </ul>
-  </div>
+  </section>
 </nav>

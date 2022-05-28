@@ -19,14 +19,14 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 ### ローカル環境
 
 - [Windows への Docker CLI のインストール](/blogs/2021/12/27/install-dockercli-for-windows/)
-- [lima 紹介](blogs/2022/01/21/lima/)
+- [lima 紹介](/blogs/2022/01/21/lima/)
 - [Rancher Desktop 紹介](/blogs/2022/01/29/rancher-desktop/)
 - [Windows、macOS で sshfs を使用する](/blogs/2022/05/17/sshfs/)
 - [macOS 上で Podman を動かす](/blogs/2022/02/23/podman-machine/)
 - [OpenLibertyとVSCodeによるコンテナを用いた開発環境の構築](/blogs/2022/05/26/openliberty-devcontainer/)
-- [Kubernetesチュートリアル ローカル開発環境準備 - 実行環境(minikube)](containers/k8s/tutorial/app/minikube/)
-- [Kubernetesチュートリアル ローカル開発環境準備 - 自動化ツール(Skaffold)](containers/k8s/tutorial/app/minikube/)
-- [Kubernetesチュートリアル ローカル開発環境準備 - ローカルAWS(LocalStack)](containers/k8s/tutorial/app/minikube/)
+- [Kubernetesチュートリアル ローカル開発環境準備 - 実行環境(minikube)](/containers/k8s/tutorial/app/minikube/)
+- [Kubernetesチュートリアル ローカル開発環境準備 - 自動化ツール(Skaffold)](/containers/k8s/tutorial/app/minikube/)
+- [Kubernetesチュートリアル ローカル開発環境準備 - ローカルAWS(LocalStack)](/containers/k8s/tutorial/app/minikube/)
 
 ### リモート環境
 

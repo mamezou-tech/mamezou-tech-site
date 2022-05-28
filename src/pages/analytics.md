@@ -17,3 +17,4 @@ date: git Last Modified
 - [水準が３つ以上のデータを分析したい](/blogs/2022/05/22/one-factor-analysis-of-variance/)
 - [２要因の分散分析](blogs/2022/05/24/analysis-of-variance/)
 - [相関係数だけで一喜一憂してはいけない理由](/blogs/2022/05/26/correlation-matrix/)
+- [線形回帰を疑ってかかるこれだけの理由](/blogs/2022/05/28/linear-regression/)

@@ -5,13 +5,16 @@ layout: page.njk
 titleImage: "/img/logo/mameka5_50.png"
 ---
 
+Dockerの登場によって、コンテナはユーティリティ化しました。
+当初は開発環境やテスト環境等で使われることが多かったですが、主要クラウドベンダーのKubernetesサポートもあり、今や商用環境でコンテナ技術が使われるのが当たり前になりました。
+ここでは、コンテナ技術に関する記事をまとめていきます。
+
 ## Kubernetesチュートリアル
-コンテナオーケストレーションツールとしてデファクトスタンダードとなったKubernetesは、今やクラウド環境のみならずオンプレ環境でも利用が進んでおり、コンテナ実行基盤としての確固たる地位を築いています。
-アプリケーション開発する上で、アプリ内のことだけでなくコンテナ実行基盤について理解することは、拡張性や耐障害性といったコンテナメリットを活かす上で非常に重要な要素であると考えています。
+コンテナオーケストレーションツールとしてデファクトスタンダードとなったKubernetesは、クラウド環境のみならずオンプレ環境でも利用が進んでおり、コンテナ実行基盤としての確固たる地位を築いています。
 ここでは、そんなKubernetesの環境構築から開発・運用までで必要な作業をハンズオン形式で実施することで、初心者レベルからの脱却を目指します。
 
 ### 環境構築編
-#### Kubernetesクラスタを構築
+#### Kubernetesクラスタ構築
 1. [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/)
 2. [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/)
 
@@ -62,7 +65,7 @@ titleImage: "/img/logo/mameka5_50.png"
 1. [Velero による Kubernetes クラスタのバックアップ・リストア](/containers/k8s/tutorial/ops/velero-backup/)
 
 ## Kubernetes活用編
-Kubernetes活用例をサイト内の記事、ブログから抜粋しました。Kubernetesを様々なユースケースに適用してみましょう。
+Kubernetes活用例を抜粋しました。Kubernetesを様々なユースケースに適用してみましょう。
 
 1. [Kubernetes ネイティブなワークフローエンジン Argo Workflows](/containers/k8s/tutorial/advanced/argo-workflows/)
 2. [Karpenterのオートスケールを試してみました](/blogs/2022/02/13/introduce-karpenter/)

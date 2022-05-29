@@ -1,6 +1,6 @@
 ---
 title: 開発環境
-description: 快適な開発環境構築のためのTips
+description: 快適な開発環境を実現するTips
 date: git Last Modified
 ---
 

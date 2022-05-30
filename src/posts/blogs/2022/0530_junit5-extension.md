@@ -164,7 +164,7 @@ private Store getEntityManagerStore(ExtensionContext context) {
   return context.getStore(Namespace.create(getClass(), context.getRequiredTestMethod()));
 }
 ```
-[BeforeAllCallback](#1-テストクラスごとの前処理実行前beforeallcallback#beforeall)で保存した`EntityManagerFactory`をStore領域から取り出し、`EntityManagerFactory`からテストメソッドで使用するEntityManager(≒JDBCコネクション)を生成し、今度はExtensionクラスとテストメソッドのペアを`Namespace`にしたStore領域に定数定義した文字列をキーに`EntityManager`を保存しておきます。また、`EntityManagerFactory`と同様に`EntityManager`もclose処理が確実に行われるように`CloseableWrapper`クラスでラップしてStore領域に保存しておきます。
+[BeforeAllCallback](#1-テストクラスごとの前処理実行前beforeallcallback#beforeall)で保存した`EntityManagerFactory`をStore領域から取り出します。取り出す際、Store領域には`CloseableWrapper`でラップしたものを格納しているのでunwrapをします。次に取り出した`EntityManagerFactory`からテストメソッドで使用するEntityManager(≒JDBCコネクション)を生成し、今度はExtensionクラスとテストメソッドのペアを`Namespace`にしたStore領域に定数定義した文字列をキーに`EntityManager`を保存しておきます。ここでも`EntityManagerFactory`と同様に`EntityManager`もclose処理が確実に行われるように`CloseableWrapper`クラスでラップしてStore領域に保存しておきます。
 
 ### 3. 引数が指定されているライフサイクルメソッド実行前(setupメソッド実行前)(ParameterResolver#supportsParameter)
 ```java
@@ -183,7 +183,7 @@ public Object resolveParameter(ParameterContext parameterContext, ExtensionConte
   return store.get(CURRENT_ENTITY_MANAGER, CloseableWrapper.class).unwrap();
 }
 ```
-ParameterResolver#supportsParameterで`true`が返された後に呼び出されるコールバックメソッドで、ライフサイクルメソッドの引数に渡す値を返却します。今回は[BeforeEachCallback](#2-テストメソッドごとの前処理実行前beforeeachcallback#beforeeach)で`ExtensionContext`のStore領域に保存していた`EntityManager`を取得し、そのインスタンスを返します。これにより戻り値で返したEntityManagerインスタンスがJUnit5を経由し、最終的にはsetupメソッドのem引数に渡されます。なお、Store領域には`CloseableWrapper`でラップしたものを格納しているので、unwrapしてから返却しています。
+ParameterResolver#supportsParameterで`true`が返された後に呼び出されるコールバックメソッドで、ライフサイクルメソッドの引数に渡す値を返却します。今回は[BeforeEachCallback](#2-テストメソッドごとの前処理実行前beforeeachcallback#beforeeach)で`ExtensionContext`のStore領域に保存していた`EntityManager`を取得し、そのインスタンスを返します。これにより戻り値で返したEntityManagerインスタンスがJUnit5を経由し、最終的にはsetupメソッドのem引数に渡されます。なお、Store領域には`CloseableWrapper`でラップしたものを格納しているのでunwrapしてから返却しています。
 
 ### 5. テストメソッド実行前(BeforeTestExecutionCallback#beforeTestExecution)
 ```java

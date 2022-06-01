@@ -57,7 +57,7 @@ persistence-file.jarとpersistence-jpa.jarは排他的な関係にあり、実�
 ### ライブラリの利用方針
 どのコードからも利用してよいアプリケーション全体で利用を許可するライブラリは以下のとおりになります。
 - SFL4J (org.slf4j.*)
-- JavaSE (javax.*)
+- JavaSE (java.*)
 - JavaEE (javax.*)
   - ただし、全体としてjavax.*への依存は許容するが、別途レイヤごとに依存を許可するJavaEE仕様を限定する。
   - また、JavaEEの実装には[Helidon](https://helidon.io/)を利用するがHelidonやEclipseLink、JerseyなどのJavaEE実装にアプリが直接依存することは禁止する。
@@ -226,7 +226,7 @@ OSSなど外部のライブラリを利用することは昨今のJava開発で�
 
 Personアプリのアーキテクチャとして説明した[ライブラリの利用方針](#ライブラリの利用方針)からArchUnitの実装に必要なルールを抜き出すと次のとおりになります。
 
-- アプリのコードが依存するパッケージはアプリ自身(`io.extact.sample.*`)とSFL4J(`org.slf4j.*`)、JavaSE(`javax.*`)、JavaEE(`javax.*`)のみとなっていること。
+- アプリのコードが依存するパッケージはアプリ自身(`io.extact.sample.*`)とSFL4J(`org.slf4j.*`)、JavaSE(`java.*`)、JavaEE(`javax.*`)のみとなっていること。
 - ただし、アプリのextパッケージ配下(`"io.extact.sample..ext.."`)とMainクラスは除く。
 
 これをArchUnitで実装すると次のようになります。

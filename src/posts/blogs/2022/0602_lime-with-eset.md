@@ -1,18 +1,17 @@
 ---
-title: ESET を利用している環境で Rancher Desktop (lima) を使う
+title: セキュリティソフト ESET を利用している環境で Rancher Desktop (lima) を使う
 author: shigeki-shoji
 date: 2022-06-02
 tags: [k8s, container, macOS]
 ---
 
-:::stop
-この記事では、個人的に見つけた回避策を記載しています。
-セキュリティ対策ソフトウェアの設定変更については、所属組織のルールを厳守してください。
-:::
-
 皆さんは mac でセキュリティ対策ソフトウェアに何をお使いでしょうか。私は [ESET](https://eset-info.canon-its.jp/) を使用しています。
 
 ESET のファイアウォール機能を有効にして Docker Desktop の代替として [Rancher Desktop](https://developer.mamezou-tech.com/blogs/2022/01/29/rancher-desktop/) や [lima](https://developer.mamezou-tech.com/blogs/2022/01/21/lima/) を使用していると、イメージを pull するときにエラーが発生し困ったことがあり、その回避方法について調べてみました。
+
+:::stop
+この記事では、ファイアウォールにアプリケーションを許可する方法で回避する手順を示しています。所属する組織の運用ポリシーに照らして適切でない場合は、適用しないでください。
+:::
 
 ```shell
 $ nerdctl run -it --rm ubuntu
@@ -28,7 +27,9 @@ FATA[0010] failed to resolve reference "docker.io/library/ubuntu:latest": failed
 この記事よりさらに厳格にトラフィック制御したい場合は、より詳細にトラフィックを分析して設定してください。
 :::
 
-ESET の対話モードで実行して、ルールを生成させた場合でも、この記事の説明とほとんど同じルールが作成されます。
+ESET には対話モードがあります。対話モードでは、アプリケーションを実行した時、ルールにない通信を検出すると許可するか拒否するかを確認するダイアログが表示されます。ここで確認したルールを ESET のファイアウォールのルールとして保存もできます。
+
+ESET の対話モードで実行して、Rancher Desktop で docker pull 等を行ってルールを生成させた場合でも、この記事の説明とほとんど同じルールを作成できます。
 
 ## 手順
 

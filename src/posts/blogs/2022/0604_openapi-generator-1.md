@@ -90,22 +90,22 @@ additionalProperties:
 プロジェクトのルートで、Docker コマンドを実行します。
 
 ```shell
-$ docker run -it --rm -v `pwd`:/build -v example:/root/.m2 maven:3.8-eclipse-temurin-17-focal bash
+docker run -it --rm -v `pwd`:/build -v example:/root/.m2 maven:3.8-eclipse-temurin-17-focal bash
 ```
 
 起動したコンテナ上で、次のコマンドを実行します。
 
 ```shell
-# curl -L https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.0.0/openapi-generator-cli-6.0.0.jar -o /tmp/openapi-generator-cli.jar
-# cd /build
-# java -DsupportingFiles -jar /tmp/openapi-generator-cli.jar batch application.yaml
+curl -L https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.0.0/openapi-generator-cli-6.0.0.jar -o /tmp/openapi-generator-cli.jar
+cd /build
+java -DsupportingFiles -jar /tmp/openapi-generator-cli.jar batch application.yaml
 ```
 
 ここまでの実行で `/build/modules/application` ディレクトリにプロジェクトが生成されます。
 
 ```shell
-# cd modules/application
-# mvn install
+cd modules/application
+mvn install
 ```
 
 生成したアーティファクトは、example ボリュームに保存されます。
@@ -137,22 +137,22 @@ additionalProperties:
 プロジェクトのルートで、Docker コマンドを実行します。
 
 ```shell
-$ docker run -it --rm -v `pwd`:/build -v example:/root/.m2 maven:3.8-eclipse-temurin-17-focal bash
+docker run -it --rm -v `pwd`:/build -v example:/root/.m2 maven:3.8-eclipse-temurin-17-focal bash
 ```
 
 起動したコンテナ上で、次のコマンドを実行します。
 
 ```shell
-# curl -L https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.0.0/openapi-generator-cli-6.0.0.jar -o /tmp/openapi-generator-cli.jar
-# cd /build
-# java -jar /tmp/openapi-generator-cli.jar batch controller.yaml
+curl -L https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.0.0/openapi-generator-cli-6.0.0.jar -o /tmp/openapi-generator-cli.jar
+cd /build
+java -jar /tmp/openapi-generator-cli.jar batch controller.yaml
 ```
 
 ここまでの実行で `/build/modules/controller` ディレクトリにプロジェクトが生成されます。
 
 ```shell
-# cd modules/controller
-# mvn install
+cd modules/controller
+mvn install
 ```
 
 生成したアーティファクトは、application モジュール同様、example ボリュームに保存されます。
@@ -266,14 +266,14 @@ tasks.compileJava.dependsOn(tasks.copy)
 Gradle のイメージは DockerHub にあるオフィシャルなイメージを使います。
 
 ```shell
-$ docker run -it --rm -v `pwd`:/build -v example:/root/.m2 -p 8080:8080 gradle:jdk17-focal bash
+docker run -it --rm -v `pwd`:/build -v example:/root/.m2 -p 8080:8080 gradle:jdk17-focal bash
 ```
 
 起動したコンテナ上で、次のコマンドを実行します。
 
 ```shell
-# cd /build
-# gradle bootRun
+cd /build
+gradle bootRun
 ```
 
 ホストPCのブラウザから、次の URL にアクセスします。

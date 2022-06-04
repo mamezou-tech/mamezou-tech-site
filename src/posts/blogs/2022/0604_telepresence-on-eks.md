@@ -61,7 +61,7 @@ brew install --cask macfuse
 brew install gromgit/fuse/sshfs-mac
 ```
 
-## Traffic Manager/Root Daemonをインストールする
+## Traffic Manager/Daemonをインストールする
 
 Telepresenceの動作に必要なTraffic ManagerとDaemonをセットアップします。
 これらはそれぞれクラスタ環境、ローカル環境に配置され、両環境の通信を担います。
@@ -87,9 +87,9 @@ Launching Telepresence User Daemon
 Connected to context arn:aws:eks:ap-northeast-1:xxxxxxxxxxxx:cluster/mz-k8s (https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.yl4.ap-northeast-1.eks.amazonaws.com)
 ```
 
-これでローカル環境にRoot Daemon、EKSクラスタ環境にTraffic Managerがインストールされます[^4]。
+これでローカル環境にDaemon、EKSクラスタ環境にTraffic Managerがインストールされます[^4]。
 
-[^4]: Root Daemonの実行にはローカル環境の管理者権限が必要です。
+[^4]: ローカル環境のDaemonの実行には管理者権限が必要です。
 
 - ローカル環境(Daemon)
 
@@ -120,12 +120,11 @@ traffic-manager-758658ccc5-lzftn   1/1     Running   0          99s
 curl prod-task-service.prod:3000/health/readiness
 ```
 
-通常、ClusterIPタイプのServiceはクラスタ外からアクセスできませんが、TelepresenceのTraffic ManagerとRoot Daemonの協調動作によりこれが実現できています。
+通常、ClusterIPタイプのServiceはクラスタ外からアクセスできませんが、TelepresenceのTraffic ManagerとDaemonの協調動作によりこれが実現できています。
 
 ## トラフィックをインターセプトする
 
-これで準備ができました。
-実際のクラスタを流れるトラフィックをインターセプトして、ローカルプロセスで実行します。
+次に、実際のクラスタに流れるトラフィックをインターセプトします。
 
 まずは、インターセプト可能な対象を表示してみます。
 

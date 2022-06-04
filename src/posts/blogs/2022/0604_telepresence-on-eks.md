@@ -7,7 +7,7 @@ tags: ["k8s", "container", "aws"]
 
 クラウド環境で動作しているアプリケーションのデバッグはどうしていますか？
 ローカル環境であれば、ローカルプロセスで起動したアプリに対してお気に入りのIDEで簡単にデバッグできますが、クラウド環境の場合はそうはいきません。
-デバッグ用のコードを埋め込んで、パイプラインで再デプロイして、原因が分かったらコードを修正して、再びデプロイして。。。というトライ&エラーを繰り返していくことが多いのではないでしょうか？
+デバッグ用のコードを埋め込んでデプロイして、原因が分かったらコードを修正して、再びデプロイして。。。というトライ&エラーを繰り返していくことが多いのではないでしょうか？
 パイプラインで自動化されていると言っても、この作業にはかなりの時間がかかりますし、無駄なコミットが発生したり良いことはありません。
 
 ここでは[Telepresence](https://www.telepresence.io/)というツールを利用して、このストレスを解消するやり方を紹介したいと思います。
@@ -41,7 +41,7 @@ Kubernetesチュートリアルで使用したサンプルアプリを事前にE
 
 - [Kubernetesチュートリアル - アプリケーション開発編](/container/#アプリケーション開発編)
 
-これはWeb UIからEKS環境経由でDynamoDBにアクセスするシンプルなタスク管理ツールです。
+これはWeb UIからEKS環境のコンテナ経由でDynamoDBにアクセスするシンプルなタスク管理ツールです。
 
 ## Telepresence CLIをインストールする
 
@@ -73,7 +73,7 @@ Telepresenceの動作に必要なTraffic ManagerとDaemonをセットアップ�
 aws eks update-kubeconfig --name mz-k8s
 ```
 
-次にTelepresence CLIの以下を実行します[^3]。
+次にTelepresence CLIで以下を実行します[^3]。
 
 [^3]: `telepresence list`や`telepresence intercept`でもインストールされるようです。
 
@@ -137,9 +137,9 @@ prod-task-service: ready to intercept (traffic-agent not yet installed)
 prod-task-web    : ready to intercept (traffic-agent not yet installed)
 ```
 
-2つのサービスが表示されました。出力結果を見れば分かるようにまだTraffic Agentがインストールされていない状態です。
+2つのサービスが表示されました。出力結果を見れば分かるように、まだTraffic Agentがインストールされていない状態です。
 
-今回はExpressで動いている`prod-task-service`のトラフィックをインターセプトします。
+今回はNode.js(TypeScript)+Expressで動いている`prod-task-service`のトラフィックをインターセプトします。
 以下のコマンドを実行します。
 
 ```shell
@@ -158,9 +158,9 @@ intercepted
 ```
 これで以下のような状態となり、トラフィックのインターセプトとローカル環境への転送が開始されます。
 
-- 全てのトラフィックををローカルの3000番ポートに転送
-- Podにマウントされているボリュームをローカルにマウント(`Volume Mount Point`)
-- Podの環境変数をローカルに取り込んだ状態でBashを起動(サブシェル)
+- 全てのトラフィックをローカルの3000番ポートに転送
+- コンテナにマウントされているボリュームをローカルにマウント(`Volume Mount Point`)
+- コンテナの環境変数をローカルに取り込んだ状態でBashを起動(サブシェル)
 
 内部的には、対象のPodへサイドカーコンテナ(`telepresence-agents`)としてTraffic Agentが配置されます。クラスタトラフィックはこれを通してローカルへ転送されるようになっています。
 まだローカルプロセスは実行していませんが、以下のようなイメージです。
@@ -171,22 +171,22 @@ intercepted
 
 ## IRSAセッショントークンのパス(環境変数)を修正する
 
-これで、Pod内のコンテナ環境をローカル環境へ取り込んだ状態になりますが、これだけでは不十分です。
+`telepresence intercept`で作成されたサブシェルでは、コンテナの環境変数を取り込んだ状態になりますが、ローカルで実行にはこれだけでは不十分です。
 サンプルアプリはAWSリソースのDynamoDBにアクセスできる必要があります。
 ローカル環境にセットアップしたAWS認証設定で、DynamoDBへの接続が可能であれば良いですが、通常はそうでないことが多いかと思います。
 このような状態ではローカル環境からDynamoDBへの接続でエラーが発生します。
 
 今回、EKSのPodは、[IRSA(IAM Role for ServiceAccount)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)を利用して、DynamoDBに接続しています。
 
-IRSAを利用すると、EKSはPodにセッショントークンを取得してPodにマウントし、そのパスを環境変数`AWS_WEB_IDENTITY_TOKEN_FILE`に設定しています。
-AWS SDKでは、これを利用することでDynamoDB等の各種AWSリソースへのアクセスを実現しています。
+IRSAを利用すると、EKSはPodにセッショントークンファイルをマウントし、そのパスを環境変数`AWS_WEB_IDENTITY_TOKEN_FILE`に設定しています。
+AWS SDKでは、このセッショントークンを使用してDynamoDB等の各種AWSリソースへのアクセスを実現します。
 ローカル環境では、ディレクトリ構成が異なりますので、このトークン参照先をマウント先に変更してあげる必要があります。
 
-Telepresenceでは、Podにマウントされたファイルをローカル環境にもマウントしています。
+Telepresenceでは、Pod内のコンテナにマウントされたVolumeをローカル環境にもマウントしています。
 先程`telepresence intercept`コマンドを実行したときに出力されていた`Volume Mount Point`がマウントポイントです。
 このパスはインターセプト時に環境変数(`TELEPRESENCE_ROOT`)にも設定されます。
 
-例えばPodの`/var/run/secrets`にマウントされるトークンは以下のように確認できます。
+例えば、Podの`/var/run/secrets`にマウントされるトークンは以下のように確認できます。
 
 ```shell
 # telepresence interceptしたターミナルで実行(サブシェル)
@@ -199,7 +199,7 @@ drwxr-xr-x  1 noboru-kudo  staff  28 Jun  4 17:31 kubernetes.io
 ```
 
 `eks.amazonaws.com`にIRSAが格納されているトークンファイルが配置されます。
-ローカル環境のAWS環境変数(`AWS_WEB_IDENTITY_TOKEN_FILE`)をこちらを参照するように変更します。
+インターセプトによって取り込まれたAWS環境変数(`AWS_WEB_IDENTITY_TOKEN_FILE`)で、こちらを参照するように変更します。
 
 ```shell
 export AWS_WEB_IDENTITY_TOKEN_FILE=${TELEPRESENCE_ROOT}${AWS_WEB_IDENTITY_TOKEN_FILE}
@@ -209,7 +209,7 @@ cat ${AWS_WEB_IDENTITY_TOKEN_FILE}
 
 :::info
 これはマウントしたファイルを参照する例です。
-これ以外にもPod内でVolumeとしてマウントしている場所を参照する場合は、ローカルのマウントポイント(環境変数`TELEPRESENCE_ROOT`)配下を参照する必要があります。
+これ以外にもコンテナでVolumeとしてマウントしている場所をローカルから参照している場合は、ローカルのマウントポイント(環境変数`TELEPRESENCE_ROOT`)配下に変更する必要があります。
 :::
 
 :::info
@@ -240,8 +240,8 @@ node --inspect --require ts-node/register ./src/index.ts
 
 ![Intellij IDEA Node.js Debugger](https://i.gyazo.com/f416b4dafec5ef96d5a1f949b93420b1.png)
 
-通常はローカル環境だと外部サービスはモックを使うことが多いかと思いますが、ここでは本物のリソースにアクセスしていますので、抜群に効率的です。 
-ローカルプロセスですので、ローカルでソースコードを変更した場合は、すぐに実際のトラフィックを通して修正内容が正しいかを確認できます。
+通常はローカル環境だと外部サービスはモックを使うことが多いかと思いますが、ここでは本物のリソースにアクセスしていますので、はるかに効率的にデバッグできます。 
+また、ローカルプロセスですので、ローカルでソースコードを変更した場合は、コンテナビルドする必要はなく、すぐに実際のトラフィックを通して修正内容が正しいかを確認できます。
 
 ## クリーンアップ
 
@@ -261,7 +261,7 @@ Podを再起動した場合は、こちらを実行して再度インターセ�
 
 ## まとめ
 
-Telepresenceを導入すれば、モックではない実際のトラフィックベースで簡単にソースコードレベルのデバッグができました。
+Telepresenceを導入すれば、実際のトラフィックでソースコードレベルのデバッグが簡単にできます。
 デプロイ自動化が進んだとはいえ、特にクラウド環境では実際に動かしてみないと分からないことも多いです。
 Telepresenceはまさにそのようなケースで絶大な力を発揮するツールだと思います。
 

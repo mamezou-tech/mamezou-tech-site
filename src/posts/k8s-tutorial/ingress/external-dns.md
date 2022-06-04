@@ -2,6 +2,7 @@
 title: Ingress - カスタムドメイン管理(external-dns)
 author: noboru-kudo
 date: 2021-10-17
+updated: 2022-06-04
 tags: [AWS]
 prevPage: ./src/posts/k8s-tutorial/ingress/ingress-aws.md
 nextPage: ./src/posts/k8s-tutorial/ingress/https.md
@@ -634,4 +635,4 @@ external-dnsドキュメント: <https://github.com/kubernetes-sigs/external-dns
 ---
 更新情報
 
-- 2022-06-04: External DNSのHelmチャートレポジトリ変更(bitnami-kubernetes-sigs)に伴ってインストール方法を最新化しました。
+- 2022-06-04: External DNSのHelmチャートレポジトリ変更(bitnami -> kubernetes-sigs)に伴ってインストール方法を最新化しました。

@@ -169,12 +169,13 @@ spec:
 ## クラスタでSealedSecretを復号化する
 
 作成したSealedSecretリソースをKubernetesにデプロイし、復号化されることを確認します。
+kubesealが作成したSealedSecretをそのまま投入します。
 
 ```shell
 kubectl apply -f test-sealed-secret.yaml
 ```
 
-SealedSecretsのコントローラーがすぐにこれを検知して、データを復号化して通常のSecretリソースを作成します。
+SealedSecretsのコントローラーがすぐにこれを検知して、通常のSecretリソースを作成します。
 
 ```shell
 kubectl get secret test-secret -n default -o yaml
@@ -191,7 +192,7 @@ data:
   password: c3BlY2lhbC1zZWNyZXQ=
 ```
 
-元通りの通常のSecretリソースになっています。
+元通りの通常のSecretリソースになっています。`data.password`も最初に作成したSecretリソースと同じで、正常に復号化されていることが分かります。
 これでPodは通常のSecretリソースと同じようにボリュームとしてマウントしたり、環境変数に入れることが可能です。
 
 SealedSecretsコントローラー側のログを見ても、復号化(Unsealed)が実行されていることが分かります。

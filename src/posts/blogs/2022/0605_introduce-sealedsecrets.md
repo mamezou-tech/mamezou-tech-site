@@ -19,12 +19,12 @@ SealedSecretsを導入した運用イメージは以下のようになります�
 
 ![](https://i.gyazo.com/57a806bf612d7798bc4fc0977e7ba4d3.png)
 
-このようにSealedSecretは、CLIツールを利用してSecretリソースを暗号化したSealedSecretというカスタムリソースに変換します。
-このSealedSecretリソースはクラスタにデプロイすると、SealedSecret コントローラーによって復号化され、通常のSecretリソースとして利用可能になります。
-SealedSecretリソースは安全にGitで管理可能で、他の資材同様にバージョン管理システムの恩恵を受けることができます。
+このようにSealedSecretsは、CLIツールを利用してSecretリソースを暗号化したSealedSecretというカスタムリソースに変換します。
+このSealedSecretリソースはクラスタにデプロイすると、SealedSecretsコントローラーによって復号化され、通常のSecretリソースとして利用可能になります。
+SealedSecretリソースのマニフェストファイルは安全にGitで管理可能で、他の資材同様にバージョン管理システムの恩恵を受けることができます。
 
 :::column:外部プロダクト・サービスと連携するツール
-SealedSecret以外にも、Vault等の専用プロダクトやクラウドプロバイダのマネージドサービスと連携するツールがあります。
+SealedSecrets以外にも、Vault等の専用プロダクトやクラウドプロバイダのマネージドサービスと連携するツールがあります。
 
 - [External Secrets Operator](https://external-secrets.io/)
 - [Kubernetes Secrets Store CSI Driver](https://secrets-store-csi-driver.sigs.k8s.io/introduction.html)
@@ -82,7 +82,7 @@ sealed-secrets-7765f5c487-q58xt   1/1     Running   0          25s
 ```
 
 これがSealedSecretsのコントローラーになります。
-このコントローラーは、暗号化・復号化鍵の更新やカスタムリソースのSealedSecretの復号化処理を行います。
+このコントローラーは、暗号化・復号化鍵の更新やカスタムリソース（SealedSecret）の復号化処理を行います。
 そのカスタムリソースの方も確認します。
 
 ```shell
@@ -93,10 +93,11 @@ NAME                        CREATED AT
 sealedsecrets.bitnami.com   2022-06-05T05:20:29Z
 ```
 
-コントローラーで監視するカスタムリソースのSealedSecretが作成されています。
+これがコントローラーで監視するカスタムリソースです。
 
 暗号化・復号化を行う鍵(sealing key)はSecretリソースに格納されています。
 こちらも確認してみます。
+
 ```shell
 kubectl get secret -n sealed-secrets -l sealedsecrets.bitnami.com/sealed-secrets-key
 ```
@@ -163,7 +164,7 @@ spec:
 `spec.encryptedData`に暗号化された文字列が出力されていることが確認できます。
 この状態だと秘密鍵が漏洩しない限り、この情報は復号化できません。
 したがって、このSealedSecretリソースはGitにコミットできます。
-最初に作成したSecretリソースは、もう不要になりますので削除して構いません（残してもいけません）。
+最初に作成したSecretリソースは、もう不要になりますので削除して構いません（通常は残してもいけません）。
 
 ## クラスタでSealedSecretを復号化する
 

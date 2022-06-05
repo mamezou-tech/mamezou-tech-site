@@ -1,5 +1,5 @@
 ---
-title: SealedSecretsでKubernetesのシークレット情報をGit管理する
+title: SealedSecretsでKubernetesコンテナのシークレット情報をGit管理する
 author: noboru-kudo
 date: 2022-06-05
 tags: ["k8s", "container"]

@@ -20,7 +20,7 @@ Playwright は Microsoft が開発するクロスブラウザに対応した E2E
 
 [Fast and reliable end-to-end testing for modern web apps | Playwright](https://playwright.dev/)
 
-Playwright のドキュメントでは、Android や AndroidWebView などと共に Electron の Experimental なサポートが提供されています。
+Playwright のドキュメントでは、Android や AndroidWebView などと共に Electron のサポートは Experimental と位置付けられています。
 
 - [Electron | Playwright](https://playwright.dev/docs/api/class-electron/)
 - [ElectronApplication | Playwright](https://playwright.dev/docs/api/class-electronapplication)
@@ -77,7 +77,7 @@ npm test
 
 これで ウィンドウが一瞬表示されました。
 
-Playwright の API を使って、起動後2秒待ってスクリーンショットを取得してみます。
+Playwright の API を使って、ウィンドウの起動を待ち、起動後にコンテンツの読み込みを2秒待ってスクリーンショットを取得してみます。
 
 ```javascript
 test('launch app', async () => {
@@ -197,4 +197,4 @@ Scrapbox - チームのための新しい共有ノート
 Running open fav page
 ```
 
-以上、Playwright を使って Electron アプリの簡単な動作確認テストを書いてみました。Playwright の Electron 対応はまだ実験的なサポートですが、今後の開発に期待したいところです。
+以上、Playwright を使って Electron アプリの簡単な動作確認テストを書いてみました。Spectron に比べてもテストは書きやすい印象でした。まだ実験的なサポートという位置付けですが、Spectron の開発が止まった現在、正式対応が待たれるところです。

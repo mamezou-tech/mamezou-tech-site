@@ -20,3 +20,4 @@ date: git Last Modified
 - [線形回帰を疑ってかかるこれだけの理由](/blogs/2022/05/28/linear-regression/)
 - [仮説検定はなぜ遠回りするのか](/blogs/2022/06/01/hypothesis-test/)
 - [ベイジアンの逆襲](/blogs/2022/06/03/bayesian-inference)
+- [転ばぬ先のベイズの定理](/blogs/2022/06/07/bayes-theorem)

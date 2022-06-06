@@ -2,6 +2,7 @@
 title: Java17にBump upしてみた - 使った/使わなかった新機能(後編)
 author: toshio-ogiwara
 date: 2022-06-13
+eleventyExcludeFromCollections: true
 ---
 
 Java17にBump upしてみたの後編の今回は[前編](/blogs/2022/0606_bumpup-java17-part1/)で紹介できなかった3つの機能を紹介していきます。

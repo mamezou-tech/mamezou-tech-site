@@ -167,15 +167,17 @@ mvn install
 
 `src/main/java` の `com.mamezou_tech.example.controller.api` パッケージに `ExampleApi` インターフェースのコードが見つかります。
 
-コードは controller モジュールに生成された `ExampleAPI` インターフェースを実装することで完成します。
+コードは controller モジュールに生成された `ExampleApi` インターフェースを実装することで完成します。
 
 1. プロジェクトのルートに、`src/main/java` ディレクトリを作成します。
 2. 作成したディレクトリに、`com.mamezou_tech.example.controller.api` パッケージを作成します。
-3. 作成したパッケージに `ExampleAPIController` クラスを作成します。
+3. 作成したパッケージに `ExampleApiController` クラスを作成します。
 
-`ExampleAPIController` クラスのコードは次のようになりました。
+`ExampleApiController` クラスのコードは次のようになりました。
 
 ```java
+package com.mamezou_tech.example.controller.api;
+
 import com.mamezou_tech.example.controller.model.Hello;
 
 import org.springframework.http.HttpStatus;
@@ -185,7 +187,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("${openapi.exampleService.base-path:/example}")
-public class ExampleAPIController implements ExampleApi {
+public class ExampleApiController implements ExampleApi {
 
     @Override
     public ResponseEntity<Hello> helloGet() {
@@ -199,7 +201,7 @@ public class ExampleAPIController implements ExampleApi {
 このコードでは application.properties の `openapi.exampleService.base-path`、環境変数の `OPENAPI_EXAMPLESERVICE_BASE_PATH` 等に値が指定されていない場合のデフォルトベースパスを `/example` に指定しています。つまり、API 定義の `/hello` は `/example/hello` になります。
 
 :::info
-Spring Boot では application.properties の `server.servlet.context-path`、環境変数の `SERVER_SERVLET_CONTEXT_PATH` 等でコンテキストパスを設定もできます。例えば、環境変数に `SERVER_SERVLET_CONTEXT_PATH=/stg` と設定すると、`/example/hello` は `/stg/example/hello` が有効なパスになります。
+Spring Boot では application.properties の `server.servlet.context-path`、環境変数の `SERVER_SERVLET_CONTEXT_PATH` 等でコンテキストパスの設定もできます。例えば、環境変数に `SERVER_SERVLET_CONTEXT_PATH=/stg` と設定すると、`/example/hello` は `/stg/example/hello` が有効なパスになります。
 :::
 
 ### ビルド

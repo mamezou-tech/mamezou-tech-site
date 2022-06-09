@@ -2,6 +2,7 @@
 title: Ingress - カスタムドメイン管理(external-dns)
 author: noboru-kudo
 date: 2021-10-17
+updated: 2022-06-04
 tags: [AWS]
 prevPage: ./src/posts/k8s-tutorial/ingress/ingress-aws.md
 nextPage: ./src/posts/k8s-tutorial/ingress/https.md
@@ -222,19 +223,19 @@ aws route53 create-hosted-zone \
 ## external-dnsインストール
 それでは準備が整いましたので、今回主役のexternal-dnsをセットアップしましょう。
 以下にHelm Chartが準備されていますので、今回もHelmを使ってインストールします。
-- <https://github.com/bitnami/charts/tree/master/bitnami/external-dns>
+- <https://github.com/kubernetes-sigs/external-dns/tree/master/charts/external-dns>
 
 いつものようにリポジトリを追加・更新します。
 ```shell
-helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
 helm repo update
 ```
 
-以下のパラメータでexternal-dnsをインストールします。以下は現時点で最新の`5.4.11`のHelm Chartを利用しています。
+以下のパラメータでexternal-dnsをインストールします。以下は現時点で最新の`1.9.0`のHelm Chartを利用しています。
 
 ```shell
-helm upgrade external-dns bitnami/external-dns \
-  --install --version 5.4.11 \
+helm upgrade external-dns external-dns/external-dns \
+  --install --version 1.9.0 \
   --namespace external-dns \
   --set provider=aws \
   --set aws.region=ap-northeast-1 \
@@ -627,7 +628,11 @@ helm uninstall -n kube-system aws-load-balancer-controller
 [^4]: helmインストール時に`policy`を`sync`とすれば削除可能です。
 
 ---
-
 参照資料
 
 external-dnsドキュメント: <https://github.com/kubernetes-sigs/external-dns>
+
+---
+更新情報
+
+- 2022-06-04: External DNSのHelmチャートレポジトリ変更(bitnami -> kubernetes-sigs)に伴ってインストール方法を最新化しました。

@@ -13,7 +13,7 @@
   command = "npm run build:netlify"
 
   [build.environment]
-    NODE_VERSION="14"
+    NODE_VERSION="16"
 
   [[redirects]]
     from = "/feed/"

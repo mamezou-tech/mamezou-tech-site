@@ -5,7 +5,7 @@ date: 2022-06-09
 tags: [java, "openapi-generator", "spring-boot"]
 ---
 
-この記事は、「[OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-2/)」の続編です。
+この記事は、「[OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)」の続編です。
 
 この記事のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-2)に置いています。
 
@@ -19,11 +19,15 @@ tags: [java, "openapi-generator", "spring-boot"]
 
 ![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-2/event-storming/event-storming-1.png)
 
+:::info
+イベントストーミングは、[モノリスからマイクロサービスへ](https://www.amazon.co.jp/dp/4873119316/)」や「[Learning Domain-Driven Design](https://www.amazon.co.jp/dp/B09J2CMJZY/)」で紹介されているドメイン境界を導きだす手法で、付箋の色によって、「ドメインイベント」(オレンジ)、「コマンド」(青)、「ポリシー」(紫)、「集約」(黄)、「外部システム」(ピンク) をホワイトボード等に時系列に並べて整理します。
+:::
+
 前回から作成している API はこの「挨拶の音声を生成する」というコマンドです。
 
 ここで、いくつかアーキテクチャ上の決定事項を説明します。
 
-- 冬眠カプセルが開いて、カプセル内の船員のファーストネームの取得するいわゆる認証プロセスについては、別のチームが開発中で、私たちには OpenID Connect の ID Token のペイロードの属性 "custom:firstname" に "James" のような名前が入るとのことです。
+- 冬眠カプセルが開いて、カプセル内の船員のファーストネームを取得するいわゆる認証プロセスについては、別のチームが開発中で、OpenID Connect の ID Token ペイロードの属性 "custom:firstname" に "James" のような名前が入ります。
 - 同様に、ポリシーの「人間であること」つまりアンドロイドのような存在の場合には挨拶は不要であり、それを識別するために "custom:type" が "Human" の場合に人間であると判断します。
 
 とはいえ、なるべく作成するコードにはこのような条件を意識したくないため、次のような構成で動作するアプリケーションとすることに決定しました。
@@ -59,6 +63,10 @@ Envoy Proxy で ID Token で認証認可を行ったのち、ヘッダの `paylo
 
 「[良いコード／悪いコードで学ぶ設計入門](https://www.amazon.co.jp/dp/B09Y1MWK9N/)」を読まれた方ならお気づきでしょうが、インスタンス変数は `final` にして、コンストラクタインジェクションとすることで、生焼けオブジェクトにならないようにコーディングしています。
 
+:::info
+「生焼けオブジェクト」とは簡単にいうと未初期化のインスタンス変数が残っているオブジェクトです。特にデフォルトコンストラクタと setter/getter でアクセスするように設計された実装では「生焼けオブジェクト」が発生しやすく、バグの温床になります。
+:::
+
 ここに登場する `HelloService` は、アプリケーション層のクラスで次に説明します。
 
 ## アプリケーション層
@@ -74,6 +82,8 @@ Envoy Proxy で ID Token で認証認可を行ったのち、ヘッダの `paylo
         return maybePerson.flatMap(person -> Optional.ofNullable(voiceFactory.sayHello(person)));
     }
 ```
+
+Optional の map は値がある場合に実行され、変換された型を返します。つまり、`Optional<Person> maybePerson = maybePayload.map(this::parseRequest);` は `jwtPayload` が null でない場合に `parseRequest(String)` が実行され、返された `Person` 型に変換されます。`parseRequest()` は JWT ペイロードから "custom:firstname" 属性の値を取得して `Person` 型に変換しています。
 
 ## インフラストラクチャー層
 
@@ -103,6 +113,10 @@ public class VoiceFactoryImpl implements VoiceFactory {
 ファクトリー ([`VoiceFactory`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/main/java/com/mamezou_tech/example/domain/factory/VoiceFactory.java)) は、`interface` で定義し、Spring の依存注入 (DI) によりインフラストラクチャー層の実装を取り込みます。
 
 2 つのバリューオブジェクトは共に `record` で定義しました。
+
+:::info
+record は、JDK 14 と JDK 15 でプレビュー機能として導入され、[JDK 16 で正式に導入された機能](https://www.infoq.com/jp/news/2020/08/java16-records-instanceof/)です。
+:::
 
 ファーストネームを保持する [`Person`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/main/java/com/mamezou_tech/example/domain/valueobject/Person.java) は次の通りです。
 
@@ -167,6 +181,10 @@ class OpenApiGeneratorApplicationTests {
 
 認証認可を Envoy Proxy を使うサイドカーを採用したため、JWT トークンの Issuer (`iss`)、Audience (`aud`)、有効期限 (`exp`) 等を関心事から外してテストしやすいアーキテクチャが実現できています。
 
+認証認可のような横断的関心事をサイドカーに分離しない場合は、アプリケーションに Spring Security などの依存を追加し、JWT トークンの `iss`、`aud`、`exp` の検証を行うだけでなく、さらに署名検証のために公開鍵を取得が必要になります。そして、人間であるかという認可処理の実装も必要になります。
+
+その上アプリケーションでこの検証をクリアするために、テスト時に有効期限 (`exp`) 内の正しい署名付きの JWT トークンが必要になるなど、テスト設計が相当複雑になります。
+
 ## [継続的インテグレーションとデプロイ](/tags/ci/cd/)
 
 GitHub リポジトリには GitHub Actions を使って、OpenAPI Generator で生成したモジュールを GitHub Packages にデプロイしています。
@@ -181,6 +199,11 @@ GitHub Actions の コードはリンク [`build.yml`](https://github.com/edward
 curl -H 'payload: eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiY3VzdG9tOmZpcnN0bmFtZSI6IkphbWVzIiwiYXVkIjoiQVBQQ0xJRU5USUQiLCJleHAiOjE2NTQ3NTg3NTcsImN1c3RvbTp0eXBlIjoiSHVtYW4ifQ==' http://localhost:8080/example/hello
 ```
 
+:::info
+JWT トークンは、3つのパートにわかれています。それぞれのパートは、文字 '.' で区切られた Base64 でエンコードされた文字列です。先頭のパートはヘッダ部でここには署名に使う暗号化アルゴリズムや公開鍵IDなどがJSON形式で設定されています。2番目のパートはペイロード (payload) と呼ばれる部分で、Issuer (`iss`)、Audience (`aud`)、有効期限 (`exp`) のように決められた属性の他、任意の属性を含めることができます。この記事では、このペイロードに "custom:firstname" や "custom:type" を含められていることを想定しています。ペイロードも JSON 形式です。最後の部分は署名です。ヘッダで指定された暗号化アルゴリズムを使った署名が設定されています。
+この記事では、サイドカーが JWT トークンの検証を行い、ペイロード部のみを ヘッダ `payload` に設定してアプリケーションが呼び出されるように設計しています。ペイロードの元となる JSON は、[テストコード](https://github.com/edward-mamezou/use-openapi-generator/blob/647823e5c956714120eed8d107f57420abbae12f/src/test/java/com/mamezou_tech/example/controller/api/OpenApiGeneratorApplicationTests.java#L21)にある文字列です。これを Base64 に変換すると、"eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiY3VzdG9tOmZpcnN0bmFtZSI6IkphbWVzIiwiYXVkIjoiQVBQQ0xJRU5USUQiLCJleHAiOjE2NTQ3NTg3NTcsImN1c3RvbTp0eXBlIjoiSHVtYW4ifQ==" が得られます。
+:::
+
 ## まとめ
 
 今回、現実的なアプリケーションのレイヤー構造で説明しました。次回は、OpenAPI Generator のパラメータの説明をする予定です。
@@ -188,6 +211,7 @@ curl -H 'payload: eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiY3VzdG9tOmZpcnN0bmFtZSI6Ik
 ## 参考
 
 - [良いコード／悪いコードで学ぶ設計入門](https://www.amazon.co.jp/dp/B09Y1MWK9N/)
+- [Event Storming](https://www.eventstorming.com/)
 - [OpenAPI Generator を使って Spring Boot アプリを作る](https://developer.mamezou-tech.com/blogs/2022/06/04/openapi-generator-1/)
 - [S3 の静的 Web サイトをセキュアに Envoy でホスティング](https://developer.mamezou-tech.com/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)
 - [Envoy と Open Policy Agent を使用した認可](https://developer.mamezou-tech.com/blogs/2022/02/20/envoy-authz/)

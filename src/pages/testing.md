@@ -18,7 +18,7 @@ description: ソフトウェアテストに関する技法やテクニック
 
 ここでは、テスト技法やテスティングフレームワークに関する記事を紹介していきます。
 
-## jUnit
+## JUnit
 
 - [Helidon Tips - MicroProfile RestClientを使ったRESTリースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing/)
 - [JUnit5のExtension実装 - テストライフサイクルコールバックと引数の解決](/blogs/2022/05/30/junit5-extension/)

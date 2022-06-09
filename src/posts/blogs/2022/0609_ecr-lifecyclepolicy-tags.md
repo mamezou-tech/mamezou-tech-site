@@ -23,7 +23,7 @@ tags: ["container", "AWS"]
   "rules": [
     {
       "rulePriority": 1,
-      "description": "Keep last 10 dev images",
+      "description": "Keep last 2 dev images",
       "selection": {
         "tagStatus": "tagged",
         "tagPrefixList": ["dev-"],

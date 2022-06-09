@@ -105,7 +105,7 @@ ECRのライフサイクルポリシーは優先度別で複数ルールを指�
 
 > ・All rules are evaluated at the same time, regardless of rule priority. After all rules are evaluated, they are then applied based on rule priority.
 > ・An image is expired by exactly one or zero rules.
-
+> ・An image that matches the tagging requirements of a rule cannot be expired by a rule with a lower priority.
 
 再度ライフサイクルポリシーをテストします。
 

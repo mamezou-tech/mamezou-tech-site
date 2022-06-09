@@ -88,12 +88,12 @@ Envoy Proxy で ID Token で認証認可を行ったのち、ヘッダの `paylo
 ```java
     public Optional<HelloVoice> sayHello(final String jwtPayload) {
         Optional<String> maybePayload = Optional.ofNullable(jwtPayload);
-        Optional<Person> maybePerson = maybePayload.map(this::parseRequest);
+        Optional<Person> maybePerson = maybePayload.flatMap(payload -> Optional.ofNullable(parseRequest(payload)));
         return maybePerson.flatMap(person -> Optional.ofNullable(voiceFactory.sayHello(person)));
     }
 ```
 
-Optional の map は値がある場合に実行され、変換された型を返します。つまり、`Optional<Person> maybePerson = maybePayload.map(this::parseRequest);` は `jwtPayload` が null でない場合に `parseRequest(String)` が実行され、`Person` 型に変換されます。`parseRequest()` は JWT ペイロードから "custom:firstname" 属性の値を取得して `Person` 型に変換しています。
+Optional の flatMap や map は値がある場合に実行され、変換された型を返します。つまり、`Optional<Person> maybePerson = maybePayload.flatMap(payload -> Optional.ofNullable(parseRequest(payload)));` は `jwtPayload` が null でない場合に `parseRequest(String)` が実行され、`Person` 型に変換されます。`parseRequest()` は JWT ペイロードから "custom:firstname" 属性の値を取得して `Person` 型に変換しています。
 
 ## インフラストラクチャー層
 
@@ -191,7 +191,7 @@ class OpenApiGeneratorApplicationTests {
 
 認証認可で Envoy Proxy を使うサイドカーを採用したため、JWT トークンの Issuer (`iss`)、Audience (`aud`)、有効期限 (`exp`) 等を関心事から外してテストしやすいアーキテクチャが実現できています。
 
-認証認可のような横断的関心事をサイドカーに分離しない場合は、アプリケーションに Spring Security などの依存を追加し、JWT トークンの `iss`、`aud`、`exp` の検証を行うだけでなく、さらに署名検証のために公開鍵を取得が必要になります。そして、人間であるかという認可処理の実装も必要になります。
+認証認可のような横断的関心事をサイドカーに分離しない場合は、アプリケーションに Spring Security などの依存を追加し、JWT トークンの `iss`、`aud`、`exp` の検証を行うだけでなく、さらに署名検証のために公開鍵の取得が必要になります。そして、人間であるかという認可処理の実装も必要になります。
 
 その上アプリケーションでこの検証をクリアするために、テスト時に有効期限 (`exp`) 内の正しい署名付きの JWT トークンが必要になるなど、テスト設計が相当複雑になります。
 

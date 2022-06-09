@@ -122,3 +122,8 @@ ECRのライフサイクルポリシーの挙動は、AWSの公式ドキュメ�
 
 思い込みで設定し、公式ドキュメント確認やテストを怠ってしまったことがよくありませんでした。
 他の現場でも参考になれば幸いです。
+
+---
+参考資料
+
+- [StackOverflow - ECR lifecycle policy exception](https://stackoverflow.com/questions/51375318/ecr-lifecycle-policy-exception)

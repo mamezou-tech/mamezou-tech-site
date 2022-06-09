@@ -2,7 +2,7 @@
 title: Amazon ECRのライフサイクルポリシーで開発環境向けのイメージのみ削除する
 author: noboru-kudo
 date: 2022-06-09
-tags: ["container"]
+tags: ["container", "AWS"]
 ---
 
 つい先日、EKSを利用している社内システムで、とあるPodが起動できない障害がありました。

@@ -1,23 +1,35 @@
 ---
-title: "テスティング"
-description: 'ソフトウェアテストに関する技法やテクニック'
-eleventyExcludeFromCollections: true
+title: テスト
+description: ソフトウェアテストに関する技法やテクニック
 ---
 
-TO: 岩城さん
+どんな業界でも、プロダクト品質を確認・証明する上でテストはなくてはならない存在です。
 
-## ソフトウェアテスト技法
-テストスコープの話がここにあると良さそう。絵で表現できるといいですね。
+ソフトウェア業界に限定すると、スコープによって様々な種類のテストがあります。名称はプロジェクトによって変わってきますが、代表的なものだと以下のようなものがあります。
 
-ここからは記事へのリンクです！
-### Unit Testing
-- [単体テストとは？](/)
+- 単体テスト - ソースファイル
+- 機能テスト - 複数コンポーネント
+- (外部)結合テスト - 外部I/F
+- システムテスト/E2Eテスト - システム全体
+- 受け入れテスト(UAT) - ステークホルダーの視点
+- 運用テスト - アラート、ログ、バックアップ等の運用視点
 
-### Functional Testing
-- [テストとは？](/)
+また、テスト駆動開発の浸透で、テストコードの位置づけを実装作業の中心に据えている現場も増えてきていると感じます。
 
-### End-to-End Testing
-- [テストとは？](/)
+ここでは、テスト技法やテスティングフレームワークに関する記事を紹介していきます。
 
-### Contract Testing
-- [テストとは？](/)
+## jUnit
+
+- [Helidon Tips - MicroProfile RestClientを使ったRESTリースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing/)
+- [JUnit5のExtension実装 - テストライフサイクルコールバックと引数の解決](/blogs/2022/05/30/junit5-extension/)
+
+
+## ArchUnit
+
+- [ArchUnitで考えるアーキテクチャ構造とその検証](/blogs/2022/05/19/archunit-and-architechure/)
+
+## Playwright
+
+- [Electron アプリの E2E テストを Playwright で書く](/blogs/2022/06/05/test-electron-app-with-playwright/)
+
+<div style="margin-top: 3rem"><span style="font-size: 1.2rem;color: red;">その他多数記事を追加予定です！！</span></div>

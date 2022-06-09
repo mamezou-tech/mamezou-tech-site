@@ -1,6 +1,7 @@
 ---
 title: ArchUnitで考えるアーキテクチャ構造とその検証
 author: toshio-ogiwara
+tags: [テスト]
 date: 2022-05-19
 ---
 

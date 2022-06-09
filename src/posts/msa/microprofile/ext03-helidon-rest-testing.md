@@ -2,7 +2,7 @@
 title: Helidon Tips - MicroProfile RestClientを使ったRESTリースのJUnitテスト
 author: toshio-ogiwara
 date: 2022-04-30
-tags: ["逆張りのMicroProfile", helidon]
+tags: ["逆張りのMicroProfile", helidon, テスト]
 prevPage: ./src/posts/msa/microprofile/ext02-helidon-testing.md
 ---
 

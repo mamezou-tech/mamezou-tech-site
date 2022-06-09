@@ -1,6 +1,7 @@
 ---
 title: Electron アプリの E2E テストを Playwright で書く
 author: masahiro-kondo
+tags: [electron, テスト]
 date: 2022-06-05
 ---
 

@@ -20,7 +20,7 @@ tags: [java, "openapi-generator", "spring-boot"]
 ![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-2/event-storming/event-storming-1.png)
 
 :::info
-イベントストーミングは、[モノリスからマイクロサービスへ](https://www.amazon.co.jp/dp/4873119316/)」や「[Learning Domain-Driven Design](https://www.amazon.co.jp/dp/B09J2CMJZY/)」で紹介されているドメイン境界を導きだす手法で、付箋の色によって、「ドメインイベント」(オレンジ)、「コマンド」(青)、「ポリシー」(紫)、「集約」(黄)、「外部システム」(ピンク) をホワイトボード等に時系列に並べて整理します。
+イベントストーミングは、「[モノリスからマイクロサービスへ](https://www.amazon.co.jp/dp/4873119316/)」や「[Learning Domain-Driven Design](https://www.amazon.co.jp/dp/B09J2CMJZY/)」で紹介されているドメイン境界を導きだす手法で、付箋の色によって、「ドメインイベント」(オレンジ)、「コマンド」(青)、「ポリシー」(紫)、「集約」(黄)、「外部システム」(ピンク) をホワイトボード等に時系列に並べて整理します。
 :::
 
 前回から作成している API はこの「挨拶の音声を生成する」というコマンドです。
@@ -34,7 +34,17 @@ tags: [java, "openapi-generator", "spring-boot"]
 
 ![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-2/image/openapi-generator-2.png)
 
-Envoy Proxy を使った認証認可については、後で紹介する[記事](#参考)を参照してください。
+:::info
+サイドカーパターンは、「[分散システムの設計](https://azure.microsoft.com/ja-jp/resources/designing-distributed-systems/)」や「[Istio in Action](https://www.amazon.co.jp/dp/1617295825/)」で詳しい解説をみることができます。
+
+外部からの接続 (inbound) を Envoy Proxy が受け取り、JWT である ID Token のヘッダに記述された暗号化アルゴリズム (`alg`)、公開鍵ID (`kid`) とペイロード部にある Issuer (`iss`) から [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata) 仕様にしたがって、`jwks_uri` にアクセスし `jwks.json` を取得し ID Token の署名を検証します。ペイロードの Audience (`aud`) には認証プロバイダに登録したアプリクライアントIDの値が入っているため、このアプリが予定している認証プロバイダにより発行された ID Token と一致するか確認します。さらに、有効期限 (`exp`) の値から有効期限を過ぎていないかを確認します。
+
+今回のアプリケーションでは ID Token のペイロードに `custom:type` 属性が設定されていることを予定しています。この属性の値が `Human` であるかを確認します。
+
+ここに書かれた認証認可を全てパスした場合のみ、Envoy Proxy は ID Token のペイロードを HTTP リクエストのヘッダ `payload` にセットしてメインのアプリケーションにルーティングします。
+
+Envoy Proxy を使った認証認可については、後で紹介する[記事](#参考)も参照してください。
+:::
 
 今回の記事では音声イメージを生成する部分の実装はしていません。音声にするテキストの作成までを実装しています。
 
@@ -78,12 +88,12 @@ Envoy Proxy で ID Token で認証認可を行ったのち、ヘッダの `paylo
 ```java
     public Optional<HelloVoice> sayHello(final String jwtPayload) {
         Optional<String> maybePayload = Optional.ofNullable(jwtPayload);
-        Optional<Person> maybePerson = maybePayload.map(this::parseRequest);
+        Optional<Person> maybePerson = maybePayload.flatMap(payload -> Optional.ofNullable(parseRequest(payload)));
         return maybePerson.flatMap(person -> Optional.ofNullable(voiceFactory.sayHello(person)));
     }
 ```
 
-Optional の map は値がある場合に実行され、変換された型を返します。つまり、`Optional<Person> maybePerson = maybePayload.map(this::parseRequest);` は `jwtPayload` が null でない場合に `parseRequest(String)` が実行され、返された `Person` 型に変換されます。`parseRequest()` は JWT ペイロードから "custom:firstname" 属性の値を取得して `Person` 型に変換しています。
+Optional の flatMap や map は値がある場合に実行され、変換された型を返します。つまり、`Optional<Person> maybePerson = maybePayload.flatMap(payload -> Optional.ofNullable(parseRequest(payload)));` は `jwtPayload` が null でない場合に `parseRequest(String)` が実行され、`Person` 型に変換されます。`parseRequest()` は JWT ペイロードから "custom:firstname" 属性の値を取得して `Person` 型に変換しています。
 
 ## インフラストラクチャー層
 
@@ -179,9 +189,9 @@ class OpenApiGeneratorApplicationTests {
 }
 ```
 
-認証認可を Envoy Proxy を使うサイドカーを採用したため、JWT トークンの Issuer (`iss`)、Audience (`aud`)、有効期限 (`exp`) 等を関心事から外してテストしやすいアーキテクチャが実現できています。
+認証認可で Envoy Proxy を使うサイドカーを採用したため、JWT トークンの Issuer (`iss`)、Audience (`aud`)、有効期限 (`exp`) 等を関心事から外してテストしやすいアーキテクチャが実現できています。
 
-認証認可のような横断的関心事をサイドカーに分離しない場合は、アプリケーションに Spring Security などの依存を追加し、JWT トークンの `iss`、`aud`、`exp` の検証を行うだけでなく、さらに署名検証のために公開鍵を取得が必要になります。そして、人間であるかという認可処理の実装も必要になります。
+認証認可のような横断的関心事をサイドカーに分離しない場合は、アプリケーションに Spring Security などの依存を追加し、JWT トークンの `iss`、`aud`、`exp` の検証を行うだけでなく、さらに署名検証のために公開鍵の取得が必要になります。そして、人間であるかという認可処理の実装も必要になります。
 
 その上アプリケーションでこの検証をクリアするために、テスト時に有効期限 (`exp`) 内の正しい署名付きの JWT トークンが必要になるなど、テスト設計が相当複雑になります。
 

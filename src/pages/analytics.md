@@ -15,7 +15,7 @@ date: git Last Modified
 - [品質改善効果を検定で確認する](/blogs/2022/05/19/Confirm-the-quality-improvement-effect/)
 - [対応のあるデータの差を検定する](/blogs/2022/05/20/corresponding-t-test/)
 - [水準が３つ以上のデータを分析したい](/blogs/2022/05/22/one-factor-analysis-of-variance/)
-- [２要因の分散分析](blogs/2022/05/24/analysis-of-variance/)
+- [２要因の分散分析](/blogs/2022/05/24/analysis-of-variance/)
 - [相関係数だけで一喜一憂してはいけない理由](/blogs/2022/05/26/correlation-matrix/)
 - [線形回帰を疑ってかかるこれだけの理由](/blogs/2022/05/28/linear-regression/)
 - [仮説検定はなぜ遠回りするのか](/blogs/2022/06/01/hypothesis-test/)

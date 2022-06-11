@@ -15,7 +15,7 @@ date: 2022-06-11
 
 現在では workflow_dispatch の入力値も inputs コンテキストから取得可能です。
 
-:::info:Note
+:::info
 event コンテキストからの取得も互換性のため残されています。
 :::
 
@@ -115,9 +115,9 @@ jobs:
 {% endraw %}
 workflow_dispach は入力フォームが使用できるため、logLevel を選択できるよう `type: choice` を指定し、`options` で選択肢を列挙しています。
 
-workflow_call の方は、値を呼び出し側のジョブでコードで渡すため、logLevel は `type: string` にしています。
+workflow_call の方は、値を呼び出し側ジョブのコードで渡すため、logLevel は `type: string` にしています。
 
-:::info:Note
+:::info
 `type: choice` を指定すると invalid value としてエラーになります。
 :::
 
@@ -145,7 +145,7 @@ jobs:
       tags: false
 ```
 
-呼び出し側のワークフローを手動実行します。入力値は、ワークフローのコードで渡すため、実行するだけです。
+呼び出し側のワークフローを手動実行します。入力値はコードで渡すため、実行するだけです。
 
 ![](https://i.gyazo.com/a59ce549af6575374995427aed5f9fe4.png)
 

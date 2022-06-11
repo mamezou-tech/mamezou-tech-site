@@ -28,6 +28,7 @@ CI/CDパイプラインは、現代のソフトウェア開発に必要不可欠
 - [GitHub のリリースノート自動生成機能を使う](/blogs/2022/03/11/github-automatically-generated-release-notes/)
 - [GitHub Actions ワークフローで個別ジョブのリランが可能に](/blogs/2022/04/14/github-actions-workflow-rerun-individual-jobs/)
 - [GitHub Actions ジョブサマリー機能を使う](/blogs/2022/05/14/github-actions-job-summaries/)
+- [GitHub Actions - 再利用可能ワークフローと手動トリガーで入力値の扱いを統一](/blogs/2022/06/11/github-actions-inputs-unified/)
 
 豆蔵有志でも、特定ユースケースに対応したActionをOSSとして公開しています。
 

@@ -185,7 +185,7 @@ it('incrementをクリックするとカウントアップされた値が表示�
 E2Eの場合は`cy.visit(...)`で、URLアクセスしますが、コンポーネントテストは`cy.mount(...)`を記述します。
 こうすることでCypressはテスト対象のコンポーネントを、ブラウザ上でマウントしてくれます。
 この`mount`メソッドは、Vue.jsでは内部的には[Vue Test Utils](https://test-utils.vuejs.org/guide/)を呼び出しているようで、使い方もほとんど同じです。
-違いと言えばVue Test Utilsを使った場合は、mountの戻り値のWrapperを利用してクリックや入力、値の取得等を行いますが、そこはCypressでブラウザから確認するので不要です。
+違いと言えば、Vue Test Utilsを使った場合はmountの戻り値(Wrapper)を使ってクリックや入力、値の取得等を行いますが、そこはCypressでブラウザから確認するので不要です。
 
 mount後の記述はCypressのE2Eテストと変わりません。Cypressから提供される豊富なメソッドで簡潔にテストを記述できます。
 

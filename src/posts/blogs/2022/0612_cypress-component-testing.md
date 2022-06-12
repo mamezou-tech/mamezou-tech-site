@@ -14,7 +14,7 @@ E2Eテストのフレームワークとして有名な[Cypress](https://www.cypr
 公式ブログによると、既にプロダクション環境での利用も問題なさそうです。
 Cypressのコンポーネントテストはブラウザベースでテストできるので、Jest等で行っていた既存のNodeベースの単体テストを置き換える存在になる可能性を秘めていると感じます。
 
-今回はE2Eではなく、このCypressのコンポーネントテスト機能を利用して、Vueコンポーネントの単体テストにトライしてみようと思います。
+今回はCypressのE2Eではなく、コンポーネントテスト機能を利用して、Vueコンポーネントの単体テストにトライしてみようと思います。
 
 [[TOC]]
 
@@ -68,7 +68,7 @@ CypressのUIが開きます。
 
 ![](https://i.gyazo.com/b7ac77a45eae8a9b878ae508b8ab0aad.png)
 
-Cypress関連の設定ファイルもデフォルトのままにしました。
+Cypress関連の設定ファイルが表示されています。このまま進みます。
 
 ![](https://i.gyazo.com/65a8cef0bccce474fa12153038a1cc89.png)
 
@@ -187,7 +187,9 @@ E2Eの場合は`cy.visit(...)`で、URLアクセスしますが、コンポー�
 この`mount`メソッドは、Vue.jsでは内部的には[Vue Test Utils](https://test-utils.vuejs.org/guide/)を呼び出しているようで、使い方もほとんど同じです。
 違いと言えば、Vue Test Utilsを使った場合はmountの戻り値(Wrapper)を使ってクリックや入力、値の取得等を行いますが、そこはCypressでブラウザから確認するので不要です。
 
-mount後の記述はCypressのE2Eテストと変わりません。Cypressから提供される豊富なメソッドで簡潔にテストを記述できます。
+mount後の記述はCypressのE2Eテストと変わりません。Cypressから提供される豊富なメソッドで簡潔にテストを記述できます[^2]。
+
+[^2]: `cy.findByTestId(...)`はtesting-libraryのCypress拡張です。詳細は[こちら](https://github.com/testing-library/cypress-testing-library)を参照してください。
 
 ここでは載せていませんが、テスト対象コンポーネントでタイマー等の非同期処理を多用すると、Jest+Vue Test Utilsはテストが途端にカオスになります。
 Cypressのコンポーネントテストでは、Cypressに備わる[リトライ機能](https://docs.cypress.io/guides/core-concepts/retry-ability)が使えるのでかなり緩和されそうです。
@@ -307,13 +309,13 @@ npx cypress run --component --browser=chrome
 
 ```
 
-CIではこちらを利用することになります。初回起動はそれなりに時間がかかりますが、470msとテストは比較的高速です(ケース数少ないですが)。
+CIではこちらを利用することになります。初回起動はそれなりに時間がかかりますが、E2Eテストと比較するとテスト実行時間が470msと比較的高速です(ケース数少ないですが)。
 
 ## まとめ
 
 ブラウザベースのアプリケーションはやはりブラウザ上で動かすのが安心・確実です。
 既にE2EテストでCypressを使っている場合は、使い方もほとんど同じですし、こちらへの移行を検討するのは価値がありそうです。
-そうでない場合でも、既存のJest+Vue Test Utilsの単体テストでCypressを使うのは結構アリじゃないかと思いました。
+そうでない場合でも、既存のJest+Vue Test Utilsの単体テストをCypressに置き換えるのは結構アリじゃないかと思いました。
 
 ---
 参考資料

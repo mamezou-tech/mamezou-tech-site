@@ -32,4 +32,9 @@ description: ソフトウェアテストに関する技法やテクニック
 
 - [Electron アプリの E2E テストを Playwright で書く](/blogs/2022/06/05/test-electron-app-with-playwright/)
 
+## Cypress
+
+- [Cypress Component TestingでVueコンポーネントの単体テストをする](/blogs/2022/06/12/cypress-component-testing/#コンポーネントテストを記述する)
+
+
 <div style="margin-top: 3rem"><span style="font-size: 1.2rem;color: red;">その他多数記事を追加予定です！！</span></div>

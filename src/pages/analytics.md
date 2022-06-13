@@ -22,3 +22,4 @@ date: git Last Modified
 - [ベイジアンの逆襲](/blogs/2022/06/03/bayesian-inference)
 - [転ばぬ先のベイズの定理](/blogs/2022/06/07/bayes-theorem)
 - [選択された結果を分析する（２項検定）](/blogs/2022/06/10/binomial-test)
+- [君子は豹変すべし（ベイズ更新）](/blogs/2022/06/13/bayes-update)

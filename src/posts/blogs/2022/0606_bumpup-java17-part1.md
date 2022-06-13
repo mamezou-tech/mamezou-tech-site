@@ -110,7 +110,7 @@ private static String getMessage(Response response) {
 }
 ```
 
-上記は文字列インスタンスの全てのパターンを網羅できていないためコンパイルエラーとなります。これを正しくするには次のようにdefaultラベルを付けます。
+上記は数値型の全てのパターンを網羅できていないためコンパイルエラーとなります。これを正しくするには次のようにdefaultラベルを付けます。
 
 ```java
 private static String getMessage(Response response) {

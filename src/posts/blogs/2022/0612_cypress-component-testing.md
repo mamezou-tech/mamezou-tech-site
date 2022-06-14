@@ -109,6 +109,7 @@ Vue CLIのデフォルトのWebpackの[DevServer](https://webpack.js.org/configu
 
 VueのSFC(Single File Component)で、以下コンポーネントを作成しました。
 
+{% raw %}
 ```typescript
 <template>
   <h1 data-testid="title">{{ title }}</h1>
@@ -132,6 +133,7 @@ const increment = () => {
 };
 </script>
 ```
+{% endraw %}
 
 Vue3のComposition APIを使っています[^1]。
 

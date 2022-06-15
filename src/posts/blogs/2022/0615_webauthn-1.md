@@ -41,7 +41,13 @@ Security Key をクリックします。
 
 ## 構成
 
-WebAuthn では HTTPS が必須です。唯一の例外は localhost を使う場合だけですが iPhone や iPad 上で動作する keycloak のようなプロダクトは存在しないでしょう。したがってこの記事では AWS を使用するので AWS 上で使用できるドメイン名を用意してください。
+では、上記でデモンストレーションした WebAuthn の構成を Keycloak で構築してみます。
+
+WebAuthn では HTTPS が必須です。唯一の例外は localhost を使う場合だけです。ここでは、AWS を使って環境構築するため、ホストゾーン作成済みの [Amazon Route 53](https://aws.amazon.com/jp/route53/) と [AWS Certificate Manager](https://aws.amazon.com/jp/certificate-manager/) を使います。
+
+:::info
+Route 53 のホストゾーンを作成するドメイン名は必ずしも AWS で取得する必要ありません。私が主に使用しているドメイン名は、「[お名前.com](https://www.onamae.com/)」や「[名づけてねっと](https://www.nadukete.net/)」で取得して、ネームサーバーだけ Route 53 を使用しています。
+:::
 
 Keycloak の公式のコンテナイメージを [AWS Fargate](https://aws.amazon.com/jp/fargate/) で実行します。
 
@@ -69,31 +75,32 @@ Keycloak の公式のコンテナイメージを [AWS Fargate](https://aws.amazo
 
 Administration Console のリンクをクリックして、`Username or email` に `admin`、`Password` に `password` を入力して Sign In します。
 
+![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-2.png)
+
 新しい Realm を作成するため、左上の Master のあたりにマウスを置いて「Add realm」ボタンをクリックします。
 
+![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-4.png)
+
 Add realm の Name に `passengers` と入力します。
+
+![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-6.png)
 
 左側にある `Authentication` をクリックします。
 
 ### Flow の設定
 
-Flow で Browser が選択されたボックスの右にある「Copy」ボタンをクリックします。
+1. Flow で Browser が選択されたボックスの右にある「Copy」ボタンをクリックします。
+2. 新しい名前として `WebAuthn Browser` と入力します。
+3. WebAuthn Browser Forms の下にある「Username Password Form」、「WebAuthn Browser Browser - Conditional OTP」、「Condition - User Configured」と「OTP Form」の右にある `Actions` から `Delete` を選んで削除します。
 
-新しい名前として `WebAuthn Browser` と入力します。
+![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-9.png)
 
-WebAuthn Browser Forms の下にある「Username Password Form」、「WebAuthn Browser Browser - Conditional OTP」、「Condition - User Configured」と「OTP Form」の右にある `Actions` から `Delete` を選んで削除します。
-
-WebAuthn Browser Forms の右にある `Actions` の `Add execution` をクリックして、`Provider` から `Username Form` を選択して「Save」ボタンをクリックします。
-
-WebAuthn Browser Forms の右にある `Actions` の `Add flow` をクリックして `Alias` に `Password Or Two-factor` を入力して「Save」ボタンをクリックします。このフローは `REQUIRED` に設定します。
-
-Password Or Two-factor の右にある `Actions` の `Add execution` をクリックして、`Provider` から `WebAuthn Passwordless Authenticator` を選択して「Save」ボタンをクリックします。このフローは `ALTERNATIVE` に設定します。
-
-Password Or Two-factor の右にある `Actions` の `Add flow` をクリックして `Alias` に `Password And Two-factor WebAuthn` を入力して「Save」ボタンをクリックします。このフローは `ALTERNATIVE` に設定します。
-
-Password And Two-factor WebAuthn の右にある `Actions` の `Add execution` をクリックして `Provider` から `Password Form` を選択して「Save」ボタンをクリックします。このフローは `REQUIRED` に設定します。
-
-最後に Password And Two-factor WebAuthn の右にある `Actions` の `Add execution` をクリックして `Provider` から `WebAuthn Authenticator` を選択して「Save」ボタンをクリックします。このフローは `REQUIRED` に設定します。
+4. WebAuthn Browser Forms の右にある `Actions` の `Add execution` をクリックして、`Provider` から `Username Form` を選択して「Save」ボタンをクリックします。
+5. WebAuthn Browser Forms の右にある `Actions` の `Add flow` をクリックして `Alias` に `Password Or Two-factor` を入力して「Save」ボタンをクリックします。このフローは `REQUIRED` に設定します。
+6. Password Or Two-factor の右にある `Actions` の `Add execution` をクリックして、`Provider` から `WebAuthn Passwordless Authenticator` を選択して「Save」ボタンをクリックします。このフローは `ALTERNATIVE` に設定します。
+7. Password Or Two-factor の右にある `Actions` の `Add flow` をクリックして `Alias` に `Password And Two-factor WebAuthn` を入力して「Save」ボタンをクリックします。このフローは `ALTERNATIVE` に設定します。
+8. Password And Two-factor WebAuthn の右にある `Actions` の `Add execution` をクリックして `Provider` から `Password Form` を選択して「Save」ボタンをクリックします。このフローは `REQUIRED` に設定します。
+9. 最後に Password And Two-factor WebAuthn の右にある `Actions` の `Add execution` をクリックして `Provider` から `WebAuthn Authenticator` を選択して「Save」ボタンをクリックします。このフローは `REQUIRED` に設定します。
     
 ![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-10.png)
 
@@ -171,3 +178,4 @@ Sign Out して、もう一度 Sign In すると、Password を入力する画�
 ## 参考
 
 - [インフラ管理不要なコンテナ環境のAWS FargateでKeycloakを動かしてみる](https://qiita.com/wadahiro/items/0837729e7c57becbfd06)
+- [Server Administration Guide](https://www.keycloak.org/docs/latest/server_admin/index.html#managing-webauthn-credentials-as-a-user)

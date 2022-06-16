@@ -60,7 +60,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("./src/fonts");
   eleventyConfig.addPassthroughCopy("./src/img");
   eleventyConfig.addPassthroughCopy("./src/previews");
-  eleventyConfig.addPassthroughCopy({ "./node_modules/photoswipe/dist": "photoswipe" });
+  eleventyConfig.addPassthroughCopy({"./node_modules/photoswipe/dist": "photoswipe"});
 
   eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`);
   eleventyConfig.addShortcode("packageVersion", () => `v${packageVersion}`);
@@ -116,7 +116,21 @@ module.exports = function (eleventyConfig) {
         const imageTag = originalRule(tokens, idx, options, env, self);
         const token = tokens[idx];
         return `<a id="image-swipe-${idx}" class="image-swipe" href="${token.attrs[token.attrIndex("src")][1]}" target="_blank" rel="noopener noreferrer">${imageTag}</a>`;
+      };
+    }).use((md) => {
+      function isInternalLink(token) {
+        return token.attrIndex("href") === -1 ||
+          token.attrGet("href").match(/^([#\/].*$|https:\/\/developer\.mamezou-tech\.com.*$)/);
       }
+      md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+        if (isInternalLink(tokens[idx])) {
+          // skip internal link
+          return self.renderToken(tokens, idx, options, env, self);
+        }
+        tokens[idx].attrPush(["target", "_blank"], ["rel", "noopener noreferrer"]);
+        tokens[idx].attrJoin("class", "new-tab-link");
+        return self.renderToken(tokens, idx, options, env, self);
+      };
     });
 
   eleventyConfig.setLibrary("md", markdownLibrary);

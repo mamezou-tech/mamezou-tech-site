@@ -28,9 +28,9 @@ Java11からJava17で取り込まれた機能や変更は大小様々ありま�
 |switch式|Java14|言語仕様の拡張|前編(今回)で紹介|
 |テキストブロック|Java15|言語仕様の拡張|前編(今回)で紹介|
 |instanceofのパターン・マッチング|Java16|言語仕様の拡張|前編(今回)で紹介|
-|Recordクラス|Java16|言語仕様の拡張|後編で紹介|
-|Sealedクラス|Java17|言語仕様の拡張|後編で紹介|
-|Stream#toList() の追加|Java16|標準APIの追加|後編で紹介|
+|Recordクラス|Java16|言語仕様の拡張|[後編](/blogs/2022/06/13/bumpup-java17-part2/)で紹介|
+|Sealedクラス|Java17|言語仕様の拡張|[後編](/blogs/2022/06/13/bumpup-java17-part2/)で紹介|
+|Stream#toList() の追加|Java16|標準APIの追加|[後編](/blogs/2022/06/13/bumpup-java17-part2/)で紹介|
 
 :::column: Java8からのBump up Java11
 今回Java17化しようとしているアプリはもともとJava8だったため、今回と同じようにLTSのJava11がリリースされてからまとめてJava11にキャッチアップしました。Java8からJava11でも言語仕様の拡張から標準APIの追加まで大小様々な追加変更が行われましたが、その中でもコレは便利だなと積極的に取り込んだ機能として次の２つがあります。
@@ -290,7 +290,7 @@ public static boolean store(Repository repository) {
 instanceofを使った場合、if-elseif-elseで記述する必要があるため可読性がよくありませんが、switchを使うことにより、より簡潔により可読性の高いコードを記述することができようになります。今後は”switch式および文のパターン・マッチング”のコーディングスタイルは標準的になってくると思います。ですので、それまでの練習として今からでも使えるところがあれば、”instanceofのパターン・マッチング”を使っておいて損はないと思います。
 
 
-前編の今回は以上となります。残りの3つの機能は後編（<span style="color:red">Coming Soon!</span>）で紹介したいと思います。
+前編の今回は以上となります。残りの3つの機能は[後編](/blogs/2022/06/13/bumpup-java17-part2/)で紹介したいと思います。
 
 ---
 参照資料

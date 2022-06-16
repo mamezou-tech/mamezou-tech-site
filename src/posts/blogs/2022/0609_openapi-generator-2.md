@@ -2,7 +2,7 @@
 title: OpenAPI Generator を使って Spring Boot アプリを作る (2)
 author: shigeki-shoji
 date: 2022-06-09
-tags: [java, "openapi-generator", "spring-boot"]
+tags: [java, "openapi-generator", "spring-boot", DDD]
 ---
 
 この記事は、「[OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)」の続編です。

@@ -20,6 +20,10 @@ OpenAPI Generator はさまざまな言語とフレームワークに対応し�
 - OpenAPI Generator のバージョンアップ対応の簡素化。
 - Generation Gap パターンの適用の簡素化。
 
+:::info
+OpenAPI Generator を使ったコード生成プロジェクトで、私はコンテナイメージを使う自動ビルドを使用することが多いです。この場合、OpenAPI Generator を使ってコードを生成するフェーズでは Java の実行が可能なコンテナイメージを使い、生成されたそれぞれのコードのビルド、デプロイにはそれぞれ別のコンテナイメージを使用することになります。例えば、Spring Boot のサーバーサイドのコードのビルド、デプロイであれば Maven の実行が可能なコンテナイメージで、TypeScript のクライアントコードのビルド、デプロイであれば Node.js の実行が可能なコンテナイメージとなります。
+:::
+
 OpenAPI Generator には Node.js を使う別の [CLI](https://github.com/OpenAPITools/openapi-generator-cli) もあります。これを使うと OpenAPI Generator のバージョンアップへの対応を容易になりそうですが、詳細は別の機会にします。
 
 前回までの記事で、Generation Gap パターンの適用について説明しました。この記事では Generation Gap パターンと OpenAPI Generator の使用方法との関連について説明します。
@@ -38,7 +42,7 @@ java -jar /tmp/openapi-generator-cli.jar batch application.yaml
 mvn spring-boot:run
 ```
 
-生成されたコードを実行するだけで [http://localhost:8080/example/hello](http://localhost:8080/example/hello) にアクセスして `Hello World` のレスポンスが得られます。
+生成されたコードを実行するだけで `http://localhost:8080/example/hello` にアクセスして `Hello World` のレスポンスが得られます。
 
 このレスポンスは [openapi.yml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-3/openapi.yml) の `example` に設定された値です。
 

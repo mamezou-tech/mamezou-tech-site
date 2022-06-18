@@ -54,8 +54,14 @@ src/imgに配置した画像へのリンク
 
 ![](https://i.gyazo.com/0a10e00098674a544d7d4aca77c4a159.png)
 
-## Mermaid
+## Mermaid(UML)
 
 [Mermaid](https://mermaid-js.github.io/mermaid/#/)で図を書きたい！という通なあなたはこちらを参考にしてください。
 
 - [/src/pages/mermaid-sample.md](/src/pages/mermaid-sample.md)
+
+## KaTeX(数式)
+
+数式を記事に載せたいというマニアなあなたはKaTeXをサポートしています。こちらを参考にしてください。
+
+- [/src/pages/katex-sample.md](/src/pages/katex-sample.md)

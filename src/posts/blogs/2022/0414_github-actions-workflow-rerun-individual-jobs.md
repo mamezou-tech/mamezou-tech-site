@@ -2,7 +2,7 @@
 title: GitHub Actions ワークフローで個別ジョブのリランが可能に
 author: masahiro-kondo
 date: 2022-04-14
-tags: [CI/CD]
+tags: [CI/CD, GitHub]
 ---
 
 先月、GitHub Actions でワークフロー内のジョブを個別にリランできる機能がリリースされました。

@@ -2,7 +2,7 @@
 title: GitHub のリリースノート自動生成機能を使う
 author: masahiro-kondo
 date: 2022-03-11
-tags: [CI/CD]
+tags: [CI/CD, GitHub]
 ---
 
 昨年10月 GitHub のリリース機能がリニューアルされ、自動的なリリースノート生成とリリースページ作成 UI の改善が実施されました。

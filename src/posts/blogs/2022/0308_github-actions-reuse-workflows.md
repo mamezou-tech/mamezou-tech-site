@@ -2,7 +2,7 @@
 title: GitHub Actions - 再利用可能ワークフローを使う
 author: masahiro-kondo
 date: 2022-03-08
-tags: [CI/CD]
+tags: [CI/CD, GitHub]
 ---
 
 GitHub Actions のワークフローから別のワークフローを再利用する機能が昨年11月にリリースされました。この機能がなくて不便に感じていた人も多いのではないでしょうか。

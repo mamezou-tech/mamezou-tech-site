@@ -2,7 +2,7 @@
 title: GitHub Actions - 再利用可能ワークフローと手動トリガーで入力値の扱いを統一
 author: masahiro-kondo
 date: 2022-06-11
-tags: [CI/CD]
+tags: [CI/CD, GitHub]
 ---
 
 これまで、GitHub Actions の手動トリガー(workflow_dispatch)では、入力値を扱う際、`github.event.inputs.foo` のように event コンテキストから値を取り出す必要がありました。

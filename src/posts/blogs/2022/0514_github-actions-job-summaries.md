@@ -2,7 +2,7 @@
 title: GitHub Actions ジョブサマリー機能を使う
 author: masahiro-kondo
 date: 2022-05-14
-tags: [CI/CD]
+tags: [CI/CD, GitHub]
 ---
 
 GitHub Actions のジョブサマリー機能がリリースされました。

@@ -1,22 +1,20 @@
 ---
 pagination:
-  data: collections
+  data: collections.tagArticles
   size: 1
-  alias: tag
-  filter:
-    - all
-    - nav
-    - post
-    - pages
-    - no-page
-    - tagList
-    - contributorArticles
+  alias: tagArticle
   addAllPagesToCollections: true
+permalink: /tags/{{ tagArticle.tag }}/{% if tagArticle.pageIndex > 0 %}{{ tagArticle.pageIndex }}/{% endif %}
 layout: page.njk
-permalink: /tags/{{ tag }}/
 eleventyComputed:
-  title: "“{{ tag }}”タグの記事"
+  title: "“{{ tagArticle.tag }}”タグの記事"
 ---
 
-{% set postslist = collections[tag] | reverse %}
+{% set pages = pagination.pages | byTag(tagArticle.tag) %}
+{% set hrefs = pagination.hrefs | tagUrl(tagArticle.tag) %}
+{% include "pagination.njk" %}
+
+{% set postslist = tagArticle.articles %}
 {% include "posts-list.njk" %}
+
+{% include "pagination.njk" %}

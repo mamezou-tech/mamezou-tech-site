@@ -1,6 +1,7 @@
 ---
 title: Debezium によるチェンジデータキャプチャー
 author: masahiro-kondo
+tags: [Kafka]
 date: 2022-02-28
 ---
 

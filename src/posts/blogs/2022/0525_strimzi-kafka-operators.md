@@ -1,7 +1,7 @@
 ---
 title: Strimzi - Kubernetes で Kafka を運用するための Operators
 author: masahiro-kondo
-tags: [k8s, container]
+tags: [k8s, container, Kafka]
 date: 2022-05-25
 ---
 

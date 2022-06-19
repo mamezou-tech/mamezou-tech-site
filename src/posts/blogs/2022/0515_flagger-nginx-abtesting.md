@@ -2,7 +2,7 @@
 title: Flagger と Ingress Nginx でA/Bテストをする
 author: noboru-kudo
 date: 2022-05-15
-tags: ["k8s", "container", "CI/CD"]
+tags: ["k8s", "container", "CI/CD", "Flagger"]
 ---
 
 前回は、[Flagger](https://flagger.app/)とNginxのIngress Controllerを使ってカナリアリリースを試しました。

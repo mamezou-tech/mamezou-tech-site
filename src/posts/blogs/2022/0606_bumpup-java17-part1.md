@@ -1,6 +1,7 @@
 ---
 title: Java17にBump upしてみた - 使った/使わなかった新機能(前編)
 author: toshio-ogiwara
+tags: [java]
 date: 2022-06-06
 ---
 

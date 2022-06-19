@@ -10,6 +10,7 @@ module.exports = (collection) => {
           case 'nav':
           case 'pages':
           case 'no-page':
+          case 'posts':
             return false;
         }
 
@@ -21,5 +22,5 @@ module.exports = (collection) => {
       }
     }
   });
-  return [...tagSet];
+  return [...tagSet].sort();
 };

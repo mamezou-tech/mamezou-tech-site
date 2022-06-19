@@ -27,7 +27,6 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [Kubernetesチュートリアル ローカル開発環境準備 - 実行環境(minikube)](/containers/k8s/tutorial/app/minikube/)
 - [Kubernetesチュートリアル ローカル開発環境準備 - 自動化ツール(Skaffold)](/containers/k8s/tutorial/app/minikube/)
 - [Kubernetesチュートリアル ローカル開発環境準備 - ローカルAWS(LocalStack)](/containers/k8s/tutorial/app/minikube/)
-- [Telepresence - EKSのワークロードをローカル環境でデバッグする](/blogs/2022/06/04/telepresence-on-eks/)
 
 ### リモート環境
 

@@ -2,7 +2,7 @@
 title: Flagger と Ingress Nginx でカナリアリリースをする
 author: noboru-kudo
 date: 2022-05-08
-tags: ["k8s", "container", "CI/CD"]
+tags: ["k8s", "container", "CI/CD", "Flagger"]
 ---
 
 Kubernetesはデフォルトではローリングアップデート(RollingUpdate)とPod再生成(Recreate)をデプロイ時の戦略として利用できます。

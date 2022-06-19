@@ -1,6 +1,7 @@
 ---
 title: Backstageで開発者ポータルサイトを構築する - 導入編
 author: noboru-kudo
+tags: [Backstage]
 date: 2022-04-29
 ---
 

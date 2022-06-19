@@ -1,6 +1,7 @@
 ---
 title: Backstageで開発者ポータルサイトを構築する - カタログ作成
 author: noboru-kudo
+tags: [Backstage]
 date: 2022-05-05
 ---
 

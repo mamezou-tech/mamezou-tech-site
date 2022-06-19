@@ -2,7 +2,7 @@
 title: サービスメッシュが解決しようとしている課題 
 author: shigeki-shoji
 date: 2022-05-17
-tags: [k8s, container]
+tags: [k8s, container, msa]
 ---
 
 この記事では、サービスメッシュがどのような課題を解決しようとしているかについて概説します。

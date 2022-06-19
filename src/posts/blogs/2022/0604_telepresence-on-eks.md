@@ -2,7 +2,7 @@
 title: Telepresence - EKSのワークロードをローカル環境でデバッグする
 author: noboru-kudo
 date: 2022-06-04
-tags: ["k8s", "container", "aws"]
+tags: ["k8s", "container", "AWS"]
 ---
 
 クラウド環境で動作しているアプリケーションのデバッグはどうしていますか？

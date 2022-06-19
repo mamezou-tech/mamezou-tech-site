@@ -79,12 +79,16 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter('pageTags', require("./11ty/page-tags"));
   eleventyConfig.addFilter('blogPage', require("./11ty/blog-page"));
   eleventyConfig.addFilter('inputPath', (pages, path) => pages.find((page) => page.inputPath === path));
+  eleventyConfig.addFilter('byTag',
+    (tagArticles, tag) => tagArticles.filter(tagArticle => tagArticle.tag === tag));
+  eleventyConfig.addFilter('tagUrl', (hrefs, tag) => hrefs.filter(href => href.includes(`tags/${tag}`)));
   eleventyConfig.addFilter('byAuthor',
     (contributorArticles, author) => contributorArticles.filter(contributor => contributor.name === author));
   eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));
   eleventyConfig.addCollection('articles', getPosts);
   eleventyConfig.addCollection('tagList', require("./11ty/tag-list"));
   eleventyConfig.addCollection('contributorArticles', require("./11ty/contributor-articles"));
+  eleventyConfig.addCollection('tagArticles', require("./11ty/tag-articles"));
 
   /* Markdown Overrides */
   const markdownLibrary = markdownIt({

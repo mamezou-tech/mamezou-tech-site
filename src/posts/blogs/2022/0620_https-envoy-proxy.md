@@ -161,7 +161,7 @@ keycloak.example.com A 192.168.1.2
 Route 53 へのレコードの登録の反映には少し時間がかかるかもしれません。数分待って、iPad 等の Safari で上の例の場合では `https://keycloak.example.com/auth` にアクセスしてください。Keycloak の Welcome 画面が表示されます。
 
 :::info
-Keycloak へのアクセスで使用する端末に PC 等だけを使う場合は、ここで説明したような DNS レコードではなく `/etc/hosts` ファイルの使用も可能です。この記事では iPad、iPhone、Android 等の `/etc/hosts` ファイルの編集ができない/困難な端末の使用を想定しているため、Route 53 にレコードを追加しています。
+Keycloak へのアクセスで使用する端末に PC を使う場合は、ここで説明したような DNS レコードではなく `/etc/hosts` ファイルの使用も可能です。この記事では iPad、iPhone、Android 等の `/etc/hosts` ファイルの編集ができない/困難な端末の使用を想定しているため、Route 53 にレコードを追加しています。
 :::
 
 ## まとめ

@@ -2,7 +2,7 @@
 title: クラスタ環境デプロイ - コンテナレジストリ(ECR)
 author: noboru-kudo
 date: 2022-01-13
-tags: [AWS]
+tags: [AWS, ECR]
 prevPage: ./src/posts/k8s-tutorial/app/batch.md
 nextPage: ./src/posts/k8s-tutorial/app/eks-1.md
 ---

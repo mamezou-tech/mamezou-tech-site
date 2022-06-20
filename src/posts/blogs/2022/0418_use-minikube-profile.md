@@ -1,6 +1,7 @@
 ---
 title: Minikube のプロファイルを使いこなす
 author: masahiro-kondo
+tags: [minikube]
 date: 2022-04-18
 ---
 

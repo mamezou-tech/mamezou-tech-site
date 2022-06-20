@@ -1,7 +1,7 @@
 ---
 title: 分散トレーシング(OpenTelemetry / AWS X-Ray)
 author: noboru-kudo
-tags: [AWS]
+tags: [AWS, tracing]
 prevPage: ./src/posts/k8s-tutorial/ops/cloudwatch.md
 nextPage: ./src/posts/k8s-tutorial/ops/velero-backup.md
 date: 2022-05-03

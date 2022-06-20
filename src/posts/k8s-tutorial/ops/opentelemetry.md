@@ -1,7 +1,7 @@
 ---
 title: メトリクス収集・可視化 - OpenTelemetry / CloudWatch
 author: noboru-kudo
-tags: [AWS]
+tags: [AWS, metrics]
 prevPage: ./src/posts/k8s-tutorial/ops/prometheus.md
 nextPage: ./src/posts/k8s-tutorial/ops/opensearch.md
 date: 2022-03-24

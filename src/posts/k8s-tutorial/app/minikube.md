@@ -2,6 +2,7 @@
 title: ローカル開発環境準備 - 実行環境(minikube)
 author: noboru-kudo
 date: 2021-12-16
+tags: [minikube]
 prevPage: ./src/posts/k8s-tutorial/storage/efs.md
 nextPage: ./src/posts/k8s-tutorial/app/skaffold.md
 ---

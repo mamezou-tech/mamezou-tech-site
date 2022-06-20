@@ -1,7 +1,7 @@
 ---
 title: ログ収集・分析(Fluent Bit / AWS OpenSearch)
 author: noboru-kudo
-tags: [AWS]
+tags: [AWS, logging]
 prevPage: ./src/posts/k8s-tutorial/ops/opentelemetry.md
 nextPage: ./src/posts/k8s-tutorial/ops/cloudwatch.md
 date: 2022-04-03

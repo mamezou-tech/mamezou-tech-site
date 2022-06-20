@@ -2,7 +2,7 @@
 title: KubernetesのPod Security(PSS/PSA)
 author: noboru-kudo
 date: 2022-03-03
-tags: [container, k8s]
+tags: [container, k8s, Security]
 ---
 
 Kubernetesのv1.21で、今までPodセキュリティを担っていた[PodSecurityPolicy(PSP)](https://kubernetes.io/docs/concepts/policy/pod-security-policy/)が非推奨となりました[^1]。このままいくとPSPはv1.25で削除される予定です。

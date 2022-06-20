@@ -2,7 +2,7 @@
 title: SealedSecretsでKubernetesコンテナのシークレット情報をGit管理する
 author: noboru-kudo
 date: 2022-06-05
-tags: ["k8s", "container"]
+tags: ["k8s", "container", "Security"]
 ---
 
 GitOpsが普及し、アプリケーションのソースコードだけでなく、インフラを含めた全ての構成情報をGitで管理して、ランタイム環境と同期を取ることが一般的になってきました。

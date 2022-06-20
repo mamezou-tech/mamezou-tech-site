@@ -160,6 +160,10 @@ keycloak.example.com A 192.168.1.2
 
 Route 53 へのレコードの登録の反映には少し時間がかかるかもしれません。数分待って、iPad 等の Safari で上の例の場合では `https://keycloak.example.com/auth` にアクセスしてください。Keycloak の Welcome 画面が表示されます。
 
+:::info
+Keycloak へのアクセスで使用する端末に PC を使う場合は、ここで説明したような DNS レコードではなく `/etc/hosts` ファイルの使用も可能です。この記事では iPad、iPhone、Android 等の `/etc/hosts` ファイルの編集ができない/困難な端末の使用を想定しているため、Route 53 にレコードを追加しています。
+:::
+
 ## まとめ
 
 プライベートネットワークに HTTPS で提供するアプリケーションは、証明書として自己署名証明書を利用する方法、プロキシを使用せずアプリケーション自体に証明書をインストールする方法、プロキシに Nginx や HAProxy 等を利用する方法など、多くの選択肢があります。この記事では、証明書に Let's Encrypt を使い、プロキシに Envoy Proxy を利用する方法を説明しました。

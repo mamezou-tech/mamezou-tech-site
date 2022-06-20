@@ -21,7 +21,7 @@ Code scanning alerts は、コード分析エンジン CodeQL を使用してコ
 
 [About code scanning | GitHub Docs](https://docs.github.com/ja/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning)
 
-機能の紹介としてはこれだけなのですが、CodeQL がちょっと気になったので調べてみました。
+機能の紹介としてはこれだけなのですが、CodeQL が気になったので少し調べてみました。
 
 CodeQL は、GitHub により買収された Semmle 社によって開発されました。分析対象のコードの AST(抽象構文木)などを格納したデータベースを作成し、クエリを発行することで解析を行います。
 
@@ -71,7 +71,7 @@ where not exists(p.getAnAccess())
 select p
 ```
 
-SQL ライクな DSL でコードの該当箇所を抽出できることがわかります。各言語ごとの CodeQL 実装は以下のリポジトリで公開されています。
+SQL ライクな DSL でコードの該当箇所を抽出できることがわかります。各言語用 CodeQL 実装は以下のリポジトリで公開されています。
 
 [GitHub - github/codeql: CodeQL: the libraries and queries that power security researchers around the world, as well as code scanning in GitHub Advanced Security (code scanning), LGTM.com, and LGTM Enterprise](https://github.com/github/codeql)
 
@@ -178,7 +178,7 @@ jobs:
       uses: github/codeql-action/analyze@v2
 ```
 
-workflow_dispatch(手動)、pull_request の他に schedule として crontab 形式で起動するようなテンプレートになっているのは、コード変更以外に、CWE や言語のバージョンアップによる新たな脆弱性検出があり得るため、定期的に点検する必要があるからでしょう。
+workflow_dispatch(手動)、pull_request の他に、schedule として crontab 形式で起動するようなテンプレートになっています。これは、コード変更しなくても、新種の脆弱性発見の可能性があるため、定期的に点検する必要があるからでしょう。
 
 使用されているのは、GitHub 公式 codeql-action です。
 
@@ -206,7 +206,7 @@ workflow_dispatch(手動)、pull_request の他に schedule として crontab �
 
 Bot がインラインで指摘してくれるため、マージ前に対応することができます。
 
-GitHub の Roadmap を見ると、Kotlin や Swift のサポートも計画されているようです。
+CodeQL のリポジトリでは、すでに Swift のサポートが実装中のようですし、Kotlin のサポートも計画されているようです。
 
 このように素晴らしい Code scanning ですが、private リポジトリについては有償で、Security の Code scanning alerts のセクションは `Contact sales` になっています。
 

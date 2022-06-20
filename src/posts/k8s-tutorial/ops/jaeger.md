@@ -1,6 +1,7 @@
 ---
 title: 分散トレーシング(OpenTelemetry / Jaeger)
 author: noboru-kudo
+tags: [tracing]
 prevPage: ./src/posts/k8s-tutorial/ops/cloudwatch.md
 date: 2022-04-21
 ---

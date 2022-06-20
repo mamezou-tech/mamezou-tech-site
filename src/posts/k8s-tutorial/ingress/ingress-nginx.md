@@ -2,6 +2,7 @@
 title: Ingress - NGINX Ingress Controller
 author: noboru-kudo
 date: 2021-10-10
+tags: [ingress, nginx]
 prevPage: ./src/posts/k8s-tutorial/infra/aws-eks-terraform.md
 nextPage: ./src/posts/k8s-tutorial/ingress/ingress-aws.md
 ---

@@ -1,6 +1,7 @@
 ---
 title: メトリクス収集・可視化 - Prometheus / Grafana
 author: noboru-kudo
+tags: [metrics]
 prevPage: ./src/posts/k8s-tutorial/ops/scheduling.md
 nextPage: ./src/posts/k8s-tutorial/ops/opentelemetry.md
 date: 2022-03-17

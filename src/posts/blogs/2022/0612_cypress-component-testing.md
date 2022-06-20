@@ -2,7 +2,7 @@
 title: Cypress Component TestingでVueコンポーネントの単体テストをする
 author: noboru-kudo
 date: 2022-06-12
-tags: ["テスト"]
+tags: ["テスト", cypress]
 ---
 
 E2Eテストのフレームワークとして有名な[Cypress](https://www.cypress.io/)ですが、コンポーネントテスト(Component Testing)機能もあります。

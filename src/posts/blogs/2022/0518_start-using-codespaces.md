@@ -1,6 +1,7 @@
 ---
 title: GitHub Codespaces を使いはじめる
 author: masahiro-kondo
+tags: [GitHub]
 date: 2022-05-18
 ---
 

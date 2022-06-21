@@ -102,7 +102,7 @@ Spring Integration のドメイン固有言語 (DSL) を使って [MQTT ブロ�
     }
 ```
 
-この定義を使用するときは、Spring の依存性注入 (DI) を使うことが必要です。つまり `@Autowired` 等を使うことが必要です。Spring の DI コンテナに登録されるコンポーネントは、コードに書かれたとおりに生成されたインスタンスではなく、Spring の内部の仕組みでコードが付加されている場合があります。ここで定義した `IntegrationFlow` もその一つです。
+この定義を使用するときは、Spring による依存性注入 (DI) を使うことが必要です。つまり `@Autowired` 等を使うことが必要です。Spring の DI コンテナに登録されるコンポーネントは、コードに書かれたとおりに生成されたインスタンスではなく、Spring の内部の仕組みでコードが付加されている場合があります。ここで定義した `IntegrationFlow` もその一つです。
 
 注入された `IntegrationFlow` を使ってイベントを発行する[コード](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-4/src/main/java/com/mamezou_tech/example/infrastructure/repository/HelloEventRepositoryImpl.java)は次のようになります。
 

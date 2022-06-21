@@ -217,6 +217,7 @@ public class HelloEvents {
 ## 参考
 
 - [エリック・エヴァンスのドメイン駆動設計](https://www.amazon.co.jp/dp/4798121967/)
+- [エンタープライズ統合パターン](https://www.enterpriseintegrationpatterns.com/)
 - [実践ドメイン駆動設計](https://www.amazon.co.jp/dp/479813161X/)
 - [Spring Integration](https://spring.io/projects/spring-integration)
 

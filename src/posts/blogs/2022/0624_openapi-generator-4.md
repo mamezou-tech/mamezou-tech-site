@@ -112,7 +112,7 @@ Spring Integration のドメイン固有言語 (DSL) を使って [MQTT ブロ�
 
 ## レイヤードアーキテクチャ
 
-2回目の[記事](https://developer.mamezou-tech.com/blogs/2022/06/09/openapi-generator-2/)で説明したときとドメイン層以外のレイヤー構成に変化はありません。以前はドメイン層を設けなかったため、アプリケーション層から直接インフラストラクチャー層を実行するようになっていました。
+2回目の[記事](https://developer.mamezou-tech.com/blogs/2022/06/09/openapi-generator-2/)で説明したときとドメイン層以外のレイヤー構成に変化はありません。以前はドメイン層を設けなかったため、アプリケーション層から直接インフラストラクチャー層を実行するようにしていました。
 
 ### インフラストラクチャー層
 
@@ -120,23 +120,85 @@ Spring Integration のドメイン固有言語 (DSL) を使って [MQTT ブロ�
 
 ドメイン駆動設計はビジネスドメインにフォーカスして、ビジネスドメインをドメイン層に隔離します。
 
-一方、組込みではデバイスのリアルタイム制御など、エンタープライズアプリケーションでいうインフラストラクチャー層のウェイトが大きくなりやすいです。
+一方、組込みではリアルタイム制御など、エンタープライズアプリケーションでいうインフラストラクチャー層のウェイトが大きくなりやすいです。
 
-冬眠ポッドや宇宙船制御システムでは、このインフラストラクチャー層にフォーカスして多層化する必要に迫られるでしょう。
+冬眠ポッドや宇宙船制御システムでは、このインフラストラクチャー層にフォーカスして多層化が必要になるでしょう。
 
 ### ドメイン層の実装
 
-#### 集約
+複雑なロジック、再利用性の高いレイヤーを実装するコードは、Spring のようなフレームワークの寿命と合わせるべきではありません。ドメイン駆動設計でドメイン層を他のレイヤーと分離している場合は、このドメイン層のコードをライブラリにして、他のフレームワークでも利用できると考えています。
 
-#### ドメインイベント
+したがって、このサービスの実装では、ドメイン層のコードに Spring に依存するコードを含めないようにしています。
 
-#### エンティティ
+ドメイン駆動設計を採用した場合、インフラストラクチャー層と結合しやすいデザインパターンは、ライフサイクルに分類される、集約、リポジトリ、ファクトリーです。エンティティは、この3つと関連する可能性があり、バリューオブジェクトは集約とファクトリーに関連する可能性があり、ドメインイベントは集約と関連する可能性があります。
 
-#### バリューオブジェクト
+これらのオブジェクトにインフラストラクチャー層の実装を注入しなければなりませんが、`@Autowired` などのアノテーションを使わずにアプリケーション層のコード等で注入するようにしました。
 
-#### ファクトリー
+外部からドメインへのアクセスは、集約ルートを通さなければならないというルールを前述しました。アプリケーション層はこの外部との境界に位置するレイヤーです。したがって、集約でトランザクション整合性を保つために `@Transactional` のようなアノテーションを追加する必要があるとすれば、アプリケーション層のメソッドに付加して制御可能です。
 
-#### リポジトリ
+#### 集約 (aggregates)
+
+集約は、リポジトリとファクトリーに依存する可能性があります。このサービスの実装では、集約にリポジトリやファクトリーの実装が注入されるようになっています。
+
+```java
+package com.mamezou_tech.example.domain.aggregate;
+
+import com.mamezou_tech.example.domain.domainevent.HelloEvent;
+import com.mamezou_tech.example.domain.entity.HibernationPod;
+import com.mamezou_tech.example.domain.factory.HelloEventFactory;
+import com.mamezou_tech.example.domain.repository.HelloEventRepository;
+
+public class HelloEvents {
+
+    private final HelloEventFactory helloEventFactory;
+
+    private final HelloEventRepository helloEventRepository;
+
+    public HelloEvents(HelloEventFactory helloEventFactory, HelloEventRepository helloEventRepository) {
+        this.helloEventFactory = helloEventFactory;
+        this.helloEventRepository = helloEventRepository;
+    }
+
+    public HelloEvent publishEvent(final HibernationPod hibernationPod) {
+        HelloEvent helloEvent = helloEventFactory.create(hibernationPod);
+        helloEventRepository.save(helloEvent);
+        return helloEvent;
+    }
+}
+```
+
+例にあげた「発行済イベント集約 (HelloEvents)」のインスタンス化は、アプリケーション層の次のようなコードです。
+
+```java
+    public HelloService(@Autowired HelloEventFactory helloEventFactory, HelloEventRepository helloEventRepository) {
+        HelloEvents helloEvents = new HelloEvents(helloEventFactory, helloEventRepository);
+        this.hibernationPods = new HibernationPods(helloEvents);
+    }
+```
+
+#### ドメインイベント (domain-events)
+
+ドメインイベントは、集約を通してイベントを生成し、集約を通じて発行 (publish) します。
+
+#### エンティティ (entities)
+
+新しいエンティティは、直接、集約またはファクトリーを通して生成します。データベース等にある既存のエンティティは、集約またはリポジトリを通して取得します。
+
+#### バリューオブジェクト (value-objects)
+
+バリューオブジェクトは、直接、集約またはファクトリーを通して生成、取得します。
+
+#### ファクトリー (factories)
+
+インフラストラクチャー層の実装が必要ない場合を除いて、ドメイン層では `interface` として定義します。
+
+#### リポジトリ (repositories)
+
+インフラストラクチャー層の実装が必要ない場合を除いて、ドメイン層では `interface` として定義します。
+
+## まとめ
+
+この記事のコード全体は [GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-4) にあります。
 
 ## 参考
 

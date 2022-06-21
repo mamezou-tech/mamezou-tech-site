@@ -15,7 +15,7 @@ tags: [java, "openapi-generator", "spring-boot", "spring-integration", DDD]
 
 このサービスは、冬眠ポッドにドメインイベントを発行する [publish/subscribe](https://www.enterpriseintegrationpatterns.com/PublishSubscribeChannel.html) のために MQTT を使用します。MQTT は非常に軽量な代わりに [Kafka](https://kafka.apache.org/) のようなイベントストアを保持しません。つまり、購読者 (subscriber または consumer) が接続していない間に発行されるイベントは残らないということを意味します。
 
-従ってイベントストーミングの見直しで、後で受信されなかったイベントの再発行を可能にするため「発行済みイベント」集約をこのサービスに持ちました。「[実践ドメイン駆動設計](https://www.amazon.co.jp/dp/479813161X/)」の説明でもドメインイベントの発行は集約を通しています。
+従ってイベントストーミングの見直しで、後で受信されなかったイベントの再発行を可能にするため「発行済みイベント」集約をこのサービスに持ちました。「[実践ドメイン駆動設計](https://www.amazon.co.jp/dp/479813161X/)」でもドメインイベントの発行は集約を通しています。
 
 イベントストーミングの成果をさらに「[Context Mapper](https://contextmapper.org/docs/home/)」ツールを使って[モデリング](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-4/context-map/example.cml)しました。
 
@@ -70,7 +70,7 @@ PlantUML を使って出力した図は下のようになります。
 
 ![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-4/out/src-gen/example_BC_ExampleContext/example_BC_ExampleContext.png)
 
-「[エリック・エヴァンスのドメイン駆動設計](https://www.amazon.co.jp/dp/4798121967/)」で集約 (aggregate) と集約ルート (aggregate root) について説明されています。
+「[エリック・エヴァンスのドメイン駆動設計](https://www.amazon.co.jp/dp/4798121967/)」に集約 (aggregate) と集約ルート (aggregate root) の説明があります。
 
 ポイントは、「集約」はトランザクション整合性が守られる境界で、境界づけられたコンテキスト (bounded context) を横断するアクセスは集約ルートを介さなければならないということです。余談ですが、ここからの帰結として「ドメイン駆動設計」を採用し、複数の集約を横断する場合には「結果整合性」となります。
 
@@ -79,11 +79,11 @@ PlantUML を使って出力した図は下のようになります。
 
 ## イベントのフロー
 
-このサービスの設計では、冬眠ポッドが開いて、挨拶の音声ファイルの生成をリクエストすると、音声ファイル生成が通知されるイベントのIDをレスポンスします。
+このサービスの設計では、冬眠ポッドが開いて、挨拶の音声ファイルの生成をリクエストすると、音声ファイル生成が通知されるイベントIDをレスポンスします。
 
 音声ファイルの URL は MQTT を通じてイベントが発行されます。冬眠ポッドの別の部分にあるオーディオプレーヤーコンポーネントが MQTT をサブスクライブして、自身のイベントの場合に生成された音声ファイルを再生します。
 
-リクエストした音声ファイルがいつまでも届かない場合、冬眠ポッドは、リクエスト時のレスポンスで受け取ったイベントIDを使って再送をリクエストするよう拡張することが可能です。
+リクエストした音声ファイルがいつまでも届かない場合、冬眠ポッドは、リクエスト時のレスポンスで受け取ったイベントIDを使って再送を求める拡張が可能な設計になっています。
 
 ## Spring Integration
 
@@ -102,7 +102,7 @@ Spring Integration のドメイン固有言語 (DSL) を使って [MQTT ブロ�
     }
 ```
 
-この定義を使用するときは、Spring の依存性注入 (DI) を使うことが必要です。つまり `@Autowired` 等を使うことが必要です。Spring の DI コンテナに登録されるコンポーネントは、ここに書かれたとおりに生成されたインスタンスではなく、Spring の内部の仕組みでコードが付加されている場合があります。ここで定義した `IntegrationFlow` もその一つです。
+この定義を使用するときは、Spring の依存性注入 (DI) を使うことが必要です。つまり `@Autowired` 等を使うことが必要です。Spring の DI コンテナに登録されるコンポーネントは、コードに書かれたとおりに生成されたインスタンスではなく、Spring の内部の仕組みでコードが付加されている場合があります。ここで定義した `IntegrationFlow` もその一つです。
 
 注入された `IntegrationFlow` を使ってイベントを発行する[コード](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-4/src/main/java/com/mamezou_tech/example/infrastructure/repository/HelloEventRepositoryImpl.java)は次のようになります。
 
@@ -132,7 +132,7 @@ Spring Integration のドメイン固有言語 (DSL) を使って [MQTT ブロ�
 
 ドメイン駆動設計を採用した場合、インフラストラクチャー層と結合しやすいデザインパターンは、ライフサイクルに分類される、集約、リポジトリ、ファクトリーです。エンティティは、この3つと関連する可能性があり、バリューオブジェクトは集約とファクトリーに関連する可能性があり、ドメインイベントは集約と関連する可能性があります。
 
-これらのオブジェクトにインフラストラクチャー層の実装を注入しなければなりませんが、`@Autowired` などのアノテーションを使わずにアプリケーション層のコード等で注入するようにしました。
+これらのオブジェクトにインフラストラクチャー層の実装を注入しなければなりませんが、`@Autowired` などのアノテーションを使わずにアプリケーション層のコードで注入するようにしました。
 
 外部からドメインへのアクセスは、集約ルートを通さなければならないというルールを前述しました。アプリケーション層はこの外部との境界に位置するレイヤーです。したがって、集約でトランザクション整合性を保つために `@Transactional` のようなアノテーションを追加する必要があるとすれば、アプリケーション層のメソッドに付加して制御可能です。
 
@@ -172,7 +172,7 @@ public class HelloEvents {
 ```java
     public HelloService(@Autowired HelloEventFactory helloEventFactory, HelloEventRepository helloEventRepository) {
         HelloEvents helloEvents = new HelloEvents(helloEventFactory, helloEventRepository);
-        this.hibernationPods = new HibernationPods(helloEvents);
+        this.passengers = new Passengers(helloEvents);
     }
 ```
 
@@ -206,3 +206,9 @@ public class HelloEvents {
 - [ドメイン駆動設計のコンテキストマップ](https://developer.mamezou-tech.com/blogs/2022/04/21/context-map/)
 - [実践ドメイン駆動設計](https://www.amazon.co.jp/dp/479813161X/)
 - [エリック・エヴァンスのドメイン駆動設計](https://www.amazon.co.jp/dp/4798121967/)
+
+## 過去の記事
+
+- [OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)
+- [OpenAPI Generator を使って Spring Boot アプリを作る (2)](/blogs/2022/06/09/openapi-generator-2/)
+- [OpenAPI Generator を使って Spring Boot アプリを作る (3)](/blogs/2022/06/17/openapi-generator-3/)

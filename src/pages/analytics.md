@@ -10,12 +10,13 @@ date: git Last Modified
 
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/Introduction-of-statistical-analysis-tool-jamovi/)
+- [ベイズ統計をお手軽に、統計解析ツールJASPの紹介](/blogs/2022/06/23/statistical-analysis-tool-jasp/) <span style="color: red;">★NEW★</span>
 
 ## 古典的統計学(推計統計・記述統計)
 ### 基本編
 - [仮説検定はなぜ遠回りするのか](/blogs/2022/06/01/hypothesis-test/)
 - [箱ひげ図で外れ値を確認する](/blogs/2022/05/18/Check-outliers-with-a-boxplot/)
-- [統計学で避けて通れない自由度の話](/blogs/2022/06/20/degrees-of-freedom/) <span style="color: red;">★NEW★</span>
+- [統計学で避けて通れない自由度の話](/blogs/2022/06/20/degrees-of-freedom/)
 ### t検定
 - [品質改善効果を検定で確認する（対応なしt検定）](/blogs/2022/05/19/Confirm-the-quality-improvement-effect/)
 - [対応のあるデータの差を検定する（対応ありt検定）](/blogs/2022/05/20/corresponding-t-test/)

@@ -232,7 +232,7 @@ public class CodeFlow {
 
         Map<String, Object> json = mapper.readValue(response.body(), new TypeReference<Map<String, Object>>() {});
         if (json.containsKey("error")) {
-            logger.error("error", json.get("error"));
+            logger.error(json.get("error"));
         }
         return json.get("id_token") instanceof String idToken ? idToken : null;
     }
@@ -253,7 +253,7 @@ auth:
   tokenEndpoint: https://keycloak.example.com/auth/realms/passengers/protocol/openid-connect/token
   clientId: hibernation-pod
   clientSecret: SECRETSECRETSECRET
-  callback: /auth/callback
+  callback: /callback
 ```
 
 `clientSecret` に Keycloak の設定時に記録した値を設定してください。

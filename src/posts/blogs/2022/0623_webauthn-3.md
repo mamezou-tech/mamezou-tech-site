@@ -232,7 +232,7 @@ public class CodeFlow {
 
         Map<String, Object> json = mapper.readValue(response.body(), new TypeReference<Map<String, Object>>() {});
         if (json.containsKey("error")) {
-            logger.error(json.get("error"));
+            logger.error(json.get("error").toString());
         }
         return json.get("id_token") instanceof String idToken ? idToken : null;
     }

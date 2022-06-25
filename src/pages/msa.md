@@ -51,7 +51,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - [第1回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)<br/>
   - 最初に OpenAPI Generator を使った簡単なサービスを実装します。
 - [第2回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/09/openapi-generator-2/)
-  - ドメイン駆動設計で活用するイベントストーミングとサイドカーパターンを紹介します。
+  - ドメイン駆動設計の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
 - [第3回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/17/openapi-generator-3/)
   - OpenAPI Generator のようなコード生成の活用でポイントとなる Generation Gap パターンについて説明します。
 - [第4回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/24/openapi-generator-4/)

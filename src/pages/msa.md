@@ -60,19 +60,19 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 ### Envoy Proxy
 サイドカーの利用が多いプログラマブルな Proxy である [Envoy Proxy](https://www.envoyproxy.io/) を説明します。
 
-- [S3 の静的 Web サイトをセキュアに Envoy でホスティング](https://developer.mamezou-tech.com/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)
-  - 「[S3 の静的 Web サイトを Envoy でホスティング](https://developer.mamezou-tech.com/blogs/2022/02/16/hosting-a-static-website-using-s3-with-envoy/)」から S3 バケットアクセスをセキュアにするため、Envoy Proxy から IAM 認証を使ったアクセスを説明します。
-- [Envoy を使用して ID Token (OIDC) を検証する](https://developer.mamezou-tech.com/blogs/2022/02/20/envoy-authn/)
+- [S3 の静的 Web サイトをセキュアに Envoy でホスティング](/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)
+  - 「[S3 の静的 Web サイトを Envoy でホスティング](/blogs/2022/02/16/hosting-a-static-website-using-s3-with-envoy/)」から S3 バケットアクセスをセキュアにするため、Envoy Proxy から IAM 認証を使ったアクセスを説明します。
+- [Envoy を使用して ID Token (OIDC) を検証する](/blogs/2022/02/20/envoy-authn/)
   - Envoy Proxy の [JWT 認証フィルタ](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/jwt_authn_filter)の使い方を説明します。
-- [Envoy と Open Policy Agent を使用した認可](https://developer.mamezou-tech.com/blogs/2022/02/20/envoy-authz/)
+- [Envoy と Open Policy Agent を使用した認可](/blogs/2022/02/20/envoy-authz/)
   - Envoy Proxy の [認可フィルタ](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter) で [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) を使用する方法を説明します。
 
 ### Keycloak
 [Keycloak](https://www.keycloak.org/) を使った認証サービスを説明します。
 
-- [WebAuthn でパスワードの無い世界へ](https://developer.mamezou-tech.com/blogs/2022/06/15/webauthn-1/)
+- [WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)
   - Keycloak を [AWS Fargate](https://aws.amazon.com/jp/fargate/) にデプロイして、[FIDO2](https://fidoalliance.org/fido2/) (WebAuthn) によってパスワードレスに認証する構成を説明します。
-- [Envoy Proxy による HTTPS Proxy](https://developer.mamezou-tech.com/blogs/2022/06/20/https-envoy-proxy/)
+- [Envoy Proxy による HTTPS Proxy](/blogs/2022/06/20/https-envoy-proxy/)
   - Envoy Proxy を使って、プライベートネット内にパスワードレスに認証する Keycloak の構成を説明します。
-- [OpenID Connect でパスワードレス認証を使う](https://developer.mamezou-tech.com/blogs/2022/06/23/webauthn-3/)
+- [OpenID Connect でパスワードレス認証を使う](/blogs/2022/06/23/webauthn-3/)
   - Keycloak の永続化に PC のローカルストレージを使用し、[OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) の認証を利用する構成を説明します。 

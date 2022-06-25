@@ -43,9 +43,9 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 
 ## Spring Boot
 
-マイクロサービスを [Spring Boot](https://spring.io/projects/spring-boot) を使って実装方法を説明します。
+マイクロサービスを [Spring Boot](https://spring.io/projects/spring-boot) を使って実装する方法を説明します。
 
-### OpenAPI Generator
+### マイクロサービスの設計と実装
 宇宙船の冬眠ポッド (hibernation pod) を題材に [OpenAPI Generator](https://openapi-generator.tech/) を使ってサービスを構築します。
 
 - [第1回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)<br/>
@@ -57,7 +57,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - [第4回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/24/openapi-generator-4/)
   - ドメイン駆動設計の戦術的設計によってサービスの実装を完成します。
 
-### Envoy Proxy
+### サイドカーパターンの利用
 サイドカーの利用が多いプログラマブルな Proxy である [Envoy Proxy](https://www.envoyproxy.io/) を説明します。
 
 - [S3 の静的 Web サイトをセキュアに Envoy でホスティング](/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)
@@ -67,7 +67,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - [Envoy と Open Policy Agent を使用した認可](/blogs/2022/02/20/envoy-authz/)
   - Envoy Proxy の [認可フィルタ](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter) で [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) を使用する方法を説明します。
 
-### Keycloak
+### 認証サービスの構築
 [Keycloak](https://www.keycloak.org/) を使った認証サービスを説明します。
 
 - [WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)

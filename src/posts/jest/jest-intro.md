@@ -126,7 +126,7 @@ describe("Foo.ts", () => {
 npx jest
 ```
 
-実行すると、Jestに検知されたテストが実行されます。
+これだけでJestが検知したテストが実行されます。
 
 ```
  PASS  specs/todo.spec.ts (5.696 s)

@@ -23,6 +23,15 @@ description: ソフトウェアテストに関する技法やテクニック
 - [Helidon Tips - MicroProfile RestClientを使ったRESTリースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing/)
 - [JUnit5のExtension実装 - テストライフサイクルコールバックと引数の解決](/blogs/2022/05/30/junit5-extension/)
 
+## Jest
+
+### Jest再入門シリーズ
+- [導入編](/testing/jest/jest-intro/)
+- [マッチャー編](/testing/jest/jest-matchers/)
+- スナップショットテスト編 <span style="color: red">Coming Soon!</span>
+- モック編 <span style="color: red">Coming Soon!</span>
+- カスタムマッチャー編 <span style="color: red">Coming Soon!</span>
+- 非同期編 <span style="color: red">Coming Soon!</span>
 
 ## ArchUnit
 

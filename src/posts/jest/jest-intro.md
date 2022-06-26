@@ -80,7 +80,7 @@ npx jest --init
 [ts-jest](https://kulshekhar.github.io/ts-jest/)は先程Jestと一緒にインストールしたJest用のTypeScriptプリプロセッサです。
 なお、これ以外にBabelを使用する方法もあります。こちらを利用する場合は[公式ドキュメントの手順](https://jestjs.io/docs/getting-started#via-babel)を参照してください。
 
-これだけでJestのセットアップは完了です。Zero-Configurationと謳っているだけあって導入は簡単です。
+これでJestのセットアップは完了です。Zero Configurationと謳っているだけあって導入は簡単です。
 
 ## テストファイル
 
@@ -381,7 +381,7 @@ Tests:       2 todo, 2 total
 
 ## カバレッジレポート
 
-Jestはこれ単体でカバレッジレポートの出力ができます。
+Jest単体でカバレッジレポートの出力もできます。
 カバレッジレポートは以下で取得します（設定ファイルでも可）。
 
 ```shell
@@ -409,7 +409,37 @@ CLIパラメータでなく`jest.config.ts`でも指定できますので、事�
 [リファレンス - coveragePathIgnorePatterns](https://jestjs.io/docs/configuration#coveragepathignorepatterns-arraystring)
 :::
 
-次回はマッチャー編に続きます。
+## テストレポート
+
+デフォルトではコンソール上にテストレポートを出力しますが、CI等でテストを実行した場合に、別の形でテストレポートを確認したいことが多いと思います。
+そのような場合は、別途カスタムレポーターをセットアップする必要があります。
+
+ここではHTML形式のレポート出力するカスタムレポーターとして[jest-html-reporters](https://www.npmjs.com/package/jest-html-reporters)を導入してみます。
+
+```shell
+npm install --save-dev jest-html-reporters
+```
+
+インストール後は`--reporters`オプションでレポーターを指定します。
+
+```shell
+npx jest --reporters=default --reporters=jest-html-reporters
+```
+
+上記は`--reporters=jest-html-reporters`に加えて、`--reporters=default`も合わせて指定し、デフォルトのコンソールレポートとHTMLレポート両方を出力するようにしています。
+ここではjestコマンドの引数に指定していますが、一般的には設定ファイル(`jest.config.ts`)に指定することが多いと思います。設定ファイルへの指定方法の詳細は[公式ドキュメント](https://jestjs.io/docs/configuration#reporters-arraymodulename--modulename-options)を参照してください。
+
+テスト実行が終わると、プロジェクトルート直下に`jest_html_reporters.html`というHTMLレポートが出力されます[^4]。
+
+[^4]: 実際のテスト結果は`jest-html-reporters-attach`ディレクトリ内に生成されます。
+
+これをブラウザで開くと、以下のようにリッチなUIでテスト結果を確認できます。
+
+![](https://i.gyazo.com/e2c056d1be582807a046a91978e7aae4.png)
+
+---
+
+次はマッチャー編に続きます。
 
 - [Jest再入門 - マッチャー編](/testing/jest/jest-matchers/)
 

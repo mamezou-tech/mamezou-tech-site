@@ -74,7 +74,7 @@ test("toEqual/toStrictEqual違い", () => {
 基本はtoEqualで問題ないと思いますが、厳密性が求められる場合は、toStrictEqualを使うと良いでしょう。
 
 :::info
-テスト観点でないプロパティやタイムスタンプ等、テスト実行の度に変わるものは、等価条件以外で検証したいこともあるでしょう。
+テスト観点でないプロパティやタイムスタンプ等、テスト実行の度に変わるものは、等価条件以外でチェックしたいこともあるでしょう。
 そのような場合は、Expect APIで用意されているユーティリティとしてのマッチャーを使うと便利です。
 
 ```typescript
@@ -99,7 +99,7 @@ test("expectマッチャーユーティリティ利用", () => {
 
 ## Truthy/Falsy
 
-JavaScriptのTruthy(真値)/Falsy(偽値)の検証は[toBeTruthy](https://jestjs.io/docs/expect#tobetruthy)/[toBeFalsy](https://jestjs.io/docs/expect#tobefalsy)を使用します。
+JavaScriptのTruthy(真値)/Falsy(偽値)のチェックは[toBeTruthy](https://jestjs.io/docs/expect#tobetruthy)/[toBeFalsy](https://jestjs.io/docs/expect#tobefalsy)を使用します。
 
 ```typescript
 test("toBeTruthy/toBeFalsy", () => {
@@ -127,7 +127,7 @@ test("toBeTruthy/toBeFalsy", () => {
 
 ## undefined/null
 
-undefinedやnullを検査する場合は、[toBeDefined](https://jestjs.io/docs/expect#tobedefined)/[toBeUndefined](https://jestjs.io/docs/expect#tobeundefined)、[toBeNull](https://jestjs.io/docs/expect#tobenull)を利用します。
+undefinedやnullをチェックする場合は、[toBeDefined](https://jestjs.io/docs/expect#tobedefined)/[toBeUndefined](https://jestjs.io/docs/expect#tobeundefined)、[toBeNull](https://jestjs.io/docs/expect#tobenull)を利用します。
 
 ```typescript
 test("toBeUndefined/toBeNull/toBeDefined", () => {
@@ -146,7 +146,7 @@ test("toBeUndefined/toBeNull/toBeDefined", () => {
 
 ## 配列長、文字数
 
-配列や文字数等の`length`プロパティを検査する場合は、[toHaveLength](https://jestjs.io/docs/expect#tohavelengthnumber)を利用します。
+配列や文字数等の`length`プロパティをチェックする場合は、[toHaveLength](https://jestjs.io/docs/expect#tohavelengthnumber)を利用します。
 
 ```typescript
 test("toHaveLength", () => {
@@ -155,7 +155,7 @@ test("toHaveLength", () => {
 });
 ```
 
-これらは、`expect([1, 2, 3].length).toBe(3)`等としても同じですが、toHaveLengthを使用した方が可読性は高いでしょう。
+これらは、`expect([1, 2, 3].length).toBe(3)`等としても同じですが、toHaveLengthを使用した方が可読性が良いでしょう。
 
 ## 正規表現
 
@@ -169,11 +169,11 @@ test("toMatch", () => {
 });
 ```
 
-3つ目の例のように、正規表現でなくとも特定の文字列が含まれているのかを検査する場合にも使用できます。
+3つ目の例のように、正規表現でなくとも特定の文字列が含まれているのかをチェックする場合にも使用できます。
 
 ## 配列要素
 
-配列に指定した要素が含まれていることを検査する場合には、[toContain](https://jestjs.io/docs/expect#tocontainitem)/[toContainEqual](https://jestjs.io/docs/expect#tocontainequalitem)を利用します。
+配列に指定した要素が含まれていることをチェックする場合には、[toContain](https://jestjs.io/docs/expect#tocontainitem)/[toContainEqual](https://jestjs.io/docs/expect#tocontainequalitem)を利用します。
 
 ```typescript
 test("toContain/toContainEqual", () => {
@@ -186,7 +186,7 @@ test("toContain/toContainEqual", () => {
 
 ## 例外送出
 
-例外送出を検査する場合は、[toThrow](https://jestjs.io/docs/expect#tothrowerror)を利用します。
+テスト対象中で送出された例外をチェックする場合は、[toThrow](https://jestjs.io/docs/expect#tothrowerror)を利用します。
 
 ```typescript
 test("toThrow", () => {
@@ -194,7 +194,7 @@ test("toThrow", () => {
   const throwError = () => {
     throw new CustomError("エラー発生");
   };
-  expect(throwError).toThrow(); // エラーになることを検証
+  expect(throwError).toThrow(); // エラーになることをチェック
   expect(throwError).toThrow(CustomError); // 送出したエラーの型判定
   expect(throwError).toThrow(new Error("エラー発生")); // Errorオブジェクト(messageプロパティ一致)
   expect(throwError).toThrow("エラー発生"); // messageプロパティの値
@@ -203,14 +203,14 @@ test("toThrow", () => {
 ```
 toThrowを利用する場合は、expectの引数には値でなくテスト対象のメソッドを指定します。
 
-toThrowの引数を省略すると、エラーが送出されたことのみを検証します。
+toThrowの引数を省略すると、エラーが送出されたことのみをチェックします。
 上記のように、引数には送出した型やErrorオブジェクト、Errorのmessageプロパティを指定できます。
 
-カスタムエラー等で定義したmessage以外のプロパティを検査する場合は従来通りtry-catchでラップする必要があります。
-例えば、カスタムエラーとして追加定義したcodeプロパティを検査する場合は以下のようになります。
+カスタムエラー等で追加したmessage以外のプロパティをテストする場合は、従来通りtry-catchでラップする必要があります。
+例えば、カスタムエラーとして追加したcodeプロパティをチェックする場合は以下のようになります。
 
 ```typescript
-test("message以外を検査", () => {
+test("message以外をチェック", () => {
   class CustomError extends Error {
     constructor(message: string, readonly code: string) {
       super(message);
@@ -224,7 +224,7 @@ test("message以外を検査", () => {
     fail();
   } catch (e) {
     expect(e).toBeInstanceOf(CustomError);
-    expect((e as CustomError).code).toBe("E001"); // codeプロパティを検査
+    expect((e as CustomError).code).toBe("E001"); // codeプロパティをチェック
   }
 });
 ```

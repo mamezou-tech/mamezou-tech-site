@@ -346,7 +346,7 @@ test.todo("Bazを渡すとエラーを送出すること");
 npx jest
 ```
 
-これだけでJestが検知したテストが実行されます。
+これだけでJestで検知したテストが全て実行されます。
 
 ```
  PASS  specs/todo.spec.ts (5.696 s)
@@ -399,10 +399,10 @@ CLIパラメータでなく`jest.config.ts`でも指定できますので、事�
 
 ## テストレポート
 
-デフォルトではコンソール上にテストレポートを出力しますが、CI等でテストを実行した場合に、別の形でテストレポートを確認したいことが多いと思います。
+デフォルトではコンソール上にテストレポートを出力しますが、CI等でテストを実行した場合は、別の形でテストレポートを確認したいことが多いと思います。
 そのような場合は、別途カスタムレポーターをセットアップする必要があります。
 
-ここではHTML形式のレポート出力するカスタムレポーターとして[jest-html-reporters](https://www.npmjs.com/package/jest-html-reporters)を導入してみます。
+ここではHTML形式のレポートを出力するカスタムレポーターとして[jest-html-reporters](https://www.npmjs.com/package/jest-html-reporters)を導入してみます。
 
 ```shell
 npm install --save-dev jest-html-reporters

@@ -34,7 +34,7 @@ test("expect.toBe", () => {
 });
 ```
 
-Jest内部では[Object.is()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)メソッドで値の等価であるかを判定しています。
+Jest内部では[Object.is()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)メソッドで値が等価であるかを判定しています。
 このため、参照先の異なるオブジェクトの比較は期待通りに動作しません。
 
 ## オブジェクト/配列の等価条件
@@ -51,7 +51,7 @@ test("expect.toEqual/toStrictEqual", () => {
 });
 ```
 
-上記のように、toBeとは異なりオブジェクトや配列内の値をチェックできます。
+上記のように、toBeとは異なりオブジェクトや配列内の値でも期待通りにチェックできます。
 
 toEqualとtoStrictEqualでは、undefinedの扱い方等でその厳密性に違いがあります。以下コードはその違いを表しています。
 
@@ -74,7 +74,7 @@ test("toEqual/toStrictEqual違い", () => {
 基本はtoEqualで問題ないと思いますが、厳密性が求められる場合は、toStrictEqualを使うと良いでしょう。
 
 :::info
-テスト観点でないプロパティやタイムスタンプ等、テスト実行の度に変わるものは、等価条件以外でチェックしたいこともあるでしょう。
+テスト観点でないプロパティやタイムスタンプ等のテスト実行の度に変わるものは、等価条件以外でチェックしたいこともあるでしょう。
 そのような場合は、Expect APIで用意されているユーティリティとしてのマッチャーを使うと便利です。
 
 ```typescript
@@ -186,45 +186,45 @@ test("toContain/toContainEqual", () => {
 
 ## 例外送出
 
-テスト対象中で送出された例外をチェックする場合は、[toThrow](https://jestjs.io/docs/expect#tothrowerror)を利用します。
+テスト対象で送出された例外をチェックする場合は、[toThrow](https://jestjs.io/docs/expect#tothrowerror)を利用します。
 
 ```typescript
 test("toThrow", () => {
   class CustomError extends Error {}
-  const throwError = () => {
-    throw new CustomError("エラー発生");
+  const throwError = (message: string) => {
+    throw new CustomError(message);
   };
-  expect(throwError).toThrow(); // エラーになることをチェック
-  expect(throwError).toThrow(CustomError); // 送出したエラーの型判定
-  expect(throwError).toThrow(new Error("エラー発生")); // Errorオブジェクト(messageプロパティ一致)
-  expect(throwError).toThrow("エラー発生"); // messageプロパティの値
-  expect(throwError).toThrow(/^エラー.*$/); // messageプロパティの値(正規表現)
+  expect(() => throwError("")).toThrow(); // エラーになることを検証
+  expect(() => throwError("")).toThrow(CustomError); // 送出したエラーの型判定
+  expect(() => throwError("エラー発生")).toThrow(new Error("エラー発生")); // Errorオブジェクト(messageプロパティ一致)
+  expect(() => throwError("エラー発生")).toThrow("エラー発生"); // messageプロパティの値
+  expect(() => throwError("エラー発生")).toThrow(/^エラー.*$/); // messageプロパティの値(正規表現)
 });
 ```
-toThrowを利用する場合は、expectの引数には値でなくテスト対象のメソッドを指定します。
+toThrowを利用する場合は、expectの引数には値でなくテスト対象のメソッド呼出を関数でラップします。
 
 toThrowの引数を省略すると、エラーが送出されたことのみをチェックします。
-上記のように、引数には送出した型やErrorオブジェクト、Errorのmessageプロパティを指定できます。
+上記のように、引数には送出した例外の型やErrorオブジェクト、Errorのmessageの値を指定できます。
 
-カスタムエラー等で追加したmessage以外のプロパティをテストする場合は、従来通りtry-catchでラップする必要があります。
+自作したカスタムエラー等で追加したmessage以外のプロパティをテストする場合は、従来通りtry-catchでラップする必要があります。
 例えば、カスタムエラーとして追加したcodeプロパティをチェックする場合は以下のようになります。
 
 ```typescript
-test("message以外をチェック", () => {
+test("message以外を検査", () => {
   class CustomError extends Error {
     constructor(message: string, readonly code: string) {
       super(message);
     }
   }
-  const throwError = () => {
-    throw new CustomError("エラー発生", "E001");
+  const throwError = (message: string, code: string) => {
+    throw new CustomError(message, code);
   };
   try {
-    throwError();
+    throwError("エラー発生", "E001");
     fail();
   } catch (e) {
     expect(e).toBeInstanceOf(CustomError);
-    expect((e as CustomError).code).toBe("E001"); // codeプロパティをチェック
+    expect((e as CustomError).code).toBe("E001"); // codeプロパティを検査
   }
 });
 ```

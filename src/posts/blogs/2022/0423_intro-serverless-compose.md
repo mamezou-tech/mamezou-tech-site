@@ -2,7 +2,7 @@
 title: Serverless Framework Composeで複数サービスをまとめて管理する
 author: noboru-kudo
 date: 2022-04-23
-tags: [AWS, サーバーレス, ServerlessFramework]
+tags: [AWS, サーバーレス, serverless-framework]
 ---
 
 2022/04/20にServerless Frameworkの新機能Serverless Framework Composeがアナウンスされました。

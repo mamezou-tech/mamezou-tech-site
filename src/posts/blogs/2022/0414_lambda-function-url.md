@@ -2,7 +2,7 @@
 title: Lambda Function URLでLambdaをHTTPで直接実行する
 author: noboru-kudo
 date: 2022-04-14
-tags: [AWS, サーバーレス, ServerlessFramework]
+tags: [AWS, サーバーレス, serverless-framework]
 ---
 
 2022/04/06 AWSはLambdaをHTTPで直接呼び出す機能追加を発表しました。

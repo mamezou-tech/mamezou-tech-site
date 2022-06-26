@@ -1,7 +1,7 @@
 ---
 title: Jest再入門 - 導入編
 author: noboru-kudo
-date: 2022-06-26
+date: 2022-06-25
 templateEngineOverride: md
 nextPage: ./src/posts/jest/jest-matchers.md
 ---

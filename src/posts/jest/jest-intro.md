@@ -118,35 +118,6 @@ describe("Foo.ts", () => {
 });
 ```
 
-## テスト実行
-
-もちろんIDEからもできますが、CLIの場合はJestコマンドでテストを実行します。
-
-```shell
-npx jest
-```
-
-これだけでJestが検知したテストが実行されます。
-
-```
- PASS  specs/todo.spec.ts (5.696 s)
- PASS  specs/parameterrized.spec.ts (5.76 s)
- PASS  specs/foo.spec.ts (5.763 s)
- PASS  specs/matcher.spec.ts (5.765 s)
- PASS  specs/basic.spec.ts (5.77 s)
- PASS  specs/skip.spec.ts (5.765 s)
- PASS  specs/concurrent.spec.ts (7.991 s)
-
-Test Suites: 7 passed, 7 total
-Tests:       6 skipped, 2 todo, 125 passed, 133 total
-Snapshots:   0 total
-Time:        8.551 s
-Ran all test suites.
-```
-失敗すると最後に失敗したテストと内容が出力されます。
-
-一般的には、npm/yarnのスクリプトにこのコマンドを登録して利用します。
-
 ## 事前・事後処理
 
 テスト前のセットアップやテスト後のクリーンアップには`beforeEach`/`afterEach`、`beforeAll`/`afterAll`を使用します。
@@ -358,26 +329,43 @@ describe("配列ベースのパラメタライズドテストを並列に実行�
 
 ## 未実装(TODO)
 
-テストの実装が必要だけど、現在は未実装であることを表します。
+テストの実装が必要だけど、現在は未実装であることを示します。
 
 ```typescript
 test.todo("FooがBarに変換されること");
 test.todo("Bazを渡すとエラーを送出すること");
 ```
 
-これらはテストを実行すると、未実装であることが分かるように出力されます。
-CLIでは以下のように出力されます（抜粋）。
+これらは未実装であることが分かるようにテストレポートにマーキングだけされます。
+
+## テスト実行
+
+もちろんIDE機能からもテストは実行できますが、CLIベースではjestコマンドを使います。
 
 ```shell
- PASS  specs/todo.spec.ts
-  ✎ todo FooがBarに変換されること
-  ✎ todo Bazを渡すとエラーを送出すること
-(省略)
-Test Suites: 1 passed, 1 total
-Tests:       2 todo, 2 total
+npx jest
 ```
 
-テストケースを先に作成しておく場合に使うと良いかと思います。
+これだけでJestが検知したテストが実行されます。
+
+```
+ PASS  specs/todo.spec.ts (5.696 s)
+ PASS  specs/parameterrized.spec.ts (5.76 s)
+ PASS  specs/foo.spec.ts (5.763 s)
+ PASS  specs/matcher.spec.ts (5.765 s)
+ PASS  specs/basic.spec.ts (5.77 s)
+ PASS  specs/skip.spec.ts (5.765 s)
+ PASS  specs/concurrent.spec.ts (7.991 s)
+
+Test Suites: 7 passed, 7 total
+Tests:       6 skipped, 2 todo, 125 passed, 133 total
+Snapshots:   0 total
+Time:        8.551 s
+Ran all test suites.
+```
+失敗すると最後に失敗したテストと内容が出力されます。
+
+一般的には、npm/yarnのスクリプトにこのコマンドを登録して利用します。
 
 ## カバレッジレポート
 

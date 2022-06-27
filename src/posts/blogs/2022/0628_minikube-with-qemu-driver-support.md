@@ -94,7 +94,7 @@ minikube start
 🏄  終了しました！kubectl がデフォルトで「minikube」クラスターと「default」ネームスペースを使用するよう設定されました
 ```
 
-Docker も Minikube の VM の Docker Engine を使うことで利用可能になります。
+Docker も仮想マシンの Docker Engine により利用可能です。
 
 ```shell
 eval $(minikube docker-env)
@@ -132,7 +132,7 @@ Server: Docker Engine - Community
   GitCommit:        de40ad0
 ```
 
-ワークロードを実行していない状態では Hyperkit と比べてもさほど負荷は変わらないようです。
+仮想マシンのプロセス(qemu-system-aarch64)を見ると、ワークロードを実行していない状態では Hyperkit と同程度の負荷のようです。
 
 ![](https://i.gyazo.com/87bba3d8d451ea6a444e730ffead91cb.png)
 
@@ -189,9 +189,9 @@ NAME                        STATUS   VOLUME                                     
 data-hoge-db-postgresql-0   Bound    pvc-e4c5db59-7ad5-4cb7-9b5c-c2132c0aec4b   8Gi        RWO            standard       4m32s
 ```
 
-どうやらバグのようです。
+どうやらバグのようです。PV を自動で割り当ててくれる storage-provisioner との通信がうまく行っていないなどの不具合なのでしょうか？
 
-類似の issue はないようですが、この issue を見るとまだ相当問題が残っているようです。
+類似の issue はないようですが、この issue を見るとまだかなり問題が残っているようです。
 
 [Known QEMU2 Driver Issues · Issue #14146 · kubernetes/minikube](https://github.com/kubernetes/minikube/issues/14146)
 

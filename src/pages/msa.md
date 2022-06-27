@@ -7,6 +7,10 @@ description: マイクロサービスアーキテクチャ(MSA)のチュート�
 
 [[toc]]
 
+## マイクロサービスパターン
+
+- [サービスメッシュが解決しようとしている課題](/blogs/2022/05/17/servicemesh/)
+
 ## MicroProfile
 [MicroProfile](https://microprofile.io/)は、2016年9月に誕生したエンタープライズマイクロサービス向けのプラットフォームです。
 JavaEE(現JakartaEE)の仕様をベースとしつつも、マイクロサービスアーキテクチャに親和性の高い機能(JAX-RS, CDI, JSON-P等)に限定しています。
@@ -59,7 +63,3 @@ Javaでマイクロサービスを構築するならやはり[Spring Boot](https
   - ドメイン駆動設計の戦術的設計によってサービスの実装を完成します。
 - [OpenID Connect でパスワードレス認証を使う](/blogs/2022/06/23/webauthn-3/)
   - 番外編として、Keycloak [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) によるパスワードレス認証を利用する構成を説明します。 
-
-## マイクロサービスの技術背景
-
-- [サービスメッシュが解決しようとしている課題](/blogs/2022/05/17/servicemesh/)

@@ -10,7 +10,7 @@ M1 Mac で Minikube を使う場合、Hyperkit のドライバーが未サポー
 [Mac M1: hyperkit not supported. · Issue #11885 · kubernetes/minikube](https://github.com/kubernetes/minikube/issues/11885)
 
 :::info
-この issue のコメントによると Hyperkit サポートは 2022年第2四半期終わりに予定されているようです。
+この issue のコメントによると Hyperkit サポートは暫定で2022年第2四半期終わりに予定されているようです。
 
 [https://github.com/kubernetes/minikube/issues/11885#issuecomment-1022670840](https://github.com/kubernetes/minikube/issues/11885#issuecomment-1022670840)
 :::
@@ -53,7 +53,7 @@ minikube version: v1.26.0
 commit: f4b412861bb746be73053c9f6d2895f12cf78565
 ```
 
-minikube のデフォルトのドライバーを qemu2 に設定しました。
+デフォルトのドライバーを qemu2 に設定しました。
 
 ```shell
 minikube config set driver qemu2
@@ -71,7 +71,7 @@ minikube config view
 - kubernetes-version: 1.24.2
 ```
 
-minikube start すると初回は qemu2 ドライバー(実験的)と VM ブートイメージがダウンロードされ、その後クラスターが起動しました。qemu2 サポートは「実験的」となっています。
+minikube start すると初回は qemu2 ドライバーと VM ブートイメージがダウンロードされ、その後クラスターが起動しました。qemu2 ドライバーは「実験的」となっています。
 
 ```shell
 minikube start
@@ -195,6 +195,6 @@ data-hoge-db-postgresql-0   Bound    pvc-e4c5db59-7ad5-4cb7-9b5c-c2132c0aec4b   
 
 [Known QEMU2 Driver Issues · Issue #14146 · kubernetes/minikube](https://github.com/kubernetes/minikube/issues/14146)
 
-QEMU ドライバーサポートがちゃんと動くようになると、Docker Desktop も不要になり M1 Mac に作業が移行できるのですが、もう少し時間がかかりそうです。
+QEMU ドライバーサポートがちゃんと動くようになると、Docker Desktop も不要になり M1 Mac に作業を移行できるのですが、もう少し時間がかかりそうです。
 
 今回遭遇した不具合も issue 登録して様子を見ようと思います。

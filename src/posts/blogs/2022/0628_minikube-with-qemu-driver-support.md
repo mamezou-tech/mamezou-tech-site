@@ -140,7 +140,7 @@ Server: Docker Engine - Community
 
 さて、QUEM ドライバーで構築したクラスターで PostgreSQL や MySQL などの StatefulSet なワークロードを実行すると Pod が起動してこないという現象に遭遇しました[^1]。
 
-[^1]: StatufulSet ではなく Deployment であれば正常に動作しました。
+[^1]: StatefulSet ではなく Deployment であれば正常に動作しました。
 
 ```shell
 $ helm install hoge-db bitnami/postgresql -n hoge

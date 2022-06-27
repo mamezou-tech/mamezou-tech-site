@@ -189,12 +189,12 @@ NAME                        STATUS   VOLUME                                     
 data-hoge-db-postgresql-0   Bound    pvc-e4c5db59-7ad5-4cb7-9b5c-c2132c0aec4b   8Gi        RWO            standard       4m32s
 ```
 
-どうやらバグのようです。PV を自動で割り当ててくれる storage-provisioner との通信がうまく行っていないなどの不具合なのでしょうか？
+どうやらバグのようです。PV を自動で割り当ててくれる storage-provisioner との通信がうまくいっていないなどの不具合なのでしょうか？
 
-類似の issue はないようですが、この issue を見るとまだかなり問題が残っているようです。
+類似の issue はないようですが、以下の issue を見るとまだかなり問題が残っているようです。
 
 [Known QEMU2 Driver Issues · Issue #14146 · kubernetes/minikube](https://github.com/kubernetes/minikube/issues/14146)
 
-QEMU ドライバーサポートがちゃんと動くようになると、Docker Desktop も不要になり M1 Mac に作業を移行できるのですが、もう少し時間がかかりそうです。
+ということでこのバージョンでは QEMU ドライバーサポートはまだ実験的でした。これがちゃんと動くようになると、Docker Desktop も不要になり M1 Mac に作業を移行できるのですが、もう少し時間がかかりそうです。
 
 今回遭遇した不具合も issue 登録して様子を見ようと思います。

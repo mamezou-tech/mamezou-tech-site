@@ -7,7 +7,7 @@ tags: [envoy, "openapi-generator", "spring-boot", OPA]
 
 前回の記事で、「挨拶の音声を生成する」コマンド (以降 Hello コマンドといいます) を完成させました。
 
-この記事では、このコマンドを実行する権限チェックに [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) を使用します。
+この記事では、このコマンドの実行権限チェックに [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) を使って説明します。
 
 ![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-6/image/sidecar.png)
 
@@ -62,7 +62,7 @@ ID Token を必要としない、つまり認証が不要な API はこのフィ
 
 Envoy Proxy の [External Authorization](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_authz_filter) フィルタを使用して、Envoy Proxy と OPA 間で gRPC/HTTP2 を使って通信する認可処理が可能になります。
 
-Envoy Proxy と OPA 間のインターフェースは [Protocol Buffers](https://developers.google.com/protocol-buffers) (protobuf) で定義されています。インターフェースが一致していれば、OPA 以外も使用可能で、Red Hat の [Authorino](https://rheb.hatenablog.com/entry/2022/03/25/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E3%83%8D%E3%82%A4%E3%83%86%E3%82%A3%E3%83%96%E3%81%AAAPI%E7%AE%A1%E7%90%86%E3%82%92%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8BKuadrant%E3%81%A8%E3%81%9D%E3%81%AE%E3%82%B5) はその1つです。
+Envoy Proxy と OPA 間のインターフェースは [Protocol Buffers](https://developers.google.com/protocol-buffers) (protobuf) で定義されています。インターフェースが一致していれば OPA 以外も使用可能で、Red Hat の [Authorino](https://rheb.hatenablog.com/entry/2022/03/25/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E3%83%8D%E3%82%A4%E3%83%86%E3%82%A3%E3%83%96%E3%81%AAAPI%E7%AE%A1%E7%90%86%E3%82%92%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8BKuadrant%E3%81%A8%E3%81%9D%E3%81%AE%E3%82%B5) はその1つです。
 
 この処理の中で HTTP Header の追加 ("response_headers_to_add") や削除 ("request_headers_to_remove")、呼び出し先のパスの書き換え等も可能です。
 
@@ -161,11 +161,48 @@ OPA の Rego で、パスを変えたい場合、レスポンスの `headers` �
 
 ## コンテナビルド
 
+Spring Boot は、Gradle の場合には `bootBuildImage` を実行してコンテナイメージをビルドできます。
+
+:::info
+Maven を使っている場合は、`spring-boot:build-image` でコンテナイメージをビルドできます。
+詳しくは「[Spring Boot Docker](https://spring.io/guides/topicals/spring-boot-docker/)」を参照してください。
+:::
+
 ```shell
 ./gradlew bootBuildImage --imageName=example
 ```
 
+GitHub Actions を使ってビルドしたイメージが [GitHub Packages](https://github.com/edward-mamezou/use-openapi-generator/pkgs/container/example) にあります。
+
 ## docker-compose の例
+
+Docker Compose で実行する場合の [docker-compose.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/docker-compose.yml) は次のようになりました。
+
+```yaml
+version: "3"
+services:
+  envoy:
+    image: envoyproxy/envoy:v1.21-latest
+    volumes:
+      - ./envoy/front-envoy.yaml:/etc/front-envoy.yaml
+    ports:
+      - 8080:8080
+    command: ["-c", "/etc/front-envoy.yaml", "--service-cluster", "front-proxy"]
+  opa:
+    image: openpolicyagent/opa:latest-envoy
+    volumes:
+      - ./opa/config.yaml:/work/config.yaml
+      - ./opa/example-policy.rego:/work/example-policy.rego
+    command: ["run", "--server", "--log-level", "debug", "-c", "/work/config.yaml", "/work/example-policy.rego"]
+  example:
+    image: ghcr.io/edward-mamezou/example:v0.6.0
+    volumes:
+      - ~/.aws:/home/cnb/.aws
+      - ./application.yaml:/workspace/application.yaml
+      - ./tmp:/tmp
+    environment:
+      AWS_REGION: ap-northeast-1
+```
 
 ## kubernetest の例
 

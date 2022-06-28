@@ -208,9 +208,22 @@ services:
 
 ## まとめ
 
+伝統的なエンタープライズサービスは認証に (LDAP 等を使用する) 集中型の製品が使われ、リバースプロキシを介して HTTP Header にユーザーIDが設定され、サービスそれぞれに (ユーザーID 等に基づいた) 独自の認可処理が組み込まれてきました。
+
+侵入者が、認証サービスやリバースプロキシを突破しない限り、機密情報にアクセスできない境界モデル (perimeter model) を採用してきました。しかし、近年このような防御の根本的な欠陥が指摘され「ゼロトラストアーキテクチャ」の採用が進んできました。
+
+このシリーズの記事で説明した JWT や OPA を使う各サービスに分散配置されたセキュリティコンポーネントによって、堅牢で柔軟できめ細かなアクセス制御が可能になります。
+
+## 参考
+
+- [ゼロトラストネットワーク](https://www.amazon.co.jp/dp/4873118883/)
+
 ## 過去の記事
 
 - [OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)
 - [OpenAPI Generator を使って Spring Boot アプリを作る (2)](/blogs/2022/06/09/openapi-generator-2/)
 - [OpenAPI Generator を使って Spring Boot アプリを作る (3)](/blogs/2022/06/17/openapi-generator-3/)
 - [OpenAPI Generator を使って Spring Boot アプリを作る (4)](/blogs/2022/06/24/openapi-generator-4/)
+
+Keycloak を実行するために、次の記事も参照してください。
+- [OpenID Connect でパスワードレス認証を使う](https://developer.mamezou-tech.com/blogs/2022/06/23/webauthn-3/)

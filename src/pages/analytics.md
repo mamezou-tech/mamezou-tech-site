@@ -10,7 +10,7 @@ date: git Last Modified
 
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/Introduction-of-statistical-analysis-tool-jamovi/)
-- [ベイズ統計をお手軽に、統計解析ツールJASPの紹介](/blogs/2022/06/23/statistical-analysis-tool-jasp/) <span style="color: red;">★NEW★</span>
+- [ベイズ統計をお手軽に、統計解析ツールJASPの紹介](/blogs/2022/06/23/statistical-analysis-tool-jasp/)
 
 ## 古典的統計学(推計統計・記述統計)
 ### 基本編
@@ -37,3 +37,5 @@ date: git Last Modified
 - [転ばぬ先のベイズの定理](/blogs/2022/06/07/bayes-theorem)
 ### ベイズ更新
 - [君子は豹変すべし（ベイズ更新）](/blogs/2022/06/13/bayes-update)
+### ベイズ推定
+- [ベイズ推定を学ぶ ～２項推定～](/blogs/2022/06/28/bayesian-inference-by-jasp) <span style="color: red;">★NEW★</span>

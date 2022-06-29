@@ -3,7 +3,13 @@ title: マイクロサービス
 description: マイクロサービスアーキテクチャ(MSA)のチュートリアル・実践テクニック
 ---
 
+マイクロサービスアーキテクチャは、大規模なシステムを構築する上で有力な選択肢となっています。ここでは、いくつかの実装技術による構築手法をご紹介します。
+
 [[toc]]
+
+## マイクロサービスパターン
+
+- [サービスメッシュが解決しようとしている課題](/blogs/2022/05/17/servicemesh/)
 
 ## MicroProfile
 [MicroProfile](https://microprofile.io/)は、2016年9月に誕生したエンタープライズマイクロサービス向けのプラットフォームです。
@@ -42,13 +48,12 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 番外編は随時公開していきますので、こうご期待
 
 ## Spring Boot
+Javaでマイクロサービスを構築するならやはり[Spring Boot](https://spring.io/projects/spring-boot)は外せません。ここではSpring Bootを使った実装をご紹介します。
 
-マイクロサービスを [Spring Boot](https://spring.io/projects/spring-boot) を使って実装する方法を説明します。
+### OpenAPI Generator を使って Spring Boot アプリを作る
+この連載では、宇宙船の冬眠ポッド (hibernation pod) を題材に [OpenAPI Generator](https://openapi-generator.tech/) を使ってサービスを構築します。
 
-### マイクロサービスの設計と実装
-宇宙船の冬眠ポッド (hibernation pod) を題材に [OpenAPI Generator](https://openapi-generator.tech/) を使ってサービスを構築します。
-
-- [第1回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)<br/>
+- [第1回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)
   - 最初に OpenAPI Generator を使った簡単なサービスを実装します。
 - [第2回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/09/openapi-generator-2/)
   - ドメイン駆動設計の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
@@ -56,23 +61,5 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
   - OpenAPI Generator のようなコード生成の活用でポイントとなる Generation Gap パターンについて説明します。
 - [第4回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/24/openapi-generator-4/)
   - ドメイン駆動設計の戦術的設計によってサービスの実装を完成します。
-
-### サイドカーパターンの利用
-サイドカーの利用が多いプログラマブルな Proxy である [Envoy Proxy](https://www.envoyproxy.io/) を説明します。
-
-- [S3 の静的 Web サイトをセキュアに Envoy でホスティング](/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)
-  - 「[S3 の静的 Web サイトを Envoy でホスティング](/blogs/2022/02/16/hosting-a-static-website-using-s3-with-envoy/)」から S3 バケットアクセスをセキュアにするため、Envoy Proxy から IAM 認証を使ったアクセスを説明します。
-- [Envoy を使用して ID Token (OIDC) を検証する](/blogs/2022/02/20/envoy-authn/)
-  - Envoy Proxy の [JWT 認証フィルタ](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/jwt_authn_filter)の使い方を説明します。
-- [Envoy と Open Policy Agent を使用した認可](/blogs/2022/02/20/envoy-authz/)
-  - Envoy Proxy の [認可フィルタ](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter) で [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) を使用する方法を説明します。
-
-### 認証サービスの構築
-[Keycloak](https://www.keycloak.org/) を使った認証サービスを説明します。
-
-- [WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)
-  - Keycloak を [AWS Fargate](https://aws.amazon.com/jp/fargate/) にデプロイして、[FIDO2](https://fidoalliance.org/fido2/) (WebAuthn) によってパスワードレスに認証する構成を説明します。
-- [Envoy Proxy による HTTPS Proxy](/blogs/2022/06/20/https-envoy-proxy/)
-  - Envoy Proxy を使って、プライベートネット内にパスワードレスに認証する Keycloak の構成を説明します。
 - [OpenID Connect でパスワードレス認証を使う](/blogs/2022/06/23/webauthn-3/)
-  - Keycloak の永続化に PC のローカルストレージを使用し、[OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) の認証を利用する構成を説明します。 
+  - 番外編として、Keycloak [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) によるパスワードレス認証を利用する構成を説明します。 

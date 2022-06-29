@@ -233,6 +233,80 @@ Pod をデプロイします。
 kubectl apply -f deployment.yaml
 ```
 
+[deployment.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/deployment.yaml) は次のとおりです。
+
+```yaml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: example-app
+  labels:
+    app: example-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-app
+  template:
+    metadata:
+      labels:
+        app: example-app
+    spec:
+      containers:
+        - name: example
+          image: ghcr.io/edward-mamezou/example:v0.6.0
+          env:
+            - name: AWS_REGION
+              value: ap-northeast-1
+          volumeMounts:
+            - readOnly: true
+              mountPath: /home/cnb/.aws
+              name: aws
+            - readOnly: true
+              mountPath: /workspace/config
+              name: spring-config
+        - name: envoy
+          image: envoyproxy/envoy:v1.21-latest
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - readOnly: true
+              mountPath: /config
+              name: proxy-config
+          args:
+            - "-c"
+            - "/config/front-envoy.yaml"
+            - "--service-cluster"
+            - "example-proxy"
+        - name: opa
+          image: openpolicyagent/opa:latest-envoy
+          volumeMounts:
+            - readOnly: true
+              mountPath: /policy
+              name: opa-policy
+          args:
+            - "run"
+            - "--server"
+            - "--log-level"
+            - "debug"
+            - "-c"
+            - "/policy/config.yaml"
+            - "/policy/example-policy.rego"
+      volumes:
+        - name: proxy-config
+          configMap:
+            name: proxy-config
+        - name: opa-policy
+          secret:
+            secretName: opa-policy
+        - name: aws
+          secret:
+            secretName: aws
+        - name: spring-config
+          secret:
+            secretName: spring-config
+```
+
 ブラウザからアクセスできるように、port-foward を実行します。
 
 ```shell

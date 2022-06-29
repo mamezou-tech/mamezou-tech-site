@@ -25,9 +25,9 @@ ID Token の検証では、正しい発行者 (iss) とクライアント ID (au
 
 Envoy Proxy の [JWT Authentication](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/jwt_authn_filter) フィルタを使用すると、JWT を検証し、不当な場合 `401 Unauthorized` (デフォルト) をレスポンスします。
 
-妥当な場合、フィルタはペイロード部分を HTTP Header に追加もできます。Hello コマンドは、HTTP Header の `payload` の追加を前提にしています。
+妥当な場合、フィルタはペイロード部分をフォワードするリクエストの HTTP Header に追加もできます。Hello コマンドは、HTTP Header の `payload` の追加を前提にしています。
 
-Envoy Proxy [設定ファイルサンプル](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-authn-authz.yaml.example)のフィルタの設定部分は次のとおりです。
+Envoy Proxy [設定ファイルサンプル](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example)のフィルタの設定部分は次のとおりです。
 
 ```yaml
     - name: envoy.filters.http.jwt_authn
@@ -174,7 +174,7 @@ Maven を使っている場合は、`spring-boot:build-image` でコンテナイ
 
 GitHub Actions を使ってビルドしたイメージが [GitHub Packages](https://github.com/edward-mamezou/use-openapi-generator/pkgs/container/example) にあります。
 
-## docker-compose の例
+## Docker Compose の例
 
 Docker Compose で実行する場合の [docker-compose.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/docker-compose.yml) は次のようになりました。
 

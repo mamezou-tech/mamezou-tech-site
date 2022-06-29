@@ -5,7 +5,7 @@ date: 2022-07-01
 tags: [envoy, "openapi-generator", "spring-boot", OPA]
 ---
 
-前回の記事で、「挨拶の音声を生成する」コマンド (以降 Hello コマンドといいます) を完成させました。
+前回の記事で、「挨拶の音声を生成する」コマンド (以降 Hello コマンドまたは Hello サービスといいます) を完成させました。
 
 この記事では、このコマンドの実行権限チェックに [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) を使って説明します。
 
@@ -21,11 +21,11 @@ JWT は `.` (ドット) で区切られた3つの部分から構成され、ヘ�
 
 ヘッダには、署名検証のための暗号化アルゴリズム (alg)、公開鍵を特定するためのキー ID (kid) 等を含んでいます。ペイロードには、トークンの発行者 (iss)、クライアント ID (aud)、有効期限 (exp) などの他に任意の属性値を含められます。
 
-ID Token の検証では、正しい発行者 (iss) とクライアント ID (aud) によるトークンかの判断と有効期限 (exp) 内かを判断し、発行者から取得した公開鍵で署名を検証して改ざんされていない正当なトークンであることを判断します。
+ID Token の検証では、正しい発行者 (iss) とクライアント ID (aud) によるトークンかの判断と有効期限 (exp) 内かを判断し、発行者から取得した公開鍵で署名を検証して改ざんされていない正当なトークンであるかを判断します。
 
 Envoy Proxy の [JWT Authentication](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/jwt_authn_filter) フィルタを使用すると、JWT を検証し、不当な場合 `401 Unauthorized` (デフォルト) をレスポンスします。
 
-妥当な場合、フィルタはペイロード部分をフォワードするリクエストの HTTP Header に追加もできます。Hello コマンドは、HTTP Header の `payload` の追加を前提にしています。
+妥当な場合、フィルタはペイロード部分をフォワードするリクエストの HTTP Header に追加もできます。Hello コマンドは、HTTP Header へ `payload` の追加を前提にしています。
 
 Envoy Proxy [設定ファイルサンプル](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example)のフィルタの設定部分は次のとおりです。
 
@@ -68,7 +68,7 @@ Envoy Proxy と OPA 間のインターフェースは [Protocol Buffers](https:/
 
 ポリシーは [Rego](https://www.openpolicyagent.org/docs/latest/policy-language/) というドメイン固有言語 (DSL) で記述します。
 
-Envoy Proxy から送られてくるリクエストを Rego の中のアクセス方法の詳細は、Go 言語のソースコード ([request.go](https://github.com/open-policy-agent/opa-envoy-plugin/blob/main/envoyauth/request.go)) を参照してください。
+Envoy Proxy から送られてくるリクエストを Rego でアクセスする方法の詳細は、Go 言語のソースコード ([request.go](https://github.com/open-policy-agent/opa-envoy-plugin/blob/main/envoyauth/request.go)) を参照してください。
 
 ### 準備
 
@@ -176,6 +176,8 @@ GitHub Actions を使ってビルドしたイメージが [GitHub Packages](http
 
 ## Docker Compose の例
 
+Docker Compose は、以前は docker コマンドとは別の docker-compose というコマンドでしたが、今では docker コマンドで run などの代わりに compose をタイプして実行できます。
+
 Docker Compose で実行する場合の [docker-compose.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/docker-compose.yml) は次のようになりました。
 
 ```yaml
@@ -186,7 +188,7 @@ services:
     volumes:
       - ./envoy/front-envoy.yaml:/etc/front-envoy.yaml
     ports:
-      - 8080:8080
+      - 8081:8081
     command: ["-c", "/etc/front-envoy.yaml", "--service-cluster", "front-proxy"]
   opa:
     image: openpolicyagent/opa:latest-envoy
@@ -204,26 +206,90 @@ services:
       AWS_REGION: ap-northeast-1
 ```
 
-## kubernetest の例
+[`sidecar/envoy/front-envoy.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example)、[`sidecar/application.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/application.yaml.example) ファイルの作成は、利用している OpenID Connect の IdP (Identity Provider) 等の環境に合わせてください。
+
+## Kubernetes の例
+
+この記事では、このサービスの動作が確認できる最低限の説明にとどめます。
+
+Docker Compose の場合と同じく [`sidecar/envoy/front-envoy.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-pod.yaml.example)、[`sidecar/application.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/application.yaml.example) ファイルの作成は、利用している OpenID Connect の IdP (Identity Provider) 等の環境に合わせてください。
+
+Kubernetes は Docker よりセキュリティが向上しています。同一 Pod 内のコンテナ間の通信には、ローカル・ループバック・アドレス (127.0.0.1) が使われます。このため `front-envoy.yaml` で設定される Envoy Proxy が Hello サービス (example) や OPA へのアクセスに使用する IP Address は 127.0.0.1 となります。
+
+設定ファイルのサンプルが、Docker Compose 用の [`sidecar/envoy/front-envoy-docker.yaml.example`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example) と Pod 用の [`sidecar/envoy/front-envoy-pod.yaml.example`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-pod.yaml.example) の2つ用意したのはそのためです。
+
+Kubernetes に設定ファイルをマウントするために、次のコマンドで ConfigMap と Secret を作成します。AWS のクレデンシャル、Hello サービスのポリシー、IdP のシークレットが設定されるファイルは ConfigMap ではなく、セキュアな Secret を使用します。
+
+```shell
+kubectl create configmap proxy-config --from-file envoy/front-envoy.yaml
+kubectl create secret generic aws --from-file ~/.aws/credentials
+kubectl create secret generic opa-policy --from-file opa/example-policy.rego --from-file opa/config.yaml
+kubectl create secret generic spring-config --from-file application.yaml
+```
+
+Pod をデプロイします。
+
+```shell
+kubectl apply -f deployment.yaml
+```
+
+ブラウザからアクセスできるように、port-foward を実行します。
+
+```shell
+kubectl port-forward deployment/example-app --address 0.0.0.0 80:8081
+```
+
+ブラウザからは、`http://localhost/` 等でアクセスできます。
+
+## 認証認可処理について
+
+伝統的なシステムは認証に集中型の製品が使われ、リバースプロキシを介して HTTP Header にユーザーIDが設定され、サービスそれぞれに独自の認可処理が組み込まれてきました。
+
+これは、侵入者が認証サービスやリバースプロキシを突破しない限り、機密情報にアクセスできない境界モデル (perimeter model) であることを意味しています。プライベートネットワーク内の信頼されたリソースと、インターネット等外部の信頼されないリソースの間に壁を築き、プライベートネットワーク内のシステムは HTTP Header などに設定されたユーザーIDを信頼して認可処理してきました。
+
+認可処理については、早い段階から設計される場合もあれば、ドメインロジックの開発の遅い段階で着手する場合などさまざまでした。
+
+多くの場合、この認可要件はドメインロジックに組み込まれ、認可要件の変更への迅速な対応を困難にしてきました。
+
+これらも要因となり、侵入者がひとたびこのようなプライベートネットワーク内のリソースへの足がかりができれば、すべてのサービスにアクセスできます。
+
+この記事の説明で、認可に OPA を採用し Kubernetes の場合にはポリシーをセキュアな [Secret](https://kubernetes.io/ja/docs/concepts/configuration/secret/) に保存して利用しました。
+
+JWT は署名によって改ざんを検出できます。プライベートネットワークにある各サービスは、JWT によって認証情報を確認し、ドメインロジックと分離された OPA により認可されたアクセスのみを受け入れることで、セキュリティを向上できます。
 
 ## まとめ
 
-伝統的なエンタープライズサービスは認証に (LDAP 等を使用する) 集中型の製品が使われ、リバースプロキシを介して HTTP Header にユーザーIDが設定され、サービスそれぞれに (ユーザーID 等に基づいた) 独自の認可処理が組み込まれてきました。
+OpenAPI Generator と Spring Boot を使ってマイクロサービスを構築する場合のさまざまな懸念点、課題の解決策をシリーズを通して説明してきました。
 
-侵入者が、認証サービスやリバースプロキシを突破しない限り、機密情報にアクセスできない境界モデル (perimeter model) を採用してきました。しかし、近年このような防御の根本的な欠陥が指摘され「ゼロトラストアーキテクチャ」の採用が進んできました。
+シリーズは、今回のこの記事で一区切りとなります。
 
-このシリーズの記事で説明した JWT や OPA を使う各サービスに分散配置されたセキュリティコンポーネントによって、堅牢で柔軟できめ細かなアクセス制御が可能になります。
+これまでの記事を振り返ります。
+
+### [OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)
+
+第1回は、OpenAPI Generator とはどういうものかの概要を説明しました。
+
+### [OpenAPI Generator を使って Spring Boot アプリを作る (2)](/blogs/2022/06/09/openapi-generator-2/)
+
+第2回は、マイクロサービスの設計では欠かせない「ドメイン駆動設計」のためのイベントストーミングを紹介し、ドメイン駆動設計の戦略的設計の概要を説明しました。
+
+### [OpenAPI Generator を使って Spring Boot アプリを作る (3)](/blogs/2022/06/17/openapi-generator-3/)
+
+第3回は、OpenAPI Generator のようなコード生成を活用する場合に重要となる Generation Gap パターンについて説明しました。
+
+### [OpenAPI Generator を使って Spring Boot アプリを作る (4)](/blogs/2022/06/24/openapi-generator-4/)
+
+第4回は、ドメイン駆動設計の戦略的設計、戦術的設計を利用して、OpenAPI Generator と Spring Boot でサービスを完成させました。
+
+### 今回
+
+今回の記事で、セキュリティ向上のためドメインに組み込まなかった認証認可をサイドカーパターンで実現し、全体のサービスを完成しました。
+
+この記事のコード全体は [GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-6) にあります。
 
 ## 参考
 
 - [ゼロトラストネットワーク](https://www.amazon.co.jp/dp/4873118883/)
 
-## 過去の記事
-
-- [OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)
-- [OpenAPI Generator を使って Spring Boot アプリを作る (2)](/blogs/2022/06/09/openapi-generator-2/)
-- [OpenAPI Generator を使って Spring Boot アプリを作る (3)](/blogs/2022/06/17/openapi-generator-3/)
-- [OpenAPI Generator を使って Spring Boot アプリを作る (4)](/blogs/2022/06/24/openapi-generator-4/)
-
-Keycloak を実行するために、次の記事も参照してください。
+Keycloak を IdP として実行する場合は、次の記事も参照してください。
 - [OpenID Connect でパスワードレス認証を使う](https://developer.mamezou-tech.com/blogs/2022/06/23/webauthn-3/)

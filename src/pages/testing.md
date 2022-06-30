@@ -28,7 +28,7 @@ description: ソフトウェアテストに関する技法やテクニック
 ### Jest再入門シリーズ
 - [導入編](/testing/jest/jest-intro/)
 - [マッチャー編](/testing/jest/jest-matchers/)
-- スナップショットテスト編 <span style="color: red">Coming Soon!</span>
+- [スナップショットテスト編](/testing/jest/jest-snapshot-testing/)
 - モック編 <span style="color: red">Coming Soon!</span>
 - カスタムマッチャー編 <span style="color: red">Coming Soon!</span>
 - 非同期編 <span style="color: red">Coming Soon!</span>

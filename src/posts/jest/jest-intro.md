@@ -427,9 +427,13 @@ npx jest --reporters=default --reporters=jest-html-reporters
 
 ---
 
-次はマッチャー編に続きます。
+次回は[マッチャー編](/testing/jest/jest-matchers/)に続きます。
+
+---
+関連記事
 
 - [Jest再入門 - マッチャー編](/testing/jest/jest-matchers/)
+- [Jest再入門 - スナップショットテスト編](/testing/jest/jest-snapshot-testing/)
 
 ---
 参照資料

@@ -4,6 +4,7 @@ author: noboru-kudo
 date: 2022-06-26
 templateEngineOverride: md
 prevPage: ./src/posts/jest/jest-intro.md
+nextPage: ./src/posts/jest/jest-snapshot-testing.md
 ---
 
 Jestはオールインワンのテストフレームワークです。
@@ -234,8 +235,13 @@ test("message以外を検査", () => {
 
 ---
 
-これ以外にも、モックやスナップショットテストに関するマッチャーも用意されています。
-これらは、それぞれの記事(モック編、スナップショットテスト編)に掲載予定です。
+次回は[スナップショットテスト編](/testing/jest/jest-snapshot-testing/)に続きます。
+
+---
+関連記事
+
+- [Jest再入門 - 導入編](/testing/jest/jest-intro/)
+- [Jest再入門 - スナップショットテスト編](/testing/jest/jest-snapshot-testing/)
 
 ---
 参照資料

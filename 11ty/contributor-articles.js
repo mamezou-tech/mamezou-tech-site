@@ -1,5 +1,22 @@
 const contributors = require("../src/_data/contributors");
 const {getPosts} = require("./utils")
+
+function log(authorArticles) {
+  Object.values(authorArticles).forEach(v => {
+    const result = v.articles.reduce((acc, cur) => {
+      const ym = cur.date.getFullYear() + "-" + (cur.date.getMonth() + 1)
+      const found = acc.findIndex(a => a.ym === ym);
+      if (found >= 0) {
+        acc[found].count++;
+      } else {
+        acc.push({ym, count: 1});
+      }
+      return acc;
+    }, []);
+    console.log(v.name, result);
+  });
+}
+
 module.exports = (collection) => {
   const authorArticles = {};
   Object.keys(contributors).forEach(name => {
@@ -14,6 +31,7 @@ module.exports = (collection) => {
       authorArticles[article.data.author].articles.push(article);
     }
   });
+  // log(authorArticles);
   // pagination
   const chunkSize = 10;
   return Object.keys(authorArticles).reduce((state, name) => {

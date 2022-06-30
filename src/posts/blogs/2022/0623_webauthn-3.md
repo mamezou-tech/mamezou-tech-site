@@ -73,7 +73,7 @@ Credentials のタブを選択します。
 
 ### Mappers
 
-この記事で構築しようとしている認証サービスは、別の記事「[OpenAPI Generator を使って Spring Boot アプリを作る (2)](https://developer.mamezou-tech.com/blogs/2022/06/09/openapi-generator-2/)」の要素の1つです。そのため、`custom:firstname` と `custom:type` を ID トークンに含められるようマッピングを作成します。
+ID トークン等の JWT のペイロードには独自の属性を追加できます。この記事で構築しようとしている認証サービスは、宇宙船の冬眠ポッドが開いた時にコマンドを実行する別の記事「[第2回 イベントストーミングとドメイン駆動設計の戦略的設計](https://developer.mamezou-tech.com/blogs/2022/06/09/openapi-generator-2/)」の要素の1つです。そのため、`custom:firstname` と `custom:type` を ID トークンに含められるようマッピングを作成します。
 
 「Mappers」タブを選択して、「Create」ボタンをクリックします。
 

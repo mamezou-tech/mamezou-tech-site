@@ -1,8 +1,8 @@
 ---
-title: OpenAPI Generator を使って Spring Boot アプリを作る (4)
+title: 第4回 ドメイン層の実装とサービスの完成
 author: shigeki-shoji
 date: 2022-06-24
-tags: [java, "openapi-generator", "spring-boot", "spring-integration", DDD]
+tags: [java, "openapi-generator", "spring-boot", "spring-integration", DDD, "実践マイクロサービス"]
 ---
 
 シリーズ4回目は [Spring Integration](https://spring.io/projects/spring-integration) を使うドメインイベントの発行 (publish) について説明します。
@@ -224,6 +224,6 @@ public class HelloEvents {
 ## 過去の記事
 
 - [ドメイン駆動設計のコンテキストマップ](https://developer.mamezou-tech.com/blogs/2022/04/21/context-map/)
-- [OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)
-- [OpenAPI Generator を使って Spring Boot アプリを作る (2)](/blogs/2022/06/09/openapi-generator-2/)
-- [OpenAPI Generator を使って Spring Boot アプリを作る (3)](/blogs/2022/06/17/openapi-generator-3/)
+- [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
+- [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
+- [第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用](/blogs/2022/06/17/openapi-generator-3/)

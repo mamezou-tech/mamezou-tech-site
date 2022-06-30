@@ -50,16 +50,22 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 ## Spring Boot
 Javaでマイクロサービスを構築するならやはり[Spring Boot](https://spring.io/projects/spring-boot)は外せません。ここではSpring Bootを使った実装をご紹介します。
 
-### OpenAPI Generator を使って Spring Boot アプリを作る
+### 実践マイクロサービス開発
 この連載では、宇宙船の冬眠ポッド (hibernation pod) を題材に [OpenAPI Generator](https://openapi-generator.tech/) を使ってサービスを構築します。
 
-- [第1回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)
+- [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
   - 最初に OpenAPI Generator を使った簡単なサービスを実装します。
-- [第2回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/09/openapi-generator-2/)
+- [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
   - ドメイン駆動設計の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
-- [第3回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/17/openapi-generator-3/)
+- [第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用](/blogs/2022/06/17/openapi-generator-3/)
   - OpenAPI Generator のようなコード生成の活用でポイントとなる Generation Gap パターンについて説明します。
-- [第4回 OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/24/openapi-generator-4/)
+- [第4回 ドメイン層の実装とサービスの完成](/blogs/2022/06/24/openapi-generator-4/)
   - ドメイン駆動設計の戦術的設計によってサービスの実装を完成します。
+- [第5回 Open Policy Agent とサイドカーパターンによる認可の実装](/blogs/2022/07/01/openapi-generator-5/)
+  - サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。
+
+（番外編）
+- [Spring Boot と Apache Camel の統合](/blogs/2022/06/12/spring-boot-with-apache-camel-integration/)
+  - Spring Boot でエンタープライズインテグレーションパターン (EIPs) を活用するため Apache Camel との統合について説明します。
 - [OpenID Connect でパスワードレス認証を使う](/blogs/2022/06/23/webauthn-3/)
-  - 番外編として、Keycloak [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) によるパスワードレス認証を利用する構成を説明します。 
+  - Keycloak [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) によるパスワードレス認証を利用する構成を説明します。 

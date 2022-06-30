@@ -1,8 +1,8 @@
 ---
-title: OpenAPI Generator を使って Spring Boot アプリを作る (3)
+title: 第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用
 author: shigeki-shoji
 date: 2022-06-17
-tags: [java, "openapi-generator", "spring-boot"]
+tags: [java, "openapi-generator", "spring-boot", "実践マイクロサービス"]
 ---
 
 [前回](/blogs/2022/06/09/openapi-generator-2/)はドメイン駆動設計の話題を中心に説明しました。
@@ -253,8 +253,8 @@ OpenAPI Generator に設定可能なパラメータも多くあります。パ�
 
 ## 過去の記事
 
-- [OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)
-- [OpenAPI Generator を使って Spring Boot アプリを作る (2)](/blogs/2022/06/09/openapi-generator-2/)
+- [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
+- [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
 
 ## 参考
 

@@ -12,7 +12,7 @@ flowchart TB
 subgraph レビューイ
   ブランチ作成-->コード修正-->PR作成-->レビュアーアサイン
   subgraph レビュー対応
-    コメント確認-->コメント箇所修正-->rep[conversation リプライ]
+    コメント箇所修正-->rep[conversation リプライ]
   end
   レビュー対応-->再レビューリクエスト
 end
@@ -74,7 +74,7 @@ flowchart TB
 
 Approve は PR を承認した状態で、レビュアーの右にチェックマークが付きます。
 
-![](https://i.gyazo.com/1a8bc6f072accae3bbac593c018ec3b3.png)
+![](https://i.gyazo.com/ee505d86d7a088b48b7503af3a3cc0c9.png)
 
 Request changes はレビューイに PR の修正を要求、Comment は単にコメントして完了です。いずれも、レビュアーの右に状態とともに、`Re-request review` のリロードのようなボタンが表示されます。
 

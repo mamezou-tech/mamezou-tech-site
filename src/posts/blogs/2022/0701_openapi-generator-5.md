@@ -31,7 +31,7 @@ Envoy Proxy [設定ファイルサンプル](https://github.com/edward-mamezou/u
 
 ```yaml
     - name: envoy.filters.http.jwt_authn
-    typed_config:
+      typed_config:
         "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
         providers:
           keycloak:

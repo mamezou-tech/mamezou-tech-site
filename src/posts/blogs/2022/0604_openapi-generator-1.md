@@ -1,8 +1,8 @@
 ---
-title: OpenAPI Generator を使って Spring Boot アプリを作る
+title: 第1回 OpenAPI Generator を使ったコード生成
 author: shigeki-shoji
 date: 2022-06-04
-tags: [java, "openapi-generator", "spring-boot"]
+tags: [java, "openapi-generator", "spring-boot", "実践マイクロサービス"]
 ---
 
 REST API の仕様を記述する [OpenAPI Specification](https://swagger.io/specification/) があります。この仕様では、JSON または YAML で API の仕様を記述します。

@@ -50,7 +50,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 ## Spring Boot
 Javaでマイクロサービスを構築するならやはり[Spring Boot](https://spring.io/projects/spring-boot)は外せません。ここではSpring Bootを使った実装をご紹介します。
 
-### 実践マイクロサービス開発
+### Spring Boot による実践マイクロサービス開発
 この連載では、宇宙船の冬眠ポッド (hibernation pod) を題材に [OpenAPI Generator](https://openapi-generator.tech/) を使ってサービスを構築します。
 
 - [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)

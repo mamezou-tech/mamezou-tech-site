@@ -1,11 +1,11 @@
 ---
-title: OpenAPI Generator を使って Spring Boot アプリを作る (2)
+title: 第2回 イベントストーミングとドメイン駆動設計の戦略的設計
 author: shigeki-shoji
 date: 2022-06-09
-tags: [java, "openapi-generator", "spring-boot", DDD]
+tags: [java, "openapi-generator", "spring-boot", DDD, "実践マイクロサービス"]
 ---
 
-この記事は、「[OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)」の続編です。
+この記事は、「[第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)」の続編です。
 
 この記事のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-2)に置いています。
 
@@ -148,7 +148,7 @@ public record HelloVoice(String message) {
 
 ## テストコード
 
-モダンな開発で、テストコードがないということは考えられません。書いている私自身にとっても痛みを伴うものであり、今回作成したテストコードは十分とは考えていませんが、以下のコード ([`OpenApiGeneratorApplicationTests`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/test/java/com/mamezou_tech/example/controller/api/OpenApiGeneratorApplicationTests.java)) を作成しています。
+モダンな開発で、テストコードがないということは考えられません。今回作成したテストコードは十分とは考えていませんが、以下のコード ([`OpenApiGeneratorApplicationTests`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/test/java/com/mamezou_tech/example/controller/api/OpenApiGeneratorApplicationTests.java)) を作成しています。
 
 ```java
 package com.mamezou_tech.example.controller.api;
@@ -222,7 +222,7 @@ JWT トークンは、3つのパートにわかれています。それぞれの
 
 - [良いコード／悪いコードで学ぶ設計入門](https://www.amazon.co.jp/dp/B09Y1MWK9N/)
 - [Event Storming](https://www.eventstorming.com/)
-- [OpenAPI Generator を使って Spring Boot アプリを作る](https://developer.mamezou-tech.com/blogs/2022/06/04/openapi-generator-1/)
-- [S3 の静的 Web サイトをセキュアに Envoy でホスティング](https://developer.mamezou-tech.com/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)
-- [Envoy と Open Policy Agent を使用した認可](https://developer.mamezou-tech.com/blogs/2022/02/20/envoy-authz/)
-- [Envoy を使用して ID Token (OIDC) を検証する](https://developer.mamezou-tech.com/blogs/2022/02/20/envoy-authn/)
+- [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
+- [S3 の静的 Web サイトをセキュアに Envoy でホスティング](/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)
+- [Envoy と Open Policy Agent を使用した認可](/blogs/2022/02/20/envoy-authz/)
+- [Envoy を使用して ID Token (OIDC) を検証する](/blogs/2022/02/20/envoy-authn/)

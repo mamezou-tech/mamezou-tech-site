@@ -1,8 +1,8 @@
 ---
-title: OpenAPI Generator を使って Spring Boot アプリを作る (5)
+title: 第5回 Open Policy Agent とサイドカーパターンによる認可の実装
 author: shigeki-shoji
 date: 2022-07-01
-tags: [envoy, "openapi-generator", "spring-boot", OPA]
+tags: [envoy, "openapi-generator", "spring-boot", OPA, "実践マイクロサービス"]
 ---
 
 前回の記事で、「挨拶の音声を生成する」コマンド (以降 Hello コマンドまたは Hello サービスといいます) を完成させました。
@@ -339,19 +339,19 @@ OpenAPI Generator と Spring Boot を使ってマイクロサービスを構築�
 
 これまでの記事を振り返ります。
 
-### [OpenAPI Generator を使って Spring Boot アプリを作る](/blogs/2022/06/04/openapi-generator-1/)
+### [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
 
 第1回は、OpenAPI Generator とはどういうものかの概要を説明しました。
 
-### [OpenAPI Generator を使って Spring Boot アプリを作る (2)](/blogs/2022/06/09/openapi-generator-2/)
+### [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
 
 第2回は、マイクロサービスの設計では欠かせない「ドメイン駆動設計」のためのイベントストーミングを紹介し、ドメイン駆動設計の戦略的設計の概要を説明しました。
 
-### [OpenAPI Generator を使って Spring Boot アプリを作る (3)](/blogs/2022/06/17/openapi-generator-3/)
+### [第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用](/blogs/2022/06/17/openapi-generator-3/)
 
 第3回は、OpenAPI Generator のようなコード生成を活用する場合に重要となる Generation Gap パターンについて説明しました。
 
-### [OpenAPI Generator を使って Spring Boot アプリを作る (4)](/blogs/2022/06/24/openapi-generator-4/)
+### [第4回 ドメイン層の実装とサービスの完成](/blogs/2022/06/24/openapi-generator-4/)
 
 第4回は、ドメイン駆動設計の戦略的設計、戦術的設計を利用して、OpenAPI Generator と Spring Boot でサービスを完成させました。
 
@@ -366,4 +366,4 @@ OpenAPI Generator と Spring Boot を使ってマイクロサービスを構築�
 - [ゼロトラストネットワーク](https://www.amazon.co.jp/dp/4873118883/)
 
 Keycloak を IdP として実行する場合は、次の記事も参照してください。
-- [OpenID Connect でパスワードレス認証を使う](https://developer.mamezou-tech.com/blogs/2022/06/23/webauthn-3/)
+- [OpenID Connect でパスワードレス認証を使う](/blogs/2022/06/23/webauthn-3/)

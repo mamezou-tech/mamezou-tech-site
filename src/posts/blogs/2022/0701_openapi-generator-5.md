@@ -48,7 +48,7 @@ Envoy Proxy [設定ファイルサンプル](https://github.com/edward-mamezou/u
         rules:
         - match:
             prefix: /example/hibernation-pod
-            requires:
+          requires:
             provider_name: keycloak
 ```
 

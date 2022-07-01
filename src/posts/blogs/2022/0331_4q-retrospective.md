@@ -2,6 +2,7 @@
 title: 豆蔵デベロッパーサイトローンチから4ヶ月のふりかえり
 author: masahiro-kondo
 date: 2022-03-31
+tags: [retrospective]
 ---
 
 本サイトもローンチから4ヶ月経ちました。

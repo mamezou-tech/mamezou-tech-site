@@ -1,5 +1,5 @@
 ---
-title: 豆蔵社員のリモートワーク環境ご紹介 職人のような同僚たちに影響されまくり
+title: 豆蔵社員のリモートワーク環境ご紹介 その２ 職人のような同僚たちに影響されまくり
 author: tadahiro-imada
 date: 2022-07-01
 tags: リモートワーク環境
@@ -19,7 +19,7 @@ iPhoneの新型が出たら毎年買うような事業部長がバリバリに�
 [IBM Space Saver（リンクはLenovoのヤツ）](https://www.lenovo.com/jp/ja/accessories-and-monitors/keyboards-and-mice/keyboards/KEYBOARD-Japanese/p/0B47208)：赤ポチが好きで。
 [Majestouch テンキーレス](https://www.diatec.co.jp/shop/det.php?prod_c=1864)：結構気に入っていて10年くらい使いました。
 
-話それちゃいますが、[初代ポメラ](https://www.kingjim.co.jp/pomera/10th/history/)はすぐ買いまして、ギリッギリでスーツのポケットに入るサイズで、ブラインドタッチができる折り畳みキーボードがついてて単4電池で20時間くらい使えて（あえて）ネットワークが使えないというところに惚れました。当時通勤電車で座れたので執筆活動したりしました。あれは面白かったなぁ。その後iPhoneとか使うようになっちゃったけど、PC持ち込めないところでは[折り畳みキーボード](https://www.iclever.co.jp/products-folding-keyboard-bk11s)とiPhone組み合わせて議事録取ったりして遊んでいました。
+話それちゃいますが、[初代ポメラ](https://www.kingjim.co.jp/pomera/10th/history/)はすぐ買いまして、ギリッギリでスーツのポケットに入るサイズで、タッチタイピングができる折り畳みキーボードがついてて単4電池で20時間くらい使えて（あえて）ネットワークが使えないというところに惚れました。当時通勤電車で座れたので執筆活動したりしました。あれは面白かったなぁ。その後iPhoneとか使うようになっちゃったけど、PC持ち込めないところでは[折り畳みキーボード](https://www.iclever.co.jp/products-folding-keyboard-bk11s)とiPhone組み合わせて議事録取ったりして遊んでいました。
 
 ## 筆者の働き方
 

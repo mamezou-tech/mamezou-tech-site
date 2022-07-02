@@ -31,25 +31,25 @@ Envoy Proxy [設定ファイルサンプル](https://github.com/edward-mamezou/u
 
 ```yaml
     - name: envoy.filters.http.jwt_authn
-    typed_config:
+      typed_config:
         "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
         providers:
-        keycloak:
+          keycloak:
             issuer: "https://keycloak.example.com/auth/realms/passengers"
             audiences:
-            - "hibernation-pod"
+              - "hibernation-pod"
             forward_payload_header: payload
             remote_jwks:
-                http_uri:
-                    uri: "https://keycloak.example.com/auth/realms/passengers/protocol/openid-connect/certs"
-                    cluster: jwks
-                    timeout: 5s
-            cache_duration: 600s
+              http_uri:
+                uri: "https://keycloak.example.com/auth/realms/passengers/protocol/openid-connect/certs"
+                cluster: jwks
+                timeout: 5s
+              cache_duration: 600s
         rules:
-        - match:
-            prefix: /example/hibernation-pod
+          - match:
+              prefix: /example/hibernation-pod
             requires:
-            provider_name: keycloak
+              provider_name: keycloak
 ```
 
 発行者 (iss) を issuer に設定し、クライアント ID (aud) を audiences に設定します。また、公開鍵取得のためにアクセスする URI を remote_jwks の http_uri に設定します。

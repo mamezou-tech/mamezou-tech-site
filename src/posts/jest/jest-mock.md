@@ -56,14 +56,14 @@ test("戻り値を指定する", () => {
 });
 ```
 
-syncFunc1とsyncFunc2で2種類の方法を記述していますが、内容は同じです。
+syncFunc1とsyncFunc2で、2種類のやり方を記述していますが、両者の内容は同じです。
 基本形はmockImplementationです。ここで先程jest.fnの引数に記述したように、モックする内容を関数として記述します。
 
 mockReturnValueはmockImplementationのシンタックスシュガーで、引数にはモック関数の戻り値を直接記述します。
 モック関数が固定の値(含むオブジェクト)を返す場合は、こちらを利用する方がシンプルです。
 ただし、例外を送出するケース等には対応していませんので、そのような場合はmockImplementationを利用する必要があります。
 
-シンタックスシュガー記法はPromiseベースの関数向けにも用意されています。
+このシンタックスシュガーはPromiseベースの関数向けにも用意されています。
 
 ```typescript
 test("戻り値を指定する(Promise)", async () => {
@@ -96,7 +96,7 @@ test("呼出タイミングで戻り値を変更する", () => {
 ```
 
 上記はメソッドチェーンで呼出タイミングごとに戻り値を指定しています。
-まず、mockReturnValueOnceを2回呼び出しています。このようにそれぞれ1回目、2回目の呼出時に戻り値を変えています。
+まず、mockReturnValueOnceを2回呼び出しています。これで、それぞれ1回目、2回目の呼出時に戻り値を変えています。
 最後のmockReturnValueでは3回目以降の呼出し全てに適用されるデフォルトです。 これを指定しない場合は、3回目以降はundefinedが戻り値になります。
 
 もちろんこれは、mockImplementationやmockResolvedValue等でも同様に利用できます。
@@ -132,7 +132,7 @@ test("モック用のマッチャー", () => {
 });
 ```
 
-それぞれのマッチャーは名前から自明です。カスタムマッチャーで引数や戻り値を検査しています。先程のmockプロパティを使うよりこちらを使うほうが可読性の点で好ましいでしょう。
+それぞれのマッチャーは名前から自明だと思います。このマッチャーで引数や戻り値を検査しています。先程のmockプロパティを使うよりこちらを使うほうが可読性の点で好ましいでしょう。
 
 最後の検査ではスナップショットテストを利用しています。
 この場合はスナップショットファイルには以下のように記録されます。
@@ -163,6 +163,9 @@ exports[`mock モック用のマッチャー 1`] = `
 ```
 
 このように、前回実行時の引数、戻り値をスナップショットとして保存することで、変更によるデグレが発生していないことを確認できます。
+スナップショットテストについては、以下の記事を参照してください。
+
+- [Jest再入門 - スナップショットテスト編](/testing/jest/jest-snapshot-testing/)
 
 ## モジュールのモック化
 
@@ -175,7 +178,7 @@ exports[`mock モック用のマッチャー 1`] = `
 以下のモジュールを作成しました。
 
 ```typescript
-// ./src/random.ts
+// src/random.ts
 const random = {
   randomModule: () => Math.random(),
 };
@@ -183,11 +186,11 @@ const random = {
 export { random };
 ```
 
-randomモジュールはランダム値を返すrandomModule関数持っています。
-次にこのモジュール利用する側です。
+randomモジュールはランダム値を返すrandomModule関数を持っています。
+次に、このモジュール利用する側です。
 
 ```typescript
-// ./src/sample-handler.ts
+// src/sample-handler.ts
 import { random } from "./random";
 
 export function calculate(): number {
@@ -214,20 +217,20 @@ test("Objectとしてexportしたモジュールのモック化", () => {
 });
 ```
 
-トップレベルで`jest.mock("../src/random")`を最初に呼び出します。これを実行するとJestはこのモジュール全体をモックにします。
+トップレベルで`jest.mock("../src/random")`を呼び出します。これを実行するとJestはこのモジュール全体をモックにします。
 オプションですが、第2引数にモック化する内容についても記述可能です([module factory](https://jestjs.io/docs/jest-object#jestdomockmodulename-factory-options))。
 
 この状態ではrandomモジュールの関数の呼出はundefinedが返ってきますが、これではテストがしにくいので、その後でrandomModuleの戻り値を固定値に変更しています。
-具体的には、モック化されたrandomモジュールのrandomModule関数のmockReturnValueで戻り値を指定します。
-TypeScriptの場合は、これがモック化されたものであるのかコンパイラが判別できず、そのままではmockReturnValueが呼び出せません。
-このため事前にjest.Mockedにキャストしています。jest.Mocked以外でも対象の型に応じたものがJestのindex.d.tsに用意されていますので、モック対象に応じて適宜確認すると良いでしょう。
+具体的には、モック化されたrandomモジュールのrandomModule関数をmockReturnValueで戻り値を固定にします。
+ただし、TypeScriptの場合は、これがモック化されたものであるのかコンパイラが判別できず、そのままではmockReturnValueが呼び出せません。
+このため、事前に対象モジュールをjest.Mockedにキャストしています。jest.Mocked以外でも対象の型に応じたものがJestのindex.d.tsに用意されていますので、モック対象に応じて適宜確認すると良いでしょう。
 
 ### 関数モジュール
 
 次は、関数としてexportしたモジュールに対してモックを適用します。
 
 ```typescript
-// ./src/random.ts
+// src/random.ts
 export function randomFunc(): number {
   return Math.random();
 }
@@ -237,7 +240,7 @@ export function randomFunc(): number {
 次に、このモジュールを利用する側です。
 
 ```typescript
-// ./src/sample-handler.ts
+// src/sample-handler.ts
 import { randomFunc } from "./random";
 
 export function calculate2(): number {
@@ -262,7 +265,7 @@ test("関数としてexportしたモジュールのモック化", () => {
 ```
 
 先程とほとんど同じです。jest.mockを使ってモジュールをモック化し、mockReturnValueで固定値を返すようにしています。
-違いとしては、TypeScript向けにキャストしている部分が、今回はFunction自体を対象としているので、jest.Mockedでなくjest.MockedFunctionにしているところくらいです。
+違いとしては、今回はFunction自体を対象としているので、キャストしている部分が、jest.Mockedでなくjest.MockedFunctionにしているところくらいです。
 
 ### クラスモジュール
 
@@ -270,7 +273,7 @@ test("関数としてexportしたモジュールのモック化", () => {
 以下のモジュールを作成しました。
 
 ```typescript
-// ./src/RandomService.ts
+// src/RandomService.ts
 export default class RandomService {
   random(): number {
     return Math.random();
@@ -282,7 +285,7 @@ export default class RandomService {
 次に、このモジュールを利用する側です。
 
 ```typescript
-// ./src/sample-handler.ts
+// src/sample-handler.ts
 import RandomService from "./RandomService";
 
 export function calculate3(): number {
@@ -308,8 +311,8 @@ test("Classとしてexportしたモジュールをモック化 - メソッド", 
 ```
 
 こちらも先程と大きく変わることはありません。jest.mockを使ってクラスをモック化し、そのメソッドをmockReturnValueで固定値を返すようにしています。
-TypeScript向けのキャストもほとんど同じですが、対象はインスタンスメソッドなので、RandomService.prototype.randomとする必要があります。
-ちなみに、もしrandomをstaticメソッドとした場合は以下のようにします。
+TypeScript向けのキャストもほとんど同じですが、対象はインスタンスメソッドなので、RandomService.prototype.randomとしました。
+ちなみに、もしrandomをstaticメソッドとして定義した場合は以下のようにします。
 
 ```typescript
 test("Classとしてexportしたモジュールをモック化 - staticメソッド", () => {
@@ -324,10 +327,10 @@ test("Classとしてexportしたモジュールをモック化 - staticメソッ
 これまではJestの自動モック機能によって、jest.mockで指定したモジュールを自動でモック化(Auto Mock)してきました。
 Jestにはマニュアルモック（Manual Mock）というやり方もあります。 
 マニュアルモックは一般的にはスタブという言葉が分かりやすいと思います。
-モック化対象を別モジュールに置き換えて実行します。
+モック化対象を手動で作成したスタブモジュールに置き換えて実行します。
 
 ここではUUID生成ライブラリの[uuid](https://www.npmjs.com/package/uuid)のモック化を実施してみます。
-このライブラリで生成するv4タイプのランダムUUIDはテストによって実行結果が変わるためスタブ化してどのテストも固定値を返すようにします。
+このライブラリで生成するv4タイプのUUIDはテストによって実行結果が変わるため、スタブ化してどのテストも固定値を返すようにします。
 
 プロジェクトルートに`__mocks__`というディレクトリを作成します。このディレクトリ名はJestで決められたルールです。
 このディレクトリ内にuuid.tsを作成します。ここでは以下の内容にしました。
@@ -351,10 +354,10 @@ test("マニュアルモック", () => {
 });
 ```
 
-先程のようにjest.mockは不要です。Jestが該当のモックを検知して適用します。
+先程のようにjest.mockは不要です。Jestが該当のマニュアルモックを検知して適用します。
 このようにすると、各テストでモックの記述が不要になりますので、一律スタブ化したい場合はこのマニュアルモックを使うと良いかと思います。
 
-なお、公式ドキュメントによるとnode.jsに組み込まれているものに対してマニュアルモックを適用する場合は、明示的にjest.mockの指定は必要となりますので注意してください。
+なお、node.jsに組み込まれているものや自作モジュールに対してマニュアルモックを適用する場合は、明示的にjest.mockの指定は必要となりますので注意してください。
 
 マニュアルモックの詳細は[公式ドキュメント](https://jestjs.io/docs/manual-mocks)を参照してください。
 
@@ -364,7 +367,7 @@ test("マニュアルモック", () => {
 以下のモジュールを作成したとします。
 
 ```typescript
-// foo-bar.ts
+// src/foo-bar.ts
 const fooBar = {
   foo: () => "foo",
   bar: () => "bar",
@@ -389,7 +392,7 @@ test("部分モック", () => {
 上記のテストは成功します。
 これは、jest.spyOnでfooBarモジュールのfooメソッドで固定値`mock`を返すようにしているからです。
 一方で、barメソッドについてはモックではなく実体が使われるため、`bar`がそのまま返ってきます。
-spyも他のモック同様に、カスタムマッチャーで呼出内容の検査ができます。
+spyも他のモック同様に、モック用のマッチャーで呼出内容の検査ができます。
 
 :::info
 [公式ドキュメント](https://jestjs.io/docs/mock-functions#mocking-partials)では、jest.mockメソッドのmodule factoryを使用した方法も紹介されています。

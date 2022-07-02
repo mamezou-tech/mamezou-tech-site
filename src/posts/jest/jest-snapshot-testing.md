@@ -209,14 +209,14 @@ Object {
 
 ---
 
-次回は[モック編](/testing/jest/jest-mock/)に続きます。
+次回は[関数・モジュールモック編](/testing/jest/jest-mock/)に続きます。
 
 ---
 関連記事
 
 - [Jest再入門 - 導入編](/testing/jest/jest-intro/)
 - [Jest再入門 - マッチャー編](/testing/jest/jest-matchers/)
-- [Jest再入門 - モック編](/testing/jest/jest-mock/)
+- [Jest再入門 - 関数・モジュールモック編](/testing/jest/jest-mock/)
 
 ---
 参照資料

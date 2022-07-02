@@ -118,6 +118,37 @@ describe("Foo.ts", () => {
 });
 ```
 
+テスト対象がPromiseを利用する場合は、テスト本文にasync/awaitが利用できます。
+
+```typescript
+test("Promiseベースのテスト", async () => {
+  const actual = await something();
+  expect(actual).toBe("...")
+});
+```
+
+テスト対象がCallbackを要求し、その中身を検査する場合は、テスト本文の引数としてテストの成功・失敗を取り決めるdone関数を受け取れます。
+
+```typescript
+test("コールバックのテスト", (done) => {
+  function callback(success: string, error?: Error) {
+    if (error) {
+      done(error); // テスト失敗
+      return;
+    }
+    try {
+      expect(success).toBe("...");
+      done(); // テスト終了
+    } catch (e) {
+      done(e); // テスト失敗内容を出力して、テスト失敗
+    }
+  }
+  something(callback);
+});
+```
+
+引数なしでdoneを呼び出すとテストは成功します。doneが引数ありで呼ばれるまたは呼ばれない(タイムアウト)場合にテストは失敗します。
+
 ## 事前・事後処理
 
 テスト前のセットアップやテスト後のクリーンアップには`beforeEach`/`afterEach`、`beforeAll`/`afterAll`を使用します。
@@ -434,7 +465,7 @@ npx jest --reporters=default --reporters=jest-html-reporters
 
 - [Jest再入門 - マッチャー編](/testing/jest/jest-matchers/)
 - [Jest再入門 - スナップショットテスト編](/testing/jest/jest-snapshot-testing/)
-- [Jest再入門 - モック編](/testing/jest/jest-mock/)
+- [Jest再入門 - 関数・モジュールモック編](/testing/jest/jest-mock/)
 
 ---
 参照資料

@@ -39,7 +39,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 （番外編）
 - [Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)
 - [Helidon Tips - Helidon MP Testing with JUnit5を使ってみる](/msa/mp/ext02-helidon-testing/)
-- [Helidon Tips - Helidon MicroProfile RestClientを使ったRESTリースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)
+- [Helidon Tips - Helidon MicroProfile RestClientを使ったRESTリソースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)
 - Helidon Tips - Configuration Secretsを使ってみる(公開予定)
 - Helidon Tips - CORS in Helidon MPを使ってみる(公開予定)
 - Helidon Tips - Helidon Web Serverで知っておくと便利な設定(公開予定)

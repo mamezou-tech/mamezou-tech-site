@@ -11,7 +11,7 @@ date: git Last Modified
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/Introduction-of-statistical-analysis-tool-jamovi/)
 - [ベイズ統計をお手軽に、統計解析ツールJASPの紹介](/blogs/2022/06/23/statistical-analysis-tool-jasp/)
-- [Rを4.2系にバージョンアップしたらRstanの導入でつまずいた話](/blogs/2022/06/30/install-rstan-on-r421/) <span style="color: red;">★NEW★</span>
+- [Rを4.2系にバージョンアップしたらRstanの導入でつまずいた話](/blogs/2022/06/30/install-rstan-on-r421/)
 
 ## 古典的統計学(推計統計・記述統計)
 ### 基本編
@@ -36,6 +36,7 @@ date: git Last Modified
 - [ベイジアンの逆襲](/blogs/2022/06/03/bayesian-inference)
 ### ベイズの定理
 - [転ばぬ先のベイズの定理](/blogs/2022/06/07/bayes-theorem)
+- [直感が理性に大反抗！「モンティ・ホール問題」](/blogs/2022/07/04/monty-hall-problem) <span style="color: red;">★NEW★</span>
 ### ベイズ更新
 - [君子は豹変すべし（ベイズ更新）](/blogs/2022/06/13/bayes-update)
 ### ベイズ推定

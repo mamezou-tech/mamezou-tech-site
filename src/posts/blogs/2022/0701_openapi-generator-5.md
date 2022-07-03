@@ -27,7 +27,7 @@ Envoy Proxy の [JWT Authentication](https://www.envoyproxy.io/docs/envoy/latest
 
 妥当な場合、フィルタはペイロード部分をフォワードするリクエストの HTTP Header に追加もできます。Hello コマンドは、HTTP Header へ `payload` の追加を前提にしています。
 
-Envoy Proxy [設定ファイルサンプル](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example)のフィルタの設定部分は次のとおりです。
+[サンプル](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example)のフィルタの設定部分は次のとおりです。
 
 ```yaml
     - name: envoy.filters.http.jwt_authn
@@ -158,6 +158,19 @@ OPA の Rego で、パスを変えたい場合、レスポンスの `headers` �
 - [envoy-v3-api-msg-extensions-filters-http-ext-authz-v3-extauthz](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/http/ext_authz/v3/ext_authz.proto#envoy-v3-api-msg-extensions-filters-http-ext-authz-v3-extauthz)
 - [response.go](https://github.com/open-policy-agent/opa-envoy-plugin/blob/main/envoyauth/response.go)
 :::
+
+[サンプル](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example)のフィルタの設定部分は次のとおりです。
+
+```yaml
+    - name: envoy.filters.http.ext_authz
+      typed_config:
+        "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthz
+        transport_api_version: V3
+        grpc_service:
+          envoy_grpc:
+            cluster_name: authz
+          timeout: 0.250s
+```
 
 ## コンテナビルド
 

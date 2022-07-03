@@ -30,7 +30,6 @@ description: ソフトウェアテストに関する技法やテクニック
 - [マッチャー編](/testing/jest/jest-matchers/)
 - [スナップショットテスト編](/testing/jest/jest-snapshot-testing/)
 - [関数・モジュールモック編](/testing/jest/jest-mock/)
-- タイマーモック編 <span style="color: red">Coming Soon!</span>
 - カスタムマッチャー編 <span style="color: red">Coming Soon!</span>
 
 ## ArchUnit

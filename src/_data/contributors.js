@@ -7,5 +7,6 @@ module.exports = {
   "yoshihisa-muta": "ymuta",
   "shuichi-takatsu": "shuichi-takatsu",
   "nozomu-tanaka": "nzm-tnk",
-  "tadahiro-imada": "tadahima"
+  "tadahiro-imada": "tadahima",
+  "yoshifumi-moriya": "morya-530"
 };

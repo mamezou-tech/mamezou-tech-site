@@ -117,7 +117,7 @@ Server listening on http://localhost:8000
 
 [Interactive islands | fresh docs](https://fresh.deno.dev/docs/concepts/islands)
 
-routes/index.tsx は次のように、Preact で記述されていました。
+アプリのインデックスページ routes/index.tsx は次のように、Preact で記述されていました。
 
 ```ts
 /** @jsx h */
@@ -142,7 +142,11 @@ export default function Home() {
 }
 ```
 
-routes/[name].tsx というファイルが Router のように動作し、パスによって描画を変更できます。生成したプロジェクトに routes/api/jokes.tsx というランダムにジョークを返す API が実装されているので、これを呼び出して、リロードのたびにランダムにジョークを表示するページを追加してみました。
+routes/[name].tsx というファイルがありますが、これが Dynamic Routes の実装で、routes/hoge.tsx のように tsx ファイルを追加することで、/hoge ページに遷移させることができます。
+
+[Dynamic routes | fresh docs](https://fresh.deno.dev/docs/getting-started/dynamic-routes)
+
+生成したプロジェクトに routes/api/joke.tsx というファイルがあります。これは、ランダムなジョークの文章を返す API の実装です。この API を使ってリロードのたびにランダムにジョークを表示するページを追加してみました。
 
 ```ts
 // routes/jokes.tsx
@@ -174,7 +178,7 @@ API を呼び出す Handler を作成し、その中でページコンポーネ�
 
 このファイルを routes 配下に追加し、`localhost:8000/jokes` にアクセスすると更新のたびにランダムにジョークが表示されます[^2]。
 
-[^2]:「Java プログラマーはなぜメガネをかけているのか？ can't see sharp (くっきり見えない) 転じて can't C# (C# ができない) から。」というジョーク。このタイトルの本があるようです。
+[^2]: 表示されているジョークは「Java プログラマーはなぜメガネをかけているのか？ can't see sharp (くっきり見えない) 転じて can't C# (C# ができない) から。」というもので、このタイトルの本があるようです。
 
 ![](https://i.gyazo.com/da70b988b06d78f7cb40f4d31437e863.png)
 
@@ -208,13 +212,13 @@ View をクリックすると稼働しているアプリをブラウザで開き
 このようにコードをリポジトリに push するだけで、ビルド、設定することなくデプロイが完了しました。
 
 ## Fresh と Jamstack
-Fresh は Jamstack を進化させたフレームワークに見えました。Jamstack は Web サイトを早く安全に、簡単に拡張できるように設計されたアーキテクチャで、Pre-rendering を重視し、レンダリング結果を CDN に配置することで、動的サーバーをバックエンドで運用するコストやセキュリティリスクを軽減します。
+Fresh は Jamstack を進化させたフレームワークに見えました。Jamstack は Web サイトを速く安全に、簡単に拡張できるように設計されたアーキテクチャで、Pre-rendering を重視し、レンダリング結果を CDN に配置することで、動的サーバーをバックエンドで運用するコストやセキュリティなどのリスクを軽減します。
 
 [What is the Jamstack? | Jamstack](https://jamstack.org/what-is-jamstack/)
 
 Jamstack はこのように SSG (Static Site Generator) を前提としているので、データ更新時にビルドが必要というところが弱点でした。Fresh のようにリクエスト時にジャストインタイムでレンダリングする方式であれば、このタイムラグが無くなります。
 
-SSG/SSR については Next.js などでも実現されていますが、Fresh は Deno Deploy というグローバルな Edge 環境を前提とした、JIT レンダリングによる、ゼロビルド、ゼロコンフィギュレーションな次世代 Web フレームワークなのだと思います。
+SSG/SSR については Next.js などでも実現されていますが、Fresh は Deno Deploy というグローバルなエッジ環境を前提とした、JIT レンダリングによる、ゼロビルド、ゼロコンフィギュレーションな次世代 Web フレームワークなのだと思います。
 
 Jamstack なサービスで有名な Netlify も Deno Deploy を利用した Edge Functions の提供を開始しています。
 
@@ -223,7 +227,7 @@ Jamstack なサービスで有名な Netlify も Deno Deploy を利用した Edg
 既存の Netlify Functions は AWS Lambda を使用していましたが、Edge Functions は真にエッジで実行される Function になるため、こちらも注目です。
 
 :::info
-ジョークページで使用した API 実装 jokes.ts のコードは以下のようになっています。Netlify Functions と同様シンプルなコードになっており、その親和性が伺えます。
+ジョークページで使用した API 実装 joke.ts のコードは以下のようになっています。Netlify Functions と同様シンプルなコードになっており、その親和性が伺えます。
 
 ```ts
 import { HandlerContext } from "$fresh/server.ts";

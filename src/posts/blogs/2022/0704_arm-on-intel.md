@@ -43,7 +43,7 @@ uname -m
 
 `x86_64` と表示されます。
 
-## Uninstall
+## アンインストール
 
 マルチアーキテクチャサポートをアンインストールしたい場合は、次のコマンドを実行します。Docker を使用していない場合は、`docker` を `sudo nerdctl` に置き換えてください。
 
@@ -53,7 +53,9 @@ docker run --privileged --rm tonistiigi/binfmt --uninstall qemu-x86_64
 
 ## まとめ
 
-Arm64 で実行されている仮想 Linux (lima) 上で QEMU を使って実行するため、結局のところ動作しないイメージが多くあります。例えば、筆者は `jboss/keycloak` を実行しようとしましたが、ソケットを作るところでエラーが発生して正常に起動しませんでした。この方法で実行可能なイメージはかなり限定されるようです。
+Arm64 で実行されている仮想 Linux (lima) 上で QEMU を使って実行するため、結局のところ動作しないイメージが多くあります。例えば、筆者は `openpolicyagent/opa:latest-envoy` の実行には成功しましたが、`jboss/keycloak` を実行しようとするとソケットを作るところでエラーが発生して正常に起動しませんでした。この方法で実行可能なイメージはかなり限定されるようです。
+
+ここで説明した方法は、Arm64 の Raspberry Pi にも適用できます。
 
 WWDC 2022 の「[Create macOS or Linux virtual machines](https://developer.apple.com/videos/play/wwdc2022/10002/)」で紹介された Rosetta 2 を搭載した macOS がリリースされると、Windows Subsystem for Linux のような手軽さで Linux を実行できるようになるため、コンテナ実行環境が大きく改善されるのではと期待を持っています。
 

@@ -1,0 +1,6 @@
+{
+  "permalink": "/learning/{{ page.fileSlug }}/",
+  "tags": ["learning"],
+  "layout": "post",
+  "category": "学び"
+}

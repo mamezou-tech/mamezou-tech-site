@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/**.md'
       - 'src/**.njk'
+      - 'src/_data/**.js'
   workflow_dispatch:
 
 jobs:

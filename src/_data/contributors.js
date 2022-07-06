@@ -8,5 +8,6 @@ module.exports = {
   "shuichi-takatsu": "shuichi-takatsu",
   "nozomu-tanaka": "nzm-tnk",
   "tadahiro-imada": "tadahima",
-  "yoshifumi-moriya": "morya-530"
+  "yoshifumi-moriya": "morya-530",
+  "yuta-masuda": "ymasuda64"
 };

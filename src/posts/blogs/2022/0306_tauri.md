@@ -401,7 +401,13 @@ flowchart LR
 
 Bridge パターンは Lockdown のスーパーセットで Rust と WebView 双方にある Broker オブジェクト経由で通信します。
 
-Tauri は Electron よりも Web フレームワークの利用が簡単です。開発体験としては、Rust のビルドに時間がかかりますが、キャッシュされてしまえば Electron での開発と同じような感覚で UI 周りの実装はできる感じでした。今のところ Electron のようにリモートのサイトをまるっとアプリのコンテンツとして表示する機能はなさそうです。
+Tauri は Electron よりも Web フレームワークの利用が簡単です。開発体験としては、Rust のビルドに時間がかかりますが、キャッシュされてしまえば Electron での開発と同じような感覚で UI 周りの実装はできる感じでした。~~今のところ Electron のようにリモートのサイトをまるっとアプリのコンテンツとして表示する機能はなさそうです。~~
+
+:::info:訂正 (2022.07.06)
+tauri.conf.json の `build/devPath` や `build/distDir` に URL を指定するとリモートのサイトをコンテンツとしてロード可能でした。
+
+[https://tauri.app/v1/api/config/#buildconfig](https://tauri.app/v1/api/config/#buildconfig)
+:::
 
 Electron からの移行に際してハードルになるのは、やはり Rust しょう。Electron アプリは JavaScript だけで書けますが、Tauri を使いこなすには Rust の知識が不可欠です。厳密な型付けやメモリ安全性を備える Rust を使うことで堅牢なアプリケーションが作成できそうです。Rust に CPU パワーが要るのでなるべく性能の高いマシンが欲しいところです。
 

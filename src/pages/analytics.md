@@ -27,6 +27,7 @@ date: git Last Modified
 ### 回帰分析
 - [相関係数だけで一喜一憂してはいけない理由（相関行列）](/blogs/2022/05/26/correlation-matrix/)
 - [線形回帰を疑ってかかるこれだけの理由](/blogs/2022/05/28/linear-regression/)
+- [複雑な関係から真の関係を絞り込む（偏相関）](/blogs/2022/07/08/partial-correlation/) <span style="color: red;">★NEW★</span>
 ### 度数分析
 - [選択された結果を分析する（２項検定）](/blogs/2022/06/10/binomial-test)
 - [何となくは通用しない（カイ２乗適合度検定）](/blogs/2022/06/16/chi-square-goodness-of-fit-test)
@@ -36,7 +37,7 @@ date: git Last Modified
 - [ベイジアンの逆襲](/blogs/2022/06/03/bayesian-inference)
 ### ベイズの定理
 - [転ばぬ先のベイズの定理](/blogs/2022/06/07/bayes-theorem)
-- [直感が理性に大反抗！「モンティ・ホール問題」](/blogs/2022/07/04/monty-hall-problem) <span style="color: red;">★NEW★</span>
+- [直感が理性に大反抗！「モンティ・ホール問題」](/blogs/2022/07/04/monty-hall-problem)
 ### ベイズ更新
 - [君子は豹変すべし（ベイズ更新）](/blogs/2022/06/13/bayes-update)
 ### ベイズ推定

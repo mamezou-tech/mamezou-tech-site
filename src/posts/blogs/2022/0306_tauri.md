@@ -2,6 +2,7 @@
 title: Rust によるデスクトップアプリケーションフレームワーク Tauri
 author: masahiro-kondo
 date: 2022-03-06
+tags: Tauri
 ---
 
 Tauri はクロスプラットフォームデスクトップアプリのための Rust によるフレームワークです。Electron と同様 Web 技術でアプリの UI を構築します。

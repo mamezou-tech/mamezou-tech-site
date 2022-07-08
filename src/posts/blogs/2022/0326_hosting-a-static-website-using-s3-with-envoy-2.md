@@ -23,7 +23,7 @@ tags: [AWS, envoy, "rancher-desktop", k8s, container, traefik]
 
 S3 バケットへのアクセスには、IAM の認証情報を使った署名が必要になりますが、Envoy proxy には [AWS Request Signing](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/aws_request_signing_filter) という、署名をするフィルターが含まれています。
 
-このフィルターを利用する設定例は次のようになります:
+このフィルターを利用する設定例は次のようになります。
 
 ```yaml
   - name: envoy.filters.http.aws_request_signing
@@ -39,7 +39,7 @@ S3 バケットへのアクセスには、IAM の認証情報を使った署名�
 
 また、インデックスアクセス (URL の末尾が '/' となるアクセス) のパスもルート (route) 設定で `regex_rewrite` を使って `index.html` にリライトしていました。ただし、そうすると、署名時のパス (path) と実際の S3 バケットのパスが異なることになり、署名の検証に失敗してしまいます。
 
-これを回避するため、ルート設定での `regex_rewrite` の使用をやめて、署名フィルターの前にパスをリライトするために Lua スクリプトを使う[フィルター](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/lua_filter)を追加しました:
+これを回避するため、ルート設定での `regex_rewrite` の使用をやめて、署名フィルターの前にパスをリライトするために Lua スクリプトを使う[フィルター](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/lua_filter)を追加しました。
 
 ```yaml
   - name: envoy.filters.http.lua
@@ -54,7 +54,7 @@ S3 バケットへのアクセスには、IAM の認証情報を使った署名�
 
 ここで紹介した[設定ファイル](https://github.com/takesection-sandbox/envoyproxy-examples/blob/main/front-proxy-s3/docker/front-envoy.tmp)、Fargate 上で実行するためのコンテナイメージ用の [Dockerfile](https://github.com/takesection-sandbox/envoyproxy-examples/blob/main/front-proxy-s3/Dockerfile)、図の構成を構築する [Cloudformation テンプレート](https://github.com/takesection-sandbox/envoyproxy-examples/blob/main/front-proxy-s3/aws-cloudformation/cloudformation.yaml) 等の全体は [GitHub リポジトリ](https://github.com/takesection-sandbox/envoyproxy-examples/tree/main/front-proxy-s3) にあります。
 
-また、ローカル PC にインストールした Rancher Desktop (または k3s) の [Traefik](https://traefik.io/) から S3 の静的コンテンツにアクセスする構成も [GitHub リポジトリ](https://github.com/takesection-sandbox/envoyproxy-examples/tree/main/front-proxy-s3/kubernetes) にあります。
+また、ローカル PC にインストールした Rancher Desktop (または k3s) の [Traefik](https://traefik.io/) から S3 の静的コンテンツにアクセスする構成も [GitHub リポジトリ](https://github.com/takesection-sandbox/envoyproxy-examples/tree/main/front-proxy-s3/kubernetes) にあります。Ingress を除けば、[Amazon ECS](https://aws.amazon.com/jp/ecs/) を [Amazon EKS](https://aws.amazon.com/jp/eks/) にかえる場合に適用できます。
 
 # まとめ
 

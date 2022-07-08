@@ -53,7 +53,7 @@ Tauri のプロジェクトで、src-tauri/tauri.conf.json で `build/devPath`�
 
 作成したモデルのファイルを BPMN 形式(XML) や SVG 形式でダウンロード可能です。
 
-このツールは、bpmn.js という OSS で公開されているライブラリを使用しています。bpmn.js を使うと BPMN モデリングツールを Web ページに組み込んで、独自にホスティングすることも可能です。
+このサイトでは、bpmn.js という OSS のライブラリを使用しています。bpmn.js を使うと BPMN モデリングツールを Web ページに組み込んで、独自にホスティングすることも可能です。
 
 [GitHub - bpmn-io/bpmn-js: A BPMN 2.0 rendering toolkit and web modeler.](https://github.com/bpmn-io/bpmn-js)
 
@@ -95,7 +95,7 @@ Press any key to continue...
   Vue CLI (https://cli.vuejs.org/)
 ```
 
-まず、tauri.conf.json では、`build/devPath` に webpack-dev-srver が起動する URL (ここでは、localhost:3001 を指定)、`build/distDir` に Webpack でバンドルされたアセットが格納されるディレクトリを相対パスで指定します。また、`build/beforeBuildCommand` には、アセットのビルドコマンド、`build/beforeDevCommand` には、webpack-dev-server を起動するコマンドを指定します。
+まず、tauri.conf.json では、`build/devPath` に webpack-dev-srver が起動する URL (ここでは、localhost:3001 を指定)、`build/distDir` に Webpack でバンドルされたアセットが格納されるディレクトリを相対パスで指定します。また `build/beforeBuildCommand` にはアセットのビルドコマンド、`build/beforeDevCommand` には、webpack-dev-server を起動するコマンドを指定します。
 
 ```json
 {
@@ -114,7 +114,7 @@ distDir に相対的パスが指定されると、そのパスは再起的に読
 [Configuration | Tauri Apps](https://tauri.app/v1/api/config/)
 
 package.json では、tauri.conf.json で指定したコマンド build と dev を npm script で指定します。
-dependency には、アプリに必要なライブラリと、`@tauri-apps/api`、devDependency には、Webpack 関連ライブラリと、`@tauri-apps/cli` などを組み込みます[^1]。
+dependencies には、アプリに必要なライブラリと、`@tauri-apps/api`、devDependencies には、Webpack 関連ライブラリと、`@tauri-apps/cli` などを組み込みます[^1]。
 
 [^1]: サンプルの Webpack 関連など依存関係が古かったので全て現時点の最新バージョンに上げています。
 
@@ -146,7 +146,7 @@ dependency には、アプリに必要なライブラリと、`@tauri-apps/api`�
 }
 ```
 
-webpack.config.js の devServer 設定では、開発時に起動するポートを指定。アプリ起動時に、ブラウザでも同じページが開かないよう、`open: false` を指定します。あと、サンプルの copy-webpack-plugin が古かったので、plugins のオプション指定も修正しました。
+webpack.config.js の devServer 設定では、開発時に起動するポートを指定。開発時にブラウザでも同じページが開かないよう、`open: false` を指定します。あと、サンプルの copy-webpack-plugin が古かったので、plugins のオプション指定も修正しました。
 
 ```javascript
   plugins: [
@@ -165,9 +165,13 @@ webpack.config.js の devServer 設定では、開発時に起動するポート
 
 これで、`npm run tauri dev` を実行すると、アプリ画面で BPMN エディタが使える状態になります。
 
+:::info
+設定から分かるように webpack-dev-server が起動するのは開発時だけで、パッケージングされたバイナリでは bundler でビルドされた静的なファイルが起動時に読み込まれるだけです。内部で Web Server が動作するということではありません。
+:::
+
 ## BPMN ファイル読み込み部分の実装
 
-さて、サンプルでは、起動画面に BPMN ファイルをドロップすることでファイルを開くことができますが、Tauri に読み込んだ状態では、ドロップに反応しません。これは、Tauri 側でファイルドロップを受け取るようになっており、JavaScript の実装が動かないためです。これを解消するには、tauri.conf.json で `fileDropEnabled` を false にします。これは、WebView でファイルドロップを受け付けるかどうかの設定で、無効化することで、JavaScript 側でハンドリングを実装できます。
+さて、元のサンプルでは起動画面に BPMN ファイルをドロップすることでファイルを開くことができますが、Tauri に読み込んだ状態ではドロップに反応しません。これは、Tauri 側でファイルドロップを受け取るようになっており、JavaScript の実装が動かないためです。これを解消するには、tauri.conf.json で `fileDropEnabled` を false にします。これは、WebView でファイルドロップを受け付けるかどうかの設定で、無効化することで、JavaScript 側でハンドリングを実装できます。
 
 ```json
     "windows": [
@@ -188,7 +192,7 @@ webpack.config.js の devServer 設定では、開発時に起動するポート
 
 ## ファイル保存の実装 (with Tauri API)
 
-次にファイルの保存です。元のサンプルのコードでは、BPMN 形式や SVG 形式での保存は、Http Server からのダウンロードを想定して実装されていたので、Tauri のデスクトップアプリケーションにロードした状態では動きません。そこで、Tauri API を使って、ファイル保存機能を実装します。
+次にファイルの保存です。元のサンプルのコードでは、BPMN 形式や SVG 形式での保存は、Web サイトからのダウンロードを想定して実装されているので、Tauri のデスクトップアプリケーションにロードした状態では動きません。そこで、Tauri API を使って、ファイル保存機能を実装します。
 
 tauri.conf.json では、JavaScript 側から Tauri API を呼び出せるように、`build/withGlobalTauri` を true に設定します。
 

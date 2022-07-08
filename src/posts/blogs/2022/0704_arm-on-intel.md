@@ -27,6 +27,14 @@ Docker (moby) を使っていない場合は、次のコマンドを実行しま
 sudo nerdctl run --privileged --rm tonistiigi/binfmt --install amd64
 ```
 
+:::info
+kubectl を使う場合は、次のコマンドを実行してインストールします。
+
+```shell
+sudo kubectl run binfmt --privileged=true --rm=true -i -t --image=tonistiigi/binfmt -- --install amd64
+```
+:::
+
 ### 実行
 
 Amd64 の Ubuntu を実行してみましょう。Docker を使用していない場合は、`docker` を `sudo nerdctl` に置き換えてください。
@@ -43,6 +51,14 @@ uname -m
 
 `x86_64` と表示されます。
 
+:::info
+kubectl を使う場合は次のようにダイジェストを使って実行します。
+
+```shell
+sudo kubectl run ubuntu --rm=true -i -t --image=ubuntu@sha256:bace9fb0d5923a675c894d5c815da75ffe35e24970166a48a4460a48ae6e0d19
+```
+:::
+
 ## アンインストール
 
 マルチアーキテクチャサポートをアンインストールしたい場合は、次のコマンドを実行します。Docker を使用していない場合は、`docker` を `sudo nerdctl` に置き換えてください。
@@ -50,6 +66,14 @@ uname -m
 ```shell
 docker run --privileged --rm tonistiigi/binfmt --uninstall qemu-x86_64
 ```
+
+:::info
+kubectl を使う場合は、次のコマンドを実行してアンインストールします。
+
+```shell
+sudo kubectl run binfmt --privileged=true --rm=true -i -t --image=tonistiigi/binfmt -- --uninstall qemu-x86_64
+```
+:::
 
 ## まとめ
 

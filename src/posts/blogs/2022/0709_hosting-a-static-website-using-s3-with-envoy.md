@@ -1,5 +1,5 @@
 ---
-title: S3 の静的 Web サイトを Rancher Desktop でホスティング 
+title: Rancher Desktop の Ingress (traefik) の使い方 
 author: shigeki-shoji
 date: 2022-07-09
 tags: [AWS, envoy, traefik, "rancher-desktop", container, ingress, k8s]

@@ -1,6 +1,6 @@
 ---
 title: 自然言語処理初心者が「GPT2-japanese」で遊んでみた
-author: Takafumi-Okubo
+author: takafumi-okubo
 date: 2022-07-08
 tags: [自然言語処理,機械学習,GPT-2,OpenAI,ファインチューニング,文章自動生成]
 ---

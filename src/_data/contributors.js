@@ -9,5 +9,6 @@ module.exports = {
   "nozomu-tanaka": "nzm-tnk",
   "tadahiro-imada": "tadahima",
   "yoshifumi-moriya": "morya-530",
+  "takafumi-okubo": "TakOkubo",
   "yuta-masuda": "ymasuda64"
 };

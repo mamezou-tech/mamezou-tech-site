@@ -10,5 +10,6 @@ module.exports = {
   "tadahiro-imada": "tadahima",
   "yoshifumi-moriya": "morya-530",
   "takafumi-okubo": "TakOkubo",
-  "yuta-masuda": "ymasuda64"
+  "yuta-masuda": "ymasuda64",
+  "hiroaki-taka": "hiroaki-taka"
 };

@@ -243,6 +243,7 @@ test("message以外を検査", () => {
 - [Jest再入門 - 導入編](/testing/jest/jest-intro/)
 - [Jest再入門 - スナップショットテスト編](/testing/jest/jest-snapshot-testing/)
 - [Jest再入門 - 関数・モジュールモック編](/testing/jest/jest-mock/)
+- [Jest再入門 - カスタムマッチャー作成編](/testing/jest/jest-custom-matchers/)
 
 ---
 参照資料

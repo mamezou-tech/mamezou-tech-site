@@ -466,6 +466,7 @@ npx jest --reporters=default --reporters=jest-html-reporters
 - [Jest再入門 - マッチャー編](/testing/jest/jest-matchers/)
 - [Jest再入門 - スナップショットテスト編](/testing/jest/jest-snapshot-testing/)
 - [Jest再入門 - 関数・モジュールモック編](/testing/jest/jest-mock/)
+- [Jest再入門 - カスタムマッチャー作成編](/testing/jest/jest-custom-matchers/)
 
 ---
 参照資料

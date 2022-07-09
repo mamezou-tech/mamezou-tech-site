@@ -4,7 +4,7 @@ author: noboru-kudo
 date: 2022-07-03
 templateEngineOverride: md
 prevPage: ./src/posts/jest/jest-snapshot-testing.md
-# nextPage:
+nextPage: ./src/posts/jest/jest-custom-matchers.md
 ---
 
 単体テストでは、テストを不安定化させる要因となる外部サービス、データベース等のステートフルなモジュールへの依存は極力避けるべきです。
@@ -423,7 +423,7 @@ test("部分モック", () => {
 
 ---
 
-次回はカスタムマッチャー編に続きます。
+次回は[カスタムマッチャー作成編](/testing/jest/jest-custom-matchers/)に続きます。
 
 ---
 関連記事
@@ -431,6 +431,7 @@ test("部分モック", () => {
 - [Jest再入門 - 導入編](/testing/jest/jest-intro/)
 - [Jest再入門 - マッチャー編](/testing/jest/jest-matchers/)
 - [Jest再入門 - スナップショットテスト編](/testing/jest/jest-snapshot-testing/)
+- [Jest再入門 - カスタムマッチャー作成編](/testing/jest/jest-custom-matchers/)
 
 ---
 参照資料

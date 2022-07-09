@@ -21,10 +21,10 @@ JestのExpect APIには、組み込みで多くのマッチャーが提供され
 [[TOC]]
 
 ## カスタムマッチャーの基本
-シンプルなケースでカスタムマッチャーを作成します。
+最初は、シンプルなケースでカスタムマッチャーを作成します。
 ここではUUIDのフォーマットが正しいことを検証するマッチャーを作成してみましょう。
 
-まずは、Jestのカスタムマッチャーです。テストファイルに以下を記述します。
+まずは、Jestのカスタムマッチャーです。この場合は以下のようなマッチャー実装になります。
 
 ```typescript
 expect.extend({
@@ -44,8 +44,8 @@ expect.extend({
 });
 ```
 
-上記がカスタムマッチャーの基本形です。
-jest.extendの引数にカスタムマッチャーとなるFunctionを定義します。
+これがカスタムマッチャーの基本形です。
+expect.extendの引数にカスタムマッチャーとなる関数を定義します。
 カスタムマッチャーの定義は以下になります。
 
 ```typescript
@@ -57,7 +57,7 @@ type CustomMatcher = (
 ) => CustomMatcherResult | Promise<CustomMatcherResult>;
 ```
 
-引数としてテスト対象の値を受け取り、戻り値として、jest.CustomMatcherResultを返します。
+引数としてテスト対象の値(received)を受け取り、戻り値として、jest.CustomMatcherResultを返します。
 jest.CustomMatcherResultの型定義は以下のようになります。
 
 ```typescript
@@ -66,8 +66,8 @@ interface CustomMatcherResult {
     message: () => string;
 }
 ```
-passに検査結果、messageがテスト失敗時のメッセージです。
-ここでは正規表現による一致を検査し、trueまたはfalseをpassに指定しています。
+passが検査結果、messageがテスト失敗時のメッセージです。
+ここでは正規表現による一致を検査し、passにtrueまたはfalseを設定しています。
 message指定時は注意が必要です。passがtrueだからと言ってテストが成功する訳ではありません。
 これは`expect("foo").not.toBe("bar")`のように否定のケースがあるためです。
 上記では、その点を考慮してpassがtrueでも、notを指定した場合のmessageも定義しています（3項演算子の部分）。
@@ -103,7 +103,7 @@ declare global {
 CustomMatcherにTypeScriptが認識可能なマッチャーのインターフェースを記述し、その下のdeclare内でjestの既存インターフェースにマージしています。
 
 これで準備は完了です。後は通常のテスト同様に上記テストは成功します。
-テストが失敗する場合は以下のような出力となります。
+テストが失敗すると、以下のような出力となります。
 
 ```shell
   ● カスタムマッチャー › UUIDフォーマットマッチャー
@@ -119,7 +119,7 @@ CustomMatcherにTypeScriptが認識可能なマッチャーのインターフェ
       56 |
 ```
 
-テストが失敗して、messageに設定した内容が表示されていることが分かります。
+テスト失敗の出力として、カスタムマッチャーでmessageに設定した内容が表示されていることが分かります。
 
 :::info
 自作のマッチャーはゼロベースで作成するのではなく、Jest本体のマッチャーの実装を参考に作成するのがお勧めです。
@@ -131,7 +131,7 @@ CustomMatcherにTypeScriptが認識可能なマッチャーのインターフェ
 
 次は、比較対象の期待値を受け取るパターンを作成します。さらに今回はJestで用意されているユーティリティで出力結果の見栄えを良くしてみましょう。
 ここでは、文字列を大文字小文字を区別せずに比較するtoMatchCaseInsensitiveマッチャーを作成します。
-まずは先程同様にマッチャーを作成し、先程のextendに追加しましょう。
+まずは、専用のマッチャーを作成し、先程定義したexpect.extendに追加しましょう。
 
 ```typescript
 expect.extend({
@@ -161,7 +161,7 @@ expect.extend({
   },
 });
 ```
-今回は期待値を受け取るので、引数にexpectedを追加しています。検証は期待値(expected)、実際値(received)を小文字に変換して比較(Object.is)します。
+今回は期待値を受け取るので、引数にexpectedを追加しています。事前に期待値(expected)、実際値(received)それぞれを小文字に変換して比較(Object.is)します。
 message部分ですが、今回はJestのユーティリティ([jest-matcher-utility](https://github.com/facebook/jest/tree/main/packages/jest-matcher-utils))で用意されているものを活用しています。
 これは、カスタムマッチャー内のthis.utilsで呼出しできます。今回はmatcherHint/printDiffOrStringifyを利用してmessageを構築しました。
 
@@ -199,7 +199,7 @@ test("大文字小文字区別しないマッチャー", () => {
 ## スナップショットテストのカスタムマッチャー
 
 カスタムマッチャーはスナップショットテスト[^1]にも適用できます。
-ここではJSON形式でpayloadフィールド配下のみをスナップショットテストするカスタムマッチャーを作成してみます。
+ここではオブジェクトのpayloadフィールド配下のみをスナップショットテストするカスタムマッチャーを作成してみます。
 
 [^1]: スナップショットテストは [Jest再入門 - スナップショットテスト編](/testing/jest/jest-snapshot-testing/)を参照してください。
 
@@ -224,8 +224,8 @@ expect.extend({
 ```
 
 ポイントはカスタムマッチャーの最後の`toMatchSnapshot.bind(...)`の部分です。
-ここで、Jestが提供しているスナップショットテストのカスタムマッチャーにスナップショット検査を移譲しています。
-現状はTypeScriptで型付けしようとすると、事前にthisをjest-snapshotが提供する型(`jest.MatcherContext & { snapshotState: SnapshotState }`)にキャストする必要がありました。
+ここで、jest-snapshotが提供しているマッチャーにスナップショットファイルのチェックを移譲しています。
+現状はTypeScriptで厳密に型付けしようとすると、thisをjest-snapshotが提供する型(`jest.MatcherContext & { snapshotState: SnapshotState }`)にキャストする必要がありました（他の方法があるのかもしれません）。
 
 作成するテストは以下のようになります(先程同様にd.tsファイルは先程のCustomMatcherに追加するだけですので割愛します)。
 
@@ -276,13 +276,13 @@ payload配下のみの差分がテスト失敗として検出されているこ�
 
 ## カスタムマッチャーをテスト全体に適用する
 
-これまで作成したカスタムマッチャーは、このままだと各テストファイル内でjest.extendを使って登録する必要があります。通常はデフォルトで使えるようにしたいと思います。
+これまで作成したカスタムマッチャーは、このままだと各テストファイル内でexpect.extendを使って登録する必要があります。通常はデフォルトで使えるようにしたいと思います。
 Jestではテストファイル実行時のフックポイントがあります。
 
 - [Jestドキュメント - setupFilesAfterEnv](https://jestjs.io/docs/configuration#setupfilesafterenv-array)
 
-最後の仕上げに今まで作成したカスタムマッチャーをテスト全体で利用できるようにしてみましょう。
-まずはセットアップファイルを作成します。ここでは`specs/register-matchers.ts`というファイルを作成しました。
+最後の仕上げに、今まで作成したカスタムマッチャーをテスト全体で利用できるようにしてみましょう。
+まずはセットアップスクリプトを作成します。ここでは`specs/register-matchers.ts`というファイルを作成しました。
 
 ```typescript
 import { SnapshotState, toMatchSnapshot } from "jest-snapshot";
@@ -315,14 +315,14 @@ export default {
 ```
 
 `<rootDir>`はデフォルトではプロジェクトルートを指します。これで各テストファイル実行前にこのセットアップスクリプトが実行されるようになります。
-各テストファイルではjest.extendの定義が不要で、作成したカスタムマッチャーがデフォルトで利用できるようになります。
+各テストファイルでexpect.extendの定義は不要になり、これまで作成したカスタムマッチャーがデフォルトで利用できるようになります。
 
 ## 終わりに
 今回でJest再入門シリーズは最終回になります。
 Jestは予め用意されたものを何となく使うことが多いですが、ゼロベースから導入するのも簡単で、これだけで単体テストのユースケースのほとんどを賄えることが理解いただけたでしょうか？
 と偉そうなことを言いましたが、筆者も執筆していて気づいたことが結構多く、改めてJestの使い方を再認識しました。
 
-Jest+TypeScriptはフロントエンドに限らず、バックエンドでも多く使われるようになってきたと思います。
+Jest+TypeScriptはフロントエンドに限らず、バックエンドでも広く使われるようになってきたと思います。
 本シリーズが皆さんの参考になれば幸いです。
 
 ---

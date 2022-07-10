@@ -246,7 +246,7 @@ aws codeartifact login --tool npm --repository my-private-registry \
 npm install my-vue-libs
 ```
 
-`pakcage.json`を見ると、先程デプロイされているnpmモジュールが追加されます。
+`package.json`を見ると、先程デプロイされているnpmモジュールが追加されます。
 
 ```json
   "dependencies": {

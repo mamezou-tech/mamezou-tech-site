@@ -69,7 +69,7 @@ tags: リモートワーク環境
 
 ### ATEM Mini
 
-[ATEM Mini](https://www.blackmagicdesign.com/jp/products/atemmini)は、HDMIスイッチャ－です。ボタン1つで出力するHDMIソースを選択できます。ZoomではこのATEM Miniの出力を画面共有していました。前述の通り、Zoomでの講義配信はMacを使っていましたが、具体的にはATEM Miniの出力を画面共有で配信していました。ATEM Miniはカメラとして認識されるので、Zoomで画面共有から「第2カメラのコンテンツ」を選択することでATEM Miniの出力を配信可能できます。
+[ATEM Mini](https://www.blackmagicdesign.com/jp/products/atemmini)は、HDMIスイッチャ－です。ボタン1つで出力するHDMIソースを選択できます。ZoomではこのATEM Miniの出力を画面共有していました。前述の通り、Zoomでの講義配信はMacを使っていましたが、具体的にはATEM Miniの出力を画面共有で配信していました。ATEM Miniはカメラとして認識されるので、Zoomで画面共有から「第2カメラのコンテンツ」を選択することでATEM Miniの出力を配信です。
 
 今回、HDMIソースとして、iPhone、iPad、Let's note、別のWindowsノートPCを接続しました。通常時は、Let's noteの外部ディスプレイの内容を共有します。PDFを表示したいときはiPadに切り替え、書籍紹介で本の表紙を生で見せたいときには、iPhoneの映像に切り替えていました。ちなみに、HDMIスプリッターも使っているので、Let's noteに接続した外部ディスプレイ、液晶ペンタブレット、ATEM Miniへの入力はすべて同じ映像になります。
 

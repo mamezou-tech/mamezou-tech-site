@@ -9,6 +9,8 @@ GitHub Packages は、Docker イメージ、npm、Maven、NuGet、RubyGems な�
 
 この記事では、[OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator) で生成した TypeScript モジュールを GitHub Actions を使って GitHub Packages にデプロイする方法を説明します。
 
+[[TOC]]
+
 ## OpenAPI Generator
 
 このサンプルでは OpenAPI の定義 ([openapi.yml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/openapi.yml)) から OpenAPI Generator で axios を使うモジュールのコードを生成します。
@@ -103,19 +105,16 @@ GitHub Actions の `actions/setup-node@v3` で GitHub リポジトリのルー�
 //npm.pkg.github.com/:always-token=true
 ```
 
-生成されたコードをビルドするために、依存ライブラリを `node_modules` にダウンロードします。
+:::info
+`actions/setup-node` の設定と生成される `.npmrc` ファイルの関係の詳細は、[GitHub リポジトリ](https://github.com/actions/setup-node/blob/main/action.yml)を参照するとよいでしょう。
 
-```shell
-npm install
-```
+`registry-url` については、次のように書かれています。
+>Optional registry to set up for auth. Will set the registry in a project level .npmrc and .yarnrc file, and set up auth to read in from env.NODE_AUTH_TOKEN.
 
-npm の `publish` コマンドで、ビルドと GitHub Packages にデプロイします。
+>認証のためのオプションの設定。プロジェクトレベルの .npmrc と .yarnrc ファイルにレジストリが設定される。環境変数 NODE_AUTH_TOKEN を読み込む認証が設定される。
+:::
 
-```shell
-npm publish
-```
-
-この一連の処理を実行する GitHub Actions の定義は次のようになります。
+一連の処理を実行する GitHub Actions の定義は次のようになります。
 {% raw %}
 ```yaml
 - run: (cd modules/client; npm install)
@@ -126,9 +125,13 @@ npm publish
 {% endraw %}
 OpenAPI Generator の設定により、コードは `modules/client` ディレクトリに生成されています。そのため、`npm install` の前に `cd modules/client` でディレクトリを移動しています。
 
-さらに、GitHub Actions は GitHub リポジトリのルートに `.npmrc` ファイルを生成するため、環境変数 `NPM_CONFIG_USERCONFIG` で GitHub リポジトリのルートにある `.npmrc` ファイルを使用するよう設定します。
+`npm install` で依存ライブラリを `node_modules` にインストール (ダウンロード) します。
+
+GitHub Actions は GitHub リポジトリのルートに `.npmrc` ファイルを生成するため、環境変数 `NPM_CONFIG_USERCONFIG` で GitHub リポジトリのルートにある `.npmrc` ファイルを使用するよう設定します。
 
 `npm publish` で使用する `_authToken` は GitHub から取得して環境変数 `NODE_AUTH_TOKEN` に設定しています。
+
+`npm publish` コマンドで、ビルドと GitHub Packages にデプロイします。
 
 ここで説明した全体のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-6) にあります。
 

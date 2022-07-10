@@ -7,7 +7,7 @@ tags: [container, docker]
 
 Docker は背後で Docker デーモンが実行されて、Docker コマンドは Unix ドメインソケット (Linux や macOS の場合) または tcp ソケットで Docker デーモンと通信します。
 
-Linux にインストールした Docker デーモンは設定により Unix ドメインではなく tcp で外部マシンからのアクセスも可能できます。これは、Windows Subsystem for Linux 2 にインストールした Docker デーモンの場合も同様です。
+Linux にインストールした Docker デーモンは設定により Unix ドメインではなく tcp で外部マシンからのアクセスもできます。これは、Windows Subsystem for Linux 2 にインストールした Docker デーモンの場合も同様です。
 
 この記事では、ローカルの WSL2 またはリモートの Amazon Linux 2 などで動作している Docker デーモンにリモートで接続して、Docker を利用するために、Windows 環境に Docker クライアントの Docker CLI をインストールする手順を説明します。また、Docker デーモンへのアクセスには暗号化されていない tcp/2375 を使用する場合について記述しています。
 

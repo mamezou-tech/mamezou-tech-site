@@ -2,7 +2,7 @@
 title: 第2回 イベントストーミングとドメイン駆動設計の戦略的設計
 author: shigeki-shoji
 date: 2022-06-09
-tags: [java, "openapi-generator", "spring-boot", DDD, "実践マイクロサービス"]
+tags: [java, "openapi-generator", "spring-boot", DDD, "実践マイクロサービス", ZTA]
 ---
 
 この記事は、「[第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)」の続編です。

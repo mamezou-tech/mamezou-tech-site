@@ -2,7 +2,7 @@
 title: Dapr on Jetson Nano with k3s 
 author: shigeki-shoji
 date: 2022-01-03
-tags: [container, k8s]
+tags: [container, k8s, ZTA]
 ---
 
 マイクロサービスのように、多言語プログラミング (polyglot programming) が前提の環境では、認証認可やログのような横断的関心事 (cross-cutting concern) をアプリケーションのコードとして実装すると、各言語やフレームワークごとに移植が必要となり最新化への足かせとなります。
@@ -19,7 +19,7 @@ NVIDIA の [Jetson Nano Developer Kit](https://developer.nvidia.com/embedded/jet
 user ALL=(ALL) NOPASSWD: ALL
 ```
 
-K3S のインストール:
+K3S のインストール。
 
 ```shell
 curl -sfL https://get.k3s.io | sh -
@@ -31,7 +31,7 @@ Dapr の[インストール](https://docs.dapr.io/getting-started/install-dapr-c
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 ```
 
-Helm の[インストール](https://helm.sh/ja/docs/intro/install/):
+Helm の[インストール](https://helm.sh/ja/docs/intro/install/)。
 
 ```shell
 curl https://helm.baltorepo.com/organization/signing.asc | sudo apt-key add -
@@ -41,13 +41,13 @@ sudo apt-get update
 sudo apt-get install helm --yes
 ```
 
-Dapr の初期化を実行します:
+Dapr の初期化を実行します。
 
 ```shell
 dapr init -k
 ```
 
-Nginx の Ingress コントローラを Helm チャートを使ってインストールします:
+Nginx の Ingress コントローラを Helm チャートを使ってインストールします。
 
 ```shell
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx

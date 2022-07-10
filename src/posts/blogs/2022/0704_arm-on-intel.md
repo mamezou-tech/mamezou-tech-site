@@ -2,7 +2,7 @@
 title: M1 mac の Rancher Desktop で intel のコンテナイメージを実行する
 author: shigeki-shoji
 date: 2022-07-04
-tags: [container]
+tags: [container, "rancher-desktop"]
 ---
 
 M1 mac にインストールした Rancher Desktop では Amd64 のコンテナイメージの実行ができません。

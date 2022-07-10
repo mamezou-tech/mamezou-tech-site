@@ -101,8 +101,7 @@ GitHub Actions の `actions/setup-node@v3` で GitHub リポジトリのルー�
 
 ```text
 @edward-mamezou:registry=https://npm.pkg.github.com/
-//npm.pkg.github.com/:email={Email Address}
-//npm.pkg.github.com/:always-token=true
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
 ```
 
 :::info

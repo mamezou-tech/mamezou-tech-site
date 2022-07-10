@@ -1,5 +1,5 @@
 ---
-title: npm モジュールを GitHub Actions で GitHub Pakcages にデプロイする
+title: npm モジュールを GitHub Actions で GitHub Packages にデプロイする
 author: shigeki-shoji
 date: 2022-07-11
 tags: [npm, "openapi-generator", GitHub]

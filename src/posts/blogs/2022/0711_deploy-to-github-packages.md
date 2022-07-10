@@ -191,5 +191,5 @@ npm install --save @edward-mamezou/example-client
 
 この記事では、GitHub Actions を使って GitHub Packages に npm パッケージを登録、使用する方法を説明しました。
 
-npm パッケージをインハウスのレジストリ (Sonatype Nexus や JFrog Artifactory、あるいは GitLab Packages & Registries 等) に登録して共有したい場合も `.npmrc` ファイルの設定等の基本的な部分は GitHub Packages を使う場合と同じです。
+npm パッケージをインハウスのレジストリ ([AWS CodeArtifact](https://aws.amazon.com/jp/codeartifact/)、Sonatype Nexus、JFrog Artifactory、あるいは GitLab Packages & Registries 等) に登録して共有したい場合も `.npmrc` ファイルの設定等の基本的な部分は GitHub Packages を使う場合と同じです。
 

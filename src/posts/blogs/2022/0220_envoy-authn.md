@@ -124,7 +124,7 @@ typed_config:
         - "<CLIENT ID>"
         forward_payload_header: jwt-payload
         remote_jwks:
-        http_uri:
+          http_uri:
             uri: "https://cognito-idp.<REGION>.amazonaws.com/<POOL ID>/.well-known/jwks.json"
             cluster: jwks
             timeout: 5s
@@ -132,7 +132,7 @@ typed_config:
     rules:
     - match:
         prefix: /
-    requires:
+      requires:
         provider_name: amazoncognito
 ```
 
@@ -142,18 +142,18 @@ Envoy proxy の実装では、[OpenID Connect Discovery](https://openid.net/spec
 
 ```yaml
 - name: jwks
-type: LOGICAL_DNS
-dns_lookup_family: V4_ONLY
-load_assignment:
+  type: LOGICAL_DNS
+  dns_lookup_family: V4_ONLY
+  load_assignment:
     cluster_name: jwks 
     endpoints:
     - lb_endpoints:
-    - endpoint:
-        address:
+      - endpoint:
+          address:
             socket_address:
-            address: cognito-idp.<REGION>.amazonaws.com 
-            port_value: 443
-transport_socket:
+              address: cognito-idp.<REGION>.amazonaws.com 
+              port_value: 443
+  transport_socket:
     name: envoy.transport_sockets.tls
 ```
 

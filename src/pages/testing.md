@@ -44,5 +44,10 @@ description: ソフトウェアテストに関する技法やテクニック
 
 - [Cypress Component TestingでVueコンポーネントの単体テストをする](/blogs/2022/06/12/cypress-component-testing/#コンポーネントテストを記述する)
 
+## テスト技法
+
+### ペアワイズ法
+
+- [複数因子の組み合わせテストケースを簡単に効率よく導出する](/blogs/2022/07/11/pairwise-test/)
 
 <div style="margin-top: 3rem"><span style="font-size: 1.2rem;color: red;">その他多数記事を追加予定です！！</span></div>

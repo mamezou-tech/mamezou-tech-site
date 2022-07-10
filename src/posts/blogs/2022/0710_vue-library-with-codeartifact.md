@@ -1,18 +1,18 @@
 ---
-title: Vue3コンポーネントをnpmモジュールとしてCodeArtifactにデプロイする
+title: Vue3コンポーネントをnpmモジュールとしてAWS CodeArtifactにデプロイする
 author: noboru-kudo
 date: 2022-07-10
 tags: ["vite", "vue", "AWS", "code-artifact"]
 templateEngineOverride: md
 ---
 
-Vue.jsのようなフレームワークを使ってある程度の規模の開発を進めていくと、作成するVueコンポーネントは膨大になってきます。
-その結果、似たようなコンポーネントが乱立し、メンテナンスが難しい状況に陥ることになります。
+Vue.jsのようなコンポーネントフレームワークを使ってある程度の規模の開発を進めていくと、作成するコンポーネントは膨大になってきます。
+その結果、似たようなコンポーネントが乱立し、メンテナンスが難しい状況に陥るのはよくあることです。
 
 この課題に対する有力な解決策は、再利用可能なコンポーネントをnpmモジュールとしてプライベートnpmレジストリに登録することです。
 こうすることで、UIコンポーネントの組織内共有や通常のライブラリ同様のバージョン管理が可能となり、この苦痛は大きく緩和されることになるでしょう。
 
-今回はVue.js(v3)のコンポーネントをnpmモジュール化し、AWS CodeArtifactにデプロイする方法を紹介します。
+今回は[Vue.js](https://vuejs.org/)(v3)のコンポーネントをnpmモジュール化し、[AWS CodeArtifact](https://aws.amazon.com/jp/codeartifact/)にデプロイする方法を紹介します。
 
 [[TOC]]
 
@@ -31,7 +31,7 @@ npm install
 ```
 
 インタラクティブに作成するプロジェクト構造を聞かれます。ここではプロジェクト名を`my-vue-libs`として、Vue.js+TypeScriptを選択しました。
-後は、Viteが指定されたフレームワークやTypeScriptで必要な設定ファイル等を作成してくれます(現時点で最新のViteのv2.9.9を使用)。
+後は、ViteがフレームワークやTypeScriptで必要な設定ファイルを作成してくれます(現時点で最新のViteのv2.9.9を使用)。
 
 ここでは、以下のような構造でプロジェクトが作成されました。
 
@@ -98,11 +98,11 @@ export { MyButton }
 ## ライブラリモードのビルド設定をする
 
 今回はUIアプリとしてパッケージングしないので、専用のビルド設定が必要です。
-Viteには通常のアプリとしてではないライブラリモードが用意されていますのでこれを利用します。
+Viteにはnpmモジュールとしてビルドするライブラリモードが用意されていますのでこれを利用します。
 
 - [Vite - Library Mode](https://vitejs.dev/guide/build.html#library-mode)
 
-プロジェクトルート直下の`vite.config.ts`を以下のように追加します。
+プロジェクトルート直下の`vite.config.ts`のbuildフィールドに以下を追加します。
 
 ```typescript
 import { defineConfig } from 'vite'
@@ -149,7 +149,7 @@ UMD(Universal Module Definition)形式とESM(ES Module)形式の2種類のバン
 
 次に、プライベートnpmレジストリのAWS CodeArtifactにモジュールをデプロイします。
 
-その前に、このままではTypeScriptからこのモジュールを利用できませんので、型定義用のd.tsファイルを生成します。
+その前に、このままではTypeScriptからこのモジュールを利用できませんので、d.tsファイル(TypeScript向けの型宣言)を生成します。
 プロジェクトルート直下のtsconfig.jsonに以下を追加します(関連部分のみ抜粋)。
 
 ```json
@@ -222,7 +222,7 @@ npm -d ping
 最後の出力結果からCodeArtifactに接続できていることを確認します。
 後はCodeArtifactにnpmモジュールをpublishするだけです[^2]。
 
-[^2]: 誤ってnpm本体のレジストリに公開しないように`package.json`の`publishConfig.registry`にもCodeArtifactのURLを指定しておいた方が良いと思います。
+[^2]: 誤ってnpm本体のレジストリに公開しないように`package.json`の`publishConfig.registry`にもCodeArtifactのURLを指定しておいた方が良いと思います。また、ここでは実施していませんがライブラリのモジュール名も他と区別しやすいようにスコープ(@xxxx)をつけるとより良いと思います。
 
 ```shell
 npm publish

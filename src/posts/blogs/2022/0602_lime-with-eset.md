@@ -2,7 +2,7 @@
 title: セキュリティソフト ESET を利用している環境で Rancher Desktop (lima) を使う
 author: shigeki-shoji
 date: 2022-06-02
-tags: [k8s, container, macOS]
+tags: [k8s, container, macOS, "rancher-desktop"]
 ---
 
 皆さんは mac でセキュリティ対策ソフトウェアに何をお使いでしょうか。私は [ESET](https://eset-info.canon-its.jp/) を使用しています。

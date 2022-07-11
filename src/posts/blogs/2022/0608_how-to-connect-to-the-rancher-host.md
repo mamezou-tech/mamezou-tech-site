@@ -2,7 +2,7 @@
 title: コンテナ内から Rancher Desktop のホストに接続する方法 
 author: shigeki-shoji
 date: 2022-06-08
-tags: [k8s, container]
+tags: [k8s, container, "rancher-desktop"]
 ---
 
 [Rancher Desktop](https://rancherdesktop.io/) で実行しているコンテナ内からホストにアクセスしたくなる場合があります。

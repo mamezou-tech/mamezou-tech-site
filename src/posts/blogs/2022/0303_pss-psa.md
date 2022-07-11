@@ -15,7 +15,7 @@ Kubernetesコミュニティ(Auth Special Interest Group)では、現在これ�
 今回は、このPod Security Standards(以下PSS)とPod Security Admission(以下PSA)の使い方を紹介します。
 
 :::info
-PSS/PSAはビルドイン機能として、設定のシンプルさを追求しています。
+PSS/PSAはビルトイン機能として、設定のシンプルさを追求しています。
 このため、きめ細かいセキュリティポリシーを適用をする必要がある場合は、専用プロダクトの導入が推奨されています。
 これを実現するプロダクトには、以下のようなものがあります。
 - [OPA/GateKeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/)
@@ -352,7 +352,7 @@ Events:
 ## まとめ
 
 Namespaceにラベル付けするだけで、PSS/PSAが簡単に使えることが分かりました。
-PSS/PSAは簡単に使えるビルドイン機能の位置づけですので、PSS自体のカスタマイズはできません。
+PSS/PSAは簡単に使えるビルトイン機能の位置づけですので、PSS自体のカスタマイズはできません。
 
 とはいえ、PSSはKubernetesが考えるセキュリティスタンダードです。
 もっと柔軟な指定が必要な場合は、これを適用しつつも、追加の基準を外部プロダクトで補完するようなやり方も考えられます。

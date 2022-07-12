@@ -1,7 +1,7 @@
 ---
 title: GitHub Projects の Automated kanban で issue 管理を楽にする
 author: masahiro-kondo
-date: 2022-07-13
+date: 2022-07-12
 tags: GitHub
 ---
 

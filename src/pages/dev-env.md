@@ -38,6 +38,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [GitHub のリリースノート自動生成機能を使う](/blogs/2022/03/11/github-automatically-generated-release-notes/)
 - [GitHub issue からブランチ作成する新機能 - issue と PR を自動リンク](/blogs/2022/03/28/github-create-branch-from-issue/)
 - [GitHub の Dependabot version updates で依存ライブラリを継続的に更新する](/blogs/2022/06/19/github-enable-dependabot-version-updates/)
+- [GitHub Projects の Automated kanban で issue 管理を楽にする](/blogs/2022/07/13/using-github-projects-automated-kanban/)
 
 ## チーム内外のコミュニケーションを促進する
 

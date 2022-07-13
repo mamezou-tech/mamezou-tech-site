@@ -34,11 +34,11 @@ BrowserView 向けにはこのような便利コンポーネントはないの�
 
 フラットな見た目ですが、タブが増えて画面から溢れると自動的にスクロールするようにできたりして、悪くない感じです。
 
-ちょっと困ったのが、BrowserView ではレイアウトが自在にできないという点です。元々 お気に入りや履歴などの機能は、ツールバーからドロップダウンリストを出す UI でした
+ちょっと困ったのが、BrowserView ではレイアウトが自在にできないという点です。元々お気に入りや履歴などの機能は、ツールバーからドロップダウンリストを出す UI でした。
 
 ![](https://i.gyazo.com/ff5b1a932e616e41a0221b5ea491101d.gif)
 
-しかし、BrowserView は、 Main Window に 子 Window を重ねているようなもので、ドロップダウンリストが下に隠れてしまうため、ツールバー部分からコンテンツにかぶさるような描画はできません。
+しかし、BrowserView は Main Window に 子 Window を重ねているようなもので、ドロップダウンリストが下に隠れてしまうため、ツールバー部分からコンテンツにかぶさるような描画はできません。
 
 ![](https://i.gyazo.com/1ce99d44eb756cd27eaa245b7a27e0e5.png)
 
@@ -60,9 +60,7 @@ Scrapbox のページ、お気に入りページ、履歴ページ、一覧の�
 
 例えば、履歴ページでは、表示するページ遷移履歴を BrowserView を管理している Main プロセスから取得しています。
 
-まず、preload スクリプトでは、getHistory という API を定義します。Main プロセスと IPC 通信をして、履歴情報を取得し返却しています。
-
-また、Main プロセスからの受信用のイベントハンドラーも用意しています。
+まず、preload スクリプトでは、getHistory という API を定義します。Main プロセスと IPC 通信をして、履歴情報を取得し返却しています。また、Main プロセスからの受信用のイベントハンドラーも用意しています。
 
 ```javascript
 const { contextBridge, ipcRenderer } = require('electron');
@@ -78,7 +76,7 @@ contextBridge.exposeInMainWorld(
 );
 ```
 
-履歴ページの Vue.js 側の処理では、フォーカス時に呼び出される onFocus 関数で、getHistory API を呼び出し、描画する履歴を更新しています。
+履歴ページの Vue.js 側の処理では、フォーカス時に呼び出される onFocus 関数で getHistory API を呼び出し描画する履歴データを更新しています。
 
 ```javascript
 const app = new Vue({

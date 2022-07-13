@@ -77,3 +77,4 @@ Kubernetes活用例を抜粋しました。Kubernetesを様々なユースケー
 8. [Strimzi - Kubernetes で Kafka を運用するための Operators](/blogs/2022/05/25/strimzi-kafka-operators/)
 9. [Telepresence - EKSのワークロードをローカル環境でデバッグする](/blogs/2022/06/04/telepresence-on-eks/)
 10. [SealedSecretsでKubernetesコンテナのシークレット情報をGit管理する](/blogs/2022/06/05/introduce-sealedsecrets/)
+11. [Secrets Store CSI DriverでKubernetesのシークレット情報を管理する](/blogs/2022/07/13/secrets-store-csi-driver-intro/)

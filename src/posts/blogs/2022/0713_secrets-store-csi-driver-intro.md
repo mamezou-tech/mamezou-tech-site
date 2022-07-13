@@ -565,6 +565,11 @@ Secret Store CSI DriverはKubernetesコミュニティで開発されている�
 シークレット情報を専用ストレージへの保管が義務付けられる環境で、利用を検討する価値はありそうです。
 
 ---
+関連記事
+
+- [SealedSecretsでKubernetesコンテナのシークレット情報をGit管理する](/blogs/2022/06/05/introduce-sealedsecrets/)
+
+---
 参考資料
 
 - [Secrets Store CSI Driver ドキュメント](https://secrets-store-csi-driver.sigs.k8s.io/introduction.html)

@@ -223,6 +223,11 @@ SealedSecretはそれ単体で安全にシークレット情報をGit管理で�
 そもそもですが、SealedSecretsが管理するSecretリソースへのアクセスはRBACで厳格に制限する必要があるのは間違いないです。
 
 ---
+関連記事
+
+- [Secrets Store CSI DriverでKubernetesのシークレット情報を管理する](/blogs/2022/07/13/secrets-store-csi-driver-intro/)
+
+---
 参照資料
 
 - [SealedSecrets](https://github.com/bitnami-labs/sealed-secrets/tree/main/helm/sealed-secrets)

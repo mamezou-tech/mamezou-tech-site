@@ -103,7 +103,7 @@ aws secretsmanager create-secret \
 
 ![secrets manager](https://i.gyazo.com/0b835f44c3ddadff17ddc55a8ba901b8.png)
 
-このSecret情報をPodにマウントして、参照できるようにします。
+このシークレット情報をPodにマウントして、参照できるようにします。
 まずは、PodがこのSecrets Managerのシークレット情報にアクセスできるように、IRSA(IAM Role for ServiceAccount)を設定します。
 以下のIAMポリシーファイルを準備します。
 
@@ -562,7 +562,7 @@ aws ssm delete-parameter --name "/sample-app/db/password"
 
 Secretの扱い方には若干トリッキーな感がありますが、AWSのマネージドサービスで厳格に管理されているシークレット情報をPodから容易にアクセスできました。
 Secret Store CSI DriverはKubernetesコミュニティで開発されているものです。
-シークレット情報を専用ストレージへの保管が義務付けられる環境で、利用を検討する価値はありそうです。
+シークレット情報の専用ストレージへの保管が義務付けられる環境で、利用を検討する価値はありそうです。
 
 ---
 関連記事

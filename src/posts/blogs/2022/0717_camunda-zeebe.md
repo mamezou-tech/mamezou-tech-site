@@ -19,7 +19,7 @@ Zeebe は Java で書かれており、リモートのワーカーと gRPC で�
 
 [GitHub - camunda/zeebe: Distributed Workflow Engine for Microservices Orchestration](https://github.com/camunda/zeebe)
 
-Camunda Platform では、Web 版と デスクトップ版の BPMN Modeler が提供されており、作成した BPMN モデルをデプロイして実行できます。
+Camunda Platform では、Web 版とデスクトップ版の BPMN Modeler が提供されており、作成した BPMN モデルをデプロイして実行できます。
 
 [Camunda Modeler - Design Business Processes and Decision Models](https://camunda.com/platform/modeler/)
 
@@ -215,7 +215,7 @@ Optimize 画面用。
 kubectl port-forward svc/camunda-pf-optimize 8083:80 -n camunda
 ```
 Keycloak 用。
-```
+```shell
 kubectl port-forward svc/camunda-pf-keycloak 18080:80 -n camunda
 ```
 
@@ -426,20 +426,20 @@ Operate 画面で、立て続けに実行され完了したプロセスのリス
 
 ![](https://i.gyazo.com/7f19d557af62f4938d2d5630e80d0eb4.png)
 
-実行されたタイミングでは、`{"Return":"..."}` を出力するワーカーにプロセスが割り当てられ、下側の分岐を辿るものもあります。
+実行されたタイミングでは、`{"Return":"..."}` を出力するワーカーにタスクが割り当てられ、下側の分岐を辿るプロセスもあります。
 
 ![](https://i.gyazo.com/d91fc6234b97fdd2fc4e2085bc9e12b6.png)
 
-このように多数のプロセスが起動するときに、ワーカーも冗長構成で配置して、処理を捌くことができます。
+このようにワーカーを冗長構成で配置して、多数のプロセスを捌くことができます。
 
-この例では、CLI client を使用しましたが、Camunda 公式では、Java と Go の client ライブラリが提供されており、Community ベースで JavaScript / Python / Rust など様々な言語の Client ライブラリが開発されています。
+今回は CLI client を使用しましたが、Camunda 公式では、Java と Go の client ライブラリが提供されており、Community ベースで JavaScript / Python / Rust など様々な言語の Client ライブラリが開発されています。
 
 [Overview | Camunda Platform 8](https://docs.camunda.io/docs/apis-clients/community-clients/)
 
 ## まとめ
-以上、Camunda のローカル環境を構築しました。Camunda の SaaS にサインアップすると、このような面倒な構築作業をスキップしてモデリングしたプロセスをデプロイ・実行できます。Modeler も Web Modeler が提供されているため、ローカルにインストールする必要はありません。
+以上、Camunda のローカル環境を構築しました。Camunda の SaaS にサインアップすると、このような面倒な構築作業をスキップしてモデリングしたプロセスをデプロイ・実行できます。Modeler も Web 版が提供されているため、ローカルにインストールする必要はありません。
 
-公式ドキュメントには、ローカルで構築した環境に対して zbctl を実行するための手順が書いていないので、Keycloak の設定を覗いて少し試行錯誤が必要でした。認証さえ通ってしまえば快適に操作できます。
+公式ドキュメントには、ローカルで構築した環境に対して zbctl を実行するための手順が書かれていないので、Keycloak の設定を覗いて少し試行錯誤が必要でした。認証さえ通ってしまえば快適に操作できます。
 
 Camunda Platform には、DMN という意思決定エンジンもあり、これもグラフィカルなエディタで定義してデプロイできます。
 

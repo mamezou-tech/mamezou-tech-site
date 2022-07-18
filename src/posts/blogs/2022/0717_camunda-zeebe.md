@@ -1,6 +1,7 @@
 ---
 title: Camunda Platform のモダンなプロセスオーケストレーター  Zeebe による開発環境を構築する
 author: masahiro-kondo
+tags: [k8s, container]
 date: 2022-07-17
 ---
 

@@ -5,10 +5,10 @@
 
 ```markdown
 アップロード画像へのリンク(png等の画像リンクにしてください)
-![](https://i.gyazo.com/a6fc0564284c2a417db133a24a3a8432.png)
+![画像説明を記述](https://i.gyazo.com/a6fc0564284c2a417db133a24a3a8432.png)
 
 src/imgに配置した画像へのリンク
-![](/img/sample/cool.png)
+![画像説明を記述](/img/sample/cool.png)
 ```
 
 ## 目次(Table of Contents)

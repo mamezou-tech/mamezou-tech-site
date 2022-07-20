@@ -238,7 +238,7 @@ Lambda関数のハンドラーには、Nitroで出力したエントリーポイ
 npx serverless deploy
 ```
 
-AWS CLIでLambadaのURLを確認し、curlでアクセスしてみます。 URLはデプロイ時の出力結果やマネジメントコンソールからでも構いません。
+AWS CLIでLambadaのURLを確認し、curlでアクセスしてみます。 URLはデプロイ時の出力やマネジメントコンソールからの確認でも構いません。
 ```shell
 # AWS CLI
 LAMBDA_URL=$(aws lambda get-function-url-config --function-name nitro-sample-dev-foo --query FunctionUrl --output text)

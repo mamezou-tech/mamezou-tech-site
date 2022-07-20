@@ -10,7 +10,7 @@ tags: ["CI/CD"]
 
 WebアプリのテストをSelenium[^1]やPuppeteer[^2]、Playwright[^3]などを利用することにより、 **人の手による操作（キー入力やマウスクリック）** を必要とせず、 **人の目による確認を必要としない** 意味で自動化したものをさします（一般的にE2Eテストの操作を自動化したもの）。
 
-さらに操作用コードも **自動生成** したり、HTML検証やコミットされたDBスキーマの更新情報（画面に現れない情報）も **自動検証** したり、アプリの変更を検知してJenkinsで自動的に実行したりするなど、不具合の検出を自動化することまでを範囲とします。
+さらに操作用コードも **自動生成** したり、HTMLやコミットされたDBスキーマの更新情報（画面に現れない情報）も **自動検証** したり、アプリの変更を検知してJenkinsで自動的に実行したりするなど、不具合の検出を自動化することまでを範囲とします。
 
 「自動操作テスト」と呼んだ方が一般的かもしれないですが、システム開発現場の一部でアプリを操作することを「打鍵する」と呼んでいるのと、「自動打鍵」という響きが気に入ってこう呼んでいます。
 
@@ -115,26 +115,26 @@ public class 顧客管理Test extends BaseTest {
 #### ページオブジェクトコードの例
 
 ```java
-public class 顧客検索画面 extends BasePageObject<窓口検索画面> {
+public class 顧客検索画面 extends BasePageObject<顧客検索画面> {
   public 顧客検索画面 ___顧客検索画面___() {
     return this;
   }
 
+  public 顧客検索画面 顧客検索() {
+    click(By.id("customerSearchButton"));
+    // 後述の自動化の3.3（勝手に検証）
+    return refresh();
+  }
+
   public 社員検索ダイアログ 担当社員検索() {
-    click(By.id("userSearch"));
+    click(By.id("userSearchButton"));
     // 後述の自動化の2（画面切り替え）、自動化の3.3（勝手に検証）
     return openPopupPage(社員検索ダイアログ.class);
   }
 
-  public 顧客検索画面 担当社員番号(String userCode) {
-    sendKeys(By.id("userCode"), userCode);
+  public 顧客検索画面 担当社員番号(String userNo) {
+    sendKeys(By.id("userNo"), userNo);
     return this;
-  }
-
-  public 顧客検索画面 顧客検索() {
-    click(By.id("searchButton"));
-    // 後述の自動化の3.3（勝手に検証）
-    return refresh();
   }
 
   public 法人顧客詳細画面 顧客番号(String customerNo) {
@@ -210,15 +210,146 @@ flowchart TB
     end
 ```
 
+## テスト作成時の作業手順
+
+* テスト対象アプリを表示してページオブジェクトを自動生成（8割程度自動）
+* 画面を見ながらJUnitのテストケースを作成（手動）
+  * 画面名や要素名は表示されている通りの日本語なので、操作したい内容をそのまま日本語で書くイメージ
+* 期待値がない状態で実行してみる
+  * 動きに問題がなければ、画面描画毎に自動で出力されたhtmlファイルと、終了時に自動で出力されたテスト実行前後のDB差分csvファイル、ダウンロードしたファイルを、期待値を置くフォルダーに移動する
+* 期待値がある状態で実行する
+  * 期待値通りなら終了
+  * 差分が出たら内容に応じて微修正する（テストを直すか、無視する設定にする）
+* 特に重要なところは明示的に検証コードを追加する
+
 ## どういう仕組みになっているのか
 
 面白そうなところいくつかについて解説します。
 
 ### ページオブジェクト自動生成
 
-Webページからブックマークレットを呼び出すと、ページのタイトルや操作可能エレメントの情報をテキスト形式でダウンロードできるようにし、ダウンロードしたファイルからJavaのクラスを自動生成する仕組みを用意しました。
+Webページからブックマークレットを呼び出すと、ページのタイトルや操作可能エレメントの情報をテキスト形式の中間ファイルとしてダウンロードできるようにし、ダウンロードした中間ファイルからJavaのクラスを自動生成する仕組みを用意しました。
 
-TODO:例（操作可能エレメントにIDがあればID、無ければnameやclassなどで特定するようなファイルを出力。画面タイトルも。）
+1. ページオブジェクトを生成したい画面をブラウザーで開く
+1. 中間ファイル作成用スクリプトレットを実行する
+   1. アドレスバーにURLを直接入力するか、ブックマークレットにしておいて実行する
+1. ダウンロードダイアログが出るので保存する
+
+#### 中間ファイルのイメージ
+
+```text
+顧客管理メニュー画面
+a text 顧客検索 顧客検索
+a text 顧客登録 顧客登録
+:
+```
+
+```text
+顧客検索画面
+button id customerSearchButton 顧客検索
+text id customerName 顧客名称
+text id userNo 担当社員番号
+button id userSearchButton 検索
+a text 前ページ 前ページ
+a text 次ページ 次ページ
+a text C0000001 C0000001
+a text C0000002 C0000002
+:
+```
+
+* 1行目は画面タイトルです。
+* 2行目以降は画面内の操作可能な要素が1行ごとにタブ区切りで出力されます。
+  * 第1項目：画面上の要素の種別（a, text, button, textareaなど）
+  * 第2項目：この項目を指定するために指定する属性（idを指定、nameを指定、textを指定など）
+  * 第3項目：この項目を指定するために指定する値（第2項目と組み合わせ）
+  * 第4項目：画面の要素名（これがそのままメソッド名になります）
+
+#### 中間ファイルからJavaファイルを生成
+
+中間ファイルをJavaファイルに変換する仕組みを用意して、以下のようなファイルを自動生成します。
+
+```java
+public class 顧客管理メニュー画面
+        extends BasePageObject<顧客管理メニュー画面> {
+
+    @Override
+    public String getPageTitle() {
+        return "顧客管理メニュー画面";
+    }
+
+    public 顧客管理メニュー画面 ___顧客管理メニュー画面___() {
+        return this;
+    }
+
+
+    public 顧客管理メニュー画面 顧客検索() {
+        click(By.linkText("顧客検索"));
+        return this;
+    }
+
+    public 顧客管理メニュー画面 顧客登録() {
+        click(By.linkText("顧客登録"));
+        return this;
+    }
+}
+```
+
+```java
+public class 顧客検索画面
+        extends BasePageObject<顧客検索画面> {
+
+    @Override
+    public String getPageTitle() {
+        return "顧客検索画面";
+    }
+
+    public 顧客検索画面 ___顧客検索画面___() {
+        return this;
+    }
+
+    public 顧客検索画面 顧客検索() {
+        click(By.id("customerSearchButton"));
+        return this;
+    }
+
+    public 顧客検索画面 顧客名称(String value) {
+        sendKeys(By.id("customerName"), value);
+        return this;
+    }
+
+    public 顧客検索画面 担当社員番号(String value) {
+        sendKeys(By.id("userNo"), value);
+        return this;
+    }
+
+    public 顧客検索画面 検索() {
+        click(By.id("userSearchButton"));
+        return this;
+    }
+
+    public 顧客検索画面 前ページ() {
+        click(By.linkText("前ページ"));
+        return this;
+    }
+
+    public 顧客検索画面 次ページ() {
+        click(By.linkText("次ページ"));
+        return this;
+    }
+
+    public 顧客検索画面 C0000001() {
+        click(By.linkText("C0000001"));
+        return this;
+    }
+
+    public 顧客検索画面 C0000002() {
+        click(By.linkText("C0000002"));
+        return this;
+    }
+}
+```
+
+必要に応じて、画面遷移する部分の戻り値を別のページオブジェクトに変更したり、可変部分についてパラメーター化したりするなど、修正します。
 
 ### 自動検証
 

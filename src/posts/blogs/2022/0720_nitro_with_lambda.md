@@ -1,5 +1,5 @@
 ---
-title: ユニバーサルJavaScriptサーバーのNitroをAWS Lambdaにデプロイする
+title: ユニバーサルJavaScriptサーバーNitroをAWS Lambdaにデプロイする
 author: noboru-kudo
 date: 2022-07-20
 tags: [nuxt, AWS, サーバーレス, serverless-framework, lambda]
@@ -10,13 +10,13 @@ templateEngineOverride: md
 
 - [Announcing Nuxt 3 Release Candidate](https://nuxtjs.org/announcements/nuxt3-rc/)
 
-Nuxt3はVue3やTypeScript、Vite対応等の様々な改良・機能追加がありますが、その1つにNitroエンジンの搭載があります。
+Nuxt3はVue3やTypeScript、Vite対応等の様々な改良・機能追加がありますが、大きな変更の1つにNitroエンジンの搭載があります。
 
 - [Nitro](https://nitro.unjs.io/)
 
 Nitro自体はNuxtに依存するものではなく、Node.js上で動作する軽量・高速JavaScriptサーバーです。Nuxt3ではSSRのサーバー実行環境やSSGのビルド時に利用されています。
 Nitroの大きな特徴として、当初からサーバーレス環境を前提としてデザインされており、[AWS Lambda](https://aws.amazon.com/jp/lambda/)や[Netlify](https://www.netlify.com/)、[Vercel](https://vercel.com/)等の各種サーバーレスプロバイダー上で動作可能です。
-このようなマルチプロバイダー対応や移植性の高さから、ユニバーサルJavaScriptサーバーというのがNitroの売りのようです。
+このようなマルチプロバイダー対応や移植性の高さから、NitroはユニバーサルJavaScriptサーバーというのが売りのようです。
 
 今回はNuxt3ではなく、あえてNitroにフォーカスしてその機能を試してみました(Nuxt3は別の機会で...)。
 
@@ -51,7 +51,7 @@ tscコマンドで生成されたtsconfig.jsonを修正します。以下関連�
 
 これで準備完了です。
 
-## Nitroアプリを作成する
+## NitroでREST APIを作成する
 
 Nitroは実装も最小限です。REST APIは`routes`ディレクトリを作成し、その中にリクエストを処理するスクリプトファイルを配置するだけです。
 今回は/fooでアクセス可能なGET/POSTメソッドを用意しました。以下追加したファイルです。
@@ -74,8 +74,8 @@ export default eventHandler(async (event) => {
 
 非常にシンプルですね。それぞれのファイルがAPIのRouteになります。
 Nitroは内部的には[H3](https://github.com/unjs/h3)という軽量サーバーを利用して、リクスエストを処理します。
-このroutesディレクトリ内のスクリプトは、NitroによってそのままH3のRouteとしてマッピングされます。
-実装詳細は、以下NitroドキュメントやH3のドキュメントを参照してください。
+このroutesディレクトリ内のスクリプトは、ファイル名やディレクトリ構成に応じてそのままH3のRouteとしてマッピングされます。明示的なルーティングの定義は不要です。
+実装方法の詳細は、以下NitroドキュメントやH3のドキュメントを参照してください。
 
 - [Nitro - Route Handling](https://nitro.unjs.io/guide/routing.html)
 
@@ -113,7 +113,7 @@ curl localhost:3000/foo -d '{"name": "mamezou"}' -H 'Content-Type: application/j
 :::
 
 ## ローカルでビルド・実行する
-まずは、ローカル環境でこのアプリをビルドしてみます。
+まずは、ローカル環境でこのAPIをビルドしてみます。
 以下のコマンドを実行します。
 
 ```shell
@@ -173,7 +173,7 @@ export default defineNitroConfig({
 - [Nitro Configuration](https://nitro.unjs.io/config/)
 :::
 
-## NitroアプリをAWS Lambdaにデプロイする
+## Nitro REST APIをAWS Lambdaにデプロイする
 
 前述の通り、Nitroはマルチプロバイダーのサーバーレス環境で動かすことができます。
 先程はデフォルトのNode.js Serverで動かしましたが、今度はAWS Lambdaにデプロイしてみます。
@@ -184,10 +184,12 @@ Lambdaにデプロイする場合は、ビルド時にpresetを指定します�
 NITRO_PRESET=aws-lambda npx nitropack build
 ```
 
-環境変数`NITRO_PRESET`に`aws-lambda`を指定します。このようにすることで、NitroはLambda用の実行コードを出力します。
-この指定は設定ファイルでも可能です。Lambda以外の場合もこのpresetを変更することで、プロバイダーに応じたビルド結果へ切り替えできるようになっています。
+環境変数`NITRO_PRESET`に`aws-lambda`を指定します[^1]。このようにすることで、NitroはLambda用の実行コードを出力します。
+Lambda以外の場合もこのpresetを変更することで、プロバイダーに応じたビルド結果へ切り替えできるようになっています。
 なお、Netlify等の一部のプロバイダーではpresetを使わなくても自動検知可能です。
 プロバイダー設定の詳細は[公式ドキュメント](https://nitro.unjs.io/deploy/#zero-config-providers)を参照してください。
+
+[^1]: presetの指定は設定ファイル(nitro.config.ts)でも可能です。
 
 ビルド結果を見ると、先程と少し変わっています。
 `.output/server/chunks`の中を見ると以下のようになりました。
@@ -225,12 +227,12 @@ functions:
     url: true # Lambda Function URLを使う
 ```
 
-最もシンプルな構成です。
-`.output`配下のファイルのみを対象とし、`functions`には単一のLambda関数(foo)を定義しています。
-Lambda関数のハンドラーには、Nitroで出力したLambda向けのエンドポイントを指定します。
-また、`url: true`としてAPI Gatewayを配置せずに、Lambda Function URL経由[^1]でLambda関数へアクセスできるようにしました。
+非常にシンプルな構成にしました。
+`.output`配下のファイルのみをデプロイ対象とし、`functions`には単一のLambda関数(foo)を定義しています。
+Lambda関数のハンドラーには、Nitroで出力したエントリーポイントを指定します。
+また、`url: true`としてAPI Gatewayを配置せずに、Lambda Function URL経由[^2]でLambda関数へアクセスできるようにしました。
 
-[^1]: Lambda Function URLは[こちら](/blogs/2022/04/14/lambda-function-url/)の記事で紹介していますので、必要な場合はご参照ください。
+[^2]: Lambda Function URLは[こちら](/blogs/2022/04/14/lambda-function-url/)の記事で紹介していますので、必要な場合はご参照ください。
 
 ```shell
 npx serverless deploy
@@ -259,7 +261,7 @@ Node.js Serverと同じように、AWS LambdaでNitroのAPIサーバーが使え
 とはいえ、今回はシンプルすぎるAPIでNitro以外の依存関係もないので、実用レベルになるともっとかかりそうです。
 
 この辺りの時間が許容できなくなった場合は、その時にコンテナ等で常時起動させておくように変更すれば良さそうです。 
-というのも今回実装したアプリでLambdaに依存するコードは一切なく、Nitroのビルド時のパラメータレベルで切り替えしました。
+というのも今回実装したREST APIでLambdaに依存するコードは一切なく、Nitroのビルド時のパラメータレベルで切り替えしました。
 ユニバーサルサーバーのNitroは可搬性に優れていますので、臨機応変にデプロイ先を変えていくことができそうです。
 
 ---

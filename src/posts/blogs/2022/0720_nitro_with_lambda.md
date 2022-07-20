@@ -14,7 +14,7 @@ Nuxt3はVue3やTypeScript、Vite対応等の様々な改良・機能追加があ
 
 - [Nitro](https://nitro.unjs.io/)
 
-Nitro自体はNuxtに依存するものではなく、Node.js上で動作する軽量・高速JavaScriptサーバーです。Nuxt3ではSSRのサーバー実行環境やSSGのビルド時に利用されています。
+Nitro自体はNuxtに依存するものではなく、Node.js上で動作する軽量・高速JavaScriptサーバーです。Nuxt3ではユニバーサルモードのサーバー側ビルド・実行環境に利用されています。
 Nitroの大きな特徴として、当初からサーバーレス環境を前提としてデザインされており、[AWS Lambda](https://aws.amazon.com/jp/lambda/)や[Netlify](https://www.netlify.com/)、[Vercel](https://vercel.com/)等の各種サーバーレスプロバイダー上で動作可能です。
 このようなマルチプロバイダー対応や移植性の高さから、NitroはユニバーサルJavaScriptサーバーというのが売りのようです。
 
@@ -32,7 +32,7 @@ cd nitro-sample
 npm init -y
 ```
 
-Nitroをインストールします。ここではNitro本体に加えてTypeScriptもインストール、初期化しました。
+Nitroをインストールします(現時点で最新のv0.4.12)。ここではNitro本体に加えてTypeScriptもインストール、初期化しました。
 
 ```shell
 npm install --save-dev nitropack typescript
@@ -67,9 +67,9 @@ export default eventHandler((event) => {
 - routes/foo.post.ts
 ```typescript
 export default eventHandler(async (event) => {
-  const { name } = await useBody<{ name: string }>(event);
-  return `POST: ${name}`;
-});
+  const { name } = await useBody<{ name: string }>(event)
+  return `POST: ${name}`
+})
 ```
 
 非常にシンプルですね。それぞれのファイルがAPIのRouteになります。

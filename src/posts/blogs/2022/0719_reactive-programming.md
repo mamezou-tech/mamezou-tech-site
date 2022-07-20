@@ -50,4 +50,4 @@ def brakeOn = speed > distance + 0.1;
 
 brakeOn を無限ループで評価できますが、実際上は speed と distance のどちらかに変化があった場合に再計算すれば良いため、リアクティブプログラミングでは再計算に必要な変数の変化を監視 (Observe) することが一般的です。
 
-リアクティブプログラミングを実現するアプローチは、関数型リアクティブプログラミング (FRP - Functional Reactive Programming) やアクターベース (Actor Based) 等があります。
+リアクティブプログラミングを実現するアプローチは、関数型リアクティブプログラミング (FRP - Functional Reactive Programming) やアクターベース (Actor Based) 等があります。また、標準化されたパターンとして、リアクティブストリーム ([Reactive Streams](https://www.reactive-streams.org/)) があります。

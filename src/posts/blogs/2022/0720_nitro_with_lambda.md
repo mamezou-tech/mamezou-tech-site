@@ -2,7 +2,7 @@
 title: ユニバーサルJavaScriptサーバーNitroをAWS Lambdaにデプロイする
 author: noboru-kudo
 date: 2022-07-20
-tags: [nuxt, AWS, サーバーレス, serverless-framework, lambda]
+tags: [nuxt, AWS, サーバーレス, serverless-framework, lambda, vue]
 templateEngineOverride: md
 ---
 

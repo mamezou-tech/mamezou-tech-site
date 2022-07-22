@@ -2,7 +2,7 @@
 title: Electron 製の非公式 Scrapbox アプリを式年遷宮した話
 author: masahiro-kondo
 date: 2022-07-13
-tags: electron
+tags: [electron, vue]
 ---
 
 昨年書いた「[非公式 Scrapbox アプリを開発している話](/blogs/2021/12/15/developing-unofficial-scrapbox-app/)」の記事の最後に

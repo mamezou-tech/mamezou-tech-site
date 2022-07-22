@@ -39,6 +39,11 @@ int a = 5; // c ===> 10
 * 関数型プログラミング (Functional Programming)
 
 リアクティブプログラミングは、新たなプログラミングパラダイムに分類されるだろうと考えています。
+
+ところで、プログラミングパラダイムと混同されやすい、プログラミング言語の種別があります。同 SWEBOK では、プログラミング言語は Low-Level Programming Languages と High-Level Programming Languages があり、そしてパラダイムと混同されやすい、次の種別が説明されています。
+
+* 宣言的プログラミング言語 (Declarative Programming Languages): Lisp (あるいは関数型プログラミング言語)、および Prolog 等。
+* 命令型プログラミング言語 (Imperative Programming Languages): C、C++、Java 等。
 :::
 
 リアクティブプログラミングは、GUI や Robotics で活用されています。

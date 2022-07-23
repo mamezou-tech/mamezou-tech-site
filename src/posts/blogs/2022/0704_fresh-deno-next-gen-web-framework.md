@@ -2,6 +2,7 @@
 title: Fresh - Deno の 次世代 Web フレームワーク
 author: masahiro-kondo
 date: 2022-07-04
+tags: [Deno, Edge]
 ---
 
 Deno のフルスタック Web フレームワーク Fresh v1.0 がリリースされました。

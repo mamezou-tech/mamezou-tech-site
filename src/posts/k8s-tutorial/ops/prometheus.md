@@ -206,7 +206,7 @@ http_request_duration_seconds_count{method="GET",route="/health/readiness",code=
 CPU時間等の基本的な情報からレスポンスタイムまで、様々なアプリケーションメトリクスが取得できることが分かります。
 メトリクスのフォーマットについては、Prometheusの[公式ドキュメント](https://prometheus.io/docs/concepts/data_model/)を参照してください。
 
-これでコンテナイメージをビルドし、コンテレジストリにプッシュし、kubectlでアプリケーションをデプロイします。
+これでコンテナイメージをビルドし、コンテナレジストリにプッシュし、kubectlでアプリケーションをデプロイします。
 
 ```shell
 # PROJECT_ROOTにはリポジトリルートを設定してください

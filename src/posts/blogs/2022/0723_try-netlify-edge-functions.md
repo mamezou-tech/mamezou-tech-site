@@ -1,7 +1,7 @@
 ---
 title: Deno Deploy を基盤とする Netlify Edge Functions を試す
 author: masahiro-kondo
-date: 2022-07-22
+date: 2022-07-23
 tags: [Netlify, Deno, サーバーレス, Edge]
 ---
 

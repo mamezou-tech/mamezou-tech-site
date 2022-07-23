@@ -209,7 +209,7 @@ $ curl localhost:8888/context
 ```
 
 :::info
-記事執筆時点、geo は筆者の Netlify 環境デプロイ時にビルドエラーになりました。next は動作しました。
+記事執筆時点、geo は筆者の Netlify 環境ではデプロイ時にビルドエラーになりました。next は動作しました。
 :::
 
 このように Chaining を活用することで、アプリケーションを小さな function で構成し、ユーザーのロケーションに応じて結果をカスタマイズするような使い方が可能です。
@@ -243,3 +243,9 @@ Edge Functions のユースケースについて公式ドキュメントにユ�
 今回作成したコードは以下のリポジトリに格納しています。
 
 [GitHub - kondoumh/netlify-functions-example](https://github.com/kondoumh/netlify-functions-example)
+
+
+---
+参考
+
+[A Deep Dive into Netlify Edge Functions](https://www.netlify.com/blog/deep-dive-into-netlify-edge-functions/)

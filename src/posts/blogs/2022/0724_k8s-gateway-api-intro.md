@@ -173,7 +173,7 @@ spec:
 `spec.listeners`にはGatewayの設定を記述します。
 ここではdefaultという名前で、ホスト名`*.example.com`のHTTP通信を許可するリスナーを1つ作成しました。
 
-これをk8sに反映します。
+これを反映します。
 ```shell
 kubectl apply -f gateway.yaml
 ```
@@ -205,7 +205,7 @@ NAME              TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        
 service/gateway   LoadBalancer   10.102.160.70   10.102.160.70   15021:30671/TCP,80:30970/TCP   4m6s
 ```
 
-IstioのGateway Podが起動しています。実態はIstioのEnvoyプロキシーです。
+Gateway Podが起動しています。実態はIstioのEnvoyプロキシーです。
 また、LoadBalancerタイプのServiceも作成され、EXTERNAL-IPには先程のGatewayと同じIPアドレスが指定されています。
 これを通して外部からのトラフィックを受け付けています。
 
@@ -270,10 +270,10 @@ spec:
 
 まず、`spec.parentRefs`配下で先程作成したGatewayリソースを指定します。`sectionName`にはリスナーの名前を指定します。こちらは先程defaultという名前で作成しましたので、それを設定します。
 
-`spec.hostNames`にはホスト名を指定します。Gateway側では`example.com`のサブドメインのみを許可しましたので、それぞれ`foo.example.com`、`bar.example.com`としました。
+`spec.hostNames`にはホスト名を指定します。Gateway側で`example.com`のサブドメインのみを許可しましたので、それぞれ`foo.example.com`、`bar.example.com`としました。
 
-最後に`spec.rules`です。ここにアプリで作成したServiceリソースへのマッピングを定義します。
-この辺りはIngressの指定とほとんど同じです。それぞれのパス(`/foo`または`/bar`)が対応するServiceにルーティングされるように指定します。
+最後に`spec.rules`です。ここにアプリ向けに作成したServiceリソースへのマッピングを定義します。
+この辺りはIngressの指定とほとんど同じです。それぞれのパス(`/foo`または`/bar`)に対応するServiceへのルーティングを指定します。
 
 これをクラスタに反映します。
 
@@ -292,7 +292,7 @@ bar         http   ["bar.example.com"]   2m34s
 foo         http   ["foo.example.com"]   3m50s
 ```
 
-実際のIstioのEnvoyプロキシーのルーティング設定は、IstioのCLIツールistioctlからも確認できます。
+実際のIstioのルーティング設定は、IstioのCLIツールistioctlからも確認できます。
 
 ```shell
 GATEWAY_POD=$(kubectl get pod -n istio-ingress -o jsonpath='{.items[0].metadata.name}')
@@ -316,7 +316,7 @@ curl -H Host:bar.example.com ${GATEWAY_IP}/bar
 > bar bar-95c7cdf87-v8sqx
 ```
 
-Gateway経由でPodにアクセスできました。
+無事Gateway経由でPodにアクセスできました。
 
 ## HTTPS通信を強制する
 
@@ -382,7 +382,7 @@ curl -H Host:bar.example.com --resolve "bar.example.com:443:${GATEWAY_IP}" \
 
 先ほどと同じ結果になりました。アプリ側(つまりHTTPRouteリソース)では何もせずともHTTPS化できました。
 この構成であれば、更新を忘れがちな証明書もクラスタ管理者で一括管理になります。
-非機能要件をアプリ担当者から分離できますので、特にある程度大きい規模のクラスタでは理想的だと思います。
+非機能要件をアプリ担当者から分離できますので、ある程度大きい規模のクラスタでは理想的だと思います。
 
 ## カナリアリリースをする
 

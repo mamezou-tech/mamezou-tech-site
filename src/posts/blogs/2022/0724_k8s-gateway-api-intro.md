@@ -75,6 +75,13 @@ TLSのSNIベースのルーティングを定義するTLSRouteや、TCP/UDPプ�
 
 [^1]: minikubeのセットアップは[こちら](/containers/k8s/tutorial/app/minikube/)の記事を参照してください。
 
+次に、Gateway APIのカスタムリソース(CRD)をセットアップしておきます。現時点で最新のv0.5.0を準備します。
+
+```shell
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v0.5.0/standard-install.yaml
+```
+
+そしてGateway APIをサポートするプロダクトをインストールします。
 Gateway APIの実装にはいくつかありますが、ここでは[Istio](https://istio.io/)を使用することにしました。
 Istioは以下公式ドキュメントよりセットアップします。
 

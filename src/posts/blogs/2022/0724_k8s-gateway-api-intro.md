@@ -10,7 +10,7 @@ templateEngineOverride: md
 
 - [Kubernetes Gateway API Graduates to Beta](https://kubernetes.io/blog/2022/07/13/gateway-api-graduates-to-beta/)
 
-外部からのトラフィックにはKubernetesビルトインリソースのIngressで対応することが多いと思いますが、Ingressには次のような欠点が指摘されてきました。
+外部からのトラフィックにはKubernetes built-inのIngressリソースで対応することが多いと思いますが、Ingressには次のような欠点が指摘されてきました。
 
 - クラスタ管理者、アプリ開発者の関心事が1つのリソース(Ingress)内に混在している(責務が曖昧)
 - カナリアリリース等、Ingressでサポートしていない機能を利用する場合は、実装固有のアノテーションを指定する必要がある
@@ -31,7 +31,7 @@ Kubernetes Gateway API(以下Gateway API)はこのような欠点を解消すべ
 
 ## Kubernetes Gateway APIが提供するリソース
 
-Gateway APIは、ロールに応じてリソースが分離され、大規模クラスタでの運用に配慮した設計となっています。
+Gateway APIは、ロールに応じてリソースが定義され、大規模クラスタでの運用に配慮した設計となっています。
 次のリソースで構成されています。
 
 | リソース名        | ロール           | 内容                |
@@ -45,13 +45,13 @@ Gateway APIは、ロールに応じてリソースが分離され、大規模ク
 GatewayClassはクラウドプロバイダや実装ベンダーが提供するもので、利用者が作成することはほとんどないかと思います。
 Ingressでいう[IngressClass](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)と同義になります。
 
-GatewayとxRouteは従来のIngressリソースに対応します。Gateway APIでは運用を考慮し、ロールに応じて2つに分割されています。
+GatewayとxRouteは従来のIngressリソースに対応します。Gateway APIでは運用のしやすさを考慮し、クラスタ管理者とアプリ側で2つに分割されています。
 
-Gatewayはクラスタ管理者が作成します。ここではGatewayインスタンス自体のインフラ設定をします。
-また、ここで作成したGatewayの利用範囲を制限したり、TLSや共通のネットワーク設定もここでできます。
+Gatewayはクラスタ管理者が作成します。ここではGatewayインスタンス自体の設定をします。
+また、ここで作成したGatewayの利用範囲を制限したり、TLSや共通のネットワーク設定もここで指定します。
 
 xRouteはアプリのルーティングを設定するリソースで、アプリ開発者または管理者が自分のNamespace内に作成します。
-xの部分はHTTPやTLS等の種類でさらに分割されます。現時点では、HTTPRouteのみがベータ版として提供されています。
+xの部分はルーティングの方法に応じて複数定義されます。現時点では、HTTP(S)ベースのHTTPRouteのみがベータ版として提供されています。
 
 :::column:HTTP(S)以外のxRoute
 TLSのSNIベースのルーティングを定義するTLSRouteや、TCP/UDPプロトコルをサポートするTCP/UDPRouteがあります。
@@ -187,7 +187,7 @@ NAME      CLASS   ADDRESS         READY   AGE
 gateway   istio   10.102.160.70   True    82s
 ```
 
-READYがtrueとなり、Istio側の準備が完了しています。
+`READY=true`となり、Istio側の準備が完了しています。
 ADDRESSが外部向けのIPアドレスです。
 今回はローカル環境ですが、クラウド環境ではこの時点でロードバランサーが配置され、エンドポイントが割り当てられるはずです。
 
@@ -207,13 +207,13 @@ service/gateway   LoadBalancer   10.102.160.70   10.102.160.70   15021:30671/TCP
 
 Gateway Podが起動しています。実態はIstioのEnvoyプロキシーです。
 また、LoadBalancerタイプのServiceも作成され、EXTERNAL-IPには先程のGatewayと同じIPアドレスが指定されています。
-これを通して外部からのトラフィックを受け付けています。
+これを通して外部からのトラフィックを受け付けられる状態となりました。
 
 ## HTTPRouteでルーティングを定義する
 
 HTTPRouteを作成して、アプリのルーティングを定義します。
 
-ここでは予め以下のマニフェストでサンプルアプリをデプロイしておきました。
+ここでは予め`foo`/`bar`Namespaceを作成し、以下のマニフェストでサンプルアプリをデプロイしておきました。
 
 - [fooアプリ - マニフェスト](https://gist.github.com/kudoh/c6e015861c1aac9dee46752a1d1c4f6f)
 - [barアプリ - マニフェスト](https://gist.github.com/kudoh/78ea558a8c92725d10174a12877ed0aa)
@@ -268,7 +268,7 @@ spec:
 
 それぞれの基本的な構造は同じです。
 
-まず、`spec.parentRefs`配下で先程作成したGatewayリソースを指定します。`sectionName`にはリスナーの名前を指定します。こちらは先程defaultという名前で作成しましたので、それを設定します。
+まず、`spec.parentRefs`配下で先程作成したGatewayリソースを指定します。`sectionName`にはリスナーの名前を指定します。先程defaultという名前でリスナーを作成しましたので、それを設定します。
 
 `spec.hostNames`にはホスト名を指定します。Gateway側で`example.com`のサブドメインのみを許可しましたので、それぞれ`foo.example.com`、`bar.example.com`としました。
 
@@ -321,7 +321,7 @@ curl -H Host:bar.example.com ${GATEWAY_IP}/bar
 ## HTTPS通信を強制する
 
 一般的に外部公開向けのエンドポイントはHTTPS通信を強制したいことが多いと思います。
-Ingressだと、ルーティングを記述するIngressリソース側にTLS設定が必要でしたが、Gateway APIではクラスタ管理者側(つまりGatewayリソース)で設定します。
+Ingressだと、ルーティングを記述するIngressリソース側にTLS設定が必要でしたが、Gateway APIではGatewayリソース(つまりクラスタ管理者側)で設定します。
 
 ローカルで簡単に試せる自己署名の証明書を使って試してみます。
 まず、opensslで自己署名のワイルドカード証明書を作成し、Secretリソースとして登録します。
@@ -380,7 +380,7 @@ curl -H Host:bar.example.com --resolve "bar.example.com:443:${GATEWAY_IP}" \
 > bar bar-95c7cdf87-v8sqx
 ```
 
-先ほどと同じ結果になりました。アプリ側(つまりHTTPRouteリソース)では何もせずともHTTPS化できました。
+先ほどと同じ結果になりました。HTTPRouteリソース(つまりアプリ側)では何もせずともHTTPS化できました。
 この構成であれば、更新を忘れがちな証明書もクラスタ管理者で一括管理になります。
 非機能要件をアプリ担当者から分離できますので、ある程度大きい規模のクラスタでは理想的だと思います。
 
@@ -434,7 +434,7 @@ spec:
           port: 80
 ```
 
-`spec.rules`に2つのルールを記述しています。1つ目のルールでは先程と同様にパス一致のみでv1、2つ目のルールではそれにHTTPヘッダ条件(`spec.rules.matches.headers`)を加えてv2へのルーティングを指定します。
+`spec.rules`に2つのルールを記述しています。1つ目のルールでは先程と同様にパス一致でv1、2つ目のルールではHTTPヘッダ条件(`spec.rules.matches.headers`)を加えてv2へのルーティングを指定します。
 この状態で反映すると、以下のようになります。
 
 ```shell

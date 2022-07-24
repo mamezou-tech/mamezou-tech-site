@@ -16,8 +16,8 @@ templateEngineOverride: md
 - カナリアリリース等、Ingressでサポートしていない機能を利用する場合は、実装固有のアノテーションを指定する必要がある
 - HTTP(S)通信しか対応していない(この部分は現時点ではGateway APIでも実験的バージョン)
 
-Kubernetes Gateway API(以下Gateway API)はこのような欠点を解消すべく誕生した新しいAPIで、Ingressのスーパーセットになっています。
-現時点ではサポートするプロダクトのほとんどが一部機能に限定されており、商用環境で使うにはかなり勇気が必要ですが、(遠い)将来的にはIngressに取って変わる可能性があります。
+Kubernetes Gateway API(以下Gateway API)はこのような欠点を解消すべく誕生した新しいAPIです。
+現時点ではサポートするプロダクトのほとんどが一部機能に限定されており、商用環境で使うにはかなり勇気が必要ですが、将来的にはIngressに取って変わる可能性があります。
 今回はこのGateway APIを実際に試してみたいと思います。
 
 :::info
@@ -44,28 +44,17 @@ Gateway APIは、ロールに応じてリソースが分離され、大規模ク
 
 GatewayClassはクラウドプロバイダや実装ベンダーが提供するもので、利用者が作成することはほとんどないかと思います。
 Ingressでいう[IngressClass](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)と同義になります。
-Istioの場合はインストール時に作成されていました。
-
-```shell
-kubectl get gatewayclass
-```
-```
-NAME    CONTROLLER                    ACCEPTED   AGE
-istio   istio.io/gateway-controller   True       1h
-```
-
-<div style="margin-top: 1.2rem"></div>
 
 GatewayとxRouteは従来のIngressリソースに対応します。Gateway APIでは運用を考慮し、ロールに応じて2つに分割されています。
 
-Gatewayはクラスタ管理者が作成します。ここでは主にインフラ側の設定をします（クラウドプロバイダのロードバランサー等）。
-また、ここで作成したGatewayの利用範囲を制限したり、共通のネットワーク設定もここでできます。
+Gatewayはクラスタ管理者が作成します。ここではGatewayインスタンス自体のインフラ設定をします。
+また、ここで作成したGatewayの利用範囲を制限したり、TLSや共通のネットワーク設定もここでできます。
 
 xRouteはアプリのルーティングを設定するリソースで、アプリ開発者または管理者が自分のNamespace内に作成します。
 xの部分はHTTPやTLS等の種類でさらに分割されます。現時点では、HTTPRouteのみがベータ版として提供されています。
 
 :::column:HTTP(S)以外のxRoute
-HTTP(S)以外にも、TLSのSNIベースのルーティングを定義するTLSRouteや、HTTP以外のTCP/UDPプロトコルをサポートするTCP/UDPRouteがあります。
+TLSのSNIベースのルーティングを定義するTLSRouteや、TCP/UDPプロトコルをサポートするTCP/UDPRouteがあります。
 現時点では、両者は実験的(Experimental)バージョンで、デフォルトでは含まれていません([Experimental Channel](https://gateway-api.sigs.k8s.io/guides/getting-started/#install-experimental-channel)として提供)。
 これが安定してくるとHTTP以外の様々なプロトコルに対応可能となり、Gateway APIの普及が大きく前進しそうです。
 
@@ -101,7 +90,7 @@ Istio以外でGateway APIをサポートする製品や実装ステータスは�
 - [Kubernetes Gateway API - Implementation](https://gateway-api.sigs.k8s.io/implementations/)
 :::
 
-ここではistioctl(CLIツール)のインストールし、Istio本体をminimalプロファイルでセットアップします。
+ここではistioctl(CLIツール)をインストールし、Istio本体をminimalプロファイルでセットアップします。
 
 ```shell
 curl -L https://istio.io/downloadIstio | sh -
@@ -120,6 +109,18 @@ kubectl get pod -n istio-system
 NAME                      READY   STATUS    RESTARTS   AGE
 istiod-859b487f84-48b9w   1/1     Running   0          3m2s
 ```
+
+また、この時点で`istio`というGatewayClassも作成されていました。これを使用してGateway APIを利用できそうです。
+
+```shell
+kubectl get gatewayclass
+```
+```
+NAME    CONTROLLER                    ACCEPTED   AGE
+istio   istio.io/gateway-controller   True       1h
+```
+
+<div style="margin-top: 1.2rem"></div>
 
 セットアップ後は別ターミナルで、minikubeからローカル環境にトンネルを通しておきます。
 

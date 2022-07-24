@@ -11,5 +11,6 @@ module.exports = {
   "yoshifumi-moriya": "morya-530",
   "takafumi-okubo": "TakOkubo",
   "yuta-masuda": "ymasuda64",
-  "hiroaki-taka": "hiroaki-taka"
+  "hiroaki-taka": "hiroaki-taka",
+  "koshiro-fukushima": "mz-fukushima-k"
 };

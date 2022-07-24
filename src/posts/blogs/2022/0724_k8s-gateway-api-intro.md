@@ -434,8 +434,8 @@ spec:
           port: 80
 ```
 
-`spec.rules`に2つのルールを記述しています。1つ目のルールでは無条件にv1、2つ目のルールではHTTPヘッダを条件(`spec.rules.matches.headers`)にv2へのルーティングを指定します。
-この状態で確認すると、以下のようになります。
+`spec.rules`に2つのルールを記述しています。1つ目のルールでは先程と同様にパス一致のみでv1、2つ目のルールではそれにHTTPヘッダ条件(`spec.rules.matches.headers`)を加えてv2へのルーティングを指定します。
+この状態で反映すると、以下のようになります。
 
 ```shell
 # デフォルト -> v1
@@ -478,7 +478,7 @@ spec:
 ```
 
 ルールは1つになり、`spec.rules.backendRefs`に2つのServiceを記述しました。
-また、それぞれに`weight`を指定して、トラフィックの割合を指定します。
+それぞれに`weight`を追加して、トラフィックの割合を指定します。
 
 これを適用して、複数回curlでアクセスしてみます。
 
@@ -536,7 +536,7 @@ spec:
 
 - [Flagger - Gateway API Canary Deployments](https://docs.flagger.app/tutorials/gatewayapi-progressive-delivery)
 
-Flaggerを利用したカナリアリリースは本サイトでも記事がありますので、そちらもぜひご参考ください。
+Flaggerを利用したカナリアリリースは本サイトでも紹介記事がありますので、そちらもぜひご参考ください。
 - [Flagger と Ingress Nginx でカナリアリリースをする](/blogs/2022/05/08/flagger-nginx-canary/)
 :::
 

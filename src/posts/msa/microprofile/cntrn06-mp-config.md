@@ -12,6 +12,8 @@ nextPage: ./src/posts/msa/microprofile/cntrn07-mp-restclient.md
 なお、記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/02-config>
 
+また、MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
+
 
 :::info
 この記事はJava11+Helidon 2.4.2 + MicroProfile Config 1.4をもとに作成しています。

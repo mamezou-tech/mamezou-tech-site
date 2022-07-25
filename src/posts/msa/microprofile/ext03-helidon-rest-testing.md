@@ -13,6 +13,8 @@ HTTPプロトコルを用いた結合レベルのRESTリソースのテストは
 なお、記事はコードの抜粋を記載しています。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/ex-helidon-rest-testing>
 
+MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
+
 :::info
 この記事はJava11 + Helidon 2.4.2 + MicroProfile RestClient 1.4 + Helidon MP Testing With JUnit5をもとに作成しています。MicroProfile RestClientやHelidon MP Testing With JUnit5の説明は本記事では行いませんので、ご存じない方は以下を一読されることをお勧めします。
 - [第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)

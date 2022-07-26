@@ -2,7 +2,7 @@
 title: Envoy と Open Policy Agent を使用した認可 
 author: shigeki-shoji
 date: 2022-02-20
-tags: [AWS, "認証/認可", envoy, ZTA]
+tags: [AWS, "認証/認可", envoy, ZTA, OPA, rego]
 ---
 
 Envoy proxy は API を使って動的に構成すると無停止で設定変更等を行うことができます。このような操作は 通常 Istio や AWS App Mesh のようなコントロールプレーンで行うことになります。

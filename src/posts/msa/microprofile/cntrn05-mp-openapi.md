@@ -12,7 +12,8 @@ nextPage: ./src/posts/msa/microprofile/cntrn06-mp-config.md
 今回はAPIの利用方法が主となるため、小さなサンプルアプリにMP OpenAPIのアノテーションを追加していきながらその出力を確認してくStep by Step形式で説明していきます。題材に使用するアプリは以下のGitHubリポジトリにアップしていますので、是非動かしながら見てください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/03-openapi>
 
-なお、記事は必要な部分のコードの抜粋を記載します。全体を見たい場合は適時上記GitHubのリポジトリを参照ください。
+なお、記事は必要な部分のコードの抜粋を記載します。全体を見たい場合は適時上記GitHubのリポジトリを参照ください。また、MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
+
 
 :::info
 この記事はJava11+Helidon 2.4.2 + MicroProfile OpenAPI 1.2をもとに作成しています。

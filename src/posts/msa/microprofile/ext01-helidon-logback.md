@@ -13,6 +13,7 @@ HelidonのLogger実装にはJavaSEのJUL(java.util.logging)が使われていま
 この記事はJava11+Helidon 2.4.2をもとに作成しています。
 :::
 
+MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
 
 [[TOC]]
 

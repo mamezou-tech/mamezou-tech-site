@@ -11,6 +11,8 @@ nextPage: ./src/posts/msa/microprofile/cntrn04-spec-ranking.md
 
 その初回となる今回は、まずは動くものを見てもらう意味も含めMicroProfileを使ったサンプルアプリを紹介し、その後にMicroProfile実装として利用しているHelidonを説明します。サンプルアプリの中身は以降の回をとおして説明するため、今回はこんなのが有りますよ程度の説明に留めます。
 
+MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
+
 [[TOC]]
 
 ## サンプルアプリの紹介

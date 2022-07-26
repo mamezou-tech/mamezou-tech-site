@@ -2,7 +2,7 @@
 title: 第5回 Open Policy Agent とサイドカーパターンによる認可の実装
 author: shigeki-shoji
 date: 2022-07-01
-tags: [envoy, "openapi-generator", "spring-boot", OPA, "実践マイクロサービス", ZTA]
+tags: [envoy, "openapi-generator", "spring-boot", OPA, "実践マイクロサービス", ZTA, rego]
 ---
 
 前回の記事で、「挨拶の音声を生成する」コマンド (以降 Hello コマンドまたは Hello サービスといいます) を完成させました。

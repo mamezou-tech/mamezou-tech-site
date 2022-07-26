@@ -14,6 +14,8 @@ CDIのテストはCDIコンテナが必要となる点やアノテーション�
 なお、記事はコードの抜粋を記載しています。設定やコードの全体を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/ex-helidon-testing>
 
+MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
+
 :::info
 この記事はJava11+Helidon 2.4.2 をもとに作成しています。なお、Helidon MP Testing With JUnit5はMicroProfileには含まれないHelidon独自の機能となります。
 :::

@@ -31,10 +31,10 @@ tags: [Doma2,DAO,OSS]
 ```java
 @Dao(config = AppConfig.class)
 public interface EmployeeDao {
-  ：
+  // (中略)
     @Select
     Employee selectById(Integer id);
-  ：
+  // (中略)
 ```
 
 SQLファイル（サンプルより抜粋）
@@ -55,7 +55,7 @@ where
 ```java
 @Dao(config = AppConfig.class)
 public interface EmployeeDao {
-  :
+  // (中略)
     @Insert
     int insert(Employee employee);
 
@@ -64,7 +64,7 @@ public interface EmployeeDao {
 
     @Delete
     int delete(Employee employee);
-   :
+  // (中略)
 ```
 
 

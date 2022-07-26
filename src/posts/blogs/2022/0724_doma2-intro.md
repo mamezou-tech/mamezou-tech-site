@@ -75,9 +75,11 @@ public interface EmployeeDao {
 SQLテンプレートの文法はSQLのブロックコメント /* */ をベースにしたもので あるためコメントアウトされたものとして 静的な SQL としても実行できます。
 
 - [Doma-Gen2](https://doma-gen.readthedocs.io/en/latest/) を使ったエンティティの自動生成
-エンティティ作成しなくても付属のツールでDDLから自動で作成してくれます。（なんと便利な）
+わざわさ自分でエンティティを作成しなくても付属のツールでDDLから自動で作成してくれます。（なんと便利な）
 
 - 条件式の構築でIF文やFOR文が使える。
+条件が不一致でwhere句以降の構文が出力されない場合、where は自動的に除去されます。次のサンプルにはありませんが、複数条件の and が出力されなかった場合も自動的に除去されます。[参考：条件ディレクティブの句の削除](https://doma.readthedocs.io/en/latest/sql/#removal-of-clauses-on-the-condition-directive)
+
 ```sql
 -- IF文
 select * from employee where
@@ -96,6 +98,8 @@ employee_name like /* name */'hoge'
   /*%end */
 /*%end*/
 ```
+
+
 
 
 ## 最後に

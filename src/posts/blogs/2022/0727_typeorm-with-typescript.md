@@ -9,6 +9,7 @@ templateEngineOverride: md
 Node.jsの普及によって、JavaScript/TypeScriptはフロントエンドだけの実装言語ではなくなりました。
 Express等のWebサーバーや、Lambda等のサーバーレス環境でバックエンド処理として使われることが当たり前になりました。
 
+最近はもっとバリエーションが増えていますが、一般的にバックエンドサービスだとRDBアクセスが定番モノと言えます。
 ここでは、そんなJavaScript/TypeScript向けのORマッパーの[TypeORM](https://typeorm.io/)をご紹介します。
 TypeORMはフルスタックのORマッパーで、特に実装言語としてTypeScriptを利用すると、その型付け機能をフル活用できます[^1]。
 もちろん、PostgreSQL、MySQL、Oracle、SQL Server等のメジャーなRDBはフルサポートされています。
@@ -97,7 +98,7 @@ TypeORMのエンティティ(テーブル)はこのようになります。
 指定可能なオプションは多数ありますので、詳細は[APIレファレンス](https://typeorm.io/decorator-reference#column)を参照してください。
 
 [@PrimaryGeneratedColumn](https://typeorm.io/decorator-reference#primarygeneratedcolumn)は、主キーとして自動生成のサロゲートキーとなることを示します。
-PostgreSQLの場合はデフォルトでPostgreSQLのシーケンスによる採番となります。PKが自然キーの場合は[@PrimaryColumn](https://typeorm.io/decorator-reference#primarycolumn)を使います。
+PostgreSQLの場合はデフォルトでシーケンスによる採番となります。PKが自然キーの場合は[@PrimaryColumn](https://typeorm.io/decorator-reference#primarycolumn)を使います。
 
 :::column:便利なカラムデコレーター
 TypeORMでは実運用でよく見る以下のようなカラムに対応する便利なデコレーターも提供されます。
@@ -173,7 +174,7 @@ datasource.initialize()
 
 最初にDataSourceを作成し、PostgreSQLの接続情報や起動オプションを指定しています。
 接続情報については自明な内容ですので、説明は不要かと思います。
-今回はローカル検証用にエンティティとスキーマの同期(synchronize)や、スキーマの初期化(dropSchema)、詳細なログの出力を有効にしています。
+起動オプションとしては、今回はローカル検証用にエンティティとスキーマの同期(synchronize)や、スキーマの初期化(dropSchema)、詳細なログの出力を有効にしています。
 接続情報に加えて、この辺りも環境によって切り替えできるようにしておくと良いかと思います。
 
 また、`entities`で使用するエンティティを指定しています。ここでは直接クラス名を指定していますが、`entity/*.js`等のパス指定も可能です。
@@ -186,7 +187,7 @@ DataSource作成後はinitializeメソッドで初期化します。このとき
 また、データベースアクセスが終わった際には、destroyメソッドで接続を破棄するようにします。
 
 ## CRUD操作を実行する
-それでは、作成したエンティティのテーブルのCRUD操作をしてみます。
+それでは、作成したエンティティのCRUD操作をしてみます。
 データアクセス用のソースコードは、以下のようになります。
 
 ```typescript
@@ -237,8 +238,9 @@ await repo.remove(persisted);
 ポイントは、先程生成したDataSourceから[Repository](https://typeorm.io/repository-api)を取得しているところくらいです。
 ここではDataSource.getRepositoryメソッドを使用していますが、内部的にはDataSourceから[EntityManger](https://typeorm.io/entity-manager-api)を取得し、そこからRepositoryを取得するショートカットメソッドになっています。
 
-ここで、エンティティの型を第1引数に指定することで、取得するRepositoryはそのエンティティで型付けされます。
-以降ではフィールド自体やその値を設定する際には、IDEのコードアシストが有効になるため、リズムよく実装できるようになります。
+RepositoryとEntityMangerは共にデータベースアクセスの基本操作を提供しますが、Repositoryの場合は対応するエンティティの型に制限します。
+ここでは、Repository取得時にエンティティの型を第1引数に指定し、取得するRepositoryを該当エンティティで型付けするようにしています。
+これより、以降でフィールドの指定やその値を設定する際には、IDEのコードアシストが有効になるため、リズムよく実装できるようになります。
 
 :::column:クエリビルダーを使って複雑なクエリを記述する
 ここでは記載していませんが、クエリビルダーを利用するとSQLに近い方法でデータアクセス操作を記述できます。
@@ -426,7 +428,7 @@ Authorエンティティ側ではarticlesフィールドに`eager: true`を付�
 ここでは、RepositoryのfindOneメソッドの引数で`relations`プロパティで明示的にarticlesの関連も取得するように指定します。
 こうすることで、内部的にはテーブルJOINが実施され、Authorエンティティのarticlesフィールドには取得したデータが設定されます。
 
-一方で、Articleエンティティ側ではauthorフィールドに`eager: true`を指定しましたので、ここでは明示的に`relations`の指定は不要です。
+一方で、Articleエンティティ側ではauthorフィールドに`eager: true`を指定しましたので、明示的に`relations`の指定は不要です。
 このため、こちらの方がシンプルな記述でAuthorエンティティ含めたデータが取得できます。
 
 :::column:関連エンティティを非同期(lazy)に取得する

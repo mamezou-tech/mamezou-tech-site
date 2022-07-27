@@ -2,7 +2,7 @@
 title: DBアクセスフレームワークDoma2の紹介
 author: koshiro-fukushima
 date: 2022-07-26
-tags: [Doma2,DAO,OSS, orm]
+tags: [Doma2,DAO,OSS, ORマッパー]
 ---
 
 業務で使用させていただいおりますDBアクセスフレームワーク[Doma2](https://doma.readthedocs.io/en/latest/)を紹介させていただきます。（とても重宝しております。）導入方法等の詳細については[公式サイト](https://doma.readthedocs.io/en/latest/)をご覧ください。

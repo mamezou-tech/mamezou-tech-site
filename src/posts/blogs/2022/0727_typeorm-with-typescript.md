@@ -2,7 +2,7 @@
 title: ORマッパーのTypeORMをTypeScriptで使う
 author: noboru-kudo
 date: 2022-07-27
-tags: [type-orm, typescript, orm]
+tags: [type-orm, typescript, ORマッパー]
 templateEngineOverride: md
 ---
 

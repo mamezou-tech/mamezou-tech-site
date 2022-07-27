@@ -15,6 +15,7 @@ TypeORMはフルスタックのORマッパーで、特に実装言語としてTy
 もちろん、PostgreSQL、MySQL、Oracle、SQL Server等のメジャーなRDBはフルサポートされています。
 また、実験的(experimental)ではありますが、JavaScriptで人気のあるMongoDBもサポートしています。
 
+個人的な見解ではありますが、JavaのORマッパーJPA/Hibernateを使ったことがある方であれば、かなり小さい学習コストで導入できると思います(ただし、エンティティのプロキシ等は使っていませんのでもっと直感的です)。
 TypeORMは非常に多機能ですので、今回は基本的な機能をピックアップして紹介します。
 
 [^1]: 新規導入する場合で素のJavaScriptを使うメリットはほぼないと思いますが、興味のある方は[こちら](https://typeorm.io/usage-with-javascript)を参照してください。

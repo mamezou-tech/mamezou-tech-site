@@ -87,3 +87,6 @@ public PersonDto updatePerson(PersonDto dto) {
 
 
 冒頭でも触れましたが、昨今のJavaのアプリケーションではDTOとエンティティの変換のようなコードは至る所にでてきます。今回説明したように変換コードはDTO自体に、そして変換処理はインタフェースを切った上で変換対象であるエンティティに持たせることで、処理のまとまり（凝集性）もよくなり、またコードも読みやすくなります。
+
+サンプルコードの全量はGitHubに格納してあります。
+- <https://github.com/extact-io/fluent-convert-sample/blob/main/src/main/java/sample/PersonSample.java>

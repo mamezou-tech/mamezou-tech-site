@@ -177,5 +177,6 @@ Sign Out して、もう一度 Sign In すると、Password を入力する画�
 
 ## 参考
 
+- [Red Hat Single Sign-onで、WebAuthnがGAに](https://rheb.hatenablog.com/entry/2022/07/26/005014)
 - [インフラ管理不要なコンテナ環境のAWS FargateでKeycloakを動かしてみる](https://qiita.com/wadahiro/items/0837729e7c57becbfd06)
 - [Server Administration Guide](https://www.keycloak.org/docs/latest/server_admin/index.html#managing-webauthn-credentials-as-a-user)

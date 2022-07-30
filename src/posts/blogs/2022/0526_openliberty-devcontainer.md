@@ -2,7 +2,7 @@
 title: OpenLibertyとVSCodeによるコンテナを用いた開発環境の構築
 author: toshio-ogiwara
 date: 2022-05-26
-tags: ["container"]
+tags: [container, vscode]
 ---
 昨今の開発ではコードの修正が即反映されデバックも行えるHot Reloadの仕組みが当たり前になっていますが、これをコンテナを使ったJava開発で行おうとした場合、変更をどのように即座にコンテナ側に反映させるかが少し悩ましかったりします。
 

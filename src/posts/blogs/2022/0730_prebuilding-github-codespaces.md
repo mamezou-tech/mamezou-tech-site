@@ -1,7 +1,7 @@
 ---
 title: GitHub Codespaces の Prebuilding で開発環境をカスタマイズして共有する
 author: masahiro-kondo
-tags: [GitHub, Codespaces]
+tags: [GitHub, Codespaces, vscode]
 date: 2022-07-30
 ---
 
@@ -39,7 +39,7 @@ Prebuilding を使うと、必要な設定が完了した Codespaces のイメ�
 
 Access and cost control セクションで Prebuild triggers を指定します。Prebuild では独自のコンテナをビルドするため、トリガーの設定は GitHub の課金を節約するために重要です。デフォルトでは、`Every push` になっていますが、`On configuration change` がよいでしょう。push のたびにビルドが走るとコストが高くなってしまいます。
 
-`Region availbility` も、開発拠点がグローバルに分散されていない限りは特定の Region でよいでしょう。
+`Region availability` も、開発拠点がグローバルに分散されていない限りは特定の Region でよいでしょう。
 
 ![リポジトリの Codespaces 設定2](https://i.gyazo.com/2d851b1c45407e74577caac28db457e3.png)
 
@@ -95,7 +95,7 @@ Prebuild された Codespace が検出され、セットアップが実行され
 
 初期状態では Codespace の VS Code の画面は Light テーマだったり、ミニマップが出ていたりしますし、Go の拡張もインストールされていません。
 
-devcontainer.json を生成すると、`extensions` に拡張の設定は入りますので、必要に応じて追加します。`customizations` にも使用したい設定を追加します。以下では、ミニアップを非表示にし、テーマを Dark+ にしたりしています。
+devcontainer.json を生成すると、`vscode/extensions` に拡張の設定は入りますので、必要に応じて追加します。`vscode/settings` にも使用したい設定を追加します。以下では、ミニアップを非表示にし、テーマを Dark+ にしたりしています。
 
 ```json
 	"customizations": {

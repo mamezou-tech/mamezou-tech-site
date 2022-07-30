@@ -32,6 +32,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 
 - [JetBrains Gateway の Gitpod 統合を使って IntelliJ IDEA でリモート開発する](/blogs/2022/05/09/jetbrains-gateway-with-gitpod/)
 - [GitHub Codespaces を使いはじめる](/blogs/2022/05/18/start-using-codespaces/)
+- [GitHub Codespaces の Prebuilding で開発環境をカスタマイズして共有する](/blogs/2022/07/30/prebuilding-github-codespaces/)
 
 ## VCS(バージョン管理)の機能を活用する
 

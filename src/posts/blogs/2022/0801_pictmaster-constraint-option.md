@@ -16,14 +16,14 @@ tags: [テスト]
 例えば、ある因子の水準を特定の環境にだけ割り当てたい、または割り当てたくない場合などです。
 
 以前使用したテストケースの例題で考えてみましょう。  
-・OS (Windows, Linux, MacOSX)  
+・OS (Windows, Linux, macOS)  
 ・ブラウザ (Firefox, Chrome)  
 ・Java (バージョン8, バージョン11)  
 
 上記の例では全てのブラウザが全てのOSで使用可能ですが、Windowsでのみ動作するブラウザをテストケースに組み込みたい場合を想定しましょう。  
 
-例としてIEをブラウザ環境に追加します。  
-・OS (Windows, Linux, MacOSX)  
+例としてインターネット・エクスプローラ(以降IEと称す)をブラウザ環境に追加します。  
+・OS (Windows, Linux, macOS)  
 ・ブラウザ (Firefox, Chrome, IE) ※ただしIEはWindows限定  
 ・Java (バージョン8, バージョン11)  
 
@@ -40,13 +40,13 @@ PictMasterでは「制約表」に値を設定するだけで簡単に制約を�
 例題を以下のように設定します。  
 ブラウザ環境に追加した「IE」はWindows限定とします。
 
-・OS (Windows, Linux, MacOSX)  
+・OS (Windows, Linux, macOS)  
 ・ブラウザ (Firefox, Chrome, IE) ※ただしIEはWindows限定  
 ・Java (バージョン8, バージョン11)  
 
 パラメータ(因子)と値(水準)を以下のように設定します。
 
-![](https://gyazo.com/4390c9c077edc20ab90014e0732e9841.png)
+![](https://gyazo.com/8a964947637b1caf7d10409642c1fa4c.png)
 
 「環境設定」ボタンを押して環境設定ダイアログを開き、制約を利用できるようにします。  
 以下のように「制約表を使用」をチェックします。
@@ -60,7 +60,7 @@ PictMasterでは「制約表」に値を設定するだけで簡単に制約を�
 
 「制約表」に以下のように制約を設定します。(「制約１」の部分)  
 
-![](https://gyazo.com/f988181e057f06e0edfc814145942e3c.png)
+![](https://gyazo.com/1b88e1b4619b1b22c460b3d0747c83fc.png)
 
 上表の意味は
 - 「ブラウザ」が「IE」の時は
@@ -77,23 +77,23 @@ PictMasterでは「制約表」に値を設定するだけで簡単に制約を�
 
 セルを選択した状態でマウスを右クリックすると制約値として設定可能な値の候補が表示されますので、制約値を選択して設定します。(複数選択可)
 
-![](https://gyazo.com/376826ba08a173a28e9b6266418a5a1c.png)
+![](https://gyazo.com/82aafcc88123108349a31ddfa952a107.png)
 
 ## テストケース生成
 
 「実行」ボタンを押すと制約が設定されたテストケースが生成されます。
 
-![](https://gyazo.com/a305ad38474c522e5b169ff0edb16180.png)
+![](https://gyazo.com/480abec478d8008effdfac07cadef69d.png)
 
 テストケース数は8通り。
 IEはWindows限定になっていることがわかります。
 
 ちなみに、制約を設定しないでテストケースを生成するとテストケースは以下のようになります。
 
-![](https://gyazo.com/0b588cc774039fe13dd0262826d63b35.png)
+![](https://gyazo.com/8504654ab968712dd3973032e840044b.png)
 
 テストケース数は9通り。  
-IEはLinux、MacOSXの条件にも含まれてしまっています。
+IEはLinux、macOSの条件にも含まれてしまっています。
 
 ## まとめ
 

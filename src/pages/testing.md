@@ -51,5 +51,6 @@ description: ソフトウェアテストに関する技法やテクニック
 - [複数因子の組み合わせテストケースを簡単に効率よく導出する](/blogs/2022/07/11/pairwise-test/)
 - [ペアワイズ法による組み合わせテストケース生成ツール「PICT」の紹介](/blogs/2022/07/15/pairwise-test-case-creation-tool-pict/)
 - [ペアワイズ法をGUIから使いこなすツール「PictMaster」の紹介](/blogs/2022/07/23/pictmaster/)
+- [ペアワイズ法テストケース生成ツール「PictMaster」の制約表を使う](/blogs/2022/08/01/pictmaster-constraint-option/)
 
 <div style="margin-top: 3rem"><span style="font-size: 1.2rem;color: red;">その他多数記事を追加予定です！！</span></div>

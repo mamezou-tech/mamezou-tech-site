@@ -251,11 +251,17 @@ OpenAPI Generator に設定可能なパラメータも多くあります。パ�
 
 このシリーズはまだまだ続きます。
 
-## 過去の記事
-
-- [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
-- [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
-
 ## 参考
 
 - [OpenAPI Generatorを使ったコードの自動生成とインタフェースの守り方](https://zenn.dev/angelica/articles/3b7ac906f73638)
+
+## 関連記事
+
+- [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
+  - 最初に OpenAPI Generator を使った簡単なサービスを実装します。
+- [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
+  - ドメイン駆動設計の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
+- [第4回 ドメイン層の実装とサービスの完成](/blogs/2022/06/24/openapi-generator-4/)
+  - ドメイン駆動設計の戦術的設計によってサービスの実装を完成します。
+- [第5回 Open Policy Agent とサイドカーパターンによる認可の実装](/blogs/2022/07/01/openapi-generator-5/)
+  - サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。

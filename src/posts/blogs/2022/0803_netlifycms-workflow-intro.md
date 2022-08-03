@@ -17,9 +17,9 @@ templateEngineOverride: md
 今回ヘッドレスCMSで簡単に導入できるものとして、ホスティングサービスで有名なNetlifyがOSSとして提供している[Netlify CMS](https://www.netlifycms.org/)を試してみたいと思います。
 
 Netlify CMS自体は、Netlify本体と直接依存関係がある訳ではなく、CMSとして単独で利用できます(もちろんNetlifyの方が連携しやすいですが)。
-また、Netlify CMS自体にでは、コンテンツを保管する永続化レイヤは存在せず、GitHubやGitLab等のGitベースのサービスをバックエンドとして利用します。
+また、Netlify CMS自体には、コンテンツを保管する永続化レイヤは存在せず、GitHubやGitLab等のGitベースのサービスをバックエンドとして利用します。
 
-今回は、静的サイトジェネレータ(SSG)として[eleventy](https://11ty.dev)を使い、そのコンテンツをNetlify CMSで管理するようにしてみたいと思います[^1]。
+今回は、静的サイトジェネレータ(SSG)として[eleventy](https://11ty.dev)を使い、そのコンテンツをNetlify CMSで管理するようにしてみたいと思います。
 題材はブログサイトです(本サイトとは直接関係ありません)。
 
 なお、ここではeleventyを使用しましたが、もちろん他のSSGツールでも構いません。
@@ -306,7 +306,7 @@ UI部品にはNetlify CMSが提供するWidgetを利用できます。単純な�
 
 - [Netlify CMS - Widget](https://www.netlifycms.org/docs/widgets/)
 
-これだけでも多くのユースケースに対応できますが、もっと凝った部品を提供する場合はカスタムWidgetの作成も可能です。
+これだけでも多くのユースケースに対応できますが、もっと凝った部品を提供する場合はカスタムWidgetを作成します。
 
 - [Netlify CMS - Creating Custom Widgets](https://www.netlifycms.org/docs/custom-widgets/)
 
@@ -316,7 +316,7 @@ UI部品にはNetlify CMSが提供するWidgetを利用できます。単純な�
 ## Netlify CMSのUIを見てみる
 
 それでは、Netlify CMSを実際に使ってみたいと思います。
-通常は、静的サイトとしてデプロイして使いますが、Netlify CMS自体はバックエンドサービスを持たないため、ローカル環境でも利用できます。
+通常は、静的サイトとしてデプロイして使うと思いますが、Netlify CMS自体はバックエンドサービスを持たないため、ローカル環境でも利用できます。
 
 ブラウザより`http://localhost:8080/admin/`にアクセスします。
 以下のようなページが表示されます。
@@ -368,7 +368,7 @@ GitHub上ではフィーチャーブランチ上にコミットされ、プル�
 
 ![Netlify CMS - review](https://i.gyazo.com/b5ef4e5d10720c314af59a05f605d6f8.png)
 
-GitHubでは先程の`netlify-cms/draft`ラベルが削除され、`netlify-cms/pending-review`がつけられています。
+GitHubでは先程の`netlify-cms/draft`ラベルが削除され、`netlify-cms/pending-review`が付けられています。
 ![GitHub - pull-request-review](https://i.gyazo.com/3789610cccfdfb3b2aa0c7e258ef4af1.png)
 
 レビューが完了したものとします。ワークフローより該当ブログを公開待ち状態にします。
@@ -394,3 +394,7 @@ Netlify CMSはGitベースのバックエンドサービスを利用し、Git流
 今回はブログ公開までのワークフローを見ていきましたが、サイト自体の設定も同じです。
 
 本サイトでも、まずは共通レイアウト等を試行してみようかと思います（個人的にはブログ記事だとやはり使い慣れたエディターを使いたいなという感じがしました）。
+
+当ブログで使用したGitHubレポジトリは以下で公開していますので、興味のある方はご参考ください。
+
+- <https://github.com/kudoh/netlify-cms-11ty-example>

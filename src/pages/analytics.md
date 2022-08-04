@@ -18,6 +18,7 @@ date: git Last Modified
 - [仮説検定はなぜ遠回りするのか](/blogs/2022/06/01/hypothesis-test/)
 - [箱ひげ図で外れ値を確認する](/blogs/2022/05/18/Check-outliers-with-a-boxplot/)
 - [統計学で避けて通れない自由度の話](/blogs/2022/06/20/degrees-of-freedom/)
+- [箱ひげ図と散布図を同時に描画して概要を把握する(描画編)](/blogs/2022/08/05/boxplot-and-scatterplot/) <span style="color: red;">★NEW★</span>
 ### t検定
 - [品質改善効果を検定で確認する（対応なしt検定）](/blogs/2022/05/19/Confirm-the-quality-improvement-effect/)
 - [対応のあるデータの差を検定する（対応ありt検定）](/blogs/2022/05/20/corresponding-t-test/)
@@ -27,7 +28,7 @@ date: git Last Modified
 ### 回帰分析
 - [相関係数だけで一喜一憂してはいけない理由（相関行列）](/blogs/2022/05/26/correlation-matrix/)
 - [線形回帰を疑ってかかるこれだけの理由](/blogs/2022/05/28/linear-regression/)
-- [複雑な関係から真の関係を絞り込む（偏相関）](/blogs/2022/07/08/partial-correlation/) <span style="color: red;">★NEW★</span>
+- [複雑な関係から真の関係を絞り込む（偏相関）](/blogs/2022/07/08/partial-correlation/)
 ### 度数分析
 - [選択された結果を分析する（２項検定）](/blogs/2022/06/10/binomial-test)
 - [何となくは通用しない（カイ２乗適合度検定）](/blogs/2022/06/16/chi-square-goodness-of-fit-test)

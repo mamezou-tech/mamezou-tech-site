@@ -1,0 +1,46 @@
+backend:
+  name: github
+  repo: kudoh/netlify-cms-11ty-example
+  branch: main
+
+publish_mode: editorial_workflow
+
+media_folder: src/images
+public_folder: /images
+locale: ja
+collections:
+  - name: blog
+    label: ブログ
+    create: true
+    folder: src/posts
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: 記事のタイトル, name: title, widget: string }
+      - { label: 公開パス, name: publishedPath, widget: string, pattern: ["^[a-z0-9-]+$", "英小文字、数字+ハイフンのみ"] }
+      - { label: 執筆者, name: author, widget: string, pattern: ["^[a-z-]+$", "英小文字のみ"]}
+      - { label: 公開日, name: date, widget: date, date_format: YYYY-MM-DD, format: YYYY-MM-DD }
+      - { label: 本文, name: body, widget: markdown }
+      - label: タグ
+        name: tags
+        widget: select
+        multiple: true
+        options: [netlify, 11ty, SSG, post, 2022年]
+        default: [post, 2022年]
+  - name: settings
+    label: 設定
+    files:
+      - name: site
+        label: サイト全般
+        file: src/_data/meta.json
+        editor:
+          preview: false
+        fields:
+          - { label: サイト名, name: siteName, widget: string }
+          - label: フッターリンク
+            name: footerLinks
+            widget: list
+            collapsed: true
+            summary: "{{fields.name}}:{{fields.url}}"
+            fields:
+              - { label: リンク名, name: name, widget: string}
+              - { label: URL, name: url, widget: string, pattern: ["^https://.+$", "HTTPSサイトを指定"]}

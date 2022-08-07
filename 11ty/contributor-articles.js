@@ -1,4 +1,4 @@
-const contributors = require("../src/_data/contributors.json");
+const contributors = require("../src/_data/contributors.json").contributors;
 const {getPosts} = require("./utils")
 
 function log(authorArticles) {

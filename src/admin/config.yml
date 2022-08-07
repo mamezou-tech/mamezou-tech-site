@@ -30,7 +30,7 @@ collections:
         editor:
           preview: false
         fields:
-          - name: contributor
+          - name: contributors
             label: 記事執筆者
             summary: "{{fields.name}}:{{fields.github}}"
             widget: list

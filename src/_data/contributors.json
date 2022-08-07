@@ -1,58 +1,60 @@
-[
-  {
-    "name": "noboru-kudo",
-    "github": "kudoh"
-  },
-  {
-    "name": "masahiro-kondo",
-    "github": "kondoumh"
-  },
-  {
-    "name": "shigeki-shoji",
-    "github": "edward-mamezou"
-  },
-  {
-    "name": "toshio-ogiwara",
-    "github": "ogiwarat"
-  },
-  {
-    "name": "satoshi-kawasaki",
-    "github": "satoshi-kawasaki"
-  },
-  {
-    "name": "yoshihisa-muta",
-    "github": "ymuta"
-  },
-  {
-    "name": "shuichi-takatsu",
-    "github": "shuichi-takatsu"
-  },
-  {
-    "name": "nozomu-tanaka",
-    "github": "nzm-tnk"
-  },
-  {
-    "name": "tadahiro-imada",
-    "github": "tadahima"
-  },
-  {
-    "name": "yoshifumi-moriya",
-    "github": "morya-530"
-  },
-  {
-    "name": "takafumi-okubo",
-    "github": "TakOkubo"
-  },
-  {
-    "name": "yuta-masuda",
-    "github": "ymasuda64"
-  },
-  {
-    "name": "hiroaki-taka",
-    "github": "hiroaki-taka"
-  },
-  {
-    "name": "koshiro-fukushima",
-    "github": "mz-fukushima-k"
-  }
-]
+{
+  "contributors": [
+    {
+      "name": "noboru-kudo",
+      "github": "kudoh"
+    },
+    {
+      "name": "masahiro-kondo",
+      "github": "kondoumh"
+    },
+    {
+      "name": "shigeki-shoji",
+      "github": "edward-mamezou"
+    },
+    {
+      "name": "toshio-ogiwara",
+      "github": "ogiwarat"
+    },
+    {
+      "name": "satoshi-kawasaki",
+      "github": "satoshi-kawasaki"
+    },
+    {
+      "name": "yoshihisa-muta",
+      "github": "ymuta"
+    },
+    {
+      "name": "shuichi-takatsu",
+      "github": "shuichi-takatsu"
+    },
+    {
+      "name": "nozomu-tanaka",
+      "github": "nzm-tnk"
+    },
+    {
+      "name": "tadahiro-imada",
+      "github": "tadahima"
+    },
+    {
+      "name": "yoshifumi-moriya",
+      "github": "morya-530"
+    },
+    {
+      "name": "takafumi-okubo",
+      "github": "TakOkubo"
+    },
+    {
+      "name": "yuta-masuda",
+      "github": "ymasuda64"
+    },
+    {
+      "name": "hiroaki-taka",
+      "github": "hiroaki-taka"
+    },
+    {
+      "name": "koshiro-fukushima",
+      "github": "mz-fukushima-k"
+    }
+  ]
+}

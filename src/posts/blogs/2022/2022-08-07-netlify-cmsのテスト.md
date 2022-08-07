@@ -7,6 +7,8 @@ permalink: "/blogs/{{ page.date | date: '%Y/%m/%d' }}/{{ publishedPath }}/"
 tags:
   - post
   - 2022年
+  - test
+  - netlify
 ---
 # これはテストです。
 

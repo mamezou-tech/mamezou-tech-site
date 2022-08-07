@@ -13,7 +13,7 @@ collections:
     files:
       - name: site
         label: サイト全般
-        file: src/_data/meta.json
+        file: src/_data/site.json
         editor:
           preview: false
         fields:
@@ -25,11 +25,17 @@ collections:
     label: 記事執筆者
     files:
       - name: github
-        file: src/_data/contributors.js
+        file: src/_data/contributors.json
         label: メールアドレスとGitHubアカウント紐付け
         editor:
           preview: false
         fields:
           - name: contributor
             label: 記事執筆者
-            widget: map
+            summary: "{{fields.name}}:{{fields.github}}"
+            widget: list
+            fields:
+              - { label: 名前, name: name, widget: string, pattern: [ "^[a-z]+-[a-z]+$", "英小文字(区切りはハイフン)" ] }
+              - { label: GitHubアカウント, name: github, widget: string }
+
+

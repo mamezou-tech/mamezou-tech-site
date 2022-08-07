@@ -5,7 +5,7 @@ eleventyExcludeFromCollections: true
 ---
 [{% for pages in collections.all %}
 	{
-   "title":"{% if pages.data.title %}{{ pages.data.title | addNbsp | safe }}{% else %}{{ meta.siteName }}{% endif %}",
+   "title":"{% if pages.data.title %}{{ pages.data.title | addNbsp | safe }}{% else %}{{ site.siteName }}{% endif %}",
    "imgName":"{% if pages.data.title %}{{ pages.data.title | slug}}{% else %}home{% endif %}",
    "variables": {
      "category": "{% if pages.data.category %}{{ pages.data.category }}{% endif %}"

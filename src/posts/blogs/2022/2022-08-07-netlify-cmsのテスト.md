@@ -2,7 +2,7 @@
 title: Netlify CMSのテスト
 publishedPath: netlify-cms-test
 author: noboru-kudo
-date: 2022-08-07
+date: 2022-08-08
 permalink: "/blogs/{{ page.date | date: '%Y/%m/%d' }}/{{ publishedPath }}/"
 tags:
   - post

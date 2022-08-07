@@ -55,6 +55,10 @@
     {
       "name": "koshiro-fukushima",
       "github": "mz-fukushima-k"
+    },
+    {
+      "name": "netlify-cms",
+      "github": "test-netlify"
     }
   ]
 }

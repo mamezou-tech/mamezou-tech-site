@@ -1,0 +1,34 @@
+backend:
+  name: git-gateway
+
+publish_mode: editorial_workflow
+
+media_folder: src/img
+public_folder: /img
+locale: ja
+collections:
+  - name: settings
+    label: 設定
+    files:
+      - name: site
+        label: サイト全般
+        file: src/_data/meta.json
+        editor:
+          preview: false
+        fields:
+          - { label: サイト名, name: siteName, widget: string }
+          - { label: サイト説明, name: siteDescription, widget: string }
+          - { label: サイト運営者, name: authorName, widget: string }
+          - { label: Twitterアカウント, name: twitterUsername, widget: string }
+  - name: contributors
+    label: 記事執筆者
+    files:
+      - name: github
+        file: src/_data/contributors.js
+        label: メールアドレスとGitHubアカウント紐付け
+        editor:
+          preview: false
+        fields:
+          - name: contributor
+            label: 記事執筆者
+            widget: map

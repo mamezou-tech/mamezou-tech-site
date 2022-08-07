@@ -267,7 +267,7 @@ collections:
     fields: # UI部品
       - { label: 記事のタイトル, name: title, widget: string }
       - { label: 公開パス, name: publishedPath, widget: string, pattern: ["^[a-z0-9-]+$", "英小文字、数字+ハイフンのみ"] }
-      - { label: 執筆者, name: author, widget: string, pattern: ["^[a-z-]+$", "英小文字のみ"]}
+      - { label: 執筆者, name: author, widget: string, pattern: ["^[a-z-]+$", "英小文字+ハイフンのみ"]}
       - { label: 公開日, name: date, widget: date, date_format: YYYY-MM-DD, format: YYYY-MM-DD }
       - { label: 本文, name: body, widget: markdown }
       - label: タグ

@@ -7,6 +7,8 @@ permalink: "/blogs/{{ page.date | date: '%Y/%m/%d' }}/{{ publishedPath }}/"
 tags:
   - post
   - 2022年
+  - netlify
+  - netlify-cms
 ---
 前回は以下の記事で[Netlify CMS](https://www.netlifycms.org/)を使ったコンテンツ管理をご紹介しました。
 

@@ -24,9 +24,7 @@ date: 2022-07-29
 ![SSSホーム画面](/img/sss/sss_0.png "SSSホーム画面２")  
 <div>図. SSSホーム画面</div>
 
-
-&nbsp;  
-
+&nbsp;
 
 ## 業務の流れ
 

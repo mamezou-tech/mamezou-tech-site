@@ -19,11 +19,12 @@ date: 2022-07-29
 4. 中途や若手社員の技術力の底上げ  
 
 2021年10月には運用開始し、現在フェーズ6を迎えています。    
- 
-    
+  
 &nbsp;   
-![sssホーム画面](/img/sss/sss_0.png)  
-画像) SSSホーム画面  
+![SSSホーム画面](/img/sss/sss_0.png "SSSホーム画面２")  
+<div>図. SSSホーム画面</div>
+
+
 &nbsp;  
 
 
@@ -39,14 +40,17 @@ SSSとコラボフローはREST APIによって相互で通信します。
 ### 提案業務
 
 ![提案業務](/img/sss/flow_quotation.png)  
- 
+<div>図. 業務フロー -提案業務-</div>   
+
 ### 受注業務
 
 ![受注業務](/img/sss/flow_order.png)  
+<div>図. 業務フロー -受注業務-</div>
 
 ### 売上請求業務
 
 ![売上請求業務](/img/sss/flow_sales.png)  
+<div>図. 業務フロー -売上請求業務-</div>
 
 ## 機能紹介  
 詳細なアーキテクチャに関しては次回以降に紹介させていただくため、  
@@ -59,8 +63,13 @@ SSSとコラボフローはREST APIによって相互で通信します。
   &nbsp;
 
 #### 画面イメージ
-![sssホーム画面 (開発環境の画像です)](/img/sss/project_1.png)
-![sssホーム画面 (開発環境の画像です)](/img/sss/project_2.png)
+![案件登録画面 -基本属性-](/img/sss/project_1.png)
+<div>図. 案件登録画面 -基本属性-</div>  
+  &nbsp;  
+
+![案件登録画面 -月毎明細-](/img/sss/project_2.png)  
+<div>図. 案件登録画面 -月毎明細-</div>  
+  &nbsp;  
 
 ### 受注稟議サービス (quotation-service)
   - 受注稟議、提案稟議の起票
@@ -70,7 +79,10 @@ SSSとコラボフローはREST APIによって相互で通信します。
 - 売上に関する帳票(受注一覧, 売上連絡票...etc)類出力 
 
 #### 画面イメージ
-![sssホーム画面 (開発環境の画像です)](/img/sss/sales_1.png)
+![売上実績と請求情報 (開発環境の画像です)](/img/sss/sales_1.png)
+<div>図. 売上実績と請求情報画面</div>
+  &nbsp;
+
 ### 会社サービス (company-service)
 - 豆蔵に関係する会社を一元管理するため顧客会社および協力会社の登録、編集、閲覧
 ### パートナーサービス (partner-service)

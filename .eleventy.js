@@ -62,6 +62,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("./src/img");
   eleventyConfig.addPassthroughCopy("./src/previews");
   eleventyConfig.addPassthroughCopy({"./node_modules/photoswipe/dist": "photoswipe"});
+  eleventyConfig.addPassthroughCopy("./src/admin/config.yml");
 
   eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`);
   eleventyConfig.addShortcode("packageVersion", () => `v${packageVersion}`);
@@ -85,6 +86,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter('byAuthor',
     (contributorArticles, author) => contributorArticles.filter(contributor => contributor.name === author));
   eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));
+  eleventyConfig.addCollection('currentMonthPosts', (collection) => getPosts(collection).filter(post => post.date.getMonth() === new Date().getMonth()));
   eleventyConfig.addCollection('articles', getPosts);
   eleventyConfig.addCollection('tagList', require("./11ty/tag-list"));
   eleventyConfig.addCollection('contributorArticles', require("./11ty/contributor-articles"));

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
-{%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ meta.siteName }}{% endset -%}
-{%- set pageDescription %}{% shortDesc collections.all, page, meta.siteDescription %}{% endset -%}
+{%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ site.siteName }}{% endset -%}
+{%- set pageDescription %}{% shortDesc collections.all, page, site.siteDescription %}{% endset -%}
 {%- set pageSocialImg %}{{ meta.url }}/previews/{% if title %}{{ title | slug }}{% else %}home{% endif %}.png{% endset -%}
   <head>
     <meta charset="UTF-8" />
@@ -36,8 +36,8 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Mochiy+Pop+One&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
     <meta name="twitter:card" content="summary_large_image" />
-    {% if meta.twitterUsername %}
-    <meta name="twitter:creator" content="@{{ meta.twitterUsername }}" />
+    {% if site.twitterUsername %}
+    <meta name="twitter:creator" content="@{{ site.twitterUsername }}" />
     {% endif %}
     <meta
       name="twitter:title"
@@ -73,7 +73,7 @@
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="RSS Feed for {{ meta.siteName }}"
+      title="RSS Feed for {{ site.siteName }}"
       href="/feed/"
     />
     <link rel="preload" href="/photoswipe/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -98,7 +98,7 @@
     <footer class="tdbc-background--secondary">
       <div class="tdbc-container tdbc-text-align-center">
         <div class="tdbc-row tdbc-ink--light tdbc-mx-auto">
-          <p class="tdbc-mb-none">&copy; {% year %} {{ meta.authorName }} • {% packageVersion %}</p>
+          <p class="tdbc-mb-none">&copy; {% year %} {{ site.authorName }} • {% packageVersion %}</p>
         </div>
       </div>
     </footer>

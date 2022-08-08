@@ -1,4 +1,4 @@
-const contributors = require("../src/_data/contributors");
+const contributors = require("../src/_data/contributors.json").contributors;
 const {getPosts} = require("./utils")
 
 function log(authorArticles) {
@@ -19,14 +19,14 @@ function log(authorArticles) {
 
 module.exports = (collection) => {
   const authorArticles = {};
-  Object.keys(contributors).forEach(name => {
-    authorArticles[name] = {
-      github: contributors[name], name, articles: [],
+  contributors.forEach(contributor => {
+    authorArticles[contributor.name] = {
+      github: contributor.github, name: contributor.name, articles: [],
     }
   })
   // assign
   getPosts(collection).forEach((article) => {
-    const author = contributors[article.data.author];
+    const author = contributors.find(contributor => contributor.name === article.data.author);
     if (author) {
       authorArticles[article.data.author].articles.push(article);
     }

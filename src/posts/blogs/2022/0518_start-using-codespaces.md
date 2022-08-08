@@ -1,7 +1,7 @@
 ---
 title: GitHub Codespaces を使いはじめる
 author: masahiro-kondo
-tags: [GitHub]
+tags: [GitHub, Codespaces, vscode]
 date: 2022-05-18
 ---
 
@@ -71,7 +71,11 @@ PWA だとほぼ VS Code です。
 
 ![](https://i.gyazo.com/cfbefa67c264a4a8944d5d8d69a2fd46.png)
 
-PWA として起動しても、VS Code 専用のメニューは出ません。VS Code のショートカットキーが効くので、 `⌘ + ,` で Settings を開いて Minimap を消し Dark テーマに切り替えました。この設定は Codespace を停止しても残ります。
+~~PWA として起動しても、VS Code 専用のメニューは出ません。~~ VS Code のショートカットキーが効くので、 `⌘ + ,` で Settings を開いて Minimap を消し Dark テーマに切り替えました。この設定は Codespace を停止しても残ります。
+
+:::info:2022.7.30 訂正
+左上のハンバーガーメニューからメニューが使えました。
+:::
 
 git config にはちゃんとアカウントの情報が反映されており、ターミナルでの Git 操作、commit / push も普通にできました。
 
@@ -83,7 +87,7 @@ VS Code で利用するには GitHub Codespaces 拡張が必要です。
 
 ![](https://i.gyazo.com/d95928ed94b375e0fc6e0c74034a52f5.png)
 
-拡張をインストールして、GitHub で VS Code アプリを許可すると起動しました。Remote Development 拡張と同様な方式で Codespace に接続しているのでしょう。VS Code のフルメニューが利用できるため、この利用形態の方が便利そうです。
+拡張をインストールして、GitHub で VS Code アプリを許可すると起動しました。Remote Development 拡張と同様な方式で Codespace に接続しているのでしょう。~~VS Code のフルメニューが利用できるため、この利用形態の方が便利そうです。~~
 
 ![](https://i.gyazo.com/0413ff3ce3413fe08f78999bf7ad345b.png)
 

@@ -9,7 +9,7 @@ tags: [java, "openapi-generator", "spring-boot", "spring-integration", DDD, "実
 
 ## ドメイン駆動設計
 
-説明の前に「[Spring Boot と Apache Camel の統合](https://developer.mamezou-tech.com/blogs/2022/06/12/spring-boot-with-apache-camel-integration/)」の議論を受けて冬眠カプセルを冬眠ポッド (hibernation pod) へ、船員を旅行者 (passenger) へとユビキタス言語の変更等イベントストーミングの修正がありました。
+説明の前に「[Spring Boot と Apache Camel の統合](/blogs/2022/06/12/spring-boot-with-apache-camel-integration/)」の議論を受けて冬眠カプセルを冬眠ポッド (hibernation pod) へ、船員を旅行者 (passenger) へとユビキタス言語の変更等イベントストーミングの修正がありました。
 
 ![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-4/event-storming/event-storming-2.png)
 
@@ -87,7 +87,7 @@ PlantUML を使って出力した図は下のようになります。
 
 ## Spring Integration
 
-[Spring Integration](https://spring.io/projects/spring-integration) は、ほとんどの[エンタープライズ統合パターン](https://www.enterpriseintegrationpatterns.com/) をサポートしています。別の記事で紹介した [Apache Camel](https://developer.mamezou-tech.com/blogs/2022/06/12/spring-boot-with-apache-camel-integration/) は Spring だけでなく Quarkus など他のフレームワークでも利用可能で、統合可能なコンポーネントも豊富にあります。
+[Spring Integration](https://spring.io/projects/spring-integration) は、ほとんどの[エンタープライズ統合パターン](https://www.enterpriseintegrationpatterns.com/) をサポートしています。別の記事で紹介した [Apache Camel](/blogs/2022/06/12/spring-boot-with-apache-camel-integration/) は Spring だけでなく Quarkus など他のフレームワークでも利用可能で、統合可能なコンポーネントも豊富にあります。
 
 このサービスは Spring Boot バージョン 2.7.0 を採用しています。現在はまだ、このバージョンの Spring Boot に対応した Apache Camel が存在しないため、今回は Spring Integration を使うことにしました。
 
@@ -220,10 +220,15 @@ public class HelloEvents {
 - [エンタープライズ統合パターン](https://www.enterpriseintegrationpatterns.com/)
 - [実践ドメイン駆動設計](https://www.amazon.co.jp/dp/479813161X/)
 - [Spring Integration](https://spring.io/projects/spring-integration)
+- [ドメイン駆動設計のコンテキストマップ](/blogs/2022/04/21/context-map/)
 
-## 過去の記事
+## 関連記事
 
-- [ドメイン駆動設計のコンテキストマップ](https://developer.mamezou-tech.com/blogs/2022/04/21/context-map/)
 - [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
+  - 最初に OpenAPI Generator を使った簡単なサービスを実装します。
 - [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
+  - ドメイン駆動設計の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
 - [第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用](/blogs/2022/06/17/openapi-generator-3/)
+  - OpenAPI Generator のようなコード生成の活用でポイントとなる Generation Gap パターンについて説明します。
+- [第5回 Open Policy Agent とサイドカーパターンによる認可の実装](/blogs/2022/07/01/openapi-generator-5/)
+  - サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。

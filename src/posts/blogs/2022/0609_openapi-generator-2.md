@@ -203,7 +203,7 @@ GitHub Actions の コードはリンク [`build.yml`](https://github.com/edward
 
 ## 実行
 
-前回の[記事](https://developer.mamezou-tech.com/blogs/2022/06/04/openapi-generator-1/)同様に `gradle bootRun` で実行できます。アプリケーションに直接アクセスして確認するために、ヘッダに `payload` を設定してリクエストしてください。`curl` コマンドを使う例は次の通りです。
+前回の[記事](/blogs/2022/06/04/openapi-generator-1/)同様に `gradle bootRun` で実行できます。アプリケーションに直接アクセスして確認するために、ヘッダに `payload` を設定してリクエストしてください。`curl` コマンドを使う例は次の通りです。
 
 ```shell
 curl -H 'payload: eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiY3VzdG9tOmZpcnN0bmFtZSI6IkphbWVzIiwiYXVkIjoiQVBQQ0xJRU5USUQiLCJleHAiOjE2NTQ3NTg3NTcsImN1c3RvbTp0eXBlIjoiSHVtYW4ifQ==' http://localhost:8080/example/hello
@@ -222,7 +222,17 @@ JWT トークンは、3つのパートにわかれています。それぞれの
 
 - [良いコード／悪いコードで学ぶ設計入門](https://www.amazon.co.jp/dp/B09Y1MWK9N/)
 - [Event Storming](https://www.eventstorming.com/)
-- [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
 - [S3 の静的 Web サイトをセキュアに Envoy でホスティング](/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)
 - [Envoy と Open Policy Agent を使用した認可](/blogs/2022/02/20/envoy-authz/)
 - [Envoy を使用して ID Token (OIDC) を検証する](/blogs/2022/02/20/envoy-authn/)
+
+## 関連記事
+
+- [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
+  - 最初に OpenAPI Generator を使った簡単なサービスを実装します。
+- [第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用](/blogs/2022/06/17/openapi-generator-3/)
+  - OpenAPI Generator のようなコード生成の活用でポイントとなる Generation Gap パターンについて説明します。
+- [第4回 ドメイン層の実装とサービスの完成](/blogs/2022/06/24/openapi-generator-4/)
+  - ドメイン駆動設計の戦術的設計によってサービスの実装を完成します。
+- [第5回 Open Policy Agent とサイドカーパターンによる認可の実装](/blogs/2022/07/01/openapi-generator-5/)
+  - サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。

@@ -13,5 +13,5 @@ description: 新入社員やこれからエンジニアを目指す方、新人�
 
 - [メイン講師体験記(その1 準備編)](/learning/main-teacher-experience_01)
 - [メイン講師体験記(その2 研修期間中編)](/learning/main-teacher-experience_02)
-- メイン講師体験記(その3 事後作業編) comming soon...
+- [メイン講師体験記(その3 事後作業編)](/learning/main-teacher-experience_03)
 

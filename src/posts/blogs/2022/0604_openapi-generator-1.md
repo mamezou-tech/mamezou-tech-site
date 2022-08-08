@@ -297,3 +297,14 @@ gradle bootRun
 この記事では、OpenAPI Generator を使用して Spring Boot のサーバーアプリケーションが容易に作成できることを説明しました。
 
 次回以降の記事で、ここで作成したサンプルをさらに深掘りして説明します。
+
+## 関連記事
+
+- [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
+  - ドメイン駆動設計の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
+- [第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用](/blogs/2022/06/17/openapi-generator-3/)
+  - OpenAPI Generator のようなコード生成の活用でポイントとなる Generation Gap パターンについて説明します。
+- [第4回 ドメイン層の実装とサービスの完成](/blogs/2022/06/24/openapi-generator-4/)
+  - ドメイン駆動設計の戦術的設計によってサービスの実装を完成します。
+- [第5回 Open Policy Agent とサイドカーパターンによる認可の実装](/blogs/2022/07/01/openapi-generator-5/)
+  - サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。

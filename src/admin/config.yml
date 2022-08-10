@@ -29,7 +29,7 @@ collections:
         widget: list
         allow_add: true
         max: 10
-        default: [post, 2022年]
+        default: []
   - name: settings
     label: 設定
     files:

@@ -99,6 +99,7 @@ Netlify Identityでは、サイト上にカスタマイズしたメールテン�
 ここでは、レポジトリの`/src/admin/mail-templates`配下にHTML形式でデフォルトメールテンプレートをカスタマイズしたものを配置しました。
 以下は招待メールのテンプレートの例ですが、他のテンプレートについてもドキュメントに従って作成しています。
 
+{% raw %}
 ```html
 ---
 templateEngineOverride: false
@@ -111,6 +112,7 @@ templateEngineOverride: false
 </p>
 <p><a href="{{ .SiteURL }}/admin/#invite_token={{ .Token }}">Accept the invite</a></p>
 ```
+{% endraw %}
 
 ポイントはaタグの部分のhref属性です。ここで/adminパスを指定するようにします。それ以外(トークン等)はドキュメントに従って設定すれば問題ありませんでした。
 

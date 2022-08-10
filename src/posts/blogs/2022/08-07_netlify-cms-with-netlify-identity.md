@@ -89,9 +89,10 @@ Netlifyのサイトデプロイの詳細なやり方は、以下公式ドキュ�
 
 ## Netlify Identityのメールテンプレート設定
 
-デフォルトでは、サイトのトップページ(/)を認証ページと想定されています。このためユーザーを招待すると、招待メールが送信され、そのリンク先はトップページで、そこで認証を行うことになります。
+Netlify Identityのデフォルトでは、サイトのトップページ(/)を認証ページを想定しています。ユーザーを招待すると、トップページに対してリンク（トークン付き）が張られた招待メールが送信されます。
 
-このサイトではトップページではなく、CMSは/adminパス上で動作しますので、メールテンプレートをカスタマイズする必要があります。
+Netlify CMSは/adminパス上で動作しますので、これでは正常に認証機能が動作しません。
+メールテンプレートのリンクを修正する必要があります。
 Netlify Identityでは、サイト上にカスタマイズしたメールテンプレートを配置することで、招待メールの内容をカスタマイズ可能です。
 
 - [Netlify - Identity-generated emails](https://docs.netlify.com/visitor-access/identity/identity-generated-emails/#email-templates)
@@ -129,9 +130,8 @@ Netlify CMSはGitHubに対して、記事の投稿(ブランチ作成、コミ�
 
 Netlifyでは[Git Gateway](https://docs.netlify.com/visitor-access/git-gateway/)というサービスを提供しています。
 これを利用すると、Netlifyがユーザーに代わってこのGit操作を引き受けてくれます。
-なお、Git Gatewayは現時点でベータ機能の位置づけです。実際に利用する際は最新の状況を確認してください。
 
-これについてもサイト設定で行います。「Identity」から「Services」に進みGit Gatewayを有効にします。
+Git GatewayもNetlifyコンソールのサイト設定で行います。「Identity」から「Services」に進みGit Gatewayを有効にします。
 
 ![Netlify - Enable Git Gateway](https://i.gyazo.com/10238a6282230646d76d762a6237ccba.png)
 
@@ -139,6 +139,10 @@ Netlifyでは[Git Gateway](https://docs.netlify.com/visitor-access/git-gateway/)
 
 アクセストークンの発行に成功すると、コンソール上は以下のようになります。
 ![Netlify - Git Gateway Success](https://i.gyazo.com/5448e627cfb1b1432d408718350e3700.png)
+
+:::warn
+Git Gatewayは現時点でベータ機能の位置づけです。実際に利用する際は最新の状況を確認してください。
+:::
 
 ## CMSユーザーを招待する
 
@@ -150,7 +154,8 @@ Netlifyでは[Git Gateway](https://docs.netlify.com/visitor-access/git-gateway/)
 
 ![invitation mail](https://i.gyazo.com/ee7cad3ddd7f912aad699823501c5b1e.png)
 
-リンクをクリックすると、デプロイしたサイトの/adminパスに飛びます。
+分かりにくいですが、これは先程カスタマイズしたメールテンプレートです。
+メール本文のリンクをクリックすると、デプロイしたサイトの/adminパスに飛びます。
 
 
 ## Netlify Identity設定の中身

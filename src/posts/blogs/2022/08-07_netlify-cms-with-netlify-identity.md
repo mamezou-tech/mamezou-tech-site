@@ -46,13 +46,14 @@ Netlifyにログインし、既存のGitHubレポジトリを新規サイトと�
 Netlifyコンソールから以下のように選択して、ナビゲーションにしたがって進みます。
 
 1. 「Add New site」
-1. 「Import an existing project」
-1. 「GitHub」
+1. 「Import an existing project」選択
+1. 「GitHub」クリック
 1. GitHubログイン
 1. レポジトリ選択
-1. ブランチ名選択
+1. ブランチ選択(feature/netlify-identity)
+1. 「Deploy site」クリック
 
-最後のブランチ名は、feature/netlify-identityを選択します。mainブランチはNetlify Identity対応が含まれていませんので、後述の変更を別途入れる必要があります。
+ブランチ、feature/netlify-identityを選択します。mainブランチはNetlify Identity対応が含まれていませんので、後述の変更を別途入れる必要があります。
 
 ![Deploy Site](https://i.gyazo.com/7d9cf17aae4293818d9487ff1e59ef29.png)
 
@@ -73,11 +74,83 @@ Netlifyのサイトデプロイの詳細なやり方は、以下公式ドキュ�
 
 ![Enable Netlify Identity](https://i.gyazo.com/dc9ee4de8a07293bec1a05edf8c92405.png)
 
+デフォルトは招待制ではなく、誰でもアカウント作成ができる状態(Open)となっています。これを招待制にしておきます。
+サイト設定からIdentityに進み、「Registration」で「Invite Only」を選択して、保存します。
+
+![Netlify - invite-only](https://i.gyazo.com/84b2e6ba81bd69fa573b0a32cce9ae0b.png)
+
+また、外部認証サービスとしてGoogle認証を使用可能にしておきます。 サイト設定の「External Provider」からGoogleを選択します。
+
+![Netlify - External Provider](https://i.gyazo.com/6cdb98631bbb59b22cf3f34135106ed6.png)
+
+その後、Google認証の設定をカスタムするかを聞かれますが、ここではデフォルトの「Use default configuration」を選択します。
+
+これでNetlify Identityの基本設定は完了です。ユーザーの招待はメールテンプレートやGit Gatewayの設定が終わってから実施します。
+
+## Netlify Identityのメールテンプレート設定
+
+デフォルトでは、サイトのトップページ(/)を認証ページと想定されています。このためユーザーを招待すると、招待メールが送信され、そのリンク先はトップページで、そこで認証を行うことになります。
+
+このサイトではトップページではなく、CMSは/adminパス上で動作しますので、メールテンプレートをカスタマイズする必要があります。
+Netlify Identityでは、サイト上にカスタマイズしたメールテンプレートを配置することで、招待メールの内容をカスタマイズ可能です。
+
+- [Netlify - Identity-generated emails](https://docs.netlify.com/visitor-access/identity/identity-generated-emails/#email-templates)
+
+ここでは、レポジトリの`/src/admin/mail-templates`配下にHTML形式でデフォルトメールテンプレートをカスタマイズしたものを配置しました。
+以下は招待メールのテンプレートの例ですが、他のテンプレートについてもドキュメントに従って作成しています。
+
+```html
+---
+templateEngineOverride: false
+---
+<h2>You have been invited</h2>
+
+<p>
+  You have been invited to create a user on {{ .SiteURL }}. Follow
+  this link to accept the invite:
+</p>
+<p><a href="{{ .SiteURL }}/admin/#invite_token={{ .Token }}">Accept the invite</a></p>
+```
+
+ポイントはaタグの部分のhref属性です。ここで/adminパスを指定するようにします。それ以外(トークン等)はドキュメントに従って設定すれば問題ありませんでした。
+
+このHTMLはサイトデプロイ時にそのまま配置されますので、後はこのパスをNetlify Identityに指定してあげます。
+サイト設定の「Identitiy」から「Emails」に進み、各テンプレートのパスを指定します。
+以下は招待メールの設定ですが、他のテンプレートも同じように指定しました。
+
+![Netlify - Invitation mail template](https://i.gyazo.com/90c96db8a0330a82d14caa8a642803ba.png)
+
 ## Git Gatewayを有効にする
 
 Netlify CMSはGitHubに対して、記事の投稿(ブランチ作成、コミット、プッシュ、プルリクエスト)や公開ブランチ(main)へのマージを行う必要があります。
-CMSを利用するユーザーがGitHubアカウントを持っているとも限りません。
+しかし、CMSを利用するユーザーがGitHubアカウントを持っているとも限りません。
 
 Netlifyでは[Git Gateway](https://docs.netlify.com/visitor-access/git-gateway/)というサービスを提供しています。
 これを利用すると、Netlifyがユーザーに代わってこのGit操作を引き受けてくれます。
 なお、Git Gatewayは現時点でベータ機能の位置づけです。実際に利用する際は最新の状況を確認してください。
+
+これについてもサイト設定で行います。「Identity」から「Services」に進みGit Gatewayを有効にします。
+
+![Netlify - Enable Git Gateway](https://i.gyazo.com/10238a6282230646d76d762a6237ccba.png)
+
+「Enable Git Gateway」をクリックすると、GitHubの認証が実行されアクセストークンが発行されます。
+
+アクセストークンの発行に成功すると、コンソール上は以下のようになります。
+![Netlify - Git Gateway Success](https://i.gyazo.com/5448e627cfb1b1432d408718350e3700.png)
+
+## CMSユーザーを招待する
+
+現在は誰も招待していないので、ここでコンソールのIdentityメニューよりCMSを利用するユーザーを招待します。
+
+![Netlify - Invite user](https://i.gyazo.com/6cb3d10ea723bd6a654f39e9a04ca9e8.png)
+
+招待ユーザーには以下のような招待メールが届きます。
+
+![invitation mail](https://i.gyazo.com/ee7cad3ddd7f912aad699823501c5b1e.png)
+
+リンクをクリックすると、デプロイしたサイトの/adminパスに飛びます。
+
+
+## Netlify Identity設定の中身
+
+## まとめ

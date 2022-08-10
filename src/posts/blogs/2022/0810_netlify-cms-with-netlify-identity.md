@@ -1,7 +1,7 @@
 ---
 title: Netlify Identityを使ってNetlify CMSのユーザー認証をする
 publishedPath: netlify-cms-with-netlify-identity
-author: noboru-kudoh
+author: noboru-kudo
 date: 2022-08-10
 permalink: "/blogs/{{ page.date | date: '%Y/%m/%d' }}/{{ publishedPath }}/"
 tags:

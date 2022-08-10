@@ -1,7 +1,7 @@
 ---
 title: 豆蔵社内で内製・運用している営業支援システムの紹介
 author: masafumi-kondo
-date: 2022-08-09
+date: 2022-08-10
 
 ---
 

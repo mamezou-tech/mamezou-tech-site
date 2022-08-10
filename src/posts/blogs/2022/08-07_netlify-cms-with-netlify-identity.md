@@ -2,7 +2,7 @@
 title: Netlify Identityを使ってNetlify CMSのユーザー認証をする
 publishedPath: netlify-cms-with-netlify-identity
 author: noboru-kudoh
-date: 2022-08-11
+date: 2022-08-10
 permalink: "/blogs/{{ page.date | date: '%Y/%m/%d' }}/{{ publishedPath }}/"
 tags:
   - post
@@ -33,36 +33,51 @@ Netlify Identity自体はNetlify CMS専用のサービスではなく、汎用�
 また、Netlify CMSは/adminを使用しますので、このパスのみをNetlify Identityでの認証対象とし、それ以外(トップページ、公開ブログ)は誰でも参照できるようにします。
 
 また、CMS利用者はGitHubアカウントがないケースを想定します。
-ソースコードはGitHubレポジトリは以下に公開しています（フィーチャーブランチ）。
+完成形のGitHubレポジトリは以下に公開しています（フィーチャーブランチ）。
 
 - <https://github.com/kudoh/netlify-cms-11ty-example/tree/feature/netlify-identity>
 
 [[TOC]]
 
-## Netlify Identityを有効にする
+## Netlifyにサイトをデプロイする
 
 まずは、前回構築したサイトをNetlifyにホスティングします[^1]。
 Netlifyにログインし、既存のGitHubレポジトリを新規サイトとしてデプロイします。
-詳細なやり方は、以下公式ドキュメントを参照してください。NetlifyのコンソールからGitHubにログインし、レポジトリを選択するのみで他のオプションは変更不要です。
+Netlifyコンソールから以下のように選択して、ナビゲーションにしたがって進みます。
+
+1. 「Add New site」
+1. 「Import an existing project」
+1. 「GitHub」
+1. GitHubログイン
+1. レポジトリ選択
+1. ブランチ名選択
+
+最後のブランチ名は、feature/netlify-identityを選択します。mainブランチはNetlify Identity対応が含まれていませんので、後述の変更を別途入れる必要があります。
+
+![Deploy Site](https://i.gyazo.com/7d9cf17aae4293818d9487ff1e59ef29.png)
+
+Netlifyのサイトデプロイの詳細なやり方は、以下公式ドキュメントを参照してください。
 
 - [Netlify - Import from an existing repository](https://docs.netlify.com/welcome/add-new-site/#import-from-an-existing-repository)
 
 [^1]: サイトのデプロイにはNetlifyアカウントが必要になります。この記事ではProプランを契約しているものとして説明しますが、無料のStarterプランでもNetlify Identityは使用できます。
 
-実際に試す場合はレポジトリをForkして試してみてください。
-ホスティングが終わると、Netlifyから払い出されたドメインでサイトが閲覧できるようになります。雑なページ＆掲載省略しますが、トップページは記事の一覧がでてきます。
+実際に試す場合は、レポジトリをForkして試してみてください。
+ホスティングが終わると、Netlifyから払い出されたドメインでサイトが閲覧できるようになります。雑なページ＆本題ではないので掲載省略しますが、トップページは記事の一覧がでてきます。
 通常はこの後でカスタムドメインを作成しますが、本題でありませんのでここでは対応しません。
 
-デフォルトではNetlify Identityは無効化されています。
-Netlifyコンソールのサイト設定よりNetlify Identityを有効にします。
+## Netlify Identityを有効にする
 
-![enable Netlify Identity](https://i.gyazo.com/dc9ee4de8a07293bec1a05edf8c92405.png)
+デフォルトではNetlify Identityは無効化されています。
+デプロイしたサイトの設定でNetlify Identityを有効にします。
+
+![Enable Netlify Identity](https://i.gyazo.com/dc9ee4de8a07293bec1a05edf8c92405.png)
 
 ## Git Gatewayを有効にする
 
 Netlify CMSはGitHubに対して、記事の投稿(ブランチ作成、コミット、プッシュ、プルリクエスト)や公開ブランチ(main)へのマージを行う必要があります。
 CMSを利用するユーザーがGitHubアカウントを持っているとも限りません。
 
-ここではNetlifyの[Git Gateway](https://docs.netlify.com/visitor-access/git-gateway/)というサービスを提供しています。
-これを利用すると、Netlifyがユーザーに代わってこの操作を引き受けてくれます。
+Netlifyでは[Git Gateway](https://docs.netlify.com/visitor-access/git-gateway/)というサービスを提供しています。
+これを利用すると、Netlifyがユーザーに代わってこのGit操作を引き受けてくれます。
 なお、Git Gatewayは現時点でベータ機能の位置づけです。実際に利用する際は最新の状況を確認してください。

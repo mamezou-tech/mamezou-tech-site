@@ -9,15 +9,18 @@ tags:
   - 2022年
   - netlify
   - netlify-cms
+  - netlify-identity
+  - Security
+  - 認証/認可
 ---
-前回は以下の記事で[Netlify CMS](https://www.netlifycms.org/)を使ったコンテンツ管理をご紹介しました。
+以前に以下の記事で[Netlify CMS](https://www.netlifycms.org/)を使ったコンテンツ管理をご紹介しました。
 
 - [Netlify CMSのワークフローでコンテンツ管理をする](/blogs/2022/08/03/netlifycms-workflow-intro/)
 
 この記事ではGitHubのOAuth認証を使用して、ユーザーがブログ投稿をできるようにしました。
 当サイトにおいても、記事の投稿をNetlify CMSでも作成、公開できるようにしました。この記事自体もNetlify CMSを使って作成しています。
 
-CMSを使うのはいいですが、誰でも投稿できる状態は望ましくありません。
+CMSを使うのはいいですが、これを操作して誰でも投稿できる状態は望ましくありません。
 また、ケースによってはCMSを利用するユーザーがバックエンドのGitHubアカウントを持っていないこともあると思います。
 このようなケースに対応してNetlifyでは[Netlify Identity](https://docs.netlify.com/visitor-access/identity/)という認証サービスがあります。
 Netlify Identityは、認証機能のマネージドサービスで、独自のユーザー管理はもちろん、Google等の外部の認証サービスと連携可能です。AWSでいうCognitoユーザープールのようなものです。
@@ -29,11 +32,11 @@ Netlify Identity自体はNetlify CMS専用のサービスではなく、汎用�
 
 今回はNetlify Identityを利用して、Netlify CMSのユーザー認証を有効にする方法をご紹介したいと思います。
 対象とするサイトは、前回記事でローカル環境で動作確認したものです。
-ここでは認証方式として、Googleアカウントを使用して、招待制(invite-only)でCMSを利用できるようにします。
-また、Netlify CMSは/adminを使用しますので、このパスのみをNetlify Identityでの認証対象とし、それ以外(トップページ、公開ブログ)は誰でも参照できるようにします。
+ここでは招待制で特定ユーザーのみがCMSを利用できるようにし、認証方式としてGoogleも利用可能にします。
 
-また、CMS利用者はGitHubアカウントがないケースを想定します。
-完成形のGitHubレポジトリは以下に公開しています（フィーチャーブランチ）。
+また、Netlify CMSはURLとして/adminを使用しますので、このパスのみをNetlify Identityでの認証対象とします。それ以外のページ(トップページ、公開ブログ)は誰でも参照できるようにします。
+
+完成形のGitHubレポジトリは、以下に公開しています。
 
 - <https://github.com/kudoh/netlify-cms-11ty-example/tree/feature/netlify-identity>
 
@@ -84,6 +87,34 @@ Netlifyのサイトデプロイの詳細なやり方は、以下公式ドキュ�
 ![Netlify - External Provider](https://i.gyazo.com/6cdb98631bbb59b22cf3f34135106ed6.png)
 
 その後、Google認証の設定をカスタムするかを聞かれますが、ここではデフォルトの「Use default configuration」を選択します。
+
+また、Netlify Identityによる認証を動作させるために、`src/admin/index.html`にWidgetを配置します。
+
+```html
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Netlify CMS</title>
+  <!-- 以下を追加 -->
+  <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+</body>
+</html>
+```
+
+これを配置するだけで、このページへのアクセス時には認証機能が動作するようになり、認証ユーザーのみがアクセス可能になります。
+認証機能の実装は、比較的難易度が高い作業になりますので、かなり気持ちが楽になりますね。
+
+:::column:認証ページをカスタマイズする
+Widgetはある程度のカスタマイズは可能です、詳細はWidgetの[レポジトリ](https://github.com/netlify/netlify-identity-widget)を参照してください。
+example配下には、ReactやVue.js、Svelteへの組み込み例もあります。
+
+また、認証UIを高度にカスタマイズしたい場合はNetlifyが開発するOSSの[gotrue-js](https://github.com/netlify/gotrue-js)を直接使うと、より自由度の高い認証ページを作成可能です。
+:::
 
 これでNetlify Identityの基本設定は完了です。ユーザーの招待はメールテンプレートやGit Gatewayの設定が終わってから実施します。
 
@@ -140,24 +171,45 @@ Git GatewayもNetlifyコンソールのサイト設定で行います。「Ident
 アクセストークンの発行に成功すると、コンソール上は以下のようになります。
 ![Netlify - Git Gateway Success](https://i.gyazo.com/5448e627cfb1b1432d408718350e3700.png)
 
-:::warn
+:::alert
 Git Gatewayは現時点でベータ機能の位置づけです。実際に利用する際は最新の状況を確認してください。
 :::
 
+Netlify CMS上のバックエンド設定も以前はGitHubアカウントを使用するようにしていましたが、Git Gatewayを使用するように変更が必要です。
+ここでは、`src/admin/config.yml`を以下のように修正しています。
+
+```yaml
+backend:
+  name: git-gateway
+  branch: feature/netlify-identity
+
+# 以下省略
+```
+
 ## CMSユーザーを招待する
 
-現在は誰も招待していないので、ここでコンソールのIdentityメニューよりCMSを利用するユーザーを招待します。
+現在は誰も招待していないので、まだCMSは利用不可能の状態です。ここでNetlifyコンソールのIdentityメニューよりCMSを利用するユーザーを招待します。
 
 ![Netlify - Invite user](https://i.gyazo.com/6cb3d10ea723bd6a654f39e9a04ca9e8.png)
 
-招待ユーザーには以下のような招待メールが届きます。
+招待ユーザーへは、以下のような招待メールが届きます。
 
-![invitation mail](https://i.gyazo.com/ee7cad3ddd7f912aad699823501c5b1e.png)
+![invitation mail](https://i.gyazo.com/87b9304123776e508c00bfe20a66f63e.png)
 
 分かりにくいですが、これは先程カスタマイズしたメールテンプレートです。
 メール本文のリンクをクリックすると、デプロイしたサイトの/adminパスに飛びます。
 
+![Netlify Identity login](https://i.gyazo.com/98b3e70e87e8dd4247d6d8c592422bed.png)
 
-## Netlify Identity設定の中身
+認証ポップアップが出た状態になります。Googleによる認証も有効にしましたので、Netlify Identity独自のユーザーだけでなく、Googleでもログインできるようになっています。
+どちらでも構いませんのでログインすると以前のようにNetlify CMSが利用可能な状態になっています。
+
+![Netlify CMS](https://i.gyazo.com/2437dab7e5fffdc2007e02b595fd2bd9.png)
+
+招待ユーザーはGitHubアカウントを持っている必要もありません。Git Gatewayが代わりにGitHub操作も担ってくれます。
 
 ## まとめ
+ここではNetlify Identityを使って、サイトの一部ページを認証付きにする方法をご紹介しました。
+Netlifyにホスティングしているサイトであれば、簡単な設定だけで、外部認証プロバイダを含めた認証機構が導入できるのは大きな魅力だなと感じました。
+ただし、初期状態だと招待制で招待できるユーザーは5人までで、監査ログ等の機能も使用できませんでした。
+それ以上は追加コストが必要なので、本格運用するには予算調整が別途必要そうですね。

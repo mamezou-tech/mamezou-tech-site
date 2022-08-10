@@ -1,5 +1,5 @@
 ---
-title: Netlify CMSをNetlify Identityを使って認証する
+title: Netlify Identityを使ってNetlify CMSのユーザー認証をする
 publishedPath: netlify-cms-with-netlify-identity
 author: noboru-kudoh
 date: 2022-08-11

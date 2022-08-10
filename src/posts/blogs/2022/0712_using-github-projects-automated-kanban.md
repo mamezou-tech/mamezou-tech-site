@@ -63,4 +63,8 @@ issue が複数のタスクの完了によりクローズできるとして、Gi
 
 GitHub Projects は今後 Kanban だけでなく、スプレッドシートのようなビューも追加され、管理者にとって便利な機能が追加されていくようです。こちらも別途記事にしたいと思います。
 
-[プロジェクト（ベータ）について | GitHub Docs](https://docs.github.com/ja/issues/trying-out-the-new-projects-experience/about-projects)
+:::info:追記
+Projects がリニューアルされたので記事書きました。
+
+[GitHub Projects がリニューアル - スプレッドシートのビューが利用可能に](/blogs/2022/07/28/github_projects_spreadseets_view/)
+:::

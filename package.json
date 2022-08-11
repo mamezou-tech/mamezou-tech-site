@@ -9,7 +9,7 @@
   "scripts": {
     "watch:sass": "sass  --no-source-map --watch src/sass:public/css",
     "watch:eleventy": "eleventy --serve --incremental",
-    "build:sass-site": "sass --no-source-map src/sass/style.scss public/css/style.css",
+    "build:sass-site": "sass --no-source-map src/sass/style.scss:public/css/style.css src/sass/style-dark.scss:public/css/style-dark.css",
     "build:sass-social": "sass --no-source-map src/sass/social.scss social/style.css",
     "build:sass": "npm-run-all --parallel build:sass-site",
     "build:eleventy": "eleventy",

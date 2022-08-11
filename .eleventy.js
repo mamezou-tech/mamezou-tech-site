@@ -2,6 +2,7 @@ const {DateTime} = require("luxon");
 const socialImages = require("@11tyrocks/eleventy-plugin-social-images");
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const pluginRss = require("@11ty/eleventy-plugin-rss");
+const {EleventyEdgePlugin} = require("@11ty/eleventy");
 const markdownIt = require("markdown-it");
 const markdownItAnchor = require("markdown-it-anchor");
 const markdownItFootNote = require("markdown-it-footnote");
@@ -46,6 +47,7 @@ const containerOptions = {
 };
 
 module.exports = function (eleventyConfig) {
+  eleventyConfig.addPlugin(EleventyEdgePlugin);
   eleventyConfig.addPlugin(socialImages);
   eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.addPlugin(pluginRss);

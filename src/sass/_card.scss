@@ -4,7 +4,7 @@
   flex-direction: column;
   width: 100%;
   border-radius: $tdbc-border-radius;
-  background-color: #fff;
+  background-color: tdbc-color("hero");
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.18);
 
   &__title {
@@ -17,7 +17,7 @@
 
   /* stylelint-disable selector-max-type, selector-no-qualifying-type */
   a.tdbc-card__title {
-    color: #730099;
+    color: $tdbc-color-card-title;
     &::before {
       position: absolute;
       top: 0;
@@ -53,7 +53,7 @@
     p {
       position: relative;
       margin: 0 0 1rem;
-      z-index: 1;
+      z-index: 10;
     }
 
     > ul {

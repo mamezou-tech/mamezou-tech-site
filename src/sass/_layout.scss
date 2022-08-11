@@ -70,7 +70,7 @@ ul.tdbc-column-container {
   min-height: 10vh;
   padding-top: 3vh;
   padding-bottom: 3vh;
-  background-color: #fff;
+  background-color: tdbc-color("hero");
   text-align: center;
   place-content: center;
 }
@@ -203,8 +203,9 @@ $social-min-height: 30px !default;
 .flash {
   padding: 16px 12px;
   margin: 15px 0;
+
   .flash-title {
-    color: #383838;
+    color: scale-color(tdbc-color("text"), $lightness: -10%);
     font-size: 1rem;
     min-height: 25px;
     display: inline-flex;
@@ -224,6 +225,7 @@ $social-min-height: 30px !default;
   pre code:not([class*="language"]) {
     max-width: calc(100vw - 4rem);
   }
+
   code[class*="language-"],
   pre[class*="language-"] {
     max-width: calc(100vw - 3rem);
@@ -242,4 +244,24 @@ ul {
   padding-inline-start: 30px;
   margin-block-start: 1em;
   margin-block-end: 1em;
+}
+
+.tdbc-theme-toggle {
+  padding: 5px;
+  background-color: $tdbc-color-theme-toggle;
+  position: fixed;
+  bottom: 3px;
+  right: 3px;
+  z-index: 999;
+  opacity: 0.6;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+
+  a {
+    color: $tdbc-color-theme-font !important;
+    font-size: unquote("min(max(0.75rem, 5vw), #{$tdbc-text-font-size} - 0.3rem)");
+  }
 }

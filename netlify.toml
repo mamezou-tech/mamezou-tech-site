@@ -1,3 +1,7 @@
+[dev]
+  framework = "#static"
+  command = "npm start"
+
 [build]
   # Directory to change to before starting a build.
   # This is where we will look for package.json/.nvmrc/etc.
@@ -26,3 +30,11 @@
   # optional, deploy the lighthouse report to a path under your site
   [plugins.inputs]
     output_path = "reports/lighthouse.html"
+
+[[edge_functions]]
+  function = "theme-switcher"
+  path = "/*"
+
+[[edge_functions]]
+  function = "eleventy-edge"
+  path = "/*"

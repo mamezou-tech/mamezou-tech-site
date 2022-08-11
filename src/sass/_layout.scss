@@ -70,7 +70,7 @@ ul.tdbc-column-container {
   min-height: 10vh;
   padding-top: 3vh;
   padding-bottom: 3vh;
-  background-color: #fff;
+  background-color: tdbc-color("hero");
   text-align: center;
   place-content: center;
 }
@@ -204,7 +204,7 @@ $social-min-height: 30px !default;
   padding: 16px 12px;
   margin: 15px 0;
   .flash-title {
-    color: #383838;
+    color: scale-color(tdbc-color("text"), $lightness: -10%);
     font-size: 1rem;
     min-height: 25px;
     display: inline-flex;

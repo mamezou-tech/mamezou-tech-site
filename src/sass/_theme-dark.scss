@@ -1,19 +1,19 @@
 $tdbc-color-primary: #171392 !default;
 $tdbc-color-secondary: #4F4350 !default;
-$tdbc-color-background: #f9f9f9;
+$tdbc-color-background: #262525;
 
 $tdbc-brand-colors: (
   "primary": $tdbc-color-primary,
   "secondary": $tdbc-color-secondary,
 ) !default;
 
-$tdbc-color-body: scale-color($tdbc-color-primary, $lightness: -30%, $saturation: -50%) !default;
+$tdbc-color-body: scale-color($tdbc-color-primary, $lightness: 80%, $saturation: -50%) !default;
 $tdbc-color-gray: mix(#767676, $tdbc-color-body, 70%) !default;
-$tdbc-color-hero: #fff;
-$tdbc-color-tag: rgb(66, 65, 65);
-$tdbc-color-list-title: rgb(41, 41, 41);
-$tdbc-color-card-title: #730099;
-$tdbc-color-toc: #fff;
+$tdbc-color-hero: #1a1717;
+$tdbc-color-tag: #fff;
+$tdbc-color-list-title: rgb(231, 225, 225);
+$tdbc-color-card-title: #d28bea;
+$tdbc-color-toc: scale-color($tdbc-color-background, $lightness: -20%);
 
 $tdbc-colors: map-merge(
   $tdbc-brand-colors,
@@ -27,7 +27,7 @@ $tdbc-colors: map-merge(
     "mz": #815685,
     "hero": $tdbc-color-hero,
     "tag": $tdbc-color-tag
-)
+  )
 );
 
 @function tdbc-color($key) {
@@ -41,7 +41,7 @@ $tdbc-ink-colors: "primary", "secondary", "text", "gray", "light", "dark", "mz" 
 $tdbc-background-colors: "primary", "secondary", "background", "gray", "light", "mz" !default;
 
 $tdbc-button-variants: "primary", "secondary", "light", "gray" !default;
-$tdbc-link-color: tdbc-color("primary") !default;
+$tdbc-link-color: scale-color(tdbc-color("light"), $lightness: -20%) !default;
 $tdbc-border-radius: 8px !default;
 
 $tdbc-font-family: "Helvetica Neue", "Arial", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
@@ -61,3 +61,17 @@ $tdbc-spacing: (
   xl: 6rem,
   auto: "auto",
 ) !default;
+
+.gsc-control-cse,.google-search {
+  background-color: tdbc-color("hero") !important;
+  border-color: scale-color(tdbc-color("hero"), $lightness: 30%) !important;
+}
+
+.flash {
+  color: tdbc-color("text") !important;
+  background-image: none !important;
+}
+
+.post img {
+  background-color: #fff !important;
+}

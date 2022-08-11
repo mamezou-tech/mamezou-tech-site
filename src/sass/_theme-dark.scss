@@ -1,5 +1,5 @@
 $tdbc-color-primary: #171392 !default;
-$tdbc-color-secondary: #4F4350 !default;
+$tdbc-color-secondary: #917c93 !default;
 $tdbc-color-background: #262525;
 
 $tdbc-brand-colors: (
@@ -9,11 +9,13 @@ $tdbc-brand-colors: (
 
 $tdbc-color-body: scale-color($tdbc-color-primary, $lightness: 80%, $saturation: -50%) !default;
 $tdbc-color-gray: mix(#767676, $tdbc-color-body, 70%) !default;
-$tdbc-color-hero: #1a1717;
+$tdbc-color-hero: #171414;
 $tdbc-color-tag: #fff;
 $tdbc-color-list-title: rgb(231, 225, 225);
 $tdbc-color-card-title: #d28bea;
 $tdbc-color-toc: scale-color($tdbc-color-background, $lightness: -20%);
+$tdbc-color-theme-toggle: #fff;
+$tdbc-color-theme-font: #2c2222;
 
 $tdbc-colors: map-merge(
   $tdbc-brand-colors,
@@ -23,8 +25,8 @@ $tdbc-colors: map-merge(
     "light": #fff,
     "dark": rgba(black, 0.87),
     "gray": $tdbc-color-gray,
-    "dark-brown": #4F4350,
-    "mz": #815685,
+    "dark-brown": #766779,
+    "mz": #b686bb,
     "hero": $tdbc-color-hero,
     "tag": $tdbc-color-tag
   )
@@ -65,6 +67,10 @@ $tdbc-spacing: (
 .gsc-control-cse,.google-search {
   background-color: tdbc-color("hero") !important;
   border-color: scale-color(tdbc-color("hero"), $lightness: 30%) !important;
+}
+
+.gsc-input-box {
+  border: none !important;
 }
 
 .flash {

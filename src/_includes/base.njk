@@ -106,6 +106,15 @@
         fbroot.after(script);
       });
     </script>
+    {% edge 'njk' %}
+    <div class="tdbc-theme-toggle">
+      {% if eleventy.edge.cookies.theme === 'dark' %}
+        <a href="{{ page.url }}?theme=light">Lightモード切替</a>
+      {% else %}
+        <a href="{{ page.url }}?theme=dark">Darkモード切替</a>
+      {% endif %}
+    </div>
+    {% endedge %}
     {{ content | safe }}
     <footer class="tdbc-background--secondary">
       <div class="tdbc-container tdbc-text-align-center">

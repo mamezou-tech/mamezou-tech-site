@@ -14,6 +14,8 @@ $tdbc-color-tag: rgb(66, 65, 65);
 $tdbc-color-list-title: rgb(41, 41, 41);
 $tdbc-color-card-title: #730099;
 $tdbc-color-toc: #fff;
+$tdbc-color-theme-toggle: #efddef;
+$tdbc-color-theme-font: $tdbc-color-body;
 
 $tdbc-colors: map-merge(
   $tdbc-brand-colors,

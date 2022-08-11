@@ -37,7 +37,7 @@ h4,
 
 p,
 li {
-  font-size: unquote("min(max(1rem, 5vw), #{$tdbc-text-font-size})");
+  font-size: unquote("min(max(1rem, 5vw), #{$tdbc-text-font-size} - 0.25rem)");
 }
 
 p {

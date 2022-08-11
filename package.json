@@ -22,7 +22,8 @@
     "lint:fix": "stylelint --fix 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
     "social-images": "eleventy-social-images --outputDir src --dataFile social/pages.json --templatePath social/template.html --stylesPath ogp-style.css --width 1200 --height 630 --deviceScaleFactor 1",
     "bump": "npm --no-git-tag-version version",
-    "textlint": "textlint"
+    "textlint": "textlint",
+    "netlify:dev": "netlify dev"
   },
   "keywords": [],
   "author": "mamezou-tech",

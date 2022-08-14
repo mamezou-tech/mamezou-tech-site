@@ -12,7 +12,7 @@ tags:
 一般的にサイトジェネレータで作成したサイトは、特定の場所に静的リソースを配置し、CDN経由で配信することが多いかと思います。
 昨今はNext.jsやNuxt.js等のハイブリッドフレームワークを使って、サーバーサイド側でページを生成するSSRも増えてきていますが、やはり静的リソースのみを配置するスタイルは何かと開発・運用しやすいと思います。
 
-とはいえ、このような静的サイトでも、認証、レスポンスヘッダ/Cookie操作等、ちょっとしたサーバーサイド側の処理がほしいことはよくあります。
+とはいえ、このような静的サイトでも、認証、レスポンスヘッダ/Cookie操作、ローカライズ等、ちょっとしたサーバーサイド側の処理がほしくなることはよくあります。
 
 今回は静的サイトジェネレータに[Eleventy](https://www.11ty.dev/)を使ったサイトで[Netlify](https://www.netlify.com/)が提供する[Netlify Edge Functions](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/)を適用する方法をご紹介したいと思います。
 
@@ -102,13 +102,49 @@ export default async (request, context) => {
 
 まず、EleventyEdgeプラグインのインスタンスを生成しています。ここで利用している`precompiledAppData`(`./_generated/eleventy-edge-app-data.js`)はEleventyのプラグインが生成するソースコードで、主導で作成する必要はありません。後述しますが、エッジ環境で利用するテンプレート構文をNetlify Edge Functionsで動作するように変換されたソースコードが配置されます。
 
+その次の`edge.config(...) => {...}`で、エッジ環境下で動作する、テンプレートの設定を記述します。
+これらは、通常はプロジェクトルート配下の`.eleventy.js`内に記述しますが、エッジ環境で実行する場合はここに記述する必要があります。
+
 今回は、以下2つのEdge Functionを追加してみます。
 1. Basic認証
-1. Cookie操作と、値に応じたHTML変更(ユーザープリファレンスやA/Bテストを想定)
+1. Cookie操作
 
 ### Basic認証
+`netlify/edge-functions`配下に`basic-auth.js`として以下のファイルを配置しました。
 
+```javascript
+import { decode } from "https://deno.land/std/encoding/base64.ts";
 
+const unauthorized = new Response(null, {
+  status: 401,
+  headers: {
+    "WWW-Authenticate": "Basic",
+  },
+});
+export default async (request, { next, log }) => {
+  const authorization = request.headers.get("authorization");
+  if (!authorization) return unauthorized;
+  const [, userpassword] = authorization.split(" ");
+  const [user, password] = new TextDecoder("utf-8")
+    .decode(decode(userpassword))
+    .split(":");
+  if (user === "mamezou" && password === "password123") {
+    log("authentication succeeded!!");
+    return next();
+  }
+  log("authentication failed...");
+  return unauthorized;
+};
+```
+
+:::alert
+ここではシンプルさのためにユーザー、パスワードはハードコードしていますが、もちろんこれをやってはいけません。
+試していませんが、Netlify Edge Functionは環境変数をサポートしていますので、通常はこれを使うのが良いかと思います。
+
+- [Scopes and Deploy Contexts for Environment Variables](https://docs.netlify.com/netlify-labs/experimental-features/environment-variables/)
+
+Netlify Edge FunctionはNode.jsではありませんので、process.envは使えません。[Deno.env](https://doc.deno.land/deno/stable/~/Deno.env)を使うことになるかと思います。
+:::
 
 ### Cookie操作
 
@@ -121,9 +157,9 @@ export default async (request, context) => {
 Elevenｔｙのプラグインを有効にするだけで、簡単にNetlify Edge Functionsを実行することができました。
 これだけ簡単でしたら、もっといろんな用途で使っていくことができそうだと思いました。
 
-とはいえ、Netlify Edge FunctionsとEleventy2.0系ともに実験的バージョンですので、早く安定版になるが待ち遠しい感じですね。
+Netlify Edge FunctionsとEleventy2.0系ともに実験的バージョンですので、早く安定版になるが待ち遠しい感じですね。
 
-本サイトでも、当記事で紹介したNetlify Edge Functionsを使ってテーマ切り替え機能を最近追加しています。
+というものの、本サイトでもNetlify Edge Functionsを使ってテーマ切り替え機能を最近追加しています。
 ここではCookieを指定し、テンプレート上でCookieの値に応じてCSS切り替えを行っています。
 
 ---

@@ -204,7 +204,7 @@ export default async (request, context) => {
 ## Netlifyにデプロイする
 
 ## まとめ
-Elevenｔｙのプラグインを有効にするだけで、簡単にNetlify Edge Functionsを実行することができました。
+Eleventyのプラグインを有効にするだけで、簡単にNetlify Edge Functionsを実行することができました。
 これだけ簡単でしたら、もっといろんな用途で使っていくことができそうだと思いました。
 
 Netlify Edge FunctionsとEleventy2.0系ともに実験的バージョンですので、早く安定版になるが待ち遠しい感じですね。これらが安定版となったら本記事の内容も更新する予定です。

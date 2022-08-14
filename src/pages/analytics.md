@@ -18,7 +18,8 @@ date: git Last Modified
 - [仮説検定はなぜ遠回りするのか](/blogs/2022/06/01/hypothesis-test/)
 - [箱ひげ図で外れ値を確認する](/blogs/2022/05/18/Check-outliers-with-a-boxplot/)
 - [統計学で避けて通れない自由度の話](/blogs/2022/06/20/degrees-of-freedom/)
-- [箱ひげ図と散布図を同時に描画して概要を把握する(描画編)](/blogs/2022/08/05/boxplot-and-scatterplot/) <span style="color: red;">★NEW★</span>
+- [箱ひげ図と散布図を同時に描画して概要を把握する(描画編)](/blogs/2022/08/05/boxplot-and-scatterplot/)
+- [箱ひげ図と散布図を同時に描画して概要を把握する(層別・分析編)](/blogs/2022/08/15/boxplot-and-scatterplot-2/) <span style="color: red;">★NEW★</span>
 ### t検定
 - [品質改善効果を検定で確認する（対応なしt検定）](/blogs/2022/05/19/Confirm-the-quality-improvement-effect/)
 - [対応のあるデータの差を検定する（対応ありt検定）](/blogs/2022/05/20/corresponding-t-test/)

@@ -153,7 +153,7 @@ Netlify Edge Functionのシグニチャや利用可能なコンテキストの�
 もちろん、Node.jsのAPIであるprocess.envは使えません。この場合は[Deno.env](https://doc.deno.land/deno/stable/~/Deno.env)を使うことになるかと思います。
 :::
 
-### Cookie操作
+### CookieベースのA/Bテスト
 `netlify/edge-functions`配下に`abtesting.js`として以下のファイルを配置しました。
 
 ```javascript
@@ -169,7 +169,7 @@ export default async (request, { next, cookies, log }) => {
   cookies.set({
     name: "abtesting",
     path: "/",
-    value: Math.random() < 0.5 ? "A" : "B",
+    value: pattern,
     expires,
     secure: true,
     httpOnly: true,

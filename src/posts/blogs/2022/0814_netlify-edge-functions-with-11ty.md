@@ -66,7 +66,54 @@ module.exports = function (eleventyConfig) {
 
 ## Edge Functionを記述する
 
-## ローカルで確認する(Netlify CLI)
+Edge Functionのソースコードはプロジェクトルート直下の`netlify/edge-functions`に配置します。
+今回利用するNetlfiy Edge Functionsでは、ここにDeno互換のソースコードを配置する必要があります。
+何も作成せずにEleventyをローカルビルド(`npx @11ty/eleventy`)すると、Netlify Edge Functionsテンプレート(`eleventy-edge.js`)が作成されます。
+初期状態のテンプレートは以下のようになりました。
+
+```javascript
+import { EleventyEdge } from "eleventy:edge";
+import precompiledAppData from "./_generated/eleventy-edge-app-data.js";
+
+export default async (request, context) => {
+  try {
+    let edge = new EleventyEdge("edge", {
+      request,
+      context,
+      precompiled: precompiledAppData,
+
+      // default is [], add more keys to opt-in e.g. ["appearance", "username"]
+      cookies: [],
+    });
+
+    edge.config((eleventyConfig) => {
+      // Add some custom Edge-specific configuration
+      // e.g. Fancier json output
+      // eleventyConfig.addFilter("json", obj => JSON.stringify(obj, null, 2));
+    });
+
+    return await edge.handleResponse();
+  } catch (e) {
+    console.log("ERROR", { e });
+    return context.next(e);
+  }
+};
+```
+
+まず、EleventyEdgeプラグインのインスタンスを生成しています。ここで利用している`precompiledAppData`(`./_generated/eleventy-edge-app-data.js`)はEleventyのプラグインが生成するソースコードで、主導で作成する必要はありません。後述しますが、エッジ環境で利用するテンプレート構文をNetlify Edge Functionsで動作するように変換されたソースコードが配置されます。
+
+今回は、以下2つのEdge Functionを追加してみます。
+1. Basic認証
+1. Cookie操作と、値に応じたHTML変更(ユーザープリファレンスやA/Bテストを想定)
+
+### Basic認証
+
+
+
+### Cookie操作
+
+
+## Netlify側のEdge Function登録／ローカル動作確認(Netlify CLI)
 
 ## Netlifyにデプロイする
 

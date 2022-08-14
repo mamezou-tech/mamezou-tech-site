@@ -26,15 +26,15 @@ Netlify Edge Functionsは本サイトで別途紹介記事がありますので�
 
 :::alert
 ここで使うNetlify Edge Functionsは実験的(experimental)バージョンとなっています。
-また、Netlify Edge Functionsに対応したEleventy2.xもCanaryバージョンです。
-実際に利用する場合は、最新の状況を確認した上で、クリティカルでないシステムで適用することをお勧めします。
+また、同様にNetlify Edge Functionsに対応したEleventyも2.xは実験的バージョンです。
+実際に利用する場合は、最新の状況を確認した上で、クリティカルでないシステムに適用することをお勧めします。
 :::
 
 [[TOC]]
 
 ## Eleventyのサンプルサイトを作成する
 
-まずは、Eleventyでシンプルなサイトを作成します。
+まずは、Eleventyでサイトを作成します。
 任意のnpmプロジェクトを作成し、Eleventyとローカル確認用に[Netlify CLI](https://www.npmjs.com/package/netlify-cli)をインストールします。
 
 ```shell
@@ -107,7 +107,7 @@ export default async (request, context) => {
 
 今回は、以下2つのEdge Functionを追加してみます。
 1. Basic認証
-1. Cookie操作
+1. CookieベースのA/Bテスト
 
 ### Basic認証
 `netlify/edge-functions`配下に`basic-auth.js`として以下のファイルを配置しました。
@@ -138,15 +138,15 @@ export default async (request, { next, log }) => {
 ```
 
 リクエストヘッダからAuthorizationヘッダを取得して、ユーザー、パスワードの一致を比較するだけの単純なものです。
-関数のシグニチャや利用できるものは、Netlifyの公式ドキュメントを参照してください。
+Netlify Edge Functionのシグニチャや利用可能なコンテキストの内容は、ここでは説明しません。詳細はNetlifyの公式ドキュメントを参照してください。
 
 -　[Netlify Edge Functions API](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/api/)
 
 注意点として、Netlify Edge FunctionsはNode.jsではなく、Denoランタイムです。Node.jsのAPIは使用できません。上記でいうとBase64文字列のデコードを実装するにはDenoのAPIを使用する必要があります。
 
-:::alert
+:::column:パスワード管理に環境変数を利用する
 ここではシンプルさのためにユーザー、パスワードはハードコードしていますが、もちろんこれをやってはいけません。
-試していませんが、Netlify Edge Functionは環境変数をサポートしていますので、通常はこれを使うのが良いかと思います。
+試していませんが、Netlify Edge Functionsは環境変数をサポートしていますので、通常はこれを使うのが良いかと思います。
 
 - [Scopes and Deploy Contexts for Environment Variables](https://docs.netlify.com/netlify-labs/experimental-features/environment-variables/)
 
@@ -154,7 +154,50 @@ export default async (request, { next, log }) => {
 :::
 
 ### Cookie操作
+`netlify/edge-functions`配下に`abtesting.js`として以下のファイルを配置しました。
 
+```javascript
+export default async (request, { next, cookies, log }) => {
+  if (cookies.get("abtesting")) {
+    return next();
+  }
+  // update A/B pattern to cookie
+  const pattern = Math.random() < 0.5 ? "A" : "B";
+  log("A/B Testing ->", pattern)
+  const expires = new Date();
+  expires.setTime(expires.getTime() + 24 * 3600 * 1000); // 1 day
+  cookies.set({
+    name: "abtesting",
+    path: "/",
+    value: Math.random() < 0.5 ? "A" : "B",
+    expires,
+    secure: true,
+    httpOnly: true,
+    sameSite: "Lax",
+  });
+  return next({ sendConditionalRequest: true });
+};
+```
+
+Cookie内に`abtesting`有無をチェックし、存在しない場合はランダム値として`A` or `B`を設定しています。
+
+これに応じて生成するページの内容を部分的に切り替えてみます。
+まずは、先程Eleventyのプラグインが生成したソースコードにこのCookieが使用できるように指定します。
+
+```javascript
+export default async (request, context) => {
+  try {
+    let edge = new EleventyEdge("edge", {
+      request,
+      context,
+      precompiled: precompiledAppData,
+      cookies: ["abtesting"], // ここを追加
+    });
+  // 以下省略
+};
+```
+
+これを追加すると、Eleventyのテンプレート内でこのCookieの値を利用できるようになります。
 
 ## Netlify側のEdge Function登録／ローカル動作確認(Netlify CLI)
 

@@ -14,9 +14,9 @@ tags:
 
 とはいえ、このような静的サイトでも、認証、レスポンスヘッダ/Cookie操作等、ちょっとしたサーバーサイド側の処理がほしいことはよくあります。
 
-今回は静的サイトジェネレータに[eleventy](https://www.11ty.dev/)を使ったサイトで[Netlify](https://www.netlify.com/)が提供する[Netlify Edge Functions](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/)を適用する方法をご紹介したいと思います。
+今回は静的サイトジェネレータに[Eleventy](https://www.11ty.dev/)を使ったサイトで[Netlify](https://www.netlify.com/)が提供する[Netlify Edge Functions](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/)を適用する方法をご紹介したいと思います。
 
-Netlify Edge Functionは本サイトで別途紹介記事がありますので、合わせてこちらもご参考ください。
+Netlify Edge Functionsは本サイトで別途紹介記事がありますので、合わせてこちらもご参考ください。
 
 - [Deno Deploy を基盤とする Netlify Edge Functions を試す](/blogs/2022/07/23/try-netlify-edge-functions/)
 
@@ -26,15 +26,15 @@ Netlify Edge Functionは本サイトで別途紹介記事がありますので�
 
 :::alert
 ここで使うNetlify Edge Functionsは実験的(experimental)バージョンとなっています。
-また、Netlify Edge Functionsに対応したeleventy2.xもCanaryバージョンです。
+また、Netlify Edge Functionsに対応したEleventy2.xもCanaryバージョンです。
 実際に利用する場合は、最新の状況を確認した上で、クリティカルでないシステムで適用することをお勧めします。
 :::
 
 [[TOC]]
 
-## eleventyのサンプルサイトを作成する
+## Eleventyのサンプルサイトを作成する
 
-まずは、eleventyでシンプルなサイトを作成します。
+まずは、Eleventyでシンプルなサイトを作成します。
 任意のnpmプロジェクトを作成し、Eleventyとローカル確認用に[Netlify CLI](https://www.npmjs.com/package/netlify-cli)をインストールします。
 
 ```shell
@@ -50,7 +50,7 @@ Eleventyでのサイト作成は別記事で紹介していますので、ここ
 
 ## Eleventyの設定ファイルを修正する
 
-EleventyのEdge Function対応は、別途インストールは不要で、Eleventy本体に含まれています。
+EleventyのEdge Functions対応は、別途インストールは不要で、Eleventy本体に含まれています。
 Eleventyの設定ファイル(.eleventy.js)に以下を追加し、プラグインを有効化します。
 
 ```javascript

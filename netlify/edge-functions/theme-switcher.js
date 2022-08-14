@@ -1,7 +1,9 @@
+import includesNonPageAssets from "./includes-non-page-assets.js";
+
 export default async (request, context) => {
   try {
     const url = new URL(request.url);
-    if (!url.pathname.endsWith("/")) {
+    if (includesNonPageAssets(url.pathname)) {
       return; // css, font, etc...
     }
     const theme = url.searchParams.get("theme");
@@ -10,12 +12,13 @@ export default async (request, context) => {
     }
     context.log("change theme", request.url, theme)
     const expires = new Date();
-    expires.setTime(expires.getTime() + 5 * 24 * 3600 * 1000);
+    expires.setTime(expires.getTime() + 365 * 24 * 3600 * 1000); // 1 year
     context.cookies.set({
       name: "theme",
       path: "/",
       value: theme,
       expires,
+      secure: true,
       httpOnly: true,
       sameSite: "Lax",
     });

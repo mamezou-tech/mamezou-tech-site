@@ -1,10 +1,11 @@
 import { EleventyEdge } from "eleventy:edge";
 import precompiledAppData from "./_generated/eleventy-edge-app-data.js";
+import includesNonPageAssets from "./includes-non-page-assets.js";
 
 export default async (request, context) => {
   try {
     const url = new URL(request.url);
-    if (!url.pathname.endsWith("/")) {
+    if (includesNonPageAssets(url.pathname)) {
       return; // css, font, etc...
     }
     context.log("apply 11ty edge", request.url)

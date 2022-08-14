@@ -140,7 +140,7 @@ export default async (request, { next, log }) => {
 リクエストヘッダからAuthorizationヘッダを取得して、ユーザー、パスワードの一致を比較するだけの単純なものです。
 Netlify Edge Functionのシグニチャや利用可能なコンテキストの内容は、ここでは説明しません。詳細はNetlifyの公式ドキュメントを参照してください。
 
--　[Netlify Edge Functions API](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/api/)
+- [Netlify Edge Functions API](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/api/)
 
 注意点として、Netlify Edge FunctionsはNode.jsではなく、Denoランタイムです。Node.jsのAPIは使用できません。上記でいうとBase64文字列のデコードを実装するにはDenoのAPIを使用する必要があります。
 

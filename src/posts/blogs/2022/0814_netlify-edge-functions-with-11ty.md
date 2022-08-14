@@ -137,13 +137,20 @@ export default async (request, { next, log }) => {
 };
 ```
 
+リクエストヘッダからAuthorizationヘッダを取得して、ユーザー、パスワードの一致を比較するだけの単純なものです。
+関数のシグニチャや利用できるものは、Netlifyの公式ドキュメントを参照してください。
+
+-　[Netlify Edge Functions API](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/api/)
+
+注意点として、Netlify Edge FunctionsはNode.jsではなく、Denoランタイムです。Node.jsのAPIは使用できません。上記でいうとBase64文字列のデコードを実装するにはDenoのAPIを使用する必要があります。
+
 :::alert
 ここではシンプルさのためにユーザー、パスワードはハードコードしていますが、もちろんこれをやってはいけません。
 試していませんが、Netlify Edge Functionは環境変数をサポートしていますので、通常はこれを使うのが良いかと思います。
 
 - [Scopes and Deploy Contexts for Environment Variables](https://docs.netlify.com/netlify-labs/experimental-features/environment-variables/)
 
-Netlify Edge FunctionはNode.jsではありませんので、process.envは使えません。[Deno.env](https://doc.deno.land/deno/stable/~/Deno.env)を使うことになるかと思います。
+もちろん、Node.jsのAPIであるprocess.envは使えません。この場合は[Deno.env](https://doc.deno.land/deno/stable/~/Deno.env)を使うことになるかと思います。
 :::
 
 ### Cookie操作
@@ -157,7 +164,7 @@ Netlify Edge FunctionはNode.jsではありませんので、process.envは使�
 Elevenｔｙのプラグインを有効にするだけで、簡単にNetlify Edge Functionsを実行することができました。
 これだけ簡単でしたら、もっといろんな用途で使っていくことができそうだと思いました。
 
-Netlify Edge FunctionsとEleventy2.0系ともに実験的バージョンですので、早く安定版になるが待ち遠しい感じですね。
+Netlify Edge FunctionsとEleventy2.0系ともに実験的バージョンですので、早く安定版になるが待ち遠しい感じですね。これらが安定版となったら本記事の内容も更新する予定です。
 
 というものの、本サイトでもNetlify Edge Functionsを使ってテーマ切り替え機能を最近追加しています。
 ここではCookieを指定し、テンプレート上でCookieの値に応じてCSS切り替えを行っています。

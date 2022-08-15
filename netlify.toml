@@ -1,6 +1,6 @@
 [dev]
   framework = "#static"
-  command = "npm start"
+  command = "npm run start:edge"
 
 [build]
   # Directory to change to before starting a build.

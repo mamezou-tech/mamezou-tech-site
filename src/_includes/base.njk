@@ -29,9 +29,7 @@
     <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
 
-    {% if meta.env !== 'prod' %}
-      <link href="{{ '/css/style.css' | url }}" rel="stylesheet" />
-    {% endif %}
+    <link href="{{ '/css/style.css' | url }}" rel="stylesheet" />
     {% edge 'njk' %}
     {% if eleventy.edge.cookies.theme === 'dark' %}
       {% set stylecss = '/css/style-dark.css' %}

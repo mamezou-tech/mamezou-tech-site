@@ -1,5 +1,5 @@
 ---
-title: 箱ひげ図と散布図を同時に描画して概要を把握する(層別・分析偏)
+title: 箱ひげ図と散布図を同時に描画して概要を把握する(層別・分析編)
 author: shuichi-takatsu
 date: 2022-08-15
 tags: [Analytics]

@@ -16,7 +16,10 @@ function chop(content) {
   }
 }
 
+const generalTags = ["all", "nav", "pages", "no-page", "posts"]
+
 module.exports = {
   getPosts,
   chop,
+  generalTags,
 }

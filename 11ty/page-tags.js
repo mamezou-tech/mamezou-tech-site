@@ -1,9 +1,8 @@
+const { generalTags } = require("./utils");
 module.exports = (tags) => {
-  const generalTags = ['all', 'nav', 'post'];
-
   return tags
     .toString()
-    .split(',')
+    .split(",")
     .filter((tag) => {
       return !generalTags.includes(tag);
     });

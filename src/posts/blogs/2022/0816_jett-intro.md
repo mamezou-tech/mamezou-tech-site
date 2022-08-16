@@ -10,7 +10,11 @@ Javaで使えるExcelテンプレートエンジン[JETT](http://jett.sourceforg
 [[TOC]]
 
 ## 特徴
-- JETT (Java Excel Template Translator) は、Excelテンプレートを使用してExcelスプレッドシートを作成できるテンプレートエンジンです。
+JETT (Java Excel Template Translator) は、Excelテンプレートを使用してExcelスプレッドシートを作成できるテンプレートエンジンです。
+
+![大まかな流れ](https://i.gyazo.com/3dfb3ff59df49d0b10140c8cda60fe79.png)
+
+Excelテンプレートを準備し、アプリケーション側からデータを与えるとテンプレートに沿ったファイルを生成してくれます（詳しい使い方は後述）。テンプレートファイル側にセルのスタイルが定義できるので、Excelファイル出力によく使われる Apache POI と比べて体裁の管理が楽にできます。
 
 ## 導入
 Maven2 を使用している場合は、pom.xml に次の依存関係を配置できます。0.3.0 以降、JETT は Maven 2 セントラル リポジトリで利用できるようになりました。

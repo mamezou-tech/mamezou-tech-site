@@ -1,16 +1,16 @@
 ---
-title: EXCELテンプレートエンジンJETTの紹介
+title: ExcelテンプレートエンジンJETTの紹介
 author: koshiro-fukushima
 date: 2022-08-16
 tags: [JETT,OSS]
 ---
 
-Javaで使えるEXCELテンプレートエンジン[JETT](http://jett.sourceforge.net/index.html)を紹介させていただきます。導入方法等の詳細については[公式サイト](http://jett.sourceforge.net/installation.html)をご覧ください。
+Javaで使えるExcelテンプレートエンジン[JETT](http://jett.sourceforge.net/index.html)を紹介させていただきます。導入方法等の詳細については[公式サイト](http://jett.sourceforge.net/installation.html)をご覧ください。
 
 [[TOC]]
 
 ## 特徴
-- JETT (Java Excel Template Translator) は、EXCELテンプレートを使用してEXCELスプレッドシートを作成できるテンプレートエンジンです。
+- JETT (Java Excel Template Translator) は、Excelテンプレートを使用してExcelスプレッドシートを作成できるテンプレートエンジンです。
 
 ## 導入
 Maven2 を使用している場合は、pom.xml に次の依存関係を配置できます。0.3.0 以降、JETT は Maven 2 セントラル リポジトリで利用できるようになりました。
@@ -78,11 +78,11 @@ copyRight属性を使用すると横方向へループします。
 （画像は出力結果のみです）
 ![メモ付きセル](https://i.gyazo.com/e7ebf90c08d14ba2b6113422cdff41c5.png)
 
-### EXCEL関数や式を入れる
-EXCEL関数や式を入れる場合は &lt;jt:formula&gt; タグを使います。
+### Excel関数や式を入れる
+Excel関数や式を入れる場合は &lt;jt:formula&gt; タグを使います。
 （画像は出力結果のみです）
-![EXCEL関数や式を入れる](https://i.gyazo.com/4e96e8d939aad616e37d04c27a16c9cb.png)
+![Excel関数や式を入れる](https://i.gyazo.com/4e96e8d939aad616e37d04c27a16c9cb.png)
 
 ## まとめ
-今回はJETT (Java Excel Template Translator) でテンプレートファイルからEXCELファイルを出力する方法を紹介しました。他にも便利なタグが提供されております。詳しくは [The JETT Tag Library](http://jett.sourceforge.net/tags/basics.html)をご覧ください。
+今回はJETT (Java Excel Template Translator) でテンプレートファイルからExcelファイルを出力する方法を紹介しました。他にも便利なタグが提供されております。詳しくは [The JETT Tag Library](http://jett.sourceforge.net/tags/basics.html)をご覧ください。
 

@@ -413,7 +413,7 @@ SLSA とは Supply-chain Levels for Software Artifacts というフレームワ�
 :::
 
 ## まとめ
-以上、コンテナイメージや、Go アプリケーションに 成果物の出所を検証可能な署名を付与するワークフローを利用してみました。
+以上、コンテナイメージや、Go アプリケーションに成果物の出所を検証可能な署名を付与するワークフローを利用してみました。
 
 今月 GitHub は、Sigstore を用いて NPM のセキュリティを改善するための RFC をオープンにしました。NPM にも Sigstore による署名が適用される流れになりそうです。
 
@@ -421,7 +421,7 @@ SLSA とは Supply-chain Levels for Software Artifacts というフレームワ�
 
 [rfcs/0000-link-packages-to-source-and-build.md at link-packages-to-source-and-build · npm/rfcs](https://github.com/npm/rfcs/blob/link-packages-to-source-and-build/accepted/0000-link-packages-to-source-and-build.md)
 
-ソフトウェアサプライチェーンのセキュリティについては、従来の脆弱性パッチ適用に加え、レジストリやCI/CD パイプラインなどの出所情報を透明性のあるログとして保存し誰もが検証可能な状態にすることが求められる時代になっていくことが予想されます。
+ソフトウェアサプライチェーンのセキュリティについては、従来の脆弱性パッチ適用に加え、リポジトリやCI/CD パイプラインなどの出所情報を透明性のあるログとして保存し誰もが検証可能な状態にすることが求められる時代になっていくことが予想されます。
 
 ---
 参考

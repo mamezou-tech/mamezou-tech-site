@@ -10,7 +10,7 @@ tags:
   - 11ty
 ---
 一般的にサイトジェネレータで作成したサイトは、特定の場所に静的リソースを配置し、CDN経由で配信することが多いかと思います。
-昨今はNext.jsやNuxt.js等のハイブリッドフレームワークを使って、サーバーサイド側でページを生成するSSRも増えてきていますが、やはり静的リソースのみを配置するスタイルは何かと開発・運用しやすいと思います。
+昨今はNext.jsやNuxt等のハイブリッドフレームワークを使って、サーバーサイド側でページを生成するSSR（Server Side Rendering）も増えてきていますが、やはり静的リソースのみを配置するスタイルは何かと開発・運用しやすいと思います。
 
 とはいえ、このような静的サイトでも、認証、レスポンスヘッダ/Cookie操作、ローカライズ等、ちょっとしたサーバーサイド側の処理がほしくなることはよくあります。
 
@@ -26,7 +26,7 @@ Netlify Edge Functionsは本サイトで別途紹介記事がありますので�
 
 :::alert
 ここで使うNetlify Edge Functionsは実験的(experimental)バージョンとなっています。
-また、同様にNetlify Edge Functionsに対応したEleventyも2.xは実験的バージョンです。
+また、同様にNetlify Edge Functionsに対応したEleventyも2系は実験的バージョンです。
 実際に利用する場合は、最新の状況を確認した上で、クリティカルでないシステムに適用することをお勧めします。
 :::
 
@@ -35,7 +35,7 @@ Netlify Edge Functionsは本サイトで別途紹介記事がありますので�
 ## Eleventyのサンプルサイトを作成する
 
 まずは、Eleventyでサイトを作成します。
-任意のnpmプロジェクトを作成し、Eleventyとローカル確認用に[Netlify CLI](https://www.npmjs.com/package/netlify-cli)をインストールします。
+任意のnpmプロジェクトを作成し、Eleventy本体と[Netlify CLI](https://www.npmjs.com/package/netlify-cli)(ローカル確認用)をインストールします。
 
 ```shell
 npm install --save-dev @11ty/eleventy@2.0.0-canary.14 netlify-cli
@@ -61,8 +61,9 @@ module.exports = function (eleventyConfig) {
 };
 ```
 
-これだけです。設定はデフォルトのままです（addPluginの第2引数で設定変更も可能です）。
-なお、現時点ではEdge Functionサービスは、Netlify Edge Functionsのみに対応していますが、今後追加されていきそうです。そうなってくると、ここで利用するサービスごとの追加設定が別途必要になってきそうです。
+設定はデフォルトのままで問題ありません（addPluginの第2引数でカスタム設定可能）。
+なお、現時点ではプラグインがサポートするサービスは、Netlify Edge Functionsのみです。
+今後対象が広がってくると、サービス別の追加設定が別途必要になってくると思います。
 
 ## Edge Functionを記述する
 
@@ -290,10 +291,14 @@ Netlify Edge Functionsのログはコンソールから確認できます。
 Eleventyのプラグインを有効にするだけで、簡単にNetlify Edge Functionsを実行することができました。
 これだけ簡単でしたら、もっといろんな用途で使っていくことができそうだと思いました。
 
-Netlify Edge FunctionsとEleventy2.0系ともに実験的バージョンですので、早く安定版になるが待ち遠しい感じですね。これらが安定版となったら本記事の内容も更新する予定です。
+Netlify Edge FunctionsとEleventy2.0系ともに実験的バージョンですので、早く安定版になるが待ち遠しい感じですね。
 
 というものの、本サイトでもNetlify Edge Functionsを使ってテーマ切り替え機能を最近追加しています。
 ここではCookieを指定し、テンプレート上でCookieの値に応じてCSS切り替えを行っています。
+
+最後に、当ブログで使用したGitHubレポジトリは以下で公開していますので、興味のある方はご参考ください。
+
+- <https://github.com/kudoh/eleventy-netlify-edge-example>
 
 ---
 参照資料

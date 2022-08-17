@@ -38,7 +38,6 @@ npm install --save-dev @netlify/plugin-lighthouse
 
 次にLighthouseで評価する対象ページとスコアのしきい値を設定します。
 これはプロジェクトルートに配置するNetlify設定ファイル(`netlify.toml`)の`plugins`セクションを指定します。
-以下のようになります。
 
 ```toml
 [[plugins]]

@@ -101,12 +101,13 @@ export default async (request, context) => {
 };
 ```
 
-まず、EleventyEdgeプラグインのインスタンスを生成しています。ここで利用している`precompiledAppData`(`./_generated/eleventy-edge-app-data.js`)はEleventyのプラグインが生成するソースコードで、主導で作成する必要はありません。後述しますが、エッジ環境で利用するテンプレート構文をNetlify Edge Functionsで動作するように変換されたソースコードが配置されます。
+まず、EleventyEdgeプラグインのインスタンスを生成しています。ここで利用している`precompiledAppData`(`./_generated/eleventy-edge-app-data.js`)はEleventyのプラグインが生成するソースコードで、手動で作成する必要はありません。後述しますが、ここにはエッジ環境で実行するテンプレートをNetlify Edge Functions向けに変換されたソースコードが配置されます。
 
-その次の`edge.config(...) => {...}`で、エッジ環境下で動作する、テンプレートの設定を記述します。
-これらは、通常はプロジェクトルート配下の`.eleventy.js`内に記述しますが、エッジ環境で実行する場合はここに記述する必要があります。
+その次の`edge.config(...) => {...}`で、エッジ環境下で動作するテンプレートの関数(ショートコードやフィルター等)を記述します。
+通常はプロジェクトルート配下の`.eleventy.js`内に記述しますが、エッジ環境で実行する場合はここに記述する必要があります。
+今回は使用しないため、変更せずにこのままにしました（定義なし）。
 
-今回は、以下2つのEdge Functionを追加してみます。
+それでは、ここから以下2つのEdge Functionを追加してみます。
 1. Basic認証
 1. CookieベースのA/Bテスト
 

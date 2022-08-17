@@ -1,5 +1,5 @@
 ---
-title: NetlifyのLighthouseプラグインでWebサイトのメトリクスをデプロイ時に評価する
+title: NetlifyのLighthouseプラグインでWebサイトのメトリクスを継続的に評価する
 author: noboru-kudo
 date: 2022-08-17
 templateEngineOverride: md

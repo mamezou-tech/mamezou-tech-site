@@ -101,13 +101,14 @@ export default async (request, context) => {
 };
 ```
 
-まず、EleventyEdgeプラグインのインスタンスを生成しています。ここで利用している`precompiledAppData`(`./_generated/eleventy-edge-app-data.js`)はEleventyのプラグインが生成するソースコードで、手動で作成する必要はありません[^1]。
+まず、EleventyEdgeプラグインのインスタンスを生成しています。
+ここで利用している`precompiledAppData`(`./_generated/eleventy-edge-app-data.js`)はEleventyのプラグインが生成するソースコードで、手動で作成する必要はありません[^1]。
 
 [^1]: テンプレートエンジンにNunjucksを使った場合に、ここに事前コンパイルしたソースコードが出力されました。
 
 その次の`edge.config(...) => {...}`で、エッジ環境下で動作するテンプレートの関数(ショートコードやフィルター等)を記述します。
 通常はプロジェクトルート配下の`.eleventy.js`内に記述しますが、エッジ環境で実行する場合はここに記述する必要があります。
-今回は使用しないため、変更せずにこのままにしました（定義なし）。
+今回は使用しないため、このままにしました（定義なし）。
 
 最後の`edge.handleResponse()`では、エッジ環境固有部分をレンダリングした結果を返しています。
 
@@ -264,8 +265,8 @@ path = "/*"
 ```
 
 `[dev]`セクションの内容はローカル確認向けのNetlify CLI設定です。
-ここでは`framework`を静的サイト`#static`として、`publish`にEleventyビルドの出力先を指定しています。
-`command`はEleventyのビルドコマンドで、リアルタイム反映を有効にするために`--watch`オプションを指定しています。
+ここでは、`framework`を静的サイト`#static`とし、`publish`にEleventyビルドの出力先を指定しています。
+`command`はEleventyのビルドコマンドで、リアルタイム反映を有効にするため`--watch`オプションを指定しています。
 ここで指定可能なその他の設定項目は、以下公式ドキュメントを参照してください。
 - [Netlify - File-based configuration - Netlify Dev](https://docs.netlify.com/configure-builds/file-based-configuration/#netlify-dev)
 
@@ -323,8 +324,8 @@ Netlify Edge Functionsのログはコンソールから確認できます。
 ![Netlify Console Edge Functions Log](https://i.gyazo.com/9ef2f9301b44a88bff6488afe08dcbd5.png)
 
 ## まとめ
-Eleventyのプラグインを有効にするだけで、Netlify Edge Functionsを実行することができました。
-これだけ簡単でしたら、もっといろんな用途で使っていくことができそうだと思いました。
+Eleventyのプラグインを有効にするだけで、Netlify Edge Functionsを簡単に作成できました。
+Denoランタイムに慣れる必要はありますが、軽量な処理[^3]であれば様々な用途で使っていくことができそうだと思いました。
 
 Netlify Edge FunctionsとEleventy2系はともに実験的バージョンですので、早く安定版になるが待ち遠しい感じです。
 
@@ -334,6 +335,8 @@ Netlify Edge FunctionsとEleventy2系はともに実験的バージョンです�
 最後に、当ブログで使用したGitHubレポジトリは以下で公開していますので、興味のある方はご参考ください。
 
 - <https://github.com/kudoh/eleventy-netlify-edge-example>
+
+[^3]: メモリ(512MB)やCPU時間(50ms)の制約があるため、重厚な処理には向きません。Netlify Edge Functionの制約は[公式ドキュメント](https://docs.netlify.com/netlify-labs/experimental-features/edge-functions/limits/)を参照しくてださい。
 
 ---
 参照資料

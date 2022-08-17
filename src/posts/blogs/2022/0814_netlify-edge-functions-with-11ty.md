@@ -51,7 +51,7 @@ Eleventyでのサイト作成は別記事で紹介していますので、ここ
 ## Eleventyの設定ファイルを修正する
 
 EleventyのEdge Functions対応は、別途インストールは不要で、Eleventy本体に含まれています。
-Eleventyの設定ファイル(.eleventy.js)に以下を追加し、プラグインを有効化します。
+Eleventyの設定ファイル(.eleventy.js)に以下を追加し、Edgeプラグインを有効化します。
 
 ```javascript
 const { EleventyEdgePlugin } = require("@11ty/eleventy");
@@ -62,7 +62,7 @@ module.exports = function (eleventyConfig) {
 ```
 
 設定はデフォルトのままで問題ありません（addPluginの第2引数でカスタム設定可能）。
-なお、現時点ではプラグインがサポートするサービスは、Netlify Edge Functionsのみです。
+なお、現時点ではEdgeプラグインがサポートするサービスは、Netlify Edge Functionsのみです。
 今後対象が広がってくると、サービス別の追加設定が別途必要になってくると思います。
 
 ## Edge Functionを記述する
@@ -101,7 +101,9 @@ export default async (request, context) => {
 };
 ```
 
-まず、EleventyEdgeプラグインのインスタンスを生成しています。ここで利用している`precompiledAppData`(`./_generated/eleventy-edge-app-data.js`)はEleventyのプラグインが生成するソースコードで、手動で作成する必要はありません。後述しますが、ここにはエッジ環境で実行するテンプレートをNetlify Edge Functions向けに変換されたソースコードが配置されます。
+まず、EleventyEdgeプラグインのインスタンスを生成しています。ここで利用している`precompiledAppData`(`./_generated/eleventy-edge-app-data.js`)はEleventyのプラグインが生成するソースコードで、手動で作成する必要はありません[^1]。
+
+[^1]: テンプレートエンジンにNunjucksを使った場合に、ここに事前コンパイルしたソースコードが出力されました。
 
 その次の`edge.config(...) => {...}`で、エッジ環境下で動作するテンプレートの関数(ショートコードやフィルター等)を記述します。
 通常はプロジェクトルート配下の`.eleventy.js`内に記述しますが、エッジ環境で実行する場合はここに記述する必要があります。
@@ -224,9 +226,9 @@ export default async (request, context) => {
 `{% edge "liquid" %}`から`{% endedge %}で囲まれた部分はエッジ環境で実行されます(それ以外はビルド時)。
 今回は、その中で先程設定したCookieの値に応じてレンダリングする内容を切り替えています。
 
-ここではテンプレートエンジンにLiquidを使用していますが、Nunjucksやマークダウンにも対応しています[^1]。
+ここではテンプレートエンジンにLiquidを使用していますが、Nunjucksやマークダウンにも対応しています[^2]。
 
-[^1]: Edgeプラグインの制約は、[プラグイン公式ドキュメント](https://www.11ty.dev/docs/plugins/edge/#limitations)を参照してください。
+[^2]: Edgeプラグインの制約は、[プラグイン公式ドキュメント](https://www.11ty.dev/docs/plugins/edge/#limitations)を参照してください。
 
 ## Netlify側のEdge Function登録／ローカル動作確認(Netlify CLI)
 

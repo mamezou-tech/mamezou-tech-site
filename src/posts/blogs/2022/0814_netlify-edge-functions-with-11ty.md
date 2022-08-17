@@ -149,7 +149,7 @@ Netlify Edge Functionのシグニチャや利用可能なコンテキストの�
 注意点として、Netlify Edge FunctionsはNode.jsではなく、Denoランタイムです。Node.jsのAPIは使用できません。上記でいうとBase64文字列のデコードを実装するにはDenoのAPIを使用する必要があります。
 
 :::column:パスワード管理に環境変数を利用する
-ここではシンプルさのためにユーザー、パスワードはハードコードしていますが、もちろんこれをやってはいけません。
+ここではシンプルさのためにユーザー、パスワードはハードコードしていますが、もちろんこれはセキュリティ上望ましくありません。
 試していませんが、Netlify Edge Functionsは環境変数をサポートしていますので、通常はこれを使うのが良いかと思います。
 
 - [Scopes and Deploy Contexts for Environment Variables](https://docs.netlify.com/netlify-labs/experimental-features/environment-variables/)
@@ -185,8 +185,8 @@ export default async (request, { next, cookies, log }) => {
 
 Cookie内に`abtesting`有無をチェックし、存在しない場合はランダム値として`A` or `B`を設定しています。
 
-これに応じて生成するページの内容を部分的に切り替えてみます。
-まずは、先程Eleventyのプラグインが生成したソースコードでこのCookieが使用できるように指定します。
+そして、この値に応じて生成するページを部分的に切り替えてみます。
+まずは、先程Eleventyのプラグインが生成したソースコード(`eleventy-edge.js`)でこのCookieが使用できるように指定します。
 
 ```javascript
 export default async (request, context) => {
@@ -223,12 +223,20 @@ export default async (request, context) => {
 </html>
 ```
 
-`{% edge "liquid" %}`から`{% endedge %}で囲まれた部分はエッジ環境で実行されます(それ以外はビルド時)。
+`{% edge "liquid" %}`から`{% endedge %}`で囲まれた部分はエッジ環境で実行されます(それ以外はビルド時)。
 今回は、その中で先程設定したCookieの値に応じてレンダリングする内容を切り替えています。
 
 ここではテンプレートエンジンにLiquidを使用していますが、Nunjucksやマークダウンにも対応しています[^2]。
 
 [^2]: Edgeプラグインの制約は、[プラグイン公式ドキュメント](https://www.11ty.dev/docs/plugins/edge/#limitations)を参照してください。
+
+:::info
+ここではNetlify Edge Functionsで使ってA/Bテストをしていますが、Netlifyは複数ブランチに配置したリソースのスプリットテスト機能を提供しています。
+現時点でベータバージョンではありますが、簡単にA/Bテストを実施するのであればこちらを利用するのが良いかと思います。
+詳細は以下公式ドキュメントを参照してください。
+
+- [Netlify - Split Testing](https://docs.netlify.com/site-deploys/split-testing/)
+:::
 
 ## Netlify側のEdge Function登録／ローカル動作確認(Netlify CLI)
 
@@ -256,20 +264,20 @@ path = "/*"
 
 `[dev]`セクションの内容はローカル確認用のNetlify CLI向けの設定です。
 ここでは`framework`を静的サイト`#static`として、`publish`にEleventyのビルド出力先を指定しています。
-`command`がEleventyのビルドコマンドで、リアルタイム反映を有効にするために`--watch`オプションを指定しています。
+`command`はEleventyのビルドコマンドで、リアルタイム反映を有効にするために`--watch`オプションを指定しています。
 ここで指定可能なその他の設定項目は、以下公式ドキュメントを参照してください。
 - [Netlify - File-based configuration - Netlify Dev](https://docs.netlify.com/configure-builds/file-based-configuration/#netlify-dev)
 
 続く`[[edge_functions]]`セクションでNetlify Edge Functionsの設定を記述します。
 これらは複数記述可能で、記載順に実行されます。ここでは、Basic認証 > A/Bテストパターン設定 -> レンダリングの順に指定しています。
 
-ローカル環境でNetlify Edge Functionを確認するには、以下コマンドを実行します。
+ローカル環境でNetlify Edge Functionsを確認するには、以下コマンドを実行します。
 
 ```shell
 npx netlify dev
 ```
 
-デフォルトの8888ポートでNetlifyのローカルサーバーが起動し、ブラウザ上で挙動を確認することができます。
+デフォルトの8888ポートでNetlifyのローカルサーバーが起動し、ブラウザ上でNetlify Edge Functionsの挙動を確認できます。
 アクセスするとBasic認証のダイアログが表示され、認証が成功すると以下のページが表示されました。
 
 ![netlify dev page](https://i.gyazo.com/59d3286e06e00e5f3d28d42a28c0f867.png)
@@ -291,10 +299,10 @@ Netlify Edge Functionsのログはコンソールから確認できます。
 ![Netlify Console Edge Functions Log](https://i.gyazo.com/9ef2f9301b44a88bff6488afe08dcbd5.png)
 
 ## まとめ
-Eleventyのプラグインを有効にするだけで、簡単にNetlify Edge Functionsを実行することができました。
+Eleventyのプラグインを有効にするだけで、Netlify Edge Functionsを実行することができました。
 これだけ簡単でしたら、もっといろんな用途で使っていくことができそうだと思いました。
 
-Netlify Edge FunctionsとEleventy2.0系ともに実験的バージョンですので、早く安定版になるが待ち遠しい感じですね。
+Netlify Edge FunctionsとEleventy2系はともに実験的バージョンですので、早く安定版になるが待ち遠しい感じです。
 
 というものの、本サイトでもNetlify Edge Functionsを使ってテーマ切り替え機能を最近追加しています。
 ここではCookieを指定し、テンプレート上でCookieの値に応じてCSS切り替えを行っています。

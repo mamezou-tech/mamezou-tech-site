@@ -68,7 +68,7 @@ module.exports = function (eleventyConfig) {
 
 Edge Functionのソースコードはプロジェクトルート直下の`netlify/edge-functions`に配置します。
 今回利用するNetlfiy Edge Functionsでは、ここにDeno互換のソースコードを配置する必要があります。
-何も作成せずにEleventyをローカルビルド(`npx @11ty/eleventy`)すると、Netlify Edge Functionsテンプレート(`eleventy-edge.js`)が作成されます。
+何も作成せずにEleventyをローカルビルド(`npx @11ty/eleventy`)すると、Netlify Edge Functionsのテンプレート(`eleventy-edge.js`)が作成されます。
 初期状態のテンプレートは以下のようになりました。
 
 ```javascript
@@ -219,8 +219,8 @@ export default async (request, context) => {
 </html>
 ```
 
-`{% edge "liquid" %}`から`{% endedge %}で囲まれた部分はエッジ環境で実行されます。
-その中では、先程設定したCookieの値に応じてレンダリングする内容を切り替えています。
+`{% edge "liquid" %}`から`{% endedge %}で囲まれた部分はエッジ環境で実行されます(それ以外はビルド時)。
+今回は、その中で先程設定したCookieの値に応じてレンダリングする内容を切り替えています。
 
 ここではテンプレートエンジンにLiquidを使用していますが、Nunjucksやマークダウンにも対応しています[^1]。
 
@@ -228,7 +228,59 @@ export default async (request, context) => {
 
 ## Netlify側のEdge Function登録／ローカル動作確認(Netlify CLI)
 
+Netlify側にこのEdge Functionを登録して、ローカルで動作確認します。
+Netlifyの設定ファイル`netlify.toml`に以下を追記します。
+
+```toml
+[dev]
+framework = "#static"
+command = "npx @11ty/eleventy --quiet --watch"
+publish = "_site"
+
+[[edge_functions]]
+function = "basic-auth"
+path = "/*"
+
+[[edge_functions]]
+function = "abtesting"
+path = "/*"
+
+[[edge_functions]]
+function = "eleventy-edge"
+path = "/*"
+```
+
+`[dev]`セクションの内容はローカル確認用のNetlify CLI向けの設定です。
+ここでは`framework`を静的サイト`#static`として、`publish`にEleventyのビルド出力先を指定しています。
+`command`がEleventyのビルドコマンドで、リアルタイム反映を有効にするために`--watch`オプションを指定しています。
+ここで指定可能なその他の設定項目は、以下公式ドキュメントを参照してください。
+- [Netlify - File-based configuration - Netlify Dev](https://docs.netlify.com/configure-builds/file-based-configuration/#netlify-dev)
+
+続く`[[edge_functions]]`セクションでNetlify Edge Functionsの設定を記述します。
+これらは複数記述可能で、記載順に実行されます。ここでは、Basic認証 > A/Bテストパターン設定 -> レンダリングの順に指定しています。
+
+ローカル環境でNetlify Edge Functionを確認するには、以下コマンドを実行します。
+
+```shell
+npx netlify dev
+```
+
+デフォルトの8888ポートでNetlifyのローカルサーバーが起動し、ブラウザ上で挙動を確認することができます。
+アクセスするとBasic認証のダイアログが表示され、認証が成功すると以下のページが表示されました。
+
+![netlify dev page](https://i.gyazo.com/59d3286e06e00e5f3d28d42a28c0f867.png)
+
+Cookieの値によって、エッジ環境上でレンダリングするページが切り替わっていることが分かります。
+
 ## Netlifyにデプロイする
+
+では、これをNetlifyにデプロイして、実際の環境で確認します。
+ここで特別な設定は必要ありません。ソースコードをGitHubにコミットし、対象レポジトリをNetlifyにインポートするだけです。
+
+- [Netlify - Import from an existing repository](https://docs.netlify.com/welcome/add-new-site/#import-from-an-existing-repository)
+
+ドキュメントの通りですので、詳細は省略します。
+デプロイ後はNetlifyのコンソールから以下のように確認できます。
 
 ## まとめ
 Eleventyのプラグインを有効にするだけで、簡単にNetlify Edge Functionsを実行することができました。
@@ -242,4 +294,4 @@ Netlify Edge FunctionsとEleventy2.0系ともに実験的バージョンです�
 ---
 参照資料
 
-- [eleventy - ELEVENTY EDGE](https://www.11ty.dev/docs/plugins/edge/#edge-shortcode-examples)
+- [Eleventyドキュメント - ELEVENTY EDGE](https://www.11ty.dev/docs/plugins/edge/)

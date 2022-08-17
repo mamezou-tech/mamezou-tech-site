@@ -40,6 +40,7 @@ Dockerfile を含むリポジトリへのワークフロー追加時にサジェ
 
 [^1]: サードパーティ製 Action を使用していることから、Action の更新による挙動変更を避けるため、コミットハッシュを指定して Action をチェックアウト・実行するようになっています。
 
+{% raw %}
 ```yaml
 name: Docker
 
@@ -90,6 +91,7 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
 ```
+{% endraw %}
 
 通常の docker build / push に加えて以下のステップが追加されています。
 
@@ -413,7 +415,7 @@ SLSA とは Supply-chain Levels for Software Artifacts というフレームワ�
 ## まとめ
 以上、コンテナイメージや、Go アプリケーションに 成果物の出所を検証可能な署名を付与するワークフローを利用してみました。
 
-今月 GitHub では、Sigstore を用いて NPM のセキュリティを改善するための RFC をオープンにしました。NPM にも Sigstore による署名が適用される流れになりそうです。
+今月 GitHub は、Sigstore を用いて NPM のセキュリティを改善するための RFC をオープンにしました。NPM にも Sigstore による署名が適用される流れになりそうです。
 
 [New request for comments on improving npm security with Sigstore is now open | The GitHub Blog](https://github.blog/2022-08-08-new-request-for-comments-on-improving-npm-security-with-sigstore-is-now-open/)
 

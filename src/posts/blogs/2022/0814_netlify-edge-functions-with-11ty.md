@@ -44,7 +44,7 @@ npm install --save-dev @11ty/eleventy@2.0.0-canary.14 netlify-cli
 注意点として、現時点のEleventyの安定版は1.0.1ですが、こちらではNetlify Edge Functionsの対応は含まれていません。明示的に2系バージョンを指定する必要があります。
 ここでは、執筆時点で最新の`2.0.0-canary.14`をインストールしました。
 
-Eleventyでのサイト作成は別記事で紹介していますので、ここでは省略します(記事はNetlify CMSのものですが、こちらはセットアップ不要です)。
+Eleventyでのサイト作成は別記事で紹介していますので、ここでは省略します(記事はNetlify CMSのものですが、CMSはセットアップ不要です)。
 
 - [Eleventy(11ty)プロジェクトを作成する](/blogs/2022/08/03/netlifycms-workflow-intro/#eleventy11tyプロジェクトを作成する)
 
@@ -182,7 +182,7 @@ export default async (request, { next, cookies, log }) => {
 Cookie内に`abtesting`有無をチェックし、存在しない場合はランダム値として`A` or `B`を設定しています。
 
 これに応じて生成するページの内容を部分的に切り替えてみます。
-まずは、先程Eleventyのプラグインが生成したソースコードにこのCookieが使用できるように指定します。
+まずは、先程Eleventyのプラグインが生成したソースコードでこのCookieが使用できるように指定します。
 
 ```javascript
 export default async (request, context) => {
@@ -191,13 +191,40 @@ export default async (request, context) => {
       request,
       context,
       precompiled: precompiledAppData,
-      cookies: ["abtesting"], // ここを追加
+      cookies: ["abtesting"], // <-ここを追加
     });
   // 以下省略
 };
 ```
 
 これを追加すると、Eleventyのテンプレート内でこのCookieの値を利用できるようになります。
+テンプレート側でこの値を参照する場合は、プラグインが提供する`edge`ショートコードを利用します。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h1>Netlify Edge Functions example</h1>
+  {% edge "liquid" %}
+  {% if eleventy.edge.cookies.abtesting == "A" %}
+    <p style="color: red">Aパターンコンテンツ</p>
+  {% else %}
+    <p style="color: blue">Bパターンコンテンツ</p>
+  {% endif %}
+  {% endedge %}
+</body>
+</html>
+```
+
+`{% edge "liquid" %}`から`{% endedge %}で囲まれた部分はエッジ環境で実行されます。
+その中では、先程設定したCookieの値に応じてレンダリングする内容を切り替えています。
+
+ここではテンプレートエンジンにLiquidを使用していますが、Nunjucksやマークダウンにも対応しています[^1]。
+
+[^1]: Edgeプラグインの制約は、[プラグイン公式ドキュメント](https://www.11ty.dev/docs/plugins/edge/#limitations)を参照してください。
 
 ## Netlify側のEdge Function登録／ローカル動作確認(Netlify CLI)
 

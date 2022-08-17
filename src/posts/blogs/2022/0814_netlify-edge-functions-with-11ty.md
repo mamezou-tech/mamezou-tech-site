@@ -109,6 +109,8 @@ export default async (request, context) => {
 通常はプロジェクトルート配下の`.eleventy.js`内に記述しますが、エッジ環境で実行する場合はここに記述する必要があります。
 今回は使用しないため、変更せずにこのままにしました（定義なし）。
 
+最後の`edge.handleResponse()`では、エッジ環境固有部分をレンダリングした結果を返しています。
+
 それでは、ここから以下2つのEdge Functionを追加してみます。
 1. Basic認証
 1. CookieベースのA/Bテスト
@@ -186,7 +188,7 @@ export default async (request, { next, cookies, log }) => {
 Cookie内に`abtesting`有無をチェックし、存在しない場合はランダム値として`A` or `B`を設定しています。
 
 そして、この値に応じて生成するページを部分的に切り替えてみます。
-まずは、先程Eleventyのプラグインが生成したソースコード(`eleventy-edge.js`)でこのCookieが使用できるように指定します。
+まずは、先程Eleventyのプラグインが生成したソースコード(`eleventy-edge.js`)でこのCookieを参照できるよう指定します。
 
 ```javascript
 export default async (request, context) => {
@@ -201,8 +203,7 @@ export default async (request, context) => {
 };
 ```
 
-これを追加すると、Eleventyのテンプレート内でこのCookieの値を利用できるようになります。
-テンプレート側でこの値を参照する場合は、プラグインが提供する`edge`ショートコードを利用します。
+テンプレート側でCookieの値を参照する場合は、プラグインが提供する`edge`ショートコードを利用します。
 
 ```html
 <!DOCTYPE html>
@@ -238,7 +239,7 @@ export default async (request, context) => {
 - [Netlify - Split Testing](https://docs.netlify.com/site-deploys/split-testing/)
 :::
 
-## Netlify側のEdge Function登録／ローカル動作確認(Netlify CLI)
+## Netlify設定／ローカル動作確認(Netlify CLI)
 
 Netlify側にこのEdge Functionを登録して、ローカルで動作確認します。
 Netlifyの設定ファイル`netlify.toml`に以下を追記します。
@@ -262,8 +263,8 @@ function = "eleventy-edge"
 path = "/*"
 ```
 
-`[dev]`セクションの内容はローカル確認用のNetlify CLI向けの設定です。
-ここでは`framework`を静的サイト`#static`として、`publish`にEleventyのビルド出力先を指定しています。
+`[dev]`セクションの内容はローカル確認向けのNetlify CLI設定です。
+ここでは`framework`を静的サイト`#static`として、`publish`にEleventyビルドの出力先を指定しています。
 `command`はEleventyのビルドコマンドで、リアルタイム反映を有効にするために`--watch`オプションを指定しています。
 ここで指定可能なその他の設定項目は、以下公式ドキュメントを参照してください。
 - [Netlify - File-based configuration - Netlify Dev](https://docs.netlify.com/configure-builds/file-based-configuration/#netlify-dev)
@@ -282,7 +283,30 @@ npx netlify dev
 
 ![netlify dev page](https://i.gyazo.com/59d3286e06e00e5f3d28d42a28c0f867.png)
 
-Cookieの値によって、エッジ環境上でレンダリングするページが切り替わっていることが分かります。
+Cookieの値によって、エッジ環境上でレンダリングするページが部分的に切り替わっていることが分かります。
+
+参考までに、Eleventyで生成されたHTMLは以下のようになっていました。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h1>Netlify Edge Functions example</h1>
+  <!--ELEVENTYEDGE_edge "liquid" %}
+  {% if eleventy.edge.cookies.abtesting == "A" %}
+    <p style="color: red">Aパターンコンテンツ</p>
+  {% else %}
+    <p style="color: blue">Bパターンコンテンツ</p>
+  {% endif %}
+  ELEVENTYEDGE_edge-->
+</body>
+</html>
+```
+
+エッジ環境で動作する部分は、コメントアウトされている状態です。EleventyのEdgeプラグインはこの部分をサーバーサイドでレンダリングしているようです。
 
 ## Netlifyにデプロイする
 

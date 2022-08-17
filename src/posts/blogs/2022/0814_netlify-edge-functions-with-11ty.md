@@ -280,7 +280,11 @@ Cookieの値によって、エッジ環境上でレンダリングするペー�
 - [Netlify - Import from an existing repository](https://docs.netlify.com/welcome/add-new-site/#import-from-an-existing-repository)
 
 ドキュメントの通りですので、詳細は省略します。
-デプロイ後はNetlifyのコンソールから以下のように確認できます。
+デプロイが終わると、ローカル環境と同様にEdge Functionが動作していることが確認できます。
+
+Netlify Edge Functionsのログはコンソールから確認できます。
+
+![Netlify Console Edge Functions Log](https://i.gyazo.com/9ef2f9301b44a88bff6488afe08dcbd5.png)
 
 ## まとめ
 Eleventyのプラグインを有効にするだけで、簡単にNetlify Edge Functionsを実行することができました。

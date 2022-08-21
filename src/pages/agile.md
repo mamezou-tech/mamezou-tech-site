@@ -1,15 +1,15 @@
 ---
-layout: page.njk
-permalink: /agile/
-eleventyExcludeFromCollections: true
 title: アジャイル開発
+description: アジャイル開発のノウハウ・事例紹介
+date: git Last Modified
+eleventyExcludeFromCollections: true
 ---
 
 ここに簡単な紹介文を書きます。
 
 ## XP(Extreme Programming)
 
-XPはアジャイル開発のフレームワークです。XXXXXXX
+XPはアジャイル開発のフレームワークの1つです。XXXXXXX
 
 - [XP(Extreme Programming)とは？](/agile/sample/)
 - [XXXXXXXXXXXXXX](/agile/sample/)
@@ -19,5 +19,3 @@ XPはアジャイル開発のフレームワークです。XXXXXXX
 XXXXXXXXXXX
 
 - [XXXXXXXXX](/agile/sample/)
-
-<div style="margin-top: 3rem"><span style="font-size: 1.2rem;color: red;">その他多数記事を追加予定です！！</span></div>

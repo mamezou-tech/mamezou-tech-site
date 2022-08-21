@@ -11,6 +11,18 @@
       name="description"
       content="{{pageDescription}}"
     />
+    <link href="{{ '/css/style.css' | url }}" rel="stylesheet" />
+    {% edge 'njk' %}
+    {% if eleventy.edge.cookies.theme === 'dark' %}
+      {% set stylecss = '/css/style-dark.css' %}
+      <meta name="theme-color" content="#262525">
+    {% else %}
+      {% set stylecss = '/css/style.css' %}
+      <meta name="theme-color" content="#ffffff">
+    {% endif %}
+    <link href="{{ stylecss | url }}" rel="stylesheet" />
+    {% endedge %}
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     {% if meta.env === 'prod' %}
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-38XP4WXMMY"></script>
@@ -20,7 +32,7 @@
       gtag('js', new Date());
 
       const darkCss = Array.from(document.querySelectorAll("link[rel='stylesheet']"))
-        .find(el => el.href && el.href.indexOf("style-dark") !== -1)
+        .find(el => el.href && el.href.indexOf("style-dark") !== -1);
       gtag('config', 'G-38XP4WXMMY', {
         'user_properties': {
           branch: '{{ meta.branch }}',
@@ -35,18 +47,6 @@
     <link rel="manifest" href="/img/site.webmanifest">
     <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
-
-    <link href="{{ '/css/style.css' | url }}" rel="stylesheet" />
-    {% edge 'njk' %}
-    {% if eleventy.edge.cookies.theme === 'dark' %}
-      {% set stylecss = '/css/style-dark.css' %}
-      <meta name="theme-color" content="#262525">
-    {% else %}
-      {% set stylecss = '/css/style.css' %}
-      <meta name="theme-color" content="#ffffff">
-    {% endif %}
-    <link href="{{ stylecss | url }}" rel="stylesheet" />
-    {% endedge %}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

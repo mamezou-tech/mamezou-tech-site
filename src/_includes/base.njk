@@ -23,7 +23,7 @@
         .find(el => el.href && el.href.indexOf("style-dark") !== -1)
       gtag('config', 'G-38XP4WXMMY', {
         'user_properties': {
-          branch: '{{ meta.branch }}'
+          branch: '{{ meta.branch }}',
           theme: darkCss ? 'dark' : 'light',
         }
       });

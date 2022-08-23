@@ -58,7 +58,7 @@ collections:
             summary: "{{fields.name}} -> {{fields.github}}"
             widget: list
             fields:
-              - { label: 名前, name: name, widget: string, pattern: [ "^[a-z]+-[a-z]+$", "英小文字(区切りはハイフン)" ] }
+              - { label: 名前, name: name, widget: string, pattern: [ "^[a-z]+$", "英小文字" ] }
               - { label: GitHubアカウント, name: github, widget: string }
 
 

@@ -25,6 +25,6 @@ export default async (request, context) => {
     return await edge.handleResponse();
   } catch (e) {
     console.log("ERROR", { e });
-    return context.next(e);
+    return context.next();
   }
 };

@@ -30,6 +30,6 @@ export default async (request, context) => {
     });
   } catch (e) {
     context.log(e);
-    return context.next(e);
+    return context.next();
   }
 };

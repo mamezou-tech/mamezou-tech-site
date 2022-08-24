@@ -114,10 +114,9 @@ PreviewバージョンのデプロイはGitHubのPull Requestから確認でき�
 通常は、このPreviewバージョンのURLから変更内容が正しく動作しているのかを確認します。
 
 :::column:Previewバージョンがデプロイされない場合
-Netlifyのサイト作成時にデフォルトで有効になっていますが、Split Testingはブランチデプロイが有効になっている必要があります。
-Pull RequestでPreviewバージョンがデプロイされない場合は、NetlifyのSite settings > Continuous Deploymentから、以下のようにBranch DeploysやDeploy Previewsが設定されていることを確認してください。
+Pull RequestでPreviewバージョンがデプロイされない場合は、NetlifyのSite settings > Continuous Deploymentから、以下のようにDeploy Previewsが設定されていることを確認してください。
 
-![branch deploy & deploy preview](https://i.gyazo.com/0dabe15f15b9d4b1c996600dfd16758e.png)
+![deploy preview](https://i.gyazo.com/fbbbbb6b275098566529a4a99bda7074.png)
 :::
 
 ## NetlifyのSplit Testingを有効にする

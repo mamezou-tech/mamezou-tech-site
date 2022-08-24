@@ -95,7 +95,7 @@ module.exports = {
 
 この状態で、サイトをmainブランチにコミット&プッシュし、Productionバージョンとしてデプロイします(mainブランチ変更をNetlifyが検知して自動でデプロイされます)。
 
-## Previewバージョンをデプロイする
+## 更新バージョンのブランチを作成する
 
 mainブランチよりフィーチャーブランチを作成し、更新バージョンを作成します。
 今回は使用するCSSをダークモードに切り替えるように変えてみました。
@@ -105,19 +105,8 @@ mainブランチよりフィーチャーブランチを作成し、更新バー�
   <link href="/css/style-dark.css" rel="stylesheet" />
 ```
 
-これをfeature/darkブランチとしてGitHubにプッシュし、mainブランチへのPull Requestを作成します。
-Pull Requestを作成すると、Netlifyが検知しPreviewバージョンとしてデプロイを実施します。
-PreviewバージョンのデプロイはGitHubのPull Requestから確認できます。
-
-![GitHub - pull request - preview version url](https://i.gyazo.com/c0f12d0e174fddf319426e941a52e2a6.png)
-
-通常は、このPreviewバージョンのURLから変更内容が正しく動作しているのかを確認します。
-
-:::column:Previewバージョンがデプロイされない場合
-Pull RequestでPreviewバージョンがデプロイされない場合は、NetlifyのSite settings > Continuous Deploymentから、以下のようにDeploy Previewsが設定されていることを確認してください。
-
-![deploy preview](https://i.gyazo.com/fbbbbb6b275098566529a4a99bda7074.png)
-:::
+これをfeature/darkブランチとしてGitHubにプッシュします。
+通常はこの後mainブランチへのPull Requestを作成すると、Netlifyが検知しPreviewバージョンとしてデプロイを実施します。
 
 ## NetlifyのSplit Testingを有効にする
 
@@ -126,11 +115,11 @@ NetlifyコンソールからSplit Testingを選択し、「Activate branch deplo
 ![Netlify activate branch deploys](https://i.gyazo.com/ad86d64db896db79470716ebca402d3b.png)
 
 こうするとmainブランチ以外のブランチのデプロイが実行され、Branchデプロイされたバージョンが選択可能な状態となります。
-デプロイログを見ると、Branchデプロイはソースは同じですが、デプロイ自体はPreviewバージョンとは異なるもののようです。
+デプロイログを見ると、Branchデプロイはソースは同じですが、Pull Request作成時にデプロイされるPreviewバージョンとは異なるもののようです。
 
 ![Netlify Split Testing](https://i.gyazo.com/d4fd1f1a3486245645ab0a1227234e41.png)
 
-Branchのところに、先程Previewバージョンとしてデプロイしたfeature/darkを選択します。
+Branchのところに、先程更新バージョンとしてGitHubにプッシュしたfeature/darkを選択します。
 Splitの比率はデフォルトの50%のままにし、「Start test」をクリックします。
 これでSplit Testingが開始されます。
 mainブランチ(つまりProduction環境)にデプロイしているものと同じURLにアクセスすると50%の確率でfeature/darkブランチのサイトが表示されます。
@@ -146,17 +135,17 @@ Google Analyticsのリアルタイムレポートでも以下のように確認�
 ![GA - realtime report user property](https://i.gyazo.com/70f6a19de77eda6c0b1e33f11754878c.png)
 
 これを分析軸とすれば、この変更がサイトアクセスにどのような影響を及ぼしているか確認できます。
-良い影響がでていることが確認できれば、Pull Requestをmainブランチにマージすれば、PreviewバージョンがProductionバージョンに昇格します。
+良い影響がでていることが確認できれば、フィーチャーブランチをmainブランチにマージすれば、Productionバージョンに昇格します。
 その後、Netlifyコンソールから「Stop test」をクリックすればSplit Testingは終了します。
 
 一方で、更新バージョンの結果が好ましくない場合は、フィーチャーブランチに変更コミットを重ねれば、Branchデプロイしたバージョンにも反映されA/Bテストをそのまま継続できます。
-改善の見込みがなければ、Split Testingを終了して、Pull Requestはマージせずにクローズするだけです。
+改善の見込みがなければ、Split Testingを終了して、フィーチャーブランチは削除しても構いません。
 
 ## まとめ
 
 今回は、Netlifyが提供するSplit Testingを利用してA/Bテストを試してみました。
-メトリクス収集の部分の工夫は必要ですが、通常のGitブランチベースでA/Bテストを実施できることが分かりました。
-Pull Requestを作成して、レビュー段階でちょっと実際に公開してみないと分からないと思えば、そこからすぐにA/Bテストを開始するなんてことが簡単にできます。
+メトリクス収集の部分の工夫は必要ですが、GitブランチベースでA/Bテストを実施できることが分かりました。
+レビュー段階でちょっと実際に公開してみないと分からないと思えば、そこからすぐにA/Bテストを開始するなんてことが簡単にできます。
 
 とても簡単に実施できますので、Netlifyを使っている方は是非試してみてください！
 本サイトでも今後必要に応じて試してみたいと思います。

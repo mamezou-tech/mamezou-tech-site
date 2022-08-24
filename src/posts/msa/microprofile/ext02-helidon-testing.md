@@ -2,7 +2,7 @@
 title: Helidon Tips - Helidon MP Testing with JUnit5を使ってみる
 author: toshio-ogiwara
 date: 2022-04-06
-tags: ["逆張りのMicroProfile", helidon, "JUnit"]
+tags: ["逆張りのMicroProfile", helidon, junit]
 prevPage: ./src/posts/msa/microprofile/ext01-helidon-logback.md
 nextPage: ./src/posts/msa/microprofile/ext03-helidon-rest-testing.md
 ---

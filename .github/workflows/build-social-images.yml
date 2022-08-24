@@ -7,6 +7,7 @@ on:
       - 'src/**.md'
       - 'src/**.njk'
       - 'src/_data/**.js'
+      - 'src/_data/**.json'
   workflow_dispatch:
 
 jobs:

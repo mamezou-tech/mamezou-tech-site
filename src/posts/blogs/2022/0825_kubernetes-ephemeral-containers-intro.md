@@ -90,7 +90,7 @@ kubectl debug sample-app -it --image=curlimages/curl -- curl localhost:8080
 ```
 
 期待通りのレスポンスが返ってきました。
-サイドカーコンテナ同様に、Ephemeral Containersはアプリコンテナと同一Podネックワークを共有していますので、ローカルアクセス(`localhost:8080`)できます。
+サイドカーコンテナ同様に、Ephemeral Containersはアプリコンテナと同一ネックワークを共有していますので、ローカルアクセス(`localhost:8080`)できます。
 
 ### コンテナのファイルシステムを調べる
 
@@ -121,8 +121,10 @@ ls -l /proc/1/root/app
 > lrwxrwxrwx    1 root     root            16 Aug 24 07:59 server.js -> ..data/server.js
 ```
 
-まず、psコマンドで対象コンテナのプロセスを特定します。`--target`でプロセス名前空間を共有していますので、対象コンテナのプロセスを参照できます。
+まず、psコマンドで対象コンテナのプロセスを特定します。`--target`でプロセス名前空間を共有していますので、対象コンテナのプロセスを参照できます[^3]。
 共有したコンテナのファイルシステムは`/proc/{pid}/root`より確認できます。
+
+[^3]: プロセス名前空間の共有についての詳細は[公式ドキュメント](https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/)を参照しくてださい。
 
 ### デバッグ対象Podのマニフェスト
 
@@ -196,7 +198,7 @@ kubectl debug sample-app -it --image=alpine \
   --share-processes --copy-to debug-sample-app -- sh
 ```
 
-ここでは`--share-processes`でプロセス名前空間を共有するよう指定し、`--copy-to`でコピー先のPodを指定します。
+ここでは`--share-processes`でプロセス名前空間を共有するよう指定し[^3]、`--copy-to`でコピー先のPodを指定します。
 その後のデバッグ操作は先程と同様です。
 
 ただし、今回はEphemeral Containersではなく、サイドカーコンテナになっています。

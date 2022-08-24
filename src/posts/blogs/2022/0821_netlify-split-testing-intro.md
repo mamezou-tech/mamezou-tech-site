@@ -125,14 +125,15 @@ NetlifyコンソールからSplit Testingを選択し、「Activate branch deplo
 
 ![Netlify activate branch deploys](https://i.gyazo.com/ad86d64db896db79470716ebca402d3b.png)
 
-すると、mainブランチの他に、Previewデプロイされたバージョンが選択可能な状態となります。
+こうするとmainブランチ以外のブランチのデプロイが実行され、Branchデプロイされたバージョンが選択可能な状態となります。
+デプロイログを見ると、Branchデプロイはソースは同じですが、デプロイ自体はPreviewバージョンとは異なるもののようです。
 
 ![Netlify Split Testing](https://i.gyazo.com/d4fd1f1a3486245645ab0a1227234e41.png)
 
 Branchのところに、先程Previewバージョンとしてデプロイしたfeature/darkを選択します。
 Splitの比率はデフォルトの50%のままにし、「Start test」をクリックします。
 これでSplit Testingが開始されます。
-mainブランチ(つまりProduction環境)にデプロイしているものと同じURLにアクセスすると50%の確率でPreviewバージョンのサイトが実行されます。
+mainブランチ(つまりProduction環境)にデプロイしているものと同じURLにアクセスすると50%の確率でfeature/darkブランチのサイトが表示されます。
 Netlify Split Testingでは、CookieベースのA/Bテストを採用しており、Chrome DevToolsから`nf_ab`というCookieが設定されているのが確認できます。
 以下は更新バージョン(Bパターン)で表示されている状態です。
 
@@ -148,13 +149,13 @@ Google Analyticsのリアルタイムレポートでも以下のように確認�
 良い影響がでていることが確認できれば、Pull Requestをmainブランチにマージすれば、PreviewバージョンがProductionバージョンに昇格します。
 その後、Netlifyコンソールから「Stop test」をクリックすればSplit Testingは終了します。
 
-一方で、Previewバージョンでの結果が好ましくない場合は、フィーチャーブランチに変更コミットを重ねれば、Previewバージョンに反映されA/Bテストをそのまま継続できます。
+一方で、更新バージョンの結果が好ましくない場合は、フィーチャーブランチに変更コミットを重ねれば、Branchデプロイしたバージョンにも反映されA/Bテストをそのまま継続できます。
 改善の見込みがなければ、Split Testingを終了して、Pull Requestはマージせずにクローズするだけです。
 
 ## まとめ
 
 今回は、Netlifyが提供するSplit Testingを利用してA/Bテストを試してみました。
-メトリクス収集の部分の工夫は必要ですが、通常のGitワークフロー(Pull Requestベース)でA/Bテストを実施できることが分かりました。
+メトリクス収集の部分の工夫は必要ですが、通常のGitブランチベースでA/Bテストを実施できることが分かりました。
 Pull Requestを作成して、レビュー段階でちょっと実際に公開してみないと分からないと思えば、そこからすぐにA/Bテストを開始するなんてことが簡単にできます。
 
 とても簡単に実施できますので、Netlifyを使っている方は是非試してみてください！

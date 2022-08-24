@@ -198,7 +198,7 @@ kubectl debug sample-app -it --image=alpine \
   --share-processes --copy-to debug-sample-app -- sh
 ```
 
-ここでは`--share-processes`でプロセス名前空間を共有するよう指定し[^3]、`--copy-to`でコピー先のPodを指定します。
+ここでは`--share-processes`でプロセス名前空間を共有するよう指定し、`--copy-to`でコピー先のPodを指定します。
 その後のデバッグ操作は先程と同様です。
 
 ただし、今回はEphemeral Containersではなく、サイドカーコンテナになっています。

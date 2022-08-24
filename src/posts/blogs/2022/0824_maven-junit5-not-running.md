@@ -71,18 +71,18 @@ JUnitPlatform runner(`junit-platform-runner`)はJUnit5のテストクラスをJU
 ```xml
 <build>
     <plugins>
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M7</version>
-        <!-- ↓↓↓ dependencyを追加する ↓↓↓ -->
-        <dependencies>
-            <dependency>
-                <groupId>org.apache.maven.surefire</groupId>
-                <artifactId>surefire-junit-platform</artifactId>
-                <version>3.0.0-M7</version>
-            </dependency>
-        </dependencies>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M7</version>
+            <!-- ↓↓↓ dependencyを追加する ↓↓↓ -->
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.maven.surefire</groupId>
+                    <artifactId>surefire-junit-platform</artifactId>
+                    <version>3.0.0-M7</version>
+                </dependency>
+            </dependencies>
         </plugin>
     </plugins>
 </build>
@@ -139,7 +139,7 @@ public class AllTestSuite {
 
 が、このようにJUnit5ネイティブでテストスイートを定義した場合、Eclipseはテストモジュールと認識してくれなくなり、コンテキストメニューからのテスト実行ができなくなります（要はEclipseから普通にテストスイートの実行ができなくなります）。この問題に対処するため、筆者はテストスイートだけはJUnitPlatform runnerの機能を使うようにしています。
 
-一方でVSCodeではJUnit5ネイティブなテストスイートを問題なく実行することができるところから、この原因は恐らくEclipseのJUnitランナー実装が@Suiteに対応していないためではないかと思います。
+一方でVSCodeではJUnit5ネイティブなテストスイートを問題なく実行することができるところから、原因は恐らくEclipseのJUnitランナー実装が@Suiteに対応していないためではないかと思います。
 :::
 
 ---

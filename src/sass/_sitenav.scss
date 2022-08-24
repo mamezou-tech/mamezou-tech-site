@@ -36,6 +36,7 @@
   .menu > li {
     margin: 0 0.5rem;
     overflow: hidden;
+    font-size: unquote("min(max(0.8rem, 5vw), 1rem)");
   }
 
   .menu-button-container {

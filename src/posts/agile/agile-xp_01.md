@@ -2,7 +2,7 @@
 title: エクストリームプログラミング解説 その1：全体像
 author: makiko-nakasato
 date: 2022-08-24
-tags: アジャイル
+tags: XP
 ---
 
 ## はじめに

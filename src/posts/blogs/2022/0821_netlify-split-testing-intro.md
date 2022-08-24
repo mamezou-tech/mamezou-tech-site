@@ -25,7 +25,7 @@ NetlifyのSplit Testing機能は現在ベータバージョンでの提供とな
 
 ここでは以下のようにmainブランチはProduction環境向け(Aパターン)、feature/darkブランチは更新バージョン(Bパターン)としてA/Bテストします。
 
-![Netlify Split Testing summary](https://i.gyazo.com/01a9d4bf7899dc3ef7849854afaf35be.png)
+![Netlify Split Testing summary](https://i.gyazo.com/7fd7e2fa17b9b2a1f7a8df7cd4eabb2e.png)
 
 [[TOC]]
 
@@ -114,8 +114,8 @@ NetlifyコンソールからSplit Testingを選択し、「Activate branch deplo
 
 ![Netlify activate branch deploys](https://i.gyazo.com/ad86d64db896db79470716ebca402d3b.png)
 
-こうするとmainブランチ以外のブランチのデプロイが実行され、Branchデプロイされたバージョンが選択可能な状態となります。
-デプロイログを見ると、Branchデプロイはソースは同じですが、Pull Request作成時にデプロイされるPreviewバージョンとは異なるもののようです。
+こうするとmain以外のBranchデプロイが実行され、Gitブランチが選択可能な状態となります。
+デプロイログを見ると、Branchデプロイはソースは同じですが、Pull Request作成時にデプロイされるPreviewバージョンとは異なるもののようです(当初勘違いしてました)。
 
 ![Netlify Split Testing](https://i.gyazo.com/d4fd1f1a3486245645ab0a1227234e41.png)
 

@@ -20,8 +20,10 @@ description: ソフトウェアテストに関する技法やテクニック
 
 ## JUnit
 
+- [Helidon Tips - Helidon Tips - Helidon MP Testing with JUnit5を使ってみる](msa/mp/ext02-helidon-testing/)
 - [Helidon Tips - MicroProfile RestClientを使ったRESTリソースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing/)
 - [JUnit5のExtension実装 - テストライフサイクルコールバックと引数の解決](/blogs/2022/05/30/junit5-extension/)
+- [今さら聞けないMaven - JUnit5のテストクラスがなぜか実行されない](/blogs/2022/08/24/maven-junit5-not-running/)
 
 ## Jest
 

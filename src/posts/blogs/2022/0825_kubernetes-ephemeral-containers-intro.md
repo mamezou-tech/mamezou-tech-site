@@ -11,12 +11,14 @@ tags: [k8s, container]
 - [Kubernetes公式ブログ - Kubernetes v1.25: Combiner](https://kubernetes.io/blog/2022/08/23/kubernetes-v1-25-release/)
 
 PSP(Pod Security Policy)の削除等、多くの変更がありますが、Ephemeral ContainersがBetaからStableバージョンとなりました。
-この機能は`kubectl debug`コマンドで使用できますが、あまり使ったことがなく、これを機に改めて使い方を調べてみましたのでご紹介します。
+この機能は`kubectl debug`コマンド[^1]で使用できますが、あまり使ったことがなく、これを機に改めて使い方を調べてみましたのでご紹介します。
+
+[^1]: kubectl v1.18~では`kubectl alpha debug`でv1.20~からは`kubectl debug`として利用できました。
 
 一般的にKubernetes上で動作するPodのコンテナをデバッグするには`kubectl exec`を使うことが多いかと思います。
-しかし、昨今はセキュリティリスク低減や軽量化による起動速度向上の目的で、[Distroless](https://github.com/GoogleContainerTools/distroless)イメージを使うことが多くなってきています[^1]。
+しかし、昨今はセキュリティリスク低減や軽量化による起動速度向上の目的で、[Distroless](https://github.com/GoogleContainerTools/distroless)イメージを使うことが多くなってきています[^2]。
 
-[^1]: Kubernetes本体もコンテナのベースイメージにはDistrolessを使っています。
+[^2]: Kubernetes本体もコンテナのベースイメージにはDistrolessを使っています。
 
 この欠点はデバッグが難しいことです。Distrolessイメージにはシェルを含めて余計なものは一切含まれていませんので、`kubectl exec`でコンテナに入って状態を調べることはできません。
 

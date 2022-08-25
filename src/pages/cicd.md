@@ -31,6 +31,7 @@ CI/CDパイプラインは、現代のソフトウェア開発に必要不可欠
 - [GitHub Actions - 再利用可能ワークフローと手動トリガーで入力値の扱いを統一](/blogs/2022/06/11/github-actions-inputs-unified/)
 - [GitHub Actions のセルフホストランナーを M1 Mac で動かす](/blogs/2022/08/05/setup-github-actions-self-hosted-runner/)
 - [ソフトウェアサプライチェーンセキュリティのための GitHub Actions ワークフロー](/blogs/2022/08/17/github-actions-workflows-for-software-supply-chain-security/)
+- [GitHub Actions 再利用可能ワークフローでネスト呼び出しと Matrix strategy が解禁](/blogs/2022/08/25/github-actions-reusable-workflow-renewal/)
 
 豆蔵有志でも、特定ユースケースに対応したActionをOSSとして公開しています。
 

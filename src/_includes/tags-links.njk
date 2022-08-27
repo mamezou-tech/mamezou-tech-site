@@ -1,6 +1,23 @@
+<span id="head-tags">
+{% for tag in collections.tagList | limit(50) %}
+  {% set tagUrl %}/tags/{{ tag }}/{% endset %}
+  <a href="{{ tagUrl | url }}" class="post-tag">#{{ tag }}</a>
+{% endfor %}
+<a href="#" onclick="showAllTag(event)">...(全てのタグを表示)</a>
+</span>
+
+<span id="all-tags" style="display: none">
 {% for tag in collections.tagList %}
   {% set tagUrl %}/tags/{{ tag }}/{% endset %}
-
   <a href="{{ tagUrl | url }}" class="post-tag">#{{ tag }}</a>
-
 {% endfor %}
+</span>
+
+<script>
+function showAllTag(event) {
+  event.preventDefault();
+  const allTags = document.querySelector("#all-tags");
+  event.target.parentElement.style.display = "none";
+  allTags.style.display = "inline";
+}
+</script>

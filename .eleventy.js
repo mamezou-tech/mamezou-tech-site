@@ -85,6 +85,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter('byTag',
     (tagArticles, tag) => tagArticles.filter(tagArticle => tagArticle.tag === tag));
   eleventyConfig.addFilter('tagUrl', (hrefs, tag) => hrefs.filter(href => href.includes(`tags/${tag}`)));
+  eleventyConfig.addFilter('limit', (array, limit) => array.slice(0, limit));
   eleventyConfig.addFilter('byAuthor',
     (contributorArticles, author) => contributorArticles.filter(contributor => contributor.name === author));
   eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));

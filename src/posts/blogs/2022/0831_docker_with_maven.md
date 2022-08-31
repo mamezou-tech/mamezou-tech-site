@@ -66,7 +66,7 @@ CMD ["java", "-jar", "hello-server.jar"]
 EXPOSE 7001
 ```
 
-このDockrefileをもとにMavenでコンテナイメージをビルドできるようにpomの`build`タグに次のようにdockerプラグインを定義します。
+このDockerfileをもとにMavenでコンテナイメージをビルドできるようにpomの`build`タグに次のようにdockerプラグインを定義します。
 
 ```xml
 <build>
@@ -87,8 +87,8 @@ EXPOSE 7001
               <contextDir>${project.basedir}</contextDir>
             </build>
           </image>
-        <images>
-      <configuration>
+        </images>
+      </configuration>
     </plugin>
     ...
   </plugins>

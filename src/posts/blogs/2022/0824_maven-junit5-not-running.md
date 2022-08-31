@@ -2,7 +2,7 @@
 title: 今さら聞けないMaven - JUnit5のテストクラスがなぜか実行されない
 author: toshio-ogiwara
 date: 2022-08-24
-tags: [java, maven, junit]
+tags: [java, maven, junit, 今さら聞けないMaven]
 templateEngineOverride: md
 ---
 

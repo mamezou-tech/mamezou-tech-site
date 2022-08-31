@@ -79,6 +79,6 @@ Kubernetes活用例を抜粋しました。Kubernetesを様々なユースケー
 10. [SealedSecretsでKubernetesコンテナのシークレット情報をGit管理する](/blogs/2022/06/05/introduce-sealedsecrets/)
 11. [Secrets Store CSI DriverでKubernetesのシークレット情報を管理する](/blogs/2022/07/13/secrets-store-csi-driver-intro/)
 12. [Camunda Platform のモダンなプロセスオーケストレーター Zeebe による開発環境を構築する](/blogs/2022/07/17/camunda-zeebe/)
-14. [Ingressを強化したKubernetes Gateway APIを試してみる](/blogs/2022/07/24/k8s-gateway-api-intro/)
-13. [kubectl debugを使ってKubernetesのコンテナをデバッグする](/blogs/2022/08/25/kubernetes-ephemeral-containers-intro/)
+13. [Ingressを強化したKubernetes Gateway APIを試してみる](/blogs/2022/07/24/k8s-gateway-api-intro/)
+14. [kubectl debugを使ってKubernetesのコンテナをデバッグする](/blogs/2022/08/25/kubernetes-ephemeral-containers-intro/)
 15. [EKS Blueprints(CDK)ですぐ使える実用的なEKSクラスタ環境を簡単に手に入れる](/blogs/2022/09/01/eks-blueprints-cdk-intro/)

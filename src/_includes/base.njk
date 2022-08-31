@@ -12,12 +12,12 @@
       content="{{pageDescription}}"
     />
     <link href="{{ '/css/style.css' | url }}" rel="stylesheet" />
-    {% edge 'njk' %}
-    {% if eleventy.edge.cookies.theme === 'dark' %}
-      {% set stylecss = '/css/style-dark.css' %}
+    {% edge 'liquid' %}
+    {% if eleventy.edge.cookies.theme == 'dark' %}
+      {% assign stylecss = '/css/style-dark.css' %}
       <meta name="theme-color" content="#262525">
     {% else %}
-      {% set stylecss = '/css/style.css' %}
+      {% assign stylecss = '/css/style.css' %}
       <meta name="theme-color" content="#ffffff">
     {% endif %}
     <link href="{{ stylecss | url }}" rel="stylesheet" />
@@ -111,9 +111,9 @@
         fbroot.after(script);
       });
     </script>
-    {% edge 'njk' %}
+    {% edge 'liquid' %}
     <div class="tdbc-theme-toggle">
-      {% if eleventy.edge.cookies.theme === 'dark' %}
+      {% if eleventy.edge.cookies.theme == 'dark' %}
         <a href="{{ page.url }}?theme=light">Lightモード切替</a>
       {% else %}
         <a href="{{ page.url }}?theme=dark">Darkモード切替</a>

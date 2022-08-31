@@ -8,7 +8,7 @@ tags: [k8s, container, aws-cdk, argocd, IaC]
 
 EKSクラスタを構築するには、Kubernetesだけでなくその土台となるAWSネットワーク・セキュリティの知識も少なからず必要です。
 また、素のEKSクラスタをそのまま利用することはほとんどなく、Ingress Controllerやオートスケーラー、メトリクスコレクター等多くのツールを別途セットアップする必要があります。
-複数チームで共有するようなマルチテナント環境の場合は、NamespaceやRBACセットアップ等、やることはたくさんあります。
+複数チームで共有するようなマルチテナント環境の場合は、NamespaceやRBAC等、やることはたくさんあります。
 eksctlやTerraformのEKSモジュールを使えばある程度は改善できますが、全てをカバーできる訳ではありません。
 
 これらをまとめて一気にセットアップしてくれるツールとして、EKS BlueprintsというOSSがあります。
@@ -118,7 +118,7 @@ EKS Blueprintsで提供されているアドオンは多岐に渡っており、
 
 - [EKS Blueprints(CDK) - Add-ons](https://aws-quickstart.github.io/cdk-eks-blueprints/addons/)
 
-これらの設定に加えて、AWSアカウント・リージョン等を最後にEKS Blueprintsのビルダーに設定すれば完了です。
+これらの設定に加えて、AWSアカウント・リージョン等をEKS Blueprintsのビルダーに設定すれば完了です。
 ほとんどデフォルトを使っているのもありますが、コード自体とてもシンプルで自明です。
 もちろんCDKのソースコードは通常のTypeScriptですので、環境に応じて各種設定を切り替えるのも簡単です。TerraformやCloudFormationのようにツール固有のトリッキー(?)な記述は不要です。
 
@@ -263,7 +263,7 @@ dev-appsは`app of apps`と呼ばれるもので、サンプルアプリ自体�
 ## チームを管理する
 
 EKS Blueprintsのコアコンセプトの1つにチーム管理があります。
-通常複数チームで1つのクラスタ環境を使うことも多いですので、これを使ってみます。
+通常複数チームで1つのクラスタ環境を使うことも多いですので、これを使ってみることにします。
 
 - [EKS Blueprints(CDK) - Teams](https://aws-quickstart.github.io/cdk-eks-blueprints/teams/)
 
@@ -319,8 +319,8 @@ blueprints.EksBlueprint.builder()
 ```
 
 プラットフォームチーム(`mamezou-admin`)、サンプルアプリで作成された4つのアプリケーションチームそれぞれを定義し、EKS Blueprintsのビルダーに設定しています。
-サンプルとして、チーム名のIAMユーザーを1人ずつ指定していますが、もちろん現実的には個々の開発者を複数名指定します。
-これを再度`cdk deploy`を実行します。
+サンプルとして、チーム名のIAMユーザーを1人ずつ指定していますが、もちろん実運用では実際の開発者を複数指定します。
+これで再度`cdk deploy`を実行します。
 
 実行後はチームごとにIAMロールが作成されます。
 
@@ -383,11 +383,11 @@ kubectl describe cm aws-auth -n kube-system
 プラットフォームチーム(`admin`)は`system:master`グループで、クラスタ管理者権限(`cluster-admin`ロール)になっています。
 
 一方で、アプリケーションチームにはチーム別のグループ(`team-<name>-team-group`)が割り当てられています。
-このグループには、以下の内容で権限が割り当てられており、自チームのNamespaceのリソースのみの参照権限が割り当てられます。
+このグループには、以下の内容で権限が割り当てられており、自チームのNamespaceに作成したリソースのみ参照権限が割り当てられます。
 
 - [GitHub - DefaultTeamRoles](https://github.com/aws-quickstart/cdk-eks-blueprints/blob/main/lib/teams/default-team-roles.ts)
 
-残念ながら、現時点ではこのデフォルトのRole定義のカスタマイズはできないようです[^2]。デフォルトは必要最低限のアクセス許可のみとなっていますので、構築後に別途修正する必要がありそうです。
+残念ながら、現時点ではこのデフォルトRoleのカスタマイズはできないようです[^2]。最低限のアクセス許可のみとなっていますので、構築後に必要に応じて別途修正する必要がありそうです。
 
 [^2]: EKS Blueprintsのソースコードを見ると今後はカスタマイズできるようになりそうです。
 
@@ -410,7 +410,7 @@ kubectl get pod -n team-carmen
 
 指定するIAMロールは、CloudFormationのルートスタックの出力から確認可能です。
 
-もちろんマネジメントコンソール経由でのEKSクラスタ環境にアクセスする場合も、所属するチームのIAMロールへのスイッチロールが必要です。
+もちろんマネジメントコンソール経由でEKSクラスタ環境にアクセスする場合も、所属するチームのIAMロールへのスイッチロールが必要です。
 
 ## まとめ
 

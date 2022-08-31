@@ -2,7 +2,7 @@
 title: 今さら聞けないMaven – コンテナも一緒にビルドしたい。テスト実行前にコンテナを起動したい
 author: toshio-ogiwara
 date: 2022-08-31
-tags: [java, maven, junit, 今さら聞けないMaven, container]
+tags: [java, maven, junit, 今さら聞けないMaven, container, docker]
 templateEngineOverride: md
 ---
 

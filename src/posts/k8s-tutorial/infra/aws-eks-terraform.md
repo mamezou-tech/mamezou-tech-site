@@ -3,7 +3,7 @@ title: クラスタ環境構築 - AWS EKS (Terraform)
 author: noboru-kudo
 date: 2021-10-09
 updated: 2022-01-12
-tags: [AWS]
+tags: [AWS, IaC]
 prevPage: ./src/posts/k8s-tutorial/infra/aws-eks-eksctl.md
 nextPage: ./src/posts/k8s-tutorial/ingress/ingress-nginx.md
 ---

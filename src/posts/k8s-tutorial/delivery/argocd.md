@@ -2,7 +2,7 @@
 title: 継続的デリバリ - ArgoCD
 author: noboru-kudo
 date: 2022-02-06
-tags: [CI/CD, GitOps]
+tags: [CI/CD, GitOps, argocd]
 prevPage: ./src/posts/k8s-tutorial/delivery/flux.md
 ---
 

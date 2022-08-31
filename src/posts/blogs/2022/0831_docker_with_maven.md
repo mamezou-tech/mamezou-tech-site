@@ -95,7 +95,7 @@ EXPOSE 7001
 </build>
 ```
 
-dockerプラグインはビルド方法を定義する`configuration`タグにある`contextDir`タグのディレクトリにあるDockerflieをもとにコンテナイメージを生成し、生成したイメージを`name`タグと`tags`タグの内容でローカルレジストリに登録します。
+dockerプラグインは`contextDir`タグで指定されたディレクトリにあるDockerflieをもとにコンテナイメージを生成し、生成したイメージを`name`タグと`tags`タグの内容でローカルレジストリに登録します。
 
 また`tags`タグの指定がない場合はデフォルトでlatestが付けられます。dockerプラグインにはこの他にも豊富な指定が用意されています。他の設定項目やデフォルト値を知りたい場合は[公式マニュアル](http://dmp.fabric8.io/)を参照してみてください。
 
@@ -295,7 +295,7 @@ dockerプラグインはDocker Composeによる起動もサポートしていま
 ```
 
 ただし、このDocker Composeを使った機能には次のような制限やデメリットがあります。
-- dockerプラグインはdocker-compose.ymlを使ってdocker-composeコマンドで起動している訳ではなく、ymlファイルを解析して個々のコンテナとして起動している
+- dockerプラグインはdocker-composeコマンドを使ってdocker-compose.ymlを起動している訳ではなく、ymlファイルを解析して個々のコンテナとして起動している
 - サポートされるdocker-compose.ymlのバージョンが2のみ（現在はバージョン3）
 - バージョンが2のdocker-compose.ymlでもすべての機能がサポートされている訳ではない（depends_onが効かいないのは確認できた）
 

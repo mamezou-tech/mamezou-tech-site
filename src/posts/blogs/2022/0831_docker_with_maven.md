@@ -20,7 +20,7 @@ Mavenが誕生してから早20年ですが、開発で使っていると未だ�
 ## コンテナイメージのビルド
 はじめにMavenでビルドした成果物（アプリ）からコンテナイメージをビルドする方法を紹介します。
 
-ここではMavenでビルドしてコンテナイメージを生成するアプリとして呼び出されたら"hello!"を返す Jakarta RESTful Web Services(旧JAX-RS) で作られたごく簡単なRESTサーバアプリケーションをもとに説明していきます。(アプリの説明は本題ではないのでコードは雰囲気程度の理解で大丈夫です)
+ここではコンテナイメージを生成するアプリとして"hello!"を返す Jakarta RESTful Web Services(旧JAX-RS) で作られたごく簡単なRESTサーバアプリを使って説明していきます。(アプリの説明は本題ではないのでコードは雰囲気程度の理解で大丈夫です)
 
 ```java
 @ApplicationScoped
@@ -33,25 +33,25 @@ public class HelloResourceImpl implements HelloResource  {
 }
 ```
 
-このRESTアプリはJDKがローカルにインストールされていればjavaコマンドから実行可能なExecutable Jarとして次のようにMavenでビルドされています（targetディレクトリはMavenのビルド成果物の出力ディレクトリになります）
+このRESTアプリはJDKがローカルにインストールされていればjavaコマンドから実行可能なExecutable JarとしてMavenで次のようにビルドされています（targetディレクトリはMavenのビルド成果物の出力ディレクトリになります）
 
 - targetディレクトリ直下にアプリ本体のhello-server.jarが作られる
 - target/libsディレクトリに実行に必要なすべての依存ライブラリがコピーされる
-- アプリは`java -jar hello-server.jar`で起動できるようにMainクラスとclasspathが設定されたMANIFESTファイルがhello-server.jarに同梱されている
+- アプリは`java -jar hello-server.jar`で起動できるようにmainクラスとclasspathが設定されたMANIFESTファイルがhello-server.jarに同梱されている
 
 
 
 
-### コンテナイメージのビルドするdockerプライグインの設定
+### コンテナイメージをビルドするdockerプラグインの設定
 では、このExecutable JarなRESTアプリをMavenでコンテナ化、つまりコンテナイメージをビルドする方法を見ていきます。
 
-今回紹介するfabric8のdocker-maven-plugin（dockerプラグイン）にはコンテナイメージのビルド方法が2つあります。
+今回紹介するfabric8のdocker-maven-plugin（dockerプラグイン）にはコンテナイメージをビルドする方法が2つあります。
 
 1つはDockerfileをもとにビルドする方法、もう1つはpomの定義をもとにビルドする方法となります。後者はDockerfile不要でコンテナイメージをビルドできる素敵な方法なのですが、その代わりとしてそれなりな数のdockerプラグイン固有の設定が必要となり学習コストが掛かります。
 
-ですので、今回はDockerfileがあれば簡単にコンテナイメージがビルドできる前者のDockerfileをもとにビルドする方法を紹介します。後者のpomの定義をもとにビルドする方法については後ほどコラムで簡単に紹介します。
+ですので、今回はDockerfileがあれば簡単にコンテナイメージがビルドできる前者のDockerfileをもとにビルドする方法を紹介します。後者のpomの定義をもとにビルドする方法は後ほどコラムで簡単に紹介します。
 
-早速そのDockerfileですが、上で説明したMavenのビルド成果物からコンテナイメージをビルドするものとして次のDockerfileを使います（簡単な定義のため説明は割愛します）
+早速そのDockerfileですが、上で説明したMavenのビルド成果物からコンテナイメージをビルドする定義として次のDockerfileを使います（簡単な定義のため説明は割愛します）
 
 ```dockerfile
 # ベースイメージはeclipse-temurin(旧OpenJDK)のJava17を使用
@@ -66,7 +66,7 @@ CMD ["java", "-jar", "hello-server.jar"]
 EXPOSE 7001
 ```
 
-このDockrefileをもとにMavenでコンテナイメージをビルドできるようにpomの`build`タグに次のようにdockerプラグインの定義を行います。
+このDockrefileをもとにMavenでコンテナイメージをビルドできるようにpomの`build`タグに次のようにdockerプラグインを定義します。
 
 ```xml
 <build>
@@ -95,11 +95,11 @@ EXPOSE 7001
 </build>
 ```
 
-ビルド方法は`configuration`タグに定義します。dockerプラグインは`contextDir`タグで指定されたディレクトリにあるDockerflieをもとにコンテナイメージを生成し、生成したイメージを`name`タグと`tags`タグの内容でローカルレジストリに登録します。
+dockerプラグインはビルド方法を定義する`configuration`タグにある`contextDir`タグのディレクトリにあるDockerflieをもとにコンテナイメージを生成し、生成したイメージを`name`タグと`tags`タグの内容でローカルレジストリに登録します。
 
-また`tags`タグの指定がない場合はデフォルトでlatestが付けられます。dockerプラグインにはこの他にも豊富な指定も用意されています。他の設定項目やデフォルト値を知りたい場合は[公式マニュアル](http://dmp.fabric8.io/)を参照してみてください。
+また`tags`タグの指定がない場合はデフォルトでlatestが付けられます。dockerプラグインにはこの他にも豊富な指定が用意されています。他の設定項目やデフォルト値を知りたい場合は[公式マニュアル](http://dmp.fabric8.io/)を参照してみてください。
 
-pomの定義ができたので、dockerプラグインを実行し実際にコンテナイメージが生成される様子を見ていきます。
+pomの定義ができたので、次はdockerプラグインを実行し実際にコンテナイメージが生成される様子を見ていきます。
 
 dockerプラグインはどのフェーズにも割り当てていないので、コンテナイメージのビルド実行には次のようにdockerプラグインのbuildゴールを直接指定します。
 
@@ -144,7 +144,7 @@ dockerプラグインはどのフェーズにも割り当てていないので�
 
 pom定義をもとにしたビルド方法はMavenと連携しtargetディレクトリや生成したアーティファクトなどMavenが認識しているものを抽象化して扱うことができるため、Dockerfileのように物理的な生々しいパスの指定を少なくすることができるため、targetディレクトリやアーティファクト名を変更してもコンテナイメージのビルド定義は変更せずに済みます。
 
-このようにpom定義をもとにしたビルド方法のメリットは十分理解できるのですが、それにはDockerfileの個々の定義に相当するdockerプライングの細かい設定を理解しなければないらないため、個人的にはDockerfileをもとにしたビルドの方が現実的と考えています。
+このようにpom定義をもとにしたビルド方法のメリットは十分理解できるのですが、それにはDockerfileの個々の定義に相当するdockerプラグインの細かい設定を理解しなければないらないため、個人的にはDockerfileをもとにしたビルドの方が現実的と考えています。
 :::
 
 ## テスト実行前にコンテナを起動したい
@@ -169,7 +169,7 @@ public class AppService {
 - [第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)
 :::
 
-### 起動停止を行うdockerプライグインの設定
+### 起動停止を行うdockerプラグインの設定
 Mockライブラリを使ったり、スタブクラスを作ったりして単体テストを行っていたとしても、対向システムとなるRESTサーバアプリがコンテナ化されて簡単に動作させられるのならコンテナと繋いだテストをしてみたいですよね！
 
 ということで、今度はdockerプラグインで先ほど作ったhello-serverコンテナをテスト実行前に起動しテスト終了後に停止する例を紹介します。
@@ -235,10 +235,10 @@ Mockライブラリを使ったり、スタブクラスを作ったりして単�
 
 この定義により`mvn clean verify`コマンドで`integration-test`フェーズのテスト実行前に`name`タグで指定したコンテナイメージが起動し、テスト終了後に起動したコンテナが終了削除されるようになります。
 
-:::info:failsafeプラグインとsurefireプライグインの違い
-failsafeプラグインはtestフェーズで使われるsurefireプライグインと基本的に機能は同じですが、以下の2点が異なります。
-- テストが失敗した場合、surefireプライグインはMavenの処理自体を終了するのに対して、failsafeプラグインではテストが失敗してもMavenは終了せず、後続のフェーズが続行される
-- デフォルトのテスト実行対象のクラス名がsurefireプライグインは"Test"なのに対して、failsafeプラグイン"IT"となる
+:::info:failsafeプラグインとsurefireプラグインの違い
+failsafeプラグインはtestフェーズで使われるsurefireプラグインと基本的に機能は同じですが、以下の2点が異なります。
+- テストが失敗した場合、surefireプラグインはMavenの処理自体を終了するのに対して、failsafeプラグインではテストが失敗してもMavenは終了せず、後続のフェーズが続行される
+- デフォルトのテスト実行対象のクラス名がsurefireプラグインは"Test"なのに対して、failsafeプラグイン"IT"となる
 
 integration-testフェーズでfailsafeプラグインでテストを実行するのは、テストが失敗してもpost-integration-testフェーズで停止処理が行われるようにするためです。
 :::

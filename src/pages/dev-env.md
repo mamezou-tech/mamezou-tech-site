@@ -41,6 +41,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [GitHub の Dependabot version updates で依存ライブラリを継続的に更新する](/blogs/2022/06/19/github-enable-dependabot-version-updates/)
 - [GitHub Projects の Automated kanban で issue 管理を楽にする](/blogs/2022/07/12/using-github-projects-automated-kanban/)
 - [GitHub Projects がリニューアル - スプレッドシートのビューが利用可能に](/blogs/2022/07/28/github_projects_spreadseets_view/)
+- [GitHub の外部サービス自動リンク参照で英数字の識別子が利用可能に](/blogs/2022/09/02/github-autolinks-with-alphanumeric/)
 
 ## チーム内外のコミュニケーションを促進する
 

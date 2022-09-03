@@ -2,6 +2,7 @@
 title: IoT を使ってみる（その１：AWS IoT チュートリアル編）
 author: shuichi-takatsu
 date: 2022-09-04
+tags: AWS 
 ---
 
 「IoT」という言葉が世の中に広まって、結構な時間が経ったと思います。  

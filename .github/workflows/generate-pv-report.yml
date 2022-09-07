@@ -74,7 +74,7 @@ jobs:
           git commit -m "Add PV ranking report"
           git push -u origin ${{ steps.create-ga-branch.outputs.branch }}
 
-       https://github.com/marketplace/actions/github-pull-request-action
+      # https://github.com/marketplace/actions/github-pull-request-action
       - name: Create Pull Request
         uses: repo-sync/pull-request@v2
         with:
@@ -85,6 +85,7 @@ jobs:
           pr_reviewer: kudoh
           pr_body: "Check weekly access ranking report."
 
+      # https://github.com/slackapi/slack-github-action
       - name: Notify to Slack
         id: slack
         uses: slackapi/slack-github-action@v1.21.0

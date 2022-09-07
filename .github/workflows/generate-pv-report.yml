@@ -65,36 +65,24 @@ jobs:
           git push -u origin ${{steps.create-ga-branch.outputs.branch}} 
 
       # https://github.com/marketplace/actions/github-pull-request-action
-      - name: Create Pull Request
-        uses: repo-sync/pull-request@v2
-        with:
-          destination_branch: "main"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ steps.create-ga-branch.outputs.branch }}
-          pr_title: "Update GA Report by github-actions"
-          pr_reviewer: kudoh
-          pr_body: "Check Weekly access ranking report!!"
+#      - name: Create Pull Request
+#        uses: repo-sync/pull-request@v2
+#        with:
+#          destination_branch: "main"
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          source_branch: ${{ steps.create-ga-branch.outputs.branch }}
+#          pr_title: "Update GA Report by github-actions"
+#          pr_reviewer: kudoh
+#          pr_body: "Check Weekly access ranking report!!"
 
       - name: Notify to Slack
         id: slack
         uses: slackapi/slack-github-action@v1.21.0
         with:
-          payload: |
-            {
-              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-                  }
-                }
-              ]
-            }
+          channel-id: 'D1KSEGS3F'
+          slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - name: Delete google auth file
         run: rm -f ${GITHUB_WORKSPACE}/google_auth.json

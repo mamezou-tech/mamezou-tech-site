@@ -92,13 +92,13 @@ jobs:
           channel-id: 'U04JHT7S4'
           payload: |
             {
-              "text": "今週のGAアクセスランキング更新しました！",
+              "text": "週間GAアクセスランキング更新しました！",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "1. ${{ steps.generate-ga-pv-report.outputs.rank1}}\n2. ${{ steps.generate-ga-pv-report.outputs.rank2 }}\n3. ${{ steps.generate-ga-pv-report.outputs.rank3 }}4. ${{ steps.generate-ga-pv-report.outputs.rank4 }}5. ${{ steps.generate-ga-pv-report.outputs.rank5 }}6. ${{ steps.generate-ga-pv-report.outputs.rank6 }}7. ${{ steps.generate-ga-pv-report.outputs.rank7 }}8. ${{ steps.generate-ga-pv-report.outputs.rank8 }}9. ${{ steps.generate-ga-pv-report.outputs.rank9 }}10. ${{ steps.generate-ga-pv-report.outputs.rank10 }}"
+                    "text": "# 週間アクセスランキング\n1. ${{ steps.generate-ga-pv-report.outputs.rank1}}\n2. ${{ steps.generate-ga-pv-report.outputs.rank2 }}\n3. ${{ steps.generate-ga-pv-report.outputs.rank3 }}\n4. ${{ steps.generate-ga-pv-report.outputs.rank4 }}\n5. ${{ steps.generate-ga-pv-report.outputs.rank5 }}\n6. ${{ steps.generate-ga-pv-report.outputs.rank6 }}\n7. ${{ steps.generate-ga-pv-report.outputs.rank7 }}\n8. ${{ steps.generate-ga-pv-report.outputs.rank8 }}\n9. ${{ steps.generate-ga-pv-report.outputs.rank9 }}\n10. ${{ steps.generate-ga-pv-report.outputs.rank10 }}"
                   }
                 }
               ]

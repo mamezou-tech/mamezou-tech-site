@@ -21,6 +21,9 @@ layout: base.njk
 <main class="tdbc-container">
   <article class="tdbc-mx-auto">
     {{ content | safe }}
+    <hr class="link-separator">
+    {%- include "pv-ranking.njk" %}
+    {%- include "links.njk" %}
   </article>
   {% initClipboardJS %}
   {% mermaid_js %}

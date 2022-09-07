@@ -91,7 +91,9 @@ layout: base.njk
         {% endif %}
       </nav>
     </aside>
-  {%- include "links.njk" %}
+    <hr class="link-separator">
+    {%- include "pv-ranking.njk" %}
+    {%- include "links.njk" %}
   </article>
   <script type="module">
     import PhotoSwipeLightbox from '/photoswipe/photoswipe-lightbox.esm.js';

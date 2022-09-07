@@ -89,6 +89,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter('byAuthor',
     (contributorArticles, author) => contributorArticles.filter(contributor => contributor.name === author));
   eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));
+  eleventyConfig.addFilter('getDate', require("./11ty/get-date"));
   eleventyConfig.addCollection('currentMonthPosts', (collection) => getPosts(collection).filter(post => post.date.getMonth() === new Date().getMonth()));
   eleventyConfig.addCollection('articles', getPosts);
   eleventyConfig.addCollection('tagList', require("./11ty/tag-list"));

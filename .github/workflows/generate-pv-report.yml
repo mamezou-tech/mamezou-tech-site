@@ -55,14 +55,14 @@ jobs:
             echo "::set-output name=changed::true"
           fi
 
-      - name: Commit report
-        if: steps.generate-ga-pv-report.outputs.changed == 'true'
-        run: |
-          set -eu
-          git config --local user.email "github-actions@mamezou.com"
-          git config --local user.name "github-actions"
-          git commit -m "Add PV ranking report"
-          git push -u origin ${{steps.create-ga-branch.outputs.branch}} 
+#      - name: Commit report
+#        if: steps.generate-ga-pv-report.outputs.changed == 'true'
+#        run: |
+#          set -eu
+#          git config --local user.email "github-actions@mamezou.com"
+#          git config --local user.name "github-actions"
+#          git commit -m "Add PV ranking report"
+#          git push -u origin ${{steps.create-ga-branch.outputs.branch}}
 
       # https://github.com/marketplace/actions/github-pull-request-action
 #      - name: Create Pull Request

@@ -186,7 +186,7 @@ npm run dev
 [GitHub - one-aalam/awesome-astro: Curated resources on building sites with Astro, a brand new way to build static and server rendered sites, with cross-framework components, styling and reactive store support.](https://github.com/one-aalam/awesome-astro)
 :::
 
-`src/pages` に配置するコンテンツは Markdonn 形式で、ヘッダーにタイトルやレイアウトファイルを指定します。
+`src/pages` に配置するコンテンツは Markdown 形式で、ヘッダーにタイトルやレイアウトファイルを指定します。
 
 ```markdown
 ---

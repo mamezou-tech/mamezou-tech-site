@@ -41,6 +41,7 @@ jobs:
         id: generate-ga-pv-report
         env:
           GOOGLE_APPLICATION_CREDENTIALS_FILE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_FILE }}
+          GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
         run: |
           set -eu
           cd ${GITHUB_WORKSPACE}/ga

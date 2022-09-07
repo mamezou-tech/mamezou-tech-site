@@ -5,6 +5,10 @@ description: 新入社員やこれからエンジニアを目指す方、新人�
 
 弊社の教育案件に携わるメンバーが、新入社員やこれからエンジニアを目指す方、新人を指導する立場になった方向けに、様々な情報を投稿していきます。
 
+## 初学者の学び
+
+- [タイトル未定](/learning/java-for-beginners_01/)
+
 ## 研修講師の学び
 
 ### メイン講師体験記
@@ -15,5 +19,5 @@ description: 新入社員やこれからエンジニアを目指す方、新人�
 - [メイン講師体験記(その2 研修期間中編)](/learning/main-teacher-experience_02/)
 - [メイン講師体験記(その3 事後作業編)](/learning/main-teacher-experience_03/)
 
-### 研修運営の学び
+## 研修運営の学び
 - [オンライン研修の注意点](/learning/online-lecture-tips/)

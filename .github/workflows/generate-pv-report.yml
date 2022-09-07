@@ -48,6 +48,16 @@ jobs:
           echo ${GOOGLE_APPLICATION_CREDENTIALS_FILE} | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
           export GOOGLE_APPLICATION_CREDENTIALS=${GITHUB_WORKSPACE}/google_auth.json
           npm run generate:pv
+          echo "::set-output name=rank1::$(cat ../src/_data/pv.json | jq -r ".ranking[0].title")"
+          echo "::set-output name=rank2::$(cat ../src/_data/pv.json | jq -r ".ranking[1].title")"
+          echo "::set-output name=rank3::$(cat ../src/_data/pv.json | jq -r ".ranking[2].title")"
+          echo "::set-output name=rank4::$(cat ../src/_data/pv.json | jq -r ".ranking[3].title")"
+          echo "::set-output name=rank5::$(cat ../src/_data/pv.json | jq -r ".ranking[4].title")"
+          echo "::set-output name=rank6::$(cat ../src/_data/pv.json | jq -r ".ranking[5].title")"
+          echo "::set-output name=rank7::$(cat ../src/_data/pv.json | jq -r ".ranking[6].title")"
+          echo "::set-output name=rank8::$(cat ../src/_data/pv.json | jq -r ".ranking[7].title")"
+          echo "::set-output name=rank9::$(cat ../src/_data/pv.json | jq -r ".ranking[8].title")"
+          echo "::set-output name=rank10::$(cat ../src/_data/pv.json | jq -r ".ranking[9].title")"
           git add ${GITHUB_WORKSPACE}/src/_data
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"
@@ -62,7 +72,7 @@ jobs:
 #          git config --local user.email "github-actions@mamezou.com"
 #          git config --local user.name "github-actions"
 #          git commit -m "Add PV ranking report"
-#          git push -u origin ${{steps.create-ga-branch.outputs.branch}}
+#          git push -u origin ${{ steps.create-ga-branch.outputs.branch }}
 
       # https://github.com/marketplace/actions/github-pull-request-action
 #      - name: Create Pull Request
@@ -82,13 +92,13 @@ jobs:
           channel-id: 'U04JHT7S4'
           payload: |
             {
-              "text": "GAアクセスランキング: ${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "text": "今週のGAアクセスランキング更新しました！",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                    "text": "1. ${{ steps.generate-ga-pv-report.outputs.rank1}}\n2. ${{ steps.generate-ga-pv-report.outputs.rank2 }}\n3. ${{ steps.generate-ga-pv-report.outputs.rank3 }}4. ${{ steps.generate-ga-pv-report.outputs.rank4 }}5. ${{ steps.generate-ga-pv-report.outputs.rank5 }}6. ${{ steps.generate-ga-pv-report.outputs.rank6 }}7. ${{ steps.generate-ga-pv-report.outputs.rank7 }}8. ${{ steps.generate-ga-pv-report.outputs.rank8 }}9. ${{ steps.generate-ga-pv-report.outputs.rank9 }}10. ${{ steps.generate-ga-pv-report.outputs.rank10 }}"
                   }
                 }
               ]

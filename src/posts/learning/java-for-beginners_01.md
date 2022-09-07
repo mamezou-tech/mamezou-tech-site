@@ -2,7 +2,7 @@
 title: 初心者のためのJavaプログラミング再学習（その1 基本データ型とオブジェクト型）
 author: hiroaki-taka
 date: 2022-09-07
-tags: [学び,Java,初心者向け]
+tags: [Java,初心者向け]
 ---
 
 ## はじめに

@@ -39,10 +39,12 @@ jobs:
 
       - name: Generate GA PageView report
         id: generate-ga-pv-report
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_FILE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_FILE }}
         run: |
           set -eu
           cd ${GITHUB_WORKSPACE}/ga
-          echo $GOOGLE_APPLICATION_CREDENTIALS_FILE | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
+          echo ${GOOGLE_APPLICATION_CREDENTIALS_FILE} | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
           export GOOGLE_APPLICATION_CREDENTIALS=${GITHUB_WORKSPACE}/google_auth.json
           npm run generate:pv
           git add ${GITHUB_WORKSPACE}/src/_data

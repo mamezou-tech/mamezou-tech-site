@@ -65,31 +65,31 @@ jobs:
             echo "::set-output name=changed::true"
           fi
 
-#      - name: Commit report
-#        if: steps.generate-ga-pv-report.outputs.changed == 'true'
-#        run: |
-#          set -eu
-#          git config --local user.email "github-actions@mamezou.com"
-#          git config --local user.name "github-actions"
-#          git commit -m "Add PV ranking report"
-#          git push -u origin ${{ steps.create-ga-branch.outputs.branch }}
+      - name: Commit report
+        if: steps.generate-ga-pv-report.outputs.changed == 'true'
+        run: |
+          set -eu
+          git config --local user.email "github-actions@mamezou.com"
+          git config --local user.name "github-actions"
+          git commit -m "Add PV ranking report"
+          git push -u origin ${{ steps.create-ga-branch.outputs.branch }}
 
-      # https://github.com/marketplace/actions/github-pull-request-action
-#      - name: Create Pull Request
-#        uses: repo-sync/pull-request@v2
-#        with:
-#          destination_branch: "main"
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          source_branch: ${{ steps.create-ga-branch.outputs.branch }}
-#          pr_title: "Update GA Report by github-actions"
-#          pr_reviewer: kudoh
-#          pr_body: "Check Weekly access ranking report!!"
+       https://github.com/marketplace/actions/github-pull-request-action
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "main"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: ${{ steps.create-ga-branch.outputs.branch }}
+          pr_title: "Update GA Report by github-actions"
+          pr_reviewer: kudoh
+          pr_body: "Check weekly access ranking report."
 
       - name: Notify to Slack
         id: slack
         uses: slackapi/slack-github-action@v1.21.0
         with:
-          channel-id: 'U04JHT7S4'
+          channel-id: 'C034MCKP4M6'
           payload: |
             {
               "text": "週間GAアクセスランキング更新しました！",

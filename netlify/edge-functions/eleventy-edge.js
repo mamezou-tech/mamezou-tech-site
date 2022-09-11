@@ -8,7 +8,7 @@ export default async (request, context) => {
     if (includesNonPageAssets(url.pathname)) {
       return; // css, font, etc...
     }
-    context.log("apply 11ty edge", request.url)
+    // context.log("apply 11ty edge", request.url)
     const edge = new EleventyEdge("edge", {
       request,
       context,

@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-04-27
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn06-mp-config.md
+nextPage: ./src/posts/msa/microprofile/cntrn08-mp-config3.md
 ---
 MicroProfileの厳選仕様を紹介していくシリーズの最後は[第4回](/msa/mp/cntrn04-spec-ranking/)で紹介した『これは抑えておくベキ、もしくは使っておくベキ』仕様第1位の筆者一押しのMicroProfile RestClient(MP RestClient)です。JAX-RSのAPIはREST向けに設計されているAPIとは言え、そのベースはHTTPプロトコルのためパラメータ送信1つをとっても、それがQueryStringかパスパラメータか、それともbodyのJSON連携かにより呼び出し手順やAPIが異なり、その実装は単調な割には骨の折れる面倒くさいものでした。MP RestClientはそんな面倒くさいREST API呼び出しをローカルAPI呼び出しのように正に「らくらく」に呼び出せる機能となります。
 

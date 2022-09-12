@@ -12,7 +12,8 @@ Javaのエンタープライズの標準仕様はなんですか？と問われ�
 
 MicroProfileを語る上で標準であるJakarta EE（Java EE/J2EE）は切っても切り離せない関係にあります。ですので、MicroProfileの説明に行く前にまずは軽くJava EEのおさらいから始めたいと思います。
 
-MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
+MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
+- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
 [[TOC]]
 

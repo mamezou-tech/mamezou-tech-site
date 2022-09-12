@@ -28,12 +28,15 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - [第5回 コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)
 - [第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)
 - [第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)
-  
-～ 2022年秋以降連載再開予定 ～
-- MicroProfile OpenTracingの機能と利用
+- [第8回 MicroProfile Config 3.0へのキャッチアップ](/msa/mp/cntrn08-mp-config3/) <span style="color: red;">★NEW★</span>
+
+～ 今後の連載予定 ～
+- MicroProfile OpenAPI 3.0の新機能と既存機能の比較 <span style="color:red">Coming Soon!</span>
+- MicroProfile RestClient 3.0の確認と小技機能の紹介 <span style="color:red">Coming Soon!</span>
+- MicroProfile Healthの機能と利用 <span style="color:red">Coming Soon!</span>
 - MicroProfile Fault Tolerance機能と利用
-- MicroProfile Healthの機能と利用
 - MicroProfile Metricsの機能と利用
+- MicroProfile OpenTracingの機能と利用
 - MicroProfile JWT Authを眺めてみる
 
 （番外編）

@@ -9,13 +9,14 @@ HelidonのLogger実装にはJavaSEのJUL(java.util.logging)が使われていま
 
 そこで今回はHelidonのログをSLF4J＋Logbackへ切り替える方法を紹介します。
 
+MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
+- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
+
+[[TOC]]
+
 :::info
 この記事はJava11+Helidon 2.4.2をもとに作成しています。
 :::
-
-MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
-
-[[TOC]]
 
 ## SLF4J+Logbackの依存の追加
 まずはSLF4JとLogbackの依存を追加するためpomに次のdependencyを追加します。

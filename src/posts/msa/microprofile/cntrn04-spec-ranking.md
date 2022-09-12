@@ -9,9 +9,12 @@ nextPage: ./src/posts/msa/microprofile/cntrn05-mp-openapi.md
 
 MicroProfileは大小様々な仕様が存在します。 [前回](/msa/mp/cntrn03-sampleapp-helidon/)紹介したサンプルアプリにMicroProfileの各機能を組み込んでフィット感を試してみた結果、MicroProfileを採用するのであれば『これは抑えておくベキ、もしくは使っておくベキ』と言える仕様がいくつかありました。今回はその中から厳選した3つの仕様をランキング形式で紹介します。
 
-なお、APIレベルまでまとめて1度で説明するのはムリがあるため、今回はどんなことができるかの概要を紹介し、APIも含めた利用法は次回3回に分けて説明していきます。また、MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
+APIレベルまでまとめて1度で説明するのはムリがあるため、今回はどんなことができるかの概要を紹介し、APIも含めた利用法は次回3回に分けて説明していきます。
 
-それでは早速ランキング発表に行きます！
+MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
+- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
+
+話しは戻って、それでは早速ランキング発表に行きます！
 
 # 第3位 MicroProfile OpenAPI
 REST APIの仕様はOAS([OpenAPI Specification](https://spec.openapis.org/oas/latest.html))に従った形式で記述するのが最近のスタンダードとなりつつありますが、MicroProfile OpenAPIはこのOASをコードから生成するためのアノテーションとそのOASの取得方法を定めた仕様となります。

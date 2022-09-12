@@ -12,14 +12,14 @@ nextPage: ./src/posts/msa/microprofile/cntrn07-mp-restclient.md
 なお、記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/02-config>
 
-また、MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
-
-
-:::info
-この記事はJava11+Helidon 2.4.2 + MicroProfile Config 1.4をもとに作成しています。
-:::
+MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
+- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
 [[TOC]]
+
+:::info
+この記事はJava11+Helidon 2.4.2 + MicroProfile Config 1.4をもとに作成しています。MicroProfile Config 3.0は [第8回 Microprofile Config 3.0へのキャッチアップ](/msa/mp/cntrn08-mp-config3/) で紹介しています。
+:::
 
 ## 設定の読み込み
 Javaの標準的な設定機能と言えばpropertiesファイルの読み込みと取得を行う`java.util.Properties` (もしくは`java.util.ResourceBundle`)ですが、MP Configも同じようにその基本機能として設定の読み込みと取得の機能を持っています。

@@ -9,7 +9,8 @@ nextPage: ./src/posts/msa/microprofile/cntrn03-sampleapp-helidon.md
 
 [前回](/msa/mp/cntrn01-what-mp/)はMicroProfileの登場からMicroProfileが目指すものまで説明しました。今回はMicroProfileの中身となるMicroProfileの仕様と実装について、私見も交えながら説明したいと思います。若干長い説明となりますが、最後まで目を通していただけたら幸いです。
 
-MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
+MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
+- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
 [[TOC]]
 

@@ -8,26 +8,35 @@
 
  # モチベーション
 
-よくあるKnative EventingのKafkaでの設定例は、KafkaSourceのSinkに直接Knative Serviceが設定されるシンプルなものが殆どである。ただ、KafkaSourceにはリトライやDLSの設定ができないため、信頼性が求められるところにはその形のまま適用しにくい。そこで、それらの設定が可能なBrokerを使う構成で、処理失敗時のリトライやDLSへのメッセージ送信を確認したい。
+よくあるKnative EventingのKafkaでの設定例は、KafkaSourceのSinkに直接Knative Serviceが設定されるシンプルなものが殆どです。ただ、KafkaSourceにはリトライやDLSの設定ができないため、信頼性が求められるところにはその形のまま適用しにくいです。そこで、それらの設定が可能なBrokerを使う構成で、処理失敗時のリトライやDLSへのメッセージ送信を確認しようと思います。
 
 # 検証構成
 
+よくあるKnative EventingのKafkaでの設定例は、以下のように、イベントソースのKafkaSourceのsinkにKnative Serviceへの参照を直接指定したシンプルなものです。
+
+![よくある構成](https://i.gyazo.com/bec795dff5bbb4f37dc9b83b9566f19a.jpg)
+
+今回は、以下のように、KafkaSourceとするKafkaTopic①の他に、処理が失敗した時にメセージを送るDLS用のKafkaTopic③を作成します。
+その上で、KafkaSourceとKnative Serviceの間をBrokerとTriggerで結ぶ構成とし、Knative Servcieでの処理失敗時のBrokerでのリトライとDLSへの転送を検証します。
+
 ![検証構成](https://i.gyazo.com/1085e14c29e213ce2693244235c538b7.jpg)
 
-上記のように、KafkaSourceとするKafkaTopic①の他に、処理が失敗した時にメセージを送るDLS用のKafkaTopic③を作成した。
-その上で、KafkaSourceとKnative Serviceの間をBrokerとTriggerで結ぶ構成とし、Knative Servcieでの処理失敗時のBrokerでのリトライとDLSへの転送を検証した。
+またその他にも、検証用のKnative Serviceのアプリのイメージの管理とKafkaのTopicに入っているメッセジーの確認のために、以下をk8s環境内に構築しています（それぞれの構築方法については今回のテーマから外れますので、詳細についての説明は割愛します）。
 
-なお今回は、Brokerの作成時に自動登録されるKafkaTopic②を使う構成としたが、Brokerの作成時にすでにあるKafkaTopic①を使うこともできそうである。それについては、別途検証をしていきたい。
+- Kafdrop
+- プライベートレジストリ
+
+また、Brokerの作成時に自動登録されるKafkaTopic②を使う構成としたが、Brokerの作成時にすでにあるKafkaTopic①を使うこともできそうです。それについては、別途検証をしていきたいと思います。
 
 https://knative.dev/docs/eventing/brokers/broker-types/kafka-broker/#bring-your-own-topic
 
 # 検証結果
 
-ひとまず検証結果を先に記載する。検証作業の詳細を知りたい方は、後述する「検証作業詳細（準備編）」と「検証作業詳細（実装編）」を御覧ください。
+ひとまず検証結果を先に記載します。検証作業の詳細を知りたい方は、後述する「検証作業詳細（準備編）」と「検証作業詳細（実装編）」を御覧ください。
 
 ## メッセージの送信
 
-KafkaSourceに指定したトピック①（testknativebroker-request）に直接メッセージを書き込む。
+KafkaSourceに指定したトピック①（testknativebroker-request）に直接メッセージを書き込みます。
 
 ```
 $ kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.31.0-kafka-3.2.1 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic testknativebroker-request
@@ -47,11 +56,11 @@ If you don't see a command prompt, try pressing enter.
 
 ## Knative Serviceログ
 
-上記のメッセージ送信を受けたKnative Serviceのコンソール出力。
+上記のメッセージ送信を受けたKnative Serviceのコンソール出力です。
 
-Knative Serviceで、メッセージの値が3で割り切れる時に処理を失敗させている。
-そのため、メッセージの値が3で割り切れる時に、リトライが、10秒、20秒、40秒の間隔で3回発生していることがわかる。
-また、value=9のリトライの間にvalue=10のメッセージを送信したところで、それが割り込まれていることがわかる。
+Knative Serviceで、メッセージの値が3で割り切れる時に処理を失敗させています。
+そのため、メッセージの値が3で割り切れる時に、リトライが、10秒、20秒、40秒の間隔で3回発生していることが分かります。
+また、value=9のリトライの間にvalue=10のメッセージを送信したところで、それが割り込まれていることが分かります。
 
 ```
 Fri Sep 09 08:27:52 UTC 2022 message: Message(1)
@@ -79,23 +88,23 @@ Fri Sep 09 08:33:02 UTC 2022 message: Message(9)
 
 ### testknativebroker-request
 
-value=1〜10のメッセージがKafkaSourceに指定したTopicに入っている。
+value=1〜10のメッセージがKafkaSourceに指定したTopicに入っています。
 
 ![送信メッセージ](https://i.gyazo.com/c7989e31652f43d3efa702f5de51bd0e.png)
 
 ### testknativebroker-request-dead
 
-value=3,6,9のメッセージが最後のリトライが行われた時間にDLSに指定したTopicに入っている。
+value=3,6,9のメッセージが最後のリトライが行われた時間にDLSに指定したTopicに入っています。
 
 ![DLSメッセージ](https://i.gyazo.com/578430e3a65dcae7b28ab599c884be1a.png)
 
-こちらのTopicにはCloud Eventsのスキーマでメッセージが入っている。これにより、Knativeの内部では、Cloud Eventsの形式でメッセージの送受信が行われていることが予想できる。
+こちらのTopicにはCloud Eventsのスキーマでメッセージが入っています。これにより、Knativeの内部では、Cloud Eventsの形式でメッセージの送受信が行われていることが予想できます。
 
 # 検証作業詳細（準備編）
 
 ## Knativeのインストール
 
-Knative Serving、および、Knative Eventingの環境をガイドに従って構築した。なお検証用にはKnative 1.4.1の環境を構築した。
+Knative Serving、および、Knative Eventingの環境をガイドに従って構築しています。なお検証用にはKnative 1.4.1の環境を構築しています。
 
 https://knative.dev/v1.4-docs/install/yaml-install/eventing/install-eventing-with-yaml/
 
@@ -114,7 +123,7 @@ https://knative.dev/v1.4-docs/install/yaml-install/eventing/install-eventing-wit
 
 ## Knative以外の環境構築
 
-Knative環境以外には、以下のリソースをk8s環境内に構築している。
+Knative環境以外には、以下のリソースをk8s環境内に構築しています。
 
 - プライベートレジストリ
   - 検証用のKnative Serviceアプリのコンテナイメージを管理するためのdockerレジストリ
@@ -162,7 +171,7 @@ spec:
 
 ### Knative Service
 
-検証用アプリのKnative Service。アプリの詳細は後述する「検証用アプリのKnative Service」を参照。作成したアプリをdokcer iamgeとしてtestknativebroker-consumerというタグをつけてビルドし、予め、プライベートレジストリにpushしておく。
+検証用アプリのKnative Service。アプリの詳細は後述する「検証用アプリのKnative Service」を参照してください。作成したアプリをdokcer iamgeとしてtestknativebroker-consumerというタグをつけてビルドし、予め、プライベートレジストリにpushしておきます。
 
 ```yaml
 apiVersion: serving.knative.dev/v1
@@ -197,9 +206,9 @@ spec:
 
 ### ConfigMap
 
-次のBrokerの作成のために予め以下のConfigMapを作成しておく。
-そうすることでBrokerの作成時に自動的にKafkaTopicが作成される（構成図のKafkaTopic②）。
-なお、Knativeのガイドの通りにインストールを進めるとkafkaのbootstrapサーバは"my-cluster-kafka-bootstrap.kafka:9092"になるため、以下ではそれを指定している。
+次のBrokerの作成のために予め以下のConfigMapを作成しておきます。
+そうすることでBrokerの作成時に自動的にKafkaTopicが作成されます（構成図のKafkaTopic②）。
+なお、Knativeのガイドの通りにインストールを進めるとkafkaのbootstrapサーバは"my-cluster-kafka-bootstrap.kafka:9092"になるため、以下ではそれを指定しています。
 
 ```yaml
 apiVersion: v1
@@ -215,7 +224,7 @@ data:
 
 ### Broker
 
-メッセージを受け取るBroker。ここでDLSとして作成済みのKafkaSinkへの参照を指定する。
+メッセージを受け取るBroker。ここでDLSとして作成済みのKafkaSinkへの参照を指定します。
 
 ```yaml
 apiVersion: eventing.knative.dev/v1
@@ -242,7 +251,7 @@ spec:
     retry: 3
 ```
 
-Broker作成後に、以下のKafkaTopicが自動的に作成される。
+Broker作成後に、以下のKafkaTopicが自動的に作成されます。
 
 ```
 $ kubectl get KafkaTopic -n kafka
@@ -250,8 +259,8 @@ NAME                                                            CLUSTER      PAR
 knative-broker-default-testknativebroker-request-broker         my-cluster   10           1                    True
 ```
 
-トピック名は"knative-broker"-{namespace}-{broker名}となる。
-また、"PARTITIONS"と"REPLICATION FACTOR"が予め作成したConfigMapの内容に従って、KafkaTopicが作成されている。
+トピック名は"knative-broker"-{namespace}-{broker名}となります。
+また、"PARTITIONS"と"REPLICATION FACTOR"が予め作成したConfigMapの内容に従って、KafkaTopicが作成されています。
 
 設定の以下がリトライの設定。
 
@@ -261,7 +270,7 @@ knative-broker-default-testknativebroker-request-broker         my-cluster   10 
     retry: 3
 ```
 
-backoffDelayの仕様については、Knativeのガイドに以下のように記載されている。
+backoffDelayの仕様については、Knativeのガイドに以下のように記載されています。
 
 ```
 When using the exponential back off policy, the back off delay is equal to backoffDelay*2^<numberOfRetries>.
@@ -269,7 +278,7 @@ When using the exponential back off policy, the back off delay is equal to backo
 
 https://knative.dev/v1.4-docs/eventing/event-delivery/#configuring-subscription-event-delivery
 
-これによりこのリトライ設定は以下のようになる。
+これによりこのリトライ設定は以下のようになります。
 
 + リトライ回数は3回
 + 初回のリトライは10秒後で、その後は、20秒後、40秒後。
@@ -314,17 +323,17 @@ spec:
       name: testknativebroker-request-broker
 ```
 
-よくあるKafkaSourceの例ではsinkにKafkaServiceへの参照が指定されている事がほとんどだが、今回は、作成したBrokerへの参照をsinkに指定する。
+よくあるKafkaSourceの例ではsinkにKafkaServiceへの参照が指定されている事がほとんどですが、今回は、作成したBrokerへの参照をsinkに指定します。
 
 ## Knative Service
 
-Knativeのサービスは基本的には8080ポートでリクエスト受けるHTTPサーバのコンテナで、ルートパスへのPOSTリクエストを受けて処理を実行するアプリ。
+Knativeのサービスは基本的には8080ポートでリクエスト受けるHTTPサーバのコンテナで、ルートパスへのPOSTリクエストを受けて処理を実行するアプリです。
 
-今回は、akka httpでテスト用のKnative Serviceを作った。
+今回は、akka httpでテスト用のKnative Serviceを作成しました。
 
 ### HTTPサーバ
 
-akka httpのサーバの起動処理。これは今回の本質ではないので説明は割愛する。読み飛ばして良い。
+akka httpのサーバの起動処理。これは今回の本質ではないので説明は割愛します。読み飛ばして頂いて良いです。
 
 ```scala
 package com.example.testknativebroker.consumer
@@ -364,14 +373,14 @@ object App {
 
 ### Route
 
-リクエスト処理部の実装。実装の詳しい内容は本質から逸れるので説明は割愛するが、以下のメッセージを受けて処理をする。
+リクエスト処理部の実装。実装の詳しい内容は本質から逸れるので説明は割愛しますが、以下のメッセージを受けて処理をします。
 
 ```json
 {"value":1}
 ```
 
-ルート（"/"）へのPOSTリクエストを受けて、メッセージ内のvalueの値が3で割り切れる時に500 Internal Server Errorを返し、それ以外の場合には200 OKを返す。
-なお、私が試したバージョン（Knative 1.4.1）では、明示的に空文字（""）を返している。そうしないと、Kafka BrokerのDispatcherがエラーを吐いた。
+ルート（"/"）へのPOSTリクエストを受けて、メッセージ内のvalueの値が3で割り切れる時に500 Internal Server Errorを返し、それ以外の場合には200 OKを返します。
+なお、私が試したバージョン（Knative 1.4.1）では、明示的に空文字（""）を返しています。そうしないと、Kafka BrokerのDispatcherがエラーを吐きました。
 
 ```scala
 package com.example.testknativebroker.consumer
@@ -411,7 +420,7 @@ class Routes(implicit val system: ActorSystem[_]) {
 
 # まとめ
 
-今回は、KnativeでSourceとServiceの間にBrokerを挟んで、Serviceでの処理失敗時のリトライとDSLへのメッセージ転送を確認した。
+今回は、KnativeでSourceとServiceの間にBrokerを挟んで、Serviceでの処理失敗時のリトライとDSLへのメッセージ転送を確認しました。
 
-Cloud環境では通信経路の信頼性などの要因により意図せずに処理が失敗してしまうことが少なからずある。
-そのため、予め処理の失敗を想定し、リトライやDSLを組み込んだアーキテクチャにしておくことが、システムの安定化のために重要だと考える。
+Cloud環境では通信経路の信頼性などの要因により意図せずに処理が失敗してしまうことが少なからずあります。
+そのため、予め処理の失敗を想定し、リトライやDSLを組み込んだアーキテクチャにしておくことで、より安定したシステムを構築できると考えます。

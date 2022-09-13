@@ -70,7 +70,7 @@ https://knative.dev/docs/eventing/brokers/broker-types/kafka-broker/#bring-your-
 
 KafkaSourceに指定したトピック①（testknativebroker-request）に直接メッセージを書き込みます。
 
-```
+```shell
 $ kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.31.0-kafka-3.2.1 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic testknativebroker-request
 If you don't see a command prompt, try pressing enter.
 >{"value":1}
@@ -94,7 +94,7 @@ Knative Serviceで、メッセージの値が3で割り切れる時に処理を�
 そのため、メッセージの値が3で割り切れる時に、リトライが、10秒、20秒、40秒の間隔で3回発生していることが分かります。
 また、value=9のリトライの間にvalue=10のメッセージを送信したところで、それが割り込まれていることが分かります。
 
-```
+```shell
 Fri Sep 09 08:27:52 UTC 2022 message: Message(1)
 Fri Sep 09 08:28:13 UTC 2022 message: Message(2)
 Fri Sep 09 08:28:31 UTC 2022 message: Message(3)
@@ -287,7 +287,7 @@ spec:
 
 Broker作成後に、以下のKafkaTopicが自動的に作成されます。
 
-```
+```shell
 $ kubectl get KafkaTopic -n kafka
 NAME                                                            CLUSTER      PARTITIONS   REPLICATION FACTOR   READY
 knative-broker-default-testknativebroker-request-broker         my-cluster   10           1                    True
@@ -306,9 +306,7 @@ knative-broker-default-testknativebroker-request-broker         my-cluster   10 
 
 backoffDelayの仕様については、Knativeのガイドに以下のように記載されています。
 
-```
-When using the exponential back off policy, the back off delay is equal to backoffDelay*2^<numberOfRetries>.
-```
+> When using the exponential back off policy, the back off delay is equal to backoffDelay*2^\<numberOfRetries>.
 
 https://knative.dev/v1.4-docs/eventing/event-delivery/#configuring-subscription-event-delivery
 
@@ -319,7 +317,7 @@ https://knative.dev/v1.4-docs/eventing/event-delivery/#configuring-subscription-
 
 ### Trigger
 
-作成したBrokerを受けてKafkaServiceを呼ぶTriggerのリソース。
+作成したBrokerを受けてKnative Serviceを呼ぶTriggerのリソース。
 
 ```yaml
 apiVersion: eventing.knative.dev/v1
@@ -357,7 +355,7 @@ spec:
       name: testknativebroker-request-broker
 ```
 
-よくあるKafkaSourceの例ではsinkにKafkaServiceへの参照が指定されている事がほとんどですが、今回は、作成したBrokerへの参照をsinkに指定します。
+よくあるKafkaSourceの例ではsinkにKnative Serviceへの参照が指定されている事がほとんどですが、今回は、作成したBrokerへの参照をsinkに指定します。
 
 ## Knative Service
 

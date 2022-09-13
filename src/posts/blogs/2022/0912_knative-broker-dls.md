@@ -6,22 +6,54 @@
 
 [[TOC]]
 
- # モチベーション
+# 概要
 
-よくあるKnative EventingのKafkaでの設定例は、KafkaSourceのSinkに直接Knative Serviceが設定されるシンプルなものが殆どです。ただ、KafkaSourceにはリトライやDLSの設定ができないため、信頼性が求められるところにはその形のまま適用しにくいです。そこで、それらの設定が可能なBrokerを使う構成で、処理失敗時のリトライやDLSへのメッセージ送信を確認しようと思います。
+KafkaをイベントレイヤーとするKnative Eventingの環境をリトライとDLSが可能な様に構成した上で、意図的に処理を失敗させるKnative Servicveをデプロイし、処理失敗時のリトライやDLSへのメッセージ送信を確認しました。
+
+# モチベーション
+
+KafkaをイベントレイヤーとするKnative Eventingの設定例でよく見られるものは、KafkaSourceのSinkに直接Knative Serviceを設定するシンプルなものが殆どです。ただ、KafkaSourceにはリトライやDLSの設定ができないため、信頼性が求められるところにはその形のまま適用しにくいです。そこで、それらの設定が可能なBrokerとTriggerを使う構成で、処理失敗時のリトライやDLSへのメッセージ送信を確認しようと思います。
+
+# 登場する用語の説明
+
+登場する用語についての概要をごく簡単に記載します。詳細についてはそれぞれのリンク先を参照してください。
+
+- Knative Eventing
+  - Knative Eventingは、イベント駆動型のアプリケーションを構築するためのプラットホームです。
+  - https://knative.dev/docs/eventing/
+- Kafka Source
+  - KafkaはEventストリームを扱うためのプラットホームです。Knative Eventingでは、イベントソースとして、Kafkaを利用することができます。
+  - https://knative.dev/docs/eventing/sources/kafka-source/
+- Broker
+  - Brokerは、イベントのパブリッシャに対してイベントメッセージを渡すエンドポイントを提供し、メッセージを受け取るリソースです。
+  - https://knative.dev/docs/eventing/brokers/
+- Trigger
+  - TriggerはBrokerがイベントを配信するためのリソースです。BrokerからTriggerに渡されたイベントメッセージが、Triggerをサブスクライブしているコンシューマに配信されます。
+  - https://knative.dev/docs/eventing/triggers/
+- DLS(Dead Letter Sink)
+  - 送信メッセージをそれを処理する相手に送れなかった、あるいは、エラーで返されたなど、正しく処理されかなったメッセージを送信するところです。
+  - 正しく処理されなかったメッセージを退避し、トラブルの解析や処理の再実行などに利用します。
+    - https://knative.dev/docs/eventing/event-delivery/#configuring-broker-event-delivery
+  - AWSのAmazno SQSでの「Amazon SQS デッドレターキュー」に類するものです。
+     - https://docs.aws.amazon.com/ja_jp/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
 
 # 検証構成
 
-よくあるKnative EventingのKafkaでの設定例は、以下のように、イベントソースのKafkaSourceのsinkにKnative Serviceへの参照を直接指定したシンプルなものです。
+よくある設定例は、以下のように、イベントソースのKafkaSourceのSinkにKnative Serviceへの参照を直接指定したシンプルなものです。
 
 ![よくある構成](https://i.gyazo.com/bec795dff5bbb4f37dc9b83b9566f19a.jpg)
 
 今回は、以下のように、KafkaSourceとするKafkaTopic①の他に、処理が失敗した時にメセージを送るDLS用のKafkaTopic③を作成します。
-その上で、KafkaSourceとKnative Serviceの間をBrokerとTriggerで結ぶ構成とし、Knative Servcieでの処理失敗時のBrokerでのリトライとDLSへの転送を検証します。
+その上で、KafkaSourceとKnative Serviceの間をBrokerとTriggerで結ぶ構成とします。
 
 ![検証構成](https://i.gyazo.com/1085e14c29e213ce2693244235c538b7.jpg)
 
-またその他にも、検証用のKnative Serviceのアプリのイメージの管理とKafkaのTopicに入っているメッセジーの確認のために、以下をk8s環境内に構築しています（それぞれの構築方法については今回のテーマから外れますので、詳細についての説明は割愛します）。
+上記の構成とした上で、Brokerに対してリトライとDLSの設定を行い、以下を検証します。
+
+- Knative Serviceで処理が失敗した時にリトライが行われるか
+- リトライ回数が既定値を超えた時にDLSへメッセージが転送されるか
+
+またその他の構成として、検証用のKnative Serviceのアプリのイメージの管理とKafkaのTopicに入っているメッセジーの確認のために、以下をk8s環境内に構築しています（それぞれの構築方法については今回のテーマから外れますので、詳細についての説明は割愛します）。
 
 - Kafdrop
 - プライベートレジストリ

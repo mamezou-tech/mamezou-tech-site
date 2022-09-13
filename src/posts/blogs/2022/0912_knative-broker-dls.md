@@ -8,7 +8,7 @@
 
  # モチベーション
 
-よくあるKnative EventingのKafkaでの設定例は、KafkaSourceのSinkに直接Knative Serviceが設定されるシンプルなものが殆どである。ただ、KafkaSourceにはDLSやリトライの設定ができないため、信頼性が求められるところにはその形のまま適用しにくい。そこで、DLSやリトライの設定が可能なBrokerを使う構成を確認したい。
+よくあるKnative EventingのKafkaでの設定例は、KafkaSourceのSinkに直接Knative Serviceが設定されるシンプルなものが殆どである。ただ、KafkaSourceにはリトライやDLSの設定ができないため、信頼性が求められるところにはその形のまま適用しにくい。そこで、それらの設定が可能なBrokerを使う構成で、処理失敗時のリトライやDLSへのメッセージ送信を確認したい。
 
 # 検証構成
 

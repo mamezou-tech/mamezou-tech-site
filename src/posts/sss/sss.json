@@ -1,0 +1,6 @@
+{
+  "tags": ["社内プロジェクト", "sss"],
+  "category": "社内プロジェクト - Sales Support System",
+  "layout": "post",
+  "permalink": "/in-house-project/sss/{{ page.fileSlug }}/"
+}

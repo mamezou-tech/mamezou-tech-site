@@ -30,11 +30,13 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
+    z-index: 100;
   }
 
   .menu > li {
     margin: 0 0.5rem;
     overflow: hidden;
+    font-size: unquote("min(max(0.8rem, 5vw), 1rem)");
   }
 
   .menu-button-container {
@@ -55,7 +57,7 @@
   .menu-button::before,
   .menu-button::after {
     display: block;
-    background-color: #262525;
+    background-color: $tdbc-color-menu-button;
     position: absolute;
     height: 4px;
     width: 30px;

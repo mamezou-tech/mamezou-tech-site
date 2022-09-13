@@ -1,0 +1,6 @@
+{
+    "tags": ["iot"],
+    "category": "IoT",
+    "layout": "post",
+    "permalink": "/iot/{{ page.fileSlug }}/"
+}

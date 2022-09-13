@@ -55,7 +55,7 @@
     border-style: dotted;
     border-radius: 10px;
     border-color: tdbc-color("grey");
-    background-color: #fff;
+    background-color: $tdbc-color-toc;
     li {
       list-style-type: square;
     }

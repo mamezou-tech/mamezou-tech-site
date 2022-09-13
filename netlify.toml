@@ -1,3 +1,7 @@
+[dev]
+  framework = "#static"
+  command = "npm run start:edge"
+
 [build]
   # Directory to change to before starting a build.
   # This is where we will look for package.json/.nvmrc/etc.
@@ -23,6 +27,38 @@
 [[plugins]]
   package = "@netlify/plugin-lighthouse"
 
-  # optional, deploy the lighthouse report to a path under your site
-  [plugins.inputs]
-    output_path = "reports/lighthouse.html"
+  [[plugins.inputs.thresholds]]
+    performance = 0.6
+    accessibility = 0.9
+    best-practices = 0.8
+    seo = 0.9
+
+  [[plugins.inputs.audits]]
+    path = "/"
+    output_path = "lighthouse/top.html"
+#  [[plugins.inputs.audits]]
+#    path = "/dev-env/"
+#  [[plugins.inputs.audits]]
+#    path = "/analytics/"
+  [[plugins.inputs.audits]]
+    path = "/blogs/"
+#  [[plugins.inputs.audits]]
+#    path = "/cicd/"
+#  [[plugins.inputs.audits]]
+#    path = "/container/"
+#  [[plugins.inputs.audits]]
+#    path = "/learning/"
+#  [[plugins.inputs.audits]]
+#    path = "/msa/"
+#  [[plugins.inputs.audits]]
+#    path = "/testing/"
+#  [[plugins.inputs.audits]]
+#    path = "/oss/"
+
+[[edge_functions]]
+  function = "theme-switcher"
+  path = "/*"
+
+[[edge_functions]]
+  function = "eleventy-edge"
+  path = "/*"

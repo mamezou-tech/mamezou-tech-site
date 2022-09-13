@@ -1,5 +1,5 @@
 .link-separator {
-  margin: 1rem 0;
+  margin: 1.5rem 0;
   border-color: #dbd2e8;
 }
 .links {
@@ -16,5 +16,26 @@
       width: auto;
       display: inline;
     }
+  }
+}
+
+.page-ranking {
+  ol {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+  li {
+    font-size: $text-base;
+  }
+  margin: 0.5rem 0;
+  border-width: 0.5px;
+  border-radius: 8px;
+  border-color: #624176;
+  display: none;
+}
+@media (min-width: 80ch) {
+  .page-ranking {
+    display: block;
+    max-width: 80ch;
   }
 }

@@ -2,7 +2,7 @@
 title: Deno Deploy を基盤とする Netlify Edge Functions を試す
 author: masahiro-kondo
 date: 2022-07-23
-tags: [Netlify, Deno, サーバーレス, Edge]
+tags: [netlify, Deno, サーバーレス, Edge]
 ---
 
 Netlify では、AWS Lambda を利用したサーバーレス機能 Functions が従来から提供されていました。

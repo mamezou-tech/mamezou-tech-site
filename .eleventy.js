@@ -2,6 +2,7 @@ const {DateTime} = require("luxon");
 const socialImages = require("@11tyrocks/eleventy-plugin-social-images");
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const pluginRss = require("@11ty/eleventy-plugin-rss");
+const {EleventyEdgePlugin} = require("@11ty/eleventy");
 const markdownIt = require("markdown-it");
 const markdownItAnchor = require("markdown-it-anchor");
 const markdownItFootNote = require("markdown-it-footnote");
@@ -46,6 +47,7 @@ const containerOptions = {
 };
 
 module.exports = function (eleventyConfig) {
+  eleventyConfig.addPlugin(EleventyEdgePlugin);
   eleventyConfig.addPlugin(socialImages);
   eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.addPlugin(pluginRss);
@@ -83,9 +85,11 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter('byTag',
     (tagArticles, tag) => tagArticles.filter(tagArticle => tagArticle.tag === tag));
   eleventyConfig.addFilter('tagUrl', (hrefs, tag) => hrefs.filter(href => href.includes(`tags/${tag}`)));
+  eleventyConfig.addFilter('limit', (array, limit) => array.slice(0, limit));
   eleventyConfig.addFilter('byAuthor',
     (contributorArticles, author) => contributorArticles.filter(contributor => contributor.name === author));
   eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));
+  eleventyConfig.addFilter('getDate', require("./11ty/get-date"));
   eleventyConfig.addCollection('currentMonthPosts', (collection) => getPosts(collection).filter(post => post.date.getMonth() === new Date().getMonth()));
   eleventyConfig.addCollection('articles', getPosts);
   eleventyConfig.addCollection('tagList', require("./11ty/tag-list"));

@@ -11,6 +11,18 @@
       name="description"
       content="{{pageDescription}}"
     />
+    <link href="{{ '/css/style.css' | url }}" rel="stylesheet" />
+    {% edge 'liquid' %}
+    {% if eleventy.edge.cookies.theme == 'dark' %}
+      {% assign stylecss = '/css/style-dark.css' %}
+      <meta name="theme-color" content="#262525">
+    {% else %}
+      {% assign stylecss = '/css/style.css' %}
+      <meta name="theme-color" content="#ffffff">
+    {% endif %}
+    <link href="{{ stylecss | url }}" rel="stylesheet" />
+    {% endedge %}
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     {% if meta.env === 'prod' %}
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-38XP4WXMMY"></script>
@@ -19,7 +31,14 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-38XP4WXMMY');
+      const darkCss = Array.from(document.querySelectorAll("link[rel='stylesheet']"))
+        .find(el => el.href && el.href.indexOf("style-dark") !== -1);
+      gtag('config', 'G-38XP4WXMMY', {
+        'user_properties': {
+          branch: '{{ meta.branch }}',
+          theme: darkCss ? 'dark' : 'light',
+        }
+      });
     </script>
     {% endif %}
     <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
@@ -28,9 +47,7 @@
     <link rel="manifest" href="/img/site.webmanifest">
     <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
 
-    <link href="{{ '/css/style.css' | url }}" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Mochiy+Pop+One&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -94,11 +111,25 @@
         fbroot.after(script);
       });
     </script>
+    {% edge 'liquid' %}
+    <div class="tdbc-theme-toggle">
+      {% if eleventy.edge.cookies.theme == 'dark' %}
+        <a href="{{ page.url }}?theme=light">Lightモード切替</a>
+      {% else %}
+        <a href="{{ page.url }}?theme=dark">Darkモード切替</a>
+      {% endif %}
+    </div>
+    {% endedge %}
     {{ content | safe }}
     <footer class="tdbc-background--secondary">
       <div class="tdbc-container tdbc-text-align-center">
         <div class="tdbc-row tdbc-ink--light tdbc-mx-auto">
           <p class="tdbc-mb-none">&copy; {% year %} {{ site.authorName }} • {% packageVersion %}</p>
+          <div style="text-align:right">
+            <a href="https://www.netlify.com">
+              <img alt="Netlify" height="35px" src="https://www.netlify.com/img/global/badges/netlify-light.svg"/>
+            </a>
+          </div>
         </div>
       </div>
     </footer>

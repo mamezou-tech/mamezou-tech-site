@@ -5,13 +5,23 @@ description: 新入社員やこれからエンジニアを目指す方、新人�
 
 弊社の教育案件に携わるメンバーが、新入社員やこれからエンジニアを目指す方、新人を指導する立場になった方向けに、様々な情報を投稿していきます。
 
+## 初学者の学び
+
+### 初心者のためのJavaプログラミング再学習
+
+初心者の方向けに、Javaプログラミングの分かりやすい記事を投稿しています。
+
+- [その1 基本データ型とオブジェクト型](/learning/java-for-beginners_01/)
+
 ## 研修講師の学び
 
 ### メイン講師体験記
 
 はじめて弊社社員がメイン講師を実施した際の体験記です。
 
-- [メイン講師体験記(その1 準備編)](/learning/main-teacher-experience_01)
-- [メイン講師体験記(その2 研修期間中編)](/learning/main-teacher-experience_02)
-- [メイン講師体験記(その3 事後作業編)](/learning/main-teacher-experience_03)
+- [その1 準備編](/learning/main-teacher-experience_01/)
+- [その2 研修期間中編](/learning/main-teacher-experience_02/)
+- [その3 事後作業編](/learning/main-teacher-experience_03/)
 
+## 研修運営の学び
+- [オンライン研修の注意点](/learning/online-lecture-tips/)

@@ -9,6 +9,14 @@ $tdbc-brand-colors: (
 
 $tdbc-color-body: scale-color($tdbc-color-primary, $lightness: -30%, $saturation: -50%) !default;
 $tdbc-color-gray: mix(#767676, $tdbc-color-body, 70%) !default;
+$tdbc-color-hero: #fff;
+$tdbc-color-tag: rgb(66, 65, 65);
+$tdbc-color-list-title: rgb(41, 41, 41);
+$tdbc-color-card-title: #730099;
+$tdbc-color-toc: #fff;
+$tdbc-color-theme-toggle: #efddef;
+$tdbc-color-theme-font: $tdbc-color-body;
+$tdbc-color-menu-button: #262525;
 
 $tdbc-colors: map-merge(
   $tdbc-brand-colors,
@@ -19,8 +27,10 @@ $tdbc-colors: map-merge(
     "dark": rgba(black, 0.87),
     "gray": $tdbc-color-gray,
     "dark-brown": #4F4350,
-    "mz": #815685
-  )
+    "mz": #815685,
+    "hero": $tdbc-color-hero,
+    "tag": $tdbc-color-tag
+)
 );
 
 @function tdbc-color($key) {

@@ -1,0 +1,6 @@
+{
+  "tags": ["アジャイル開発"],
+  "category": "アジャイル開発",
+  "layout": "post",
+  "permalink": "/agile/{{ page.fileSlug }}/"
+}

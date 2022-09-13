@@ -53,7 +53,6 @@ layout: base.njk
   .tags a {
     margin: 0.5rem;
     line-height: 1.5rem;
-    color: #291cb9;
   }
   .new-box {
     margin: 0 0.25rem;
@@ -99,7 +98,8 @@ layout: base.njk
       {%- include "tags-links.njk" %}
     </fieldset>
   </div>
-  <p style="font-size:1rem;margin:1rem;">本サイトは本家の豆蔵ホームページではありません。会社概要、製品紹介や採用情報等は<a style="text-decoration:underline" href="https://www.mamezou.com/">こちら</a>をご覧ください。</p>
+  <p style="font-size:1rem;margin:1rem;">本サイトは本家の豆蔵ホームページではありません。会社概要、製品紹介等は<a class="new-tab-link" target="_blank" rel="noreferrer noopener" style="text-decoration:underline" href="https://www.mamezou.com/">こちら</a>、
+  募集中の求人情報は<a class="new-tab-link" target="_blank" rel="noreferrer noopener" style="text-decoration:underline" href="https://hrmos.co/pages/mamezou-recruit/jobs">こちら</a>をご覧ください。</p>
   <div>
     <div class="article-area">
       <article class="tdbc-mx-auto" style="margin-top: 3em">
@@ -150,6 +150,8 @@ layout: base.njk
     </div>
   </div>
   <div style="margin: 1rem 0 0 0; padding: 0;">
+  <hr class="link-separator">
+  {%- include "pv-ranking.njk" %}
   {%- include "links.njk" %}
   </div>
 </main>

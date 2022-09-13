@@ -1,0 +1,17 @@
+{
+  "name": "developer-site-ga",
+  "version": "1.0.0",
+  "description": "google analytics(v4) collector",
+  "type": "module",
+  "scripts": {
+    "generate:pv": "node pv-collector.mjs"
+  },
+  "author": "noboru-kudo",
+  "license": "ISC",
+  "dependencies": {
+    "@google-analytics/data": "^3.0.0",
+    "install": "^0.13.0",
+    "luxon": "^3.0.3",
+    "npm": "^8.19.1"
+  }
+}

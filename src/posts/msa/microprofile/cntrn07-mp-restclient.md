@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-04-27
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn06-mp-config.md
+nextPage: ./src/posts/msa/microprofile/cntrn08-mp-config3.md
 ---
 MicroProfileの厳選仕様を紹介していくシリーズの最後は[第4回](/msa/mp/cntrn04-spec-ranking/)で紹介した『これは抑えておくベキ、もしくは使っておくベキ』仕様第1位の筆者一押しのMicroProfile RestClient(MP RestClient)です。JAX-RSのAPIはREST向けに設計されているAPIとは言え、そのベースはHTTPプロトコルのためパラメータ送信1つをとっても、それがQueryStringかパスパラメータか、それともbodyのJSON連携かにより呼び出し手順やAPIが異なり、その実装は単調な割には骨の折れる面倒くさいものでした。MP RestClientはそんな面倒くさいREST API呼び出しをローカルAPI呼び出しのように正に「らくらく」に呼び出せる機能となります。
 
@@ -12,14 +13,15 @@ MicroProfileの厳選仕様を紹介していくシリーズの最後は[第4回
 なお、記事はコードの抜粋を記載してます。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/01-restclient>
 
-また、MicroProfileは"逆張りのMicroProfile"として連載しています。他の記事は[こちら](/msa/#microprofile)からどうぞ。
+MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
+- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
+
+[[TOC]]
 
 :::info
 この記事はJava11+Helidon 2.4.2 + MicroProfile RestClient 1.4をもとに作成しています。MicroProfile RestClient 1.4の仕様は[こちら](https://download.eclipse.org/microprofile/microprofile-rest-client-1.4.0/microprofile-rest-client-1.4.0.html)を参照ください。
 :::
-
-[[TOC]]
 
 ## 比較に利用するREST API
 まず最初にJAX-RSとMP RestClientの実装比較に利用REST APIを説明します。

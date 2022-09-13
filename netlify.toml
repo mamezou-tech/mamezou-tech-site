@@ -55,10 +55,10 @@
 #  [[plugins.inputs.audits]]
 #    path = "/oss/"
 
-[[edge_functions]]
-  function = "theme-switcher"
-  path = "/*"
-
-[[edge_functions]]
-  function = "eleventy-edge"
-  path = "/*"
+#[[edge_functions]]
+#  function = "theme-switcher"
+#  path = "/*"
+#
+#[[edge_functions]]
+#  function = "eleventy-edge"
+#  path = "/*"

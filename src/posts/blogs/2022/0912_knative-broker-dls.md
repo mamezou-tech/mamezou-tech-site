@@ -5,11 +5,9 @@
  tags: ["k8s", "Kafka"]
 ---
 
-[[TOC]]
-
-# 概要
-
 KafkaをイベントレイヤーとするKnative Eventingの環境をリトライとDLSが可能な様に構成した上で、意図的に処理を失敗させるKnative Servicveをデプロイし、処理失敗時のリトライやDLSへのメッセージ送信を確認しました。
+
+[[TOC]]
 
 # モチベーション
 

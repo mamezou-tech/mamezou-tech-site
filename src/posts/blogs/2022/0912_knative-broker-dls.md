@@ -88,12 +88,14 @@ Fri Sep 09 08:33:02 UTC 2022 message: Message(9)
 
 ### KafkaTopic①
 
+メッセージを送ったKafkaTopic①の様子です。
 value=1〜10のメッセージがKafkaSourceに指定したTopicに入っています。
 
 ![送信メッセージ](https://i.gyazo.com/c7989e31652f43d3efa702f5de51bd0e.png)
 
 ### KafkaTopic③
 
+Knative Serviceへの規定回数のリトライ後にメッセージが送られるKafkaTopic③の様子です。
 value=3,6,9のメッセージが最後のリトライが行われた時間にDLSに指定したTopicに入っています。
 
 ![DLSメッセージ](https://i.gyazo.com/578430e3a65dcae7b28ab599c884be1a.png)

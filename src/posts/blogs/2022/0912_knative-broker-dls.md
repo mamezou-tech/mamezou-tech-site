@@ -26,7 +26,7 @@
 - Kafdrop
 - プライベートレジストリ
 
-また、Brokerの作成時に自動登録されるKafkaTopic②を使う構成としたが、Brokerの作成時にすでにあるKafkaTopic①を使うこともできそうです。それについては、別途検証をしていきたいと思います。
+また今回は、Brokerの作成時に自動登録されるKafkaTopic②を使う構成としましたが、Brokerの作成時にすでにあるKafkaTopic①を使うこともできそうです。それについては、別途検証をしていきたいと思います。
 
 https://knative.dev/docs/eventing/brokers/broker-types/kafka-broker/#bring-your-own-topic
 
@@ -86,13 +86,13 @@ Fri Sep 09 08:33:02 UTC 2022 message: Message(9)
 
 ## トピックメッセージ
 
-### testknativebroker-request
+### KafkaTopic①
 
 value=1〜10のメッセージがKafkaSourceに指定したTopicに入っています。
 
 ![送信メッセージ](https://i.gyazo.com/c7989e31652f43d3efa702f5de51bd0e.png)
 
-### testknativebroker-request-dead
+### KafkaTopic③
 
 value=3,6,9のメッセージが最後のリトライが行われた時間にDLSに指定したTopicに入っています。
 

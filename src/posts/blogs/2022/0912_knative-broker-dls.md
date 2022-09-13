@@ -1,8 +1,10 @@
 ---
- title: Knative EventingのKafka BrokerでDead Letter Sink（DLS）とリトライを試す
+ title: Knative EventingのKafka BrokerでリトライとDead Letter Sink（DLS）を試す
  author: takashi-sato
  date: 2022-09-13
 ---
+
+[[TOC]]
 
  # モチベーション
 
@@ -360,7 +362,7 @@ object App {
 }
 ```
 
-### routes
+### Route
 
 リクエスト処理部の実装。実装の詳しい内容は本質から逸れるので説明は割愛するが、以下のメッセージを受けて処理をする。
 

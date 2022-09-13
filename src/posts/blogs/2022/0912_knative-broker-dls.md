@@ -15,7 +15,7 @@
 ![検証構成](https://i.gyazo.com/1085e14c29e213ce2693244235c538b7.jpg)
 
 上記のように、KafkaSourceとするKafkaTopic①の他に、処理が失敗した時にメセージを送るDLS用のKafkaTopic③を作成した。
-その上で、KafkaSourceとKafka Serviceの間をBrokerとTriggerで結ぶ構成とし、Kafka Servcieでの処理失敗時のBrokerでのリトライとDLSへの転送を検証した。
+その上で、KafkaSourceとKnative Serviceの間をBrokerとTriggerで結ぶ構成とし、Knative Servcieでの処理失敗時のBrokerでのリトライとDLSへの転送を検証した。
 
 なお今回は、Brokerの作成時に自動登録されるKafkaTopic②を使う構成としたが、Brokerの作成時にすでにあるKafkaTopic①を使うこともできそうである。それについては、別途検証をしていきたい。
 
@@ -45,9 +45,9 @@ If you don't see a command prompt, try pressing enter.
 >
 ```
 
-## Knativeサービスログ
+## Knative Serviceログ
 
-上記のメッセージ送信を受けたKnativeサービスのコンソール出力。
+上記のメッセージ送信を受けたKnative Serviceのコンソール出力。
 
 Knative Serviceで、メッセージの値が3で割り切れる時に処理を失敗させている。
 そのため、メッセージの値が3で割り切れる時に、リトライが、10秒、20秒、40秒の間隔で3回発生していることがわかる。
@@ -79,13 +79,13 @@ Fri Sep 09 08:33:02 UTC 2022 message: Message(9)
 
 ### testknativebroker-request
 
-value=1〜10のメッセージがKafkaSourceに指定したトピックに入っている。
+value=1〜10のメッセージがKafkaSourceに指定したTopicに入っている。
 
 ![送信メッセージ](https://i.gyazo.com/c7989e31652f43d3efa702f5de51bd0e.png)
 
 ### testknativebroker-request-dead
 
-value=3,6,9のメッセージが最後のリトライが行われた時間にDLSに指定したトピックに入っている。
+value=3,6,9のメッセージが最後のリトライが行われた時間にDLSに指定したTopicに入っている。
 
 ![DLSメッセージ](https://i.gyazo.com/578430e3a65dcae7b28ab599c884be1a.png)
 
@@ -95,7 +95,7 @@ value=3,6,9のメッセージが最後のリトライが行われた時間にDLS
 
 ## Knativeのインストール
 
-Knative Serving、および、Knative Enativeの環境をガイドに従って構築した。なお検証用にはKnative 1.4.1の環境を構築した。
+Knative Serving、および、Knative Eventingの環境をガイドに従って構築した。なお検証用にはKnative 1.4.1の環境を構築した。
 
 https://knative.dev/v1.4-docs/install/yaml-install/eventing/install-eventing-with-yaml/
 
@@ -118,8 +118,8 @@ Knative環境以外には、以下のリソースをk8s環境内に構築して�
 
 - プライベートレジストリ
   - 検証用のKnative Serviceアプリのコンテナイメージを管理するためのdockerレジストリ
-- KafDrop
-  - Kafkaのtopicに送信されたメッセージを参照するためのWebコンソール
+- Kafdrop
+  - KafkaのTopicに送信されたメッセージを参照するためのWebコンソール
 
 # 検証作業詳細（実装編）
 

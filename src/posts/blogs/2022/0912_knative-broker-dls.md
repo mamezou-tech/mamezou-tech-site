@@ -20,22 +20,22 @@ KafkaをイベントレイヤーとするKnative Eventingの設定例でよく�
 
 - Knative Eventing
   - Knative Eventingは、イベント駆動型のアプリケーションを構築するためのプラットホームです。
-  - https://knative.dev/docs/eventing/
+  - [Knative Eventing overview - Knative](https://knative.dev/docs/eventing/)
 - Kafka Source
   - KafkaはEventストリームを扱うためのプラットホームです。Knative Eventingでは、イベントソースとして、Kafkaを利用することができます。
-  - https://knative.dev/docs/eventing/sources/kafka-source/
+  - [KafkaSource - Knative](https://knative.dev/docs/eventing/sources/kafka-source/)
 - Broker
   - Brokerは、イベントのパブリッシャに対してイベントメッセージを渡すエンドポイントを提供し、メッセージを受け取るリソースです。
-  - https://knative.dev/docs/eventing/brokers/
+  - [About Brokers - Knative](https://knative.dev/docs/eventing/brokers/)
 - Trigger
   - TriggerはBrokerがイベントを配信するためのリソースです。BrokerからTriggerに渡されたイベントメッセージが、Triggerをサブスクライブしているコンシューマに配信されます。
-  - https://knative.dev/docs/eventing/triggers/
+  - [Using Triggers - Knative](https://knative.dev/docs/eventing/triggers/)
 - DLS(Dead Letter Sink)
   - 送信メッセージをそれを処理する相手に送れなかった、あるいは、エラーで返されたなど、正しく処理されかなったメッセージを送信するところです。
   - 正しく処理されなかったメッセージを退避し、トラブルの解析や処理の再実行などに利用します。
-    - https://knative.dev/docs/eventing/event-delivery/#configuring-broker-event-delivery
+    - [Handling delivery failure - Knative](https://knative.dev/docs/eventing/event-delivery/#configuring-broker-event-delivery)
   - AWSのAmazno SQSでの「Amazon SQS デッドレターキュー」に類するものです。
-     - https://docs.aws.amazon.com/ja_jp/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
+     - [Amazon SQS デッドレターキュー - Amazon Simple Queue Service](https://docs.aws.amazon.com/ja_jp/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html)
 
 # 検証構成
 
@@ -60,7 +60,7 @@ KafkaをイベントレイヤーとするKnative Eventingの設定例でよく�
 
 また今回は、Brokerの作成時に自動登録されるKafkaTopic②を使う構成としましたが、Brokerの作成時にすでにあるKafkaTopic①を使うこともできそうです。それについては、別途検証をしていきたいと思います。
 
-https://knative.dev/docs/eventing/brokers/broker-types/kafka-broker/#bring-your-own-topic
+[Knative Kafka Broker - Knative](https://knative.dev/docs/eventing/brokers/broker-types/kafka-broker/#bring-your-own-topic)
 
 # 検証結果
 
@@ -140,20 +140,20 @@ value=3,6,9のメッセージが最後のリトライが行われた時間にDLS
 
 Knative Serving、および、Knative Eventingの環境をガイドに従って構築しています。なお検証用にはKnative 1.4.1の環境を構築しています。
 
-https://knative.dev/v1.4-docs/install/yaml-install/eventing/install-eventing-with-yaml/
-
-- Install the Knative Serving component
-- Install a networking layer
-  - Istio
-- Configure DNS
-  - Magic DNS (sslip.io)
-- Install Knative Eventing
-- Optional: Install a default Channel (messaging) layer
-  - Apache Kafka Channel
-- Optional: Install a Broker laye
-  - Apache Kafka Broker
-- Install optional Eventing extensions
-  - Apache Kafka Sink
+- [Install Serving with YAML - Knative](https://knative.dev/v1.4-docs/install/yaml-install/serving/install-serving-with-yaml/)
+  - Install the Knative Serving component
+  - Install a networking layer
+    - Istio
+  - Configure DNS
+    - Magic DNS (sslip.io)
+- [Install Eventing with YAML - Knative](https://knative.dev/v1.4-docs/install/yaml-install/eventing/install-eventing-with-yaml/)
+  - Install Knative Eventing
+  - Optional: Install a default Channel (messaging) layer
+    - Apache Kafka Channel
+  - Optional: Install a Broker laye
+    - Apache Kafka Broker
+  - Install optional Eventing extensions
+    - Apache Kafka Sink
 
 ## Knative以外の環境構築
 
@@ -308,7 +308,7 @@ backoffDelayの仕様については、Knativeのガイドに以下のように�
 
 > When using the exponential back off policy, the back off delay is equal to backoffDelay*2^\<numberOfRetries>.
 
-https://knative.dev/v1.4-docs/eventing/event-delivery/#configuring-subscription-event-delivery
+[Handling delivery failure - Knative](https://knative.dev/v1.4-docs/eventing/event-delivery/#configuring-subscription-event-delivery)
 
 これによりこのリトライ設定は以下のようになります。
 

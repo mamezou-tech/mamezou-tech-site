@@ -2,6 +2,7 @@
  title: Knative EventingのKafka BrokerでリトライとDead Letter Sink（DLS）を試す
  author: takashi-sato
  date: 2022-09-13
+ tags: ["k8s", "Kafka"]
 ---
 
 [[TOC]]

@@ -87,6 +87,8 @@ value=3,6,9のメッセージが最後のリトライが行われた時間にDLS
 
 ![DLSメッセージ](https://i.gyazo.com/578430e3a65dcae7b28ab599c884be1a.png)
 
+こちらのTopicにはCloud Eventsのスキーマでメッセージが入っている。これにより、Knativeの内部では、Cloud Eventsの形式でメッセージの送受信が行われていることが予想できる。
+
 # 検証作業詳細（準備編）
 
 ## Knativeのインストール
@@ -405,3 +407,9 @@ class Routes(implicit val system: ActorSystem[_]) {
 }
 ```
 
+# まとめ
+
+今回は、KnativeでSourceとServiceの間にBrokerを挟んで、Serviceでの処理失敗時のリトライとDSLへのメッセージ転送を確認した。
+
+Cloud環境では通信経路の信頼性などの要因により意図せずに処理が失敗してしまうことが少なからずある。
+そのため、予め処理の失敗を想定し、リトライやDSLを組み込んだアーキテクチャにしておくことが、システムの安定化のために重要だと考える。

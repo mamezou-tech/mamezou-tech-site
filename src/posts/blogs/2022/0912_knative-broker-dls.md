@@ -129,7 +129,7 @@ Knative環境以外には、以下のリソースをk8s環境内に構築して�
 
 構成図のKafkaTopic①、および、KafkaTopic③。
 
-```
+```yaml
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
@@ -164,7 +164,7 @@ spec:
 
 検証用アプリのKnative Service。アプリの詳細は後述する「検証用アプリのKnative Service」を参照。作成したアプリをdokcer iamgeとしてtestknativebroker-consumerというタグをつけてビルドし、予め、プライベートレジストリにpushしておく。
 
-```
+```yaml
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
@@ -183,7 +183,7 @@ spec:
 
 処理が失敗した時にメッセージを転送するSink。
 
-```
+```yaml
 apiVersion: eventing.knative.dev/v1alpha1
 kind: KafkaSink
 metadata:
@@ -201,7 +201,7 @@ spec:
 そうすることでBrokerの作成時に自動的にKafkaTopicが作成される（構成図のKafkaTopic②）。
 なお、Knativeのガイドの通りにインストールを進めるとkafkaのbootstrapサーバは"my-cluster-kafka-bootstrap.kafka:9092"になるため、以下ではそれを指定している。
 
-```
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -217,7 +217,7 @@ data:
 
 メッセージを受け取るBroker。ここでDLSとして作成済みのKafkaSinkへの参照を指定する。
 
-```
+```yaml
 apiVersion: eventing.knative.dev/v1
 kind: Broker
 metadata:
@@ -255,7 +255,7 @@ knative-broker-default-testknativebroker-request-broker         my-cluster   10 
 
 設定の以下がリトライの設定。
 
-```
+```yaml
     backoffDelay: PT5S
     backoffPolicy: exponential
     retry: 3
@@ -278,7 +278,7 @@ https://knative.dev/v1.4-docs/eventing/event-delivery/#configuring-subscription-
 
 作成したBrokerを受けてKafkaServiceを呼ぶTriggerのリソース。
 
-```
+```yaml
 apiVersion: eventing.knative.dev/v1
 kind: Trigger
 metadata:
@@ -296,7 +296,7 @@ spec:
 
 メッセージを送信するKafkaTopicを指定したKafkaSourceのリソース。
 
-```
+```yaml
 apiVersion: sources.knative.dev/v1beta1
 kind: KafkaSource
 metadata:
@@ -326,7 +326,7 @@ Knativeのサービスは基本的には8080ポートでリクエスト受ける
 
 akka httpのサーバの起動処理。これは今回の本質ではないので説明は割愛する。読み飛ばして良い。
 
-```
+```scala
 package com.example.testknativebroker.consumer
 
 import akka.actor.typed.ActorSystem
@@ -366,14 +366,14 @@ object App {
 
 リクエスト処理部の実装。実装の詳しい内容は本質から逸れるので説明は割愛するが、以下のメッセージを受けて処理をする。
 
-```
+```json
 {"value":1}
 ```
 
 ルート（"/"）へのPOSTリクエストを受けて、メッセージ内のvalueの値が3で割り切れる時に500 Internal Server Errorを返し、それ以外の場合には200 OKを返す。
 なお、私が試したバージョン（Knative 1.4.1）では、明示的に空文字（""）を返している。そうしないと、Kafka BrokerのDispatcherがエラーを吐いた。
 
-```
+```scala
 package com.example.testknativebroker.consumer
 
 import akka.actor.typed.ActorSystem

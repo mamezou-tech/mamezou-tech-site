@@ -34,7 +34,7 @@ AWS環境限定ですが、今回はAWSが提供するサービスもアプリ�
 
 [[TOC]]
 
-## ACKのPolicyを準備する
+## ACKのIAMロールを準備する
 ACKもKubernetesのPod(コントローラ)として動作します。AWSサービスへのアクセスポリシーを事前に準備する必要があります。
 ここでは[IRSA(IAM Role for ServiceAccount)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)を利用して、ACKコントローラのIAMロール・ポリシーを作成します。
 
@@ -62,8 +62,8 @@ ACKもKubernetesのPod(コントローラ)として動作します。AWSサー�
 }
 ```
 
-PrincipalやConditionで使用している`oidc.eks.....`の部分は、IRSA用のEKS OIDCプロバイダのURL(プロトコルなし)です。これを経由して、AWSよりセッショントークンを取得します。
-これはマネジメントコンソールのEKSメニューより確認できます。
+PrincipalやConditionで使用している`oidc.eks.....`の部分は、IRSA用のEKS OIDCプロバイダのURL(プロトコルなし)です。ここを経由して、AWSよりセッショントークンを取得します。
+URLはマネジメントコンソールのEKSメニューより確認できます。
 
 ![AWS EKS OpenID Connect Provider URL](https://i.gyazo.com/d006bbab33dc991ef033fb150d30b6b6.png)
 
@@ -72,7 +72,7 @@ Conditionの引受条件には、これから作成するKubernetesのServiceAcc
 
 - `system:serviceaccount:<k8s-namespace>:<k8s-service-account>`
 
-これでACKのコントローラが引き受けるIAMロールを作成します。
+これを信頼ポリシーとして、IAMロールを作成します。
 
 ```shell
 aws iam create-role --role-name ack-dynamodb-controller \
@@ -94,7 +94,7 @@ aws iam attach-role-policy \
 
 ## ACK(DynamoDBコントローラ)をインストールする
 
-実際にEKSにACKをインストールします。
+ここでEKSにACKをインストールします。
 ACKは単一のプロダクトでなく、使用するAWSサービスの単位でインストールします。
 まだ未実装のものもありますが、利用できるAWSサービスは以下公式ドキュメントを参照してください。
 
@@ -114,7 +114,7 @@ ACKのHelmチャートはAWS ECRのパブリックレポジトリで管理され
 - `oci://public.ecr.aws/aws-controllers-k8s/<aws-service>-chart`
 
 また、Helmのパラメータ`serviceAccount.annotations...`の部分で先程作成したIAMロールのARNを指定します[^2]。
-これでACKコントローラのServiceAccountはこのIAMロールを引き受けるようになります。
+これでACKコントローラのServiceAccountは、このIAMロールを引き受けるようになります。
 
 [^2]: Helm CLIの制約でドット`.`はエスケープして引用符で括る必要があります。
 
@@ -169,7 +169,7 @@ spec:
 
 ここではプレーンなYAMLファイルとして作成しました。
 DynamoDBを使ったことがあれば、内容は自明です。1つのパーティションキーからなる`blog`テーブルです。
-詳細なAPIの仕様は以下公式ドキュメントを参照してください。
+詳細なAPI仕様は、以下公式ドキュメントを参照してください。
 
 - [ACK - API Reference](https://aws-controllers-k8s.github.io/community/reference/)
 
@@ -230,7 +230,7 @@ Statusを見るとACKのコントローラが、指定した構成でAWSと同�
 ここで作成したものは、Kubernetesのコントロールループにより同期されますので、カスタムリソースを更新すれば、変更内容は即時反映されます。
 カスタムリソースを削除した場合は、該当のDynamoDBテーブルも削除されます[^3]
 
-[^3]: データも消えるので、アプリケーションのアンデプロイだけのつもりで誤って削除してしまうと事故になります。
+[^3]: データも消えるので、アプリケーションのアンデプロイだけのつもりで誤って削除してしまうと事故になります。デプロイ単位等はアプリケーション本体とは分けたほうが良いかなと思います。
 
 ## まとめ
 

@@ -3,7 +3,7 @@ title: "AWS Controllers for Kubernetes(ACK): AWSサービスをKubernetesカス�
 author: noboru-kudo
 date: 2022-09-14
 templateEngineOverride: md
-tags: [k8s, container, IaC]
+tags: [k8s, container, IaC, AWS]
 ---
 
 Kubernetesを利用した開発では、クラスタ内で動作するアプリケーションやミドルウェアをDeploymentやStatefulSet等のKubernetes APIリソースとして管理します。

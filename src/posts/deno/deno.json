@@ -1,0 +1,6 @@
+{
+  "tags": ["Deno"],
+  "category": "Getting started with Deno",
+  "layout": "post",
+  "permalink": "/deno/getting-started/{{ page.fileSlug }}/"
+}

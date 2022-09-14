@@ -124,7 +124,7 @@ async function runReport() {
   const [response] = await analyticsDataClient.runReport(makePopularPosts(yesterday, yesterday));
   const articles = response.rows
     .sort((a, b) => b.metricValues[0].value - a.metricValues[0].value)
-    .slice(0, 5)
+    .slice(0, 10)
     .map(r => {
       const [title, url] = r.dimensionValues.map(v => v.value)
       return {

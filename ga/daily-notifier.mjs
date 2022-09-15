@@ -152,21 +152,21 @@ async function runReport() {
         type: "section",
         text: {
           type: "plain_text",
-          text: `ページビュー: ${pv.yesterday} (前日比 ${pv.diff > 0 ? "+" + pv.diff : pv.diff})`
+          text: `ページビュー :chart_with_upwards_trend: ${pv.yesterday} (前日比 ${pv.diff > 0 ? "+" + pv.diff : pv.diff})`
         }
       },
       {
         type: "section",
         text: {
           type: "plain_text",
-          text: `ユーザー数: ${user.yesterday} (前日比 ${user.diff > 0 ? "+" + user.diff : user.diff})`
+          text: `ユーザー数 :man-woman-girl-boy: ${user.yesterday} (前日比 ${user.diff > 0 ? "+" + user.diff : user.diff})`
         }
       },
       {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "## ユーザー数TOP5\n" + articles.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.user} ユーザー`).join("\n"),
+          text: ":star: ユーザー数TOP10記事 :star:\n" + articles.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.user} ユーザー`).join("\n"),
         }
       },
     ]

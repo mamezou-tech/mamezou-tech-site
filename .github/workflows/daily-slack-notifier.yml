@@ -2,7 +2,7 @@ name: daily-slack-notifier
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 9 * * *'
   workflow_dispatch:
 
 jobs:

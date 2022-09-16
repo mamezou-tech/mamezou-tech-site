@@ -30,10 +30,10 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - [第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)
 - [第8回 MicroProfile Config 3.0へのキャッチアップ](/msa/mp/cntrn08-mp-config3/)
 - [第9回 MicroProfile OpenAPI 3.0の新機能と既存機能の比較](/msa/mp/cntrn09-mp-openapi3/) <span style="color: red;">★NEW★</span>
+- [第10回 MicroProfile Healthの機能と利用](/msa/mp/cntrn10-mp-health/) <span style="color: red;">★NEW★</span>
 
 ～ 今後の連載予定 ～
 - MicroProfile RestClient 3.0の確認と小技機能の紹介 <span style="color:red">Coming Soon!</span>
-- MicroProfile Healthの機能と利用 <span style="color:red">Coming Soon!</span>
 - MicroProfile Fault Tolerance機能と利用
 - MicroProfile Metricsの機能と利用
 - MicroProfile OpenTracingの機能と利用

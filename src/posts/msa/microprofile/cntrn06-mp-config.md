@@ -146,7 +146,7 @@ booleanの型変換に関して補足すると、`true`に変換される文字�
 また、今回は説明しませんが、MP Configの`Converter`インタフェースを実装することで独自型への変換や独自ルールによる変換も可能です。
 
 :::info
-記事がベースとしているMP Config 1.4ではサポートされていませんが、2.0からは複数の設定項目を任意のデータクラスにバインドする機能や`foo = ${bar}`といった変数置換など便利な機能が多く追加されています。興味がある方は["Release Notes for MicroProfile Config 2.0"](https://download.eclipse.org/microprofile/microprofile-config-2.0/microprofile-config-spec-2.0.html#release_notes_20)をチェックしてみてください。
+記事がベースとしているMP Config 1.4ではサポートされていませんが、2.0からは複数の設定項目を任意のデータクラスにバインドする機能など便利な機能が多く追加されています。興味がある方は["Release Notes for MicroProfile Config 2.0"](https://download.eclipse.org/microprofile/microprofile-config-2.0/microprofile-config-spec-2.0.html#release_notes_20)をチェックしてみてください。
 :::
 
 ## CDIインテグレーション

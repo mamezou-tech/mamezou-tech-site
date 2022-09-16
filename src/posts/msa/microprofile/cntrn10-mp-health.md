@@ -59,7 +59,7 @@ MP Healthでは3つのヘルスチェックに対するREST API を次のよう�
 
 - ステータスコードの意味
   - 200:ヘルスチェックが正常のUP状態
-  - 503:ヘルスチェックが異常のDOWNd状態
+  - 503:ヘルスチェックが異常のDOWN状態
   - 500:ヘルスチェックを処理できなかった状態
 
 MicroProfileではパス`/openapi`がMicroProfile OpenAPIで予約されているように、`/health`はMP Healthで予約されています。

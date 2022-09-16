@@ -51,7 +51,7 @@ MP OpenAPI 1.1から3.0までに取り入れられた機能は次の3つとな�
 # 特定クラスに対するスキーマ指定
 この機能を説明する前に、この機能が登場した背景を少し説明したいと思います。
 
-MP OpenAPIランタイムはJavaのデータクラスのclass情報をスキャンし、自動でOpenAPIドキュメントのスキーマ情報を生成します。この際、データクラスのフィールドがjava.lang.StringであればOASのデータ型のstringへと言ったように、MP OpenAPIランタイムはOpenAPI Specification(OAS)で定義されているデータ型[^2]と対応するJava型との対応については、特に何も宣言することなく、デフォルトでマッピングを行ってくれます。
+MP OpenAPIランタイムはJavaのデータクラスのclass情報をスキャンし、自動でOpenAPIドキュメントのスキーマ情報を生成します。この際、データクラスのフィールドがjava.lang.StringであればOASのデータ型のstringへといったように、MP OpenAPIランタイムはOpenAPI Specification(OAS)で定義されているデータ型[^2]と対応するJava型との対応については、特に何も宣言することなく、デフォルトでマッピングを行ってくれます。
 
 これは非常に便利なのですがOASには日時に関するデータ型が定義されていません。このためLocalDateやLocalDateTimeなど日時に関する型はjava.nio.Pathやjava.sql.Connectionなどその他大勢のクラスと同じようにOASのobject型に割り当てられるのが不便でした。
 
@@ -159,7 +159,7 @@ MP OpenAPI 2.0からの新機能として特定クラスに対するスキーマ
 
 MP OpenAPI 1.1以前にもOAS情報を共通化する仕組みとして次の３つがありました。
 - @OpenAPIDefinitionによる共通項目の定義
-- OASModelrAPIを使ったプログラムによるOAS情報の定義
+- OASFactoryを使ったプログラムによるOAS情報の定義
 - OpenAPIドキュメントによる共通項目の定義
 
 OASでは共通的な項目を`components`プロパティで定義するため、上記の３つは、つまるところ下記の`components`プロパティに対する定義方法の違いとなります。
@@ -239,10 +239,10 @@ components:
 
 このように`@OpenAPIDefinition`の`@Schema`でスキーマ情報を定義し、それぞれ必要なところから`ref`で参照することで、REST APIで複数出現するクラスのスキーマ情報を1元化して共通的に扱うことができます。
 
-## OASModelrAPIを使ったプログラムによるOAS情報の定義
-今度は同じことをMP OpenAPIのOASModelrAPIを使ってプログラムで定義してみます。OASModelrAPIはMP OpenAPIのアノテーション要素に対するビルダーメソッドがそれぞれ定義されており、アノテーションで定義したOAS定義と同様なことをプログラムで定義することができます。
+## OASFactoryを使ったプログラムによるOAS情報の定義
+今度は同じことをMP OpenAPIのOASFactoryを使ってプログラムで定義してみます。OASFactoryはMP OpenAPIのアノテーション要素に対するファクトリーメソッドがそれぞれ定義されており、アノテーションで定義したOAS定義と同様なことをプログラムで定義することができます。
 
-それではOASModelrAPIを使ってLocalDateのスキーマ情報を定義した例を見ていきましょう。OAS定義をプログラムで行う場合はMP OpenAPIで定義されているOASModelReaderインタフェースを次のように実装します。
+それではOASFactoryを使ってLocalDateのスキーマ情報を定義した例を見ていきましょう。OAS定義をプログラムで行う場合はMP OpenAPIで定義されているOASModelReaderインタフェースを次のように実装します。
 
 ```java
 public class LocalDateApiModelReader implements OASModelReader {
@@ -261,7 +261,7 @@ public class LocalDateApiModelReader implements OASModelReader {
 }
 ```
 
-OASModelrAPIはMP OpenAPIのアノテーションやOASのプロパティと対称性が取れた分かりやすいAPIとなっているため、コード例からおおよその内容は推測が付くかと思われるため、詳細の説明は[APIドキュメント](https://javadoc.io/doc/org.eclipse.microprofile.openapi/microprofile-openapi-api/3.0/index.html)を参照として割愛しますが、やっていることは先ほどのアノテーションの例とまったく同じです（比較しやすいように以下に再掲します）
+OASFactory配下のファクトリーメソッドはMP OpenAPIのアノテーションやOASのプロパティと対称性が取れた分かりやすいAPIとなっているため、コード例からおおよその内容は推測が付くかと思われるため、詳細の説明は[APIドキュメント](https://javadoc.io/doc/org.eclipse.microprofile.openapi/microprofile-openapi-api/3.0/index.html)を参照として割愛しますが、やっていることは先ほどのアノテーションの例とまったく同じです（比較しやすいように以下に再掲します）
 
 -	PersonApplicationクラス（再掲）
 ```java
@@ -291,9 +291,9 @@ public class PersonApplication extends Application {
 mp.openapi.model.reader = io.extact.mp.sample.openapi3.reader.LocalDateApiModelReader
 ```
 
-@OpenAPIDefinitionによる定義とOASModelrAPIによる定義でできることは同じですが、前者はソースコードにアノテーションを指定するスタイルのため、アプリを跨っての参照、つまり共通化はできません。
+@OpenAPIDefinitionによる定義とOASFactoryによる定義でできることは同じですが、前者はソースコードにアノテーションを指定するスタイルのため、アプリを跨っての参照、つまり共通化はできません。
 
-一方、OASModelrAPIはクラス定義のため、OASModelReaderインタフェースを実装したクラスを他のアプリから参照することで、アプリを跨ってのOAS情報の共通化が可能となります。したがって、できることは同じですが、利用可能な範囲は異なります。
+一方、OASFactoryはクラス定義のため、OASModelReaderインタフェースを実装したクラスを他のアプリから参照することで、アプリを跨ってのOAS情報の共通化が可能となります。したがって、できることは同じですが、利用可能な範囲は異なります。
 
 ## OpenAPIドキュメントによる共通項目の定義
 OASを定義する仕組みとしてここまではMP OpenAPIに固有なものを使ってきましたが、最後に紹介するこの仕組みはOpenAPIドキュメントの断片を使って共通的な要素を定義するものとなります。
@@ -407,6 +407,6 @@ public Response getById(@PathParam("{id}") long id) {
 # まとめ
 MP OpenAPIは1.1の時から十分に便利で使い勝手のよい仕様でしたが、2.0で今回紹介した痒いところも手が届くような機能が追加され、より一層使い勝手がよくなりました。
 
-OpenAPIドキュメントはプレーなテキストファイルのため、それ自体で共通化を行うことが難しいですが、MP OpenAPIの元ネタはプログラムのため、効率よくかつ厳格に共通化を行うことができます。
+OpenAPIドキュメントはプレーンなテキストファイルのため、それ自体で共通化を行うことが難しいですが、MP OpenAPIの元ネタはプログラムのため、効率よくかつ厳格に共通化を行うことができます。
 
 OpenAPIの定義はSwaggerUIなどのツールを使ったスキーマファーストのアプローチが知られていますが、MP OpenAPIを使ったソースコードを起点としたボトムアップアプローチも検討してみてはいかがでしょうか。

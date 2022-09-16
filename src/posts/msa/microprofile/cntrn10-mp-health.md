@@ -53,9 +53,9 @@ MP Healthでは3つのヘルスチェックに対するREST API を次のよう�
 |path|method|ステータスコード|ヘルスチェックの種類|ボティ|
 |----|------|---------------|-----------------|------|
 |/health/live|GET|200, 500, 503|Liveness| [次項](#応答メッセージフォーマット)のとおり|
-|/health/ready|GET|200, 500, 503|Readness| [次項](#応答メッセージフォーマット)のとおり|
+|/health/ready|GET|200, 500, 503|Readiness| [次項](#応答メッセージフォーマット)のとおり|
 |/health/started|GET|200, 500, 503|Startup| [次項](#応答メッセージフォーマット)のとおり|
-|/health|GET|200, 500, 503|Liveness + Readness + Startup| [次項](#応答メッセージフォーマット)のとおり|
+|/health|GET|200, 500, 503|Liveness + Readiness + Startup| [次項](#応答メッセージフォーマット)のとおり|
 
 - ステータスコードの意味
   - 200:ヘルスチェックが正常のUP状態
@@ -69,7 +69,7 @@ MicroProfileではパス`/openapi`がMicroProfile OpenAPIで予約されてい�
 
 ![図](../../../img/mp/10-1_health.drawio.svg)
 
-後述の[複数のヘルスチェック実装](#複数のヘルスチェック実装)で詳しく説明していますが、MP Healthではヘルスチェックを複数定義することができます。あるアプリケーションのReadness状態はAチェックとBチェックの2つの結果によって決まるといった場合、AとBの2つのチェックを別々に実装することができます。
+後述の[複数のヘルスチェック実装](#複数のヘルスチェック実装)で詳しく説明していますが、MP Healthではヘルスチェックを複数定義することができます。あるアプリケーションのReadiness状態はAチェックとBチェックの2つの結果によって決まるといった場合、AとBの2つのチェックを別々に実装することができます。
 
 MP Healthの応答メッセージのトップレベルには全体の結果を表すstatusがあり、その下に実行したチェックの詳細を表すCheckが複数あり、それぞれごとにチェック名とその結果の情報を持ちます。また、チェックの詳細情報としてCheck情報にはkey-value形式の複数の情報を持つこともできます。
 
@@ -108,7 +108,7 @@ MP Healthが規定するヘルスチェックプロトコルとワイヤフォ�
 - Readiness check
   1. Startup checkと同様にアプリの状態を確認する
   2. DBの疎通確認を行う
-  3. 1.と2. の双方がOKの場合にReadness checkに対する結果として肯定応答(UP)を返し、それ以外は否定応答(DOWN)を返す
+  3. 1.と2. の双方がOKの場合にReadiness checkに対する結果として肯定応答(UP)を返し、それ以外は否定応答(DOWN)を返す
 
 （Liveness checkとして実装するものはなし）
 
@@ -143,7 +143,7 @@ public class OpenCloseStatusHealthCheck implements HealthCheck {  // 1.
 コードにある各要素の説明は次のとおりです。
 
 1. MP HealthのヘルスチェックはHealthCheckインタフェースを実装したCDI Beanとする必要があるため、HealthCheckインタフェース実装したクラスを定義し、`@ApplicationScoped`を付けます[^2]
-2. 実装するインタフェースはStartupやReadnessなど種類を問わず同じ`HealthCheck`となるため、ヘルスチェックの種類を表すMP Healthのアノテーションを付けます。今実装しているヘルスチェックはStartup checkなので`@Startup`を付けています。なお、他のアノテーションは`@Readness`, `@Liveness`となります
+2. 実装するインタフェースはStartupやReadinessなど種類を問わず同じ`HealthCheck`となるため、ヘルスチェックの種類を表すMP Healthのアノテーションを付けます。今実装しているヘルスチェックはStartup checkなので`@Startup`を付けています。なお、他のアノテーションは`@Readiness`, `@Liveness`となります
 3. HealthCheckインタフェースには`call`メソッドが定義されているので、`call`メソッドに行いたいヘルスチェックを実装します
 4. ヘルスチェックの結果は`HealthCheckResponse`で返します。`HealthCheckResponse`は[応答メッセージフォーマット](#応答メッセージフォーマット)で説明したJSONメッセージを作成する各種builderメソッドが付いているので、そのbuilderメソッドを使って結果を設定していきます
 
@@ -194,7 +194,7 @@ public class SomethingHealthCheck {
     }
     @Produces
     @Readiness
-    public HealthCheck readnessCheck() {
+    public HealthCheck readinessCheck() {
         return () -> ...
     }
 }
@@ -248,29 +248,29 @@ curl -X GET http://localhost:7001/health/started -w ':%{http_code}\n'
 このようにMP Healthではヘルスチェック部分だけを実装すればよく、あとはMP HealthランタイムがMP Healthの仕様に従って処理の受付や応答を行ってくれます。MP Health自体がやってくることは少ないですが、一貫性のあるREST APIを自分で考えるのはセンスも必要で地味に大変だったりします。その点MP Healthに準拠しておけば、その辺りは考えることなく一貫性のあるヘルスチェックが実現できるため、筆者はMicroProfileの中でも結構お気に入りの仕様だったりします。
 
 ## 複数のヘルスチェック実装
-Startup checkができたので、次はReadness checkを実装してみます。今回のReadness checkのお題は次のとおりでした。
+Startup checkができたので、次はReadiness checkを実装してみます。今回のReadiness checkのお題は次のとおりでした。
 
 - Readiness check（再掲）
   1. Startup checkと同様にアプリの状態を確認する
   2. DBへ疎通確認を行う
-  3. 1.と2. の双方がOKの場合にReadness Checkに対する結果として肯定応答(UP)を返し、それ以外は否定応答(DOWN)を返す
+  3. 1.と2. の双方がOKの場合にReadiness Checkに対する結果として肯定応答(UP)を返し、それ以外は否定応答(DOWN)を返す
 
 ### 複数用途で使うヘルスチェック実装
-1.のStartup checkと同様にアプリの状態を確認する必要がありますが、これはStartup checkで実装したOpenCloseStatusHealthCheckに次のように`@Readness`を追加するだけです。
+1.のStartup checkと同様にアプリの状態を確認する必要がありますが、これはStartup checkで実装したOpenCloseStatusHealthCheckに次のように`@Readiness`を追加するだけです。
 
 ```java
 @ApplicationScoped
 @Startup
-@Readness // ← アノテーションを追加
+@Readiness // ← アノテーションを追加
 public class OpenCloseStatusHealthCheck implements HealthCheck {
     ...
 }
 ```
 
-ヘルスチェックアノテーションはヘルスチェックの用途を表すものなため、1つのヘルスチェック実装に複数付けることができます。OpenCloseStatusHealthCheckに`@Readness`を追加することでOpenCloseStatusHealthCheck はStartup checkを行う`/health/started`に加え、Readness checkを行う`/heath/ready`のリクエストでもチェックが行われるようになります。
+ヘルスチェックアノテーションはヘルスチェックの用途を表すものなため、1つのヘルスチェック実装に複数付けることができます。OpenCloseStatusHealthCheckに`@Readiness`を追加することでOpenCloseStatusHealthCheck はStartup checkを行う`/health/started`に加え、Readiness checkを行う`/heath/ready`のリクエストでもチェックが行われるようになります。
 
 ### 複数ヘルスチェック実行の結果評価
-Readness checkで行うもう一つのヘルスチェックのDBの疎通確認の実装は次のようになります。
+Readiness checkで行うもう一つのヘルスチェックのDBの疎通確認の実装は次のようになります。
 ```java
 @ApplicationScoped
 @Readiness
@@ -301,14 +301,14 @@ MP Healthとして説明が必要な新たな要素はありません。やっ�
 ping sqlはDBMSとの疎通確認に用いられるSQLの俗称でDBMSにそのものズバリが用意されている訳ではありません。一般的にはDBMSが起動していればどんな状況、どんなスキーマ、どんなユーザでも実行できるSQLが用いられます。サンプルはH2を前提としたping sqlですが、Oracleの場合はDUAL表を用いた`SELECT 1 FROM DUAL`が良く用いられると思います。
 :::
 
-これでお題としていた2つのReadnessに対するチェックができました。`@Readness`が付いているチェックは2つなので`/health/ready`のリクエストに対して2つのチェックが実行されます。この時、片方のチェックが失敗し、片方が成功した場合、全体としての結果は失敗となり、クライアントには否定応答が返されます。
+これでお題としていた2つのReadinessに対するチェックができました。`@Readiness`が付いているチェックは2つなので`/health/ready`のリクエストに対して2つのチェックが実行されます。この時、片方のチェックが失敗し、片方が成功した場合、全体としての結果は失敗となり、クライアントには否定応答が返されます。
 
-では閉局通知を投げてOpenCloseStatusHealthCheckが失敗する状態におけるReadness checkの応答を見てみましょう。
+では閉局通知を投げてOpenCloseStatusHealthCheckが失敗する状態におけるReadiness checkの応答を見てみましょう。
 
 ```shell
 # 閉局通知を投げる（アプリ機能）
 curl -X GET http://localhost:7001/status/close
-# Readness checkを行う
+# Readiness checkを行う
 curl -X GET http://localhost:7001/health/ready -w ':%{http_code}\n'
 {"status":"DOWN","checks":[{"name":"DbHealthCheck","status":"UP"},{"name":"OpenCloseStatusHealthCheck","status":"DOWN","data":{"checkTime":"2022-09-10T15:50:54.500723200","open/close":"CLOSE"}}]}:503
 ```
@@ -337,17 +337,17 @@ curl -X GET http://localhost:7001/health/ready -w ':%{http_code}\n'
 (レスポンスのボティ部分を見やすいように整形してます)
 
 
-次に開局通知を投げてOpenCloseStatusHealthCheckが成功する状態に戻してReadness checkを行うと次のとおり成功となります。
+次に開局通知を投げてOpenCloseStatusHealthCheckが成功する状態に戻してReadiness checkを行うと次のとおり成功となります。
 ```shell
 # 開局通知を投げる（アプリ機能）
 curl -X GET http://localhost:7001/status/open
-# Readness checkを行う
+# Readiness checkを行う
 curl -X GET http://localhost:7001/health/ready -w ':%{http_code}\n'
 {"status":"UP","checks":[{"name":"DbHealthCheck","status":"UP"},{"name":"OpenCloseStatusHealthCheck","status":"UP","data":{"checkTime":"2022-09-10T15:52:12.756466200","open/close":"OPEN"}}]}:200
 ```
 
 ### リファレンスアプリでの利用例
-MP Healthではヘルスチェックの応答が規定されているため、連携先のアプリの詳細を知ることなくヘルスチェックを行うことができます。リファレンスアプリではこの性質とMicroProfile RestClientの利点を活かして「連携先のアプリがすべてReadnessか？」を確認する汎用的な [ReadnessOfOutboundServersHealthCheck](https://github.com/extact-io/msa-rms-platform/blob/main/platform-core/src/main/java/io/extact/msa/rms/platform/core/health/ReadnessOfOutboundServersHealthCheck.java)を作成しています。興味がある方は参考にしてみてください。
+MP Healthではヘルスチェックの応答が規定されているため、連携先のアプリの詳細を知ることなくヘルスチェックを行うことができます。リファレンスアプリではこの性質とMicroProfile RestClientの利点を活かして「連携先のアプリがすべてReadinessか？」を確認する汎用的な [ReadinessOfOutboundServersHealthCheck](https://github.com/extact-io/msa-rms-platform/blob/main/platform-core/src/main/java/io/extact/msa/rms/platform/core/health/ReadnessOfOutboundServersHealthCheck.java)を作成しています。興味がある方は参考にしてみてください。
 
 ### まとめ
 MP Healthによりヘルスチェックに関するプロトコル（URLとメッセージフォーマット）が標準化されているため、MP Health準拠であれば相手がどんなチェックをしているかを知らなくても、決まったURLにリクエストを投げれば、決まった応答が返ってきます。これにより、相手先ごとに相手先ごとの都合によるチェック処理を作らなくてよくなりヘルスチェックAPIを共通化しやすくなります。MP Healthは機能も小さく地味な存在ですが、MP Healthの1番の利点はそんな共通化の促進にあると筆者は考えています。

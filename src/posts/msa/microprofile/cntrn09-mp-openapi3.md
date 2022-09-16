@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-09-16
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn08-mp-config3.md
+nextPage: ./src/posts/msa/microprofile/cntrn10-mp-health.md
 ---
 
 Helidon 3.0からMicroprofile OpenAPI 3.0(MP OpenAPI 3.0)が使えるようになりました。今回はMP OpenAPI 2.0からMP OpenAPI 3.0までに取り入れられた新機能を紹介します。今回紹介する新機能はそれほど多くなく、それだけでは少し寂しいため、新機能と既存機能の比較として[第5回 コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)で紹介できなかった便利な機能も併せて紹介します。

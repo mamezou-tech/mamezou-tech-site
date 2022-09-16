@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-09-12
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn07-mp-restclient.md
+nextPage: ./src/posts/msa/microprofile/cntrn09-mp-openapi3.md
 ---
 Helidon 3.0がリリースされMicroProfile5.0準拠となり、ついにHelidonでもMicroProfile Config 3.0(MP Config 3.0)の機能が使えるようになりました。そこで今回は「[第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)」で紹介できなかった1.4から3.0までに取り入れられた便利な機能をその差分として紹介します。
 
@@ -20,7 +21,7 @@ MicroProfileは連載を行ってます。よければ他の記事も下のリ�
 :::
 
 ## 紹介する機能
-MP Config 1.4から3.0までに取り入れられた便利な機能として今回紹介するのは次の2つとなります。
+MP Config 2.0から3.0までに取り入れられた便利な機能として今回紹介するのは次の2つとなります。
 - 設定データの集約
 - Config Profile
 

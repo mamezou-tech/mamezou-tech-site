@@ -9,28 +9,28 @@
       "url": "/blogs/2022/03/06/tauri/"
     },
     {
+      "title": "ORマッパーのTypeORMをTypeScriptで使う",
+      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
+    },
+    {
       "title": "Tauri でデスクトップアプリ開発を始める",
       "url": "/blogs/2022/07/08/writing-app-with-tauri/"
     },
     {
-      "title": "ORマッパーのTypeORMをTypeScriptで使う",
-      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
+      "title": "第1回 OpenAPI Generator を使ったコード生成",
+      "url": "/blogs/2022/06/04/openapi-generator-1/"
     },
     {
       "title": "Jest再入門 - 関数・モジュールモック編",
       "url": "/testing/jest/jest-mock/"
     },
     {
-      "title": "GitHub Codespaces を使いはじめる",
-      "url": "/blogs/2022/05/18/start-using-codespaces/"
-    },
-    {
       "title": "Ingress - NGINX Ingress Controller",
       "url": "/containers/k8s/tutorial/ingress/ingress-nginx/"
     },
     {
-      "title": "第1回 OpenAPI Generator を使ったコード生成",
-      "url": "/blogs/2022/06/04/openapi-generator-1/"
+      "title": "GitHub Codespaces を使いはじめる",
+      "url": "/blogs/2022/05/18/start-using-codespaces/"
     },
     {
       "title": "GitHub のリリースノート自動生成機能を使う",

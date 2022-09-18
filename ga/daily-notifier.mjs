@@ -10,6 +10,7 @@ const analyticsDataClient = new BetaAnalyticsDataClient();
 const now = DateTime.now();
 const yesterday = now.minus({days: 1});
 const twoDaysAgo = yesterday.minus({days: 1});
+const oneWeekAgo = yesterday.minus({weeks: 1});
 
 function makeUserCountRequest(from, to) {
   return {
@@ -102,11 +103,15 @@ async function count(makeRequest) {
     makeRequest(yesterday, yesterday));
   const [response2] = await analyticsDataClient.runReport(
     makeRequest(twoDaysAgo, twoDaysAgo));
+  const [response3] = await analyticsDataClient.runReport(
+    makeRequest(oneWeekAgo, oneWeekAgo));
 
   return {
     yesterday: response1.rows[0].metricValues[0].value,
     twoDaysAgo: response2.rows[0].metricValues[0].value,
-    diff: response1.rows[0].metricValues[0].value - response2.rows[0].metricValues[0].value
+    oneWeekAgo: response3.rows[0].metricValues[0].value,
+    dayDiff: response1.rows[0].metricValues[0].value - response2.rows[0].metricValues[0].value,
+    weekDiff: response1.rows[0].metricValues[0].value - response3.rows[0].metricValues[0].value
   }
 }
 
@@ -145,32 +150,42 @@ async function runReport() {
         type: "header",
         text: {
           type: "plain_text",
-          text: `${yesterday.toISODate()}のデベロッパーサイトアクセス速報 :mz-tech:`
-        }
-      },
-      {
-        type: "section",
-        text: {
-          type: "plain_text",
-          text: `ページビュー :chart_with_upwards_trend: ${pv.yesterday} (前日比 ${pv.diff > 0 ? "+" + pv.diff : pv.diff})`
-        }
-      },
-      {
-        type: "section",
-        text: {
-          type: "plain_text",
-          text: `ユーザー数 :man-woman-girl-boy: ${user.yesterday} (前日比 ${user.diff > 0 ? "+" + user.diff : user.diff})`
+          text: `${yesterday.toISODate()}(${yesterday.weekdayShort})のデベロッパーサイトアクセス速報 :mz-tech:`
         }
       },
       {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: ":star: ユーザー数TOP10記事 :star:\n" + articles.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.user} ユーザー`).join("\n"),
+          text: `:chart_with_upwards_trend:*ページビュー: ${pv.yesterday}*\n- 前日比: ${diffToString(pv.dayDiff)}\n- 前週比: ${diffToString(pv.weekDiff)}`
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `:man-woman-girl-boy:*ユーザー数: ${user.yesterday}*\n- 前日比: ${diffToString(user.dayDiff)}\n- 前週比: ${diffToString(user.weekDiff)}`
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: ":star:*ユーザー数TOP10*:star:\n" + articles.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.user}`).join("\n"),
         }
       },
     ]
   })
+}
+
+function diffToString(diff) {
+  if (diff === 0) {
+    return `${diff} :arrow_right:`;
+  } else if (diff > 0) {
+    return `+${diff} :arrow_upper_right:`;
+  } else {
+    return `${diff} :arrow_lower_right:`;
+  }
 }
 
 await runReport();

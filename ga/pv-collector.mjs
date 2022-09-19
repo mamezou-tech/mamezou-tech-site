@@ -3,19 +3,23 @@ import { DateTime, Settings } from "luxon";
 import * as fs from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import { WebClient } from "@slack/web-api";
 
 Settings.defaultZone = "Asia/Tokyo";
 
 const propertyId = process.env.GA_PROPERTY_ID || "";
 const analyticsDataClient = new BetaAnalyticsDataClient();
 
+const now = DateTime.now();
+const oneWeekAgo = now.minus({weeks: 1});
+
 async function runReport(reportFile) {
   const [response] = await analyticsDataClient.runReport({
     property: `properties/${propertyId}`,
     dateRanges: [
       {
-        startDate: DateTime.now().minus({weeks: 1}).toISODate(),
-        endDate: DateTime.now().toISODate(),
+        startDate: oneWeekAgo.toISODate(),
+        endDate: now.toISODate(),
       },
     ],
     dimensions: [
@@ -64,13 +68,53 @@ async function runReport(reportFile) {
     .slice(0, 10)
     .map((row) => {
       const [title, url] = row.dimensionValues.map((v) => v.value);
+      const pv = row.metricValues[0].value;
       return {
         title: title.replace(" | 豆蔵デベロッパーサイト", ""),
-        url: url.replace("developer.mamezou-tech.com", ""),
+        path: url.replace("developer.mamezou-tech.com", ""),
+        url,
+        pv,
       };
     });
 
-  fs.writeFileSync(reportFile, JSON.stringify({ranking: articles.slice(0, 10)}, null, 2));
+  fs.writeFileSync(reportFile, JSON.stringify({ranking: articles.map(a => ({title: a.title, url: a.path}))}, null, 2));
+
+  await notifyToSlack(articles);
+}
+
+async function notifyToSlack(articles) {
+  const token = process.env.SLACK_BOT_TOKEN;
+  const web = new WebClient(token);
+  await web.chat.postMessage({
+    // channel: "D041BPULN4S",
+    channel: "C034MCKP4M6",
+    mrkdwn: true,
+    text: `先週(${oneWeekAgo.toISODate()} ~ ${now.minus({days: 1}).toISODate()})のランキング(PVベース)が確定しました:beers:`,
+    unfurl_media: false,
+    blocks: [
+      {
+        type: "header",
+        text: {
+          type: "plain_text",
+          text: `先週(${oneWeekAgo.toISODate()} ~ ${now.minus({days: 1}).toISODate()})のランキング(PVベース)が確定しました:beers:`,
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: articles.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.pv}`).join("\n"),
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "plain_text",
+          text: "PRがマージされたら今週のランキングとしてサイトに掲載されます:clap:\n執筆者の皆様ありがとうございました:mameka_sd_smile:",
+        }
+      },
+    ]
+  });
 }
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

@@ -42,22 +42,13 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS_FILE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_FILE }}
           GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         run: |
           set -eu
           cd ${GITHUB_WORKSPACE}/ga
           echo ${GOOGLE_APPLICATION_CREDENTIALS_FILE} | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
           export GOOGLE_APPLICATION_CREDENTIALS=${GITHUB_WORKSPACE}/google_auth.json
           npm run generate:pv
-          echo "::set-output name=rank1::$(cat ../src/_data/pv.json | jq -r ".ranking[0].title")"
-          echo "::set-output name=rank2::$(cat ../src/_data/pv.json | jq -r ".ranking[1].title")"
-          echo "::set-output name=rank3::$(cat ../src/_data/pv.json | jq -r ".ranking[2].title")"
-          echo "::set-output name=rank4::$(cat ../src/_data/pv.json | jq -r ".ranking[3].title")"
-          echo "::set-output name=rank5::$(cat ../src/_data/pv.json | jq -r ".ranking[4].title")"
-          echo "::set-output name=rank6::$(cat ../src/_data/pv.json | jq -r ".ranking[5].title")"
-          echo "::set-output name=rank7::$(cat ../src/_data/pv.json | jq -r ".ranking[6].title")"
-          echo "::set-output name=rank8::$(cat ../src/_data/pv.json | jq -r ".ranking[7].title")"
-          echo "::set-output name=rank9::$(cat ../src/_data/pv.json | jq -r ".ranking[8].title")"
-          echo "::set-output name=rank10::$(cat ../src/_data/pv.json | jq -r ".ranking[9].title")"
           git add ${GITHUB_WORKSPACE}/src/_data
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"
@@ -84,28 +75,6 @@ jobs:
           pr_title: "Update GA Report by github-actions"
           pr_reviewer: kudoh
           pr_body: "Check weekly access ranking report."
-
-      # https://github.com/slackapi/slack-github-action
-      - name: Notify to Slack
-        id: slack
-        uses: slackapi/slack-github-action@v1.21.0
-        with:
-          channel-id: 'C034MCKP4M6'
-          payload: |
-            {
-              "text": "週間GAアクセスランキング更新しました！",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "# 週間アクセスランキング\n1. ${{ steps.generate-ga-pv-report.outputs.rank1}}\n2. ${{ steps.generate-ga-pv-report.outputs.rank2 }}\n3. ${{ steps.generate-ga-pv-report.outputs.rank3 }}\n4. ${{ steps.generate-ga-pv-report.outputs.rank4 }}\n5. ${{ steps.generate-ga-pv-report.outputs.rank5 }}\n6. ${{ steps.generate-ga-pv-report.outputs.rank6 }}\n7. ${{ steps.generate-ga-pv-report.outputs.rank7 }}\n8. ${{ steps.generate-ga-pv-report.outputs.rank8 }}\n9. ${{ steps.generate-ga-pv-report.outputs.rank9 }}\n10. ${{ steps.generate-ga-pv-report.outputs.rank10 }}"
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - name: Delete google auth file
         run: rm -f ${GITHUB_WORKSPACE}/google_auth.json

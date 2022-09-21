@@ -1,4 +1,4 @@
-const { generalTags } = require("./utils");
+const { generalTags } = require("./utils.cjs");
 module.exports = (tags) => {
   return tags
     .toString()

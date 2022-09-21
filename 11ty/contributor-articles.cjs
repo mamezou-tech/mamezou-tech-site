@@ -1,5 +1,5 @@
 const contributors = require("../src/_data/contributors.json").contributors;
-const {getPosts} = require("./utils")
+const {getPosts} = require("./utils.cjs")
 
 function log(authorArticles) {
   Object.values(authorArticles).forEach(v => {

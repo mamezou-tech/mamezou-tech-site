@@ -1,6 +1,7 @@
-import { html, useRef, useEffect } from "htm/preact";
+import { html } from "htm/preact";
 import render from "preact-render-to-string";
 import { hydrate as preactHydrate } from "preact";
+import { useRef, useEffect } from "preact/hooks";
 
 function App({ url, path }) {
   const followList = useRef();
@@ -12,7 +13,7 @@ function App({ url, path }) {
     twitterFollow.defer = true;
     twitterFollow.src = "https://platform.twitter.com/widgets.js";
     twitterFollow.charset = "utf-8";
-    this.followList.current.appendChild(twitterFollow);
+    followList.current.appendChild(twitterFollow);
     // Facebook Share
     const script = document.createElement("script");
     script.async = true;

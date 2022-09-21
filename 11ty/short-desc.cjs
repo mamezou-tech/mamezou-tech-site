@@ -1,4 +1,4 @@
-const {chop} = require("./utils");
+const {chop} = require("./utils.cjs");
 module.exports = (collections, page, defaultValue) => {
   const {inputPath} = page;
   if (!inputPath) return defaultValue;

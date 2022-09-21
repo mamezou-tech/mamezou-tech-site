@@ -1,5 +1,5 @@
-const tagList = require("./tag-list");
-const {getPosts} = require("./utils");
+const tagList = require("./tag-list.cjs");
+const {getPosts} = require("./utils.cjs");
 
 module.exports = (collection) => {
   const tagArticles = {};

@@ -1,4 +1,4 @@
-const {generalTags} = require("./utils");
+const {generalTags} = require("./utils.cjs");
 module.exports = (collection) => {
   const tagSet = new Set();
   collection.getAll().forEach(item => {

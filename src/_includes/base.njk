@@ -97,20 +97,9 @@
     <noscript><link rel="stylesheet" href="/photoswipe/photoswipe.css"></noscript>
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"></noscript>
+    <script type="module" src="/vendor/is-land.js" defer></script>
   <body>
     <div id="fb-root"></div>
-    <script>
-      window.addEventListener('load', function() {
-        const script = document.createElement('script');
-        script.async = true;
-        script.defer = true;
-        script.crossorigin = 'anonymous';
-        script.src = 'https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v13.0&appId=625393465273959&autoLogAppEvents=1';
-        script.nonce = 'r6ZSti4e';
-        const fbroot = document.querySelector('#fb-root');
-        fbroot.after(script);
-      });
-    </script>
     {% edge 'liquid' %}
     <div class="tdbc-theme-toggle">
       {% if eleventy.edge.cookies.theme == 'dark' %}

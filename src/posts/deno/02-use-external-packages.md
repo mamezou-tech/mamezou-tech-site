@@ -103,7 +103,12 @@ deno cache --lock=lock.json --lock-write deps.ts
 他の開発者は、プロジェクトをリポジトリから clone して、以下のように `deno cache` を `--reload` フラグ付きで実行することで、キャッシュリロード時に依存関係を検証できます。
 
 ```shell
-$ deno cache --reload --lock=lock.json deps.ts
+deno cache --reload --lock=lock.json deps.ts
+```
+
+実行すると、再ダウンロードと検証が行われます。
+
+```
 Download https://deno.land/std@0.156.0/streams/conversion.ts
 Download https://deno.land/std@0.156.0/io/buffer.ts
 Download https://deno.land/std@0.156.0/_util/assert.ts
@@ -119,7 +124,7 @@ Deno v1.25 で npm パッケージの実験的サポートが追加されまし�
 
 [Deno 1.25 Release Notes](https://deno.com/blog/v1.25#experimental-npm-support)
 
-Release note にあるように、express をインポートして利用できます。
+リリースノートにあるように、express をインポートして利用できます。
 
 ```typescript
 import express from "npm:express";
@@ -251,7 +256,7 @@ Deno フレンドリーな CDN から取得することにより npm パッケ�
 
 
 ### Import Maps の利用
-Deno はブラウザでのモジュール解決に使用される Web プラットフォーム標準 Import Map を利用できます。Deno のパッケージ解決にも利用できますし、Node コードと Deno を連携させるのにも利用できます。
+Deno はブラウザでのモジュール解決に使用される Web プラットフォーム標準 Import Maps を利用できます。Deno のパッケージ解決にも利用できますし、Node コードと Deno を連携させるのにも利用できます。
 
 [GitHub - WICG/import-maps: How to control the behavior of JavaScript imports](https://github.com/WICG/import-maps)
 
@@ -286,6 +291,6 @@ Node.js では拡張子を解決するための機構を組み込んでおり、
 :::
 
 ## まとめ
-今回は、Deno から外部コードを利用する方法について紹介しました。
+今回は、Deno から外部ライブラリを利用する方法について紹介しました。
 
 次回は Deno のユースケースとして、JSX と DOM による SSR(Server side rendering) について見ていきたいと思います。

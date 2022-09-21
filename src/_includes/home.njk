@@ -74,11 +74,10 @@ layout: base.njk
 
     <div class="home-social-plugins">
       <is-land on:idle>
-        <div id="preact-ssn">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>
+        <div id="preact-sns">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>
         <script type="module/island">
-          import { hydrate } from '/vendor/preact.mjs';
-          import { SocialPlugins } from '/components/preact/bundle.mjs';
-          hydrate(SocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}), document.getElementById("preact-ssn"));
+          import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';
+          hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
         </script>
       </is-land>
     </div>

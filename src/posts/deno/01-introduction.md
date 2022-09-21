@@ -3,6 +3,7 @@ title: Deno を始める 第1回：開発環境とランタイム
 author: masahiro-kondo
 date: 2022-09-14
 templateEngineOverride: md
+nextPage: ./src/posts/deno/02-use-external-packages.md
 ---
 
 この連載では「遅まきながら Deno を使い始める」というテーマで Deno の環境構築から始めて、エコシステム、ユースケースなどを扱っていこうと考えています。

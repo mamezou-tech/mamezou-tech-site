@@ -7,6 +7,13 @@ function App({ url, path }) {
   const followList = useRef();
 
   useEffect(() => {
+    // Twitter Follow
+    const twitterFollow = document.createElement("script");
+    twitterFollow.async = true;
+    twitterFollow.defer = true;
+    twitterFollow.src = "https://platform.twitter.com/widgets.js";
+    twitterFollow.charset = "utf-8";
+    followList.current.appendChild(twitterFollow);
     // Facebook Share
     const script = document.createElement("script");
     script.async = true;
@@ -66,7 +73,6 @@ function App({ url, path }) {
         </div>
       </li>
     </ul>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   </div>`;
 }
 

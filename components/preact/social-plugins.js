@@ -1,14 +1,27 @@
 import { html } from "htm/preact";
 import render from "preact-render-to-string";
 import { hydrate as preactHydrate } from "preact";
+import { useRef, useEffect } from "preact/hooks";
 
 function App({ url, path }) {
+  const followList = useRef();
+
+  useEffect(() => {
+    // Facebook Share
+    const script = document.createElement("script");
+    script.async = true;
+    script.defer = true;
+    script.crossorigin = "anonymous";
+    script.src =
+      "https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v13.0&appId=625393465273959&autoLogAppEvents=1";
+    script.nonce = "r6ZSti4e";
+    const fbroot = document.querySelector("#fb-root"); // first element of body
+    fbroot.after(script);
+  });
 
   return html` <div className="tdbc-social-plugins">
-    <script src="https://platform.twitter.com/widgets.js" charset="utf-8" async></script>
-    <script src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v13.0&appId=625393465273959&autoLogAppEvents=1" crossorigin="anonymous" nonce="r6ZSti4e" async></script>
     <ul>
-      <li className="tdbc-twitter-follow">
+      <li ref="${followList}" className="tdbc-twitter-follow">
         <a
           href="https://twitter.com/MamezouDev?ref_src=twsrc%5Etfw"
           className="twitter-follow-button"
@@ -53,6 +66,7 @@ function App({ url, path }) {
         </div>
       </li>
     </ul>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   </div>`;
 }
 

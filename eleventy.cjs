@@ -108,7 +108,7 @@ module.exports = function (eleventyConfig) {
       if (typeof toHtml === "function") {
         return toHtml(args); // server rendered html
       }
-      console.log(`[Warning] toHtml function not found. Is this a Illegal Component? ${filename}`)
+      console.log(`[Warning] toHtml function not found. Is this a valid Component? ${filename}`)
       return "";
     } catch (e) {
       console.log(e);

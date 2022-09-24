@@ -184,9 +184,9 @@ dist/
   "description": "My Component Library",
   "version": "0.0.1",
   "files": ["dist"],
-  "main": "./dist/my-vue-libs-es.js",
   "types": "./dist/index.d.ts",
-  "module": "./dist/my-vue-libs-umd.js",
+  "module": "./dist/my-vue-libs-es.js",
+  "main": "./dist/my-vue-libs-umd.js",
   "exports": {
     ".": {
       "import": "./dist/my-vue-libs-es.js",

@@ -97,9 +97,8 @@ layout: base.njk
         {% endif %}
       </nav>
     </aside>
-    <hr class="link-separator" />
     <is-land on:idle style="margin-top:0">
-      <div id='recommendation-app'>{{ recommendation }}</div>
+      <div id='recommendation-app'></div>
 	  <script type="module/island">
       import { renderRecommendation } from '/components/preact/bundle.mjs';
       renderRecommendation({tags : '{{ tags | pageTags }}'}, document.getElementById("recommendation-app"));

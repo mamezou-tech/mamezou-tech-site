@@ -22,7 +22,7 @@ tags: [java, mp]
 - アプリ
   - MicroProfile等の検証で利用しているSPAアプリ（GitHubは[こちら](https://github.com/extact-io/rms)）
 - Framework
-  - [Helindo MP 3.0.1](https://helidon.io/docs/v3/#/about/introduction)
+  - [Helidon MP 3.0.1](https://helidon.io/docs/v3/#/about/introduction)
 - Jakarta EE(Java EE) Spec
   - CDI, JSON Binding, Annotations, Interceptors, RESTful Web Service(JAX-RS), JSON Processing, Dependency Injection, Bean Validation, Transactions(JTA), Persistence(JPA), Security
 
@@ -79,7 +79,7 @@ public class RentalReservationApplicationImpl implements RentalReservationApplic
 ...
 ```
 
-javaxのパッケージ名はキー名のプレフィックスなどにも多く使われているため、変更にあたってはこの点にも注意が必要です。筆者のアプリには該当として次のものがありました。
+javaxのパッケージ名はキー名のプレフィックスなどにも使われているため、変更にあたってはこの点にも注意が必要です。筆者のアプリには該当として次のものがありました。
 
 - 変更前(Java EE 8)
 ```yaml

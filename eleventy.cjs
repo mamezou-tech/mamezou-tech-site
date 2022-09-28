@@ -121,10 +121,14 @@ module.exports = function (eleventyConfig) {
     html: true,
     breaks: true,
   }).use(markdownItAnchor, {
-    permalink: true,
-    permalinkClass: "tdbc-anchor",
-    permalinkSymbol: "#",
-    permalinkSpace: false,
+    permalink: markdownItAnchor.permalink.linkAfterHeader({
+      class: "tdbc-anchor",
+      style: 'aria-label',
+      assistiveText: title => `link to '${title}'`,
+      visuallyHiddenClass: 'visually-hidden',
+      symbol: "#",
+      wrapper: ["<div class='section-header'>", "</div>"],
+    }),
     level: [1, 2, 3],
     slugify: (s) =>
       s

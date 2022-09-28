@@ -32,10 +32,12 @@ layout: base.njk
       <div style="float: right">
         <is-land on:idle>
           <div id="preact-sns">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>
-          <script type="module/island">
-            import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';
-            hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
-          </script>
+          <template data-island>
+            <script type="module">
+              import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';
+              hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
+            </script>
+          </template>
         </is-land>
       </div>
     </header>
@@ -99,10 +101,12 @@ layout: base.njk
     </aside>
     <is-land on:idle style="margin-top:0">
       <div id='recommendation-app'></div>
-	  <script type="module/island">
-      import { renderRecommendation } from '/components/preact/bundle.mjs';
-      renderRecommendation({tags : '{{ tags | pageTags }}'}, document.getElementById("recommendation-app"));
-	  </script>
+      <template data-island>
+	    <script type="module">
+        import { renderRecommendation } from '/components/preact/bundle.mjs';
+        renderRecommendation({tags : '{{ tags | pageTags }}'}, document.getElementById("recommendation-app"));
+	    </script>
+	  </template>
     </is-land>
     <hr class="link-separator" />
     {%- include "pv-ranking.njk" %}

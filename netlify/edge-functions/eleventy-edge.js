@@ -1,5 +1,7 @@
-import { EleventyEdge } from "eleventy:edge";
-import precompiledAppData from "./_generated/eleventy-edge-app-data.js";
+import {
+  EleventyEdge,
+  precompiledAppData,
+} from "./_generated/eleventy-edge-app.js";
 import includesNonPageAssets from "./includes-non-page-assets.js";
 
 export default async (request, context) => {
@@ -8,7 +10,6 @@ export default async (request, context) => {
     if (includesNonPageAssets(url.pathname)) {
       return; // css, font, etc...
     }
-    // context.log("apply 11ty edge", request.url)
     const edge = new EleventyEdge("edge", {
       request,
       context,
@@ -19,7 +20,7 @@ export default async (request, context) => {
     edge.config((eleventyConfig) => {
       // Add some custom Edge-specific configuration
       // e.g. Fancier json output
-      // eleventyConfig.addFilter("json", (obj) => JSON.stringify(obj, null, 2));
+      // eleventyConfig.addFilter("json", obj => JSON.stringify(obj, null, 2));
     });
 
     return await edge.handleResponse();

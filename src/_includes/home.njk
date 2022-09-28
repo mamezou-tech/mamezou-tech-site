@@ -75,10 +75,12 @@ layout: base.njk
     <div class="home-social-plugins">
       <is-land on:idle>
         <div id="preact-sns">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>
-        <script type="module/island">
-          import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';
-          hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
-        </script>
+        <template data-island>
+          <script type="module">
+            import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';
+            hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
+          </script>
+        </template>
       </is-land>
     </div>
     {%- include "google-search.njk" %}

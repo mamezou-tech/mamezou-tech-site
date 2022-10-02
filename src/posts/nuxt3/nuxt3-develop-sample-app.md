@@ -384,7 +384,7 @@ fetchArticle(+id);
 だいぶシンプルになりました。
 
 article取得部分を先程のComposableの公開関数・変数を使うようにしています。
-ここでも前述のNuxt3のAuto Importを使っていますので、useArticlesのimport文を記述する必要はありません。
+ここでも前述のNuxt3のAuto Importが有効ですので、useArticlesのimport文を記述する必要はありません。
 
 ## コンポーネントでUI部品を再利用する
 
@@ -465,7 +465,7 @@ fetchArticle(+id);
 ```
 
 スクリプトの変更はありません。テンプレートに先程の広告コンポーネントを追加しているだけです。
-ここでもNuxt3のAuto Importを使っていますので、import文を記述する必要はありません。
+`components`配下もNuxt3のAuto Importは機能しますので、Composable同様にコンポーネントもimport文の記述は不要です。
 
 ここまでくると、ディレクトリ構造は以下のようになります。
 

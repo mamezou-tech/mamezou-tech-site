@@ -2,7 +2,7 @@
 title: Dapr on Jetson Nano with k3s 
 author: shigeki-shoji
 date: 2022-01-03
-tags: [container, k8s, ZTA]
+tags: [container, k8s, ZTA, iot]
 ---
 
 マイクロサービスのように、多言語プログラミング (polyglot programming) が前提の環境では、認証認可やログのような横断的関心事 (cross-cutting concern) をアプリケーションのコードとして実装すると、各言語やフレームワークごとに移植が必要となり最新化への足かせとなります。

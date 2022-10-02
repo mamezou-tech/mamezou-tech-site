@@ -4,7 +4,7 @@ author: noboru-kudo
 date: 2022-09-25
 templateEngineOverride: md
 tags: [SSG, SSR]
-# prevPage: ./src/posts/jest/jest-mock.md
+nextPage: ./src/posts/nuxt3/nuxt3-develop-sample-app.md
 ---
 
 Vue.jsのハイブリッドフレームワークとして人気のNuxtですが、メジャーアップデートとなるNuxt3がそろそろGAになりそうです。

@@ -2,6 +2,7 @@
 title: スタンドアローンおよび言語組み込みの WebAssembly ランタイム Wasmer
 author: masahiro-kondo
 date: 2022-03-21
+tags: WASM
 ---
 
 [WebAssembly (Wasm)](https://developer.mozilla.org/ja/docs/WebAssembly) はブラウザで実行可能なバイナリフォーマットの標準として策定され、各ブラウザベンターにより実装されました。その後 Wasm の実行効率、ポータブルでセキュアな特徴をブラウザ外でも利用可能にするため [WebAssembly System Interface (WASI)](https://wasi.dev/) が策定されました。Wasmtime や Wasmer などの WASI 対応 Wasm ランタイムが開発されています。

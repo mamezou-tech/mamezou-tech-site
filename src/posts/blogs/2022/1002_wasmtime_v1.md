@@ -21,7 +21,7 @@ Fastly は自社開発の WASI をサポートする WASM ランタイム Lucet 
 
 [[TOC]]
 
-## WASI 開発フロー
+## WASI 対応 WASM の開発フロー
 
 WASI 対応の WASM を作成し利用するフローは以下のようになります。
 
@@ -186,7 +186,7 @@ wasmtime は 上記のようなエントリーポイントのある WASM だけ�
 wasmtime --invoke some_func foo.wasm
 ```
 
-## 言語からの呼び出し
+## ホスト言語からの呼び出し
 Wasmtime の言語への組み込みとしては、Rust / C / Python / .NET / Go をサポートしています。
 
 [Using WebAssembly from your language - Wasmtime](https://docs.wasmtime.dev/lang.html)

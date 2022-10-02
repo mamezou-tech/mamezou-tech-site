@@ -280,12 +280,12 @@ const article = articles.value.find(article => id === article.id.toString());
 
 `default.vue`というファイル名はNuxtのデフォルトとなっていますので、ここではタグを指定するだけで問題ありません。
 
-## Composition APIでロジックを再利用する
+## Composition APIでステートフルなモジュールを作成する
 
 次にVue3にビルトインされたComposition APIを使ってみます。
 
-今回表示するブログは固定のものとなっていますが、もちろん完成形としてはAPIアクセスで動的に取得したいです。
-ここでは、このブログ取得部分をモジュール(Composable)として各ページから分離します。
+今回表示するブログは固定のものとなっていますが、もちろん完成形としてはAPIアクセスで動的に取得したいところです。
+ここでは、このブログ取得機能をモジュール(Composable)として各ページから分離します。
 
 `composables`ディレクトリに以下のファイル(`useArticles.ts`)を配置します。
 

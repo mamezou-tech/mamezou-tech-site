@@ -168,7 +168,7 @@ Nuxt3では、Nuxt本体やVueの頻出APIはもちろん、自作のVueコン�
 特に、ページのヘッダ、フッタ等が各ページに冗長に記述されていました。 これら全ページ横断的に適用する部分は切り出して管理すべきです。
 Nuxt2でも同様ですが、このようなレイアウトは`layouts`ディレクトリにページ共通の枠組みとなるレイアウトファイルを作成します。
 
-- [Nuxtガイド - layout](https://v3.nuxtjs.org/guide/directory-structure/layouts)
+- [Nuxtドキュメント - layout](https://v3.nuxtjs.org/guide/directory-structure/layouts)
 
 ここでは`layouts`ディレクトリ内に`default.vue`を作成し、ヘッダ、フッタを切り出します。
 

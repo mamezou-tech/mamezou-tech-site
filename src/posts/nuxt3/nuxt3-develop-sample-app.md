@@ -237,8 +237,7 @@ articles.value = [{
 <script setup lang="ts">
 const route = useRoute();
 const {id} = route.query;
-const articles = ref<{ id: number, title: string, content: string }[]>([])
-articles.value = [{
+const articles = [{
   id: 1,
   title: "Nuxt3入門",
   content: "Nuxt3が公式リリースされました。Nuxt3ではVue3対応だけでなく、NitroやVite等様々な改善が施されています。"
@@ -247,7 +246,8 @@ articles.value = [{
   title: "Jest再入門",
   content: "今回はJestのモックについて整理していきます。Jestはビルトインでマッチャーが提供され、これ単体で多くのユースケースをサポートします。"
 }];
-const article = articles.value.find(article => id === article.id.toString());
+const article = ref<{id: number, title: string, content: string}>(null);
+article.value = articles.find(article => +id === article.id)
 </script>
 
 <template>

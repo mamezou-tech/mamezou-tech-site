@@ -153,7 +153,7 @@ Composition API自体の使い方は、本題ではありませんのでここ�
 もう一点気づくことは、上記はref()やuseRoute()等でimport文が記述されていません。これはNuxt3のAuto Importの仕組みを利用しているためです。
 Nuxt3では、Nuxt本体やVueの頻出APIはもちろん、自作のVueコンポーネント(`components`配下)、Composition APIのモジュール(`composables`配下)では明示的なimport記述は不要です[^2]。
 
-[^2]: IDEでコードアシストを使うには、Nuxtアプリ一度ビルド時して、TypeScriptの型宣言ファイル(d.ts)を`.nuxt`ディレクトリに作成する必要があります。
+[^2]: IDEでコードアシストを使うには、Nuxtアプリを一度ビルドして、TypeScriptの型宣言ファイル(d.ts)を`.nuxt`ディレクトリに作成する必要があります。
 
 - [Nuxt3ドキュメント - Auto Imports](https://v3.nuxtjs.org/guide/concepts/auto-imports)
 

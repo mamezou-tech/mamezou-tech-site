@@ -166,10 +166,14 @@ listening on http://localhost:3000/
 ```
 
 ### Node 互換モードの利用
-
 [Node Compatibility Mode | Manual | Deno](https://deno.land/manual@v1.25.3/node/compatibility_mode)
 
 Node.js のプロジェクトで、Deno を `--compat` フラグ付きで互換モードで動かす方法です。
+
+:::alert
+2022/10/03 追記
+`--compat` フラグによる Node 互換モードは、Deno 1.25.2 で削除されました。今後は import だけがサポートされます。
+:::
 
 次のようにサードパーティの npm パッケージを利用するプロジェクトで試しました。
 
@@ -241,7 +245,7 @@ std/node ライブラリは、Node のビルトインモジュール用のポリ
 [The std/node Library | Manual | Deno](https://deno.land/manual@v1.25.3/node/std_node)
 
 :::info
-実際には、あまりこういう使い方はしないと思われますが、Deno でバッチ処理を構成して、一部 Node.js のコードをまるっと動かしたいけど Node.js は入れたくないといったケースでは有効かもしれません。
+~~実際には、あまりこういう使い方はしないと思われますが、Deno でバッチ処理を構成して、一部 Node.js のコードをまるっと動かしたいけど Node.js は入れたくないといったケースでは有効かもしれません。~~
 :::
 
 ### Deno フレンドリーな CDN からのパッケージ取得

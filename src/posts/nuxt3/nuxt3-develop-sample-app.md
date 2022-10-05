@@ -251,7 +251,7 @@ article.value = articles.find(article => +id === article.id)
 </script>
 
 <template>
-  <div>
+  <div v-if="article">
     <p>タイトル：{{ article.title }}</p>
     <hr />
     <div style="width: 500px">{{ article.content }}</div>
@@ -372,7 +372,7 @@ fetchArticle(+id);
 </script>
 
 <template>
-  <div>
+  <div v-if="article">
     <p>タイトル：{{ article.title }}</p>
     <hr />
     <div style="width: 500px">{{ article.content }}</div>
@@ -453,7 +453,7 @@ fetchArticle(+id);
 </script>
 
 <template>
-  <div>
+  <div v-if="article">
     <p>タイトル：{{ article.title }}</p>
     <hr />
     <div style="width: 500px">{{ article.content }}</div>

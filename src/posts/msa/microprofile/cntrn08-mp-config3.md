@@ -6,7 +6,7 @@ tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn07-mp-restclient.md
 nextPage: ./src/posts/msa/microprofile/cntrn09-mp-openapi3.md
 ---
-Helidon 3.0がリリースされMicroProfile5.0準拠となり、ついにHelidonでもMicroProfile Config 3.0(MP Config 3.0)の機能が使えるようになりました。そこで今回は「[第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)」で紹介できなかった1.4から3.0までに取り入れられた便利な機能をその差分として紹介します。
+Helidon 3.0がリリースされMicroProfile5.0準拠となり、ついにHelidonでもMicroProfile Config 3.0(MP Config 3.0)の機能が使えるようになりました。そこで今回は前回紹介できなかった2.0から3.0までに取り入れられた便利な機能をその差分として紹介します。このため、今回の記事は[第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)の理解を前提にしています。まだの方はそちらから読んでいただければと思います。
 
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/05-config_3.0>

@@ -7,7 +7,7 @@ prevPage: ./src/posts/msa/microprofile/cntrn08-mp-config3.md
 nextPage: ./src/posts/msa/microprofile/cntrn10-mp-health.md
 ---
 
-Helidon 3.0からMicroprofile OpenAPI 3.0(MP OpenAPI 3.0)が使えるようになりました。今回はMP OpenAPI 2.0からMP OpenAPI 3.0までに取り入れられた新機能を紹介します。今回紹介する新機能はそれほど多くなく、それだけでは少し寂しいため、新機能と既存機能の比較として[第5回 コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)で紹介できなかった便利な機能も併せて紹介します。
+Helidon 3.0からMicroprofile OpenAPI 3.0(MP OpenAPI 3.0)が使えるようになりました。今回はMP OpenAPI 2.0からMP OpenAPI 3.0までに取り入れられた新機能を紹介します。今回紹介する新機能はそれほど多くなく、それだけでは少し寂しいため、新機能と既存機能の比較として前回紹介できなかった便利な機能も併せて紹介します。このため、今回の記事は[第5回 コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)の理解を前提にしています。まだの方はそちらから読んでいただければと思います。
 
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/06-openapi_3.0>
@@ -36,7 +36,7 @@ MP OpenAPI 1.1から3.0までに取り入れられた機能は次の3つとな�
 [^1]: OpenAPIではスキーマ/Schemaの単語がよく出てきますが、OpenAPIのコンテキストにおけるスキーマ/Schemaは”データ構造”として捉えると理解しやすくなります。
 
 :::column:MP OpenAPIのバージョンと主な変更点
-執筆時点の最新メジャーバージョンのHelidon 3.0はMicroProfile 4.0対応を飛ばして一気にMicroProfile 5.0へジャンプアップした形となります。このためMP OpenAPIのバージョンの動きと対応関係が掴みづらくなっていますが、整理すると次のようになります。
+執筆時の最新メジャーバージョンとなるHelidon 3.0はMicroProfile 4.0の対応を飛ばして一気にMicroProfile 5.0へジャンプアップした形となります。このためMP OpenAPIのバージョンの動きと対応関係が掴みづらくなっていますが、整理すると次のようになります。
 
 - MP OpenAPI 3.0
   - MicroProfile 5.0で取り込まれたバージョン。Helidonでは3.0で対応

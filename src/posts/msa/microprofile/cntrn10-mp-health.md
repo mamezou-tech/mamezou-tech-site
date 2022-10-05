@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-09-16
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn09-mp-openapi3.md
+nextPage: ./src/posts/msa/microprofile/cntrn11-mp-restclient3.md
 ---
 
 MicroProfileの機能を紹介していくシリーズの今回はMicroProfile Health(MP Health)です。MP Healthはアプリケーションの「生きてますか？」を確認するヘルスチェックに関する仕様をまとめたものです。ヘルスチェックは機能としては小さく地味ですが、マイクロサービスのような分散システムでアプリケーションを正常に運用にするためには欠かせない要素です。今回はそんなヘルスチェックに対しMP Healthが規定、提供する仕様や機能を紹介していきます。

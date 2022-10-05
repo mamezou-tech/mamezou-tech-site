@@ -113,9 +113,11 @@ article.value = articles.find(article => +id === article.id)
   <div>
     <header>Nuxt3サンプルアプリケーション</header>
     <div class="container">
-      <p>タイトル：{{ article.title }}</p>
-      <hr />
-      <div style="width: 500px">{{ article.content }}</div>
+      <article v-if="article">
+        <p>タイトル：{{ article.title }}</p>
+        <hr />
+        <div style="width: 500px">{{ article.content }}</div>
+      </article>
       <NuxtLink to="/">戻る</NuxtLink>
     </div>
     <footer>
@@ -251,10 +253,12 @@ article.value = articles.find(article => +id === article.id)
 </script>
 
 <template>
-  <div v-if="article">
-    <p>タイトル：{{ article.title }}</p>
-    <hr />
-    <div style="width: 500px">{{ article.content }}</div>
+  <div>
+    <article v-if="article">
+      <p>タイトル：{{ article.title }}</p>
+      <hr />
+      <div style="width: 500px">{{ article.content }}</div>
+    </article>
     <NuxtLink to="/">戻る</NuxtLink>
   </div>
 </template>
@@ -372,11 +376,15 @@ fetchArticle(+id);
 </script>
 
 <template>
-  <div v-if="article">
-    <p>タイトル：{{ article.title }}</p>
-    <hr />
-    <div style="width: 500px">{{ article.content }}</div>
+  <div>
+    <article v-if="article">
+      <p>タイトル：{{ article.title }}</p>
+      <hr />
+      <div style="width: 500px">{{ article.content }}</div>
+    </article>
     <NuxtLink to="/">戻る</NuxtLink>
+    <!-- ↓追加 -->
+    <Advertisement />
   </div>
 </template>
 ```

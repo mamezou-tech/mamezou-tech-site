@@ -1,5 +1,5 @@
 ---
-title: Nuxt3入門(第3回) - ユニーバーサルフェッチでデータを取得する
+title: Nuxt3入門(第3回) - ユニバーサルフェッチでデータを取得する
 author: noboru-kudo
 date: 2022-10-06
 templateEngineOverride: md
@@ -15,7 +15,7 @@ prevPage: ./src/posts/nuxt3/nuxt3-develop-sample-app.md
 Nuxt2では、一般的に@nuxtjs/axiosや@nuxt/httpを使ってデータを取得するケースが多かったと思いますが、Nuxt3では新しいフェッチAPI($fetch)が導入されました。
 
 今回は、Nuxt3のNitroサーバーエンジンでブログ取得APIを用意して、ここからブログ情報を取得するようにしてみます。
-なお、ここではレンダリングモードとして、Nuxt標準のユニーバーサルレンダリング(プリレンダリング無効)を使用することを前提とします。
+なお、ここではレンダリングモードとして、Nuxt標準のユニバーサルレンダリング(プリレンダリング無効)を使用することを前提とします。
 
 [[TOC]]
 
@@ -131,10 +131,10 @@ curl localhost:3000/api/blogs/1
 ここから、作成したAPIを呼び出すようにVueコンポーネント側を変えていきます。
 Nuxt3ではデータ取得のためのフェッチAPIがビルトインで提供されるようになりました。
 
-具体的には$fetchメソッドです。このメソッドの実態は[ohmyfetch](https://github.com/unjs/ohmyfetch)です。
-ohmyfetchは実行環境がブラウザの場合は[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)、Node.js環境の場合は[node-fetch](https://github.com/node-fetch/node-fetch)(または実験的バージョンのNode.jsのFetch API)を使うユニーバーサルなAPIです。
+具体的には$fetch関数です。この関数の実態は[ohmyfetch](https://github.com/unjs/ohmyfetch)です。
+ohmyfetchは実行環境がブラウザの場合は[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)、Node.js環境の場合は[node-fetch](https://github.com/node-fetch/node-fetch)(または実験的バージョンのNode.jsのFetch API)を使うユニバーサルなAPIです。
 
-$fetchメソッドはグローバルで利用可能で、importなしでどこでからでも使えます。
+$fetch関数はグローバルで利用可能で、importなしでどこでからでも使えます。
 また、前述の通りNitroで作成したAPIであれば、サーバー環境で実行する場合は直接APIコールになり性能面で有利となりますので、NitroでAPIを使う際にはよほどの理由がない限りこちらを利用した方が良いかと思います。
 
 Nuxtではこれをラップした以下のComposableを用意していますので、まずはこちらの利用を検討することになります。

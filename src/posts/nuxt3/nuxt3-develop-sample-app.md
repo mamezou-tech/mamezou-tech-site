@@ -5,6 +5,7 @@ date: 2022-10-02
 templateEngineOverride: md
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-rendering-mode.md
+nextPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md
 ---
 
 [前回](/nuxt/nuxt3-rendering-mode/)はNuxtの基本的なレンダリングモードを説明しました。

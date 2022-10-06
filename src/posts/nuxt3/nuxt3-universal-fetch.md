@@ -1,7 +1,7 @@
 ---
 title: Nuxt3入門(第3回) - ユニーバーサルフェッチでデータを取得する
 author: noboru-kudo
-date: 2022-10-07
+date: 2022-10-06
 templateEngineOverride: md
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-develop-sample-app.md
@@ -10,9 +10,9 @@ prevPage: ./src/posts/nuxt3/nuxt3-develop-sample-app.md
 [前回](/nuxt/nuxt3-develop-sample-app/)は簡単なブログサイトを作成し、Nuxtの基本機能や開発の流れを見てきました。
 
 ただ、ここで作成したサンプルアプリのブログサイトは、表示するブログデータは固定値で保持していました。新しいブログを追加した場合は別途ビルドする必要があります。
-実際のブログシステムでは、リアルタイムで最新ブログを取得しつつも、SEOを配慮してJavaScriptではなく、意味のあるHTML形式で取得できるようにしたいところです。
+実際のブログシステムでは、リアルタイムで最新ブログを取得したいところです。また、SEOや初期ロード時間を考慮して、クライアントサイドではなくサーバーサイドでレンダリングした意味のあるHTMLで取得できるようにしたいところです。
 
-Nuxt2では、一般的に@nuxtjs/axiosや@nuxt/httpを使ってデータ取得するケースが多かったと思いますが、Nuxt3では新しいフェッチAPI($fetch)が導入されました。
+Nuxt2では、一般的に@nuxtjs/axiosや@nuxt/httpを使ってデータを取得するケースが多かったと思いますが、Nuxt3では新しいフェッチAPI($fetch)が導入されました。
 
 今回は、Nuxt3のNitroサーバーエンジンでブログ取得APIを用意して、ここからブログ情報を取得するようにしてみます。
 なお、ここではレンダリングモードとして、Nuxt標準のユニーバーサルレンダリング(プリレンダリング無効)を使用することを前提とします。
@@ -26,13 +26,13 @@ Nuxt2では、一般的に@nuxtjs/axiosや@nuxt/httpを使ってデータ取得�
 
 ただし、APIの実装としてNuxt3のNitroを使うと、サーバーサイドレンダリングではHTTP通信でなく直接APIコールとなります。
 一方でクライアントサイドのレンダリングでは通常のHTTP経由の通信となります。
-このように、同一のソースコードでも臨機応変に呼び出し方式を自動で切り替えできますので、よりパフォーマンスに最適化したレンダリングが実現可能です[^1]。
+このように、同一のソースコードでも臨機応変に呼び出し方式を自動で切り替えできますので、よりパフォーマンスに最適化したレンダリングが実現できます[^1]。
 
 - [Nuxt3ドキュメント - Server Engine - Direct API Calls](https://v3.nuxtjs.org/guide/concepts/server-engine#direct-api-calls)
 
 [^1]: 実際の切り替えは、NuxtというよりもNitroが利用している[unenv](https://github.com/unjs/unenv)で行われているようです。
 
-Nitroを利用する場合は、`server/api`ディレクトリを作成し、その配下にソースコードを配置します。
+NitroでAPIを作成する場合は、`server/api`ディレクトリを作成し、その配下にソースコードを配置します。
 
 - [Nuxt3ドキュメント - Server Directory](https://v3.nuxtjs.org/guide/directory-structure/server)
 
@@ -51,7 +51,7 @@ server/
     └── blogs.get.ts
 ```
 
-Nitroはこのディレクトリ構造をもとに、APIルートにマッピングします。詳細は以下Nitroドキュメントを参照してください。
+Nitroはこのディレクトリ構造をもとに、APIのルートにマッピングします。詳細は以下Nitroドキュメントを参照してください。
 
 - [Nitroドキュメント - Route Handling](https://nitro.unjs.io/guide/introduction/routing)
 
@@ -85,13 +85,13 @@ export default defineEventHandler(async (event) => {
 実際には、DBやCMS、キャッシュ等、取得するデータに応じた処理をここで記述することになります。
 
 Nitroは、内部的にh3という軽量のHTTPサーバーを使用しており、ここで記述するリクエスト・レスポンスハンドラはh3に準じたものとする必要があります。
-また、クエリパラメータやリクエストボディの取得等、h3では必要最低限の各種ユーティリティが用意されています。NitroでもAuto Importが有効となっており、ほとんどのユーティリティはimportの記述なしで利用可能です。
+また、クエリパラメータやリクエストボディの取得等、必要最低限のh3のユーティリティが用意されています。Nuxt3同様にNitroでもAuto Importが有効となっており、ほとんどのユーティリティはimportの記述なしで利用可能です。
 h3の詳細は以下ドキュメントを参照してください。
 
 - [h3ドキュメント - GitHub](https://github.com/unjs/h3)
 
 実際にこれをビルドして、APIにアクセスしてみます。
-その前に読み込ませるJSONファイルを任意の場所に配置しておきます。
+その前に、読み込ませるJSONファイルを任意の場所に配置します。
 
 ```json
 {
@@ -110,6 +110,8 @@ h3の詳細は以下ドキュメントを参照してください。
 }
 ```
 
+後は以下でビルドと実行をします。APIで使用しているように環境変数(BLOG_DB)には、上記JSONファイルのパスを実行前に設定します。
+
 ```shell
 npm run build
 # ここではカレントディレクトリ直下にJSONファイル(db.json)を配置
@@ -126,14 +128,14 @@ curl localhost:3000/api/blogs/1
 
 ## VueコンポーネントでフェッチAPIを利用する
 
-ここで、作成したAPIを呼び出すようにVueコンポーネント側を変えていきます。
+ここから、作成したAPIを呼び出すようにVueコンポーネント側を変えていきます。
 Nuxt3ではデータ取得のためのフェッチAPIがビルトインで提供されるようになりました。
 
 具体的には$fetchメソッドです。このメソッドの実態は[ohmyfetch](https://github.com/unjs/ohmyfetch)です。
 ohmyfetchは実行環境がブラウザの場合は[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)、Node.js環境の場合は[node-fetch](https://github.com/node-fetch/node-fetch)(または実験的バージョンのNode.jsのFetch API)を使うユニーバーサルなAPIです。
 
 $fetchメソッドはグローバルで利用可能で、importなしでどこでからでも使えます。
-また、前述の通りNitroで作成したAPIであれば、サーバー環境で実行する場合は直接APIコールになり性能面で有利となりますので、NitroでAPIを使う際にはよっぽどの理由がない限りこちらを利用した方が良いかと思います。
+また、前述の通りNitroで作成したAPIであれば、サーバー環境で実行する場合は直接APIコールになり性能面で有利となりますので、NitroでAPIを使う際にはよほどの理由がない限りこちらを利用した方が良いかと思います。
 
 Nuxtではこれをラップした以下のComposableを用意していますので、まずはこちらの利用を検討することになります。
 
@@ -201,7 +203,7 @@ const { data: article } = useFetch(`/api/blogs/${id}`);
 ```
 
 実装自体は1行追加のみの簡単なものです。
-useFetch/useLazyFetchの戻り値の型定義は以下です。
+以下は、useFetch/useLazyFetchの戻り値の型定義です。
 
 ```typescript
 type AsyncData<DataT> = {
@@ -234,7 +236,7 @@ Nuxt2を使ったことのある方は、useAsyncDataにピンときたかもし
 後は実行するだけです。先程同様にNuxtアプリをビルド(`npm run build`)して、Nitroサーバーを起動(`node .output/server/index.mjs`)するだけです。
 ブラウザから`http://localhost:3000/`にアクセスすると、変更前と見た目は変わりませんが初回ロード時はサーバーサイドでAPIが呼び出され、HTMLとして返却されます。
 一方で、index.vueに配置した「最新情報法取得」ボタンクリックや詳細ページ表示時は、ブラウザからAPIが呼び出されます。
-また、詳細ページに直接アクセスする際は、サーバーサイドで直接APIコールしてデータフェッチを行います。
+また、詳細ページに直接アクセスする際は、サーバーサイドで直接APIコールしてデータフェッチを行い、ブログのコンテンツを含むHTMLとして返却します。
 少しややこしいので、図にすると以下のようになります。
 
 - トップページ表示 -> 最新情報取得 -> 詳細ページ表示(NuxtLink)
@@ -248,6 +250,7 @@ Nuxt2を使ったことのある方は、useAsyncDataにピンときたかもし
 
 ## まとめ
 今回はNuxt3で導入された新しいフェッチAPIを使い、サーバー、ブラウザ両方で利用可能なユニバーサルフェッチの実装を見てきました。
-このようにサーバーサイドレンダリングを実装する上では、ページレンダリング処理でブラウザ上でしか動作しないAPIを使用しないよう注意が必要です。
+サーバーサイドレンダリングでデプロイする形態では、どこでレンダリングされてもいいようにユニバーサルな実装が必要となります。
+ユニバーサルフェッチは、これを念頭にデザインされた柔軟なAPIであることが分かります。
 
 次回はNuxt3の動的ルーティングの方法について見ていきます。

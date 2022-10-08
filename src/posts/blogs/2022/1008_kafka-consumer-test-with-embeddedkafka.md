@@ -62,7 +62,7 @@ public class ExampleListener {
   private Long receivedEventId;
 
   @KafkaListener(topics = "test-topic")
-  public void recieve(ExampleEvent event) {
+  public void receive(ExampleEvent event) {
     logger.info("received payload='{}'", event.toString());
     receivedEventId = event.getEventId();
   }
@@ -174,7 +174,7 @@ public class EmbeddedKafkaIntegrationTest {
   }
 
   @Test
-  public void recieve() throws Exception {
+  public void receive() throws Exception {
     var event = new ExampleEvent(100L, "Alice");
     template.send(TOPIC1, event);
     Thread.sleep(1000);

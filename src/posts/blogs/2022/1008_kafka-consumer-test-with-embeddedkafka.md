@@ -193,7 +193,7 @@ KafkaTemplate はトピックにメッセージを送信するクラスで、Spr
 ./gradlew test
 ```
 
-![実行結果](https://i.gyazo.com/686f24d5bda69960e8efaf42af6fba37.png)
+![実行結果](https://i.gyazo.com/4743d07b124289e8ed2e375403142d18.png)
 
 ## まとめ
 以上、EmbeddedKafka を使ったテスト方法をご紹介しました。インプロセスで Kafka を実行するのはかなりの力技だと思いますが、やはりニーズがあるのですね。この記事のソースコードの全体は以下のリポジトリにあります。

@@ -5,7 +5,7 @@ date: 2022-10-08
 tags: [Kafka, テスト]
 ---
 
-[Kafka]((https://kafka.apache.org/)) は人気の分散メッセージングシステムです。[Spring Kafka](https://spring.io/projects/spring-kafka) を使うと Kafka トピックからのメッセージ取得を契機としてビジネスロジックを実行するコンシューマーの Spring Boot アプリを簡単に作成できます。
+[Kafka]((https://kafka.apache.org/)) は人気の分散メッセージングシステムです。[Spring for Apache Kafka](https://spring.io/projects/spring-kafka) を使うと Kafka トピックからのメッセージ取得を契機としてビジネスロジックを実行するコンシューマーの Spring Boot アプリを簡単に作成できます。
 
 ![](https://i.gyazo.com/2a0aa01e59c924e221e95a0289d6831d.png)
 
@@ -22,7 +22,7 @@ tags: [Kafka, テスト]
 
 [^1]: Homebrew や Docker を使えば簡単ではあるのですが。
 
-EmbeddedKafka は [Spring Initializr](https://start.spring.io/) で Spring Kafka を依存関係に入れると testImplementation に追加される spring-kafka-test に含まれています。
+EmbeddedKafka は [Spring Initializr](https://start.spring.io/) で Spring for Apache Kafka を依存関係に入れると testImplementation に追加される spring-kafka-test に含まれています。
 
 ```groovy
 dependencies {
@@ -62,7 +62,7 @@ public class ExampleListener {
   private Long receivedEventId;
 
   @KafkaListener(topics = "test-topic")
-  public void recieveTopic1(ExampleEvent event) {
+  public void recieve(ExampleEvent event) {
     logger.info("received payload='{}'", event.toString());
     receivedEventId = event.getEventId();
   }

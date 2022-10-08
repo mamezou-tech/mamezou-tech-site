@@ -20,7 +20,7 @@ MicroProfileは連載を行ってます。よければ他の記事も下のリ�
 [[TOC]]
 
 :::info
-この記事はJava11+Helidon 2.4.2 + MicroProfile OpenAPI 1.2をもとに作成しています。
+この記事はJava11+Helidon 2.4.2 + MicroProfile OpenAPI 1.2をもとに作成しています。MicroProfile OpenAPI 3.0は [第9回 MicroProfile OpenAPI 3.0の新機能と既存機能の比較](/msa/mp/cntrn09-mp-openapi3/) で紹介しています。
 :::
 
 # サンプルアプリと動作方法

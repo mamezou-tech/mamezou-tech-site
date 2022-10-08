@@ -6,7 +6,7 @@ tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn10-mp-health.md
 ---
 
-今回は[第8回](/msa/mp/cntrn08-mp-config3/),[9回](/msa/mp/cntrn09-mp-openapi3/)の続きとしてHelidon 3.0から使えるようになったMicroProfile RestClientの機能を紹介します。ただしMicroProfile RestClientについては差分となる機能は多くないため、今回は差分の機能を簡単に紹介した後に代わりとして以前のバージョンからあった小技的な機能を併せて紹介します。なお、今回の記事は[第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)の理解を前提にしています。まだの方はそちらから読んでいただければと思います。
+今回は[第8回](/msa/mp/cntrn08-mp-config3/),[9回](/msa/mp/cntrn09-mp-openapi3/)の続きとしてHelidon 3.0から使えるようになったMicroProfile RestClientの機能を紹介します。ただしMicroProfile RestClientは差分となる機能が多くないため、その差分を簡単に紹介した後に代わりとして以前のバージョンからあった小技的な機能を併せて紹介します。なお、今回の記事は[第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)の理解を前提にしています。まだの方はそちらから読んでいただければと思います。
 
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/07-restclient_3.0>
@@ -22,13 +22,13 @@ MicroProfile RestClientの詳細は[公式マニュアル](https://download.ecli
 :::
 
 # MicroProfile RestClient 3.0までの主な変更内容
-MicroProfile RestClient(MP RestClient) 2.0から3.0までに利用者観点で取り入れられた主な機能には大きく次の2つがあります。
+MicroProfile RestClient(MP RestClient) 2.0から3.0までに利用者観点で取り入れられた主な機能は大きく次の2つになります。
 
 1. RestClientBuilderに対するAPIの追加
 2. [Server-Sent Events (SSE)](https://developer.mozilla.org/ja/docs/Web/API/Server-sent_events)のサポート
 
 1.のRestClientBuilderに追加されたAPIは3つあります。それぞれの内容はこの後に紹介します。
-2.のSSEのサポートは個人的にSSEがそれほど利用されていないと感じている点と筆者自身がそれほど詳しくないという理由から説明は割愛します。内容が気になる方は公式マニュアルの[こちら](https://download.eclipse.org/microprofile/microprofile-rest-client-3.0/microprofile-rest-client-spec-3.0.html#server_sent_events)に詳しく記載されています。
+2.のSSEのサポートは個人的にSSEはそれほど利用されていないと感じている点と筆者自身がそれほど詳しくないという理由から説明は割愛します。内容が気になる方は公式マニュアルの[こちら](https://download.eclipse.org/microprofile/microprofile-rest-client-3.0/microprofile-rest-client-spec-3.0.html#server_sent_events)に詳しく記載されています。
 
 :::column:MP RestClientのバージョンと主な変更点
 執筆時の最新メジャーバージョンとなるHelidon 3.0はMicroProfile 4.0の対応を飛ばして一気にMicroProfile 5.0へジャンプアップした形となります。このためMP RestClientのバージョンの動きと対応関係が掴みづらくなっていますが、整理すると次のようになります。
@@ -45,14 +45,14 @@ MicroProfile RestClient(MP RestClient) 2.0から3.0までに利用者観点で�
 :::
 
 # RestClientBuilderに追加された3つのAPI
-[第7回](/msa/mp/cntrn07-mp-restclient/)ではRestClientの取得方法はインジェクションによるものしか説明していませんでしたが、もう1つ、実行時にプログラムから接続先などの構成情報を指定して動的にインスタンスを生成する方法もあります。この動的な生成で利用するビルダークラスがRestClientBuilderになります。
+[第7回](/msa/mp/cntrn07-mp-restclient/)で紹介したRestClientの取得方法はインジェクションによるものだけでしたが、もう1つ、実行時にプログラムから接続先などの構成情報を指定して動的にインスタンスを生成する方法もあります。この動的な生成で利用するビルダークラスがRestClientBuilderになります。
 
-MP RestClient 2.0ではこのRestClientBuilderにAPIが追加され、RestClientに対して指定可能な構成情報が増えています。
+このRestClientBuilderにMP RestClient 2.0でAPIが追加され、指定可能な構成情報が増えています。
 
 なお、RestClientBuilderは今回の小技機能の1つとして[動的なRestClientインスタンスの生成](#動的なrestclientインスタンスの生成)として取り上げているので、そちらも参照ください。
 
 ## リダイレクトレスポンスへの追従
-リダイレクトを指示する300番台のステータスコードを受信してもRestClientによるリダイレクトはできませんでした。これがMP RestClient 2.0からRestClientBuilderに追加されたfollowRedirectsメソッドでリダイレクトの追従を有効化することでRestClientによるリダイレクトが行えるようになります。
+リダイレクトを指示する300番台のステータスコードを受信してもRestClientでリダイレクトさせることはできませんでした。しかしMP RestClient 2.0からRestClientBuilderに追加されたfollowRedirectsメソッドで機能を有効化することでリダイレクトが行えるようになります。
 
 ```java
 RedirectClient client = RestClientBuilder.newBuilder()
@@ -65,7 +65,7 @@ RestClientBuilderに追加された3つのAPIの説明に使用しているサ�
 :::
 
 ## HTTPプロキシサーバーの指定
-MP RestClient 2.0から経由させるHTTPプロキシサーバを指定することができるようになりました。HTTPプロキシサーバを指定する場合は、RestClientBuilderに追加されたproxyAddressメソッドでプロキシサーバを指定します。
+経由させるHTTPプロキシサーバをMP RestClient 2.0から指定することができるようになりました。HTTPプロキシサーバを指定する場合は、RestClientBuilderに追加されたproxyAddressメソッドでプロキシサーバを指定します。
 
 ```java
 ProxiedClient client = RestClientBuilder.newBuilder()
@@ -90,7 +90,7 @@ QueryClient client = RestClientBuilder.newBuilder()
 Response response = client.sendMultiValues(Collections.asList("abc", "mno", "xyz"));
 ```
 
-指定可能なスタイルとしてQueryParamStyleに次の3つが定義されています。
+指定可能なスタイルとしてQueryParamStyleには次の3つが定義されています。
 
 |定数名|送信されるパラメータ例|
 |-----|--------------------|
@@ -99,7 +99,7 @@ Response response = client.sendMultiValues(Collections.asList("abc", "mno", "xyz
 |COMMA_SEPARATED|foo=v1,v2,v3|
 
 ### インジェクションでRestClientインスタンスを取得する場合
-インジェクションでRestClientインスタンスを取得する場合は設定ファイルに構成情報を定義することができます。構成情報に対する設定キーと設定内容は次のとおりです。
+インジェクションでRestClientインスタンスを取得する場合は設定ファイルに構成情報を定義します。構成情報を指定するキーと設定内容は次のとおりです。
 
 |構成情報|設定キーのsuffix|設定内容|
 |-------|---------------|--------|
@@ -107,37 +107,37 @@ Response response = client.sendMultiValues(Collections.asList("abc", "mno", "xyz
 |HTTPプロキシサーバーの指定|proxyAddress|経由させるサーバーアドレス|
 |複数値のパラメータスタイル|queryParamStyle|スタイルの定数名|
 
-表の設定キーはsuffixのため、設定ファイルに設定する実際のキーは`{configKey}/mp-rest/ + 表のsuffix`となります。また、{configKey}部分は@RegisterRestClientのconfigKey属性で指定した値になります。
+表の設定キーはsuffixのため、設定する実際のキーは`{configKey}/mp-rest/ + 表のsuffix`となります。また、{configKey}部分は@RegisterRestClientのconfigKey属性で指定した値になります。
 
-したがって`@RegisterRestClient(configKey = "web-api")`と指定されているRestClientのパラメータスタイルをCOMMA_SEPARATEDとする場合の設定は`web-api/mp-rest/queryParamStyle=MULTI_PAIRS`となります。
+例えば`@RegisterRestClient(configKey = "web-api")`と指定されているRestClientのパラメータスタイルをCOMMA_SEPARATEDとする場合は`web-api/mp-rest/queryParamStyle=MULTI_PAIRS`となります。
 
 MP RestClient 2.0で追加された機能の説明は以上となります。
 
 # 便利な小技機能の紹介
-ここからは[第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)で紹介できなかったMP RestClient 1.4(Helidon 2.x)から使える便利な機能として次の3つを紹介していきます。
+ここからは[第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)で紹介できなかったMP RestClient 1.4(Helidon 2.x)から使える便利な機能として次の3つを紹介します。
 
 - 動的なRestClientインスタンスの生成
 - HTTPヘッダーの設定
 - REST APIの非同期呼び出し
 
-紹介する3つの機能は次の簡単なRESTアプリケーションを使って説明していきます。
+また、ここからは次の簡単なRESTアプリケーションを使って説明していきます。
 
 ![overview](../../../img/mp/11-1_restclient3.drawio.svg)
 
-説明に利用するこのRESTアプリケーションはHelloAggregateサービスが収集(/aggregate)のリクエストを受け取ると配下の3つのHelloサービスに挨拶(/hello)を問い合わせ、各Helloサービスは自身の言語に対する挨拶を返します。HelloAggregateサービスは各Helloサービスから返された挨拶をカンマ区切りで連結してまとめ、その内容をリクエスト元に返すものとなります。
+説明に利用するこのRESTアプリケーションはHelloAggregateサービスが収集(/aggregate)のリクエストを受け取ると配下の3つのHelloサービスに挨拶(/hello)を問い合わせ、各Helloサービスは自身の言語に対する挨拶を返します。HelloAggregateサービスは各Helloサービスから返された挨拶をカンマ区切りで連結してまとめ、その内容をリクエスト元に返します。
 
-また、このRESTアプリケーションには紹介する機能のユースケースとして次の3つの要件もしくは仕様があるものとします。
+なお、このRESTアプリケーションには紹介機能に対するユースケースとして次の3つの要件もしくは仕様があるものとします。
 
-- 挨拶を返す3つのHelloサービスが公開するREST APIはすべて同じ。よって、HelloAggregateサービスからHelloサービスに対する呼び出しは同じRestClientインタフェースで行うことができる
-- Helloサービスを呼び出す際はHTTPヘッダに呼び出し元のリクエスト日時を設定する
+- 挨拶を返す3つのHelloサービスが公開するREST APIはすべて同じ。よって、HelloAggregateサービスからHelloサービスに対する呼び出しはすべて同じRestClientインタフェースで行うことができる
+- Helloサービスを呼び出す際はHTTPヘッダにリクエスト日時を設定する
 - HelloAggregateサービスから各Helloサービスへの呼び出しは非同期で行い処理を効率化する
 
 ## 動的なRestClientインスタンスの生成
-各Helloサービスに対するRestClientインタフェースは同じですが呼び出しURLはそれぞれ異なります。このため、[第7回で説明した](/msa/mp/cntrn07-mp-restclient/#microprofile-restclientによる実装)接続先をRestClientインタフェースのアノテーションで指定するような静的なRestClientインスタンスの取得は今回のケースには向きません。
+各Helloサービスに対するRestClientインタフェースは同じですが呼び出すURLはそれぞれ異なります。このため、[第7回で説明した](/msa/mp/cntrn07-mp-restclient/#microprofile-restclientによる実装)接続先などの構成情報をRestClientインタフェースのアノテーションで指定するような静的なRestClientインスタンスの取得は今回のケースに向きません。
 
-このような場合はRestClientBuilderで動的に必要な構成情報を指定します。
+このような場合はRestClientBuilderを使って動的に必要な構成情報を指定します。
 
-次のコードは接続先が異なる3つのRestClientインスタンスをRestClientBuilderを使って生成しています。
+接続先が異なる3つのRestClientインスタンスをRestClientBuilderで生成するコードは次のようになります。
 
 ```java
 private static final List<String> HELLO_SERVICE_URLS = List.of(
@@ -159,14 +159,14 @@ public void init() {
 }
 ```
 
-このコードは1.でRestClientBuilderインスタンスを生成し、生成したビルダーインスタンスに2.の`baseUri`メソッドで接続先を指定しています。最後に生成するインスタンスのRestClientインタフェースを3.の`build`メソッドで指定してRestClientのインスタンス生成しています。
+1.でRestClientBuilderインスタンスを生成し、生成したビルダーインスタンスに2.の`baseUri`メソッドで接続先を指定します。最後に生成するインスタンスのRestClientインタフェースを3.の`build`メソッドで指定してRestClientのインスタンス生成します。
 
 今回は接続先を動的に指定する例ですが、この他にも[RestClientBuilderに追加された3つのAPI](#restclientbuilderに追加された3つのapi)で紹介したような構成情報や[ResponseExceptionMapperなどのプロバイダ](/msa/mp/cntrn07-mp-restclient/#responseexceptionmapperインタフェースの実装)も指定することができます。
 
 ## HTTPヘッダの設定
-MP RestClientにはHTTPヘッダの設定機能が用意されています。REST API呼び出しは特定のHTTPヘッダの設定が必要になるケースはよくありますが、この機能を使うことでRestClientインタフェースを使いつつも柔軟なHTTPヘッダの設定を行うことができます。
+MP RestClientにはHTTPヘッダの設定機能が用意されています。REST API呼び出しでは特定のHTTPヘッダの設定が必要になるケースはよくありますが、この機能を使うことでRestClientインタフェースを使いつつも柔軟なHTTPヘッダの設定を行うことができます。
 
-RestClientに対するHTTPヘッダの設定方法はいくつかあります。今回の「リクエスト日時をHTTPヘッダに設定する」を題材にそれぞれの方法を見ていきます。
+HTTPヘッダの設定方法はいくつかあるため、今回の「リクエスト日時をHTTPヘッダに設定する」を題材にそれぞれの方法を見ていきます。
 
 ### @ClientHeaderParamによるHTTPヘッダの設定
 RestClientインタフェースに`@ClientHeaderParam`を付けることで該当リクエストのHTTPヘッダに情報を設定することができます。
@@ -185,12 +185,12 @@ public interface HelloRestClient extends AutoCloseable {
 }
 ```
 
-上記は`hello`メソッドで送信されるHTTPヘッダに`X-Requested-Timestamp`を追加し、その値に`generateTimestamp`メソッドの結果を設定する例となります。この例はメソッド定義に`@ClientHeaderParam`を付けているためHTTPヘッダが設定されるのはそのメソッドに対してだけですが、インタフェース定義に付けることで該当インタフェースの全てのメソッドに対しての指定ができます。
+上記は`hello`メソッドで送信されるHTTPヘッダに`X-Requested-Timestamp`を追加し、その値に`generateTimestamp`メソッドの結果を設定する例となります。この例はメソッド定義に`@ClientHeaderParam`を付けているためHTTPヘッダが設定されるのはそのメソッドに対してだけですが、インタフェース定義に付けることで該当インタフェースの全てのメソッドに対して指定ができます。
 
-また`value`属性には同一インタフェース内のメソッドを指定していますが、staticメソッドであれば他のクラスのメソッドも指定することができます。この場合の`value`属性には`"{some.pkg.MyHeaderGenerator.generateCustomHeader}"`のようにFQCN + "." + メソッド名で呼び出すメソッドを指定します。値を動的に設定する例を見てきましたが固定値も問題なく指定することができます。この場合は`value="sample"`のように設定したい値をリテラルで直接指定します。
+また`value`属性には同一インタフェース内のメソッドを指定していますが、staticメソッドであれば他のクラスのメソッドも指定することができます。この場合の`value`属性には`"{some.pkg.MyHeaderGenerator.generateCustomHeader}"`のようにFQCN + "." + メソッド名で呼び出すメソッドを指定します。ここまで値を動的に設定する例を見てきましたが固定値も問題なく指定することができます。この場合は`value="sample"`のように設定したい値をリテラルで直接指定します。
 
 ### ClientHeadersFactoryによるHTTPヘッダの設定
-決まったHTTPヘッダを常に送信するようなケースは`@ClientHeaderParam`で対応することができますが、条件によって送信するHTTPヘッダを変えるようなケースには対応できません。このようなケースではClientHeadersFactoryインタフェースを実装して対応します。
+決まったHTTPヘッダを常に送信するようなケースは`@ClientHeaderParam`で対応することができますが、条件によって送信するHTTPヘッダを変えるようなケースには対応できません。このようなケースにはClientHeadersFactoryインタフェースを実装して対応します。
 
 - ClientHeadersFactoryインタフェースの実装例
 ```java
@@ -212,12 +212,12 @@ public class TimestampHeaderFactory implements ClientHeadersFactory {
 }
 ```
 
-ClientHeadersFactoryインタフェースのupdateメソッドに送信するHTTPヘッダを決定する処理を実装します。この実装の詳細は次のとおりになります。
+ClientHeadersFactoryインタフェースのupdateメソッドに送信するHTTPヘッダを決定する処理を実装します。この実装の詳細は次のとおりです。
 
-1. 引数 `incomingHeaders`には「外から入ってきたHTTPヘッダ」が渡ってきます。これはRestClientを実行する契機となったリクエストのHTTPヘッダに相当します。
-2. 引数`clientOutgoingHeaders`には「外に出そうとしているHTTPヘッダ」が渡ってきます。通常は空で渡ってきますが、`@ClientHeaderParam`などの他の手段で既にHTTPヘッダーが設定されている場合は、そのヘッダ情報が渡ってきます。
-3. 呼び出し先のREST APIにも`clientOutgoingHeaders`に設定されているヘッダ情報を伝播させるため、その内容を返却用のHTTPヘッダ(`newHeadersMap`)にも設定します。
-4. HTTPヘッダでTimestampeの出力抑止が指定されていない場合に返却用のHTTPヘッダに`X-Requested-Timestamp`を追加する例となります。
+1. 引数 `incomingHeaders`には「外から入ってきたHTTPヘッダ」が渡ってきます。これはRestClientのメソッドを実行する契機となったリクエストのHTTPヘッダに相当します。
+2. 引数`clientOutgoingHeaders`には「外に出そうとしているHTTPヘッダ」が渡ってきます。通常は空で渡ってきますが、`@ClientHeaderParam`など他の手段で既にHTTPヘッダーが設定されている場合は、そのヘッダ情報が渡ってきます。
+3. `clientOutgoingHeaders`に設定されているヘッダ情報を伝播させるため、返却用のHTTPヘッダ(`newHeadersMap`)に内容を設定します。
+4. HTTPヘッダでTimestampeの出力抑止が指定されていない場合に、返却用のHTTPヘッダに`X-Requested-Timestamp`を追加する例となります。
 5. 返却したHTTPヘッダをもとにリクエストのHTTPヘッダが設定されます。
 
 実装したClientHeadersFactoryクラスは`@RegisterClientHeaders`でRestClientインタフェースに指定します。
@@ -251,7 +251,7 @@ public interface HelloRestClient extends AutoCloseable {
 }
 ```
 
-次にこのRestClientインタフェースでHelloサービスを呼び出すHelloAggregateサービスの実装は次のようになります。
+次にこのRestClientインタフェースを使ってHelloサービスを呼び出すHelloAggregateサービスの実装は次のようになります。
 
 ```java
 @RequestScoped
@@ -271,7 +271,7 @@ public class HelloAggregateResource {
 
 1. `helloClients`のリストにはそれぞれ接続先の異なるHelloRestClientインタフェースのRestClientが格納されています。
 2. `helloClients`からRestClientを1つずつ取り出し、HelloRestClientインタフェースをとおしてHelloサービスのREST APIを呼び出します。
-3. 2.の結果にカンマを付加して全体の結果を収集(collect)し、`helloClients`がなくなるまで2.と3.の処理を繰り返します。この際、2.のHelloサービスの呼び出しは同期呼び出しのため、結果が返ってくるまで次のHelloサービスが呼び出されることはありません。
+3. 2.で取得した結果にカンマを付加しながら`helloClients`がなくなるまで2.と3.の処理を繰り返します。この際、2.のHelloサービスの呼び出しは同期呼び出しのため、結果が返ってくるまで次のHelloサービスが呼び出されることはありません。
 
 最後に呼び出される側のHelloサービスの実装は次のとおりになります。
 
@@ -293,7 +293,7 @@ public class HelloServiceResource {
 }
 ```
 
-やっていることは`hello.message`に設定されている文字列を挨拶(`hello`メソッドの結果)として返す簡単なものですが、処理の先頭で[HTTPヘッダの設定](#httpヘッダの設定)で説明したリクエスト日時をログに出力するとともに、Helloサービスが同期で呼び出されていることが分かるように1秒間のスリープを入れています。
+やっていることは`hello.message`に設定されている文字列を挨拶(`hello`メソッドの結果)として返す簡単なものですが、処理の先頭で[HTTPヘッダに設定されているリクエスト日時](#httpヘッダの設定)をログに出力するとともに、Helloサービスが同期で呼び出されていることが分かるように1秒間のスリープを入れています。
 
 それでは、実際にHelloAggregateサービスから各Helloサービスが呼び出された際のログを見てみましょう。
 
@@ -348,10 +348,10 @@ public class HelloAggregateResource {
     }
 ```
 
-非同期呼び出しのためコードは処理の実行と結果の受け取りの大きく2つに分かれます。
+非同期呼び出しのため「処理の実行」と「結果の受け取り」の大きく2つにコードが分かれます。
 
 #### - 非同期処理の実行 -
-Helloサービスに対する呼び出しは1.の`HelloRestClient::asyncHello`で行われます。この時点でREST APIの呼び出しが実行[^1]されますが、呼び出しは非同期で行われるため、即時に結果を取得することはできません。その代わりとして非同期呼び出しの完了を意味する`CompletableFuture`が返ってきます。
+Helloサービスの呼び出しは1.の`HelloRestClient::asyncHello`で行われます。この時点でREST API呼び出しが実行[^1]されますが、呼び出しは非同期で行われるため、即時に結果を取得することはできません。その代わりとして非同期呼び出しの完了を意味する`CompletableFuture`が返ってきます。
 
 また`HelloRestClient::asyncHello`は結果を待つことのない非同期で行われるため、1.の非同期実行と2.の`CompletableFuture`の収集(collect)は即座に完了し、結果を受け取る3.以降の処理に移ります。
 
@@ -363,15 +363,15 @@ CompletableFutureはCompletionStageインタフェースの実装クラスとな
 
 
 #### - 処理結果の受け取り -
-今回の例は呼び出したHelloサービスの結果がすべて揃ってから処理を再開するようにしていますが、この制御方法を指定しているのが、3.の`CompletableFuture.allOf(futures)`です。
+今回の例は3.の`CompletableFuture.allOf(futures)`でHelloサービスの結果がすべて揃ってから処理を再開するように指定しています。
 
-この際に`CompletableFuture.allOf(futures)`の結果として`promise`に格納されるものは「処理結果を返すことを約束する」的なものでHelloサービスからの結果そのものではありません。実際の処理結果は4.の`thenApply`メソッドに「全部の結果が揃ったときにコレを呼び出してネ」という意味で引数で渡すラムダ式で行います。
+この際の`CompletableFuture.allOf(futures)`の結果として`promise`に格納されるものは「処理結果を返すことを約束する」的なものでHelloサービスからの結果そのものではありません。実際の処理結果は4.の`thenApply`メソッドに「全部の結果が揃ったときにコレを呼び出してネ」という意味で引数で渡すラムダ式で行います。
 
-引数で渡されたラムダ式[^2]は2.で取得した`CompletableFuture`からそれぞの処理結果を5.の`join`メソッドで取得し、すべてをカンマ区切りで連結した文字列を返します。そして、この最終的な処理結果は非同期処理全体の完了を意味する`thenApply`メソッドの戻り値の`CompletableFuture`インスタンスから6.の`join`メソッドを使って取り出します。
+引数で渡されたラムダ式[^2]は2.で取得した`CompletableFuture`からそれぞの処理結果を5.の`join`メソッドで取得し、すべてをカンマ区切りで連結した文字列を返します。最後に非同期処理全体の完了を意味する`thenApply`メソッドの戻り値の`CompletableFuture`インスタンスから6.の`join`メソッドを使って最終的な処理結果を取り出します。
 
 [^2]: `CompletableFuture.allOf`に対する`thenApply`メソッドで渡すラムダ式の引数は常にnullとなり意味を持ちません。このため例では`dummy`という変数名にしています。
 
-それでは今度はHelloAggregateから非同期で各Helloサービスが呼び出された際のログを見てみます。
+今度はHelloAggregateから非同期で各Helloサービスが呼び出された際のログを見てみます。
 
 ```yaml
 $ curl localhost:7001/aggregate/async

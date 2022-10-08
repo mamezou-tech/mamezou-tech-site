@@ -20,7 +20,7 @@ MicroProfileは連載を行ってます。よければ他の記事も下のリ�
 [[TOC]]
 
 :::info
-この記事はJava11+Helidon 2.4.2 + MicroProfile RestClient 1.4をもとに作成しています。MicroProfile RestClient 1.4の仕様は[こちら](https://download.eclipse.org/microprofile/microprofile-rest-client-1.4.0/microprofile-rest-client-1.4.0.html)を参照ください。
+この記事はJava11+Helidon 2.4.2 + MicroProfile RestClient 1.4をもとに作成しています。MicroProfile RestClient 1.4の仕様は[こちら](https://download.eclipse.org/microprofile/microprofile-rest-client-1.4.0/microprofile-rest-client-1.4.0.html)を参照ください。また、MicroProfile RestClient 3.0や今回紹介できなかった機能は [第11回 MicroProfile RestClient 3.0の確認と小技機能の紹介](/msa/mp/cntrn11-mp-restclient3/) で紹介しています。
 :::
 
 ## 比較に利用するREST API

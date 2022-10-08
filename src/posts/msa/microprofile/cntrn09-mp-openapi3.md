@@ -44,15 +44,19 @@ MP OpenAPI 1.1から3.0までに取り入れられた機能は次の3つとな�
 - MP OpenAPI 2.0
   - MicroProfile 4.0で取り込まれたバージョン
   - 今回紹介する3つの機能や互換性のないAPIの変更など大きな変更が加えられた
+- MP OpenAPI 1.2[^2]
+  - API のクラスローディングの問題を修正する小さな変更(2.0からバックポート)
+  - 単独リリースのため、どのMicroProfileバージョンにも含まれていない
 - MP OpenAPI 1.1
   - MicroProfile 2.2で取り込まれたバージョン。Helidonは1.xから対応
   - 小規模な変更がいくつか加えられた
 :::
+[^2]: [Eclipse Foundation MicroProfile OpenAPI 1.2](https://projects.eclipse.org/projects/technology.microprofile/releases/openapi-1.2)より
 
 # 特定クラスに対するスキーマ指定
 この機能を説明する前に、この機能が登場した背景を少し説明したいと思います。
 
-MP OpenAPIランタイムはJavaのデータクラスのclass情報をスキャンし、自動でOpenAPIドキュメントのスキーマ情報を生成します。この際、データクラスのフィールドがjava.lang.StringであればOASのデータ型のstringへといったように、MP OpenAPIランタイムはOpenAPI Specification(OAS)で定義されているデータ型[^2]と対応するJava型との対応については、特に何も宣言することなく、デフォルトでマッピングを行ってくれます。
+MP OpenAPIランタイムはJavaのデータクラスのclass情報をスキャンし、自動でOpenAPIドキュメントのスキーマ情報を生成します。この際、データクラスのフィールドがjava.lang.StringであればOASのデータ型のstringへといったように、MP OpenAPIランタイムはOpenAPI Specification(OAS)で定義されているデータ型[^3]と対応するJava型との対応については、特に何も宣言することなく、デフォルトでマッピングを行ってくれます。
 
 これは非常に便利なのですがOASには日時に関するデータ型が定義されていません。このためLocalDateやLocalDateTimeなど日時に関する型はjava.nio.Pathやjava.sql.Connectionなどその他大勢のクラスと同じようにOASのobject型に割り当てられるのが不便でした。
 
@@ -62,7 +66,7 @@ MP OpenAPIランタイムはJavaのデータクラスのclass情報をスキャ�
 
 今回はLocalDateに対するスキーマを指定する例を説明していきます。また、MP OpenAPI 1.1ではできなかったといいましたが、共通的な仕組みが全くできなかった訳ではありません。機能の比較として同様なことをMP OpenAPI 1.1以前の機能で行う例も紹介してみたいと思います。
 
-[^2]: string, number, integer, boolean, array, objectの6種類。詳細は[OpenAPI Guide/Data Types](https://swagger.io/docs/specification/data-models/data-types/)を参照
+[^3]: string, number, integer, boolean, array, objectの6種類。詳細は[OpenAPI Guide/Data Types](https://swagger.io/docs/specification/data-models/data-types/)を参照
 
 
 ## 特定クラスに対するスキーマ指定の利用法
@@ -121,7 +125,7 @@ MP OpenAPIランタイムはLocalDateなどの日付に関する型はOASのobje
 
 特定クラスに対するスキーマ指定は`mp.openapi.schema.<指定するクラスのFQCN>`をキーに、マッピングしたいスキーマ定義を次のようにJSON形式で設定ファイルに定義します。
 
--	META-INF/microprofile-config.properties[^3]
+-	META-INF/microprofile-config.properties[^4]
 ```shell
 mp.openapi.schema.java.time.LocalDate = { \
       "name": "LocalDate", \
@@ -132,7 +136,7 @@ mp.openapi.schema.java.time.LocalDate = { \
     }
 ```
 
-[^3]: プロパティファイルのため改行箇所には`\`(バックスラッシュ)が必要となります。また、全角文字を含める場合はnative2asciiが必要となります。
+[^4]: プロパティファイルのため改行箇所には`\`(バックスラッシュ)が必要となります。また、全角文字を含める場合はnative2asciiが必要となります。
 
 この設定を行った上で先ほどと同じPersonクラスを入力としてMP OpenAPIから出力されたOpenAPIドキュメントのスキーマ情報を見ると次のようになっています。
 
@@ -352,8 +356,8 @@ public class Person {
 # @RequestBodySchema/@APIResponseSchemaの導入
 この仕組みも先ほど紹介した`@SchemaProperty`と同じようにデータ構造を表す明示的に示すために導入されたものです。`@SchemaProperty`との違いは定義したいスキーマ情報に対するクラス定義はあるが、それがREST APIのメソッド定義に表れない点となります。
 
-この具体的な例としては次のようなもの[^4]があります。
-[^4]: [RequestBodySchema](https://javadoc.io/static/org.eclipse.microprofile.openapi/microprofile-openapi-api/3.0/org/eclipse/microprofile/openapi/annotations/parameters/RequestBodySchema.html)と[APIResponseSchema](https://javadoc.io/static/org.eclipse.microprofile.openapi/microprofile-openapi-api/3.0/org/eclipse/microprofile/openapi/annotations/responses/APIResponseSchema.html)のJavadocサンプルを例にしています。
+この具体的な例としては次のようなもの[^5]があります。
+[^5]: [RequestBodySchema](https://javadoc.io/static/org.eclipse.microprofile.openapi/microprofile-openapi-api/3.0/org/eclipse/microprofile/openapi/annotations/parameters/RequestBodySchema.html)と[APIResponseSchema](https://javadoc.io/static/org.eclipse.microprofile.openapi/microprofile-openapi-api/3.0/org/eclipse/microprofile/openapi/annotations/responses/APIResponseSchema.html)のJavadocサンプルを例にしています。
 
 - Requestの例
 ```java

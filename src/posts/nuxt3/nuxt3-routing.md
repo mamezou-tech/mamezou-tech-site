@@ -1,5 +1,5 @@
 ---
-title: Nuxt3入門(第3回) - Nuxtのルーティングを理解する
+title: Nuxt3入門(第4回) - Nuxtのルーティングを理解する
 author: noboru-kudo
 date: 2022-10-09
 templateEngineOverride: md

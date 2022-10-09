@@ -9,7 +9,7 @@ prevPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md
 
 [前回](/nuxt/nuxt3-universal-fetch/)はサンプルアプリのブログサイトがAPI経由でブログ情報を取得できるようにしました。
 
-今回はNuxtアプリケーションでページ遷移する際のルーティングについて見ていきます。
+今回は、Nuxtアプリケーションでページ遷移に使うルーティングについて見ていきます。
 Nuxt2でも同様ですが、Nuxtはルーティング定義を個別に作成する必要はありません[^1]。Nuxtではファイルシステムベースのルーティングを採用しており、`page`ディレクトリ配下の構造でルートマッピング決まります。
 
 [^1]: Nuxtを使わない場合は、[Vue Router](https://router.vuejs.org/)でルートマッピングを記述するのが一般的です。
@@ -77,13 +77,16 @@ const navigate = () => {
 対象のマッピングが存在しない場合のルート(Catch-all Route)です。
 Nuxt3では`[...slug].vue`というファイル名でページコンポーネントを作成します。slugの部分は任意の文字列で構いません。
 
+作成するページコンポーネントは以下のような通常のVueコンポーネントです。
+
 ```html
 <template>
   <p>{{ $route.params.slug }} Catch-all Route</p>
 </template>
 ```
 
-テンプレートの`route.params.slug`の部分には、ファイル名のスプレッド演算子から推測できるようにパスの配列(`/`区切り)が入ります。
+テンプレートのみのシンプルなコンポーネントです。
+`route.params.slug`の部分には、ファイル名のスプレッド演算子から推測できるようにパスの配列(`/`区切り)が入ります。
 このキャッチオール用のページコンポーネントは、任意のディレクトリに配置して適用範囲をそのパス配下に限定できます。
 
 なお、適用範囲の指定はできませんが、`pages/404.vue`ページコンポーネントを作成すれば、全体のキャッチオールルートとして指定可能です。
@@ -115,11 +118,11 @@ Nuxt2では`pages/details/_id.vue`のようなアンダースコアをつけて�
 - / -> pages/index.vue(変更なし)
 - /details/:id -> pages/details/\[id\].vue
 
-2番目の定義がVue Routerの動的ルーティング[^3]になります。
+2番目の定義がVue Routerの動的ルーティング[^3]になります(`id`パラメータ)。
 
 [^3]: Vue Routerの動的ルーティングは[公式ドキュメント](https://router.vuejs.org/guide/essentials/dynamic-matching.html)を参照してください。
 
-パスパラメータを利用するようindex.vueを修正します。
+このパスパラメータを利用するようindex.vueを修正します。
 
 ```html
 <script setup lang="ts">
@@ -169,7 +172,7 @@ const { data: article } = useFetch(`/api/blogs/${id}`);
 ```
 
 基本はdetails.vueと同じですが、クエリパラメータ(route.query)として取得していた部分を、パスパラメータ(`route.params`)に変更しました。
-これでNuxtアプリケーションを起動すると、パスパラメータでページ遷移するようになります。
+これでNuxtアプリケーションをビルドすると、パスパラメータでページ遷移するようになります。
 
 :::column:プリレンダリングと動的ルーティング
 Nuxtはルート(`/`)を起点としてHTMLリンクをクロールしており、動的ルーティング対象のページコンポーネントもプリレンダリングできます。
@@ -228,6 +231,11 @@ routes関数の引数には、Nuxtが作成したファイルシステムベー�
 カスタムルートの記述方法はVue Routerのものです。詳細は[Vue Routerの公式ドキュメント](https://router.vuejs.org/api/interfaces/routeroptions.html)を参照してください。
 
 こうすると /foo/baz が pages/foo/bar.vue にマッピングされ、NuxtLinkやnavigateToでカスタムパスでページ遷移可能となります。
+
+- /foo/bar -> pages/foo/bar.vue (Nuxtデフォルト)
+- /foo/baz -> pages/foo/bar.vue (追加したカスタムルート)
+
+もちろん上記ロジックを修正して、Nuxtデフォルトの方のルートを除外することもできます。
 
 ## まとめ
 

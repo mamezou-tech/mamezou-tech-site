@@ -24,3 +24,4 @@ MQTTの仕組みと特徴、各種実装についてご紹介します。
 
 - [IoT を使ってみる（その５：MQTT編）](/iot/internet-of-things-05/)
 - [IoT を使ってみる（その６：MQTTブローカー Mosquitto編）](/iot/internet-of-things-06/)
+- [IoT を使ってみる（その７：MQTTクライアント paho編）](/iot/internet-of-things-07/)

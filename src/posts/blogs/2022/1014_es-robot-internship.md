@@ -15,7 +15,7 @@ tags: [intern,AWS,iot]
 その内容について紹介したいと思います。
 
 :::info
-ロボット開発者を募集しております。[採用情報](https://hrmos.co/pages/mamezou-recruit)
+ロボット開発者を募集しております。[採用情報](https://hrmos.co/pages/mamezou-recruit/jobs?category=1751150653226418177)
 :::
 
 ## 6軸ロボットの制御ソフトウェア開発を体験しよう

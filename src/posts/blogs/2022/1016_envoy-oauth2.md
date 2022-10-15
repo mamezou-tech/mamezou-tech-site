@@ -219,13 +219,14 @@ JSON 等のリクエストを受け取り、JSON 等でレスポンスする API
 
 このような API で構成されたマイクロサービスのサイドカーでは、[JWT Authentication](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/jwt_authn_filter) と認可のための [OPA](https://www.openpolicyagent.org/) などを利用する [External Authorization](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter) が適しています。
 
-一方、HTML などの UI コンテンツのリクエスト時は、リダイレクト応答等の適切な処理が期待でき、OpenID Connect の認証フローの実行に適しています。
-この目的には OAuth2 Filter が適しています。
+一方、OpenID Connect の認証フローの実行はリダイレクト応答等の対応やユーザとの対話のために OAuth2 Filter が必要です。
 
 図で示すと、下のようになります。
 
 ![構成図2](/img/blogs/2022/1016_envoy-oauth2-2.png)
 
-## 最後に
+JWT Authentication / External Authorization については「[第5回 Open Policy Agent とサイドカーパターンによる認可の実装](https://developer.mamezou-tech.com/blogs/2022/07/01/openapi-generator-5/)」等の過去の記事を参照してください。
+
+## おわりに
 
 この記事のサンプルコードは、[GitHub Repository](https://github.com/takesection-sandbox/envoyproxy-examples/tree/feature/code-flow/front-proxy-login) にあります。

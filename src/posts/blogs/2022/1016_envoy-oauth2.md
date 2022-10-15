@@ -184,11 +184,12 @@ docker build -t envoy-proxy .
 docker run -p 8081:8081 -e AWS_ACCESS_KEY_ID={Your access key here} -e AWS_SECRET_ACCESS_KEY={Your secret access key here} envoy-proxy
 ```
 
-### Amazon Cognito User Pool 以外で使用する
+:::info:Amazon Cognito User Pool 以外で使用する
 
 上述の構成ファイルは、[Okta](https://www.okta.com/) の利用例を説明する「[Protecting web applications via Envoy OAuth2 filter](https://www.jpmorgan.com/technology/technology-blog/protecting-web-applications-via-envoy-oauth2-filter)」の場合とほとんど同じです。
 
 [Okta](https://www.okta.com/)、[Auth0](https://auth0.com/) などさまざまな IDaaS、[Keycloak](https://www.keycloak.org/) など OpenID Connect をサポートしている IdP (Identity Provider) を使用する場合は、ここで説明した構成ファイルをテンプレートとしてわずかな変更で使用可能です。
+:::
 
 ## OAuth2 Filter を使用した構成
 

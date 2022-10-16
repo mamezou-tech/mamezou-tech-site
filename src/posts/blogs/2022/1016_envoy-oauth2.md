@@ -70,7 +70,7 @@ static_resources:
                   signout_path:
                     path:
                       exact: /signout
-                  #forward_bearer_token: true
+                  forward_bearer_token: true
                   auth_scopes:
                     - openid
                     - email
@@ -80,8 +80,10 @@ static_resources:
                 default_source_code:
                   inline_string: |
                     function envoy_on_request(request_handle)
-                      path = request_handle:headers():get(":path"):gsub("/$", "/index.html")
-                      request_handle:headers():replace(":path", path)
+                      headers = request_handle:headers()
+                      headers:remove("authorization")
+                      path = headers:get(":path"):gsub("/$", "/index.html")
+                      headers:replace(":path", path)
                     end
             - name: envoy.filters.http.aws_request_signing
               typed_config:

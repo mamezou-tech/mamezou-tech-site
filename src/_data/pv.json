@@ -5,6 +5,14 @@
       "url": "/blogs/2022/07/08/gpt-2-japanese/"
     },
     {
+      "title": "Jest再入門 - 関数・モジュールモック編",
+      "url": "/testing/jest/jest-mock/"
+    },
+    {
+      "title": "ORマッパーのTypeORMをTypeScriptで使う",
+      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
+    },
+    {
       "title": "第1回 OpenAPI Generator を使ったコード生成",
       "url": "/blogs/2022/06/04/openapi-generator-1/"
     },
@@ -13,16 +21,12 @@
       "url": "/blogs/2022/07/08/writing-app-with-tauri/"
     },
     {
-      "title": "ORマッパーのTypeORMをTypeScriptで使う",
-      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
+      "title": "GitHub Codespaces を使いはじめる",
+      "url": "/blogs/2022/05/18/start-using-codespaces/"
     },
     {
       "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
       "url": "/nuxt/nuxt3-rendering-mode/"
-    },
-    {
-      "title": "Jest再入門 - 関数・モジュールモック編",
-      "url": "/testing/jest/jest-mock/"
     },
     {
       "title": "Rust によるデスクトップアプリケーションフレームワーク Tauri",
@@ -33,12 +37,8 @@
       "url": "/containers/k8s/tutorial/ingress/ingress-nginx/"
     },
     {
-      "title": "直感が理性に大反抗！「モンティ・ホール問題」",
-      "url": "/blogs/2022/07/04/monty-hall-problem/"
-    },
-    {
-      "title": "Nuxt3入門(第2回) - 簡単なNuxtアプリケーションを作成する",
-      "url": "/nuxt/nuxt3-develop-sample-app/"
+      "title": "Rを4.2系にバージョンアップしたらRstanの導入でつまずいた話",
+      "url": "/blogs/2022/06/30/install-rstan-on-r421/"
     }
   ]
 }

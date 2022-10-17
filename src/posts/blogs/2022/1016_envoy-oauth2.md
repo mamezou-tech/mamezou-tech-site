@@ -199,10 +199,17 @@ docker run -p 8081:8081 -e AWS_ACCESS_KEY_ID={Your access key here} -e AWS_SECRE
 
 上記のコンテナを実行して、コンテンツにアクセスする場合のシーケンスは図のようになります。
 
-1. ユーザが静的コンテンツにアクセスすると、未ログイン時には、Cognito Userpools の Web UI にリダイレクト
+1. ユーザが静的コンテンツにアクセスすると、未ログイン時には、Cognito User Pool の Web UI にリダイレクト
 2. ログインが成功すると、[Code Flow](https://openid.net/specs/openid-connect-basic-1_0.html#CodeFlow) にしたがって `/callback` にリダイレクト 
 3. Bearer Token (持参人トークン) により認証を確認
-4. AWS_ACCESS_TOKEN、AWS_SECRET_ACCESS_TOKEN を使ったリクエスト署名で S3 にアクセス
+4. AWS_ACCESS_TOKEN、AWS_SECRET_ACCESS_KEY を使ったリクエスト署名で S3 にアクセス
+
+:::info:Lua Filter と SigV4 Filter
+
+この記事の例は、バックエンドに S3 を使用するため、URL の最後の文字が '/' の場合にそれを '/index.html' に変更し、また後段で SigV4 署名するため、Bearer Token が設定された Authorization ヘッダを削除するスクリプトを [Lua](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/lua_filter) で記述しています。
+
+AWS API リクエストを使用する場合、[SigV4](https://docs.aws.amazon.com/ja_jp/general/latest/gr/signature-version-4.html) 署名が必要です。SigV4 署名は、AWS_ACCESS_KEY_ID と AWS_SECRET_ACCESS_KEY が必要です、AWS API リクエストの Authorization ヘッダに設定します。このため、元のリクエストに Authorization ヘッダがあると AWS API リクエストに失敗するため、前述の Lua スクリプトで Authorization ヘッダを削除します。
+:::
 
 ## OAuth2 Filter により設定される Cookie
 

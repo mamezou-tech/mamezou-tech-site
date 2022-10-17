@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-10-03
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn10-mp-health.md
+nextPage: ./src/posts/msa/microprofile/cntrn12-mp-faulttolerance1.md
 ---
 
 今回は[第8回](/msa/mp/cntrn08-mp-config3/),[9回](/msa/mp/cntrn09-mp-openapi3/)の続きとしてHelidon 3.0から使えるようになったMicroProfile RestClientの機能を紹介します。ただしMicroProfile RestClientは差分となる機能が多くないため、その差分を簡単に紹介した後に代わりとして以前のバージョンからあった小技的な機能を併せて紹介します。なお、今回の記事は[第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)の理解を前提にしています。まだの方はそちらから読んでいただければと思います。

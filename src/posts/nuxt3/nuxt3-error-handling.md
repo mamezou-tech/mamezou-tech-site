@@ -20,12 +20,12 @@ Nuxtはクライアントサイドだけでなく、サーバーサイドレン�
 ## Vueコンポーネントのエラー
 
 Vueコンポーネントのレンダリングやライフサイクルメソッド、setup等、エラーが発生する場所は多くあります。
-機能固有のエラーハンドリングはtry/catchやPromiseを用いることになりますが、Vue/Nuxtがフレームワークとして提供している仕組みについて見ていきます。
+機能固有のエラーハンドリングはtry/catchやPromiseを用いることになりますが、ここではVue/Nuxtがフレームワークとして提供している仕組みについて見ていきます。
 
 ### onErrorCaptured
 
 Nuxtではありませんが、Vueでは[onErrorCaptured](https://vuejs.org/api/composition-api-lifecycle.html#onerrorcaptured) イベントフックを提供しています。
-これはサブコンポーネントで捕捉されないエラーが発生した時に呼び出されるフックです[^1]。
+これはサブコンポーネントで未捕捉のエラーが発生した時に呼び出されるフックです[^1]。
 
 [^1]: onErrorCapturedは、ネストされたサブコンポーネントが対象で、自コンポーネント内でのエラー発生時には呼ばれない点に注意が必要です。
 
@@ -63,7 +63,7 @@ onMounted(() => {
 </template>
 ```
 
-サブコンポーネントの方で使用している[createError](https://v3.nuxtjs.org/api/utils/create-error)はNuxt3が提供するエラーオブジェクト作成のユーティリティです。
+サブコンポーネントの方で使用している[createError](https://v3.nuxtjs.org/api/utils/create-error)は、Nuxt3が提供するユーティリティです。
 
 これを実行するとサブコンポーネントのmountedでエラーが発生します。
 このエラーはonErrorCapturedフックで捕捉され、エラーメッセージが表示されるようになります。
@@ -71,7 +71,7 @@ onMounted(() => {
 ![onErrorCaptured](https://i.gyazo.com/141a82bac19258a27ad72966106f24b7.png)
 
 なお、onErrorCapturedに指定したコールバック関数は何も返却していませんので、上位のイベントフックがある場合はそれらも実行されます。
-コールバック関数でfalseを返却すると上位エラーハンドリングの伝播を止めることができます。
+コールバック関数でfalseを返却すると、このエラーハンドリング伝播を止めることができます。
 
 ここでエラーを発生させたmountedはクライアントサイドでのみ実行されるVueのライフサイクルイベントです。
 サーバーサイドでも実行されるsetupでエラーが発生するとどうなるでしょうか？
@@ -90,8 +90,8 @@ throw createError('FlakyComponentでエラーが発生しました！');
 
 ![ssr error](https://i.gyazo.com/3980e5ff713788b0c42be7462c1b882d.png)
 
-Nuxt3のデフォルトのメッセージの表示ではなく、エラーページに遷移してしまいました。
-ここではサーバーサイドでonErrorCapturedのコールバック関数は実行されます。とはいえ、Nuxtはサーバーサイドレンダリングでエラーが発生するとクリティカルエラーと判断し、専用のエラーページを返す仕様となっています(500エラー)[^2]。
+フォールバック用のメッセージ表示ではなく、エラーページに遷移してしまいました。
+ここでもサーバーサイドでonErrorCapturedのコールバック関数は実行されます。しかし、Nuxtはサーバーサイドレンダリングでエラーが発生するとクリティカルエラーと判断し、専用のエラーページを返す仕様となっています(500エラー)[^2]。
 
 [^2]: プリレンダリングの場合はgenerate処理でエラーが発生し、HTMLページが生成されなくなります。
 
@@ -116,7 +116,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 })
 ```
 
-ただし、ここで捕捉できるエラーはVueに関するもののみで、これで全てのエラーを検知できる訳ではありません。
+ただし、ここで捕捉できるエラーはVueに関するもののみで、全てのエラーを検知できる訳ではありません。
 例えば、setTimeout/setIntervalのコールバック関数内でのエラーは検知しません。
 全てのエラーを検知したい場合は、別途Windowの[error](https://developer.mozilla.org/en-US/docs/Web/API/Window/error_event)イベント等のフックと併用する必要があります。
 
@@ -153,12 +153,12 @@ NuxtErrorBoundaryはデフォルトスロットに対象コンポーネント、
 [^5]: スロットについてはVueの[ドキュメント](https://vuejs.org/guide/components/slots.html)を参照してください。
 
 注意点として、ハイドレーション中はフォールバックが実行されないよう制御されています。このため対象コンポーネントのmounted等で発生したエラーには反応しません。
-また、フォールバック時は上位のエラーハンドラへの伝播も行われませんので、グローバルなエラーハンドラでは検知されないようになります。
+また、フォールバック時は上位のエラーハンドラへの伝播も行われませんので、グローバルなエラーハンドラでは検知されません。
 
 ### APIアクセスエラー
 
 Nuxt3ではAPIアクセス時に[useFetch](https://v3.nuxtjs.org/api/composables/use-fetch)/[useAsyncData](https://v3.nuxtjs.org/api/composables/use-async-data) Composableを使うことが多いかと思います。
-この点についてのエラーハンドリングについても見てみます。
+この点のエラーハンドリングについても見てみます。
 
 useFetch/useAsyncData自体は例外をスローしませんので、try-await/catch等でハンドリングしてもcatch節は実行されません。
 これらは戻り値として`error`を返却しますので、それを受け取る必要があります。
@@ -229,8 +229,8 @@ propsとしてエラー発生内容が格納されている`error`を受け取�
 
 :::column:クライアントサイドでエラーページを表示する
 クライアントサイドで例外をスローするとデフォルトは非クリティカルなエラーになり、エラーページは表示されません。
-この場合はユーティリティ関数として用意されている[showError](https://v3.nuxtjs.org/api/utils/show-error)を使用すればエラーページを表示できます。
-[createError](https://v3.nuxtjs.org/api/utils/create-error)を使う場合でもfatalをtrueにするとエラーページを表示できます[^7]。
+明示的にエラーページを表示する場合は、ユーティリティ関数として用意されている[showError](https://v3.nuxtjs.org/api/utils/show-error)を使用します。
+または、例外スロー時に使用する[createError](https://v3.nuxtjs.org/api/utils/create-error)の引数で、fatalをtrueに指定するとエラーページを表示できます[^7]。
 
 ```typescript
 // プログラムでエラーページ表示
@@ -243,7 +243,7 @@ onMounted(() => {
 })
 ```
 
-[^7]: 現時点(RC.11)で開発モード(`npm run dev`)では動作しませんでした。ビルド後(`npm run build`)は正常にエラーページに遷移しました。
+[^7]: 現時点(rc.11)で、開発モード(`npm run dev`)では動作しませんでした。ビルド後(`npm run build`)はエラーページに遷移しました。
 :::
 
 ## まとめ

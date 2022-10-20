@@ -106,15 +106,15 @@ public String hello_retry_with_delay() {
 
 ```java
 @Timeout(500)
-@Retry(maxRetries = 3, delay = 1000, jitter = 1000)
+@Retry(maxRetries = 3, delay = 1000, jitter = 2000)
 public String hello_retry_with_jitterDelay() {
     return helloClient.hello("sleep");
 }
 ```
 
-上記は先ほどの例に`jitter`を追加したものになります。MP Fault Toleranceランタイムは`jitter`が指定されると指定された範囲内の乱数を発生させ、リトライの都度、その乱数を用いて遅延させる時間を`delay ± jitter`の評価式で決定します。評価した結果がマイナスとなる場合は遅延時間は0となります。
+上記は先ほどの例に`jitter`を追加したものになります。MP Fault Toleranceランタイムは`jitter`が指定されると指定された範囲内の乱数を発生させ、リトライの都度、その乱数を用いて遅延させる時間を`delay ± jitter`の評価式で決定します。評価結果がマイナスとなる場合は遅延時間は0となります。
 
-よって、このコード例は0から2秒のランダムな間隔を空けてリトライを実行する指定となります。
+よって、このコード例は0から3秒のランダムな間隔を空けてリトライを実行する指定となります。
 
 なお、時間単位は`delay`属性と同様に`jitterDelayUnit`属性で変更することができます。
 

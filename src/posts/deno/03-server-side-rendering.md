@@ -3,6 +3,7 @@ title: Deno を始める - 第3回 (SSR)
 author: masahiro-kondo
 date: 2022-10-21
 templateEngineOverride: md
+prevPage: ./src/posts/deno/02-use-external-packages.md
 ---
 
 [前回](/deno/getting-started/02-use-external-packages/)からしばらく開いてしまいました。この間 Deno v1.26 がリリースされています。

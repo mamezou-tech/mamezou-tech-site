@@ -4,6 +4,7 @@ author: masahiro-kondo
 date: 2022-09-21
 templateEngineOverride: md
 prevPage: ./src/posts/deno/01-introduction.md
+nextPage: ./src/posts/deno/03-server-side-rendering.md
 ---
 
 [前回](/deno/getting-started/01-introduction/)は開発環境の構築を行い、Deno ランタイムの概要を見ました。

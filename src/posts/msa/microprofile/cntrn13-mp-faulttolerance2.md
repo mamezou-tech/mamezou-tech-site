@@ -28,7 +28,7 @@ MP Fault Toleranceは`@Asynchronous`が付けられたメソッドの実行を�
 
 また、メソッドは非同期で実行されるため、呼び出し元には即時に結果が返りません。このため、`@Asynchronous`のメソッドはFutureもしくはCompletionStageを返す必要があります。
 
-以上の理解をもとに基本機能編で紹介した同じ例を非同期で実行する例を2つ紹介します。なお、説明には引き続き基本機能編と[同じサンプルアプリ](/msa/mp/cntrn12-mp-faulttolerance1/#説明に利用するサンプル)を利用します。
+以上の理解をもとに基本機能編で紹介した例を非同期で実行する例を2つ紹介します。なお、説明には引き続き基本機能編と[同じサンプルアプリ](/msa/mp/cntrn12-mp-faulttolerance1/#説明に利用するサンプル)を利用します。
 
 # 同時接続数を制限したい（スレッドプールスタイル）
 バルクヘッド編で説明した[メソッドの同時実行数を制限する例](/msa/mp/cntrn12-mp-faulttolerance1/#同時接続数を制限したい（セマフォスタイル）)を非同期で実行し、同時実行数をスレッドプール数で制御するようにしてみます。
@@ -52,7 +52,7 @@ public Future<String> hello_async_with_bulkhead() throws Exception {
 }
 ```
 
-`hello_async_with_bulkhead`メソッドは`@Asynchronous`により非同期で実行されますが`@Bulkhead`の`value`属性の指定により、このメソッドを同時に実行できるスレッド(Executorスレッド)は2つに制限されます。また`hello_async_with_bulkhead`メソッドが呼び出された際に空きExecutorスレッドがなければ場合、その時点でExecutionExceptionがスローされますが、`waitingTaskQueue`を指定することでその数だけメソッドの実行をキューイングさせることができます。
+`hello_async_with_bulkhead`メソッドは`@Asynchronous`により非同期で実行されますが`@Bulkhead`の`value`属性により、このメソッドを同時に実行できるスレッド(Executorスレッド)は2つに制限されます。また`hello_async_with_bulkhead`メソッドが呼び出された際に空きExecutorスレッドがなければその時点でExecutionExceptionがスローされますが、`waitingTaskQueue`を指定することでその数だけメソッドの実行をキューイングさせることができます。
 
 以下はキューイングやExecutionExceptionが発生する例となります。
 
@@ -67,8 +67,8 @@ public Future<String> hello_async_with_bulkhead() throws Exception {
 | → 呼び出し5 | 実行中   | 0 | 0 |
 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;呼び出し2 ← | 実行完了 | 1 | 0 |
 
-*1:空きExecutorスレッドの数。上限は2  
-*2:実行待ちタスク数。上限は1
+*1:空きExecutorスレッドの数。コード例の上限は2  
+*2:実行待ちタスク数。コード例の上限は1
 
 # タイムアウト時間を指定したい（非同期実行）
 タイムアウト編で説明した[メソッドにタイムアウト時間を指定する例](/msa/mp/cntrn12-mp-faulttolerance1/#タイムアウト時間を指定したい)と同じように今度は非同期実行するメソッドにタイムアウトを指定するようにしてみます。
@@ -104,7 +104,7 @@ public CompletionStage<String> hello_async_with_timeout() throws Exception {
 
 同期メソッドの例では必ず`@Timeout`や`@Bulkhead`などのメソッド境界から例外はスローされていましたが、今回は`hello_async_with_timeout`メソッドを超えた箇所で例外がスローされています。
 
-これは`CompletionStage`や`Future`などの非同期結果は他の戻り値とは別に扱われるためです。MP Fault Toleranceランタイムは通常、なんらかの結果がメソッド境界を越えた時点で完了としますが`CompletionStage`や`Future`に対してはメソッドから返された時点ではなく、その非同期処理の終了をもって完了とします。
+これは`CompletionStage`や`Future`などの非同期結果は他の戻り値とは別に扱われるためです。MP Fault Toleranceランタイムは通常、なんらかの結果がメソッド境界を越えた時点で完了としますが`@Asynchronous`のメソッドから返される`CompletionStage`や`Future`に対してはメソッドから返された時点ではなく、その非同期処理の終了をもって完了とします。
 
 このため、`@Asynchronous`で`CompletionStage`や`Future`が返されるメソッドでは、メソッド境界を越えたところでフォールトトレランス処理が動作します。
 
@@ -131,4 +131,4 @@ public Future<String> hello_async_with_retry() throws Exception {
 ```
 
 # まとめ
-MP Fault Toleranceは@Asynchronousを付けることで各種フォールトトレランス処理を簡単に非同期対応できるようにしてますが、本質的に非同期処理は技術的難易度が高くハマりどころが多いのも事実です。このため、実開発での利用にあたっては[公式マニュアルの内容](https://download.eclipse.org/microprofile/microprofile-fault-tolerance-4.0/microprofile-fault-tolerance-spec-4.0.html#asynchronous)をよく理解されることをお勧めします。これは非同期に限ったことではありませんが非同期については特にお勧めします。
+MP Fault Toleranceは@Asynchronousを付けることで各種フォールトトレランス処理を簡単に非同期対応できるようにしてますが、本質的に非同期処理は技術的難易度が高くハマりどころが多いのも事実です。このため、実開発での利用にあたっては[公式マニュアルの内容](https://download.eclipse.org/microprofile/microprofile-fault-tolerance-4.0/microprofile-fault-tolerance-spec-4.0.html#asynchronous)をよく理解されることをお勧めします。これは非同期に限ったことではありませんが非同期の仕組みの正しい理解は特に重要になります。

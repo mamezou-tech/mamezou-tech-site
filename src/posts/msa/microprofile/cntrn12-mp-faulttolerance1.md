@@ -7,7 +7,7 @@ prevPage: ./src/posts/msa/microprofile/cntrn11-mp-restclient3.md
 nextPage: ./src/posts/msa/microprofile/cntrn13-mp-faulttolerance2.md
 ---
 
-今回のテーマはマイクロサービスでは定番のタイムアウトやリトライ、サーキットブレーカーなどの耐障害性に関する機能を提供するMicroProfile Fault Tolerance(MP Fault Tolerance)です。MP Fault ToleranceはMicroProfileランタイムから提供される機能をコンフィグレーションして利用する形態となるため基本的に作りものはありません。このため、今回は少しテイストを変えてMP Fault Toleranceから提供される機能とその設定を「こんなことをしたい」的な利用シーンごとに説明していきたいと思います。なお、MP Fault Toleranceの機能は豊富なため説明は今回の基本機能編、[非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)、設定編(<span style="color:red">Coming Soon!</span>)の3回に分けて行います。
+今回のテーマはマイクロサービスでは定番のタイムアウトやリトライ、サーキットブレーカーなどの耐障害性に関する機能を提供するMicroProfile Fault Tolerance(MP Fault Tolerance)です。MP Fault ToleranceはMicroProfileランタイムから提供される機能をコンフィグレーションして利用する形態となるため基本的に作りものはありません。このため、今回は少しテイストを変えてMP Fault Toleranceから提供される機能とその設定を「こんなことをしたい」的な利用シーンごとに説明していきたいと思います。なお、MP Fault Toleranceの機能は豊富なため説明は今回の基本機能編、[非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)、[設定編](/msa/mp/cntrn14-mp-faulttolerance3/)の3回に分けて行います。
 
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/08-fault_tolerance>

@@ -4,9 +4,10 @@ author: toshio-ogiwara
 date: 2022-10-21
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn12-mp-faulttolerance1.md
+nextPage: ./src/posts/msa/microprofile/cntrn14-mp-faulttolerance3.md
 ---
 
-MicroProfile Fault Tolerance(MP Fault Tolerance)を紹介する2回目は非同期呼び出しに対するフォールトトレランス処理です。今回も前回同様、MP Fault Toleranceから提供される機能とその設定を「こんなことをしたい」的な利用シーンごとに説明していきます。なお、MP Fault Toleranceの機能は豊富なため説明は前回の[基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)、今回の非同期編、設定編(<span style="color:red">Coming Soon!</span>)の3回に分けて行います。
+MicroProfile Fault Tolerance(MP Fault Tolerance)を紹介する2回目は非同期呼び出しに対するフォールトトレランス処理です。今回も前回同様、MP Fault Toleranceから提供される機能とその設定を「こんなことをしたい」的な利用シーンごとに説明していきます。なお、MP Fault Toleranceの機能は豊富なため説明は前回の[基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)、今回の非同期編、次回の[設定編](/msa/mp/cntrn14-mp-faulttolerance3/)の3回に分けて行います。
 
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/08-fault_tolerance>

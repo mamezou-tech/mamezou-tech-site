@@ -26,9 +26,16 @@ Nuxt2と同じようにNuxt3ではクライアントサイドレンダリング�
 
 - [Hybrid Rendering (Route Caching rules) ](https://github.com/nuxt/framework/discussions/560)
 
+:::info
+Nuxt3のrc.12で、ハイブリッドレンダリングの初期バージョンがリリースされました。
+nuxt.config.tsでルートごとにレンダリング方法を指定できるようになっています。
+
+- [Nuxt3ドキュメント - Hybrid Rendering](https://v3.nuxtjs.org/guide/concepts/rendering#hybrid-rendering)
+:::
+
 レンダリングモードの概要は、公式ドキュメントの以下で説明されています。
 
-- [Nuxt - Rendering Modes](https://v3.nuxtjs.org/guide/concepts/rendering)
+- [Nuxt3ドキュメント - Rendering Modes](https://v3.nuxtjs.org/guide/concepts/rendering)
 
 ## クライアントサイドレンダリング(Client-side Only Rendering)
 

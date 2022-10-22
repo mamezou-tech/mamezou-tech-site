@@ -156,7 +156,7 @@ Nuxtではこれをラップした以下のComposableを用意していますの
 // fetchArticles();
 
 // useFetch($fetch)利用
-const { data: articles, refresh } = useFetch('/api/blogs');
+const { data: articles, refresh } = await useFetch('/api/blogs');
 </script>
 
 <template>
@@ -187,7 +187,7 @@ const { id } = route.query;
 // fetchArticle(+id);
 
 // useFetch($fetch)利用
-const { data: article } = useFetch(`/api/blogs/${id}`);
+const { data: article } = await useFetch(`/api/blogs/${id}`);
 </script>
 
 <template>

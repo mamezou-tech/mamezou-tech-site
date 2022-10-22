@@ -163,14 +163,11 @@ Nuxt3ではAPIアクセス時に[useFetch](https://v3.nuxtjs.org/api/composables
 useFetch/useAsyncData自体は例外をスローしませんので、try-await/catch等でハンドリングしてもcatch節は実行されません。
 これらは戻り値として`error`を返却しますので、それを受け取る必要があります。
 
-`error`の型は`Ref<DataT | null>`とリアクティブになっており、`error.value`の初期値はnullです。
-このため、useFetch/useAsyncData呼び出し直後にif文等で判定しても意味はありません。
-
 テンプレートでエラーハンドリングをする例は、以下のようになります。
 
 ```html
 <script setup lang="ts">
-const { data: articles, error } = useFetch('/api/blogs');
+const { data: articles, error } = await useFetch('/api/blogs');
 // useAsyncDataを使う場合
 // const { data: articles, error } = useAsyncData(() => $fetch('/api/blogs'));
 </script>

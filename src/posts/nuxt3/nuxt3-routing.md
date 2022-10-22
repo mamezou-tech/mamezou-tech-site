@@ -127,7 +127,7 @@ Nuxt2では`pages/details/_id.vue`のようなアンダースコアをつけて�
 
 ```html
 <script setup lang="ts">
-const {data: articles, refresh} = useFetch('/api/blogs');
+const {data: articles, refresh} = await useFetch('/api/blogs');
 </script>
 
 <template>
@@ -156,7 +156,7 @@ const {data: articles, refresh} = useFetch('/api/blogs');
 const route = useRoute();
 // パスパラメータよりid取得
 const { id } = route.params;
-const { data: article } = useFetch(`/api/blogs/${id}`);
+const { data: article } = await useFetch(`/api/blogs/${id}`);
 </script>
 
 <template>

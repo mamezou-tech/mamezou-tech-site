@@ -169,7 +169,7 @@ useFetch/useAsyncData自体は例外をスローしませんので、try-await/c
 <script setup lang="ts">
 const { data: articles, error } = await useFetch('/api/blogs');
 // useAsyncDataを使う場合
-// const { data: articles, error } = useAsyncData(() => $fetch('/api/blogs'));
+// const { data: articles, error } = await useAsyncData(() => $fetch('/api/blogs'));
 </script>
 <template>
   <div>サブコンポーネント</div>

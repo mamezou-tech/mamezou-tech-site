@@ -1,5 +1,5 @@
 ---
-title: Nuxt3入門(第7回) - Nuxt3のプラグイン・ミドルウェアを使ってみる
+title: Nuxt3入門(第7回) - Nuxt3のプラグイン・ミドルウェアを使う
 author: noboru-kudo
 date: 2022-10-23
 templateEngineOverride: md

@@ -5,6 +5,7 @@ date: 2022-10-19
 templateEngineOverride: md
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-app-configuration.md
+nextPage: ./src/posts/nuxt3/nuxt3-error-handling.md
 ---
 
 [前回](/nuxt/nuxt3-app-configuration/)はNuxt3の設定情報管理について見てきました。
@@ -248,4 +249,4 @@ onMounted(() => {
 ここでは、Nuxt3が提供するエラーハンドリングを見てきました。
 Nuxtだけでなく、Vueで用意されているものも含めて、うまく使って堅牢でデバッグしやすいアプリケーションとしたいものです。
 
-次回はプラグイン開発について見ていく予定です。
+次回はプラグイン/ミドルウェア開発について見ていく予定です。

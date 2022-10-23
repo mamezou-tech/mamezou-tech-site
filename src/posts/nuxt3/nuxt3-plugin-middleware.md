@@ -57,7 +57,7 @@ export default defineNuxtPlugin(() => {
 });
 ```
 
-Nuxt3では、defineNuxtPlugin内でプラグインを実装します。引数としてNuxtのランタイムコンテキスト(nuxtApp)を受け取ります。
+Nuxt3では、defineNuxtPlugin内でプラグインを実装します。
 戻り値は必須ではありませんが、ここではNuxtアプリケーションに対してyenメソッドを追加しています。
 
 このファイルを`plugins`配下に配置して、Nuxtアプリケーションを実行するとVueコンポーネント内でユーティリティメソッドが利用できます。
@@ -102,7 +102,9 @@ export default defineNuxtPlugin((nuxtApp) => {
 });
 ```
 
-ここでは引数のNuxtAppに含まれるVueアプリケーションに対してカスタムディレクティブ(`yen`)を追加しました。
+ここでは、引数としてNuxtのランタイムコンテキスト(nuxtApp)を受け取ります。
+このNuxtAppに含まれるVueアプリケーションに対してカスタムディレクティブ(`yen`)を追加しました。
+
 これはVueテンプレートから以下のように指定することで動作します。
 
 ```html

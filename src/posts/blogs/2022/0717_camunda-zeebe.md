@@ -40,7 +40,7 @@ BPMN 2.0 対応を謳うだけあって、プロセスインスタンスを監�
 
 [Operate - Camunda](https://camunda.com/platform/operate/)
 
-## Minikube での Camunda Plarform のデプロイ
+## Minikube での Camunda Platform のデプロイ
 今回は SaaS 環境ではなく、ローカルの Minikube に Camunda の Helm chart を使って構築します。Zeebe だけでなく、Keycloak や Elasticsearch など多くのオブジェクトがデプロイされるため、メモリや CPU を多めに指定しないと Pod が起動しません。今回はメモリ8GB、CPU 4で構築しました。
 
 ```shell

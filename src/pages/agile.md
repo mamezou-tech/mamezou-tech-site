@@ -23,4 +23,5 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 現場のコーチをしている中で、気付いた／見聞きしたTipsをご紹介します。
 
 - [アジャイル開発現場におけるTips：笑い声](/agile/agile-tips_01/)
+- [アジャイル開発現場におけるTips：仕様書としてのテスト](/agile/agile-tips_02/)
 

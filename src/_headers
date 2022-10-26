@@ -1,7 +1,0 @@
-/*
- X-Frame-Options: DENY
- X-XSS-Protection: 1; mode=block
- x-content-type-options: nosniff
- feature-policy: microphone 'none'; camera 'none'
- permissions-policy: microphone=(), camera=()
- referrer-policy: same-origin

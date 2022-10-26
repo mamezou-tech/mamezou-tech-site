@@ -34,9 +34,11 @@
   }
 
   .menu > li {
-    margin: 0 0.5rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0.4rem;
     overflow: hidden;
-    font-size: unquote("min(max(0.8rem, 5vw), 1rem)");
+    font-size: unquote("min(max(0.8rem, 1vw), 1rem)");
   }
 
   .menu-button-container {
@@ -89,7 +91,7 @@
     transform: rotate(-405deg);
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 1000px) {
     .menu-button-container {
       display: flex;
     }

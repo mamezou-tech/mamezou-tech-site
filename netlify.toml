@@ -30,7 +30,7 @@
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
-    Content-Security-Policy = "script-src 'self' *.googletagmanager.com cdn.jsdelivr.net unpkg.com *.netlify.app"
+    Content-Security-Policy = "script-src 'self' *.googletagmanager.com cse.google.com cdn.jsdelivr.net unpkg.com *.netlify.app clientstream.launchdarkly.com"
     Referrer-Policy = "same-origin"
     Permissions-Policy = '''
     microphone=(),

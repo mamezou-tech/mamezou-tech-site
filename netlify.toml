@@ -31,8 +31,10 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Content-Security-Policy = '''
-    default-src 'self' *.googletagmanager.com cse.google.com cdn.jsdelivr.net unpkg.com *.netlify.app clientstream.launchdarkly.com *.twitter.com *.facebook.net fonts.googleapis.com fonts.gstatic.com;
+    default-src 'self' *.googletagmanager.com cse.google.com cdn.jsdelivr.net cdnjs.cloudflare.com unpkg.com *.netlify.com *.netlify.app clientstream.launchdarkly.com *.twitter.com *.facebook.net;
     img-src *;
+    style-src *;
+    font-src *;
     media-src *;'''
     Referrer-Policy = "same-origin"
     Permissions-Policy = '''

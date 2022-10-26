@@ -30,8 +30,7 @@ class DivideTest {
 	private MathUtil mathUtil;
 
 	@BeforeEach
-	void setUp()
-	{
+	void setUp() {
 		mathUtil = new MathUtil();
 	}
 
@@ -46,7 +45,6 @@ class DivideTest {
 	@Test
 	@DisplayName("ゼロ除算😱")
 	void testAnyDivide0OccuresException() {
-		Exception exception = 
             assertThrows(CalculationException.class, () -> mathUtil.divide(1, 0));
 	}
 }

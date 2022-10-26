@@ -29,9 +29,10 @@
   [headers.values]
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
-    x-content-type-options = "nosniff"
-    content-security-policy = "script-src 'self'"
-    permissions-policy = '''
+    X-Content-Type-Options = "nosniff"
+    Content-Security-Policy = "script-src 'self' *.googletagmanager.com cdn.jsdelivr.net unpkg.com *.netlify.app"
+    Referrer-Policy = "same-origin"
+    Permissions-Policy = '''
     microphone=(),
     camera=()'''
 

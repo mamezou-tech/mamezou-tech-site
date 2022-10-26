@@ -62,6 +62,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("./src/css");
   eleventyConfig.addPassthroughCopy("./src/fonts");
   eleventyConfig.addPassthroughCopy("./src/img");
+  eleventyConfig.addPassthroughCopy("./src/_headers");
   eleventyConfig.addPassthroughCopy("./src/previews");
   eleventyConfig.addPassthroughCopy({"./node_modules/photoswipe/dist": "photoswipe"});
   eleventyConfig.addPassthroughCopy("./src/admin/config.yml");

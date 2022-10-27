@@ -31,7 +31,7 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Content-Security-Policy = '''
-    default-src 'self' *.google-analytics.com *.googletagmanager.com *.google.com cdn.jsdelivr.net cdnjs.cloudflare.com unpkg.com *.netlify.com *.netlify.app cdn.segment.com clientstream.launchdarkly.com *.twitter.com *.facebook.com *.facebook.net 'unsafe-inline';
+    default-src 'self' *.google-analytics.com *.googletagmanager.com *.google.com cdn.jsdelivr.net cdnjs.cloudflare.com unpkg.com *.netlify.com *.netlify.app cdn.segment.com clientstream.launchdarkly.com *.twitter.com *.facebook.com *.facebook.net 'unsafe-inline' 'unsafe-eval';
     img-src *;
     style-src * 'unsafe-inline';
     font-src *;

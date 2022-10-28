@@ -181,21 +181,18 @@ scriptタグの中にstateとしてサーバーサイドで初期化された情
 `composables/states.ts`を作成し、先程のuseStateを移植するだけです。
 
 ```typescript
-import { Ref } from "@vue/reactivity";
-
-export function useLoginUser(): Ref<{ id: string, name: string, mail: string }> {
-  return useState('login-user', () => {
-    console.log('retrieving user info...')
+export const useLoginUser = () =>
+  useState<{ id: string; name: string; mail: string }>("login-user", () => {
+    console.log("retrieving user info...");
     return {
-      id: '012345',
-      name: 'mamezou',
-      mail: 'nuxt-developer@mamezou.com'
+      id: "012345",
+      name: "mamezou",
+      mail: "nuxt-developer@mamezou.com",
     };
   });
-}
 ```
 
-複数の状態を作成する場合は、`use...`関数を追加していけばいいです。こうすることでVuexのようにグローバルな状態をここで一元管理できます。
+複数の状態を作成する場合は、`use...`を追加していけばいいです。こうすることでVuexのようにグローバルな状態をここで一元管理できます。
 
 後は`pages/user.vue`/`pages/user-detail.vue`双方のuseStateを上記に置き換えるだけです。
 `pages/user-detail.vue`では、以下のようになります。

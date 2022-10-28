@@ -36,7 +36,7 @@
     style-src * 'unsafe-inline';
     font-src *;
     media-src *;'''
-    Referrer-Policy = "origin-when-cross-origin"
+#    Referrer-Policy = "origin-when-cross-origin"
     Permissions-Policy = '''
     microphone=(),
     camera=()'''

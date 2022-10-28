@@ -38,14 +38,14 @@ go mod init multibuild
 go get dagger.io/dagger@latest
 ```
 
-現状、SDK をインストールした上で、docker の module を replace で置き換える必要があります。
+現状、SDK をインストールした上で docker の Module を replace で置き換える必要があります。
 
 ```shell
 go mod edit -replace github.com/docker/docker=github.com/docker/docker@v20.10.3-0.20220414164044-61404de7df1a+incompatible
 ```
 
 :::info
-replace は Go Module をローカルで置き換える際に使う設定です。現在、Dagger の依存モジュールで replace を使用しているものがあるため必要なワークアラウンドのようです。go.mod ファイルは以下のようになります。
+replace は Go Module をローカルで置き換える際に使う設定です。現在 Dagger の依存モジュールで replace を使用しているものがあるため必要なワークアラウンドのようです。go.mod ファイルは以下のようになります。
 
 ```
 module multibuild
@@ -64,7 +64,7 @@ replace github.com/docker/docker => github.com/docker/docker v20.10.3-0.20220414
 :::
 
 ## シンプルなパイプライン
-あとは、main.go ファイルを作成して、パイプラインの処理を書いていきます。リモートリポジトリ(Go のプロジェクト)を checkout し、コンテナ内でビルドして、ホストマシンの指定パスに成果物のバイナリファイルをコピーするパイプラインです。
+あとは main.go ファイルを作成してパイプラインの処理を書いていきます。リモートリポジトリ(Go のプロジェクト)を checkout しコンテナ内でビルド、ホストマシンの指定パスに成果物のバイナリファイルをコピーするパイプラインです。
 
 ```go
 package main
@@ -137,7 +137,7 @@ func build(repoUrl string) error {
 	return nil
 }
 ```
-コメントとコードを追っていけばなんとなく読めると思いますが、build 関数は以下の9ステップからなります。
+コードとコメントを追っていけばなんとなく読めると思いますが、build 関数は以下の9ステップからなります。
 
 1. Go 標準の Context を生成
 1. Dagger のクライアントを生成
@@ -261,7 +261,7 @@ build
 Milliseconds elapsed: 8.583µs
 ```
 
-8秒以上かかっています。これは goroutine で解決です。ErrGroup を使うことで並列にパイプラインの処理を実行し、エラーハンドリングも可能です。
+8秒以上かかっています。これは goroutine で解決です。ErrGroup を使うことでターゲット毎のビルドを並列に実行、エラーハンドリングも可能です。
 
 ```go
 func build(repoUrl string) error {

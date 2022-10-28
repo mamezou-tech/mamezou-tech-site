@@ -58,7 +58,7 @@ function heavyCompute() {
 
 このページを表示すると、heavyComputeメソッドはサーバーサイド、クライアンサイド双方で実行されます。
 
-![ref/reactive init](https://i.gyazo.com/9ec2194266cb36991004e82fdcaac1ad.png)
+![ref/reactive init](https://i.gyazo.com/485f02505b5f9e6dc9e9aa603c6221ee.png)
 
 固定値等では問題ありませんが、初期化処理が重い場合は効率的とは言えません。サーバーサイドで実行した結果を、クライアンサイドのハイドレーションでもそのまま利用する方が理想的です。
 
@@ -78,7 +78,7 @@ keyを省略した場合は、ランダムな値が採番されます。コン�
 initは状態が初期化されてない場合のみ実行されます。これはサーバーサイドで実行済みの場合も含まれます。
 つまり、サーバーサイドでinitが実行されている場合は、クライアンサイドではinitは実行されません。
 
-![useState init](https://i.gyazo.com/3cfa11a6ea0b3a971e053e1bf55b0452.png)
+![useState init](https://i.gyazo.com/2a5ac32818c2757f65924017802d3500.png)
 
 ## useStateを使ってみる
 

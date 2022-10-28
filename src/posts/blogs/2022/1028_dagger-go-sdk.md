@@ -192,10 +192,10 @@ func build(repoUrl string) error {
 
 	workdir := client.Host().Workdir()
 
-	// 1. Define our build matrix
 	golang := client.Container().From("golang:latest")
 	golang = golang.WithMountedDirectory("src", src).WithWorkdir("src")
 
+	// 1. Define our build matrix
 	oses := []string{"linux", "darwin"}
 	arches := []string{"amd64", "arm64"}
 

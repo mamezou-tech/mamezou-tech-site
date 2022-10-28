@@ -149,7 +149,7 @@ func build(repoUrl string) error {
 1. ビルド成果物の取り出し
 1. ビルド成果物をホストの出力先にコピー
 
-4-8 のステップが Daggar SDK の機能を使っている部分です。
+3-8 のステップが Daggar SDK の機能を使っている部分です。
 
 go mod tidy で go.sum ファイルを生成してからビルドします。
 

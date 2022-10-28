@@ -1,5 +1,5 @@
 ---
-title: Nuxt3入門(第8回) - useStateでコンポーネント間で状態を共有する 
+title: Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する 
 author: noboru-kudo
 date: 2022-10-29
 templateEngineOverride: md
@@ -14,9 +14,11 @@ prevPage: ./src/posts/nuxt3/nuxt3-plugin-middleware.md
 Nuxt2では、コンポーネント間で状態を共有するには、Nuxt2にバンドルされている[Vuex](https://vuex.vuejs.org/)を使うのが一般的でした。
 
 Nuxt3ではVuexはNuxt本体に含まれていません。
-代わりにNuxt3では新たに[useState](https://v3.nuxtjs.org/api/composables/use-state) Composableが提供されるようになりました。
+代わりにNuxt3では新たに[useState](https://v3.nuxtjs.org/api/composables/use-state) Composableが提供されるようになりました[^1]。
 useStateはVuex程の機能はありませんが、必要最低限のシンプルな設計で使いやすいものとなっています。
 データ構造がそれほど複雑でないものや、中小規模のアプリケーションでは十分に実用的なものとなっています。
+
+[^1]: Reactにも同名のフックがありますが、これとは全く別物です。
 
 :::info
 それなりの規模のアプリケーションでは、現時点では[Pinia](https://pinia.vuejs.org/)の利用を検討すると良いかと思います。
@@ -163,10 +165,10 @@ const user = useState('login-user')
 ```
 
 scriptタグの中にstateとしてサーバーサイドで初期化された情報が設定されていることが分かります。
-クライアンサイドのハイドレーションではこれを初期値として利用しているため、初期化(init)がスキップされているようです[^1]。
+クライアンサイドのハイドレーションではこれを初期値として利用しているため、初期化(init)がスキップされているようです[^2]。
 このようにstateの内容はレンダリング結果に含まれていますので、シリアライズ可能な型にする必要があります(classやfunctionは不可)。
 
-[^1]: Nuxt内部のuseStateの実装としては、ランタイムコンテキスト(NuxtApp)のpayload内でこの状態を管理しているようです。
+[^2]: Nuxt内部のuseStateの実装としては、ランタイムコンテキスト(NuxtApp)のpayload内でこの状態を管理しているようです。
 
 ## グローバルな状態をComposableで一元管理する
 

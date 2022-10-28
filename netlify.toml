@@ -36,7 +36,8 @@
     style-src * 'unsafe-inline';
     font-src *;
     media-src *;'''
-#    Referrer-Policy = "origin-when-cross-origin"
+    Referrer-Policy = "same-origin"
+    Cross-Origin-Embedder-Policy = "false"
     Permissions-Policy = '''
     microphone=(),
     camera=()'''

@@ -5,6 +5,7 @@ date: 2022-10-23
 templateEngineOverride: md
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-error-handling.md
+nextPage: ./src/posts/nuxt3/nuxt3-state-management.md
 ---
 
 [前回](/nuxt/nuxt3-error-handling/)はNuxt3のエラーハンドリングについて見てきました。

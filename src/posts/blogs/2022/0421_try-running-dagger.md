@@ -2,7 +2,7 @@
 title: 話題の CI/CD ツール Dagger を体験してみる
 author: masahiro-kondo
 date: 2022-04-21
-tags: [CI/CD]
+tags: [CI/CD, dagger]
 ---
 
 [Dagger](https://dagger.io/) は、Docker を開発した人たちによるポータブルな CI/CD ツールです。先月末公開されました。

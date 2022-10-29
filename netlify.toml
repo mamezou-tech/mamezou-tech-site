@@ -24,6 +24,23 @@
     to = "/feed/feed.xml"
     status = 200
 
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Content-Security-Policy = '''
+    default-src 'self' *.google-analytics.com *.googletagmanager.com *.google.com csp.withgoogle.com cdn.jsdelivr.net cdnjs.cloudflare.com unpkg.com *.netlify.com *.netlify.app cdn.segment.com clientstream.launchdarkly.com *.twitter.com *.facebook.com *.facebook.net 'unsafe-inline' 'unsafe-eval';
+    img-src *;
+    style-src * 'unsafe-inline';
+    font-src *;
+    media-src *;'''
+#    Referrer-Policy = "same-origin"
+    Cross-Origin-Embedder-Policy = "false"
+    Permissions-Policy = '''
+    microphone=(),
+    camera=()'''
+
 [[plugins]]
   package = "@netlify/plugin-lighthouse"
 

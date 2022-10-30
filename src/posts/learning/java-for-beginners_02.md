@@ -1,7 +1,7 @@
 ---
 title: 初心者のためのJavaプログラミング再学習（その2 例外処理（1））
 author: hiroaki-taka
-date: 2022-10-25
+date: 2022-10-31
 tags: [java,初心者向け]
 ---
 

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "generate:pv": "node pv-collector.mjs",
+    "generate:monthly": "node monthly-report.mjs",
     "notify:slack": "node daily-notifier.mjs"
   },
   "author": "noboru-kudo",

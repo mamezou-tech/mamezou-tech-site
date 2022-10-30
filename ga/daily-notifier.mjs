@@ -1,102 +1,16 @@
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import { DateTime, Settings } from "luxon";
 import { WebClient } from "@slack/web-api";
+import { makePopularPosts, makePvRequest, makeUserCountRequest } from "./ga-requests.mjs";
 
 Settings.defaultZone = "Asia/Tokyo";
 
-const propertyId = process.env.GA_PROPERTY_ID || "";
 const analyticsDataClient = new BetaAnalyticsDataClient();
 
 const now = DateTime.now();
 const yesterday = now.minus({days: 1});
 const twoDaysAgo = yesterday.minus({days: 1});
 const oneWeekAgo = yesterday.minus({weeks: 1});
-
-function makeUserCountRequest(from, to) {
-  return {
-    property: `properties/${propertyId}`,
-    dateRanges: [
-      {
-        startDate: from.toISODate(),
-        endDate: to.toISODate(),
-      },
-    ],
-    dimensions: [],
-    metrics: [
-      {
-        name: "activeUsers",
-      },
-    ],
-  }
-}
-
-function makePvRequest(from, to) {
-  return {
-    property: `properties/${propertyId}`,
-    dateRanges: [
-      {
-        startDate: from.toISODate(),
-        endDate: to.toISODate(),
-      },
-    ],
-    dimensions: [],
-    metrics: [
-      {
-        name: "eventCount",
-      },
-    ],
-    dimensionFilter: {
-      andGroup: {
-        expressions: [
-          {
-            filter: {
-              fieldName: "eventName",
-              stringFilter: {
-                value: "page_view",
-              },
-            },
-          },
-        ],
-      },
-    },
-  }
-}
-
-function makePopularPosts(from, to) {
-  return {
-    property: `properties/${propertyId}`,
-    dateRanges: [
-      {
-        startDate: from.toISODate(),
-        endDate: to.toISODate(),
-      },
-    ],
-    dimensions: [
-      {
-        name: "pageTitle",
-      },
-      {
-        name: "fullPageUrl",
-      },
-    ],
-    metrics: [
-      {
-        name: "activeUsers",
-      },
-    ],
-    dimensionFilter: {
-      notExpression: {
-        filter: {
-          fieldName: "fullPageUrl",
-          stringFilter: {
-            value: "developer.mamezou-tech.com/",
-          },
-        },
-      },
-    },
-    limit: 1000
-  };
-}
 
 async function count(makeRequest) {
   const [response1] = await analyticsDataClient.runReport(

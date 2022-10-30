@@ -31,7 +31,7 @@ module.exports = (collection) => {
       authorArticles[article.data.author].articles.push(article);
     }
   });
-  log(authorArticles);
+  // log(authorArticles);
   // pagination
   const chunkSize = 10;
   return Object.keys(authorArticles).reduce((state, name) => {

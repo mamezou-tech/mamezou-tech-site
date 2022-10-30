@@ -13,7 +13,7 @@ function log(authorArticles) {
       }
       return acc;
     }, []);
-    console.log(v.name, result);
+    console.log(v.name, result.filter(r => r.ym === '2022-10'));
   });
 }
 
@@ -31,7 +31,7 @@ module.exports = (collection) => {
       authorArticles[article.data.author].articles.push(article);
     }
   });
-  // log(authorArticles);
+  log(authorArticles);
   // pagination
   const chunkSize = 10;
   return Object.keys(authorArticles).reduce((state, name) => {

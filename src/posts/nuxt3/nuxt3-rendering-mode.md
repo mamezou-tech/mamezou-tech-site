@@ -219,7 +219,7 @@ node .output/server/index.mjs
 これに対して前述のハイドレーションが加えられ、HTMLに対してリアクティブ性が追加されます。その後の動きはクライアントサイドレンダリングのときと同じです。
 以下のイメージです。
 
-![Nuxt universal rendering](https://i.gyazo.com/5da3255e252b87b9036824c5efce54d3.png)
+![Nuxt universal rendering](https://i.gyazo.com/82cbe981fe913ab656b25c533cad997b.png)
 
 この仕組みの欠点は、サーバー環境で毎回レンダリングが発生することによるレスポンス遅延ですが、これに対してはCDNを挟むことで、キャッシュを利用したパフォーマンス対策が施されることが一般的かと思います。
 とはいえ、やはりサーバー実行環境を準備し、運用していく必要があります。

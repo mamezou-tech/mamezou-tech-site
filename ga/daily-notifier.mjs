@@ -43,7 +43,7 @@ async function runReport() {
   const [response] = await analyticsDataClient.runReport(makePopularPosts(yesterday, yesterday));
   const articles = response.rows
     .sort((a, b) => b.metricValues[0].value - a.metricValues[0].value)
-    .slice(0, 10)
+    .slice(0, 20)
     .map(r => {
       const [title, url] = r.dimensionValues.map(v => v.value)
       return {
@@ -85,7 +85,7 @@ async function runReport() {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: ":star:*ユーザー数TOP10*:star:\n" + articles.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.user}`).join("\n"),
+          text: ":trophy:*ユーザー数TOP20*:bigboss:\n" + articles.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.user}`).join("\n"),
         }
       },
     ]

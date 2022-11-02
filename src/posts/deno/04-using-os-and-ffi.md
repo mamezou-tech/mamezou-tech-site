@@ -6,7 +6,7 @@ templateEngineOverride: md
 prevPage: ./src/posts/deno/03-server-side-rendering.md
 ---
 
-Deno 1.27 がリリースされました。
+第3回の後、Deno 1.27 がリリースされましたので、本編に入る前に少し内容を見てみましょう。
 
 [Deno 1.27: Major IDE Improvements](https://deno.com/blog/v1.27)
 
@@ -43,8 +43,10 @@ Inlay Hints が有効化されていると、VS Code 上でこのようにヒン
 
 ![inlay hints](https://i.gyazo.com/37650c01eac82f2eddb3cd3d9aba0a55.png)
 
+TypeScript を使うモチベーションが高まるリリースですね。
+
 さて、今回は、Deno から OS の機能を利用する方法と、ネイティブ言語で書かれたライブラリを利用する方法について見ていきます。
-Deno は Node.js 同様ブラウザ外で実行される JavaScript ランタイムなので、OS の環境変数の操作、プロセス起動、ファイルシステムへのアクセス、シグナルの処理などをタンタイム API を通して行えます。また、FFI という API を使えば、C/C++、Rust などのネイティブコード生成言語で作成されたライブラリを呼び出すことが可能です。
+Deno は Node.js 同様ブラウザ外で実行される JavaScript ランタイムなので、OS の環境変数の操作、プロセス起動、ファイルシステムへのアクセス、シグナルの処理などをタンタイム API を通して行えます。また、FFI という API を使うと C/C++、Rust などのネイティブコード生成言語で作成されたライブラリを呼び出すことが可能です。
 
 [[TOC]]
 
@@ -146,7 +148,7 @@ if (code === 0) {
 Deno.exit(code);
 ```
 
-このコードでは、OS 標準の cat コマンドを起動し、プログラムの引数(ファイル名)を cat コマンドに渡します。`Deno.run` の戻り値は Process オブジェクトで、`Process.status()` メソッドは ProcessStatus の Promise を返します。この status でプロセスの実行結果が成功か失敗か取得できるので、結果に応じて、出力を標準出力または標準エラー出力に出力しています。
+このコードでは、OS 標準の cat コマンドを起動し、プログラムの引数(ファイル名)を cat コマンドに渡します。`Deno.run` の戻り値は Process オブジェクトで、`Process.status()` メソッドは ProcessStatus の Promise を返します。この status でプロセスの終了ステータスが取得できるので、結果を標準出力または標準エラー出力に出力しています。
 
 存在するファイルを指定した場合の結果です。ファイルの中身が出力されます。
 
@@ -159,7 +161,7 @@ contents of hoge.txt
 
 ```shell
 $ deno run --allow-run run_cat.ts fuga
-cat: simple: No such file or directory
+cat: fuga: No such file or directory
 ```
 
 いずれも、呼び出し元の Deno プログラムに、サブプロセスの出力がパイプされ取得できていることがわかります。`Deno.run` ではこのように起動したプロセスの結果や入出力を扱いやすくするメソッドやプロパティが提供されています。

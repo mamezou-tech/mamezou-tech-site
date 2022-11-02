@@ -286,7 +286,7 @@ S3オリジンの方はCloudFrontのキャッシュを有効とし、カスタ�
 
 ```shell
 aws cloudformation deploy --template-file cdn.yml --stack-name nuxt-distribution \
-  --parameter-overrides NuxtSsrEnginDomain=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.lambda-url.ap-northeast-1.on.aws
+  --parameter-overrides NuxtSsrEnginDomain=xxxxxxxxxxxx.lambda-url.ap-northeast-1.on.aws
 ```
 
 最後に、作成された静的リソース用のS3バケットに`.output/public`配下のリソースをアップロードします。

@@ -134,7 +134,7 @@ npx serverless deploy
 先程はLambda単体でNuxtアプリケーションをデプロイしました。
 シンプルで簡単ですが、サーバーサイドレンダリングだけでなく、JavaScript等の静的リソースもLambdaで処理しています。簡単な検証にはいいですが、パフォーマンスやLambdaコストの観点で実用的なものとは言えません。
 
-Nitro設定の`serveStatic`設定の[ドキュメント](https://nitro.unjs.io/config#servestatic)でも以下のように言及されています。
+Nitroの`serveStatic`設定の[ドキュメント](https://nitro.unjs.io/config#servestatic)でも以下のように言及されています。
 
 > Note: It is highly recommended that your edge CDN (nginx, apache, cloud) serves the public/ directory instead.
 

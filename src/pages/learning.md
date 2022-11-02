@@ -12,7 +12,7 @@ description: 新入社員やこれからエンジニアを目指す方、新人�
 初心者の方向けに、Javaプログラミングの分かりやすい記事を投稿しています。
 
 - [その1 基本データ型とオブジェクト型](/learning/java-for-beginners_01/)
-- [その2 例外処理（1））](/learning/java-for-beginners_02/)
+- [その2 例外処理（1）](/learning/java-for-beginners_02/)
 
 ## 研修講師の学び
 

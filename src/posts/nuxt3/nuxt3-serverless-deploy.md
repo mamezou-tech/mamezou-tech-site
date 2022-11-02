@@ -17,7 +17,7 @@ prevPage: ./src/posts/nuxt3/nuxt3-state-management.md
 - [Nuxt3入門(第3回) - ユニバーサルフェッチでデータを取得する](/nuxt/nuxt3-universal-fetch/)
 - [Nuxt3入門(第4回) - Nuxtのルーティングを理解する](/nuxt/nuxt3-routing/)
 
-使用するレンダリングモードはNuxtのデフォルトでユニバーサルレンダリングを採用します。
+使用するレンダリングモードは、Nuxtデフォルトのユニバーサルレンダリングを使います。
 なお、ここではプリレンダリングは使用せず、サーバーサイド実行環境を配置してNuxtを動作させるものとします[^1]。
 
 [^1]: プリレンダリングを使用する場合は、SSG同様で単純にビルドされた出力結果をS3等へホスティングするだけです。
@@ -178,9 +178,9 @@ functions:
     url: true
 ```
 
-変更点は、`package.patterns`でNitroビルド結果のパッケージング対象を`.output/server/**`のみとし、`public`ディレクトリを除外しました。
+`package.patterns`でNitroビルド結果のパッケージング対象を`.output/server/**`のみとし、静的リソースが作成される`.output/public`ディレクトリを除外しています。
 
-先程と同じようにこれをビルドして、デプロイします。
+先程と同じように、これでビルド・デプロイします。
 
 ```shell
 npm run build

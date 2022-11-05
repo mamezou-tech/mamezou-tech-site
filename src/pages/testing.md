@@ -61,3 +61,4 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 ### Google Test
 
 - [Google Test を使ってみる（その１：準備編）](/blogs/2022/11/04/google-test-01/)
+- [Google Test を使ってみる（その２：サンプル実行編）](/blogs/2022/11/06/google-test-02/)

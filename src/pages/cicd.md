@@ -59,3 +59,4 @@ Docker開発者によって作成されたツールの[Dagger](https://dagger.io
 かなり新しいツールですが、パイプラインの新時代を先取りしてみてはいかがでしょうか？
 
 - [話題の CI/CD ツール Dagger を体験してみる](/blogs/2022/04/21/try-running-dagger/)
+- [Go で CI/CD パイプラインを書ける Dagger Go SDK](/blogs/2022/10/28/dagger-go-sdk/)

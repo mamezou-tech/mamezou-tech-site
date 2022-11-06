@@ -16,15 +16,15 @@ jobs:
         run: |
           BRANCH=feature/$(date +"%Y-%m-%d")-ga
           git checkout -b $BRANCH
-          echo "::set-output name=branch::$BRANCH"
+          echo "branch::$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Set up Node.js environment
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
       - name: Cache Node.js modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
           key: ${{ runner.OS }}-node-${{ hashFiles('package-lock.json') }}
@@ -53,7 +53,7 @@ jobs:
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"
             git status -sb
-            echo "::set-output name=changed::true"
+            echo "changed::true" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit report

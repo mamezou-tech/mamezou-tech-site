@@ -16,7 +16,7 @@ jobs:
         run: |
           BRANCH=feature/$(date +"%Y-%m-%d")-ga
           git checkout -b $BRANCH
-          echo "branch::$BRANCH" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Set up Node.js environment
         uses: actions/setup-node@v3
@@ -53,7 +53,7 @@ jobs:
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"
             git status -sb
-            echo "changed::true" >> $GITHUB_OUTPUT
+            echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit report

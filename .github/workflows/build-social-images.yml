@@ -48,7 +48,7 @@ jobs:
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"
             git status -sb
-            echo "changed::true" >> $GITHUB_OUTPUT
+            echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit images

@@ -171,7 +171,7 @@ build
 └── greetings-api
 ```
 
-## Matix ビルド
+## Matrix ビルド
 １つのパイプラインで OS(Linux / macOS)、プロセッサアーキテクチャ(Intel / Arm) それぞれのバイナリを生成するような、いわゆる Matrix build は Go の言語機能を使って以下のように書きます。build 関数だけを掲載します。
 
 ```go

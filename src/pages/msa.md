@@ -32,12 +32,12 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - [第9回 MicroProfile OpenAPI 3.0の新機能と既存機能の比較](/msa/mp/cntrn09-mp-openapi3/)
 - [第10回 MicroProfile Healthの機能と利用](/msa/mp/cntrn10-mp-health/)
 - [第11回 MicroProfile RestClient 3.0の確認と小技機能の紹介](/msa/mp/cntrn11-mp-restclient3/) 
-- [第12回 MicroProfile Fault Tolerance(1) - 例で理解する基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/) <span style="color: red;">★NEW★</span>
-- [第13回 MicroProfile Fault Tolerance(2) - 例で理解する非同期編](/msa/mp/cntrn13-mp-faulttolerance2/) <span style="color: red;">★NEW★</span>
-- [第14回 MicroProfile Fault Tolerance(3) - 例で理解する設定編](/msa/mp/cntrn14-mp-faulttolerance3/) <span style="color: red;">★NEW★</span>
+- [第12回 MicroProfile Fault Tolerance(1) - 例で理解する基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)
+- [第13回 MicroProfile Fault Tolerance(2) - 例で理解する非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)
+- [第14回 MicroProfile Fault Tolerance(3) - 例で理解する設定編](/msa/mp/cntrn14-mp-faulttolerance3/)
+- [第15回 MicroProfile Metricsの機能と利用](/msa/mp/cntrn15-mp-metrics/) <span style="color: red;">★NEW★</span>
 
 ～ 今後の連載予定 ～
-- MicroProfile Metricsの機能と利用 <span style="color:red">Coming Soon!</span>
 - MicroProfile OpenTracingの機能と利用 <span style="color:red">Coming Soon!</span>
 - MicroProfile JWT Authを眺めてみる
 

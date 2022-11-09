@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-10-22
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn13-mp-faulttolerance2.md
+nextPage: ./src/posts/msa/microprofile/cntrn15-mp-metrics.md
 ---
 MicroProfile Fault Tolerance(MP Fault Tolerance)を紹介する最後は設定によるフォールトトレランス機能の指定です。今回も前回同様、MP Fault Toleranceから提供される機能とその設定を「こんなことをしたい」的な利用シーンごとに説明していきます。なお、MP Fault Toleranceの機能は豊富なため説明は前々回の[基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)、前回の[非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)、そして今回の設定編と3回に分けて行っています。
 
@@ -17,7 +18,7 @@ MicroProfileをテーマにブログを連載しています。他の記事も�
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Fault Tolerance 4.0をもとに作成しています。
-MicroProfile Fault Toleranceの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-fault-tolerance-4.0/microprofile-fault-tolerance-spec-4.0.html#circuitbreaker)を参照くだい。
+MicroProfile Fault Toleranceの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-fault-tolerance-4.0/microprofile-fault-tolerance-spec-4.0.html)を参照くだい。
 :::
 
 # 設定機能の概要

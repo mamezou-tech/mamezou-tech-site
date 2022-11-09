@@ -1,7 +1,7 @@
 ---
 title: 第15回 MicroProfile Metricsの機能と利用
 author: toshio-ogiwara
-date: 2022-11-08
+date: 2022-11-09
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn14-mp-faulttolerance3.md
 ---

@@ -5,7 +5,9 @@ date: 2022-11-11
 tags: [GitHub, Codespaces, vscode]
 ---
 
-5月の「[GitHub Codespaces を使いはじめる](/blogs/2022/05/18/start-using-codespaces/)」の記事時点ではパプリックベータでしたが、11月9日に全ユーザーにロールアウトされフリープランは月60時間まで無料となりました。個人ユーザーはベータ期間中無料で使えていましたが、引き続き利用できることになります。
+5月の「[GitHub Codespaces を使いはじめる](/blogs/2022/05/18/start-using-codespaces/)」の記事時点ではパプリックベータでしたが、11月9日に全ユーザーにロールアウトされフリープランは月60時間まで無料となりました[^1]。個人ユーザーはベータ期間中無料で使えていましたが、引き続き利用できることになります。
+
+[^1]: CPU 1コアで120時間が提供されるため2コアマシンの場合60時間となります。
 
 [Codespaces for Free and Pro Accounts | GitHub Changelog](https://github.blog/changelog/2022-11-09-codespaces-for-free-and-pro-accounts/)
 

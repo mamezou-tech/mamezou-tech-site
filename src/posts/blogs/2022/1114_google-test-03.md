@@ -35,8 +35,6 @@ counter.h
 #ifndef _COUNTER_H_
 #define _COUNTER_H_
 
-#include <gtest/gtest.h>
-
 class Counter {
  private:
   int counter_;
@@ -89,9 +87,7 @@ Decrement は内部変数がゼロ以下の場合、そのままの値を戻り�
 - 加算を繰り返すテスト（テスト名：Increment）
 - 減算を繰り返すテスト（テスト名：Decrement）
 - 加算と減算を複数回繰り返すテスト（テスト名：Both）
-- エラーになるテストケース（テスト名：Error）
-
-最後のテスト名「Error 」のテストのみテストが失敗するようにテストケースを書いています。  
+- 減算してもマイナスにならないことの確認テスト（テスト名：Error）
 
 counter_test1.cc  
 ```cpp
@@ -138,7 +134,7 @@ TEST(CounterTest, Error) {
   Counter c;
   c.Init();
 
-  EXPECT_EQ(-1, c.Decrement());  // 期待値：0
+  EXPECT_NE(-1, c.Decrement());  // 期待値：0
 }
 
 }  // namespace
@@ -152,10 +148,10 @@ g++ counter.cc counter_test1.cc -o counter1 -g -pthread -lgtest_main -lgtest
 
 テストを実行した結果を以下に示します。  
 
-![](https://gyazo.com/9fdf115740e01274e290686bdc4fe482.png)
+![](https://gyazo.com/a0bae80cf2a5c781f9d81e5a62bc3c38.png)
 
-期待した通り、テスト名「Error」のみテストが失敗しました。  
-結果的には目的を達成しているわけですが、テストケースに毎回  
+期待した通りの結果になりました。  
+テストとしては結果的に目的を達成しているわけですが、テストケースに毎回  
 ```cpp
   // クラスを用意して、初期化する
   Counter c;
@@ -203,7 +199,7 @@ class CounterTest : public testing::Test {
     Counter c;
 ```
 
-テストフィクスチャを使ったテストケース全体は以下のようになりました。  
+テストフィクスチャを使ったテストケース全体を以下のようにしました。  
 
 counter_test2.cc
 ```cpp
@@ -247,7 +243,7 @@ TEST_F(CounterTest, Both) {
 }
 
 TEST_F(CounterTest, Error) {
-  EXPECT_EQ(-1, c.Decrement());  // 期待値：0
+  EXPECT_NE(-1, c.Decrement());  // 期待値：0
 }
 
 }  // namespace
@@ -269,7 +265,7 @@ g++ counter.cc counter_test2.cc -o counter2 -g -pthread -lgtest_main -lgtest
 
 テストを実行した結果を以下に示します。  
 
-![](https://gyazo.com/2a0115a34dfd17260440db217d6fd769.png)
+![](https://gyazo.com/af04b25900d703e9176ffb72d6facac1.png)
 
 Test1の場合と同様の結果になりました。  
 正しく「テストフィクスチャ」が機能していることがわかりました。  

@@ -163,7 +163,7 @@ GitHub Actions ではフローの実行結果の状態 (STATE) や出力 (OUTPUT
 つまり、上の例のように `id: credentials` フローの出力を `steps.credentials.outputs` のプレフィックスと `aws-account-id` のキーで取得できます。
 
 :::info
-状態や出力は、それぞれ `set-state` と `set-output` コマンドが使用されてきました。
+状態や出力は、それぞれ `save-state` と `set-output` コマンドが使用されてきました。
 これらは「[GitHub Actions: Deprecating save-state and set-output commands](https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/)」に書かれている通り最近非推奨となりました。
 それぞれ GITHUB_STATE 環境変数に設定されたファイルへの追記、GITHUB_OUTPUT 環境変数に設定されたファイルへの追記に変更することが要求されています。
 :::

@@ -1,16 +1,16 @@
 {
   "ranking": [
     {
-      "title": "自然言語処理初心者が「GPT2-japanese」で遊んでみた",
-      "url": "/blogs/2022/07/08/gpt-2-japanese/"
+      "title": "GitHub Codespaces を使いはじめる",
+      "url": "/blogs/2022/05/18/start-using-codespaces/"
     },
     {
       "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
       "url": "/nuxt/nuxt3-rendering-mode/"
     },
     {
-      "title": "ORマッパーのTypeORMをTypeScriptで使う",
-      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
+      "title": "自然言語処理初心者が「GPT2-japanese」で遊んでみた",
+      "url": "/blogs/2022/07/08/gpt-2-japanese/"
     },
     {
       "title": "Jest再入門 - 関数・モジュールモック編",
@@ -21,16 +21,16 @@
       "url": "/blogs/2022/06/04/openapi-generator-1/"
     },
     {
-      "title": "コンテンツ重視の静的サイトジェネレーター Astro でドキュメントサイトを構築する",
-      "url": "/blogs/2022/09/07/build-doc-site-with-astro/"
+      "title": "ORマッパーのTypeORMをTypeScriptで使う",
+      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
     },
     {
-      "title": "Rust によるデスクトップアプリケーションフレームワーク Tauri",
-      "url": "/blogs/2022/03/06/tauri/"
+      "title": "Nuxt3入門(第3回) - ユニバーサルフェッチでデータを取得する",
+      "url": "/nuxt/nuxt3-universal-fetch/"
     },
     {
-      "title": "Tauri でデスクトップアプリ開発を始める",
-      "url": "/blogs/2022/07/08/writing-app-with-tauri/"
+      "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
+      "url": "/nuxt/nuxt3-routing/"
     },
     {
       "title": "直感が理性に大反抗！「モンティ・ホール問題」",

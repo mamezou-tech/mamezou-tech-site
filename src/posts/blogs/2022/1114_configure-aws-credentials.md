@@ -71,6 +71,7 @@ GitHub リポジトリの Settings タブ - Security - Secrets の Actions を�
 
 ここまでで AWS の認証情報が取得可能かを確認するワークフローは次のようになります。
 
+{% raw %}
 ```yaml
 name: example
 
@@ -94,6 +95,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: "ap-northeast-3"
 ```
+{% endraw %}
 
 認証情報 (Credentials) が取得できれば、このワークフローが成功します。
 

@@ -1,7 +1,7 @@
 ---
 title: GitHub Actions ワークフローにテンプレートエンジン採用の勧め 
 author: shigeki-shoji
-date: 2022-11-14
+date: 2022-11-21
 tags: [AWS, GitHub, "CI/CD"]
 ---
 

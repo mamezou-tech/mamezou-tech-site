@@ -4,6 +4,7 @@ author: masahiro-kondo
 date: 2022-11-02
 templateEngineOverride: md
 prevPage: ./src/posts/deno/03-server-side-rendering.md
+nextPage: ./src/posts/deno/05-using-wasm.md
 ---
 
 第3回の後、Deno 1.27 がリリースされましたので、本編に入る前に少し内容を見てみましょう。

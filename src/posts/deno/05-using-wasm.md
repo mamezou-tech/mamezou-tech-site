@@ -7,23 +7,27 @@ templateEngineOverride: md
 prevPage: ./src/posts/deno/04-using-os-and-ffi.md
 ---
 
-Deno v1.28 がリリースされました。安定化された(`--unstable` フラグが不要になった) API、新しい(unstable な) `Deno.Command` API の追加などがブログで説明されています。npm パッケージのインポートも安定化されたようで、`--unstable` が不要になりました。
+Deno v1.28 がリリースされました。新しく `Deno.Command` API が追加された模様です。npm パッケージのインポートが安定化されたようで、`--unstable` が不要になりました。
 
 [Deno 1.28: Featuring 1.3 Million New Modules](https://deno.com/blog/v1.28)
 
-とりあえず `deno upgrade` でアップデートしました。アップデート用のサブコマンドが本体に内蔵されているのは便利ですね。
+`deno upgrade` でアップデートしました。アップデート用のサブコマンドが本体に内蔵されているのは便利ですね。
 
-今回は Deno からの WebAssembry(WASM) 利用について見ていきましょう。
+さて、今回は Deno における WebAssembry(WASM) 利用について見ていきましょう。
 
 [[TOC]]
 
-## Deno の Web 標準 API による WASM サポート
-Deno ランタイムで提供される WASM 用 API は Web 標準の API ですので、Web ブラウザー用にビルドされた WASM を利用できます。
+## Web 標準 API による WASM サポート
+Deno ランタイムでは Web 標準の WASM 用 API が提供されていますので、Web ブラウザー用にビルドされた WASM を利用できます。
 
 - [Using WebAssembly | Manual | Deno](https://deno.land/manual@v1.28.0/runtime/webassembly)
 - [WebAssembly JavaScript API の使用 - WebAssembly | MDN](https://developer.mozilla.org/ja/docs/WebAssembly/Using_the_JavaScript_API)
 
-Deno では `WebAssembly.instantiate()` や `WebAssembly.instantiateStreaming()` などの Web 標準 API を使って WASM をインスタンス化、実行できます。下記のコードはリモートに配置された simple.wasm という WASM ファイルを fetch して実行するサンプルです。
+Deno では `WebAssembly.instantiate()` や `WebAssembly.instantiateStreaming()` などの Web 標準 API を使って WASM をインスタンス化、実行できます。MDN の webassembly-example のコードを利用して動作を確認してみます。
+
+[webassembly-examples/js-api-examples at master · mdn/webassembly-examples](https://github.com/mdn/webassembly-examples/tree/master/js-api-examples)
+
+下記のコードはリモートに配置された simple.wasm という WASM ファイルを fetch して実行するサンプルです。
 
 - use_wasm.ts
 ```typescript
@@ -39,9 +43,9 @@ const obj = await WebAssembly.instantiateStreaming(
 obj.instance.exports.exported_func()
 ```
 
-`WebAssembly.instantiateStreaming()` は リモートの WASM バイナリをソースとするストリームから直接 WASM モジュールをコンパイル・インスタンス化する関数です。
+`WebAssembly.instantiateStreaming()` は リモートの WASM バイナリをソースとするストリームから直接 WASM モジュールをコンパイル・インスタンス化する関数です。`importObject` は simple.wasm でインポートして使う関数をプロパティに指定したオブジェクトです。
 
-simple.wasm の WAT(WebAssembly Text) 形式のコードは以下のようになります。`i32` 型の引数を受け取る関数をインポートし、その関数に固定値 42 を渡して実行するというものです。上記の use_wasm.ts では、`imported_func` として `condole.log()` を渡しているため、`call $i` でこれが呼び出されます。
+simple.wasm の WAT(WebAssembly Text) 形式のコードは以下のようになっています。`i32` 型の引数を受け取る関数をインポートし、その関数に固定値 42 を渡して実行するというものです。上記の use_wasm.ts では、`imported_func` として `condole.log()` を渡しているため、`call $i` でこれが呼び出されます。
 
 - simple.wat
 ```lisp
@@ -186,7 +190,7 @@ deno run --allow-write --allow-env --allow-net use_canvas.ts
 
 ![template matching](https://i.gyazo.com/d34e46ed5e0289c9549671c01ac2f94b.png)
 
-ドキュメントに掲載されているのは Node.js 用のものなので、Deno で動くようにしてみました。[Node.js 用のサンプルコード](https://github.com/echamudi/opencv-wasm/blob/master/examples/templateMatching.js)を以下のように変更しました。Deno は Top-level await が使えるのでコード全体を `(async () => {})` で囲むのが不要です。また、Jimp という NPM のイメージ操作ライブラリを使用するため、`npm:jimp` でインポートしています。後は、`Jimp.write` の `data` で Node.js の `Buffer.from` を使わないようにしたぐらいです。
+ドキュメントに掲載されているのは Node.js 用のものなので、Deno で動くようにしてみました。[Node.js 用のサンプルコード](https://github.com/echamudi/opencv-wasm/blob/master/examples/templateMatching.js)を以下のように変更しました。Deno は Top-level await が使えるのでコード全体を `(async () => {})` で囲むのが不要です。また、Jimp という NPM のイメージ操作ライブラリを使用するため、`npm:jimp` でインポートしています。後は `Jimp.write` の `data` で Node.js の `Buffer.from` を使わないようにしたぐらいです。
 
 - use_opencv.ts
 ```typescript
@@ -227,7 +231,7 @@ new Jimp({
 }).write("template-matching.png");
 ```
 
-以下のようにフラグ付きで実行。
+以下のようにフラグ付きで実行。Deno 1.28 では npm インポートを使っていても `--unstable` フラグは不要です。
 
 ```shell
 deno run --allow-env --allow-net --allow-read --allow-write use_opencv.ts

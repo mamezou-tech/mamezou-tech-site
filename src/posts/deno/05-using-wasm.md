@@ -230,7 +230,7 @@ new Jimp({
 以下のようにフラグ付きで実行。
 
 ```shell
-deno run --unstable --allow-env --allow-net --allow-read --allow-write use_opencv.ts
+deno run --allow-env --allow-net --allow-read --allow-write use_opencv.ts
 ```
 
 無事にハートが識別されたマッチング結果の画像が生成されました。

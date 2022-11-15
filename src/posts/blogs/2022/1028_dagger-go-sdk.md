@@ -344,3 +344,9 @@ YAML や CUE のようなデータ指向の言語ではなく、Jenkinsfile[^1] 
 筆者としては、パイプラインは YAML のようなチューリング完全でない (なんでもできるわけではない) 言語で宣言的に書く方が (後々の保守を考えると) よいと思っていますが、Go のシンプルなコード、goroutine による並列性、手軽な実行環境を目の当たりにするとちょっと考えが揺らぎました。
 
 Dagger プロジェクトでは Go 以外の言語による SDK の提供も予定しているようです。プロダクトコードと同じ言語で CI/CD パイプラインも書く。そんな時代が来るのかもしれません。
+
+:::info:2022.11.15 追記
+Dagger Python SDK もリリースされました。Python で CI/CD パイプラインが書けます。
+
+[Develop your pipelines as code with the Dagger Python SDK](https://dagger.io/blog/python-sdk)
+:::

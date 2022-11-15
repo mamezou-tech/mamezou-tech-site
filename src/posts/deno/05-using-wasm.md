@@ -1,5 +1,5 @@
 ---
-title: Deno を始める - 第5回 (WebAssembry の利用)
+title: Deno を始める - 第5回 (WebAssembly の利用)
 author: masahiro-kondo
 date: 2022-11-15
 tags: [WASM]
@@ -13,7 +13,7 @@ Deno v1.28 がリリースされました。新しく `Deno.Command` API が追�
 
 `deno upgrade` でアップデートしました。アップデート用のサブコマンドが本体に内蔵されているのは便利ですね。
 
-さて、今回は Deno における WebAssembry(WASM) 利用について見ていきましょう。
+さて、今回は Deno における WebAssembly(WASM) 利用について見ていきましょう。
 
 [[TOC]]
 

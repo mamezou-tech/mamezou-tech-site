@@ -6,7 +6,7 @@ templateEngineOverride: md
 tags: []
 ---
 
-先日、Jamstackコミュニティを運営するNetlifyから2022年のコミュニティメンバーのアンケート調査結果が公開されました。
+先日、Jamstackコミュニティを運営するNetlifyから、2022年のアンケート調査結果が公開されました。
 
 - [Jamstack gives developers full-stack powers - Findings from the Jamstack Community Survey 2022](https://jamstack.org/survey/2022/)
 

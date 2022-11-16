@@ -30,26 +30,26 @@ tags: []
 
 ## リモートワーク普及
 
-- [Jamstack Community Survey - Remote work](https://jamstack.org/survey/2022/#remote-work)
+- [Jamstack Community Survey 2022 - Remote work](https://jamstack.org/survey/2022/#remote-work)
 
 前述の通り、世界的に見ても引き続きリモートワークを継続している結果となっています。半数以上の開発者が90%以上の比率でリモートワークを実現し、充実感を感じているようです。
 
 さらに興味深いのは、半数以上(55%)の開発者はリモートワークが解除されたら会社を辞めると回答しています。
 欧米ほどの転職頻度がない日本でどこまでこの傾向があるのかは謎ですが、企業としては優秀な人材を確保・採用するにはリモートワークを維持していく必要がありそうです。
 
-- [My company has remote work figured out](https://jamstack.org/survey/2022/#my-company-has-remote-work-figured-out)
+- [Jamstack Community Survey 2022 - My company has remote work figured out](https://jamstack.org/survey/2022/#my-company-has-remote-work-figured-out)
 
 一方でTwitter等の大手IT企業のオフィス回帰の流れもあるようですが、これらの企業は優秀な人材を確保・維持できるのでしょうか。
 
 また、最大の転職理由としてリモートワークを挙げている開発者が多いのも面白いですね。今や給与(Money)は5番目の順位となり、その重要性は下がっているようです。
 
-- [Why did you leave your job?](https://jamstack.org/survey/2022/#why-did-you-leave-your-job)
+- [Jamstack Community Survey 2022 - Why did you leave your job?](https://jamstack.org/survey/2022/#why-did-you-leave-your-job)
 
 個人的見解ですが、やはり自分に合った環境で作業するのは生産性に寄与すると感じるので、この傾向が続くといいなと思います。それだけでなく通勤ラッシュは苦痛で無駄な時間と感じますし。
 
 ## サーバーレス技術の利用
 
-- [Jamstack is Increasingly Serverless](https://jamstack.org/survey/2022/#jamstack-is-increasingly-serverless)
+- [Jamstack Community Survey 2022 - Jamstack is Increasingly Serverless](https://jamstack.org/survey/2022/#jamstack-is-increasingly-serverless)
 
 サーバーレス技術の利用が2021年と比較して25%(46% -> 71%)も上昇しています。
 Jamstackではサーバーレス技術はエッジコンピューティングのコンテキストで使用しているようです。
@@ -58,13 +58,13 @@ Next.js等これをサポートするフレームワークの普及や、Netlify
 
 この流れに沿って、Jamstackコミュニティメンバーの肩書も「フロントエンドデベロッパー」から「フルスタックデベロッパー」へシフトしているようです。
 
-- [Job titles, 2021 vs. 2022](https://jamstack.org/survey/2022/#job-titles-2021-vs-2022)
+- [Jamstack Community Survey 2022 - Job titles, 2021 vs. 2022](https://jamstack.org/survey/2022/#job-titles-2021-vs-2022)
 
 これからのフロントエンド業界では、ブラウザ等のクライアンドサイドだけでなく、バックエンド技術の動向を抑えておく必要がありそうですね。
 
 ## Webフレームワークシェア
 
-- [Web frameworks](https://jamstack.org/survey/2022/#web-frameworks)
+- [Jamstack Community Survey 2022 - Web frameworks](https://jamstack.org/survey/2022/#web-frameworks)
 
 以下調査結果から抜粋した利用シェアのトップ10です。
 
@@ -106,7 +106,7 @@ Vueの没落とともにシェアを伸ばしている[Svelte](https://svelte.de
 本文には掲載しませんでしが、ようやくブラウザサポートが浸透しつつある[Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)も高い関心を持たれているようです。
 2023年はWeb Componentsの飛躍の年となる可能性があります。
 
-- [Web Components have arrived](https://jamstack.org/survey/2022/#web-components-have-arrived)
+- [Jamstack Community Survey 2022 - Web Components have arrived](https://jamstack.org/survey/2022/#web-components-have-arrived)
 
 あまり使ったことがない技術ですが、今後キャッチアップしておこうと思いました。
 

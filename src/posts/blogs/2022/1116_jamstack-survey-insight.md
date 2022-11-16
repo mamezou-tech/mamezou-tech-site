@@ -6,7 +6,7 @@ templateEngineOverride: md
 tags: []
 ---
 
-先日、Jamstackコミュニティを運営するNetlifyから、2022年のアンケート調査結果が公開されました。
+先日、Netlifyが運営するJamstackコミュニティから、2022年のアンケート調査結果が公開されました。
 
 - [Jamstack gives developers full-stack powers - Findings from the Jamstack Community Survey 2022](https://jamstack.org/survey/2022/)
 
@@ -94,7 +94,7 @@ React対抗馬の[Vue](https://vuejs.org/)は2021年から6.4%もシェアを落
 Vue3がリリースされてだいぶ時間が経ちますが、エコシステムがそれについてきておらず、移行が進んでいないことが要因だと思います。
 とはいえ、Vue3に対応した[Nuxt3](https://nuxtjs.org/)がGAリリース間近となり、来年はNuxtと合わせて巻き返しなるかというところですね。
 
-Vueの没落とともにシェアを伸ばしている[Svelte](https://svelte.dev/)も注目です。
+Vueの没落とは対称的に大きくシェアを伸ばしている[Svelte](https://svelte.dev/)も注目です。
 来年Vue3/Nuxt3が奮わない結果となった場合には、SvelteがReactに次ぐフレームワークとなる可能性がありそうです。
 最後に、うれしいことに本サイトで使用している[11ty(Eleventy)](https://www.11ty.dev/)も10位に入っています。導入が簡単ですし、特に静的サイトの候補としては有力です。
 
@@ -102,13 +102,13 @@ Vueの没落とともにシェアを伸ばしている[Svelte](https://svelte.de
 
 ## 最後に
 
-以上、Jamstackの2022レポートのポイントをご紹介しました。
+以上、Jamstack Community Surveyの2022年レポートのポイントをご紹介しました。
 本文には掲載しませんでしが、ようやくブラウザサポートが浸透しつつある[Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)も高い関心を持たれているようです。
 2023年はWeb Componentsの飛躍の年となる可能性があります。
 
 - [Jamstack Community Survey 2022 - Web Components have arrived](https://jamstack.org/survey/2022/#web-components-have-arrived)
 
-あまり使ったことがない技術ですが、今後キャッチアップしておこうと思いました。
+あまり使ったことがない技術ですが、キャッチアップしておこうと思いました。
 
 この類のレポートはいつもはサラッと読む程度なのですが、詳しく見てみると業界の「今」が分かって面白いですね。
 今後も機会があれば、このようなブログも投稿していこうと思います。

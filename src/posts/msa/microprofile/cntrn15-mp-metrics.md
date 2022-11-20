@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-11-09
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn14-mp-faulttolerance3.md
+nextPage: ./src/posts/msa/microprofile/cntrn16-mp-tracing.md
 ---
 
 今回のテーマはマイクロサービスアーキテクチャの重要な非機能として挙げられるモニタリングに関するMicroProfile Metrics(MP Metrics)です。MicroProfile Metricsはサーバーのリソース状況や利用頻度といった数値情報(テレメトリーデータ)の測定とその提供（公開）を担う仕様になります。記事ではサンプルアプリを例にMP Metricsでどのようなメトリクス情報を収集することができるかを説明していきます。

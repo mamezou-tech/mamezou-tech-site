@@ -2,7 +2,7 @@
 title: Google Test を使ってみる（その１：準備編）
 author: shuichi-takatsu
 date: 2022-11-04
-tags: [テスト]
+tags: [テスト, googletest]
 ---
 
 これから数回に分けて「Google Test」についてご紹介したいと思います。  

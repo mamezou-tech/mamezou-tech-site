@@ -2,7 +2,7 @@
 title: Google Test を使ってみる（その３：テストフィクスチャ編）
 author: shuichi-takatsu
 date: 2022-11-14
-tags: [テスト]
+tags: [テスト, googletest]
 ---
 
 [前回](/blogs/2022/11/06/google-test-02/)は簡単なサンプルプログラムのテストケースを「Google Test」を使って記述し、テストを実行してみました。  

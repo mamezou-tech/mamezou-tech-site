@@ -2,7 +2,7 @@
 title: Google Test を使ってみる（その４：VSCode拡張機能編）
 author: shuichi-takatsu
 date: 2022-11-20
-tags: [テスト]
+tags: [テスト, googletest, vscode]
 ---
 
 [前回](/blogs/2022/11/14/google-test-03/)は Google Test のテストフィクスチャを使うことで、テストケースを実行する前に、データをテストケースに渡すことができることを確認しました。  

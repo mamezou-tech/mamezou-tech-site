@@ -2,7 +2,7 @@
 title: Google Test を使ってみる（その２：サンプル実行編）
 author: shuichi-takatsu
 date: 2022-11-06
-tags: [テスト]
+tags: [テスト, googletest]
 ---
 
 [前回](/blogs/2022/11/04/google-test-01/)は「Google Test」が実行できる環境を整えました。  

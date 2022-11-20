@@ -150,7 +150,7 @@ MP OpenTracingはJakarta RESTful Web Services(JAX-RS)のリクエストに対す
 
 ![span_trace](../../../img/mp/16-capt-5_span_trace.png)
 
-MP OpenTracingにより取得されたトレース情報はMP OpenTracingの機能によりJeager Collectorに自動で送信され、Jeager Collectorは受信したトレース情報を蓄積していきます。そしてこの蓄積されたトレース情報をJeager UIとおしてビジュアルに表示するといった流れになります。
+MP OpenTracingにより取得されたトレース情報はMP OpenTracingの機能によりJeager Collectorに自動で送信され、Jeager Collectorは受信したトレース情報を蓄積していきます。そしてこの蓄積されたトレース情報をJeager UIを通してビジュアルに表示するといった流れになります。
 
 ここまでの説明を整理する次のようになります。
 - MP OpenTracingによりJAX-RSのリクエストに対するトレース情報の取得とバックエンドへの送信が行われる
@@ -226,7 +226,7 @@ MP OpenTracingアプリと非MP OpenTracingアプリが混在したトレース�
 
 この際、非MP OpenTracingアプリのトレースで考える必要があることは、呼び出し元のBアプリケーションからSpanの紐づけ情報として渡されるトレース情報のHTTPヘッダの設定形式を意味するPropagationフォーマットとバックエンドにSpan情報を送信する際のSpanフォーマット(通信プロトコルも含む)の2つになります。
 
-MP OpenTracingで構成されたトレース環境に参加するには、MP OpenTracingアプリ間で利用されているPropagationフォーマットとSpanフォーマットに合わせる必要があります。この具体的なフォーマットしてはOpenTemeletry SDKがサポートしているフォーマットが参考になります。(Propagationフォーマットは[こちら](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator)、Spanフォーマット[^7]は[こちら](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#exporters))
+MP OpenTracingで構成されたトレース環境に参加するには、MP OpenTracingアプリ間で利用されているPropagationフォーマットとSpanフォーマットに合わせる必要があります。この具体的なフォーマットしてはOpenTelemetry SDKがサポートしているフォーマットが参考になります。(Propagationフォーマットは[こちら](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator)、Spanフォーマット[^7]は[こちら](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#exporters))
 
 [^7]: OpenTelemetryがバックエンドに送信するテレメトリーデータはSpan情報だけではなくメトリクスやログも含まれます。このため、OpenTelemetryにSpnaフォーマットといった用語はなく、バックエンドに送信するデータフォーマットに該当する用語は`Exporter`となりますが、ここでは用語の混乱を避けるためSpanフォーマットと呼んでいます。
 

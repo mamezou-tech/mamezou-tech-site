@@ -2,7 +2,7 @@
 title: 第16回 MicroProfile OpenTracingとJeagerで理解する分散トレーシング
 author: toshio-ogiwara
 date: 2022-11-20
-tags: ["逆張りのMicroProfile"]
+tags: ["逆張りのMicroProfile", tracing]
 prevPage: ./src/posts/msa/microprofile/cntrn15-mp-metrics.md
 ---
 

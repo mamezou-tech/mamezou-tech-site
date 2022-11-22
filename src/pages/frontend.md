@@ -50,6 +50,7 @@ Deno は高速でセキュアな JavaScript ランタイムです。Node.js に�
 - [Deno を始める - 第3回 (SSR)](/deno/getting-started/03-server-side-rendering/)
 - [Deno を始める - 第4回 (OS 機能と FFI の利用)](/deno/getting-started/04-using-os-and-ffi/)
 - [Deno を始める - 第5回 (WebAssembly の利用)](/deno/getting-started/05-using-wasm/)
+- [Deno を始める - 第6回 (Deno Deploy で静的ファイルを配信)](/deno/getting-started/06-serving-files-on-deno-deploy/)
 
 ### ブログ
 - [Deno による Slack プラットフォーム(オープンベータ)](/blogs/2022/09/27/slack-new-plotform-powered-by-deno/)

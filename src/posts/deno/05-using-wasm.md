@@ -5,6 +5,7 @@ date: 2022-11-15
 tags: [WASM]
 templateEngineOverride: md
 prevPage: ./src/posts/deno/04-using-os-and-ffi.md
+nextPage: ./src/posts/deno/06-serving-files-on-deno-deploy.md
 ---
 
 Deno v1.28 がリリースされました。新しく `Deno.Command` API が追加された模様です。npm パッケージのインポートが安定化されたようで、`--unstable` が不要になりました。

@@ -1,7 +1,7 @@
 ---
 title: GitHub Actions ワークフローにテンプレートエンジン採用の勧め 
 author: shigeki-shoji
-date: 2022-11-21
+date: 2022-11-28
 tags: [AWS, GitHub, "CI/CD"]
 ---
 
@@ -29,7 +29,7 @@ IAM の「アクセス管理」にある「ID プロバイダ」を選択し、�
 
 画面のように、「OpenID Connect」を選択し、プロバイダの URL に `https://token.actions.githubusercontent.com`、対象者を `sts.amazonaws.com` と入力して「プロバイダを追加」ボタンをクリックします。
 
-![ID Provider](/img/blogs/2022/1114_github-idprovider.png)
+![ID Provider](https://github.com/edward-mamezou/aws-mustache-example/raw/main/github-idprovider.png)
 
 ### 2. 追加した外部 ID プロバイダをプリンシパルとする IAM ロールの作成
 

@@ -9,9 +9,8 @@ eleventyExcludeFromCollections: true
 	{% set absoluteUrl %}{{ '/feed/' | url | absoluteUrl(meta.url) }}{% endset %}
 	<link href="{{ absoluteUrl }}" rel="self"/>
 	<link href="{{ meta.url }}"/>
-	<published>{{ site.published }}</published>
 	<updated>{{ collections.articles | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
-	<id>{{ meta.url }}</id>
+	<id>{{ meta.url }}/</id>
 	<author>
 		<name>{{ site.authorName }}</name>
 	</author>

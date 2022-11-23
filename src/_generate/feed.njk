@@ -15,7 +15,7 @@ eleventyExcludeFromCollections: true
 	<author>
 		<name>{{ site.authorName }}</name>
 	</author>
-	{%- for page in collections.articles | reverse %}
+	{%- for page in collections.articles | reverse | head(100) %}
 	{%- set absolutePostUrl %}{{ page.url | url | absoluteUrl(meta.url) }}{% endset -%}
 	{%- set pageDescription %}{% shortDesc collections.all, page, site.siteDescription %}{% endset -%}
 	<entry>

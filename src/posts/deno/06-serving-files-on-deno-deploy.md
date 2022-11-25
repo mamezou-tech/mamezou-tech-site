@@ -4,6 +4,7 @@ author: masahiro-kondo
 date: 2022-11-22
 templateEngineOverride: md
 prevPage: ./src/posts/deno/05-using-wasm.md
+nextPage: ./src/posts/deno/07-all-in-one-deno-sub-commands.md
 ---
 
 今回は Deno Deploy についてです。Deno Deploy は JavaScript / TypeScript / WebAssembly を実行できるエッジサービスです。Deno の開発元 Deno Company が運営しています。今年の5月 Beta 4 に到達し、一般提供を間近に控えています。

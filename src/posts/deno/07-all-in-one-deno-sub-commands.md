@@ -130,7 +130,7 @@ plugins=(git deno)
 
 ## types
 
-TypeScript の形定義を表示するサブコマンドです。型定義ファイルを作成して利用できます。
+Deno ランタイムの TypeScript 型定義を表示するサブコマンドです。型定義ファイルを作成して利用できます。
 
 ```shell
 deno types > lib.deno.d.ts

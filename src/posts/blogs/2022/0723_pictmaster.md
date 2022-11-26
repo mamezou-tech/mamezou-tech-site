@@ -2,7 +2,7 @@
 title: ペアワイズ法をGUIから使いこなすツール「PictMaster」の紹介
 author: shuichi-takatsu
 date: 2022-07-23
-tags: [テスト]
+tags: [テスト, pairwise, pict, pictmaster]
 ---
 
 [前々回](/blogs/2022/07/11/pairwise-test/)、[前回](/blogs/2022/07/15/pairwise-test-case-creation-tool-pict/)とペアワイズ法に関する情報を発信してきました。  

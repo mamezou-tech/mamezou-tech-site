@@ -2,7 +2,7 @@
 title: ペアワイズ法による組み合わせテストケース生成ツール「PICT」の紹介
 author: shuichi-takatsu
 date: 2022-07-15
-tags: [テスト]
+tags: [テスト, pairwise, pict]
 ---
 
 [先日のブログ](/blogs/2022/07/11/pairwise-test/)にて「ペアワイズ法」をご紹介しました。  

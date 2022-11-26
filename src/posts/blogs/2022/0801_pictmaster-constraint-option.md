@@ -2,7 +2,7 @@
 title: ペアワイズ法テストケース生成ツール「PictMaster」の制約表を使う
 author: shuichi-takatsu
 date: 2022-08-01
-tags: [テスト]
+tags: [テスト, pairwise, pict, pictmaster]
 ---
 
 [前回](/blogs/2022/07/23/pictmaster/)はペアワイズ法をGUIから使う便利ツール「PictMaster」の基本操作を紹介しました。  

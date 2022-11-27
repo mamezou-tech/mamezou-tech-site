@@ -90,6 +90,14 @@ module.exports = function (eleventyConfig) {
     (contributorArticles, author) => contributorArticles.filter(contributor => contributor.name === author));
   eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));
   eleventyConfig.addFilter('getDate', require("./11ty/get-date.cjs"));
+  eleventyConfig.addFilter('adventCalendarTag', (rawTags) => {
+    const tags = typeof rawTags === 'string' ? [rawTags] : rawTags;
+    const adventTag = tags.find(tag => tag.startsWith('advent'));
+    if (adventTag) {
+      const result = adventTag.match(/advent(?<year>\d{4})/);
+      return result ? result.groups.year : undefined;
+    }
+  });
   eleventyConfig.addCollection('currentMonthPosts', (collection) => getPosts(collection).filter(post => post.date.getMonth() === new Date().getMonth() && post.date.getFullYear() === new Date().getFullYear()));
   eleventyConfig.addCollection('articles', getPosts);
   eleventyConfig.addCollection('tagList', require("./11ty/tag-list.cjs"));

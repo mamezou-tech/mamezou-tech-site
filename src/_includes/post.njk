@@ -28,7 +28,6 @@ layout: base.njk
         {%- endif %}
         </div>
       {% endif %}
-
       <div style="float: right">
         <is-land on:idle>
           <div id="preact-sns">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>
@@ -40,6 +39,12 @@ layout: base.njk
           </template>
         </is-land>
       </div>
+    {%- set adYear = tags | adventCalendarTag %}
+    {%- if adYear %}
+    <div class="advent">
+      <a target="_blank" rel="noopener noreferrer" href="{{ adventCalendarUrl }}"><img width="20px" src="/img/icons/christmas-tree.svg" alt="christmas-tree"/>アドベントカレンダー{{adYear}}</a>
+    </div>
+    {%- endif %}
     </header>
 
     <main class="post__content">

@@ -5,12 +5,12 @@
       "url": "/nuxt/nuxt3-rendering-mode/"
     },
     {
-      "title": "GitHub Codespaces を使いはじめる",
-      "url": "/blogs/2022/05/18/start-using-codespaces/"
-    },
-    {
       "title": "自然言語処理初心者が「GPT2-japanese」で遊んでみた",
       "url": "/blogs/2022/07/08/gpt-2-japanese/"
+    },
+    {
+      "title": "GitHub Codespaces を使いはじめる",
+      "url": "/blogs/2022/05/18/start-using-codespaces/"
     },
     {
       "title": "Jest再入門 - 関数・モジュールモック編",
@@ -21,10 +21,6 @@
       "url": "/blogs/2022/07/27/typeorm-with-typescript/"
     },
     {
-      "title": "第1回 OpenAPI Generator を使ったコード生成",
-      "url": "/blogs/2022/06/04/openapi-generator-1/"
-    },
-    {
       "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
       "url": "/nuxt/nuxt3-routing/"
     },
@@ -33,12 +29,16 @@
       "url": "/nuxt/nuxt3-universal-fetch/"
     },
     {
-      "title": "Ingress - NGINX Ingress Controller",
-      "url": "/containers/k8s/tutorial/ingress/ingress-nginx/"
+      "title": "第1回 OpenAPI Generator を使ったコード生成",
+      "url": "/blogs/2022/06/04/openapi-generator-1/"
     },
     {
-      "title": "EC2にS3をマウントする方法",
-      "url": "/blogs/2022/01/23/ec2-s3-mount/"
+      "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
+      "url": "/nuxt/nuxt3-state-management/"
+    },
+    {
+      "title": "Nuxt3入門(第2回) - 簡単なNuxtアプリケーションを作成する",
+      "url": "/nuxt/nuxt3-develop-sample-app/"
     }
   ]
 }

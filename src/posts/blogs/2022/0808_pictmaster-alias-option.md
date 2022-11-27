@@ -2,7 +2,7 @@
 title: ペアワイズ法テストケース生成ツール「PictMaster」のエイリアスを使う
 author: shuichi-takatsu
 date: 2022-08-08
-tags: [テスト]
+tags: [テスト, pairwise, pict, pictmaster]
 ---
 
 [前回](/blogs/2022/08/01/pictmaster-constraint-option/)はペアワイズ法テストケース生成ツール「PictMaster」の”制約表”について紹介しました。  

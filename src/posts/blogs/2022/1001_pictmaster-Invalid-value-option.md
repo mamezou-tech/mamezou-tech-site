@@ -2,7 +2,7 @@
 title: ペアワイズ法テストケース生成ツール「PictMaster」の無効値を使う
 author: shuichi-takatsu
 date: 2022-10-01
-tags: [テスト]
+tags: [テスト, pairwise, pict, pictmaster]
 ---
 
 [前回](/blogs/2022/09/11/pictmaster-submodel-option/)はペアワイズ法テストケース生成ツール「PictMaster」の”サブモデル”機能について紹介しました。  

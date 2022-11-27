@@ -28,6 +28,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 - [ペアワイズ法テストケース生成ツール「PictMaster」の重みを使う](/blogs/2022/09/03/pictmaster-weight-option/)
 - [ペアワイズ法テストケース生成ツール「PictMaster」のサブモデルを使う](/blogs/2022/09/11/pictmaster-submodel-option/)
 - [ペアワイズ法テストケース生成ツール「PictMaster」の無効値を使う](/blogs/2022/10/01/pictmaster-Invalid-value-option/)
+- [ペアワイズ法テストケース生成ツール「PictMaster」のカバレッジ指定を使う](/blogs/2022/11/27/pictmaster-coverage-option/)
 
 ## 自動テスト導入事例
 豆蔵社員が実践した自動テストのノウハウをご紹介します。

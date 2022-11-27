@@ -2,7 +2,7 @@
 title: ペアワイズ法テストケース生成ツール「PictMaster」のサブモデルを使う
 author: shuichi-takatsu
 date: 2022-09-11
-tags: [テスト]
+tags: [テスト, pairwise, pict, pictmaster]
 ---
 
 [前回](/blogs/2022/09/03/pictmaster-weight-option/)はペアワイズ法テストケース生成ツール「PictMaster」の”重み”機能について紹介しました。  

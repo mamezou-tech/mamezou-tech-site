@@ -19,6 +19,9 @@
   tr:nth-child(odd) {
     background-color: #d1dce7;
   }
+  td {
+    vertical-align: top;
+  }
   table, th, td {
     border: 1px solid grey;
     padding: 3px;

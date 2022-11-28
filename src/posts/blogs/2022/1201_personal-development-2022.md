@@ -3,16 +3,12 @@ title: 個人開発活動2022
 author: masahiro-kondo
 date: 2022-12-01
 tags: [advent2022]
-adventCalendarUrl: https://github.com/mamezou-tech/mamezou-tech-site/issues/383
+adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
  
-これは、[豆蔵デベロッパーサイト2022アドベントカレンダー](https://github.com/mamezou-tech/mamezou-tech-site/issues/383)第1日目の記事です。
+これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第1日目の記事です。
 
 豆蔵デベロッパーサイトは12月で1周年を迎えました。この1年で執筆者が増え、バラエティに富んだ記事が数多く投稿され、アクセスも伸び続けて順調に成長しています。12月はちょうどアドベントカレンダーの季節なので、「アドカレやろうよ！」と同僚に呼びかけ、お願いしまくってカレンダーを埋めてもらっています。
-
-:::info
-今年は Qiita などのアドベントカレンダーのサービスに登録せず、GitHub issue に Markdown のテーブルで作ったカレンダーという弱気な感じでやっていますが、初の試みということでご容赦ください。
-:::
 
 言い出しっぺなので初日の記事を担当することにしました。この記事では筆者の2022年の個人開発活動について書いてみようと思います。
 

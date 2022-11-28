@@ -91,6 +91,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));
   eleventyConfig.addFilter('getDate', require("./11ty/get-date.cjs"));
   eleventyConfig.addFilter('adventCalendarTag', (rawTags) => {
+    if (!rawTags) return;
     const tags = typeof rawTags === 'string' ? [rawTags] : rawTags;
     const adventTag = tags.find(tag => tag.startsWith('advent'));
     if (adventTag) {

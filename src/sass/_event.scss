@@ -1,0 +1,77 @@
+@import "typography";
+
+.event {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  > * + * {
+    margin-top: 2rem;
+  }
+  table {
+    margin: 0.5rem;
+    border-collapse: collapse;
+    width: 96%;
+    word-break: break-word;
+  }
+  th {
+    width: 200px;
+  }
+  tr:nth-child(odd) {
+    background-color: #d1dce7;
+  }
+  table, th, td {
+    border: 1px solid grey;
+    padding: 3px;
+  }
+}
+
+.event__details {
+  opacity: 0.6;
+  font-size: 0.9rem;
+  > * + * {
+    margin-left: 0.5rem;
+  }
+}
+
+.event__content {
+  word-wrap: break-word;
+  h1 {
+    margin-top: 4rem;
+    font-size: $text-4xl;
+  }
+}
+
+.event__toc {
+  display: none;
+}
+
+@media (min-width: 80ch) {
+  .event__toc {
+    display: block;
+    margin: 2rem 0;
+    border-width: thin;
+    border-style: dotted;
+    border-radius: 10px;
+    border-color: tdbc-color("grey");
+    background-color: $tdbc-color-toc;
+    li {
+      list-style-type: square;
+    }
+  }
+  .toc-container-header {
+    margin: 0.5rem;
+    font-family: $tdbc-title-font-family;
+  }
+}
+
+.event__aside {
+  margin-top: 2rem;
+}
+
+.event__tags {
+  opacity: 0.8;
+  font-size: $text-sm;
+  * + * {
+    margin-left: 0.5rem;
+  }
+}

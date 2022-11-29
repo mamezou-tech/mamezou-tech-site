@@ -8,7 +8,11 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 これは、「[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)」第4日目の記事です。
 
-11月27日にオフラインとオンラインのハイブリッドで JJUG CCC 2022 Fall カンファレンスが開催されました。JJUG CCC の春と秋に開催されるカンファレンスでは COVID-19 パンデミック以来久しぶりのハイブリッド開催となりました。
+11月27日にオフラインとオンラインのハイブリッドで [JJUG CCC 2022 Fall](https://ccc2022fall.java-users.jp/) が開催されました。春と秋に開催される JJUG CCC では COVID-19 パンデミック以来久しぶりのハイブリッド開催となりました。
+
+:::info:JJUGとは
+日本 Java ユーザグループ ([JJUG](https://www.java-users.jp/page/about/)) は、2007年4月に発足した Java 技術の向上・発展、開発者の支援を目的とした任意団体です。
+:::
 
 私は、会場でスタッフとして参加させていただきました。といってもほぼ受付に座っていることがメインで、その間アンカファレンスや手持ちの端末で気になるトラックを視聴していました。
 
@@ -18,9 +22,9 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 JJUG CCC 2022 Fall からしばらくして開催された AWS re:Invent 2022 で AWS Lambda SnapStart が発表されましたが、これはセッション中にあった「CRaC」の技術を使っているものなのだろうかと想像したりしています。
 
-下の表は、[公開動画一覧](https://www.youtube.com/playlist?list=PLy44EKO1L0eIl0VIYmGXk9635j6QQ7cF0) をトラック別に整理しました。
+[公開動画一覧](https://www.youtube.com/playlist?list=PLy44EKO1L0eIl0VIYmGXk9635j6QQ7cF0) をトラック別に下の表に整理しました。
 
-アンカファンレンスや一部のセッションは公開されていないようなので、会場またはリアルタイムで参加されると良いと思います。
+アンカファンレンスや一部のセッションは公開されていないようです。
 
 A トラック
 | Title | Speaker |

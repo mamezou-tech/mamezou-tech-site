@@ -1,7 +1,7 @@
 ---
-title: GitHub Actions ワークフローにテンプレートエンジン採用の勧め 
+title: GitHub Actions ワークフローでリテラルの AWS アカウント ID を使用しないためのヒント
 author: shigeki-shoji
-date: 2022-11-28
+date: 2022-11-29
 tags: [AWS, GitHub, "CI/CD"]
 ---
 
@@ -11,7 +11,7 @@ GitHub Actions で AWS にアクセスする場合 GitHub の OIDC プロバイ�
 
 それでもまだ、リスクは小さいとはいえ AWS アカウント ID が ARN などの定義にプッシュされているケースを時々見かけます。
 
-この記事では、さらにセキュアにするためテンプレートエンジンを使ったソリューションを提案します。
+この記事では、さらにセキュアにするためテンプレートエンジンを使用して AWS アカウント ID を直接埋め込まない方法を紹介します。
 
 [[TOC]]
 
@@ -99,9 +99,9 @@ jobs:
 
 認証情報 (Credentials) が取得できれば、このワークフローが成功します。
 
-## テンプレートエンジンの使用
+## GitHub Actions ワークフローで AWS アカウント ID を受け渡す
 
-例えば、Spring Boot アプリケーションの application.yml 等に AWS アカウント ID を含む ARN を設定したい場合、テンプレートエンジンを利用するとシンプルな解決策になると考えています。
+例えば、Spring Boot アプリケーションの application.yml 等に AWS アカウント ID を含む ARN を設定したい場合、設定ファイルをテンプレート化し、ステップで出力された情報をテンプレートエンジンを使用することで AWS アカウント ID を直接扱わずに設定ファイルを生成できます。
 
 例として次のようなテンプレートファイル (`templates/example.yaml`) を記述してみます。
 
@@ -178,9 +178,23 @@ outputs:
     description: 'The AWS account ID for the provided credentials'
 ```
 
+### シーケンス図
+
+```mermaid
+sequenceDiagram
+    Workflow ->> GitHub Repository: clone
+    Workflow ->> configure-aws-credentials: credentials
+    configure-aws-credentials ->> GitHub ID プロバイダ: getIDToken
+    GitHub ID プロバイダ ->> configure-aws-credentials: OpenID Connect ID Token
+    configure-aws-credentials ->> AWS STS: assume-role
+    AWS STS ->> configure-aws-credentials: AWS Credentials
+    configure-aws-credentials ->> Workflow: AWS Credentials
+    Workflow ->> mustache: AWS アカウント ID
+    mustache ->> mustache: templates/example.yaml から example.yaml を生成 
+```
+
 ## まとめ
 
-GitHub に限定される話ではありませんが、開発するコードに機密情報を含めるべきではありません。機密情報は暗号化され安全が担保された場所にコードとは別に管理すべきです。
-この記事ではそれを実践するため、テンプレートエンジンの利用を提案しました。
+GitHub ID プロバイダから発行される ID Token を AWS の IAM 外部プロバイダとして使用することで、AWS のクレデンシャルを直接指定する必要は無くなり、誤って公開されるリスクが大きく減少しました。本記事では、さらに AWS アカウント ID も直接指定しない方法を紹介しました。
 
 この記事のコードサンプルは、[GitHub リポジトリ](https://github.com/edward-mamezou/aws-mustache-example) にあります。

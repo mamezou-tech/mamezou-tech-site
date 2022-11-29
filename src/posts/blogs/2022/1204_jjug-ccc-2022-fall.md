@@ -6,7 +6,7 @@ tags: [advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 
-これは、「[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)」第4日目の記事です。
+これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第4日目の記事です。
 
 11月27日にオフラインとオンラインのハイブリッドで [JJUG CCC 2022 Fall](https://ccc2022fall.java-users.jp/) が開催されました。春と秋に開催される JJUG CCC では COVID-19 パンデミック以来久しぶりのハイブリッド開催となりました。
 
@@ -25,7 +25,6 @@ JJUG CCC 2022 Fall からしばらくして開催された AWS re:Invent 2022 �
 [公開動画一覧](https://www.youtube.com/playlist?list=PLy44EKO1L0eIl0VIYmGXk9635j6QQ7cF0) をトラック別に下の表に整理しました。
 
 アンカファンレンスや一部のセッションは公開されていないようです。
-
 A トラック
 | Title | Speaker |
 |---|---|

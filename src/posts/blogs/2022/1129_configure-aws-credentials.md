@@ -186,7 +186,7 @@ sequenceDiagram
     Workflow ->> configure-aws-credentials: credentials
     configure-aws-credentials ->> GitHub ID プロバイダ: getIDToken
     GitHub ID プロバイダ ->> configure-aws-credentials: OpenID Connect ID Token
-    configure-aws-credentials ->> AWS STS: assume-role
+    configure-aws-credentials ->> AWS STS: assume-role-with-web-identity
     AWS STS ->> configure-aws-credentials: AWS Credentials
     configure-aws-credentials ->> Workflow: AWS Credentials
     Workflow ->> mustache: AWS アカウント ID

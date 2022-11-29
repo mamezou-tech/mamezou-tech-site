@@ -25,6 +25,7 @@ JJUG CCC 2022 Fall からしばらくして開催された AWS re:Invent 2022 �
 [公開動画一覧](https://www.youtube.com/playlist?list=PLy44EKO1L0eIl0VIYmGXk9635j6QQ7cF0) をトラック別に下の表に整理しました。
 
 アンカファンレンスや一部のセッションは公開されていないようです。
+
 A トラック
 | Title | Speaker |
 |---|---|

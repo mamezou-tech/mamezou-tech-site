@@ -11,7 +11,28 @@ REST API の仕様を記述する [OpenAPI Specification](https://swagger.io/spe
 
 この定義を使うツールに [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator) があります。これを使用すると、さまざまな言語、フレームワークの API Client、あるいは Server のスタブコードを生成できます。
 
-この記事では、OpenAPI Generator を使って簡単な Spring Boot アプリを作成します。
+初回のこの記事では、OpenAPI Generator を使って簡単な Spring Boot アプリを作成します。
+
+本題に入る前に、このシリーズの記事の紹介を先にしたいと思います。
+
+### [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
+
+ドメイン駆動設計の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
+認証認可等の横断的関心事は、ドメインロジックを実装する Spring Boot を使ったアプリケーション本体には組み込まず、サイドカーで処理をする多層アーキテクチャ (Multi-Tier Architecture) について説明します。
+
+### [第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用](/blogs/2022/06/17/openapi-generator-3/)
+
+OpenAPI Generator のようなコード生成の活用でポイントとなる Generation Gap パターンについて説明します。
+
+### [第4回 ドメイン層の実装とサービスの完成](/blogs/2022/06/24/openapi-generator-4/)
+
+ドメイン駆動設計の戦術的設計によってサービスの実装を完成します。
+
+### [第5回 Open Policy Agent とサイドカーパターンによる認可の実装](/blogs/2022/07/01/openapi-generator-5/)
+
+このシリーズを通して採用している多層アーキテクチャ (Multi-Tier Architecture) の1層である、サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。
+
+[[TOC]]
 
 ## OpenAPI Specification
 
@@ -298,13 +319,3 @@ gradle bootRun
 
 次回以降の記事で、ここで作成したサンプルをさらに深掘りして説明します。
 
-## 関連記事
-
-- [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
-  - ドメイン駆動設計の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
-- [第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用](/blogs/2022/06/17/openapi-generator-3/)
-  - OpenAPI Generator のようなコード生成の活用でポイントとなる Generation Gap パターンについて説明します。
-- [第4回 ドメイン層の実装とサービスの完成](/blogs/2022/06/24/openapi-generator-4/)
-  - ドメイン駆動設計の戦術的設計によってサービスの実装を完成します。
-- [第5回 Open Policy Agent とサイドカーパターンによる認可の実装](/blogs/2022/07/01/openapi-generator-5/)
-  - サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。

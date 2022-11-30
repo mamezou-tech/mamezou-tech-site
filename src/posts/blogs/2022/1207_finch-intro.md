@@ -8,7 +8,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第7日目の記事です。
 
-今回はAWSが2022/11/22に公開したコンテナ開発ツール[Finch](https://github.com/runfinch/finch)を使ってみた感想を述べたいと思います。
+今回はAWSが2022/11/22に公開したコンテナ開発ツール[Finch](https://github.com/runfinch/finch)を使ってみた感想を書きたいと思います(ググるとすでに結構なブログが出てきますが)。
 
 - [Introducing Finch: An Open Source Client for Container Development](https://aws.amazon.com/jp/blogs/opensource/introducing-finch-an-open-source-client-for-container-development/)
 - [(邦訳)コンテナ開発用のオープンソースクライアント「Finch」のご紹介](https://aws.amazon.com/jp/blogs/news/introducing-finch-an-open-source-client-for-container-development/)
@@ -16,7 +16,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 Finchはコンテナのビルドから実行までをサポートするDocker Desktopの代替ツールです。OSSとして公開されており、無償で使うことができます。
 現時点では、Mac(Intel/M1アーキテクチャ)のみをサポートしていますが、今後はWindows／Linuxにも対応する予定のようです。
 
-内部的には関連する各種OSSを利用しており、Finchはこれらをオールインワンで管理するツールの位置づけのようです。
+内部的には関連する各種OSSを利用しており、Finchはこれらをオールインワンで管理する開発者向けのツールの位置づけのようです。
 
 - コンテナランタイム: [containerd](https://containerd.io/)
 - CLI: [nerdctl](https://github.com/containerd/nerdctl)
@@ -144,7 +144,7 @@ curl localhost:8080
 ここではLimaの自動ポートフォワードが活用されているようです。
 
 :::info
-現在ではM1 Mac(ARM)が主流となりつつありますが、筆者のようにIntel Macを使っている開発者もまだ相当数います。
+現在ではM1 Mac(ARMアーキテクチャ)が主流となりつつありますが、筆者のようにIntel Macを使っている開発者もまだ相当数います。
 Finchでは、`--platform`を指定することで指定したアーキテクチャ上でコンテナを実行できるようになっています。
 
 以下はARMアーキテクチャでビルドしたコンテナイメージをIntel Macで実行する例です。
@@ -323,7 +323,11 @@ curl localhost:8000
 
 ## 最後に
 Finchを使ってDocker Desktopでいつもやっていたことをしてみました。ドキュメントが不要なくらいほとんど違和感なく操作できました。
+コンテナを使いたいけど、Kubernetesを使うほどではないという場合は利用を検討すると良さそうです（現時点ではMacのみですが）。
 
 AWSがこのようなOSSを公開するのは少し意外な感じがしますが、今後AWSサービスでの活用も視野に入っているのかもしれませんね。
 
-Finch自体まだ公開されたばかりです。今後の機能拡張・エコシステムに期待したいところですね。
+Finch自体まだ公開されたばかりです。現状は内包している各ツールのラッパーのようなイメージです[^2]。
+今後の機能拡張・エコシステムに期待したいところですね。
+
+[^2]: こちらの記事が参考になります→[Finch の内部実装を見てみた。](https://qiita.com/YmBIgo/items/96218278f40ec0f3d83b)。私もソースコード眺めてみましたが同じ印象でした。

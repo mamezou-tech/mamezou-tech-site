@@ -8,7 +8,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第7日目の記事です。
 
-今回はAWSが2022/11/22に公開したコンテナ開発ツール[Finch](https://github.com/runfinch/finch)を使ってみた感想を書きたいと思います(ググるとすでに結構なブログが出てきますが)。
+今回はAWSが2022/11/22に公開したコンテナ開発ツール[Finch](https://github.com/runfinch/finch)を使ってみた感想を書きたいと思います(ググるとすでに結構な数のブログが出てきますが)。
 
 - [Introducing Finch: An Open Source Client for Container Development](https://aws.amazon.com/jp/blogs/opensource/introducing-finch-an-open-source-client-for-container-development/)
 - [(邦訳)コンテナ開発用のオープンソースクライアント「Finch」のご紹介](https://aws.amazon.com/jp/blogs/news/introducing-finch-an-open-source-client-for-container-development/)
@@ -23,9 +23,10 @@ Finchはコンテナのビルドから実行までをサポートするDocker De
 - 仮想マシン: [Lima](https://github.com/lima-vm/lima)
 - イメージビルド: [BuildKit](https://github.com/moby/buildkit)
 
-なお、FinchではDocker DesktopのようなGUIは提供していません[^1]
+なお、現状ではDocker DesktopのダッシュボードようなGUI[^1]やKubernetes拡張機能[^2]は提供していません。
 
-[^1]: とはいえ、Docker DesktopユーザーもほとんどはGUIを使っていないのではとは思いますが。
+[^1]: とはいえ、Docker DesktopでGUIを使っている方をあまり見かけたことがありませんが。
+[^2]: Kubernetesを使う場合は、minikubeやRancher Desktop等を検討すると良いかと思います。
 
 [[TOC]]
 
@@ -40,7 +41,7 @@ Finchはコンテナのビルドから実行までをサポートするDocker De
 - Intel: Finch-v<x.x.x>-x86_64.pkg
 - Apple Silicon M1: Finch-v<x.x.x>-aarch64.pkg
 
-ここでは、Intel Mac(macOS Monterey)で現時点で最新のv0.1.0をインストールしました。
+ここでは、Intel Mac(macOS Monterey)に現時点で最新のv0.1.0をインストールしました。
 
 ```shell
 finch version
@@ -111,8 +112,8 @@ finch run --name nginx -p 8080:80 -d \
 
 実行はDocker CLIとほとんど変わりません。違いはコマンドがdockerではなくfinchに変わったくらいです。
 
-もちろんDocker CLI同様にimages,ps,start,stop,exec,logs等の各種コマンドもサポートしています。
-この辺りはDocker CLI互換のnerdctlを内部的に利用しているためです。Docker Desktopユーザーは迷うことはなさそうです。
+もちろんDocker CLI同様にimages/ps/start/stop/exec/logs等の利用頻度の高いコマンドもサポートしています。
+この辺りはDocker CLI互換のnerdctlを内部的に利用していることからくるのでしょうか。Docker CLIを使っている方であればFinchの使い方で迷うことはなさそうです。
 
 ```shell
 finch ps
@@ -144,8 +145,8 @@ curl localhost:8080
 ここではLimaの自動ポートフォワードが活用されているようです。
 
 :::info
-現在ではM1 Mac(ARMアーキテクチャ)が主流となりつつありますが、筆者のようにIntel Macを使っている開発者もまだ相当数います。
-Finchでは、`--platform`を指定することで指定したアーキテクチャ上でコンテナを実行できるようになっています。
+現在ではM1 Mac(ARMアーキテクチャ)が主流となりつつありますが、筆者のようにIntel Macを使っている開発者もまだ相当数いるでしょう。
+Finchでは`--platform`を指定することで、指定したアーキテクチャ上でコンテナを実行できるようになっています。
 
 以下はARMアーキテクチャでビルドしたコンテナイメージをIntel Macで実行する例です。
 
@@ -300,7 +301,7 @@ finch push ${DOCKER_HUB_USER_NAME}/sample-app:v1
 ```
 
 コンテナレジストリへのプッシュも、Docker Desktop利用時と全く変わりませんね。
-最後にDockerHubにプッシュしたイメージを実行してみます。
+最後に、ここでDockerHubにプッシュしたイメージをローカル環境のFinchから実行してみます。
 
 ```shell
 # あらかじめローカルイメージを削除しておく
@@ -327,7 +328,7 @@ Finchを使ってDocker Desktopでいつもやっていたことをしてみま�
 
 AWSがこのようなOSSを公開するのは少し意外な感じがしますが、今後AWSサービスでの活用も視野に入っているのかもしれませんね。
 
-Finch自体まだ公開されたばかりです。現状は内包している各ツールのラッパーのようなイメージです[^2]。
+Finch自体まだ公開されたばかりです。現状は内包している各ツールのラッパーのようなイメージです[^3]。
 今後の機能拡張・エコシステムに期待したいところですね。
 
-[^2]: こちらの記事が参考になります→[Finch の内部実装を見てみた。](https://qiita.com/YmBIgo/items/96218278f40ec0f3d83b)。私もソースコード眺めてみましたが同じ印象でした。
+[^3]: こちらの記事が参考になります→[Finch の内部実装を見てみた。](https://qiita.com/YmBIgo/items/96218278f40ec0f3d83b)。私もソースコード眺めてみましたが同じ印象でした。

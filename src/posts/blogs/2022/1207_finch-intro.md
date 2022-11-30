@@ -2,7 +2,7 @@
 title: AWSが提供するFinchでコンテナのビルド、実行をする
 author: noboru-kudo
 date: 2022-12-07
-tags: [advent2022]
+tags: [advent2022, aws, container]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 
@@ -31,7 +31,7 @@ Finchはコンテナのビルドから実行までをサポートするDocker De
 
 ## Finchをインストールする
 
-GitHubリリースページよりインストールパッケージをダウンロードして、展開するだけです。
+現時点でFinchのインストールは、GitHubリリースページよりパッケージをダウンロードして展開します。
 
 - [GitHub - Finch release](https://github.com/runfinch/finch/releases)
 
@@ -40,7 +40,7 @@ GitHubリリースページよりインストールパッケージをダウン�
 - Intel: Finch-v<x.x.x>-x86_64.pkg
 - Apple Silicon M1: Finch-v<x.x.x>-aarch64.pkg
 
-ここではIntel Mac(macOS Monterey)でv0.1.0のバージョンをインストールしました。
+ここでは、Intel Mac(macOS Monterey)で現時点で最新のv0.1.0をインストールしました。
 
 ```shell
 finch version
@@ -87,7 +87,7 @@ finch vm stop
 finch vm remove
 ```
 
-停止状態で削除していない場合は`finch vm start`で再開できます。
+停止のみの場合は`finch vm start`で再開できます。
 :::
 
 ## コンテナイメージを実行する
@@ -111,7 +111,16 @@ finch run --name nginx -p 8080:80 -d \
 
 実行はDocker CLIとほとんど変わりません。違いはコマンドがdockerではなくfinchに変わったくらいです。
 
+もちろんDocker CLI同様にimages,ps,start,stop,exec,logs等の各種コマンドもサポートしています。
+この辺りはDocker CLI互換のnerdctlを内部的に利用しているためです。Docker Desktopユーザーは迷うことはなさそうです。
 
+```shell
+finch ps
+```
+```
+CONTAINER ID    IMAGE                             COMMAND                   CREATED           STATUS    PORTS                   NAMES
+df4f0dc64496    docker.io/library/nginx:latest    "/docker-entrypoint.…"    17 minutes ago    Up        0.0.0.0:8080->80/tcp    nginx
+```
 
 上記はローカル環境の8080ポートにポートフォワードしていますので、以下のようにアクセスできます。
 
@@ -132,10 +141,189 @@ curl localhost:8080
 ```
 
 仮想マシンを意識せずにDocker Desktopを使っているのと同じようにlocalhostでコンテナにアクセスできました。
+ここではLimaの自動ポートフォワードが活用されているようです。
+
+:::info
+現在ではM1 Mac(ARM)が主流となりつつありますが、筆者のようにIntel Macを使っている開発者もまだ相当数います。
+Finchでは、`--platform`を指定することで指定したアーキテクチャ上でコンテナを実行できるようになっています。
+
+以下はARMアーキテクチャでビルドしたコンテナイメージをIntel Macで実行する例です。
+
+```shell
+# Intelの場合は`amd64`を指定
+finch run --name arm-image --platform arm64 -d arm-container-image:v1
+```
+
+この指定はビルド(`finch build`)でも同様で、CPUアーキテクチャにあったイメージを作成できるようになっています。
+:::
 
 ## Composeで複数コンテナを実行する
 
+Finchでは、内部的に使用しているnerdctlでサポートするDocker Composeにも対応しています。
+ここではnerdctlのComposeサンプルとしてGitHubに公開されているものをベースにdocker-compose.ymlを作成しました。
+
+- [GitHub nerdctl - compose example](https://github.com/containerd/nerdctl/blob/main/examples/compose-wordpress/docker-compose.yaml)
+
+```yaml
+version: '3.7'
+services:
+  wordpress:
+    image: wordpress:5.7
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    volumes:
+      - wordpress:/var/www/html
+  db:
+    image: mariadb:10.5
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  wordpress:
+  db:
+```
+
+WordPressとMariaDBのコンテナを起動するDocker Composeのファイルです。
+起動方法もDocker Composeと同じです。
+
+```shell
+finch compose up -d
+```
+
+初回はコンテナイメージのPULLに時間がかかります。
+実行が終わるとブラウザから`localhost:8080`にアクセスすればWordPressのサイトが表示されます。
+
+![](https://i.gyazo.com/53680d0cbfdf6b70813fe45812997afb.png)
+
+まとめてコンテナを終了する場合もDocker Composeを使っていたときと同じです。
+
+```shell
+finch compose down
+```
+
 ## コンテナイメージをビルド・公開する
 
-## 最後に
+最後に、自作でコンテナイメージを作成してDockerHubにプッシュしてみます。
+以前記事作成で使用したGoのHTTPサーバーとDockerfileを使います。
 
+- HTTPサーバー
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func main() {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello Finch app!!!")
+	})
+	http.ListenAndServe(":8000", nil)
+}
+```
+- Dockerfile
+```dockerfile
+FROM golang:1.16 as builder
+WORKDIR /src
+COPY main.go /src
+RUN CGO_ENABLED=0 GOOS=linux go build -o sample-app main.go
+
+FROM scratch
+COPY --from=builder /src/sample-app /sample-app
+EXPOSE 8000
+CMD ["/sample-app"]
+```
+
+コンテナイメージのビルドにはマルチステージビルドを使ってイメージサイズを小さくするようにしています。
+ビルドもDocker CLIと同じです。
+
+```shell
+finch build -t sample-app:v1 .
+
+> [+] Building 60.9s (10/10) FINISHED                                                                                                                                                                                                     
+> => [internal] load build definition from Dockerfile                                                                                                                                                                               0.2s
+> => => transferring dockerfile: 252B                                                                                                                                                                                               0.0s
+> => [internal] load .dockerignore                                                                                                                                                                                                  0.2s
+> => => transferring context: 2B                                                                                                                                                                                                    0.0s
+> => [internal] load metadata for docker.io/library/golang:1.16                                                                                                                                                                     2.3s
+> => [builder 1/4] FROM docker.io/library/golang:1.16@sha256:5f6a4662de3efc6d6bb812d02e9de3d8698eea16b8eb7281f03e6f3e8383018e                                                                                                      46.3s
+> => => resolve docker.io/library/golang:1.16@sha256:5f6a4662de3efc6d6bb812d02e9de3d8698eea16b8eb7281f03e6f3e8383018e
+> (省略)
+>  => [builder 2/4] WORKDIR /src                                                                                                                                                                                                     0.1s
+>  => [builder 3/4] COPY main.go /src                                                                                                                                                                                                0.1s
+>  => [builder 4/4] RUN CGO_ENABLED=0 GOOS=linux go build -o sample-app main.go                                                                                                                                                      9.3s
+>  => [stage-1 1/1] COPY --from=builder /src/sample-app /sample-app                                                                                                                                                                  0.1s
+>  => exporting to oci image format                                                                                                                                                                                                  2.3s
+>  => => exporting layers                                                                                                                                                                                                            1.2s
+>  => => exporting manifest sha256:41ce2a3201e448d7ce48c91cf4735490c497e2bd7e268832cdda2cde5dcde94e                                                                                                                                  0.1s
+>  => => exporting config sha256:2a21df434ac17596e9217616ee9fcbed79542294365165dd73221e207ae8f4e9                                                                                                                                    0.1s
+>  => => sending tarball                                                                                                                                                                                                             0.8s
+> unpacking docker.io/library/sample-app:v1 (sha256:41ce2a3201e448d7ce48c91cf4735490c497e2bd7e268832cdda2cde5dcde94e)...
+> Loaded image: docker.io/library/sample-app:v1
+```
+
+ここではFinchはBuildKitを使ってイメージのビルドを実行しています。
+BuildKitは現在Docker Desktopでもデフォルトで使われるようになっていますので、見慣れた出力の方も多いかと思います。
+
+作成したイメージを確認します。
+
+```shell
+finch images
+> REPOSITORY    TAG       IMAGE ID        CREATED           PLATFORM          SIZE         BLOB SIZE
+> sample-app    v1        41ce2a3201e4    9 minutes ago     linux/amd64       5.8 MiB      3.1 MiB
+```
+
+次に、このイメージをDockerHubにイメージをプッシュして公開してみます。
+
+```shell
+DOCKER_HUB_USER_NAME=<docker-hub-user-name>
+finch tag sample-app:v1 ${DOCKER_HUB_USER_NAME}/sample-app:v1
+finch login # DockerHubにログイン
+finch push ${DOCKER_HUB_USER_NAME}/sample-app:v1
+> INFO[0000] pushing as a reduced-platform image (application/vnd.docker.distribution.manifest.v2+json, sha256:41ce2a3201e448d7ce48c91cf4735490c497e2bd7e268832cdda2cde5dcde94e) 
+> manifest-sha256:41ce2a3201e448d7ce48c91cf4735490c497e2bd7e268832cdda2cde5dcde94e: done           |++++++++++++++++++++++++++++++++++++++| 
+> config-sha256:2a21df434ac17596e9217616ee9fcbed79542294365165dd73221e207ae8f4e9:   done           |++++++++++++++++++++++++++++++++++++++| 
+> elapsed: 7.0 s                                                                    total:  1.6 Ki (229.0 B/s) 
+```
+
+コンテナレジストリへのプッシュも、Docker Desktop利用時と全く変わりませんね。
+最後にDockerHubにプッシュしたイメージを実行してみます。
+
+```shell
+# あらかじめローカルイメージを削除しておく
+finch rmi ${DOCKER_HUB_USER_NAME}/sample-app:v1
+
+# イメージPULL&実行
+finch run --name sample-app -p 8000:8000 -d ${DOCKER_HUB_USER_NAME}/sample-app:v1
+> docker.io/xxxxxx/sample-app:v1:                                                   resolved       |++++++++++++++++++++++++++++++++++++++| 
+> manifest-sha256:41ce2a3201e448d7ce48c91cf4735490c497e2bd7e268832cdda2cde5dcde94e: exists         |++++++++++++++++++++++++++++++++++++++| 
+> config-sha256:2a21df434ac17596e9217616ee9fcbed79542294365165dd73221e207ae8f4e9:   exists         |++++++++++++++++++++++++++++++++++++++| 
+> elapsed: 1.5 s                                                                    total:   0.0 B (0.0 B/s)                                         
+> c8e647d1a1bde4baf406cdf0297b3fbb95b5ff8813acd9fe226fbba346947227
+
+# APIアクセス
+curl localhost:8000
+> Hello Finch app!!!
+```
+
+いつもと同じワークフローで、イメージのビルドから公開ができていることが分かります。
+
+## 最後に
+Finchを使ってDocker Desktopでいつもやっていたことをしてみました。ドキュメントが不要なくらいほとんど違和感なく操作できました。
+
+AWSがこのようなOSSを公開するのは少し意外な感じがしますが、今後AWSサービスでの活用も視野に入っているのかもしれませんね。
+
+Finch自体まだ公開されたばかりです。今後の機能拡張・エコシステムに期待したいところですね。

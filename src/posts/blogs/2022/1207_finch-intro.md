@@ -1,5 +1,5 @@
 ---
-title: AWS Finchでコンテナを実行したりイメージをビルドしてみる
+title: AWSが公開したFinchでコンテナを実行したりイメージをビルドしてみる
 author: noboru-kudo
 date: 2022-12-07
 tags: [advent2022, aws, container]

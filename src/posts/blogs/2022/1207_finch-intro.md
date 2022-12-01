@@ -13,10 +13,10 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 - [Introducing Finch: An Open Source Client for Container Development](https://aws.amazon.com/jp/blogs/opensource/introducing-finch-an-open-source-client-for-container-development/)
 - [(邦訳)コンテナ開発用のオープンソースクライアント「Finch」のご紹介](https://aws.amazon.com/jp/blogs/news/introducing-finch-an-open-source-client-for-container-development/)
 
-Finchはコンテナのビルドから実行までをサポートするDocker Desktopの代替ツールです。OSSとして公開されており、無償で使うことができます。
+Finchはコンテナのビルドから実行までコンテナを利用した開発ワークフローをトータルでサポートするDocker Desktopの代替ツールです。OSSとして公開されており、無償で使うことができます。
 現時点では、Mac(Intel/M1アーキテクチャ)のみをサポートしていますが、今後はWindows／Linuxにも対応する予定のようです。
 
-内部的には関連する各種OSSを利用しており、Finchはこれらをオールインワンで管理する開発者向けのツールの位置づけのようです。
+内部的には関連する各種OSSを利用しており、Finchはこれらをオールインワンで管理するツールの位置づけのようです。
 
 - コンテナランタイム: [containerd](https://containerd.io/)
 - CLI: [nerdctl](https://github.com/containerd/nerdctl)
@@ -114,6 +114,8 @@ finch run --name nginx -p 8080:80 -d \
 
 もちろんDocker CLI同様にimages/ps/start/stop/exec/logs等の利用頻度の高いコマンドもサポートしています。
 この辺りはDocker CLI互換のnerdctlを内部的に利用していることからくるのでしょうか。Docker CLIを使っている方であればFinchの使い方で迷うことはなさそうです。
+
+実行中のコンテナを確認するのもいつもの通りです。
 
 ```shell
 finch ps

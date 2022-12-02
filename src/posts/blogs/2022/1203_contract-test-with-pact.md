@@ -1,12 +1,12 @@
 ---
 title: Contract TestツールPactの紹介
 author: shinichiro-iwaki
-date: 2022-12-05
+date: 2022-12-03
 tags: [advent2022, test]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 
-これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第5日目の記事です。
+これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第3日目の記事です。
 
 マイクロサービスのようにAPIを介して要素を結合させてシステムを構成する場合、要素間の結合可能性をどのように担保していますか。
 
@@ -29,7 +29,7 @@ Contract Testは、APIを介して連携するサービスの結合をテスト�
 
 APIが満たすべき振舞いをAPIの提供側(Provider)と利用側(Consumer)の間の契約(Contract)と捉え、契約どおりに振る舞うかを(実際に結合せずに)検証し、結合可能性を確認します。
 
-![Contract Testイメージ](/img/blogs/2022/1205_contract-test.drawio.svg)
+![Contract Testイメージ](/img/blogs/2022/1203_contract-test.drawio.svg)
 
 ここではContractをどうやって定めるかが鍵となります。1つの有力なアイデアは、利用者側がAPIに期待する振舞いを定め、提供者側が検証するという利用者駆動(Consumer-driven)のContract Testです。
 
@@ -63,13 +63,13 @@ Pactツールの仕様や用法の詳細については説明しきれないの�
 
 サンプルアプリはSpring bootフレームワークを利用してJavaで実装したHello Worldアプリケーションです。ブラウザでフロントエンドにアクセスすると、バックエンドから挨拶メッセージを取得して表示するシンプルなものです。
 
-![サンプルアプリシーケンス](/img/blogs/2022/1205_app-sequence.drawio.svg)
+![サンプルアプリシーケンス](/img/blogs/2022/1203_app-sequence.drawio.svg)
 
 アプリケーションを実現するための基本的な機能はフレームワークが提供するものを利用し、フロントエンドとバックエンドの間のAPIはOpenAPI仕様に従った定義(スキーマ)から自動生成させる形を取っています。
 
 アプリケーションは[以下](#サンプルアプリのコードスニペット)に示すように少量の実装で実現できます。
 
-![サンプルアプリ概要](/img/blogs/2022/1205_app-overview.drawio.svg)
+![サンプルアプリ概要](/img/blogs/2022/1203_app-overview.drawio.svg)
 
 なお、SpringやOpenAPI Generatorの詳細については本稿の主題から逸れますし、ネット上などに情報も多彩ですのでここでは説明を割愛しています。
 
@@ -144,7 +144,7 @@ public class GreetController implements GreetApi {
 
 APIの利用側(Consumer)であるフロントエンドは、`GreetService`クラスからRestTemplateを利用してバックエンドのAPIを呼び出しています。Pactツールが提供するモックサーバを利用してこのクラスをテストすることで、テストで使用したRequest/Responseの組み合わせをContractとして記録できます。テストの実現イメージは以下のようになります。
 
-![Consumerテスト概要](/img/blogs/2022/1205_consumer-mechanism.drawio.svg)
+![Consumerテスト概要](/img/blogs/2022/1203_consumer-mechanism.drawio.svg)
 
 テスティングフレームワークとしてJUnit5を使用すると、以下のようなテストコードでConsumer側のテストが実装できます。
 
@@ -229,7 +229,7 @@ APIの提供側(Provider)であるバックエンドは、Springの機能を利�
 
 Provider側のアプリケーションを起動してhttp通信しても良いのですが、PactツールはSpringのMockMVCとも統合可能ですので今回はMockMVCを利用して実装してみます。テストの実現イメージは以下のようになります。
 
-![Providerテスト概要](/img/blogs/2022/1205_provider-mechanism.drawio.svg)
+![Providerテスト概要](/img/blogs/2022/1203_provider-mechanism.drawio.svg)
 
 Provider側のテストコードは以下のようになります。
 
@@ -312,7 +312,7 @@ volumes:
 
 docker-compose.ymlの設定に従い、`localhost:9292`にブラウザでアクセスするとPact-BrokerのUIが表示されます。サンプルデータを含んだ状態ですので、色々と動きを確認してみても分かりやすいと思います。
 
-![Pact-Brokerトップ画面](/img/blogs/2022/1205_pact-broker-01.jpg)
+![Pact-Brokerトップ画面](/img/blogs/2022/1203_pact-broker-01.jpg)
 
 さて、Pact-Brokerが起動できたら[Consumerのテスト](#consumer側のテスト)で生成されたPactファイルを登録してみます。
 
@@ -341,7 +341,7 @@ Pactの登録はPact-Brokerのcliツールを使用して実施しますが、Ja
 
 Pactを登録すると、UI上からも内容を確認できます。この段階ではConsumer側から登録した状態ですので未検証の状態(Verified欄が空白)で表示されているかと思います。
 
-![登録済みPact画面](/img/blogs/2022/1205_pact-broker-02.jpg)
+![登録済みPact画面](/img/blogs/2022/1203_pact-broker-02.jpg)
 
 [Provider側のテスト](#provider側のテスト)コードを以下のようにPact-Brokerを使用する設定に変更することで、Pactの内容をPact-Brokerから取得してテスト可能です。
 
@@ -358,7 +358,7 @@ JUnitで実行するテストの場合は、テストの実行時に`pact.verifi
 
 上記プロパティを実行時変数などで設定してProviderのテストを実行すると以下のようにContractの状態が検証済みに変化します。
 
-![検証済みPact画面](/img/blogs/2022/1205_pact-broker-03.jpg)
+![検証済みPact画面](/img/blogs/2022/1203_pact-broker-03.jpg)
 
 [^7]:　Pact-Broker側には(ソースの)ブランチ名、(デプロイした)環境名、タグ名が設定可能ですが、mavenプラグインの場合`tags`で指定した内容がブランチ/環境/タグの全てに付与される模様です。きめ細かく情報を設定する場合はcliツールなどの利用が望ましいですね。
 

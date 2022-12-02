@@ -10,7 +10,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 先日、JavaのLambda関数の起動を高速化する[Lambda SnapStart](https://aws.amazon.com/jp/blogs/aws/new-accelerate-your-lambda-functions-with-lambda-snapstart/)がAWSから発表されましたが、このLambda SnapStartにはJavaのCRaC(Coordinated Restore at Checkpoint)が使われています。
 
-CRaCは起動の高速化と即時にビーク性能を発揮させる技術です。Javaは起動の遅さが弱点となっていますが、この弱点を補う技術としてはGraalVMによるネイティイメージが有名です。CRaCはこの弱点を補うもう一つの高速化方法として今注目を集めている技術となります。今回はこのCRaCの概要や仕組み、その試し方などを紹介します。
+CRaCは起動の高速化と即時にビーク性能を発揮させる技術です。CRaCが登場する背景にはJavaの起動の遅さがあります。この弱点を補う技術としてはGraalVMによるネイティイメージが有名ですが、CRaCはこの弱点を補うもう一つの高速化手段として今注目を集めている技術となります。今回はこのCRaCの概要や仕組み、その試し方などを紹介します。
 
 はじめにいっておきますが、CRaCスゴイです。ホントに爆速になりますヨ！
 

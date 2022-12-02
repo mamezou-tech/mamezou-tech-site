@@ -2,7 +2,7 @@
 title: Contract TestツールPactの紹介
 author: shinichiro-iwaki
 date: 2022-12-03
-tags: [advent2022, test]
+tags: [advent2022, テスト]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 

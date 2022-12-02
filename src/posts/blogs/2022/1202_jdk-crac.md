@@ -44,7 +44,7 @@ CRaCはチェックポイント[^2]の取得と復元を行うLinuxの[CRIU(Chec
 上述のとおり、その動作にはLinuxカーネルの機能を使っているためホストOSとしてLinuxが必要となります。また、開発中のため正式リリースのJDKには含まれていません。このため、試すにはCRaCプロジェクトのGitHubからEAビルド(Early-Access Builds)を入手する必要があります。(じゃ、Lambda SnapStartはなんなんだというのは後述)
 
 :::check: CRaCをコンテナ上で動作させる場合の注意点
-CRaCがベースにしているCRUIはLinuxのカーネルレベルのサポートが必要となるため、コンテナが利用するLinuxカーネルがCRUIをサポートしている必要がります。これはLinuxの動作環境が必要といった場合、多くはホストOSがなにかを気にすることはないですが、CRaCをコンテナで使う場合はこれを気にする必要があることを意味します。
+CRaCがベースにしているCRUIはLinuxのカーネルレベルのサポートが必要となるため、コンテナが利用するLinuxカーネルがCRUIをサポートしている必要があります。これはLinuxの動作環境が必要といった場合、多くはホストOSがなにかを気にすることはないですが、CRaCをコンテナで使う場合はこれを気にする必要があることを意味します。
 
 実際に筆者は最初、WindowsのHyper-V + Docker Desktopで検証をしていましたが、この環境でCRaCはうまく動作しませんでした。恐らくHyper-V上で動作するDocker DesktopのLinux OSのカーネルがCRUIをサポートしていなかったためと思われます[^3]。ですので、CRaCをコンテナ環境で試す場合はこの点に注意が必要です。また、この理屈からいくと、恐らくDocker Desktop for Macも動作しないのではないかと思います。
 :::
@@ -52,7 +52,7 @@ CRaCがベースにしているCRUIはLinuxのカーネルレベルのサポー�
 [^3]: JavaプロセスにCheckpointイベントを送ると、Hyper-V + Docker Desktop上ではなぜか一緒にRestoreイベントも動いてしまい期待どおりに動作させることができませんでした。しかしこれと全く同じランタイム(jar)をAmazon Linux 2(EC2)のDockerに持って行くと問題なく動いたので、このことからの推測となります。
 
 # CRaCの利用例
-OpenJDKのCRaCは開発中のため商用環境で利用することはまだできませんが、ここではCRaCの技術が使われているプロダクトの例を2つ紹介します。この2つの例からCRaCが技術的にはプロダクトレディで今後色々なところで使われていく可能性を感じます。
+OpenJDKのCRaCは開発中のため商用環境で利用することはまだできませんが、ここではCRaCの技術が使われているプロダクトの例を2つ紹介します。この2つの例からCRaCが技術的にはプロダクションレディで今後色々なところで使われていく可能性を感じます。
 
 ## AWS Lambda SnapStartの例
 1つ目は冒頭でも触れたAWSのLambda SnapStartの例です。Lambda SnapStartの具体的な仕組みは公式ページでもあまり触れられていませんが、[こちらのブログ](https://aws.amazon.com/jp/blogs/compute/reducing-java-cold-starts-on-aws-lambda-functions-with-snapstart/)で次のようにサラッとCRaCだということをいっています。(後段はGoogle機械翻訳)
@@ -63,7 +63,7 @@ OpenJDKのCRaCは開発中のため商用環境で利用することはまだで
 
 AWSはLambdaで使われているJavaランタイム(Corretto11)に対し、AWSが独自にCRaCの成果をアドオンしてLambda SnapStartを実現しているものと思われます。ですので、このLambda SnapStartはCRaCをプロダクトレベルで使った初めての例となると思います。
 
-細かい仕組みはさておき、AWSのブログの中ではコールドスタートの所要時間を6秒以上から200ミリ秒未満へと短縮したとの説明があるため、JavaによるAWS Lambdaの銀の弾丸になる感じをさせます。
+細かい仕組みはさておき、AWSのブログの中ではコールドスタートの所要時間を6秒以上から200ミリ秒未満へと短縮したとの説明があるため、JavaによるAWS Lambdaの銀の弾丸になる感じがします。
 
 ## Open Liberty InstantOnの例
 [Open Liberty](https://openliberty.io/)はIBMがオープンソースで開発を行っているJakartaEEのアプリケーションサーバーです。アプリケーションサーバーの起動には時間が掛かるため、これをそのままクラウドネイティブな環境で使うには課題がありました。そこでIBMが考えたのがチェックポイントを使った起動の高速化です。
@@ -74,7 +74,7 @@ Open Liberty InstantOnを説明した[こちらのブログ](https://openliberty
 
 > InstantOn を有効にするために、Open Liberty はOpenJ9 JVM の新機能と、Checkpoint/Restore In Userspace CRIUと呼ばれる Linux テクノロジーを使用して、アプリケーション プロセスの開始時にチェックポイントを取得します。
 
-OpenJ9はIBMがオープンソースで開発を行っているJVMで語弊は少しありますが、一言でいうとIBM版のHotSpot VMです。ブログの説明からIBMはCRaCプロジェクトと同様な独自の機能を開発し、それをIBMがもつ独自のOpenJ9に搭載し、OpenLibertyと組み合わせることで登場したのがOpen Liberty InstantOnといます。
+OpenJ9はIBMがオープンソースで開発を行っているJVMで語弊は少しありますが、一言でいうとIBM版のHotSpot VMです。ブログの説明からIBMはCRaCプロジェクトと同様な独自の機能を開発し、それをIBMがもつ独自のOpenJ9に搭載し、OpenLibertyと組み合わせることで登場したのがOpen Liberty InstantOnといえます。
 
 なお、現時点でのOpen Liberty InstantOnの最新はベータ版でまだ正式リリースはされていません。また、先ほどの[ブログ](https://openliberty.io/blog/2022/09/29/instant-on-beta.html)には動作環境としてカーネルのLinux CAP_CHECKPOINT_RESTORE機能が必須で、InstantOnのテストはまだRHEL 8.6 および RHEL 9.0でしかしていないことが書かれています。よって、商用環境で利用ができるにようになるには未だ時間が掛かりそうですが、起動時間を最大90%削減可能とあるため、今後に期待したい機能といえます。
 
@@ -240,7 +240,7 @@ public class LoopCounterMain {
 }
 ```
 
-CRaC APIを実装することで、チェックポイントイベントが発行された際にJVMから`beforeCheckpoint`メソッドにコールバックが掛かるようになります。同じようにチェックポイントのリストア終了後、つまり、Javaプロセス起動後には`afterRestore`メソッドにコールバックが掛けられます。よって、`Resource`インタフェースを実装することで、それぞれのイベント時に任意のアプリ処理を実行させることが可能となります。ただし、JVMからのコールバックを受けるにはコード例のようにCRaCのグローバルコンテキスに`Resource`インスタンスを登録する必要があるので忘れずにこれも実装します。
+CRaC APIを実装することで、チェックポイントイベントが発行された際にJVMから`beforeCheckpoint`メソッドにコールバックが掛かるようになります。同じようにチェックポイントのリストア終了後、つまり、Javaプロセス起動後には`afterRestore`メソッドにコールバックが掛けられます。よって、`Resource`インタフェースを実装することで、それぞれのイベント時に任意のアプリ処理を実行させることが可能となります。ただし、JVMからのコールバックを受けるにはコード例のようにCRaCのグローバルコンテキストに`Resource`インスタンスを登録する必要があるので忘れずにこれも実装します。
 
 このコードを先ほどの基本動作と同じ手順で動作させた場合、チェックポイント取得時とリストア時に次のコンソールメッセージが出力されるようになります。
 
@@ -423,7 +423,7 @@ java -XX:CRaCRestoreFrom=cr
   - GraalVM
     - CraalVMはOpenJDKプロジェクトに寄贈された。またOpenJDKプロジェクト内にはネイティブコンパイル化を検討する[Project Leyden](https://openjdk.org/projects/leyden/)も既にある
     - OpenJDKは実質的にJavaの標準化をリードするプロジェクトのため、GraalVMは今後、標準機能となる可能性もある
-  - CRac
+  - CRaC
     - OpenJDKの1プロジェクトでまだJEPも出されていない。まだまだコレから
 
 比較は以上となります。筆者個人としては制約の多いGaalVMによるネイティブコンパイルによる高速化よりも今回のCRaCによる高速化の方が現実的で今後への可能性を感じていることを述べて記事を終わりにします。

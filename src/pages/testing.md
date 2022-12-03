@@ -30,6 +30,10 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 - [ペアワイズ法テストケース生成ツール「PictMaster」の無効値を使う](/blogs/2022/10/01/pictmaster-Invalid-value-option/)
 - [ペアワイズ法テストケース生成ツール「PictMaster」のカバレッジ指定を使う](/blogs/2022/11/27/pictmaster-coverage-option/)
 
+### テスト技法 - Contract Test
+
+- [Contract TestツールPactの紹介](/blogs/2022/12/03/contract-test-with-pact/)
+
 ## 自動テスト導入事例
 豆蔵社員が実践した自動テストのノウハウをご紹介します。
 

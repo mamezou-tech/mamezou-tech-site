@@ -26,6 +26,35 @@
     border: 1px solid grey;
     padding: 3px;
   }
+  li {
+    list-style: none;
+  }
+  ul {
+    padding-top: 10px;
+    padding-left: 5px;
+  }
+  @media only screen and (max-width:568px) {
+    thead {
+      display:none;
+    }
+    tbody tr{
+      display: block;
+      margin-bottom: 2em;
+    }
+    tbody th, tbody td{
+      display:list-item;
+      list-style: none;
+      border: none;
+    }
+    tbody th {
+      color:#f36;
+      text-align:left;
+      background:#fff;
+    }
+    tbody td {
+      margin-left: 1em;
+    }
+  }
 }
 
 .event__details {

@@ -1,12 +1,12 @@
 ---
-title: AWSが公開したFinchでコンテナを実行したりイメージをビルドしてみる
+title: AWSが公開したFinchでコンテナの実行/ビルドをする
 author: noboru-kudo
-date: 2022-12-07
+date: 2022-12-05
 tags: [advent2022, aws, container]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 
-これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第7日目の記事です。
+これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第5日目の記事です。
 
 今回はAWSが2022/11/22に公開したコンテナ開発ツール[Finch](https://github.com/runfinch/finch)を使ってみた感想を書きたいと思います(ググるとすでに結構な数のブログが出てきますが)。
 

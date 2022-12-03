@@ -1,5 +1,5 @@
 ---
-title: AWSが公開したFinchでコンテナの実行/ビルドをする
+title: AWSが公開したFinchでコンテナ実行/イメージビルドをする
 author: noboru-kudo
 date: 2022-12-05
 tags: [advent2022, aws, container]
@@ -61,7 +61,7 @@ cpus: 3
 memory: 8GiB
 ```
 
-現時点ではこの2つのみです。ここではコンテナランタイムのLima仮想マシンに割り当てるCPUコア/メモリサイズです。
+現時点で設定値はこの2つのみです。ここではコンテナランタイムのLima仮想マシンに割り当てるCPUコア/メモリサイズです。
 初期値はホストOSの空きスペックを考慮して動的に決定されるようです。もちろん必要に応じて変更可能です。
 
 それでは、まず仮想マシンを初期化・実行します。
@@ -110,9 +110,9 @@ finch run --name nginx -p 8080:80 -d \
 > df4f0dc64496cbae501ff5cb5f4542a3410dd36ba808e17bc5bcd9664613a878
 ```
 
-実行はDocker CLIとほとんど変わりません。違いはコマンドがdockerではなくfinchに変わったくらいです。
+コンテナの実行方法はDocker CLIとほとんど変わりません。違いはコマンドがdockerではなくfinchに変わったくらいです。
 
-もちろんDocker CLI同様にimages/ps/start/stop/exec/logs等の利用頻度の高いコマンドもサポートしています。
+もちろん、それ以外にもDocker CLI同様にimages/ps/start/stop/exec/logs等の利用頻度の高いコマンドもサポートしています。
 この辺りはDocker CLI互換のnerdctlを内部的に利用していることからくるのでしょうか。Docker CLIを使っている方であればFinchの使い方で迷うことはなさそうです。
 
 実行中のコンテナを確認するのもいつもの通りです。
@@ -198,8 +198,8 @@ volumes:
   db:
 ```
 
-WordPressとMariaDBのコンテナを起動するDocker Composeのファイルです。
-起動方法もDocker Composeと同じです。
+シンプルなWordPressとMariaDBのコンテナを起動するDocker Composeのファイルです。
+これの起動方法もDocker Composeと同じです。
 
 ```shell
 finch compose up -d
@@ -210,7 +210,7 @@ finch compose up -d
 
 ![](https://i.gyazo.com/53680d0cbfdf6b70813fe45812997afb.png)
 
-まとめてコンテナを終了する場合もDocker Composeを使っていたときと同じです。
+まとめてコンテナを終了する場合も、Docker Composeを使っていたときと同じです。
 
 ```shell
 finch compose down
@@ -278,7 +278,7 @@ finch build -t sample-app:v1 .
 > Loaded image: docker.io/library/sample-app:v1
 ```
 
-ここではFinchはBuildKitを使ってイメージのビルドを実行しています。
+ここでは、BuildKitを使ってイメージのビルドを実行しています。
 BuildKitは現在Docker Desktopでもデフォルトで使われるようになっていますので、見慣れた出力の方も多いかと思います。
 
 作成したイメージを確認します。

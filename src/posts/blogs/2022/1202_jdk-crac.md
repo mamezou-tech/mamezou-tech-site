@@ -10,7 +10,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 先日、JavaのLambda関数の起動を高速化する[Lambda SnapStart](https://aws.amazon.com/jp/blogs/aws/new-accelerate-your-lambda-functions-with-lambda-snapstart/)がAWSから発表されましたが、このLambda SnapStartにはJavaのCRaC(Coordinated Restore at Checkpoint)が使われています。
 
-CRaCは起動の高速化と即時にピーク性能を発揮させる技術です。CRaCが登場した背景にはJavaの起動の遅さがあります。この弱点を補う技術としてはGraalVMによるネイティイメージが有名ですが、CRaCはこの弱点を補うもう一つの高速化手段として今注目を集めている技術となります。今回はこのCRaCの概要や仕組み、その試し方などを紹介します。
+CRaCは起動の高速化と即時にピーク性能を発揮させる技術です。CRaCが登場した背景にはJavaの起動の遅さがあります。この弱点を補う技術としてはGraalVMによるネイティイメージが有名ですが、CRaCはこの弱点を補うもう一つの高速化手段として今注目を集めている技術です。今回はこのCRaCの概要や仕組み、その試し方などを紹介します。
 
 はじめにいっておきますが、CRaCスゴイです。ホントに爆速になりますヨ！
 
@@ -46,7 +46,7 @@ CRaCはチェックポイント[^2]の取得と復元を行うLinuxの[CRIU(Chec
 :::check: CRaCをコンテナ上で動作させる場合の注意点
 CRaCがベースにしているCRUIはLinuxのカーネルレベルのサポートが必要となるため、コンテナが利用するLinuxカーネルがCRUIをサポートしている必要があります。これはLinuxの動作環境が必要といった場合、多くはホストOSがなにかを気にすることはないですが、CRaCをコンテナで使う場合はこれを気にする必要があることを意味します。
 
-実際に筆者は最初、WindowsのHyper-V + Docker Desktopで検証をしていましたが、この環境でCRaCはうまく動作しませんでした。恐らくHyper-V上で動作するDocker DesktopのLinux OSのカーネルがCRUIをサポートしていなかったためと思われます[^3]。ですので、CRaCをコンテナ環境で試す場合はこの点に注意が必要です。また、この理屈からいくと、恐らくDocker Desktop for Macも動作しないのではないかと思います。
+実際に筆者は最初、WindowsのHyper-V + Docker Desktopで検証をしていましたが、この環境でCRaCはうまく動作しませんでした。恐らくHyper-V上で動作するDocker DesktopのLinuxカーネルがCRUIをサポートしていなかったためと思われます[^3]。ですので、CRaCをコンテナ環境で試す場合はこの点に注意が必要です。また、この理屈からいくと、恐らくDocker Desktop for Macも動作しないのではないかと思います。
 :::
 
 [^3]: JavaプロセスにCheckpointイベントを送ると、Hyper-V + Docker Desktop上ではなぜか一緒にRestoreイベントも動いてしまい期待どおりに動作させることができませんでした。しかしこれと全く同じランタイム(jar)をAmazon Linux 2(EC2)のDockerに持って行くと問題なく動いたので、このことからの推測となります。

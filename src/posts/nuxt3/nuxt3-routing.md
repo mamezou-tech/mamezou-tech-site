@@ -46,7 +46,7 @@ pages
 
 ## プログラムでのページ切り替え
 
-ここまでページ遷移では[NuxtLink](https://v3.nuxtjs.org/api/components/nuxt-link)を使っていました。これはNuxtにビルトインされているVueコンポーネントです。
+ここまでページ遷移では[NuxtLink](https://nuxt.com/docs/api/components/nuxt-link)を使っていました。これはNuxtにビルトインされているVueコンポーネントです。
 もちろんNuxtLinkを使わずに、プログラムでページ切り替えもできます。この場合はNuxtビルトインのnavigateTo関数を使用します。
 
 ```html
@@ -69,7 +69,7 @@ const navigate = () => {
 ```
 
 他のNuxtコアAPI同様にnavigateToもAuto Import対象ですので、import不要で記述できます。
-注意点として、navigateToを利用する場合は、awaitまたは関数の戻り値としてnavigateToの結果を返す必要があります。以下[公式ドキュメント](https://v3.nuxtjs.org/guide/directory-structure/pages#programmatic-navigation)からの引用です。
+注意点として、navigateToを利用する場合は、awaitまたは関数の戻り値としてnavigateToの結果を返す必要があります。以下[公式ドキュメント](https://nuxt.com/docs/guide/directory-structure/pages#programmatic-navigation)からの引用です。
 
 > Ensure to always await on navigateTo or chain its result by returning from functions
 
@@ -207,7 +207,7 @@ Nuxt3のRC版(rc.11)では、Nuxt2のように`generate.routes`に関数を指�
 
 ここまでは、Nuxtのファイルシステムベースのルーティングを見てきましたが、カスタムでマッピングルール作成も可能です。
 
-- [Nuxtドキュメント - Router Options](https://v3.nuxtjs.org/guide/directory-structure/pages#router-options)
+- [Nuxtドキュメント - Router Options](https://nuxt.com/docs/guide/directory-structure/pages#router-options)
 
 ここでは、Nuxtが作成するファイルシステムベースの /foo/bar(`pages/foo/bar.vue`) を /foo/baz でもアクセスできるようにしてみます。
 

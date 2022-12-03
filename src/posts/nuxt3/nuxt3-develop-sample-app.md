@@ -158,10 +158,10 @@ Nuxt3では、Nuxt本体やVueの頻出APIはもちろん、自作のVueコン�
 
 [^2]: IDEでコードアシストを使うには、Nuxtアプリを一度ビルドして、TypeScriptの型宣言ファイル(d.ts)を`.nuxt`ディレクトリに作成する必要があります。
 
-- [Nuxt3ドキュメント - Auto Imports](https://v3.nuxtjs.org/guide/concepts/auto-imports)
+- [Nuxt3ドキュメント - Auto Imports](https://nuxt.com/docs/guide/concepts/auto-imports)
 
 なお、Vue3からVueコンポーネントは複数のルート要素を保持できるようになりましたが、`pages`ディレクトリ配下のファイルは単一ルートである必要があります。
-以下は[Nuxt3ドキュメント](https://v3.nuxtjs.org/guide/directory-structure/pages)からの抜粋です。
+以下は[Nuxt3ドキュメント](https://nuxt.com/docs/guide/directory-structure/pages)からの抜粋です。
 
 > Pages must have a single root element to allow route transitions between pages. (HTML comments are considered elements as well.)
 
@@ -171,7 +171,7 @@ Nuxt3では、Nuxt本体やVueの頻出APIはもちろん、自作のVueコン�
 特に、ページのヘッダ、フッタ等が各ページに冗長に記述されていました。 これら全ページ横断的に適用する部分は切り出して管理すべきです。
 Nuxt2でも同様ですが、このようなレイアウトは`layouts`ディレクトリにページ共通の枠組みとなるレイアウトファイルを作成します。
 
-- [Nuxtドキュメント - layout](https://v3.nuxtjs.org/guide/directory-structure/layouts)
+- [Nuxtドキュメント - layout](https://nuxt.com/docs/guide/directory-structure/layouts)
 
 ここでは`layouts`ディレクトリ内に`default.vue`を作成し、ヘッダ、フッタを切り出します。
 
@@ -280,8 +280,8 @@ article.value = articles.find(article => +id === article.id)
 `<NuxtLayout>`部分は`layouts`ディレクトリ、`<NuxtPage>`タグが`pages`ディレクトリ内のファイルを指します。
 各タグの詳細は、公式ドキュメントを参照してください。
 
-- [Nuxtドキュメント - &lt;NuxtLayout>タグ](https://v3.nuxtjs.org/api/components/nuxt-layout)
-- [Nuxtドキュメント - &lt;NuxtPage>タグ](https://v3.nuxtjs.org/api/components/nuxt-page)
+- [Nuxtドキュメント - &lt;NuxtLayout>タグ](https://nuxt.com/docs/api/components/nuxt-layout)
+- [Nuxtドキュメント - &lt;NuxtPage>タグ](https://nuxt.com/docs/api/components/nuxt-page)
 
 `default.vue`というファイル名はNuxtのデフォルトとなっていますので、ここではタグを指定するだけで問題ありません。
 

@@ -23,7 +23,7 @@ Finchはコンテナのビルドから実行までコンテナを利用した開
 - 仮想マシン: [Lima](https://github.com/lima-vm/lima)
 - イメージビルド: [BuildKit](https://github.com/moby/buildkit)
 
-なお、現状ではDocker DesktopのダッシュボードようなGUI[^1]やKubernetes拡張機能[^2]は提供していません。
+なお、現状ではDocker DesktopのダッシュボードのようなGUI[^1]やKubernetes拡張機能[^2]は提供していません。
 
 [^1]: とはいえ、Docker DesktopでGUIを使っている方をあまり見かけたことがありませんが。
 [^2]: Kubernetesを使う場合は、minikubeやRancher Desktop等を検討すると良いかと思います。

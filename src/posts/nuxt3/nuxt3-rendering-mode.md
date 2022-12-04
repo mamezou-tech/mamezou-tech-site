@@ -8,13 +8,13 @@ nextPage: ./src/posts/nuxt3/nuxt3-develop-sample-app.md
 ---
 
 Vue.jsのハイブリッドフレームワークとして人気のNuxtですが、メジャーアップデートとなるNuxt3がそろそろGAになりそうです。
-Vue3やNitro、Vite等、多くの変更がある[Nuxt3](https://v3.nuxtjs.org/)ですが2022年春にRC版が公開された後、ハイペースで更新が続きかなり安定してきた印象です。
+Vue3やNitro、Vite等、多くの変更がある[Nuxt3](https://nuxt.com/)ですが2022年春にRC版が公開された後、ハイペースで更新が続きかなり安定してきた印象です。
 
 ここでは、Nuxt3入門と題してNuxt3が提供する基本機能について連載を書いていきたいと思います。
 まず、初回はNuxtが提供するレンダリングモードを整理します。
 
-なお、基本的なプロジェクト作成の方法は[公式ドキュメント](https://v3.nuxtjs.org/getting-started/installation)に記載されているとおりですので触れません。
-
+なお、基本的なプロジェクト作成の方法は[公式ドキュメント](https://nuxt.com/docs/getting-started/installation)に記載されているとおりですので触れません。
+                                                
 今回は、新しいVueコンポーネントを作成せずに初期状態のNuxtのWelcomeページで見ていきます。
 
 [[TOC]]
@@ -30,7 +30,7 @@ Nuxt2と同じようにNuxt3ではクライアントサイドレンダリング�
 Nuxt3のrc.12で、ハイブリッドレンダリングの初期バージョンがリリースされました。
 nuxt.config.tsでルートごとにレンダリング方法(クライアントサイドレンダリングやプリレンダリング有無等)を指定できるようになっています。
 
-- [Nuxt3ドキュメント - Hybrid Rendering](https://v3.nuxtjs.org/guide/concepts/rendering#hybrid-rendering)
+- [Nuxt3ドキュメント - Hybrid Rendering](https://nuxt.com/docs/guide/concepts/rendering#hybrid-rendering)
 :::
 
 レンダリングモードの概要は、公式ドキュメントの以下で説明されています。

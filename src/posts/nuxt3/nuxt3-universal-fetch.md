@@ -29,13 +29,13 @@ Nuxt2では、一般的に@nuxtjs/axiosや@nuxt/httpを使ってデータを取�
 一方でクライアントサイドのレンダリングでは通常のHTTP経由の通信となります。
 このように、同一のソースコードでも臨機応変に呼び出し方式を自動で切り替えできますので、よりパフォーマンスに最適化したレンダリングが実現できます[^1]。
 
-- [Nuxt3ドキュメント - Server Engine - Direct API Calls](https://v3.nuxtjs.org/guide/concepts/server-engine#direct-api-calls)
+- [Nuxt3ドキュメント - Server Engine - Direct API Calls](https://nuxt.com/docs/guide/concepts/server-engine#direct-api-calls)
 
 [^1]: 実際の切り替えは、NuxtというよりもNitroが利用している[unenv](https://github.com/unjs/unenv)で行われているようです。
 
 NitroでAPIを作成する場合は、`server/api`ディレクトリを作成し、その配下にソースコードを配置します。
 
-- [Nuxt3ドキュメント - Server Directory](https://v3.nuxtjs.org/guide/directory-structure/server)
+- [Nuxt3ドキュメント - Server Directory](https://nuxt.com/docs/guide/directory-structure/server)
 
 ここでは以下の2つのAPIを作成します。
 
@@ -140,8 +140,8 @@ $fetch関数はグローバルで利用可能で、importなしでどこでか�
 
 Nuxtではこれをラップした以下のComposableを用意していますので、まずはこちらの利用を検討することになります。
 
-- [Nuxt3ドキュメント - useFetch](https://v3.nuxtjs.org/api/composables/use-fetch)
-- [Nuxt3ドキュメント - useLazyFetch](https://v3.nuxtjs.org/api/composables/use-lazy-fetch)
+- [Nuxt3ドキュメント - useFetch](https://nuxt.com/docs/api/composables/use-fetch)
+- [Nuxt3ドキュメント - useLazyFetch](https://nuxt.com/docs/api/composables/use-lazy-fetch)
 
 両者の違いはクライアントナビゲーションのブロック有無です。各Composableの詳細は上記ドキュメントを参照しくてださい。
 
@@ -227,8 +227,8 @@ type AsyncData<DataT> = {
 useFetchやuseLazyFetchはシンプルですが、場合によってリクエスト前後にロジックを入れたいこともあるかと思います。
 その場合は、以下のComposableを使い、その中で$fetch関数を呼び出します。
 
-- [Nuxt3ドキュメント - useAsyncData](https://v3.nuxtjs.org/api/composables/use-async-data)
-- [Nuxt3ドキュメント - useLazyAsyncData](https://v3.nuxtjs.org/api/composables/use-lazy-async-data)
+- [Nuxt3ドキュメント - useAsyncData](https://nuxt.com/docs/api/composables/use-async-data)
+- [Nuxt3ドキュメント - useLazyAsyncData](https://nuxt.com/docs/api/composables/use-lazy-async-data)
 
 Nuxt2を使ったことのある方は、useAsyncDataにピンときたかもしれません。そうです。これがNuxt2で使っていたasyncDataフックの後継です。
 前述のuseFetch/useLazyFetchは、useAsyncData/useLazyAsyncDataと$fetchのシンタックスシュガーです。

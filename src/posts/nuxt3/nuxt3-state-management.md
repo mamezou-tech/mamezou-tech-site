@@ -15,7 +15,7 @@ nextPage: ./src/posts/nuxt3/nuxt3-serverless-deploy.md
 Nuxt2では、コンポーネント間で状態を共有するには、Nuxt2にバンドルされている[Vuex](https://vuex.vuejs.org/)を使うのが一般的でした。
 
 Nuxt3ではVuexはNuxt本体に含まれていません。
-代わりにNuxt3では新たに[useState](https://v3.nuxtjs.org/api/composables/use-state) Composableが提供されるようになりました[^1]。
+代わりにNuxt3では新たに[useState](https://nuxt.com/docs/api/composables/use-state) Composableが提供されるようになりました[^1]。
 useStateはVuex程の機能はありませんが、必要最低限のシンプルな設計で使いやすいものとなっています。
 比較的シンプルなデータ構造であったり、中小規模のアプリケーションでは十分に実用的なものとなっています。
 
@@ -34,7 +34,7 @@ useStateとPiniaとの比較は以下記事に詳細が載っていますので�
 ## ref/reactiveの欠点
 
 Vue3には[ref](https://vuejs.org/api/reactivity-core.html#ref)や[reactive](https://vuejs.org/api/reactivity-core.html#reactive)という状態管理用のAPIが備わっていますが、これらは一般的にコンポーネント内で使用するものです。
-[NuxtLink](https://v3.nuxtjs.org/api/components/nuxt-link)等で他のページに切り替えた場合は、コンポーネントはアンマウントされますので、状態は保持されません。
+[NuxtLink](https://nuxt.com/docs/api/components/nuxt-link)等で他のページに切り替えた場合は、コンポーネントはアンマウントされますので、状態は保持されません。
 また、状態をサブコンポーネントで利用する場合は、通常はpropsを通じて渡してあげます。サブコンポーネントで状態を更新する場合は、イベントを発火して、データを主管する親コンポーネントでデータ更新をします。
 コンポーネント構造がシンプルな場合はこれで問題ありませんが、コンポーネントツリーが3階層、4階層と深くなってくると冗長で面倒な作業になります(よくバケツリレーと言われています)。
 
@@ -186,7 +186,7 @@ scriptタグ内に、stateとしてサーバーサイドで初期化された情
 - 各ページで指定するキー(key)が単純な文字列なのでタイポしやすい
 - 複数の状態を利用する場合、useStateがあちこちに散らばり、共有している状態管理変数を概観できない
 
-[公式ドキュメント](https://v3.nuxtjs.org/getting-started/state-management#shared-state)でも言及されていますが、VueのComposition APIを使用して、Vuexのstoreように状態管理を一元管理すると良さそうです。
+[公式ドキュメント](https://nuxt.com/docs/getting-started/state-management#shared-state)でも言及されていますが、VueのComposition APIを使用して、Vuexのstoreように状態管理を一元管理すると良さそうです。
 
 `composables/states.ts`を作成し、先程のuseStateを移植するだけです。
 

@@ -1,7 +1,12 @@
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import { DateTime, Settings } from "luxon";
 import { WebClient } from "@slack/web-api";
-import { makePopularPosts, makePvRequest, makeUserCountRequest } from "./ga-requests.mjs";
+import {
+  makeGoogleSearchClicksRequest,
+  makePopularPosts,
+  makePvRequest,
+  makeUserCountRequest
+} from "./ga-requests.mjs";
 
 Settings.defaultZone = "Asia/Tokyo";
 
@@ -37,9 +42,14 @@ async function countUser() {
   return count(makeUserCountRequest);
 }
 
+async function countGoogleSearchClick() {
+  return count(makeGoogleSearchClicksRequest);
+}
+
 async function runReport() {
   const pv = await countPv();
   const user = await countUser();
+  // const googleSearchClick = await countGoogleSearchClick();
   const [response] = await analyticsDataClient.runReport(makePopularPosts(yesterday, yesterday));
   const articles = response.rows
     .sort((a, b) => b.metricValues[0].value - a.metricValues[0].value)
@@ -56,6 +66,7 @@ async function runReport() {
 
   await web.chat.postMessage({
     channel: "C034MCKP4M6",
+    // channel: "D041BPULN4S", // for test
     mrkdwn: true,
     text: "昨日のデベロッパーサイトアクセス情報",
     unfurl_media: false,
@@ -81,11 +92,18 @@ async function runReport() {
           text: `:man-woman-girl-boy:*ユーザー数: ${user.yesterday}*\n- 前日比: ${diffToString(user.dayDiff)}\n- 前週比: ${diffToString(user.weekDiff)}`
         }
       },
+      // {
+      //   type: "section",
+      //   text: {
+      //     type: "mrkdwn",
+      //     text: `:eyeglasses:*Google検索クリック数: ${googleSearchClick.yesterday}*\n- 前日比: ${diffToString(googleSearchClick.dayDiff)}\n- 前週比: ${diffToString(googleSearchClick.weekDiff)}`
+      //   }
+      // },
       {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: ":trophy:*ユーザー数TOP20*:bigboss:\n" + articles.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.user}`).join("\n"),
+          text: ":trophy:*ユーザー数TOP20* :bigboss:\n" + articles.map(makeEntry).join("\n"),
         }
       },
     ]
@@ -100,6 +118,25 @@ function diffToString(diff) {
   } else {
     return `${diff} :arrow_lower_right:`;
   }
+}
+
+function makeEntry(article, index) {
+  let prize;
+  switch (index + 1) {
+    case 1:
+      prize = ":first_place_medal:"
+      break;
+    case 2:
+      prize = ":second_place_medal:"
+      break;
+    case 3:
+      prize = ":third_place_medal:"
+      break;
+    default:
+      prize = "";
+      break;
+  }
+  return `${index + 1}. <https://${article.url}|${article.title}> : ${article.user}${prize}`
 }
 
 await runReport();

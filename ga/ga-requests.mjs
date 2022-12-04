@@ -1,5 +1,23 @@
 const propertyId = process.env.GA_PROPERTY_ID || "";
 
+export function makeGoogleSearchClicksRequest(from, to) {
+  return {
+    property: `properties/${propertyId}`,
+    dateRanges: [
+      {
+        startDate: from.toISODate(),
+        endDate: to.toISODate(),
+      },
+    ],
+    dimensions: [],
+    metrics: [
+      {
+        name: "organicGoogleSearchClicks",
+      },
+    ],
+  }
+}
+
 export function makeUserCountRequest(from, to) {
   return {
     property: `properties/${propertyId}`,

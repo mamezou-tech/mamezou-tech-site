@@ -9,16 +9,20 @@
       "url": "/blogs/2022/07/08/gpt-2-japanese/"
     },
     {
-      "title": "GitHub Codespaces を使いはじめる",
-      "url": "/blogs/2022/05/18/start-using-codespaces/"
-    },
-    {
       "title": "Jest再入門 - 関数・モジュールモック編",
       "url": "/testing/jest/jest-mock/"
     },
     {
       "title": "ORマッパーのTypeORMをTypeScriptで使う",
       "url": "/blogs/2022/07/27/typeorm-with-typescript/"
+    },
+    {
+      "title": "GitHub Codespaces を使いはじめる",
+      "url": "/blogs/2022/05/18/start-using-codespaces/"
+    },
+    {
+      "title": "第1回 OpenAPI Generator を使ったコード生成",
+      "url": "/blogs/2022/06/04/openapi-generator-1/"
     },
     {
       "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
@@ -29,12 +33,8 @@
       "url": "/nuxt/nuxt3-universal-fetch/"
     },
     {
-      "title": "第1回 OpenAPI Generator を使ったコード生成",
-      "url": "/blogs/2022/06/04/openapi-generator-1/"
-    },
-    {
-      "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
-      "url": "/nuxt/nuxt3-state-management/"
+      "title": "アドベントカレンダー2022",
+      "url": "/events/advent-calendar/2022/"
     },
     {
       "title": "Nuxt3入門(第2回) - 簡単なNuxtアプリケーションを作成する",

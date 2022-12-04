@@ -15,11 +15,11 @@ nextPage: ./src/posts/nuxt3/nuxt3-state-management.md
 
 プラグインはNuxtアプリケーション初期化時に実行してくれるもので、アプリケーション全体で利用するものはここでまとめて定義しておきます。
 
-- [Nuxt3ドキュメント - Plugin Directory](https://v3.nuxtjs.org/guide/directory-structure/plugins)
+- [Nuxt3ドキュメント - Plugin Directory](https://nuxt.com/docs/guide/directory-structure/plugins)
 
 ミドルウェアはページルーティング時に実行され、不正な遷移防止や条件によって遷移先を切り替える場合等で使用します。
 
-- [Nuxt3ドキュメント - Middleware Directory](https://v3.nuxtjs.org/guide/directory-structure/middleware)
+- [Nuxt3ドキュメント - Middleware Directory](https://nuxt.com/docs/guide/directory-structure/middleware)
 
 プラグイン、ミドルウェアともにNuxt2からあるものですが、Nuxt3では若干使い方が変わっています。
 
@@ -39,7 +39,7 @@ Nuxt3でプラグインを作成する場合は、`plugins`ディレクトリに
 
 ここでは、Nuxtアプリケーションに対して、日本円のフォーマットを行うユーティリティメソッドを追加してみます。
 
-- [Nuxt3ドキュメント - useNuxtApp - provide](https://v3.nuxtjs.org/api/composables/use-nuxt-app#provide-name-value)
+- [Nuxt3ドキュメント - useNuxtApp - provide](https://nuxt.com/docs/api/composables/use-nuxt-app#provide-name-value)
 
 プラグイン実装は以下のようなイメージとなります。
 
@@ -134,7 +134,7 @@ Vueのカスタムディレクティブは`v-`をプリフィックスとして�
 続いてはミドルウェアです。
 前述の通り、ミドルウェアはページルーティングが発生する際に実行されます。これはサーバーサイド、クライアントサイドでも同様です。
 
-以下はNuxtの[公式ドキュメント](https://v3.nuxtjs.org/guide/directory-structure/middleware#middleware-directory)の引用ですが、ミドルウェアは3つの方法で作成できます。
+以下はNuxtの[公式ドキュメント](https://nuxt.com/docs/guide/directory-structure/middleware#middleware-directory)の引用ですが、ミドルウェアは3つの方法で作成できます。
 
 1. 匿名(インライン)ルートミドルウェア: ページコンポーネント内に埋め込み
 2. 名前付きルートミドルウェア: `middleware`ディレクトリに作成し、実行したいページコンポーネントで実行対象のミドルウェアを指定
@@ -160,8 +160,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
 ミドルウェアはdefineNuxtRouteMiddleware内に記述します。ここでは以下のことを行っています。
 
-- tokenパラメータがない場合は[abortNavigation](https://v3.nuxtjs.org/api/utils/abort-navigation)で403(Forbidden)エラーを返却(エラーページ表示)[^2]
-- tokenパラメータの文字列が不正な場合は[navigateTo](https://v3.nuxtjs.org/api/utils/navigate-to)でトップページにリダイレクト
+- tokenパラメータがない場合は[abortNavigation](https://nuxt.com/docs/api/utils/abort-navigation)で403(Forbidden)エラーを返却(エラーページ表示)[^2]
+- tokenパラメータの文字列が不正な場合は[navigateTo](https://nuxt.com/docs/api/utils/navigate-to)でトップページにリダイレクト
 
 [^2]: 引数を省略した場合は404エラーとなります。
 
@@ -179,7 +179,7 @@ definePageMeta({
 </template>
 ```
 
-[definePageMeta](https://v3.nuxtjs.org/api/utils/define-page-meta) Composableで対象ミドルウェアを指定します(拡張子は省略)。
+[definePageMeta](https://nuxt.com/docs/api/utils/define-page-meta) Composableで対象ミドルウェアを指定します(拡張子は省略)。
 これでNuxtアプリケーションを実行するとクエリパラメータなしの`/admin`にアクセスするとエラーページ、`/admin?test=foo`であればトップページにリダイレクトされます。
 
 :::column:Staticホスティングでのミドルウェアの挙動
@@ -196,4 +196,4 @@ Nuxt2では、Staticホスティング(`npm run generate`)の場合は、初期�
 
 上級編ではありますが、ビルドレベルでNuxtを拡張する方法としてNuxt Kitを使用したモジュールという方法もあります。
 
-- [Nuxt3ドキュメント - Module Author Guide](https://v3.nuxtjs.org/guide/going-further/modules)
+- [Nuxt3ドキュメント - Module Author Guide](https://nuxt.com/docs/guide/going-further/modules)

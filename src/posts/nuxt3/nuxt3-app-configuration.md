@@ -64,7 +64,7 @@ console.log(`[${env}] db.password: ${runtimeConfig.db?.password}`);
 </template>
 ```
 
-Nuxtが提供する[useRuntimeConfig](https://v3.nuxtjs.org/api/composables/use-runtime-config) Composableを利用して、Runtime Configを取得します。
+Nuxtが提供する[useRuntimeConfig](https://nuxt.com/docs/api/composables/use-runtime-config) Composableを利用して、Runtime Configを取得します。
 もちろん、これもNuxt3のAuto Importの対象なのでimport文の記述は不要ですし、IDEのコード補完も有効です。
 
 ここでは、先程設定した設定をコンソールログに出力するだけのものです。これでNuxtを起動すると出力結果は以下のようになります。
@@ -94,7 +94,7 @@ Nuxtが提供する[useRuntimeConfig](https://v3.nuxtjs.org/api/composables/use-
 ここでは説明しませんでしたが、Runtime Configにはpublic/private以外にもデフォルトでappネームスペースとしてbaseURL等の設定が含まれています。
 これらもpublic同様にクライアントサイドへ公開されます。
 
-appネームスペースの詳細は[公式ドキュメント](https://v3.nuxtjs.org/api/configuration/nuxt-config#runtimeconfig)を参照してください。
+appネームスペースの詳細は[公式ドキュメント](https://nuxt.com/docs/api/configuration/nuxt-config#runtimeconfig)を参照してください。
 :::
 
 ## 環境変数による切り替え
@@ -106,7 +106,7 @@ appネームスペースの詳細は[公式ドキュメント](https://v3.nuxtjs
 
 このような状況でよく使わる手段はOSの環境変数です。Nuxtでも環境変数のサポートがあります。
 
-- [Nuxt3ドキュメント - Runtime Config - Environment Variables](https://v3.nuxtjs.org/guide/going-further/runtime-config#environment-variables)
+- [Nuxt3ドキュメント - Runtime Config - Environment Variables](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables)
 
 環境変数でRuntime Configを上書きする場合は、環境変数に`NUXT_`をプリフィックス(デフォルト)として、設定値のキーを大文字のスネークケースに変換して指定します[^1]。
 
@@ -148,7 +148,7 @@ NUXT_SECRET=prod-secret
 
 この点を解消するために、Nuxt3では新しくApp Configが導入されました。
 
-- [Nuxt3ドキュメント - App Config File](https://v3.nuxtjs.org/guide/directory-structure/app.config)
+- [Nuxt3ドキュメント - App Config File](https://nuxt.com/docs/guide/directory-structure/app.config)
 
 App Configは、`nuxt.config.ts`ではなく、専用のファイル`app.config.ts`を作成します。
 
@@ -168,7 +168,7 @@ const appConfig = useAppConfig();
 console.log(`[${env}] bar: ${appConfig.bar}`);
 ```
 
-Nuxtが提供する[useAppConfig](https://v3.nuxtjs.org/api/composables/use-app-config) Composableを使ってApp Configを取得します。
+Nuxtが提供する[useAppConfig](https://nuxt.com/docs/api/composables/use-app-config) Composableを使ってApp Configを取得します。
 設定値の参照はRuntime Configと同じで、IDEのコード補完も有効です。 
 
 App Configは開発モードで実行(`npm run dev`)した場合に、HMR(Hot Module Replacement)が有効となり、ソースコード同様に変更はすぐに反映されます。

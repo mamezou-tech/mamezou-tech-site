@@ -210,7 +210,7 @@ public class HelloEvents {
 
 ## まとめ
 
-メッセージングに Spring Integration を使って、ドメイン駆動設計によるドメイン層を実装してサービスを完成させました。次回は、サイドカーパターンについて説明します。
+メッセージングに Spring Integration を使って、ドメイン駆動設計によるドメイン層を実装してサービスを完成させました。[次回](/blogs/2022/07/01/openapi-generator-5/)は、このサービスで採用している多層アーキテクチャ (Multi-tier Architecture) を実現するサイドカーパターンについて説明します。
 
 この記事のコード全体は [GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-4) にあります。
 

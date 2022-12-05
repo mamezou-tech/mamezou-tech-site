@@ -1,5 +1,5 @@
 ---
-title: Tellerでシークレット情報を自動取得＆ソースコード埋め込みを検知する
+title: Tellerでシークレット情報取得＆ソースコード埋め込みを検知する
 author: noboru-kudo
 date: 2022-12-07
 templateEngineOverride: md

@@ -6,7 +6,7 @@ tags: [nuxt, AWS, サーバーレス, serverless-framework, lambda, vue]
 templateEngineOverride: md
 ---
 
-2022-04-19にハイブリッドVueフレームワークの[Nuxt3](https://v3.nuxtjs.org/)がRCバージョンになりました。
+2022-04-19にハイブリッドVueフレームワークの[Nuxt3](https://nuxt.com/)がRCバージョンになりました。
 
 - [Announcing Nuxt 3 Release Candidate](https://nuxtjs.org/announcements/nuxt3-rc/)
 

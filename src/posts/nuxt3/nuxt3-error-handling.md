@@ -14,7 +14,7 @@ nextPage: ./src/posts/nuxt3/nuxt3-plugin-middleware.md
 Nuxtはクライアントサイドだけでなく、サーバーサイドレンダリングもサポートするハイブリッドフレームワークです。
 このため、エラー発生箇所に対応した適切なハンドリングが求められます。
 
-- [Nuxt3ドキュメント - Error handling](https://v3.nuxtjs.org/getting-started/error-handling)
+- [Nuxt3ドキュメント - Error handling](https://nuxt.com/docs/getting-started/error-handling)
 
 [[TOC]]
 
@@ -64,7 +64,7 @@ onMounted(() => {
 </template>
 ```
 
-サブコンポーネントの方で使用している[createError](https://v3.nuxtjs.org/api/utils/create-error)は、Nuxt3が提供するユーティリティです。
+サブコンポーネントの方で使用している[createError](https://nuxt.com/docs/api/utils/create-error)は、Nuxt3が提供するユーティリティです。
 
 これを実行するとサブコンポーネントのmountedでエラーが発生します。
 このエラーはonErrorCapturedフックで捕捉され、エラーメッセージが表示されるようになります。
@@ -121,12 +121,12 @@ export default defineNuxtPlugin((nuxtApp) => {
 例えば、setTimeout/setIntervalのコールバック関数内でのエラーは検知しません。
 全てのエラーを検知したい場合は、別途Windowの[error](https://developer.mozilla.org/en-US/docs/Web/API/Window/error_event)イベント等のフックと併用する必要があります。
 
-Nuxtアプリケーションの起動時に発生するクリティカルなエラー検知は、`app:error`イベントフックを使用します。こちらの詳細はNuxtの[公式ドキュメント](https://v3.nuxtjs.org/getting-started/error-handling/#server-and-client-startup-errors-ssr--spa)を参照してください。
+Nuxtアプリケーションの起動時に発生するクリティカルなエラー検知は、`app:error`イベントフックを使用します。こちらの詳細はNuxtの[公式ドキュメント](https://nuxt.com/docs/getting-started/error-handling/#server-and-client-startup-errors-ssr--spa)を参照してください。
 :::
 
 ### NuxtErrorBoundaryコンポーネント
 
-クライアントサイド限定ですが、[NuxtErrorBoundary](https://v3.nuxtjs.org/api/components/nuxt-error-boundary)を使うと、簡単にエラー発生時の影響を局所化できます。
+クライアントサイド限定ですが、[NuxtErrorBoundary](https://nuxt.com/docs/api/components/nuxt-error-boundary)を使うと、簡単にエラー発生時の影響を局所化できます。
 [ソースコード](https://github.com/nuxt/framework/blob/main/packages/nuxt/src/app/components/nuxt-error-boundary.ts)を見ればすぐに分かりますが、NuxtErrorBoundaryは前述のonErrorCapturedフックを使って配下のコンポーネントで発生するエラーを監視するNuxtのユーティリティコンポーネントです。
 
 ```html
@@ -158,7 +158,7 @@ NuxtErrorBoundaryはデフォルトスロットに対象コンポーネント、
 
 ### APIアクセスエラー
 
-Nuxt3ではAPIアクセス時に[useFetch](https://v3.nuxtjs.org/api/composables/use-fetch)/[useAsyncData](https://v3.nuxtjs.org/api/composables/use-async-data) Composableを使うことが多いかと思います。
+Nuxt3ではAPIアクセス時に[useFetch](https://nuxt.com/docs/api/composables/use-fetch)/[useAsyncData](https://nuxt.com/docs/api/composables/use-async-data) Composableを使うことが多いかと思います。
 この点のエラーハンドリングについても見てみます。
 
 useFetch/useAsyncData自体は例外をスローしませんので、try-await/catch等でハンドリングしてもcatch節は実行されません。
@@ -195,7 +195,7 @@ Errorの内容(ステータスコード等)をクライアントサイドで保�
 Nuxtは、サーバーサイド実行でエラーが発生した場合や、クライアントサイドでクリティカルなエラーが発生した場合に専用のエラーページを表示します。
 もちろんこのエラーページはカスタマイズ可能です。
 
-- [Nuxt3ドキュメント - Rendering an Error Page](https://v3.nuxtjs.org/getting-started/error-handling/#rendering-an-error-page)
+- [Nuxt3ドキュメント - Rendering an Error Page](https://nuxt.com/docs/getting-started/error-handling/#rendering-an-error-page)
 
 カスタムエラーページを作成する場合は、プロジェクトルート直下に`error.vue`を作成するだけです。
 以下のようなものになります。
@@ -221,14 +221,14 @@ const isDev = process.dev;
 エラーページも通常のVueコンポーネントです。
 propsとしてエラー発生内容が格納されている`error`を受け取れます。ここでは開発モード(`npm run dev`)の場合のみエラー内容の詳細を表示するようにしています。
 
-上記では、エラーページで「トップページに戻る」ボタンを配置し、そのイベントハンドラでNuxtユーティリティの[clearError](https://v3.nuxtjs.org/api/utils/clear-error)を呼んでいます。
+上記では、エラーページで「トップページに戻る」ボタンを配置し、そのイベントハンドラでNuxtユーティリティの[clearError](https://nuxt.com/docs/api/utils/clear-error)を呼んでいます。
 この関数はNuxtアプリケーション(NuxtApp.payload.error)が内部で保持しているエラーをクリアするものです。
 引数にリダイレクト先(ここではトップページ)を指定することで、クリア後に通常のページへ復帰できるようになります。
 
 :::column:クライアントサイドでエラーページを表示する
 クライアントサイドで例外をスローするとデフォルトは非クリティカルなエラーになり、エラーページは表示されません。
-明示的にエラーページを表示する場合は、ユーティリティ関数として用意されている[showError](https://v3.nuxtjs.org/api/utils/show-error)を使用します。
-または、例外スロー時に使用する[createError](https://v3.nuxtjs.org/api/utils/create-error)の引数で、fatalをtrueに指定するとエラーページを表示できます[^7]。
+明示的にエラーページを表示する場合は、ユーティリティ関数として用意されている[showError](https://nuxt.com/docs/api/utils/show-error)を使用します。
+または、例外スロー時に使用する[createError](https://nuxt.com/docs/api/utils/create-error)の引数で、fatalをtrueに指定するとエラーページを表示できます[^7]。
 
 ```typescript
 // プログラムでエラーページ表示

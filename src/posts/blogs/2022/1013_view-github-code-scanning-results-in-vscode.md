@@ -2,7 +2,7 @@
 title: GitHub code scanning 結果を VS Code で確認できる SARIF Viewer 拡張
 author: masahiro-kondo
 date: 2022-10-13
-tags: [GitHub, vscode, Security]
+tags: [codeql, GitHub, vscode, Security]
 ---
 
 以前「[GitHub の脆弱性検出機能 Code scanning alerts と CodeQL について](/blogs/2022/06/20/github-code-scanning-and-codeql/)」という記事で Code scanning alerts を設定して確認する方法を紹介しました。

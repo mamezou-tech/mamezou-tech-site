@@ -2,7 +2,7 @@
 title: 基本から理解するJWTとJWT認証の仕組み
 author: toshio-ogiwara
 date: 2022-12-08
-tags: [advent2022, java]
+tags: [advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
  

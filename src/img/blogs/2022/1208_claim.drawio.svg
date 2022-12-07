@@ -1,0 +1,78 @@
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="421px" height="126px" viewBox="-0.5 -0.5 421 126" content="&lt;mxfile&gt;&lt;diagram id=&quot;ULWEar7BUPthAqca1kg6&quot; name=&quot;ページ1&quot;&gt;7VdBb5swFP41SNuhkY0TSI8JTbfLTjns7AYH3BnMwBSyXz/b2AEHkKomraapjpTY33t+fu97Fh/xUJS130pcpD94TJjng7j10IPn+2sfyW8FnDog8MMOSEoadxDsgT39QwwIDFrTmFSOo+CcCVq44IHnOTkIB8NlyRvX7ciZe2qBEzIC9gfMxuhPGovUlhX2+HdCk9SeDIP7zpJh62wqqVIc82YAoZ2HopJz0c2yNiJMcWd56fY9zljPiZUkF6/ZcN7yglltqjOZiZMtt+R1HhO1A3ho26RUkH2BD8rayP5KLBUZkysop0eeC9MxuFJryljEGS91LHRcqY/EY1ylOqbdNHDqhsQrUfJfZGAJ9JAWkzUpBWlna4dnRuVNJDwjojxJF7thaa6huYU+MKU3fU99aHzSQT/9pblK5hol59A903JiyJ4jfvlJvCUeBR9J/OqTeEt8iD6QeAAmiA+YUNTQF6cBwe9aPQE1S3eV5nYjHeCqaHujnCX6N9zaODIHHcoYbhLdBFHOWlJsZ3pHdNRjCL31tDs5BsV0h54TMc60qgY7dbSBkS9Iiw9iUeGsYGTx3IjhMZGN/lReVjhGpun8F5jQcFXg/KrGGqSqn+b5rHCteHwlhzLTLqsxtf/DBbwp7aQtLmmHQQjAeoWUILw7oU7c8GH2xAttkI9f4QqA+8zOeU4uVMBAmNEkl0tGjiqCepRT+VK5MXBG41gdMqk3riKN1APIMSVFam1Sn1OLCU2ZFxAEHAGB92AkIEv7bjsUEGjBqxQE+WMF2SFv7XubRz1B3iYyk62dbMCXiGGafb2dyqP3U/mJjl0l+eje7djUSy6EEx17g+TLZf/PRdsGf//Q7i8=&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs/>
+    <g>
+        <rect x="13" y="15" width="213" height="24" fill="#f5f5f5" stroke="#666666" stroke-dasharray="3 3" pointer-events="all"/>
+        <rect x="13" y="49" width="213" height="24" fill="#f5f5f5" stroke="#666666" stroke-dasharray="3 3" pointer-events="all"/>
+        <rect x="13" y="86" width="213" height="24" fill="#f5f5f5" stroke="#666666" stroke-dasharray="3 3" pointer-events="all"/>
+        <rect x="0" y="3" width="420" height="120" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 418px; height: 1px; padding-top: 63px; margin-left: 2px;">
+                        <div data-drawio-colors="color: #330000; " style="box-sizing: border-box; font-size: 0px; text-align: left;">
+                            <div style="display: inline-block; font-size: 15px; font-family: Helvetica; color: rgb(51, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <div style="font-size: 15px">
+                                    {
+                                </div>
+                                <div style="font-size: 15px">
+                                    <font color="#ffffff" style="font-size: 15px">
+                                        ----
+                                    </font>
+                                    "iss": "io.exact.sample.jwt",
+                                    <br/>
+                                    <br/>
+                                </div>
+                                <font color="#ffffff" style="font-size: 15px">
+                                    ----
+                                </font>
+                                <span style="font-size: 15px">
+                                    "sub": "saumple",
+                                    <br/>
+                                </span>
+                                <br style="font-size: 15px"/>
+                                <font color="#ffffff" style="font-size: 15px">
+                                    ----
+                                </font>
+                                <span style="font-size: 15px">
+                                    "exp": 1670085336
+                                </span>
+                                <br style="font-size: 15px"/>
+                                <span>
+                                    }
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="2" y="68" fill="#330000" font-family="Helvetica" font-size="15px" font-weight="bold">
+                    {...
+                </text>
+            </switch>
+        </g>
+        <rect x="260" y="15" width="110" height="24" fill="#f5f5f5" stroke="#666666" stroke-dasharray="3 3" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 108px; height: 1px; padding-top: 27px; margin-left: 261px;">
+                        <div data-drawio-colors="color: #333333; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: rgb(51, 51, 51); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                クレーム(Claim)
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="315" y="31" fill="#333333" font-family="Helvetica" font-size="13px" text-anchor="middle" font-weight="bold">
+                    クレーム(Claim)
+                </text>
+            </switch>
+        </g>
+    </g>
+    <switch>
+        <g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/>
+        <a transform="translate(0,-5)" xlink:href="https://www.diagrams.net/doc/faq/svg-export-text-problems" target="_blank">
+            <text text-anchor="middle" font-size="10px" x="50%" y="100%">
+                Viewer does not support full SVG 1.1
+            </text>
+        </a>
+    </switch>
+</svg>

@@ -249,7 +249,7 @@ OpenAPI Generator に設定可能なパラメータも多くあります。パ�
 
 そして、GitHub Actions のような自動デプロイの[スクリプト](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-3/.github/workflows/build.yml)で、生成、ビルド、デプロイをどのようなステップで実行するかを可視化することも有益です。
 
-このシリーズはまだまだ続きます。
+[次回](/blogs/2022/06/24/openapi-generator-4/)はこのサンプルサービスを完成させるため、ドメイン駆動設計 (Domain-driven design) の戦術的設計を説明します。
 
 ## 参考
 

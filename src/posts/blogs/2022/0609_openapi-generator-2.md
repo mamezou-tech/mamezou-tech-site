@@ -216,7 +216,7 @@ JWT トークンは、3つのパートにわかれています。それぞれの
 
 ## まとめ
 
-今回、現実的なアプリケーションのレイヤー構造で説明しました。次回は、OpenAPI Generator のパラメータの説明をする予定です。
+今回、現実的なアプリケーションのレイヤー構造で説明しました。[次回](/blogs/2022/06/17/openapi-generator-3/)は、OpenAPI Generator のパラメータの説明します。
 
 ## 参考
 
@@ -225,6 +225,7 @@ JWT トークンは、3つのパートにわかれています。それぞれの
 - [S3 の静的 Web サイトをセキュアに Envoy でホスティング](/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)
 - [Envoy と Open Policy Agent を使用した認可](/blogs/2022/02/20/envoy-authz/)
 - [Envoy を使用して ID Token (OIDC) を検証する](/blogs/2022/02/20/envoy-authn/)
+- [Reactive Architecture(2): Domain Driven Design](https://academy.lightbend.com/courses/course-v1:lightbend+LRA-DomainDrivenDesign+v1/about)
 
 ## 関連記事
 

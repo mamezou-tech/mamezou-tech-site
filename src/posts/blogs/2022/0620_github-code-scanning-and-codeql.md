@@ -2,7 +2,7 @@
 title: GitHub の脆弱性検出機能 Code scanning alerts と CodeQL について
 author: masahiro-kondo
 date: 2022-06-20
-tags: [CI/CD, GitHub, Security]
+tags: [codeql, CI/CD, GitHub, Security]
 ---
 
 GitHub の public リポジトリでは、Settings の Security タブから Code scanning alerts を有効化できます。

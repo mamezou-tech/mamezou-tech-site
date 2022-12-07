@@ -33,6 +33,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 ### テスト技法 - Contract Test
 
 - [Contract TestツールPactの紹介](/blogs/2022/12/03/contract-test-with-pact/)
+- [Contract Testの使いどころを考える](/blogs/2022/12/09/contract-test-usecase/)
 
 ## 自動テスト導入事例
 豆蔵社員が実践した自動テストのノウハウをご紹介します。

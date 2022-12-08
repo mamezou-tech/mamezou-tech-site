@@ -195,9 +195,29 @@ ISGは、初回アクセス時にサーバーサイドでレンダリングを�
 
 [^1]: Next.jsでは、getStaticPathsでfallbackをtrueまたはblockingを指定することで実現するものです。
 
-TODO 絵を入れる
+Nuxt+NetlifyのISGは以下のイメージになります。
 
-では、Nuxt3でISGを試してみます。
+```mermaid
+sequenceDiagram
+    autonumber
+    actor client as ブラウザ
+    participant edge as Netlify CDN<br />(エッジサーバー)
+    participant app as Nuxt App(Nitro)<br/ >(Netlify On-Demand Builder)
+    client->>edge: 初回ページリクエスト
+    edge->>app: オリジンリクエスト<br />(キャッシュなし)
+    app->>app: オンデマンドレンダリング
+    app-->>edge: 結果返却(キャッシュ) 
+    edge-->>client: 結果返却
+    loop
+        client->>edge: N回目ページリクエスト
+        edge-->>client: 結果返却
+    end
+```
+
+SSG等の静的リソースと同じような動きのため、この流れは分かりやすいと思います。
+Netlifyでは再デプロイでキャッシュがクリアされますので、再デプロイ後はこのフローを繰り返します。
+
+では、このNuxt3のISGを試してみます。
 まず`pages`配下に、以下のページ(`isg.vue`)を用意しました。
 
 ```html
@@ -209,7 +229,7 @@ const {data: time} = useAsyncData(async () => new Date().toLocaleString('ja'))
 <template>
   <div>
     <h1>Hello ISG!!</h1>
-    <p>time: {{time}}</p>
+    <p>time: {{ time }}</p>
   </div>
 </template>
 ```
@@ -369,6 +389,41 @@ ISRは、基本的なスタイルはISGと同様のオンデマンドなビル�
 つまり、再キャッシュ後のアクセスは、再レンダリング後にキャッシュされたものから取得されることになり、ISG同様のパフォーマンスが得られることになります。
 ISRは、Stale While Revalidate(SWR)を使ったキャッシュ戦略と呼ばれます。
 
+Nuxt+NetlifyのISRは以下のイメージになります。
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor client as ブラウザ
+    participant edge as Netlify CDN<br />(エッジサーバー)
+    participant app as Nuxt App(Nitro)<br/ >(Netlify On-Demand Builder)
+    client->>edge: 初回ページリクエスト
+    edge->>app: オリジンリクエスト<br />(キャッシュなし)
+    app->>app: オンデマンドレンダリング
+    app-->>edge: 結果返却(TTL付きキャッシュ) 
+    edge-->>client: 結果返却
+    loop TTL内
+        client->>edge: N回目ページリクエスト
+        edge-->>client: 結果返却
+    end
+    client->>edge: ページリクエスト(TTL経過後)
+    par
+        edge->>client: 結果返却(キャッシュ)
+    and
+        edge->>app: オリジンリクエスト(期限切れ) 
+        app->>app: 再レンダリング
+        app-->>edge: 結果返却(キャッシュ) 
+    end
+    loop TTL内
+        client->>edge: N回目ページリクエスト
+        edge-->>client: 結果返却
+    end
+```
+
+ISGとは異なり、TTLが経過すると再レンダリング(Regeneration)が実行されますので、コンテンツは最新となります。
+ただし、TTL経過後の初回アクセスに限りキャッシュから旧バージョン(Stale)の結果が返却されます。
+
+では、NuxtのISRを試してみます。
 ソースコードは、ISGのときとほぼ同じです(`isr.vue`)。
 
 ```html
@@ -380,10 +435,12 @@ const {data: time} = useAsyncData(async () => new Date().toLocaleString('ja'))
 <template>
   <div>
     <h1>Hello ISR!!</h1>
-    <p>time: {{time}}</p>
+    <p>time: {{ time }}</p>
   </div>
 </template>
 ```
+
+サーバーサイドで現在時刻を取得して表示します。
 
 ISRのの場合、nuxt.config.tsは以下のようになります。
 
@@ -422,10 +479,10 @@ netlify deploy --build --site nuxt3-ondemand-example --prod
 これでブラウザから`/isr`にアクセスします。
 ここでもスクリーンショットは省略しますが、継続的にリロードを繰り返すと、以下の動きになっていることが分かります。
 
-1. 初回アクセス: 現在時刻。初回レンダリングされてキャッシュされる
-2. 初回アクセスから5分間: キャッシュ済み結果
-3. 5分経過後: キャッシュ済み結果。バックグラウンドで再レンダリング＋再キャッシュ
-4. 再アクセス: 3で更新された時刻表示
+1. 初回アクセス: この時点のサーバー時刻表示。初回レンダリング＋キャッシュ
+2. 初回アクセスから5分間: 前回キャッシュ済み結果
+3. 5分経過後: キャッシュ済み結果。バックグラウンドでは再レンダリング＋再キャッシュ
+4. 再アクセス: 3で更新されたサーバー時刻表示。再キャッシュ結果
 
 初回を除いて、CDNつまりエッジ環境からコンテンツを取得しています。
 NetlifyのコンソールよりFunctionsのログを確認するとサーバーサイドの動きを確認できます。

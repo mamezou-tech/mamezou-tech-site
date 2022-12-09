@@ -286,7 +286,7 @@ const handler = async function handler2(event, context) {
 };
 ```
 
-これは、[Netlify Functions](https://docs.netlify.com/functions/overview/)のコードですが、よく見ると実態はAWS Lambdaのイベントハンドラです。
+これは、[Netlify Functions](https://docs.netlify.com/functions/overview/)のコードです(実態はAWS Lambdaのイベントハンドラですが)。
 実装を見ると、ルートルール(`routeRules`)でISG(`static`)またはISR(`swr`)(後述)が指定されている場合に、通常のNetlify Functionsではなく、[On-demand Builders](https://docs.netlify.com/configure-builds/on-demand-builders/)が使われていることが分かります。
 
 ここでサーバーサイドレンダリング(ページ生成)が実行され、その結果がCDNにキャッシュするように動作するようになっています。
@@ -305,7 +305,7 @@ const handler = async function handler2(event, context) {
 /*      /.netlify/functions/server 200
 ```
 
-`/isg`というパスにリクエストがくると、先程のNetlify On-Demand Builderのにリダイレクトするように指定されています。このファイルもNitroのプリセットで出力されています。
+`/isg`というパスにリクエストがくると、先程のNetlify On-Demand Builderのにリダイレクトするように指定されています。
 
 ビルド結果の確認ができましたので、先程作成したNetlifyにデプロイしてみます。
 
@@ -364,12 +364,12 @@ Unique Deploy URL: https://63901acdae2d9432b95ef28b--nuxt3-ondemand-example.netl
 Website URL:       https://nuxt3-ondemand-example.netlify.app
 ```
 
-静的リソースだけでなく、Netlify On-Demand BuilderのFunctionsがデプロイされていることが確認できます。
+静的リソースだけでなく、Netlify Functionsもデプロイされていることが確認できます。
 
 後は、表示されたURLよりブラウザからアクセスするだけです。`/isg`パスにアクセスすると先程の時刻表示ページが表示されます。
 
 貧素なページのためスクリーンショットは載せませんが、最初にアクセスしたタイミングでページ内に時刻が表示され、それ以降は何度アクセスしても同じページ(CDNキャッシュ)が表示されます。
-Netlifyの管理コンソールからFunctionsのログを見ても初回のみ実行され、2回目以降はログに出力されることはありません。
+Netlifyの管理コンソールからFunctionsのログを見ても、初回のみレンダリングのログが出力され、2回目以降は出力されることはありません。
 
 ![Netlify Functions Console - ISG](https://i.gyazo.com/7fa3ed47763f0ce0d65035be6616625c.png)
 

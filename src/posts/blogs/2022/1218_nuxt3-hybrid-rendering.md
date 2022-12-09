@@ -147,7 +147,7 @@ node .output/server/index.mjs
 SSR/SSGは相反するメリット・デメリットがあり、ビルド時間やデータ鮮度の面ではSSRが優位ですが、パフォーマンス面ではSSGが望ましいです。
 このような背景から、Next.jsでISG(Incremental Static Generation) / ISR(Incremental Static Regeneration)が登場してきます。
 
-ISG/ISRは、オンデマンドにビルドすることで最新コンテンツ提供とビルド時間を短縮する一方で、CDNキャッシュでのパフォーマンスも最適化しようとする欲張り(?)な試みです。
+ISG/ISRは、オンデマンドにビルドすることで最新コンテンツ提供とビルド時間を短縮する一方で、CDNの共有キャッシュでパフォーマンスも最適化しようとする欲張り(?)な試みです。
 
 そしてNuxtでも現状はNetlify/Vercelのみですが、バージョン3でようやくISG/ISRをサポートするようになりました。
 ここではNetlifyを使ってISG/ISRを試してみます。事前にNetlifyのアカウントを作成しておく必要があります（未検証ですがフリープランでも問題ないかと思います）。

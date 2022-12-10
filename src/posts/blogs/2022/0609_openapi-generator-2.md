@@ -224,6 +224,7 @@ JWT トークンは、3つのパートにわかれています。それぞれの
 - [Event Storming](https://www.eventstorming.com/)
 - [基本から理解するJWTとJWT認証の仕組み](https://developer.mamezou-tech.com/blogs/2022/12/08/jwt-auth/)
 - [Auth0 java-jwtを使った素のJWT認証](https://developer.mamezou-tech.com/blogs/2022/12/10/java-jwt-auth/)
+- [OpenID Connect のメモ](https://s-edword.hatenablog.com/entry/2019/11/20/011812)
 - [リアクティブシステムとドメイン駆動設計の学習コンテンツ](https://s-edword.hatenablog.com/entry/2022/12/06/212621)
 - [ドメイン駆動設計と「コントロールプレーン」、「データプレーン」](https://s-edword.hatenablog.com/entry/2022/12/09/020834)
 - [S3 の静的 Web サイトをセキュアに Envoy でホスティング](/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)

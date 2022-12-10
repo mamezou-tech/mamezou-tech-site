@@ -5,6 +5,8 @@ date: 2022-12-10
 tags: [Security, "認証/認可", java, advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
+これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第10日目の記事です。
+
 JWT認証としてはOIDC(OpenIDConnect)が有名ですが、今回は仕組みを素から理解することを目的にAuth0のjava-jwtを使ってJWT認証の簡単な仕組みを作ってみたいと思います。
 なお、JWTやJWT認証ってそもそもなに？という方は[「基本から理解するJWTとJWT認証の仕組み」](/blogs/2022/12/08/jwt-auth/)から読まれることをお勧めします。
 
@@ -441,11 +443,11 @@ public class AddCalculator {
         int right = Integer.parseInt(args[1]);
         String token = args[2];
 
-        AddCalculator idProvider = new AddCalculator(
+        AddCalculator addCalculator = new AddCalculator(
                 new AuthTokenVerifier(secretkey),
                 new AddOperator());
 
-        idProvider.calculate(left, right, token);
+        addCalculator.calculate(left, right, token);
     }
 }
 ```

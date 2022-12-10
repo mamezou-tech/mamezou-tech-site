@@ -18,6 +18,7 @@ REST API の仕様を記述する [OpenAPI Specification](https://swagger.io/spe
 ### [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
 
 ドメイン駆動設計 (DDD - Domain-driven design) の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
+
 認証認可等の横断的関心事は、ドメインロジックを実装する Spring Boot を使ったアプリケーション本体には組み込まず、サイドカーで処理をする多層アーキテクチャ (Multi-Tier Architecture) について説明します。
 
 参考: 「[ドメイン駆動設計と「コントロールプレーン」、「データプレーン」](https://s-edword.hatenablog.com/entry/2022/12/09/020834)」

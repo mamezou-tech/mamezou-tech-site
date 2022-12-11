@@ -2,7 +2,7 @@
 title: AWS Lambda 向け軽量Node.jsミドルウエアエンジン Middy の紹介
 author: yumeto-yamagishi
 date: 2022-12-11
-tags: ["middleware", nodejs, typescript, advent2022]
+tags: [middleware, nodejs, typescript, lambda, advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第11日目の記事です。

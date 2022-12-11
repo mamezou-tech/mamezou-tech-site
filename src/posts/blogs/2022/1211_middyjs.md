@@ -17,7 +17,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 AWSの多くのサービスは、サービスの機能拡張やアプリケーション部分の実装としてLambda関数を指定できるように統合されています。例えばApiGatewayと連携しAPIサーバを構築する、S3と連携し多機能なオブジェクトストレージを実現する、SNSやSQSと連携しPub/Subシステムを構築するといった具合です。
 
-Lambda関数には、様々なサービスからのイベントは処理する業務ロジックが実装されます。
+Lambda関数には、様々なサービスからのイベントを処理する業務ロジックが実装されます。
 ```typescript
 // file: my-handler.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResultV2 } from "aws-lambda";

@@ -49,11 +49,13 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
 }
 ```
 上記の関数は、ApiGatewayのリクエストハンドラをイメージしています。
-ハンドラでは、入力値の検証・ログ出力・エラーハンドリングなどの実装は、異なるリクエストパスに対するハンドラにおいても同様の実装が必要になります。もっと言うと、連携するサービスがSNS/SQS/S3などと違っても、必要な処理に大差はありません。
+ハンドラ内では、入力値の検証・ログ出力・エラーハンドリングも実装しています。リクエストパス毎にハンドラ関数を作成するなら、そのハンドラ内でも同様の実装が必要になります。もっと言うと、連携するサービスがSNS/SQS/S3などと違っても、必要な処理に大差はありません。
 
-この手の共通処理は、Webフレームワーク[^2]においては **ミドルウエア** が担う部分ですが、Lambdaハンドラが取り扱うのはHTTP Requestのbinaryデータではなく、サービス固有のイベントデータです。そもそもLabmdaハンドラ自体はクライアントとコネクションを張りませんので直接Webフレームワークを使うことは不適切です。
+この手の共通処理は、Webフレームワークにおいては**ミドルウエア**の役割とすることが多いです。
+しかしLambda関数の`event`オブジェクトを処理させるために直接Webフレームワークを使うことは不適切です。なぜなら、関数呼び出し時の`event`引数はHTTP Request風のイベントデータですが、もちろんHTTP/1.1のRequestバイナリストリームではありません。そもそもミドルウエア機能を使いたいがためにルーター機能やコネクション管理機能まで持ち込むのはやりすぎです。[^2]
 
-[^2]::代表的なWebFrameworkにおけるミドルウエア [express](https://expressjs.com/ja/guide/using-middleware.html), [next.js](https://nextjs.org/docs/advanced-features/middleware)など
+[^2]::代表的なWebFrameworkにおけるミドルウエア -- [express](https://expressjs.com/ja/guide/using-middleware.html), [next.js](https://nextjs.org/docs/advanced-features/middleware) など。
+Webフレームワークの使用は不適切と書いてはいるが、SSR目的でApiGatewayの統合プロキシ関数としてLambdaハンドラを作成し、[serverless-expres](https://github.com/vendia/serverless-express)を使う方法はある。
 
 我々が欲しいのは、AWS Lambdaのeventに適用可能な、Webフレームワークにあるミドルウエアの部分だけです。
 
@@ -64,16 +66,15 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
 ### インストール
 
-最もシンプルなケースでは
+最もシンプルなケースのインストール方法。
 ```bash
 npm install @middy/core
 ```
-ですが、ここで示すサンプルの場合は
+ここで示すサンプルの場合はこちら。
 ```bash
 npm install @middy/core @middy/http-error-handler @middy/validator @middy/input-output-logger
 npm install --save-dev json-schema-to-ts
 ```
-が必要です。
 
 ### ハンドラの実装例
 
@@ -108,18 +109,15 @@ export const handler = middy()
   .use(responseModelConverter())
   .handlelr(doMyBusinessLogic);
 ```
-実際にexportしている関数は `handler`関数で、これは`middy()`により`doMyBusinessLogic(request)`関数をWrapし、さらに
-
+実際にexportしている関数は `handler`関数で、これは`middy()`により`doMyBusinessLogic(request)`関数をWrapし、次のミドルウエアを適用したものです。
   - `httpErrorHandler` (公式Middleware)
   - `inputOutputLogger` (公式Middleware)
   - `validator` (公式Middleware)
   - `responseModelConverter` (カスタムmiddleware関数。[後述](#middlewareについて)します。)
 
-というミドルウエアを適用したものです。
-
 ### さらなる非機能的処理の共通化
 
-複数のApiGatewayハンドラを実装するならば、さらに共通化を進めて
+複数のApiGatewayハンドラを実装するならば、さらに共通化を進めて次のような形にまで直せます。
 ```typescript
 // file: my-handler.ts
 import { FromSchema } from "json-schema-to-ts";
@@ -131,17 +129,17 @@ async function doMyBusinessLogic(request: FromSchema<typeof eventSchema>): Promi
 }
 
 // これがexportされるhandler
-// middyfyは ./my-middy-utils.ts ファイルにおいて、middlewareのuseチェインをラップしている関数。
+// middyfyは ./my-middy-utils.ts ファイルにおいて、ミドルウエアのuseチェインをラップしている関数。
 // useのうち、可変になる部分だけ引数で渡している。
 export const handler = middyfy({eventSchema, handler: doMyBusinessLogic})
 ```
-という形にまで直せます。
 
-どうでしょう。ハンドラー固有の機能的な処理実装`doMyBusinessLogic`からは、ApiGateway固有のeventの匂いはほとんどなく、バリデーション済みのHTTPリクエスト、しかも必要なプロパティが型付けされている状態の引数を受け取ります。戻り値も業務的に必要な応答を表す `ResponseModel`などにモデル化し、カスタムミドルウエア`responseModelConverter`により `ResponseModel` => `APIGatewayProxyResultV2`に変換させるようにしています。
+いかがでしょうか。`doMyBusinessLogic(event)`からは、ApiGateway固有の匂いはほとんどありません。バリデーション済みのHTTPリクエスト、しかも必要なプロパティが型付けされている状態の引数を受け取ります。
+戻り値も業務的な応答を表す`ResponseModel`とし、`APIGatewayProxyResultV2`への変換は、カスタムミドルウエア`responseModelConverter`にさせています。
 
 ここまでできるので、Middyのトップページに"Focus on what matters"[^3]と書いてありますが、本当です。非機能的な処理をすべてミドルウエアに押し込んでいます。
 
-[^3]:: [Middyの特徴](https://middy.js.org/)を説明している中の1つ。"Focus on what matters: By pushing all the non-functional code to middlewares, you can be productive and focus on what matters the most: the business logic!"
+[^3]::[Middyの特徴](https://middy.js.org/)を説明している中の1つ。
 
 ### スキーマ定義からバリデーションと型安全なrequestオブジェクトを取得する
 
@@ -167,8 +165,8 @@ export default {
 この定義を使って次の効果を同時に得ます。
 - 実行時に`validator`ミドルウエアにより、`APIGatewayProxyEvent`型の入力イベントデータを指定したスキーマに対して検証（バリデーション）する。
   - 詳しくは[validator middleware](https://middy.js.org/docs/middlewares/validator)をご覧ください。
-- Typescriptのコンパイル時に、`doMyBusinessLogic`に渡す引数の型を`FromSchema<typeof eventSchema>`型とし、
-  実際にバリデーションを通った後に存在するプロパティのみに絞り、かつプロパティ値の型付けも行う。
+- Typescriptのコンパイル時に、`doMyBusinessLogic`に渡す引数の型を`FromSchema<typeof eventSchema>`型とする。
+  - 実際にバリデーションを通った後に存在するプロパティのみに絞り、かつプロパティ値の型付けも行う。
     ```typescript
     // file: my-handler.ts
     import { FromSchema } from "json-schema-to-ts";
@@ -179,18 +177,18 @@ export default {
       ...
     }
     ```
-    - この静的型付けは Middy の機能ではありませんが大変便利なのでここに記載しています。
-    - JSON Schemaからオブジェクトの型への変換に興味のある方は[`json-schema-to-typescript`](https://github.com/bcherny/json-schema-to-typescript#readme)をご覧ください。
+  - この静的型付けは Middy の機能ではありませんが大変便利なのでここに記載しています。
+  - JSON Schemaからオブジェクトの型への変換に興味のある方は[`json-schema-to-typescript`](https://github.com/bcherny/json-schema-to-typescript#readme)をご覧ください。
 
 
 
 
-# Middy の middleware について
+# Middy の ミドルウエアについて
 
 middlewareの適用順序ついては[公式ドキュメント](https://middy.js.org/docs/intro/how-it-works)がわかりやすいです。
 
 ここではカスタムミドルウエア`responseModelConverter`の実装例を通して、リクエスト・レスポンスに仲介する方法を見てみましょう。
-`responseModelConverter`は、`middy().handler(handler)`で渡したハンドラ関数の戻り値（`ResponseModel`型)をApiGatewayのレスポンス(`APIGatewayProxyResultV2`型）に変換するためのミドルウエアです。
+このミドルウエアは、ハンドラ関数の戻り値（`ResponseModel`型）を`APIGatewayProxyResultV2`型に変換する機能を持っています。
 ```typescript
 // file: my-middy-utils.ts
 
@@ -213,8 +211,7 @@ export function responseModelConverter(): middy.MiddlewareObj {
 
 ```
 `responseModelConverter()`は、`after`プロパティを定義したobjectを返しています。
-
-`after`では`handler`が正常終了した（レスポンスを返した）場合の処理を記述しており、（型のキャストもかねて）responseが`ResponseModel`インスタンスの場合は`APIGatewayProxyResultV2`に合うように変換しています。
+`after`では、responseが`ResponseModel`インスタンスの場合は`APIGatewayProxyResultV2`に合うように変換しています。
 
 このように、`middy.MiddlewareObj`を実装するオブジェクトを`middy().use(...)`に渡すことで、ミドルウエアを追加できます。詳しくは[カスタムミドルウエアの実装方法ドキュメント](https://middy.js.org/docs/writing-middlewares/intro)をご覧ください。
 
@@ -245,7 +242,7 @@ export function middyfy<S extends JSONSchema, H extends ValidatedRequestEventHan
 実装自体は`middy().use(...)`をラップしているだけなので単純なのですが、Typescriptの型定義が複雑になっています。
 これは、`eventSchema`の型と`handler`の型（引数の型）の整合性をコンパイル時にチェックさせるためですが、現実問題ここまで厳密でなくても問題ないと思います。
 
-また、共通化と言えども、多少ハンドラ実装側からmiddlewareの振る舞いをコントロールしたい場合もあると思います。こういう場合に`middyfy`のインターフェイスをどういう風に切るか、こういうところはチーム開発や複数プロダクトにまたがる仕組みを作る際には重要になります。
+また、共通化と言えども、多少ハンドラ実装側からミドルウエアの振る舞いをコントロールしたい場合もあると思います。こういう場合に`middyfy`のインターフェイスをどういう風に切るか、こういうところはチーム開発や複数プロダクトにまたがる仕組みを作る際には重要になります。
 例えば以下のように、オプションの渡し方を工夫することで振る舞いを柔軟に変更できます。
 ```typescript
 // エラーハンドリング失敗時のメッセージを可変にしたい場合

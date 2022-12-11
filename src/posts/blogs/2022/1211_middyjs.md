@@ -9,7 +9,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 今年偶然[^1]に見つけた [middyjs](https://middy.js.org/) が、「シンプルでパワフル・軽量で拡張性あり」というサイトの謳い文句どおり素晴らしかったのでご紹介します。
 
-[^1]::[serverlessのtypescript用テンプレート](https://www.serverless.com/framework/docs/providers/aws/cli-reference/create)の中で見つけました。 `npx serverless create --template aws-nodejs-typescript`で雛形を作成できます。
+[^1]:[serverlessのtypescript用テンプレート](https://www.serverless.com/framework/docs/providers/aws/cli-reference/create)の中で見つけました。 `npx serverless create --template aws-nodejs-typescript`で雛形を作成できます。
 
 [[TOC]]
 
@@ -54,7 +54,7 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
 この手の共通処理は、Webフレームワークにおいては**ミドルウエア**の役割とすることが多いです。
 しかしLambda関数の`event`オブジェクトを処理させるために直接Webフレームワークを使うことは不適切です。なぜなら、関数呼び出し時の`event`引数はHTTP Request風のイベントデータですが、もちろんHTTP/1.1のRequestバイナリストリームではありません。そもそもミドルウエア機能を使いたいがためにルーター機能やコネクション管理機能まで持ち込むのはやりすぎです。[^2]
 
-[^2]::代表的なWebFrameworkにおけるミドルウエア -- [express](https://expressjs.com/ja/guide/using-middleware.html), [next.js](https://nextjs.org/docs/advanced-features/middleware) など。
+[^2]:代表的なWebFrameworkにおけるミドルウエア -- [express](https://expressjs.com/ja/guide/using-middleware.html), [next.js](https://nextjs.org/docs/advanced-features/middleware) など。
 Webフレームワークの使用は不適切と書いてはいるが、SSR目的でApiGatewayの統合プロキシ関数としてLambdaハンドラを作成し、[serverless-expres](https://github.com/vendia/serverless-express)を使う方法はある。
 
 我々が欲しいのは、AWS Lambdaのeventに適用可能な、Webフレームワークにあるミドルウエアの部分だけです。
@@ -139,7 +139,7 @@ export const handler = middyfy({eventSchema, handler: doMyBusinessLogic})
 
 ここまでできるので、Middyのトップページに"Focus on what matters"[^3]と書いてありますが、本当です。非機能的な処理をすべてミドルウエアに押し込んでいます。
 
-[^3]::[Middyの特徴](https://middy.js.org/)を説明している中の1つ。
+[^3]:[Middyの特徴](https://middy.js.org/)を説明している中の1つ。
 
 ### スキーマ定義からバリデーションと型安全なrequestオブジェクトを取得する
 

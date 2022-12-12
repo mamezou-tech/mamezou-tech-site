@@ -1,5 +1,5 @@
 ---
-title: Wasmer 3.0 の WASM →各プラットフォーム用バイナリ生成機能を試す
+title: Wasmer 3.0 の WASM からの各プラットフォーム用バイナリ生成機能を試す
 author: masahiro-kondo
 date: 2022-12-13
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
@@ -42,7 +42,7 @@ installing: /Users/masahiro-kondo/.wasmer
 [GitHub - wasmerio/wasmer-install: Wasmer Binary Installer https://wasmer.io/](https://github.com/wasmerio/wasmer-install)
 :::
 
-## WASMパッケージの直接実行(wasmer run)
+## WASM パッケージの直接実行(wasmer run)
 [3月の記事](/blogs/2022/03/21/wasmer/#wapm-の利用)では WASM のパッケージを `wapm install` コマンドでローカルにインストールしてから `wapm run` で実行していましたが、3.0 からはインストールステップをスキップして `wasmer run` で直接実行できるようになりました[^1]。
 
 [^1]: ローカルにパッケージがインストールされていない場合、初回実行時に自動でインストールされます。

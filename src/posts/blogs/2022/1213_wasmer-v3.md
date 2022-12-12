@@ -6,7 +6,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 tags: [wasmer, WASM, advent2022]
 ---
 
-これは、[豆蔵デベロッパーサイト2022アドベントカレンダー](https://github.com/mamezou-tech/mamezou-tech-site/issues/383)第13日目の記事です。
+これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第13日目の記事です。
 
 3月の記事「[スタンドアローンおよび言語組み込みの WebAssembly ランタイム Wasmer](/blogs/2022/03/21/wasmer/)」で、WASI 対応の WASM ランタイム Wasmer について紹介しました。
 

@@ -250,7 +250,7 @@ export function middyfy<S extends JSONSchema, H extends ValidatedRequestEventHan
 export function middyfy<S extends JSONSchema, H extends ValidatedRequestEventHandler<S>>(
   opt : { handler: H; eventSchema?: S; unhandledErrorMessage?: string; }
 ): middy.MiddyfiedHandler {
-  const {eventSchema, handler, unhandledErrorMessage, skipValidate} = opt;
+  const {eventSchema, handler, unhandledErrorMessage} = opt;
   const m = middy()
     .use(httpErrorHandler({ fallbackMessage: unhandledErrorMessage }))
     .use(inputOutputLogger());

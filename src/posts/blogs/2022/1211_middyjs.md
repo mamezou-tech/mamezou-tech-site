@@ -82,7 +82,7 @@ Middyを使うと、上記ハンドラの実装は次のようになります。
 
 ```typescript
 // file: my-handler.ts
-import { ResponseModel } from "./my-busuness";
+import { ResponseModel } from "./my-business";
 import { responseModelConverter } from "./my-middy-utils";
 import eventSchema from "./my-event-schema";
 import { FromSchema } from "json-schema-to-ts";
@@ -143,9 +143,9 @@ export const handler = middyfy({eventSchema, handler: doMyBusinessLogic})
 
 ### スキーマ定義からバリデーションと型安全なrequestオブジェクトを取得する
 
-`./my-event-schema`ファイルには、JSON-Schema objectを(定数として)返すように実装します。
+`./my-event-schema.ts`ファイルには、JSON-Schema objectを(定数として)返すように実装します。
 ```typescript
-// file: my-event-schema
+// file: my-event-schema.ts
 
 export default {
   type: "object",

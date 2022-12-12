@@ -246,7 +246,7 @@ PAS-C01、170分、65問。
 - Skill Builderに日本語化されているコンテンツがある
 	- [SAP on AWS (Technical) (Japanese) (日本語字幕版)](https://explore.skillbuilder.aws/learn/course/12875/sap-on-aws-technical-japanese-ri-ben-yu-zi-mu-ban)
 
-## その他に訳だった本
+## その他に役立った本
 
 これまでは各試験対策として使用した本を紹介しましたが、他に役に立った本を紹介します。
 

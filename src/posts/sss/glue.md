@@ -1,5 +1,5 @@
 ---
-title: AWS Glueを社内システムに導入しようとしてハマったことと対応
+title: AWS Glueを社内システムに導入しようとして躓いたことと対応
 author: masafumi-kondo
 date: 2022-12-16
 

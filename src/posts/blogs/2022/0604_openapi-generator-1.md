@@ -18,7 +18,10 @@ REST API の仕様を記述する [OpenAPI Specification](https://swagger.io/spe
 ### [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
 
 ドメイン駆動設計 (DDD - Domain-driven design) の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
+
 認証認可等の横断的関心事は、ドメインロジックを実装する Spring Boot を使ったアプリケーション本体には組み込まず、サイドカーで処理をする多層アーキテクチャ (Multi-Tier Architecture) について説明します。
+
+参考: 「[ドメイン駆動設計と「コントロールプレーン」、「データプレーン」](https://s-edword.hatenablog.com/entry/2022/12/09/020834)」
 
 ### [第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用](/blogs/2022/06/17/openapi-generator-3/)
 
@@ -318,3 +321,7 @@ gradle bootRun
 この記事では、OpenAPI Generator を使用して Spring Boot のサーバーアプリケーションが容易に作成できることを説明しました。
 
 [次回](/blogs/2022/06/09/openapi-generator-2/)以降の記事で、ここで作成したサンプルをさらに深掘りして説明します。
+
+## 参考
+
+- [リアクティブシステムとドメイン駆動設計の学習コンテンツ](https://s-edword.hatenablog.com/entry/2022/12/06/212621)

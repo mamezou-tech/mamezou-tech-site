@@ -159,3 +159,7 @@ camel.component.paho.broker-url=tcp://localhost:1883
 [Apache Camel](https://camel.apache.org/) は日本ではあまりメジャーでないように感じていますが、多くのエンタープライズ統合パターン (EIPs) をサポートし、MQTT 以外にも非常に多くの[コンポーネントのリスト](https://camel.apache.org/components/3.17.x/index.html)があります。
 
 記事では Spring Boot との統合を説明しました。他では [Quarkus](https://quarkus.io/) を拡張する [Camel Quarkus](https://camel.apache.org/camel-quarkus/2.9.x/) もあります。
+
+## 参考
+
+- [Azure IoT HubのMQTT(s)](https://s-edword.hatenablog.com/entry/2016/08/23/140633)

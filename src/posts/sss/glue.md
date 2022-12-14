@@ -2,25 +2,19 @@
 title: AWS Glueを社内システムに導入しようとして躓いたことと対応
 author: masafumi-kondo
 date: 2022-12-16
-
+tags: [advent2022]
+adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
-
-先日社内システム(Sales Support System 以下SSS)にAWS Glueを導入しようとしたところ躓いたため、    
-生じた問題点と対応に関して紹介いたします。  
-結論から申し上げますと今回根本原因が不明であったため暫定対応を取ったという話になっております。    
+これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第16日目の記事です。
+先日社内システム(Sales Support System 以下SSS)にAWS Glueを導入しようとしたところ躓いたため、生じた問題点と対応に関して紹介いたします。結論から申し上げますと今回根本原因が不明であったため暫定対応を取ったという話になっております。    
 
 ## アーキテクチャについて  
 &nbsp;  
 ![アーキテクチャ](/img/sss/glue_for_analisis.png "アーキテクチャ図")  
-<div>図. アーキテクチャ</div>
+図. アーキテクチャ
 &nbsp;
 &nbsp;
-
-今回、SSSで保持している案件に関する情報からAWS外部の分析ツールにて分析し、  
-プロジェクトの実績を確認、今後の見通しの予測に用いるためGlue + Athena の環境を構築しました。　　
-こちらの図は当初の想定です。  
-GlueのJobとCrawlerは定期的にプライベートサブネット内のauroraにアクセスしデータの収集を行います。  
-DBへの接続設定に関してはGlue Connector内からSecrets Managerを参照する形としました。  
+今回、SSSで保持している案件に関する情報からAWS外部の分析ツールにて分析し、プロジェクトの実績を確認、今後の見通しの予測に用いるためGlue + Athena の環境を構築しました。こちらの図は当初の想定です。GlueのJobとCrawlerは定期的にプライベートサブネット内のauroraにアクセスしデータの収集を行います。DBへの接続設定に関してはGlue Connector内からSecrets Managerを参照する形としました。  
 
 ### Glue Jobの設定に関して  
 今回は以下のような形で構築しました  
@@ -33,25 +27,22 @@ DBへの接続設定に関してはGlue Connector内からSecrets Managerを参�
 
 &nbsp;
 ![Glue job イメージ](/img/sss/glue_job_image.png "Glue Job イメージ")  
-<div>図. Glue Jobのイメージ</div>
+図. Glue Jobのイメージ
 &nbsp;
 &nbsp;
-
-こちらはJobのおおよそのイメージとなります。
-実際にはデータ加工がある程度複雑となったためPythonでScriptを手書きしています。  
+こちらはJobのおおよそのイメージとなります。 実際にはデータ加工がある程度複雑となったためPythonでScriptを手書きしています。  
 
 ## 発生した問題について  
 構築を完了し、Jobを実行したところ以下のようなエラーが実行画面に表示されました。    
 
 &nbsp;
 ![Glue job 実行時エラー](/img/sss/glue_jobs_run_error.png "Glue job 実行時エラー")
-<div>図. Glue Jobの実行画面</div>
+図. Glue Jobの実行画面
 &nbsp;
+&nbsp;
+このエラーだけでは何がなんだか分からないのでエラーログを見てみます。
 &nbsp;
 
-このエラーだけでは何がなんだか分からないのでエラーログを見てみます。  
-
-&nbsp;
 ```log
 1668406098287,"22/11/14 06:08:18 ERROR ProcessLauncher: Error from Python:Traceback (most recent call last):
   File ""/tmp/for-developer-site-dummy.py"", line 33, in <module>
@@ -91,47 +82,29 @@ py4j.protocol.Py4JJavaError: An error occurred while calling o89.getCatalogSourc
 "
 ```
 &nbsp;
-
-JDBCConf周りでエラーが出ていることが分かります。
-この事から何かしらの理由でGlueからDBの接続設定が取得できないのではと推測しました。  
+JDBCConf周りでエラーが出ていることが分かります。 この事から何かしらの理由でGlueからDBの接続設定が取得できないのではと推測しました。  
 
 ## 確認と試した点
 
 ### DB接続設定の内容確認
 ![Glue Connectors](/img/sss/glue_jobs_run_error.png "Glue Connectors")
-<div>図. Glue Connectorsの設定画面</div>
+図. Glue Connectorsの設定画面
 &nbsp;
 &nbsp;
-
-初歩的なミスを疑い、Secrets Managerの選択間違いを疑いましたが  
-こちらは間違いなくDB用の項目を選択していました。  
-JDBC URLも間違い無いものです。  
+初歩的なミスを疑い、Secrets Managerの選択間違いを疑いましたがこちらは間違いなくDB用の項目を選択していました。JDBC URLも間違い無いものです。  
 (Amazon AuroraでpostgresのDBを選択するとJDBC URLがmysqlとなるのは何故だろう...)  
-
-また、Glue Connectorsの接続テスト及びCrawlerの手動実行においてもDBへアクセスできることを確認しました。    
-状況としてはDBの接続設定は正しく、Crawlerは動くがJobからは動かない事になります。    
-この辺りGlueのアーキテクチャを正しく理解できていないのですが、    
-CrawlerとJobの動く場所がそれぞれ異なるように感じます。  
+また、Glue Connectorsの接続テスト及びCrawlerの手動実行においてもDBへアクセスできることを確認しました。状況としてはDBの接続設定は正しく、Crawlerは動くがJobからは動かない事になります。この辺りGlueのアーキテクチャを正しく理解できていないのですが、CrawlerとJobの動く場所がそれぞれ異なるように感じます。  
 
 ### Secrets Manager用のVPCエンドポイント設定追加  
-これはJobがCrawlerと別の場所で動きSecrets Managerにアクセスできないのではという推測の元に行ったことですが、  
-結果としては解決には至りませんでした。
-今回はGlue Connectionに設定しているのと同じくDB用サブネットの値を設定しましたが、
-ただ現状Jobが動く場所が不明であるため、エンドポイントに設定するサブネットの値が間違っている可能性があります。   
+これはJobがCrawlerと別の場所で動きSecrets Managerにアクセスできないのではという推測の元に行ったことですが、結果としては解決には至りませんでした。今回はGlue Connectionに設定しているのと同じくDB用サブネットの値を設定しましたが、ただ現状Jobが動く場所が不明であるため、エンドポイントに設定するサブネットの値が間違っている可能性があります。   
 
 ### Glue用ロールのポリシー変更
-当初Glue用のポリシーとしてかなり絞られた権限設定を行っていたのですが、    
-AdministratorAccess 権限を用いても変化が無かったため、    
-権限関連の問題ではないと考えます。  
+当初Glue用のポリシーとしてかなり絞られた権限設定を行っていたのですが、AdministratorAccess 権限を用いても変化が無かったため、権限関連の問題ではないと考えます。  
 
 ## 暫定解決策
-再度設定項目の見直しと変更を行っていたところ、  
-GlueのConnectorにてSecrets Managerを使わずユーザ名とパスワードを直書きしたところJobが正常に動作する事を確認しました。  
-根本的な対応方法は不明なままですが一旦DBへの認証情報は手打ちする形で本機能のリリースとなりました。    
+再度設定項目の見直しと変更を行っていたところ、GlueのConnectorにてSecrets Managerを使わずユーザ名とパスワードを直書きしたところJobが正常に動作する事を確認しました。根本的な対応方法は不明なままですが一旦DBへの認証情報は手打ちする形で本機能のリリースとなりました。    
 
 ## まとめ 
-今回、初めてGlueを触り躓いた箇所を記載させていただきました。  
-Glueのサンプルはそれなりに存在するのですが今回のようにプライベートサブネット内のDBが起点となるケースが少なく、    
-Glueやその周辺サービスへの理解の大切さが身にしみました。
+今回、初めてGlueを触り躓いた箇所を記載させていただきました。Glueのサンプルはそれなりに存在するのですが今回のようにプライベートサブネット内のDBが起点となるケースが少なく、Glueやその周辺サービスへの理解の大切さが身にしみました。
 
 

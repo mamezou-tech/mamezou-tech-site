@@ -1,4 +1,4 @@
-name: daily-slack-notifier
+name: twitter-notifier
 
 on:
   schedule:

@@ -22,7 +22,7 @@ async function search(
 ): Promise<SearchResult[]> {
   const result = await twitterClient.tweets.tweetsRecentSearch({
     query: `${query} ${retweet ? "is:quote" : "-is:retweet"} -from:MamezouDev`,
-    start_time: start.startOf("day").toISO({ suppressMilliseconds: true }),
+    start_time: start.toISO({ suppressMilliseconds: true }),
     end_time: end.toISO({ suppressMilliseconds: true }),
     sort_order: "recency",
     max_results: max,

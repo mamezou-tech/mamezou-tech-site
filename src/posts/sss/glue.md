@@ -22,6 +22,31 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 &nbsp;
 こちらが今回構築したものとなります。GlueからENIを経由しS3に接続する必要があるためプライベートサブネットに対するVPCエンドポイントの設定をしています。 ENIはGlue Job実行時にDPU数分作成され処理完了後破棄されます。  
 
+## 構築の流れ
+Glueを構築するにあたり以下の設定を行いました。  
+- Connection設定
+  - auroraへの接続設定を登録します
+- Crawler設定
+  - データのメタデータを収集しデータカタログとして作成するために必要になります。
+- Job設定
+  - 実際にETL処理を定義する場所になります。
+
+### Connection設定に関して
+&nbsp;
+![glue connection](/img/sss/glue_connection.png "glue connection")
+図. connection 設定
+&nbsp;
+&nbsp;
+こちらでは接続先DBのURL、認証情報、Glueが動作するSubnetや適用するSecurity groupsを登録します。認証情報に関してはSecrets Managerを参照させることもできますが、今回ハードコーディングとしました。また、こちらで登録するSecurity groupsには[こちら](https://docs.aws.amazon.com/ja_jp/glue/latest/dg/setup-vpc-for-glue-access.html)の手順通り、自己参照ルールを追加しています。接続のテストに関しては記載現在レガシーページ上からのみ可能なようです。   
+
+### Crawlerの設定に関して
+&nbsp;
+![glue crawler](/img/sss/glue_crawler.png "glue crawler")
+図. connection 設定
+&nbsp;
+&nbsp;
+こちらでは手順に従い利用するconnection設定の選択、参照するスキーマ、クロールのためのスケジュール設定等を行っています。
+
 ### Glue Job部分の設定に関して  
 今回は以下のような形で構築しています。    
 
@@ -33,14 +58,14 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 | Job Bookmark | Disable                                          |
 | source code  | Python 3                                         |
 
-今回、データ数や加工する内容からDPU数は2としました。Job Bookmarkは有効にすることでInputデータ(今回だとaurora部分)に発生したデータ差分のみをOutput側(今回だとS3部分)へ連携する事が可能となるのですが、今回は無効としました。理由としてはJob BookmarkはInsert分のみを差分と伝達するのですが、私達がInputとしたいデータはDeleteやUpdateが発生します。そうした更新差分をBookmarkでは扱えなかったため無効とし、都度全件洗替する形としました。S3上既存データ削除に関してはPython Script上で削除処理をさせるように記述しました。
+pysparkを用いてETL処理を実装しています。Glue Jobでは簡易的なETL処理であればGUIで作成可能でそこからpysparkのscriptへの変換が可能です。今回それをベースとし処理の詳細をコーディングしたためpysparkを用いています。また、データ数がさほど多くないことからDPU数は2としました。Job Bookmarkは有効にすることでInputデータ(今回だとaurora部分)に発生したデータ差分のみをOutput側(今回だとS3部分)へ連携する事が可能となるのですが、今回は無効としました。理由としてはJob BookmarkはInsert分のみを差分と伝達するのですが、私達がInputとしたいデータはDeleteやUpdateが発生します。そうした更新差分をBookmarkでは扱えなかったため無効とし、都度全件洗替する形としました。S3上既存データ削除に関してはPython Script上で削除処理をさせるように記述しました。
 
 &nbsp;
 ![Glue job イメージ](/img/sss/glue_job_image.png "Glue Job イメージ")  
 図. Glue Jobのイメージ
 &nbsp;
 &nbsp;
-こちらはJobのおおよそのイメージとなります。 GlueのETL処理は簡易的なものであればAWS Glueの画面上からGUIで作成可能であり、そこからPythonのScriptへ変換が可能です。今回、上記のようにデータのInputからOutputまでの雛形を作成し、PythonScriptへ変換後、Custom Transformの場所で細かいデータ変換部分を作り込んでいます。作成したScriptはGlue Jobの画面からスケジュール設定可能なため夜間帯にS3に連携されるようにしています。
+こちらはGlue JobのGUI上で作成した段階のイメージです。実際にはここからscriptへ変換、Custom Transformの場所で細かいデータ変換部分を作り込んでいます。作成したScriptはGlue Jobの画面からスケジュール設定可能なため夜間帯にS3に連携されるようにしています。
 &nbsp;
 ![Glue job Schedule](/img/sss/glue_job_scedule.png "Glue job Schedule")  
 図. Schedule設定画面

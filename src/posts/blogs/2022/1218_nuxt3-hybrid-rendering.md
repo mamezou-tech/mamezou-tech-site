@@ -9,7 +9,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第18日目の記事です。
 
-今年春にRCバージョンとなったNuxt3は、先月ようやく安定バージョンとなりました。
+今年春にRCバージョンとなったNuxt3は、先月(2022-11-16)ようやく安定バージョンとなりました。
 
 - [Announcing Nuxt 3.0 stable](https://nuxt.com/v3)
 
@@ -133,7 +133,7 @@ npm run build
 一方で、SPA/SSRとしたルートではHTMLは生成されていません。これらはクライアントサイドまたはサーバーサイドでリアルタイムにレンダリングされるためです。
 
 ローカル環境でこれを実行してみます。
-Node.jsでサーバーリソースを実行して確認できます。クライアントリソースもここから取得されますので、個別にデプロイする必要はありません。
+Node.jsでサーバーリソースを実行して確認できます。静的リソースもここから取得されますので、個別にデプロイする必要はありません。
 
 ```shell
 node .output/server/index.mjs

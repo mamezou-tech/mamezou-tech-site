@@ -20,7 +20,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.OS }}-node-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.OS }}-node-${{ hashFiles('twitter/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
@@ -30,7 +30,7 @@ jobs:
           cd ${GITHUB_WORKSPACE}/twitter
           npm ci
 
-      - name: Send daily report to Slack
+      - name: Send twitter search report to Slack
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}

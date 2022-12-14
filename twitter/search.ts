@@ -13,7 +13,7 @@ export type SearchResult = {
   text: string;
   url: string;
 };
-const keywords = ["developer.mamezou-tech.com", "豆蔵デベロッパーサイト", "twitter.com/MamezouDev"];
+const keywords = ["developer.mamezou-tech.com", "豆蔵デベロッパー", "twitter.com/MamezouDev"];
 
 async function search(
   query: string,
@@ -27,11 +27,12 @@ async function search(
     sort_order: "recency",
     max_results: max,
   });
-  // (result.data || []).forEach((a) => {
-  //   console.log(a);
-  // });
+  if (process.env.DEBUG_ENABLED) {
+    (result.data || []).forEach((a) => {
+      console.log(a);
+    });
+  }
   return (result.data || [])
-    .filter(({ text }: { text: string }) => !text.startsWith("RT @MamezouDev:"))
     .map(({ id, text }: { id: string; text: string }) => ({
       id,
       text,
@@ -43,7 +44,7 @@ async function run() {
   const results = await Promise.all(
     keywords.map((k) => search(k, false, 10)).concat(keywords.map((k) => search(k, true, 10)))
   );
-  const tweets = Array.from(results).flat();
+  const tweets = results.flat();
   const uniqueIds = Array.from(new Set(tweets.map((item) => item.id)));
   const uniqueTweets: SearchResult[] = uniqueIds.map((id) => tweets.find((t) => t.id === id)!);
   if (!uniqueTweets.length) {

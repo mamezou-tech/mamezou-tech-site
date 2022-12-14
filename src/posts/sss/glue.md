@@ -6,34 +6,59 @@ tags: [advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第16日目の記事です。
-先日社内システム(Sales Support System 以下SSS)にAWS Glueを導入しようとしたところ躓いたため、生じた問題点と対応に関して紹介いたします。結論から申し上げますと今回根本原因が不明であったため暫定対応を取ったという話になっております。    
+先日社内システム(Sales Support System 以下SSS)にAWS Glueを導入したため、その経緯と構築の流れを紹介させて頂きます。    
+
+## 背景 
+それまでSSSでは案件に関する情報をcsvとして出力する機能があり、これはプロジェクトの実績を確認、今後の見通しの予測に用いるための分析用途として使われておりましたが、それはユーザが人の手でExcelで行っているものでした。この度、分析部分を既製の外部ツールに移譲し、そこへのデータ連携を自動化するためにGlue + Athenaを用いる事になりました。この組み合わせを選定した理由としては既にSSSがAWS上にデプロイされており、そこへのETL処理であれば同じAWS Serviceであれば比較的容易に行えることが予想された事と、SSS開発メンバーの中でGlueとAthenaを触れたことがいる者がいなかったため、その習熟を狙ったためです。
 
 ## アーキテクチャについて  
 &nbsp;  
 ![アーキテクチャ](/img/sss/glue_for_analisis.png "アーキテクチャ図")  
 図. アーキテクチャ
 &nbsp;
+![glue](/img/sss/glue.png "glue")
+図. auroraからGlue、S3への連携する部分のイメージ
 &nbsp;
-今回、SSSで保持している案件に関する情報からAWS外部の分析ツールにて分析し、プロジェクトの実績を確認、今後の見通しの予測に用いるためGlue + Athena の環境を構築しました。こちらの図は当初の想定です。GlueのJobとCrawlerは定期的にプライベートサブネット内のauroraにアクセスしデータの収集を行います。DBへの接続設定に関してはGlue Connector内からSecrets Managerを参照する形としました。  
+&nbsp;
+こちらが今回構築したものとなります。GlueからENIを経由しS3に接続する必要があるためプライベートサブネットに対するVPCエンドポイントの設定をしています。 ENIはGlue Job実行時にDPU数分作成され処理完了後破棄されます。  
 
-### Glue Jobの設定に関して  
-今回は以下のような形で構築しました  
+### Glue Job部分の設定に関して  
+今回は以下のような形で構築しています。    
 
-| 項目          | 詳細                                               |
-|-------------|--------------------------------------------------|
-| Type        | Spark                                            |
-| version     | Glue 3.0 - Supports spark 3.1, Scala 2, Python 3 |
-| source code | Python 3                                         |
+| 項目           | 詳細                                               |
+|--------------|--------------------------------------------------|
+| Type         | Spark                                            |
+| version      | Glue 3.0 - Supports spark 3.1, Scala 2, Python 3 |
+| DPU数         | 2                                                |
+| Job Bookmark | Disable                                          |
+| source code  | Python 3                                         |
+
+今回、データ数や加工する内容からDPU数は2としました。Job Bookmarkは有効にすることでInputデータ(今回だとaurora部分)に発生したデータ差分のみをOutput側(今回だとS3部分)へ連携する事が可能となるのですが、今回は無効としました。理由としてはJob BookmarkはInsert分のみを差分と伝達するのですが、私達がInputとしたいデータはDeleteやUpdateが発生します。そうした更新差分をBookmarkでは扱えなかったため無効とし、都度全件洗替する形としました。S3上既存データ削除に関してはPython Script上で削除処理をさせるように記述しました。
 
 &nbsp;
 ![Glue job イメージ](/img/sss/glue_job_image.png "Glue Job イメージ")  
 図. Glue Jobのイメージ
 &nbsp;
 &nbsp;
-こちらはJobのおおよそのイメージとなります。 実際にはデータ加工がある程度複雑となったためPythonでScriptを手書きしています。  
+こちらはJobのおおよそのイメージとなります。 GlueのETL処理は簡易的なものであればAWS Glueの画面上からGUIで作成可能であり、そこからPythonのScriptへ変換が可能です。今回、上記のようにデータのInputからOutputまでの雛形を作成し、PythonScriptへ変換後、Custom Transformの場所で細かいデータ変換部分を作り込んでいます。作成したScriptはGlue Jobの画面からスケジュール設定可能なため夜間帯にS3に連携されるようにしています。
+&nbsp;
+![Glue job Schedule](/img/sss/glue_job_scedule.png "Glue job Schedule")  
+図. Schedule設定画面
+&nbsp;
+&nbsp;
+:::alert
+Glue Jobの編集に関してGUI → Python Scriptへは変換可能ですが、Python Script → GUIへは変換不可能なため注意ください。
+:::
 
-## 発生した問題について  
-構築を完了し、Jobを実行したところ以下のようなエラーが実行画面に表示されました。    
+## 実行結果の確認
+Jobの実行結果はGlue JobのRunsタブから確認可能です。  
+![Glue job Runs](/img/sss/glue_job_run_after.png "Glue job Runs")  
+&nbsp;
+&nbsp;
+実行結果や実行時間、各種ログへの遷移が可能です。  
+
+## 構築過程で発生した問題についてご紹介  
+今回、構築を進める過程でDBへの接続情報をSecrets Managerから取得しようとした所、Jobの実行時に以下のようなエラーが表示されました。    
 
 &nbsp;
 ![Glue job 実行時エラー](/img/sss/glue_jobs_run_error.png "Glue job 実行時エラー")
@@ -82,21 +107,12 @@ py4j.protocol.Py4JJavaError: An error occurred while calling o89.getCatalogSourc
 "
 ```
 &nbsp;
-JDBCConf周りでエラーが出ていることが分かります。 この事から何かしらの理由でGlueからDBの接続設定が取得できないのではと推測しました。  
+JDBCConf周りでエラーが出ていることが分かります。 この事から何かしらの理由でGlueからDBの接続設定が取得できないのではと推測しました。ただ、DB接続設定は正しいものをしていしており、Glue Crawler単体では動作できます。   
 
-## 確認と試した点
-
-### DB接続設定の内容確認
-![Glue Connectors](/img/sss/glue_jobs_run_error.png "Glue Connectors")
-図. Glue Connectorsの設定画面
-&nbsp;
-&nbsp;
-初歩的なミスを疑い、Secrets Managerの選択間違いを疑いましたがこちらは間違いなくDB用の項目を選択していました。JDBC URLも間違い無いものです。  
-(Amazon AuroraでpostgresのDBを選択するとJDBC URLがmysqlとなるのは何故だろう...)  
-また、Glue Connectorsの接続テスト及びCrawlerの手動実行においてもDBへアクセスできることを確認しました。状況としてはDBの接続設定は正しく、Crawlerは動くがJobからは動かない事になります。この辺りGlueのアーキテクチャを正しく理解できていないのですが、CrawlerとJobの動く場所がそれぞれ異なるように感じます。  
+## 確認した点    
 
 ### Secrets Manager用のVPCエンドポイント設定追加  
-これはJobがCrawlerと別の場所で動きSecrets Managerにアクセスできないのではという推測の元に行ったことですが、結果としては解決には至りませんでした。今回はGlue Connectionに設定しているのと同じくDB用サブネットの値を設定しましたが、ただ現状Jobが動く場所が不明であるため、エンドポイントに設定するサブネットの値が間違っている可能性があります。   
+これはJobがCrawlerと別の場所で動きSecrets Managerにアクセスできないのではという推測の元に行ったことですが、結果としては解決には至りませんでした。今回はGlue Connectionに設定しているのと同じくDB用サブネットの値を設定しましたが、ただ現状Jobが動く場所が不明であるため、エンドポイントに設定するサブネットの値が間違っている可能性があります。この辺り今回の活動で詰めきれなかったので追っていきたい箇所です。 
 
 ### Glue用ロールのポリシー変更
 当初Glue用のポリシーとしてかなり絞られた権限設定を行っていたのですが、AdministratorAccess 権限を用いても変化が無かったため、権限関連の問題ではないと考えます。  
@@ -105,6 +121,6 @@ JDBCConf周りでエラーが出ていることが分かります。 この事�
 再度設定項目の見直しと変更を行っていたところ、GlueのConnectorにてSecrets Managerを使わずユーザ名とパスワードを直書きしたところJobが正常に動作する事を確認しました。根本的な対応方法は不明なままですが一旦DBへの認証情報は手打ちする形で本機能のリリースとなりました。    
 
 ## まとめ 
-今回、初めてGlueを触り躓いた箇所を記載させていただきました。Glueのサンプルはそれなりに存在するのですが今回のようにプライベートサブネット内のDBが起点となるケースが少なく、Glueやその周辺サービスへの理解の大切さが身にしみました。
+今回、初めてGlueを導入するに至った背景と動作までの流れ、躓いた点などを紹介させていただきました。Glueのサンプルはそれなりに存在するのですが今回のようにプライベートサブネット内のDBが起点となるケースが少なく、Glueやその周辺サービスへの理解の大切さが身にしみました。
 
 

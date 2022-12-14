@@ -3,7 +3,7 @@ title: Nuxt3のハイブリッドレンダリングと新しく導入されたIS
 author: noboru-kudo
 date: 2022-12-18
 templateEngineOverride: md
-tags: [nuxt, vue, advent2022]
+tags: [nuxt, vue, netlify, advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 
@@ -23,23 +23,24 @@ Nuxt3の目玉機能の1つとしてハイブリッドレンダリングがあ�
 Nuxt2までは、アプリケーション全体で1つのレンダリングモード(SPA/SSG/SSR)しか指定できませんでした。
 一方で、Reactフレームワークとして人気のNext.jsでは、ページ単位で柔軟にレンダリング方法を切り替えできました。
 
-Nuxt3でようやくこれに追い付いた形です。各ページ(ルート)の特性に応じて柔軟なレンダリングモードやキャッシュルールを選択できるようになりました。
-さらに、環境は限定されますがキャッシュを使用したオンデマンドなレンダリング(ISG/ISR)もサポートしています。
+Nuxt3でようやくこれに追い付いた形です。各ルートに対してレンダリングモードやキャッシュルールを選択できるようになりました。
+さらに、環境は限定されますがNext.jsのISG/ISRようにキャッシュを使用したオンデマンドビルドもサポートしています。
 
-先行するNext.jsは、任意のタイミングでキャッシュをクリアするOn-Demand ISRとさらに進化を続けていますが、Nuxt3でもNext.jsに近いことができるようになったと言えると思います。
-
-まだ現時点では、Nuxtのハイブリッドレンダリングのドキュメントは充実しているとは言えない状況ですが、今回は暗中模索で試してみました。
+現時点ではNuxtのハイブリッドレンダリングのドキュメントは充実しているとは言えない状況ですが、今回は暗中模索で試してみました。
 
 :::alert
 現時点でハイブリッドレンダリングはExperimental(実験的)バージョンです。
 利用する際は、Nuxt、またはハイブリッドレンダリングを実装しているNitroの最新ドキュメントを参照してください。
+
+- [Nuxt Doc - Route Rules](https://nuxt.com/docs/guide/concepts/rendering#route-rules)
+- [Nitro Doc - routeRules](https://nitro.unjs.io/config#routerules)
 :::
 
 [[TOC]]
 
 ## ハイブリッドレンダリングを試す
 
-ISG/ISRに入る前に、ローカル環境で従来のレンダリングモードでハイブリッドレンダリングを体感してみます。
+まずはローカル環境で従来のレンダリングモードを使ってハイブリッドレンダリングを体感してみます。
 
 NuxtではNext.jsのように各ページ内でレンダリング方法(getStaticProps / getServerSideProps等)を指定するのではなく、設定ファイル(nuxt.config.ts)で各ルートにルールを指定する宣言的スタイルです。
 この辺りは両フレームワークの思想の違いからくるもので、好みはあるかと思いますが、個人的にはNuxtの方が設定ファイルを見れば全て把握できていいなと感じました。
@@ -65,12 +66,15 @@ export default defineNuxtConfig({
 | /foo      | サーバーサイドレンダリング(SSR)   |
 | /bar/home | 静的ホスティング(SSG)        |
 
+なお、SSR/SSGのルールで指定している`ssr: true`はデフォルト値ですので、省略可能です。
+
 :::info
-現時点(v3.0.0)では、プリレンダリングで`/bar/**`のようなワイルドカード指定は機能せず、フォールバックされてデフォルトのサーバーサイドレンダリングになりました。
+現時点(v3.0.0)では、SSG(`prerender: true`)している部分で`/bar/**`のようなワイルドカードを使ったパス指定は機能しませんでした。
+フォールバックされてデフォルトのサーバーサイドレンダリングになりました。
 :::
 
-ハイブリッドレンダリングは、内部的にはNuxt3のサーバーエンジンである[Nitro](https://github.com/unjs/nitro)によって実現しています。 
-これに対応するNitroのインターフェースを見ると、以下のようになっています。
+ここで指定しているルールは、Nuxt3のサーバーエンジンである[Nitro](https://github.com/unjs/nitro)のものです。 
+対応するNitroのインターフェースを確認してみると、以下のようになっていました。
 
 ```typescript
 interface NitroRouteConfig {
@@ -89,19 +93,18 @@ interface NitroRouteConfig {
 
 キャッシュ関連の`cache`/`swr`/`static`については後述しますが、レンダリングモードだけでなく、HTTPヘッダ(`headers`)やリダイレクト(`redirect`)、CORS要否(`cors`)等もルート単位で指定できることが分かります。
 
-ハイブリッドレンダリング利用時は、`npm run build`(`nuxt build`)でビルドします。
+ハイブリッドレンダリング利用時は、`npm run build`でビルドします。
 
 ```shell
 npm run build
-
 ```
 
-.output/public配下にプリレンダリング結果(SSG)を含むクライアントサイドリソース、.output/server配下にSSR用のサーバーサイドアプリが生成されます。
+`.output/public`ディレクトリに静的リソース、`.output/server`ディレクトリにサーバーリソースが生成されます。
 
 ```
 .output/
 ├── nitro.json
-├── public
+├── public <- 静的リソース
 │ ├── _nuxt
 │ │ ├── asyncData.7c640ab7.js
 │ │ ├── composables.f627409f.js
@@ -113,9 +116,9 @@ npm run build
 │ └── bar
 │     └── home
 │         └── index.html <- SSG静的リソース(パス:/bar/home)
-└── server
+└── server <- サーバーリソース
     ├── chunks
-    │ ├── app <- サーバーサイドアプリ
+    │ ├── app
     │ │ ├── _nuxt
     │ │ ├── client.manifest.mjs
     │ │ ├── client.manifest.mjs.map
@@ -123,16 +126,20 @@ npm run build
     │ │ ├── server.mjs.map
     │ │ ├── styles.mjs
     │ │ └── styles.mjs.map
-    │ ├── (以下省略)
+    │ ├── (以降省略)
 ```
 
-ローカル環境(node-server)ではサーバーサイドレンダリングモードと同じように、生成されたNitroアプリを実行して確認できます。
+`.output/public`配下に先程SSG(プリレンダリング)で指定した`/bar/home`の静的HTMLが生成されています。
+一方で、SPA/SSRとしたルートではHTMLは生成されていません。これらはクライアントサイドまたはサーバーサイドでリアルタイムにレンダリングされるためです。
+
+ローカル環境でこれを実行してみます。
+Node.jsでサーバーリソースを実行して確認できます。クライアントリソースもここから取得されますので、個別にデプロイする必要はありません。
 
 ```shell
 node .output/server/index.mjs
 ```
 
-実行結果は省略しますが、期待通りルートごとに指定したレンダリングが実行されていました。
+実行結果の掲載は省略しますが、期待通りルートごとに指定したレンダリングが実行されていました。
 
 :::info
 ここで使用しているNuxt3のレンダリングモードの詳細は、以下記事にまとめていますので興味のある方はご参照ください。
@@ -142,15 +149,24 @@ node .output/server/index.mjs
 ここでは、上記で紹介しているレンダリングモードがルートごとに適用されているイメージとなります。
 :::
 
-## Nuxt版のISG/ISR
+## Nuxt版のISG/ISR登場
 
-SSR/SSGは相反するメリット・デメリットがあり、ビルド時間やデータ鮮度の面ではSSRが優位ですが、パフォーマンス面ではSSGが望ましいです。
-このような背景から、Next.jsでISG(Incremental Static Generation) / ISR(Incremental Static Regeneration)が登場してきます。
+SSR/SSGは相反するメリット・デメリットがあり、最新コンテンツ提供の側面ではSSRが優位ですが、パフォーマンス面ではSSGが望ましいです。
+また、数万ページにおよぶ大規模サイトともなると、SSGで事前にビルドするのはかなりの時間やリソースが必要になってきます。
 
-ISG/ISRは、オンデマンドにビルドすることで最新コンテンツ提供とビルド時間を短縮する一方で、CDNの共有キャッシュでパフォーマンスも最適化しようとする欲張り(?)な試みです。
+このような中でNext.jsは、両者のメリットをそのまま活かすISG(Incremental Static Generation) / ISR(Incremental Static Regeneration)をサポートしています[^1]。
 
-そしてNuxtでも現状はNetlify/Vercelのみですが、バージョン3でようやくISG/ISRをサポートするようになりました。
-ここではNetlifyを使ってISG/ISRを試してみます。事前にNetlifyのアカウントを作成しておく必要があります（未検証ですがフリープランでも問題ないかと思います）。
+[^1]: Next.jsは任意のタイミングでキャッシュクリアするOn-Demand ISRとさらに進化を続けています。
+
+ISG/ISRは、ユーザーリクエストに応じてビルドして最新コンテンツ提供を可能とする一方で、その結果をキャッシュしてパフォーマンスも最適化しようとする欲張り(?)な試みです。
+
+そしてNuxtでも現時点ではNetlify/Vercelのみですが、Nuxt3でISG/ISRをサポートするようになりました。
+なお、ISG/ISRという言葉はNext.js由来のもの(だと思います。違っていたらすみません)ですが、こちらの用語が一般的に流通しているように感じますので、便宜的に使わせていただきます[^2]。
+
+[^2]: この辺りの名前は、フレームワークやベンダーによってかなり違って混乱します。他にもGatsbyのDSRやNetlifyのDPRとか。。
+
+ここでは[Netlify](https://www.netlify.com/)を使ってISG/ISRを試してみます。
+事前にNetlifyのアカウントを作成しておく必要があります。Proプランで試しましたが、フリープランでも問題ないかと思います(未検証ですが)。
 
 ## Netlifyサイトを準備する
 
@@ -191,9 +207,9 @@ command = "npm run build"
 
 ISGは、初回アクセス時にサーバーサイドでレンダリングを実行し、CDNにその結果をキャッシュします。
 2回目以降のアクセスではCDNから配信されるため、都度レンダリングするSSRよりもパフォーマンス面で優位です。
-ユーザーからのリクエストに応じて徐々にページが生成されるため、インクリメンタルなSSGといった感じです[^1]。
+ユーザーからのリクエストに応じて徐々にページが生成されるため、インクリメンタルなSSGといった感じです[^3]。
 
-[^1]: Next.jsでは、getStaticPathsでfallbackをtrueまたはblockingを指定することでISGを実現します。
+[^3]: Next.jsでは、getStaticPathsでfallbackをtrueまたはblockingを指定することでISGを実現します。
 
 Nuxt+NetlifyのISGは以下のイメージになります。
 
@@ -214,11 +230,10 @@ sequenceDiagram
     end
 ```
 
-SSG等の静的ホスティングと同じような動きのため、この流れは分かりやすいと思います。
-ただし、ISGは事前にページを生成するのではなく、オンデマンドに生成してキャッシュします。
-Netlifyでは、再デプロイでキャッシュがクリアされますので、再デプロイするまではキャッシュは残ります。
+SSGとは異なり、ISGは事前にページを生成するのではなく、オンデマンドに生成してキャッシュします。
+このため、大規模サイトになるとビルド時間は劇的に短縮されるはずです。
 
-では、このNuxt3版のISGを試してみます。
+では、このNuxtのISGを試してみます。
 まず`pages`配下に、以下のページ(`isg.vue`)を用意しました。
 
 ```html
@@ -252,21 +267,21 @@ export default defineNuxtConfig({
 });
 ```
 
-指定するルールに`{ static: true }`と指定しました。この指定は`{ cache: { static: true } }`のショートカットです。
-また、Nitroのプリセットに`netlify`を指定し、Nuxtのビルド時にNetlifyへのデプロイモードを指定します[^2]。
+指定するルールを`{ static: true }`としました。この指定は`{ cache: { static: true } }`のショートカットです。
+また、Nitroのプリセットに`netlify`を指定します。この指定をするとNitroはNetlify用のビルド成果物を出力します[^4]。
 
-[^2]: Netlify CLIでは、明示的に指定しなくてもNetlifyのプリセットでビルドされるようです。
+[^4]: Netlify CLI経由でビルドすると、明示的にプリセット指定がなくても、Netlifyプリセットとしてビルドされるようです。
 
-Netlifyへデプロイする前に、ビルド成果物を確認してみます。
+実際にNetlifyへデプロイする前に、ビルド結果を確認してみます。
 
 ```shell
 npm run build
 ```
 
-`.netlify`/`dist`ディレクトリが作成され、そこにビルド結果が配置されます。
+ビルドが成功すると、`.netlify`/`dist`ディレクトリが作成されます。
 
 `.netlify`ディレクトリがNetlify側で実行されるサーバーサイドコードです。
-ここでは、エントリーポイントの`.netlify/functions-internal/server/chunks/nitro/netlify.mjs`を確認します。
+エントリーポイントの`.netlify/functions-internal/server/chunks/nitro/netlify.mjs`を確認します。
 以下、実際に生成されたソースコードにコメントを追記したものです。
 
 ```javascript
@@ -288,11 +303,11 @@ const handler = async function handler2(event, context) {
 ```
 
 これは、[Netlify Functions](https://docs.netlify.com/functions/overview/)のコードです(実態はAWS Lambdaのイベントハンドラですが)。
-実装を見ると、ルートルール(`routeRules`)でISG(`static`)またはISR(`swr`)(後述)が指定されている場合に、通常のNetlify Functionsではなく、[On-demand Builders](https://docs.netlify.com/configure-builds/on-demand-builders/)が使われていることが分かります。
-ここではISG(`static`)を指定していますので、再デプロイ時までは永続的にキャッシュされます。
+実装を見ると、ルートルール(`routeRules`)で`static`または`swr`(後述)が指定されている場合に、通常のNetlify Functionsではなく、[On-demand Builders](https://docs.netlify.com/configure-builds/on-demand-builders/)が使われていることが分かります。
+ここでは`static`を指定していますので、On-Demand BuilderにTTL(有効期限)は設定されません。つまり、再デプロイ時までキャッシュは残ります。
 
 もう1つの`dist`ディレクトリも確認します。
-こちらはNetlifyに限らずNuxtの静的リソースが出力されますが、よく見ると`_redirects`というファイルも作成されています。
+こちらはNuxtの静的リソースが出力されますが、見慣れない`_redirects`というファイルも作成されています。
 これは、Netlifyのリダイレクト設定ファイルです。
 
 - [Netlify Docs - Redirects and rewrites](https://docs.netlify.com/routing/redirects/)
@@ -304,18 +319,17 @@ const handler = async function handler2(event, context) {
 /*      /.netlify/functions/server 200
 ```
 
-nuxt.config.tsに指定した内容に従って、Netlify向けの適切なリダイレクトルールが作成されています。
-ここでは、以下のようなルールが設定されているようです。
+nuxt.config.tsに指定した内容に従って設定されていることが分かります。
 
-- `/isg`にリクエストがくると、Netlify On-Demand BuilderつまりISGの方にリダイレクト
-- それ以外(`/*`)は通常のNetlify FunctionsつまりデフォルトのSSRの方にリダイレクト
+- `/isg`へのリエクストはOn-Demand Builderにリダイレクト
+- それ以外(`/*`)は通常のNetlify FunctionsつまりデフォルトのSSRの方にリダイレクト(キャッシュしない)
 
-ビルド結果の確認ができましたので、先程作成したNetlifyのサイトにデプロイしてみます。
+ビルド結果の確認ができましたので、実際にNetlifyのサイトにデプロイしてみます。
 
 ```shell
 netlify deploy --build --site nuxt3-ondemand-example --prod
 ```
-以下抜粋したコンソール出力です。
+以下コンソール出力の抜粋です。
 ```
 ────────────────────────────────────────────────────────────────
   Netlify Build                                                 
@@ -369,21 +383,16 @@ Website URL:       https://nuxt3-ondemand-example.netlify.app
 
 静的リソースだけでなく、Netlify Functions(On-Demand Builder)もデプロイされていることが確認できます。
 
-後は、表示されたURLよりブラウザからアクセスするだけです。`/isg`パスにアクセスすると先程の時刻表示ページが表示されます。
+後は、表示されたURLよりブラウザからアクセスするだけです。`/isg`パスにアクセスすると先程のサンプルページが表示されます。
 
-貧素なページのためスクリーンショットは載せませんが、最初にアクセスしたタイミングで時刻が表示され、それ以降は何度アクセスしても同じページ(CDNキャッシュ)が表示されます。
-Netlifyの管理コンソールからFunctionsのログを見ても、初回のみレンダリングのログが出力され、2回目以降は出力されることはありません。
+貧素なページのためスクリーンショットは載せませんが、リロードを繰り返すと、最初にアクセスしたタイミングの時刻が表示され、それ以降は同じページ(CDNキャッシュ)が表示されます。
+Netlifyの管理コンソールからFunctionsのログを見ても、初回レンダリング時のログのみが出力され、2回目以降は出力されることはありません。
 
 ![Netlify Functions Console - ISG](https://i.gyazo.com/7fa3ed47763f0ce0d65035be6616625c.png)
 
-このようにISGは、その特性から以下のようなサイトに有効です。
-
-- 大量のページがあるサイトでSSGだとビルド時間が現実的でない
-- ページは新規追加のみで、更新がほとんど発生しない(最新化する場合はキャッシュクリアが必要)
-
 ## ISR(Incremental Static Regeneration)
 
-ISGは、コンテンツに更新がある場合にキャッシュクリアが必要になるというデメリットがあります。
+ISGは、コンテンツ更新が発生した場合に問題が生じます。Netlifyの場合は再デプロイしなければキャッシュはクリアされず古いページが表示され続けます。
 これを緩和するのがISRです。
 
 ISRは、基本的なスタイルはISGと同様のオンデマンドなビルドですが、キャッシュにTTL(有効期限)を設けます。
@@ -411,7 +420,7 @@ sequenceDiagram
     end
     client->>edge: ページリクエスト(TTL経過後)
     edge-->>client: 結果返却(キャッシュ)
-    edge->>app: オリジンリクエスト 
+    edge->>app: オリジンリクエスト<br />(バックグラウンド)
     app->>app: 再レンダリング
     app-->>edge: 結果返却(TTL付きキャッシュ) 
     loop TTL内
@@ -421,7 +430,8 @@ sequenceDiagram
 ```
 
 ISGとは異なり、TTLが経過すると再レンダリング(Regeneration)が実行されますので、コンテンツは最新となります。
-ただし、前述の通りTTL経過後の初回アクセスに限りキャッシュから旧バージョン(Stale)の結果が返却されます。
+ただし、前述の通りTTL経過後しても、最初の1人はキャッシュから旧バージョン(Stale)のコンテンツが返却されます。
+ISRはこの緩い整合性を許容できる場合に有効なキャッシュ戦略です。
 
 では、NuxtのISRを試してみます。
 ソースコードは、ISGのときとほぼ同じです(`isr.vue`)。
@@ -454,7 +464,7 @@ export default defineNuxtConfig({
 });
 ```
 
-ISGのときは`static`を指定しましたが、ISRの場合は`swr`として、値にTTLを指定します。この設定は`{ cache: { swr: 300 } }`と指定した場合と同義です(ショートカット)。
+ISRの場合は、ルーティングルールとして`{ swr: 300 }`としました。この設定は`{ cache: { swr: 300 } }`と指定した場合と同義です(ショートカット)。
 今回はTTLに5分(300秒)を指定しています。
 
 ビルド結果はISGと同じですので省略しますが、ISRの場合の動きを確認しておきます。
@@ -467,24 +477,23 @@ const swrHandler = routeRules.cache.swr ? (event2, context2) => lambda(event2, c
 return builder(swrHandler)(event, context);
 ```
 
-ISR(`swr`)の場合では、レスポンスと合わせてnuxt.config.tsで指定したTTL(デフォルト60秒)を返却しています。
+`swrHandler`変数初期化のタイミングで、`swr`の場合はlambda実行時のレスポンスに対してTTL(デフォルト60秒)を指定しているのが分かります。
 
-デプロイ手順はISGと同じです。
+これをNetlifyに再デプロイします。
 
 ```shell
 netlify deploy --build --site nuxt3-ondemand-example --prod
 ```
 
-これでブラウザから`/isr`にアクセスします。
+デプロイ完了後は、ブラウザから`/isr`にアクセスして確認します。
 ここでもスクリーンショットは省略しますが、継続的にリロードを繰り返すと、以下の動きになっていることが分かります。
 
 1. 初回アクセス: この時点のサーバー時刻表示。初回レンダリング＋キャッシュ
 2. 初回アクセスから5分間: 前回キャッシュ済み結果
-3. 5分経過後: キャッシュ済み結果。バックグラウンドでは再レンダリング＋再キャッシュ
-4. 再アクセス: 3で更新されたサーバー時刻表示。再キャッシュ結果
+3. 5分経過後: キャッシュ済み結果。(見た目は分からないけど)バックグラウンドでは再レンダリング＋再キャッシュ
+4. 再アクセス: 3で更新されたサーバー時刻表示。つまり再キャッシュ結果。
 
-初回を除いて、CDNつまりエッジ環境からコンテンツを取得しています。
-NetlifyのコンソールよりFunctionsのログを確認すると、サーバーサイドの動きを確認できます。
+再度NetlifyのコンソールよりFunctionsのログを確認してみます。
 
 ![Netlify Functions Console - ISR](https://i.gyazo.com/d6df224e1915a993b6a187c590cad6dd.png)
 
@@ -494,6 +503,6 @@ NetlifyのコンソールよりFunctionsのログを確認すると、サーバ�
 今回はNuxt3で導入されたハイブリッドレンダリングとISG/ISRを使ったレンダリングモードをご紹介しました。
 同一アプリケーション内でも、各ルート(ページ)に適したレンダリング方法がありますので、細かく指定できるようになったハイブリッドレンダリングはNuxtの大きな進歩だと思います。
 
-また、新しいレンダリングモードとしてISG/ISRをNetlifyを使って動作の確認もしました。
-特にISRはメリットしかないと思われがちが、1度は古い結果を返すことや（厳密に最新ではない）、デバッグが難しいなど全てのケースで適しているとも思えません。
-ここでも従来のレンダリングモードと同様に、ページの特性に応じて適材適所で使用していく必要があるのは変わらないと思います。
+また、Nuxt3でサポートされたISG/ISRをNetlifyを使って動作確認しました。
+特にISRはメリットしかないと思われがちですが、1度は古い結果を返すことや、デバッグが難しいなど全てのケースに適しているとも思えません。
+ここでも従来のレンダリングモードと同様に、ページの特性に応じて適材適所で使用していく必要があるのは変わりません。

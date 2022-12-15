@@ -74,7 +74,7 @@ Jobの実行結果はGlue JobのRunsタブから確認可能です。Runsの画�
 今回、構築を進める過程でDBへの接続情報をSecrets Managerから取得しようとした所、Jobの実行時に以下のようなエラーが表示されました。    
 
 ![Glue job 実行時エラー](/img/sss/glue_jobs_run_error.png "Glue job 実行時エラー")
-このエラーだけでは何がなんだか分からないのでエラーログを見てみるとJDBCConf周りでエラーが出ていることが分かります。 この事から何かしらの理由でGlueからDBの接続設定が取得できないのではと推測しました。ただ、DB接続設定は正しいものを指定しており、Glue Crawler単体では動作できます。
+このエラーだけでは何がなんだか分からないのでエラーログを見てみるとJDBCConf周りでエラーが出ていることが分かります(javaのログが混ざっているのはpysparkの裏でjava版のsparkが動いているためです)。 この事から何かしらの理由でGlueからDBの接続設定が取得できないのではと推測しました。ただ、DB接続設定は正しいものを指定しており、Glue Crawler単体では動作できます。
 
 ```log
 1668406098287,"22/11/14 06:08:18 ERROR ProcessLauncher: Error from Python:Traceback (most recent call last):

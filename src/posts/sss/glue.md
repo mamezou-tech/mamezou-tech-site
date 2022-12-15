@@ -48,7 +48,12 @@ Glueを構築するにあたり以下の設定を行いました。
 | Job Bookmark | Disable                                          |
 | source code  | Python 3                                         |
 
-pysparkを用いてETL処理を実装しています。Glue Jobでは簡易的なETL処理であればGUIで作成可能でそこからpysparkのscriptへの変換が可能です。今回それをベースとし処理の詳細をコーディングしたためpysparkを用いています。また、データ数がさほど多くないことからDPU数は2としました。Job Bookmarkは有効にすることでInputデータ(今回だとaurora部分)に発生したデータ差分のみをOutput側(今回だとS3部分)へ連携する事が可能となるのですが、今回は無効としました。理由としてはJob BookmarkはInsert分のみを差分と伝達するのですが、私達がInputとしたいデータはDeleteやUpdateが発生します。そうした更新差分をBookmarkでは扱えなかったため無効とし、都度全件洗替する形としました。S3上既存データ削除に関してはPython Script上で削除処理をさせるように記述しました。
+pysparkを用いてETL処理を実装しています。Glue Jobでは簡易的なETL処理であればGUIで作成可能でそこからpysparkのscriptへの変換が可能です。今回それをベースとし処理の詳細をコーディングしたためpysparkを用いています。  
+
+また、データ数がさほど多くないことからDPU数は2とし、Job Bookmarkは有効にすることでInputデータ(今回だとaurora部分)に発生したデータ差分のみをOutput側(今回だとS3部分)へ連携する事が可能となるのですが、今回は無効としました。    
+
+Job Bookmarkを無効とした理由としてはJob BookmarkはInsert分のみを差分と伝達するのですが、私達がInputとしたいデータはDeleteやUpdateが発生します。そうした更新差分をBookmarkでは扱えなかったため無効とし、都度全件洗替する形としました。  
+S3上既存データ削除に関してはPython Script上で削除処理をさせるように記述しました。
 
 ![Glue job イメージ](/img/sss/glue_job_image.png "Glue Job イメージ")  
 図. Glue Jobのイメージ

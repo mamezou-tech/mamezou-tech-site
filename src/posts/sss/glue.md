@@ -1,5 +1,5 @@
 ---
-title: AWS Glueを社内システムに導入しようとして躓いたことと対応
+title: AWS Glueを社内システムに導入した話
 author: masafumi-kondo
 date: 2022-12-16
 tags: [advent2022]
@@ -9,14 +9,14 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 先日社内システム(Sales Support System 以下SSS)にAWS Glueを導入したため、その経緯と構築の流れを紹介させて頂きます。    
 
 ## 背景 
-それまでSSSでは案件に関する情報をcsvとして出力する機能があり、これはプロジェクトの実績を確認、今後の見通しの予測に用いるための分析用途として使われておりましたが、それはユーザが人の手でExcelで行っているものでした。この度、分析部分を既製の外部ツールに移譲し、そこへのデータ連携を自動化するためにGlue + Athenaを用いる事になりました。この組み合わせを選定した理由としては既にSSSがAWS上にデプロイされており、そこへのETL処理であれば同じAWS Serviceであれば比較的容易に行えることが予想された事と、SSS開発メンバーの中でGlueとAthenaを触れたことがいる者がいなかったため、その習熟を狙ったためです。
+それまでSSSでは案件に関する情報をcsvとして出力する機能があり、これはプロジェクトの実績を確認、今後の見通しの予測に用いるための分析用途として使われておりましたが、それはユーザが人の手でExcelで行っているものでした。この度、分析部分を外部ツールであるTableauへ移譲し、そこへのデータ連携を自動化するためにGlue + Athenaを用いる事になりました。この組み合わせを選定した理由としては既にSSSがAWS上にデプロイされており、そこへのETL処理であれば同じAWS Serviceであれば比較的容易に行えることが予想された事と、SSS開発メンバーの中でGlueとAthenaを触れたことがいる者がいなかったため、その習熟を狙ったためです。
 
 ## アーキテクチャについて
 以下はアーキテクチャとGlue、aurora、S3の連携部分のイメージ図です。
 ![アーキテクチャ](/img/sss/glue_for_analisis.png "アーキテクチャ図")  
 
-![glue](/img/sss/glue.png "glue")
 こちらが今回構築したものとなります。GlueからENIを経由しS3に接続する必要があるためプライベートサブネットに対するVPCエンドポイントの設定をしています。 ENIはGlue Job実行時にDPU数分作成され処理完了後破棄されます。  
+![glue](/img/sss/glue.png "glue")
 
 ## 構築の流れ
 Glueを構築するにあたり以下の設定を行いました。  
@@ -28,14 +28,12 @@ Glueを構築するにあたり以下の設定を行いました。
   - 実際にETL処理を定義する場所になります。
 
 ### Connection設定に関して
-以下はGlueのConnectionの設定画面です。
+以下はGlueのConnectionの設定画面です。こちらでは接続先DBのURL、認証情報、Glueが動作するSubnetや適用するSecurity groupsを登録します。認証情報に関してはSecrets Managerを参照させることもできますが、今回ハードコーディングとしました。また、こちらで登録するSecurity groupsには[こちら](https://docs.aws.amazon.com/ja_jp/glue/latest/dg/setup-vpc-for-glue-access.html)の手順通り、自己参照ルールを追加しています。接続のテストに関しては記載現在レガシーページ上からのみ可能なようです。   
 ![glue connection](/img/sss/glue_connection.png "glue connection")
-こちらでは接続先DBのURL、認証情報、Glueが動作するSubnetや適用するSecurity groupsを登録します。認証情報に関してはSecrets Managerを参照させることもできますが、今回ハードコーディングとしました。また、こちらで登録するSecurity groupsには[こちら](https://docs.aws.amazon.com/ja_jp/glue/latest/dg/setup-vpc-for-glue-access.html)の手順通り、自己参照ルールを追加しています。接続のテストに関しては記載現在レガシーページ上からのみ可能なようです。   
 
 ### Crawlerの設定に関して
-以下はGlueのCrawlerの設定画面です。
+以下はGlueのCrawlerの設定画面です。こちらでは手順に従い利用するconnection設定の選択、参照するスキーマ、クロールのためのスケジュール設定等を行っています。
 ![glue crawler](/img/sss/glue_crawler.png "glue crawler")
-こちらでは手順に従い利用するconnection設定の選択、参照するスキーマ、クロールのためのスケジュール設定等を行っています。
 
 ### Glue Job部分の設定に関して  
 今回は以下のような形で構築しています。    
@@ -63,9 +61,8 @@ Glue Jobの編集に関してGUI → Python Scriptへは変換可能ですが、
 :::
 
 ## 実行結果の確認
-Jobの実行結果はGlue JobのRunsタブから確認可能です。  
+Jobの実行結果はGlue JobのRunsタブから確認可能です。Runsの画面からは実行結果や実行時間、各種ログへの遷移が可能です。  
 ![Glue job Runs](/img/sss/glue_job_run_after.png "Glue job Runs")
-実行結果や実行時間、各種ログへの遷移が可能です。  
 
 ## 構築過程で発生した問題についてご紹介  
 今回、構築を進める過程でDBへの接続情報をSecrets Managerから取得しようとした所、Jobの実行時に以下のようなエラーが表示されました。    

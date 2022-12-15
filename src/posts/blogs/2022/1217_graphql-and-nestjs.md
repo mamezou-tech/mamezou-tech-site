@@ -1,5 +1,5 @@
 ---
-title: GaphQL+NestJSで
+title: Jestの時間固定のテストで困った話
 author: issei-fujimoto
 date: 2022-12-17
 tags: [advent2022, NestJS, TypeScript, Jest]

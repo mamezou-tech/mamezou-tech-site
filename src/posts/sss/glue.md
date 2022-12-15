@@ -11,15 +11,11 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 ## 背景 
 それまでSSSでは案件に関する情報をcsvとして出力する機能があり、これはプロジェクトの実績を確認、今後の見通しの予測に用いるための分析用途として使われておりましたが、それはユーザが人の手でExcelで行っているものでした。この度、分析部分を既製の外部ツールに移譲し、そこへのデータ連携を自動化するためにGlue + Athenaを用いる事になりました。この組み合わせを選定した理由としては既にSSSがAWS上にデプロイされており、そこへのETL処理であれば同じAWS Serviceであれば比較的容易に行えることが予想された事と、SSS開発メンバーの中でGlueとAthenaを触れたことがいる者がいなかったため、その習熟を狙ったためです。
 
-## アーキテクチャについて  
-&nbsp;  
+## アーキテクチャについて
 ![アーキテクチャ](/img/sss/glue_for_analisis.png "アーキテクチャ図")  
 図. アーキテクチャ
-&nbsp;
 ![glue](/img/sss/glue.png "glue")
 図. auroraからGlue、S3への連携する部分のイメージ
-&nbsp;
-&nbsp;
 こちらが今回構築したものとなります。GlueからENIを経由しS3に接続する必要があるためプライベートサブネットに対するVPCエンドポイントの設定をしています。 ENIはGlue Job実行時にDPU数分作成され処理完了後破棄されます。  
 
 ## 構築の流れ
@@ -32,19 +28,13 @@ Glueを構築するにあたり以下の設定を行いました。
   - 実際にETL処理を定義する場所になります。
 
 ### Connection設定に関して
-&nbsp;
 ![glue connection](/img/sss/glue_connection.png "glue connection")
 図. connection 設定
-&nbsp;
-&nbsp;
 こちらでは接続先DBのURL、認証情報、Glueが動作するSubnetや適用するSecurity groupsを登録します。認証情報に関してはSecrets Managerを参照させることもできますが、今回ハードコーディングとしました。また、こちらで登録するSecurity groupsには[こちら](https://docs.aws.amazon.com/ja_jp/glue/latest/dg/setup-vpc-for-glue-access.html)の手順通り、自己参照ルールを追加しています。接続のテストに関しては記載現在レガシーページ上からのみ可能なようです。   
 
 ### Crawlerの設定に関して
-&nbsp;
 ![glue crawler](/img/sss/glue_crawler.png "glue crawler")
-図. connection 設定
-&nbsp;
-&nbsp;
+図. Crawler 設定
 こちらでは手順に従い利用するconnection設定の選択、参照するスキーマ、クロールのためのスケジュール設定等を行っています。
 
 ### Glue Job部分の設定に関して  
@@ -60,38 +50,26 @@ Glueを構築するにあたり以下の設定を行いました。
 
 pysparkを用いてETL処理を実装しています。Glue Jobでは簡易的なETL処理であればGUIで作成可能でそこからpysparkのscriptへの変換が可能です。今回それをベースとし処理の詳細をコーディングしたためpysparkを用いています。また、データ数がさほど多くないことからDPU数は2としました。Job Bookmarkは有効にすることでInputデータ(今回だとaurora部分)に発生したデータ差分のみをOutput側(今回だとS3部分)へ連携する事が可能となるのですが、今回は無効としました。理由としてはJob BookmarkはInsert分のみを差分と伝達するのですが、私達がInputとしたいデータはDeleteやUpdateが発生します。そうした更新差分をBookmarkでは扱えなかったため無効とし、都度全件洗替する形としました。S3上既存データ削除に関してはPython Script上で削除処理をさせるように記述しました。
 
-&nbsp;
 ![Glue job イメージ](/img/sss/glue_job_image.png "Glue Job イメージ")  
 図. Glue Jobのイメージ
-&nbsp;
-&nbsp;
 こちらはGlue JobのGUI上で作成した段階のイメージです。実際にはここからscriptへ変換、Custom Transformの場所で細かいデータ変換部分を作り込んでいます。作成したScriptはGlue Jobの画面からスケジュール設定可能なため夜間帯にS3に連携されるようにしています。
-&nbsp;
 ![Glue job Schedule](/img/sss/glue_job_scedule.png "Glue job Schedule")  
 図. Schedule設定画面
-&nbsp;
-&nbsp;
 :::alert
 Glue Jobの編集に関してGUI → Python Scriptへは変換可能ですが、Python Script → GUIへは変換不可能なため注意ください。
 :::
 
 ## 実行結果の確認
 Jobの実行結果はGlue JobのRunsタブから確認可能です。  
-![Glue job Runs](/img/sss/glue_job_run_after.png "Glue job Runs")  
-&nbsp;
-&nbsp;
+![Glue job Runs](/img/sss/glue_job_run_after.png "Glue job Runs")
 実行結果や実行時間、各種ログへの遷移が可能です。  
 
 ## 構築過程で発生した問題についてご紹介  
 今回、構築を進める過程でDBへの接続情報をSecrets Managerから取得しようとした所、Jobの実行時に以下のようなエラーが表示されました。    
 
-&nbsp;
 ![Glue job 実行時エラー](/img/sss/glue_jobs_run_error.png "Glue job 実行時エラー")
 図. Glue Jobの実行画面
-&nbsp;
-&nbsp;
 このエラーだけでは何がなんだか分からないのでエラーログを見てみます。
-&nbsp;
 
 ```log
 1668406098287,"22/11/14 06:08:18 ERROR ProcessLauncher: Error from Python:Traceback (most recent call last):
@@ -131,7 +109,6 @@ py4j.protocol.Py4JJavaError: An error occurred while calling o89.getCatalogSourc
 
 "
 ```
-&nbsp;
 JDBCConf周りでエラーが出ていることが分かります。 この事から何かしらの理由でGlueからDBの接続設定が取得できないのではと推測しました。ただ、DB接続設定は正しいものをしていしており、Glue Crawler単体では動作できます。   
 
 ## 確認した点    

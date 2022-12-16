@@ -2,7 +2,7 @@
 title: Jestの時間固定のテストで困った話
 author: issei-fujimoto
 date: 2022-12-17
-tags: [advent2022, NestJS, TypeScript, Jest]
+tags: [advent2022, TypeScript, Jest]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 
@@ -12,11 +12,9 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 初めまして、新卒で豆蔵に入社して4年目となる藤本と申します。
 いつか記事を書こう書こうと思いつつ時間だけが過ぎてしまっていましたが、お祭りだという事で便乗して初投稿させていただきます。
 
-内容としては、案件で扱ったGraphQL+NestJS(+TypeScript)のテストでハマった所の紹介をしようと思います。
-当時プロジェクトではNestJSを初めて扱うメンバーしかいなかったため、もっと良い方法はありそうですがこんな方法もアリだよねという事で覚書代わりに。
-テストにはJestを用いますので、GraphQLやNestJSというよりはJestについての記事かもしれませんが。。
+内容としては、Jestでテストを作成する際に時間固定をしたかったのですが、ミドルウェアが動かない問題が発生したため取った方法を紹介します。
 
-[NestJSのドキュメント](https://docs.nestjs.com/)や[Jestのドキュメント](https://jestjs.io/ja/docs/getting-started)も置いておきます。
+[Jestのドキュメント](https://jestjs.io/ja/docs/getting-started)も置いておきます。
 それではよろしくお願いします。
 
 ### Jestで時間固定のテストをしたい場合
@@ -24,57 +22,56 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 ```typescript
 // 時刻の文字列を持ったクラス
-export class Hoge {
-    dateString: string;
+type Hoge = {
+  dateString: string;
+};
+
+class HogeService {
+  private yyyyMMddHHmmss(date: Date): string {
+    const dateString = '';// dateを文字列にformatする処理
+    return dateString;
+  }
+
+  // 現在時刻を元にオブジェクトを作成する関数。このメソッドをテストしたい
+  getHoge() {
+    const hoge: Hoge = {
+      dateString: this.yyyyMMddHHmmss(new Date()),
+    };
+    return hoge;
+  }
 }
 
-// Hogeを扱うサービスのつもり
-export class HogeService {
-    function yyyyMMddHHmmss(date: Date): string {
-        const dateString = // dateを文字列にformatする処理
-        return dateString;
-    }
-    
-    function getHoge(): Hoge {
-        const hoge: Hoge = {
-            dateString: yyyyMMddHHmmss(new Date());
-        }
-        return hoge;
-    }
-}
 
-
-// 以下テストコード抜粋
-    it('hogeのテスト'. () => {
-        // テスト実行時の時間でresultが変化してしまい失敗する
-        const result = hogeService.hoge();
-        expect(result).toEqual('20221217150000');
-    });
+// 以下テストコード抜粋。hogeServiceはHogeServiceのインスタンス
+  it('hogeのテスト', () => {
+    const result = hogeService.getHoge();
+    // テスト実行時の時間でresultが変化してしまい失敗する
+    expect(result.dateString).toBe('20221217150000');
+  });
 ```
 
 テスト実行の度にnew Date()の値が変わるので、テスト時に時間を固定しないと困るというわけです。
-Dateのコンストラクタをモックしたりjestのタイマーを固定する方法は提供されていますが、上手くいかなかったり副作用で他の部分が実行できなかったりしたため、少々強引ですが次の方法を取りました。
+少々強引ですが次の方法を取りました。
 
 ```typescript
 // 引数にデフォルト値としてnew Date()を設定する
-function hoge(date: new Date()): Hoge {
+  getHoge(date: Date = new Date()) {
     const hoge: Hoge = {
-        dateString: yyyyMMddHHmmss(date);
-    }
+      dateString: this.yyyyMMddHHmmss(date),
+    };
     return hoge;
-}
+  }
 
 // 以下テストコード抜粋
-    it('hogeのテスト'. () => {
-        // 都合のいいDateを引数に入れてテストを行う
-        const date = new Date('2022/12/17 15:00:00')
-        const result = hogeService.hoge();
-        expect(result).toEqual('20221217150000');
-    });
+  it('hogeのテスト', () => {
+    // 都合のいいDateを引数に入れてテストを行う
+    const date = new Date('2022/12/17 15:00:00');
+    const result = hogeService.getHoge(date);
+    expect(result.dateString).toBe('20221217150000');
+  });
 ```
 
 Date型の引数にデフォルト値を設定することで、テストの際には固定した時間を引数に渡して使えるという具合です。
-[公式ドキュメントのタイマーモックの方法](https://jestjs.io/ja/docs/timer-mocks)はこちら。
 Jest提供の形ではなく使用法の安全も怪しいですが、テストしやすい形に実装するという事でここはひとつ。
 
 ### あとがき

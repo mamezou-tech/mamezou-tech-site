@@ -1,5 +1,5 @@
 ---
-title: Nuxt3のハイブリッドレンダリングと新しく導入されたISG/ISRを試してみる
+title: Nuxt3で導入されたハイブリッドレンダリングとNuxt版ISG/ISRを試してみる
 author: noboru-kudo
 date: 2022-12-18
 templateEngineOverride: md

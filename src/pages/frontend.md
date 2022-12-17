@@ -23,6 +23,9 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 - [Nuxt3入門(第8回) - useStateでコンポーネント間で状態を共有する](/nuxt/nuxt3-state-management/)
 - [Nuxt3入門(第9回) - Nuxt3アプリケーションをサーバーレス環境にデプロイする](/nuxt/nuxt3-serverless-deploy/)
 
+### ブログ
+- [Nuxt3で導入されたハイブリッドレンダリングとNuxt版ISG/ISRを試してみる](/blogs/2022/12/18/nuxt3-hybrid-rendering/)
+
 ## プリレンダリング / エッジ環境
 クライアントでの応答性が重要な Web アプリでは SPA(Single Page Application) が発展してきました。一方、コンテンツが重要なサイトでは事前ビルドした静的コンテンツによる MPA(Multi Page Application) が注目されています。コンテンツの配信先を CDN にしてホスト管理プロセスを無くす Jamstack なアーキテクチャも普及してきています。ここでは、プリレンダリングフレームワークや Netlify[^1] をはじめとするエッジの活用についてご紹介します。
 

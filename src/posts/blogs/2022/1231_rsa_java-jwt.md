@@ -1,5 +1,5 @@
 ---
-title: 続・Auth0 java-jwtを使った素のJWT認証 - 今度は公開鍵方式でやってみた
+title: 続・Auth0 java-jwtを使った素のJWT認証 - 公開鍵方式でやってみた
 author: toshio-ogiwara
 date: 2022-12-31
 tags: [Security, "認証/認可", java, advent2022]

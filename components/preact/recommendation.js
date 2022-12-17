@@ -1,7 +1,7 @@
-import htm from "htm";
-import { h, render as preactRender } from "preact";
-import { useEffect, useState } from "preact/hooks";
-import { styled, setup, keyframes } from "goober";
+import htm from 'htm';
+import { h, render as preactRender } from 'preact';
+import { useEffect, useState } from 'preact/hooks';
+import { styled, setup, keyframes } from 'goober';
 
 setup(h);
 const html = htm.bind(h);
@@ -15,7 +15,7 @@ const animation = keyframes`
     opacity: 1;
   }
 `;
-const StyledUl = styled("ul")`
+const StyledUl = styled('ul')`
   animation: ${animation} 1s forwards;
 `;
 
@@ -40,10 +40,11 @@ function Recommendation({ tags }) {
   };
   const prevPage = () => setCurrentPage(currentPage - 1);
   const nextPage = () => setCurrentPage(currentPage + 1);
+  const sendGa = (el) => window.gtag === 'function' && window.gtag('click_recommend', { title: el.target.text });
   useEffect(fetchArticles, []);
 
   if (!articles.length) {
-    return "";
+    return '';
   }
   return html`
     <hr class="link-separator"/>
@@ -54,7 +55,7 @@ function Recommendation({ tags }) {
     <${StyledUl} key=${currentPage}>
       ${articles
         .slice(currentPage * 10, currentPage * 10 + 10)
-        .map((article) => html` <li><a href="${article.url}">${article.title}</a></li>`)}
+        .map((article) => html` <li><a href="${article.url}" onClick=${sendGa}>${article.title}</a></li>`)}
     </${StyledUl}>
     <nav class="post__pagination">
       ${

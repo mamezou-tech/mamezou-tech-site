@@ -40,7 +40,7 @@ function Recommendation({ tags }) {
   };
   const prevPage = () => setCurrentPage(currentPage - 1);
   const nextPage = () => setCurrentPage(currentPage + 1);
-  const sendGa = (el) => window.gtag === 'function' && window.gtag('click_recommend', { title: el.target.text });
+  const sendGa = (el) => typeof window.gtag === 'function' && window.gtag('click_recommend', { title: el.target.text });
   useEffect(fetchArticles, []);
 
   if (!articles.length) {

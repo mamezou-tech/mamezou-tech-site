@@ -452,7 +452,7 @@ const {data: time} = useAsyncData(async () => new Date().toLocaleString('ja'))
 
 サーバーサイドで現在時刻を取得して表示します。
 
-ISRのの場合、nuxt.config.tsは以下のようになります。
+ISRの場合、nuxt.config.tsは以下のようになります。
 
 ```typescript
 export default defineNuxtConfig({

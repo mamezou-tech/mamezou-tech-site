@@ -3,6 +3,7 @@ title: S3でフォルダ管理する方法
 author: ryo-nakagaito
 date: 2022-12-23
 tags: [aws, s3, advent2022]
+adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第23日目の記事です。
 
@@ -217,7 +218,7 @@ S3の[APIリファレンス](https://docs.aws.amazon.com/AmazonS3/latest/API/API
 S3に保存したオブジェクトには、[タグ](https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/object-tagging.html)や[メタデータ](https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/UsingMetadata.html)という形で任意の情報を付加することができます。タグかメタデータにフォルダの情報を付加すれば、S3が持つ機能の中で完結させた形で、フォルダ管理の仕組みを実装できるということもアドバイスとしていただきました。
 
 # 最後に
-実装が完了しリリースも済んでしまった後ではありますが、振り返ってみると田中さんからご提示いただいた案3. か案4. の実装方式の方が仕組みとしてシンプルで分かりやすく、今後フォルダ名以外の情報（マスタデータを配信 / 削除する未来の日時、更新者の名前 等）を管理する必要が出てきた場合に対応できるという点で拡張性があって良いと思いました。<br>
+実装が完了しリリースも済んでしまった後ではありますが、振り返ってみると田中さんからご提示いただいた案3. か案4. の実装方式の方が仕組みとしてシンプルで分かりやすく、今後フォルダ名以外の情報（マスタデータを配信 / 削除する未来の日時、更新者の名前 等）を管理する必要が出てきた場合に対応できるという点  で拡張性があって良いと思いました。<br>
 
 
 色々な実装方式が考えられるかと思いますが、私が今回寄稿した内容がS3を利用したアプリ開発のヒントか何かになれば幸いです。また、更に良い方式など何かアイデアがあればご教示いただけますと大変助かります。<br>

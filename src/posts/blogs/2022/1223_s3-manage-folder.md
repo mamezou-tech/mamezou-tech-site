@@ -57,10 +57,10 @@ S3の[APIリファレンス](https://docs.aws.amazon.com/AmazonS3/latest/API/API
 
 まずは普通にファイルを保存する方法です。`Key`にフルパスを指定し、`body`に保存するファイルを指定します。
 
-```
->echo TEST > test.txt
+```powershell
+echo TEST > test.txt
 
->aws s3api put-object --bucket gaitobucket --key "folder001/test.txt" --body test.txt
+aws s3api put-object --bucket gaitobucket --key "folder001/test.txt" --body test.txt
 {
     "ETag": "\"9b1168b29272aeff17c058e4994a9526\""
 }
@@ -68,8 +68,8 @@ S3の[APIリファレンス](https://docs.aws.amazon.com/AmazonS3/latest/API/API
 
 `list-objects`で保存したファイルを確認してみると、指定したKeyでファイルが保存できていることが確認できます。
 
-```
->aws s3api list-objects --bucket gaitobucket
+```powershell
+aws s3api list-objects --bucket gaitobucket
 {
     "Contents": [
         {
@@ -89,13 +89,13 @@ S3の[APIリファレンス](https://docs.aws.amazon.com/AmazonS3/latest/API/API
 
 ここで、`Key`に「/」で終わるフォルダ名を指定し、`body`を指定しなければ空のフォルダ（らしきもの）が作成できるのではないかと考えました。
 
-```
->aws s3api put-object --bucket gaitobucket --key "folder002/"
+```powershell
+aws s3api put-object --bucket gaitobucket --key "folder002/"
 {
     "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\""
 }
 
->aws s3api list-objects --bucket gaitobucket
+aws s3api list-objects --bucket gaitobucket
 {
     "Contents": [
         {
@@ -123,13 +123,13 @@ S3の[APIリファレンス](https://docs.aws.amazon.com/AmazonS3/latest/API/API
 ### フォルダ新規作成
 - [画面から指定したフォルダ名]/.dummyというKeyで画面からは見えないダミーファイルを作成する
 
-```
->aws s3api put-object --bucket gaitobucket --key "folder003/.dummy"
+```powershell
+aws s3api put-object --bucket gaitobucket --key "folder003/.dummy"
 {
     "ETag": "\"9b1168b29272aeff17c058e4994a9526\""
 }
 
->aws s3api list-objects --bucket gaitobucket
+aws s3api list-objects --bucket gaitobucket
 {
     "Contents": [
         {
@@ -149,8 +149,8 @@ S3の[APIリファレンス](https://docs.aws.amazon.com/AmazonS3/latest/API/API
 フォルダ新規作成時にはこのダミーファイルを必ず作成するようにしました。
 そして、このフォルダにマスタデータを保存するという操作を行った場合は、以下のようにKeyとなるパスの前方部分（フォルダ名にあたる部分）が一致するようにしました。
 
-```
->aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
+```powershell
+aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
 "folder003/.dummy"
 "folder003/masterdata001"
 "folder003/masterdata002"
@@ -174,8 +174,8 @@ S3の[APIリファレンス](https://docs.aws.amazon.com/AmazonS3/latest/API/API
 
 
 名称変更前
-```
->aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
+```powershell
+aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
 "folder003/.dummy"
 "folder003/masterdata001"
 "folder003/masterdata002"
@@ -183,8 +183,8 @@ S3の[APIリファレンス](https://docs.aws.amazon.com/AmazonS3/latest/API/API
 ```
 
 名称変更後のフォルダ名をKeyとしてコピー
-```
->aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
+```powershell
+aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
 "folder003/.dummy"
 "folder003/masterdata001"
 "folder003/masterdata002"
@@ -196,8 +196,8 @@ S3の[APIリファレンス](https://docs.aws.amazon.com/AmazonS3/latest/API/API
 ```
 
 コピー元のオブジェクトを削除
-```
->aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
+```powershell
+aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
 "folder004/.dummy"
 "folder004/masterdata001"
 "folder004/masterdata002"

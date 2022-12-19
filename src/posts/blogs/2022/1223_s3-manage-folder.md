@@ -28,8 +28,8 @@ S3はAWSにて提供されているオブジェクトストレージサービス
 Web画面にてマスタメンテナンスを行う機能の改修を行いました。元々の機能は以下のようなものです。
 
 ### 既存機能
-- 特定の店舗のマスタデータをS3に保管する
-- 保管したマスタデータを他店舗に配信する
+- 特定の店舗のマスタデータをzipファイルにまとめS3に保管する
+- S3に保管したマスタデータのzipファイルを他店舗にコピーする
 
 この機能により、新規追加する商品のデータを一括して複数の店舗に配信するといったことが実現されておりました。
 そして今回、店舗数の増大や業務形態の多様化により、マスタデータをフォルダで管理するという以下ような新規機能が求められました。
@@ -147,9 +147,9 @@ aws s3api list-objects --bucket gaitobucket
 ```powershell
 aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
 "folder003/.dummy"
-"folder003/masterdata001"
-"folder003/masterdata002"
-"folder003/masterdata003"
+"folder003/masterdata001.zip"
+"folder003/masterdata002.zip"
+"folder003/masterdata003.zip"
 ```
 
 これにより、Keyの前方部分が「folder003/」と一致するオブジェクトは最低1点存在することが保証され、フォルダ削除機能の実装方式がシンプルになりました。
@@ -169,36 +169,38 @@ aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
 ```powershell
 aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
 "folder003/.dummy"
-"folder003/masterdata001"
-"folder003/masterdata002"
-"folder003/masterdata003"
+"folder003/masterdata001.zip"
+"folder003/masterdata002.zip"
+"folder003/masterdata003.zip"
 ```
 
 名称変更後のフォルダ名をKeyとしてコピー
 ```powershell
 aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
 "folder003/.dummy"
-"folder003/masterdata001"
-"folder003/masterdata002"
-"folder003/masterdata003"
+"folder003/masterdata001.zip"
+"folder003/masterdata002.zip"
+"folder003/masterdata003.zip"
 "folder004/.dummy"
-"folder004/masterdata001"
-"folder004/masterdata002"
-"folder004/masterdata003"
+"folder004/masterdata001.zip"
+"folder004/masterdata002.zip"
+"folder004/masterdata003.zip"
 ```
 
 コピー元のオブジェクトを削除
 ```powershell
 aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
 "folder004/.dummy"
-"folder004/masterdata001"
-"folder004/masterdata002"
-"folder004/masterdata003"
+"folder004/masterdata001.zip"
+"folder004/masterdata002.zip"
+"folder004/masterdata003.zip"
 ```
 
 無理矢理感は否めませんが、これらの方式で実装することにより、画面から見ると、マスタデータをフォルダ別に管理できているように"見せかける"ことが実現できました。
 
-ひとまず実現はできたのですが、これがベストな方式だったかと問われると疑問が残る状態です。
+ひとまず実現はできたのですが、これがベストな方式だったかと問われると少し疑問が残る状態です。
+具体的な問題点として、名称変更を別名でコピーする方式で実装したことにより、ファイルの更新日時が変わってしまうという点が挙げられます。更新日時が一定期間より以前のファイルは削除するといったライフサイクル管理の方式を取っている場合、名称変更処理によって更新日時が変わり、削除までの期間が延長されてしまうことになります。
+
 後にチームの先輩からいくつか他の実装方式を紹介していただいたので以下に記載します。
 
 # 案3. DBにフォルダの情報を持たせる
@@ -208,6 +210,7 @@ aws s3api list-objects --bucket gaitobucket | jq ".Contents[].Key"
 # 案4. タグかメタデータを使用する
 
 S3に保存したオブジェクトには、[タグ](https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/object-tagging.html)や[メタデータ](https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/UsingMetadata.html)という形で任意の情報を付加できます。タグかメタデータにフォルダの情報を付加すれば、S3が持つ機能の中で完結させた形で、フォルダ管理の仕組みを実装できるということもアドバイスとしていただきました。
+タグ / メタデータを付与した際はコピーした時と同様にファイルの更新日時が書き変わるのですが、更新日時の情報もタグ / メタデータに持たせて管理すれば、案2. にて挙げたライフサイクル管理の問題も回避することができます。
 
 # 最後に
 振り返ってみると先輩から提示していただいた案3. か案4. の実装方式の方が仕組みとしてシンプルで分かりやすく、今後フォルダ名以外の情報（マスタデータを配信 / 削除する未来の日時、更新者の名前 等）を管理する必要が出てきた場合に対応できるという点で拡張性があって良いと思いました。

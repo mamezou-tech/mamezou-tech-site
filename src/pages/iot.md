@@ -33,3 +33,4 @@ FreeRTOSの仕組みと特徴、各種実装についてご紹介します。
 
 - [IoT を使ってみる（その９：FreeRTOS基本編）](/iot/internet-of-things-09/)
 - [IoT を使ってみる（その１０：FreeRTOSタスク編）](/iot/internet-of-things-10/)
+- [IoT を使ってみる（その１１：FreeRTOSタスク優先度編）](/iot/internet-of-things-11/)

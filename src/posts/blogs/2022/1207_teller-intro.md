@@ -3,7 +3,7 @@ title: Tellerでキーストアからシークレット情報取得＆ソース�
 author: noboru-kudo
 date: 2022-12-07
 templateEngineOverride: md
-tags: [Security, aws, advent2022]
+tags: [Security, AWS, advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 

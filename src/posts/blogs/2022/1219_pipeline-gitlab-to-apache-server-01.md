@@ -9,7 +9,6 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第19日目の記事です。
 
-## はじめに
 
 私は今入社2年目で、主にアプリケーション開発に携わってきました。
 AWSやCI/CDについては、概要は知っていても自分ではほとんど触ったことのない分野でした。

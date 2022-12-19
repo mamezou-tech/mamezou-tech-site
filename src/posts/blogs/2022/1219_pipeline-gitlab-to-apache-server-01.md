@@ -9,26 +9,31 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第19日目の記事です。
 
-[[TOC]]
-
 ## はじめに
-継続的デリバリ環境を構築することで、開発したプログラムを利用環境へリリースする作業を自動化できます。
-継続的デリバリは、リリース作業で使用されるため目にする機会は多いのですが、自分でその環境を構築したことはありませんでした。
-今回私はAWSのサービスやGitLabなどを使用し簡単な継続的デリバリ環境を構築したので、具体的に構築した際の手順を説明します。
+
+私は今入社2年目で、主にアプリケーション開発に携わってきました。
+AWSやCI/CDについては、概要は知っていても自分ではほとんど触ったことのない分野でした。
+しかし、その知識はアプリケーション開発をする上でも必要であると感じ、実際に簡単な継続的デリバリ環境を構築したので、構築した環境の構成と手順を紹介します。
+
+継続的デリバリ環境は、開発したプログラムを利用環境へリリースする作業を自動化できます。
+今回私はAWSのサービスやGitLabなどを使用し簡単な継続的デリバリ環境を構築しました。
 作成した環境の構成図は以下の図の通りです。
 
 ![パイプライン構成図](https://gyazo.com/1dfaf7eb056de8dcc27dd7f41367befc.png)
 
- まず、開発者がGitLabにpushしたソースをCodeCommitへミラーリングします。その変更がCodePipelineに検知されると、CodeDeployがCodeCommitからソースを取得し、Apacheサーバーへデプロイする、といった構成となっています。
- 第１回では、
+この環境は、HTMLを静的サイトジェネレーターでビルドしてデプロイすることを目的としています。
+まず、開発者がGitLabにpushしたHTMLのソースをCodeCommitへミラーリングします。その変更がCodePipelineに検知されると、CodeDeployがCodeCommitからソースを取得し、Apacheサーバーへデプロイする、といった構成となっています。
+第１回では、
 
- * 仮想ネットワークであるVPCの作成
+* 仮想ネットワークであるVPCの作成
 
- * Apache用サーバーに使用するEC2インスタンスの作成
+* Apache(Apache HTTP Server)用サーバーに使用するEC2インスタンスの作成
 
- * 作成したEC2にSSH接続しApacheインストール
+* 作成したEC2にSSH接続しApacheインストール
 
 の３つの手順を説明しています。
+
+[[TOC]]
 
 ## １．VPC作成
 
@@ -71,16 +76,16 @@ AWSのマネジメントコンソールからEC2を選択し、「インスタ�
 
 ![ec2設定3](https://gyazo.com/fc59a82d130626c992acab13b5bf1708.png)
 
-ストレージは、動作を安定させるために30GBに変更しています。
+ストレージは、動作を安定させるため30GBに変更しています。
 他にも設定項目はありますが、簡易な環境を構築するため全てデフォルトとしています。
 設定が終わり、確認ができたら「インスタンスを起動」を押下し、画面に「成功」と表示されたら、Apache用EC2作成は完了です。
 
 ## ３．Apacheインストール
 
 次に、作成したApache用EC2にSSH接続し、Apacheインストールを行います。
-まず、GitBashからApache用EC2にSSH接続します。
+まず、ターミナルからApache用EC2にSSH接続します。
 今回の構築用にフォルダを作成し、先ほどダウンロードしたプライベートキーファイルを配置します。
-GitBashで該当ディレクトリに移動し、以下のコードを使ってSSH接続します。
+ターミナルで該当ディレクトリに移動し、以下のコードを使ってSSH接続します。
 
 ` ssh -i 公開鍵 ec2-user@IPアドレス`
 
@@ -98,14 +103,16 @@ RedHatではデフォルトユーザーがec2-userとなっています。接続
 `sudo yum install -y httpd`
 
 Apacheを以下のコマンドで起動します。エラーが発生しなければ、問題なく起動しています。
-`sudo systemctl start httpd'
-Apacheが起動しているかの確認を行います。以下のコマンドを入力し、Activeと表示されていればApacheが起動しています。
+
+`sudo systemctl start httpd`
+
+Apacheが起動しているかの確認します。以下のコマンドを入力し、Activeと表示されていればApacheが起動しています。
 
 `sudo systemctl status httpd`
 
 ![Apacheインストール2](https://gyazo.com/63b74aa4d75902ee7edb8d7450c8ac6c.png)
 
-Apacheの自動起動の設定を行います。以下のコマンドを実行することで自動起動するよう設定できます。
+Apacheの自動起動設定をします。以下のコマンドを実行することで自動起動するよう設定できます。
 
 `sudo systemctl enable httpd`
 
@@ -118,4 +125,4 @@ Apacheの自動起動設定が有効か確認をします。以下のコマン�
 ## さいごに
 
 今回は、VPCを作成し、その中に配布先であるApacheをインストールしたEC2インスタンスを準備しました。
-次回はpush先のGitLab用のEC2作成、docker-composeを使用したGitLab導入を行った際に実施した手順について整理します。
+次回はpush先のGitLab用のEC2作成、docker-composeを使用したGitLab導入した際に実施した手順について整理します。

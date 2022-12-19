@@ -3,7 +3,7 @@ title: AWS上に継続的デリバリ環境を構築してみた 第１回：VPC
 author: ryosuke-kono
 date: 2022-12-19
 templateEngineOverride: md
-tags: [advent2022]
+tags: [CI/CD, AWS, advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 

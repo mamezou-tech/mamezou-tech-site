@@ -69,22 +69,11 @@ Terms and Conditionsを読んで、「I have read and agree to the AWS Domain Na
 
 その他の項目はデフォルトでOKです。
 
-### 静的サイトホスティングの設定
-
-バケットを作成したら、バケット一覧から作成したバケットを選択し、「Properties」タブ内の「Static website hosting」を編集します。デフォルトではDisabledになっています。各項目は次のように設定します。
-
-- Static website hosting："Enable"
-- Hosting type："Host a static website"
-- Index document：任意（今回はindex.htmlにします）
-- その他：デフォルト
-
-![](/img/blogs/2022/1220_S3_02.png)
-
 ### コンテンツのアップロード
 
-静的サイトホスティングの設定でindex.htmlを指定したので、作成したバケット直下にindex.htmlをアップロードします。アップロード画面にファイルをドラッグ&ドロップでアップロードできます。
+作成したバケット直下にindex.htmlをアップロードします。アップロード画面にファイルをドラッグ&ドロップでアップロードできます。
 
-![](/img/blogs/2022/1220_S3_03.png)
+![](/img/blogs/2022/1220_S3_01.png)
 
 ## 3. Certificate Managerで証明書を取得する
 

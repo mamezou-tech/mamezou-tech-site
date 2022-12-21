@@ -2,7 +2,7 @@
 title: AWSが公開したFinchでコンテナ実行/イメージビルドをする
 author: noboru-kudo
 date: 2022-12-05
-tags: [advent2022, aws, container]
+tags: [advent2022, AWS, container]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 

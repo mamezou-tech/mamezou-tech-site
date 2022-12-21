@@ -70,8 +70,8 @@ async function run() {
 
   for (const block of blocks) {
     await slackClient.chat.postMessage({
-      // channel: "C034MCKP4M6",
-      channel: "C04F1QJDLJD", // ops channel
+      channel: "C034MCKP4M6",
+      // channel: "C04F1QJDLJD", // ops channel
       mrkdwn: true,
       text: "Twitterで記事が引用されています",
       blocks: [
@@ -79,7 +79,7 @@ async function run() {
           type: "header",
           text: {
             type: "plain_text",
-            text: `Twitterで記事が引用されています :bird:`,
+            text: "Twitterで記事が引用されています :twitter:",
           },
         },
         ...block,

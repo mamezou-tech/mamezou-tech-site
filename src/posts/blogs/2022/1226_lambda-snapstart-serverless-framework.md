@@ -1,11 +1,11 @@
 ---
 title: Lambda SnapStartをServerless Frameworkで動かす
 author: noboru-kudo
-date: 2022-12-26
+date: 2022-12-21
 tags: [serverless-framework, lambda, aws, java, サーバーレス]
 ---
 
-2022年のAWS re:InventでLambda SnapStartの発表がありました。
+先日、AWSからLambda SnapStartの発表がありました。
 
 - [Accelerate Your Lambda Functions with Lambda SnapStart](https://aws.amazon.com/blogs/aws/new-accelerate-your-lambda-functions-with-lambda-snapstart/)
 - [(邦訳)Lambda SnapStart で Lambda 関数を高速化](https://aws.amazon.com/jp/blogs/news/new-accelerate-your-lambda-functions-with-lambda-snapstart/)
@@ -21,8 +21,7 @@ SnapStartは、あらかじめ初期化(Init)フェーズを実行し、その�
 実際のコールドスタートは、初期化フェーズをスキップしてこのスナップショットから復元(Restoreフェーズ)して実行(Invokeフェーズ)します。
 これによって、SnapStartのコールドスタートは劇的に速くなります。
 
-2022/12/xxにサーバーレス環境のプロビジョニングツールの[Serverless Framework](https://www.serverless.com/)もSnapStartに対応しました。
-今回はこれを試してみたい思います。
+今回は、[Serverless Framework](https://www.serverless.com/)を使ってSnapStartを試してみたい思います。
 
 :::info
 SnapStartはJavaのCRaC(Coordinated Restore at Checkpoint)を基盤技術としています。
@@ -36,13 +35,17 @@ CRaCは本サイトの以下記事で詳細に説明されていますので、�
 ## Serverless Frameworkを導入する
 
 まずは、Serverless Frameworkをインストールしておきます。
-v3.26.0よりSnapStartをサポートしています。インストールバージョンに注意してください。
-TODO: リリースされたらバージョン確認
+ただ、執筆時点ではServerless FrameworkはSnapStartに対応しておらず、そのままでは利用できません。
+
+とはいえ、コードベース(mainブランチ)では既にSnapStartに対応されおり、次のv3.26.0に含まれそうです。
+
+ここでは、現時点で最新のスナップショットバージョンで、Serverless Frameworkをインストールしました。
+
 ```shell
-npm install -g serverless
-serverless --version
-> Framework Core: 3.26.0
-> Plugin: 6.2.2
+npm install -g serverless@3.25.1-968ddd59
+serverless -v
+> Framework Core: 3.25.1-968ddd59
+> Plugin: 6.2.2-47374d46
 > SDK: 4.3.2
 ```
 
@@ -60,7 +63,7 @@ mn create-function-app com.mamezou.lambda-snapstart \
 
 `lambda-snapstart`というディレクトリが作成され、その中にGradleビルドファイル[^1]やLambdaイベントハンドラ等、ソースコード一式が出力されます。
 
-[^1]: ここではビルドツール(`--build`)に`gradle`を指定しているためです。Mavenにする場合は`maven`を指定してください。
+[^1]: プロジェクト生成時にビルドツール(`--build`)に`gradle`を指定しているためです。Mavenを使う場合は`maven`を指定してください。
 
 ただSnapStartを動かすだけであれば、これだけでも十分です。
 せっかくなので今回は、以下ドキュメントに従ってCRaCのRuntime Hooksでログ出力するようにします。
@@ -154,7 +157,7 @@ Micronaut初めて使ってみたのですが、このあたりの設定含め�
 プロジェクトルートに以下のserverless.ymlを作成しました。
 
 ```yaml
-service: lambda-snapstart-example
+service: lambda-snapstart-sls
 frameworkVersion: '3'
 provider:
   name: aws
@@ -198,7 +201,7 @@ serverless package
         // (中略)
         "Handler": "com.mamezou.FunctionRequestHandler",
         "Runtime": "java11",
-        "FunctionName": "lambda-snapstart-example-dev-HelloWorld",
+        "FunctionName": "lambda-snapstart-sls-dev-HelloWorld",
         "MemorySize": 1024,
         "Timeout": 6,
         "Role": {
@@ -245,15 +248,15 @@ Lambda関数(AWS::Lambda::Function)リソースで`SnapStart`が追加されて�
 
 - [AWS CloudFormationリファレンス- AWS::Lambda::Function SnapStart](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-snapstart.html)
 
-もう1つは、エイリアス(AWS::Lambda::Alias)リソースです。これはSnapStart指定がない場合は作成されないリソースです。
+もう1つは、Lambdaエイリアス(AWS::Lambda::Alias)です。これはSnapStart指定がない場合は作成されないリソースです。
 [公式ドキュメント](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html)にも記載されていますが、SnapStartは公開されたバージョンのエイリアスのみに適用できます。
 
 > You can use SnapStart only on published function versions and aliases that point to versions. You can't use SnapStart on a function's unpublished version ($LATEST).
 
-Serverless Frameworkでは`snapstart`というエイリアスを作成し、これに対してデプロイ対象のLambda関数のバージョンを紐付けするようにプロビジョニングされるようです。
+Serverless Frameworkでは、`snapstart`というエイリアスに対してデプロイ対象のLambda関数のバージョンを紐付けするように構成されるようです。
 再デプロイした場合も、このエイリアスに更新バージョンのLambdaが紐付けれられます。
 
-Lambdaのエイリアス自体の詳細については、以下公式ドキュメントを参照してください。
+Lambdaエイリアス自体の詳細については、以下公式ドキュメントを参照してください。
 
 - [AWS Lambdaドキュメント - Lambda function aliases](https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html)
 
@@ -268,45 +271,58 @@ serverless deploy
 
 デプロイが成功したら、AWSマネジメントコンソールよりLambda関数を確認してみます。
 
-![AWS Console - Lambda SnapStart]()
+![AWS Console - Lambda SnapStart](https://i.gyazo.com/a48386b825e283431b921bac73382460.png)
 
 SnapStartが有効になっていることが分かります。
-次にLambdaエイリアスの方も確認します。
+Lambdaエイリアスの方も確認します。
 
-![AWS Console - Lambda Alias]()
+![AWS Console - Lambda Alias](https://i.gyazo.com/aea071a4e1ae26d234e7a8125a378cee.png)
 
 エイリアス`snapstart`が作成され、デプロイしたLambda関数のバージョンに100%の割合で振り向けられています。
 
 通常のLambdaと異なり、SnapStartの場合はこのデプロイ時点でLambdaの初期化(Init)フェーズが実行されているはずです。
 CloudWatchでログを確認します。
 
-![AWS CloudWatch - Lambda SnapStart Init phase]()
+![AWS CloudWatch - Lambda SnapStart Init phase](https://i.gyazo.com/a9d5e66c2084886b3b0eaaac5988d0b0.png)
 
-どういう理由か分かりませんが、Initフェーズは複数回実行されます。何回かデプロイしてみましたが、ここで使用している東京リージョンのAZ数とも限らず、3回以上実行されていました。
-とはいえ、beforeCheckpointフックのログ出力は出たり出なかったり。。。[^3]
+この段階でInitフェーズが実行されているのが確認できます。
+ただ、どういう理由か分かりませんが、Initフェーズは複数回(ここでは4回)実行されます。AZ数分初期化が実行されるのかと思い、何回かデプロイしてみましたが、そうでもないようです。
 
-[^3]: ログに出ていなくてもbeforeCheckpointフック自体は実行されているようです。現時点ではこのフックは意図しないタイミングで実行されるようなので、これに頼るのはやめたほうが良さそうです。
+とはいえ、beforeCheckpointフックやINIT_REPORTのログは出力されませんでした。何度か試してみましたが出たり出なかったり。。。InitフェーズのCloudWatchのログは出力されないこともあるようです[^3]。
+ただ、ログに出ていなくてもbeforeCheckpointフック自体は実行されているようでした。現時点ではこのフックは意図しないタイミングで実行されそうなので、これに頼るのはやめたほうが良さそうです。
 
-この謎の事象は置いておいて、デプロイしたLambda関数を実行してみます。
+[^3]: このログ欠落の現象はDevelopersIOの記事でも紹介されていました。
+[SnapStartでリストアされたLambda実行環境はスナップショット取得時と同じMACアドレスを利用する](https://dev.classmethod.jp/articles/snapstart-use-same-macaddress/)
+
+この謎の事象は忘れて、デプロイしたLambda関数を実行してみます。
 ここではLambda Function URLを有効にしていますので、curlでLambda関数の公開URLを叩いてみます。
 
 ```shell
-LAMBDA_URL=$(aws lambda get-function-url-config --function-name lambda-snapstart-example-dev-HelloWorld:snapstart \
+# AWSコンソールからはエイリアス:snapstart選択 -> 設定 -> 関数URLで参照できます 
+LAMBDA_URL=$(aws lambda get-function-url-config --function-name lambda-snapstart-sls-dev-HelloWorld:snapstart \
   --query FunctionUrl --output text)
 
 curl ${LAMBDA_URL}
-> Hello World
+> {"message":"Hello World"}
 ```
 
 正常にレスポンスが返ってきました。
-CloudWatchよりログを確認してみます。
+CloudWatchよりLambda関数のログを確認してみます。
 
-![AWS CloudWatch - Lambda SnapStart Restore/Invoke phase]()
+![AWS CloudWatch - Lambda SnapStart Restore/Invoke phase](https://i.gyazo.com/2b785e77bb454bf657efa96c6608ec3d.png)
 
-初回アクセス（コールドスタート）にも関わらず、初期化(Init)フェーズではなく、復元(Restore)フェーズから実行されているのが分かります。
-ここでかかった時間はxxmsです。先程デプロイ時の初期化フェーズはxxxmsですので、10倍近く高速化しているのが分かります。
-これは、一定時間経過後の実行でも同様で、高速な復元(Restore)フェーズに続いて実行(Invoke)フェーズが実行されます。
+初回アクセス（コールドスタート）ですが、初期化(Init)フェーズではなく、復元(Restore)フェーズから実行されているのが分かります。
+ここで復元フェーズでかかった時間はわずか207ms程度です。
+
+一定時間経過後のコールドスタートでも同様で、高速な復元(Restore)フェーズに続いて実行(Invoke)フェーズが実行されます。
 今まで他言語と比較して劣っていたJavaのコールドスタートの遅さが解消されています。
+
+参考までに、同じソースコードでSnapStartを無効にした場合のログ出力内容も掲載します。
+
+![AWS CloudWatch - Normal Lambda](https://i.gyazo.com/a3b5ec12cf5d70b9b3199cecdf168716.png)
+
+Lambda関数の実行時間に大きな差はありませんが、初期化処理に3秒近くかかっています。
+SnapStartでは207ms(復元フェーズ)でしたので、SnapStart無効化時の方がより大きなコールドスタートペナルティが発生していることが分かります。
 
 ## 最後に
 

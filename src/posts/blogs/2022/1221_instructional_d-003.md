@@ -2,7 +2,7 @@
 title: オンライン研修の設計勘所（その２：学びを促進するストーリー展開）
 author: toshio-yamaoka
 date: 2022-12-21
-tags: ["オンライン研修", "研修設計"]
+tags: ["オンライン研修", "研修設計", advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 

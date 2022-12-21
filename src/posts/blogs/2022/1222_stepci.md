@@ -253,8 +253,8 @@ tests:
 :::
 
 #### テストの実行順序
-tests、steps配下を上から順に実行します。
-下の例だと、applicationsの申請→審査→決裁、samplesのサンプル１→サンプル２の順番に実行されます。
+テスト群、テストに含まれるステップ群を上から順に実行します。
+下の例だと、applicationsの申請→審査→決裁、samplesのサンプル1→サンプル2という実行順序になります。
 
 {% raw %}
 ```yaml
@@ -268,13 +268,12 @@ tests:
     steps:
       # ステップ名
       - name: 申請
-        # ～略～
       - name: 審査
       - name: 決裁
   samples:
     steps:
-      -name: サンプル１
-      -name: サンプル２
+      -name: サンプル1
+      -name: サンプル2
 ```
 {% endraw %}
 

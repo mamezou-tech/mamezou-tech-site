@@ -14,7 +14,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 [GitHub Actions - Sharing actions and reusable workflows from private repositories is now GA | GitHub Changelog](https://github.blog/changelog/2022-12-14-github-actions-sharing-actions-and-reusable-workflows-from-private-repositories-is-now-ga/)
 
-この機能は待ち望んでいた人も多いのではないでしょうか。GitHub からのクリスマスプレゼント？ということで早速試してみたいと思います。
+この機能は待ち望んでいた人も多いのではないでしょうか。GitHub からのクリスマスプレゼント？ということで早速試してみました。
 
 private リポジトリでの Action と再利用可能ワークフローの共有についての公式ドキュメントは以下から見ることができます。
 
@@ -28,9 +28,9 @@ private リポジトリでの Action と再利用可能ワークフローの共�
 
 [Sharing GitHub Actions within your enterprise is now GA | GitHub Changelog](https://github.blog/changelog/2022-03-04-sharing-github-actions-within-your-enterprise-is-now-ga/)
 
-この Changelog を見て喜び勇んで会社のオーガニゼーションで試したところ、残念ながら弊社は Enterprise プランではないことに気づいてしまいました(笑)。この時お蔵入りにしていたお試しコードを再び取り出して試してみました。
+この Changelog を見て喜び勇んで会社のオーガニゼーションで試したところ、残念ながら弊社は Enterprise プランではないことに気づいてしまいました(笑)。この時お蔵入りにしていたお試しコードを再び取り出して試しました。
 
-まず private リポジトリに作ったサンプルの Greeting Action です。Composite Action のサンプルを使いました。入力パラメータとして、挨拶をする相手を受け取ります。最初に挨拶、次に乱数を生成してアウトプットに設定しています。
+まず private リポジトリに作ったサンプルの Greeting Action です。Composite Action のサンプルを使いました。入力パラメータとして、挨拶をする相手を受け取ります。最初のステップで挨拶、次のステップで乱数を生成してアウトプットに設定しています。
 
 - sample-internal-action/action.yml
 
@@ -64,7 +64,7 @@ GitHub Actions の Action は当初 Docker Action と JavaScript Action の2種�
 [Creating a composite action - GitHub Docs](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action)
 :::
 
-Action のリポジトリ(sample-internal-action) では、オーガニゼーション内のリポジトリに対してアクセス設定が必要です。`Settings` > `Actions` > `General` を開きます。
+Action のリポジトリ(sample-internal-action) では、オーガニゼーション内のリポジトリに対してアクセス設定が必要です。リポジトリの `Settings` > `Actions` > `General` を開きます。
 
 ![Setting Actions General](https://i.gyazo.com/60bda484696fbb660ca1f1fbf8bd0183.png)
 
@@ -72,7 +72,7 @@ Action のリポジトリ(sample-internal-action) では、オーガニゼーシ
 
 ![Arrow Access from internal repos](https://i.gyazo.com/6e5b2abd0079806fc68feac70483f163.png)
 
-次に利用側のワークフローです。これも Action と同じオーガニゼーションの private リポジトリに作成しています。 sample-internal-action を `uses` で指定しています。
+次に利用側のワークフローです。これも Action と同じオーガニゼーションの private リポジトリに作成しています。 sample-internal-action を `uses` で指定し、次のステップで格納された乱数を echo で表示しています。
 
 use-internal-action/.github/workflows/ci.yml
 
@@ -113,9 +113,11 @@ jobs:
 - [GitHub Actions - 再利用可能ワークフローでネスト呼び出しと Matrix strategy が解禁](/blogs/2022/08/25/github-actions-reusable-workflow-renewal/)
 :::
 
-まず再利用可能ワークフローです。shared-workflows という個人アカウントの private リポジトリに作成しました。このリポジトリの Access 設定も Action のリポジトリと同様、`Accessible from repositories in the <onwer> organization` を指定しておきます。
+まず利用されるワークフローです。個人アカウントの private リポジトリ shared-workflows に作成しました[^1]。
 
-ワークフローは CI/CD を意識して入力パラメータ `target` でデプロイ先を受け取るサンプルにしました。デプロイ先を環境変数として設定します。
+[^1]: このリポジトリの Access 設定も Action のリポジトリと同様、`Accessible from repositories in the <onwer> organization` を指定しておきます。
+
+CI/CD を意識して入力パラメータ `target` でデプロイ先を受け取るサンプルにしました。デプロイ先を環境変数として設定します。
 
 - shared-workflows/.github/workflows/deploy.yml
 
@@ -148,7 +150,7 @@ jobs:
 ```
 {% endraw %}
 
-呼び出し側ものワークフローを同じアカウントの private リポジトリに配置しました。
+呼び出し側ワークフローを同じアカウントの private リポジトリに配置しました。
 
 - call-private-reusable-flow.yml
 
@@ -165,11 +167,13 @@ jobs:
       target: dev
 ```
 
-実行結果です。再利用ワークフローで定義したジョブの各ステップが実行されました。
+実行結果です。再利用ワークフローで定義したジョブの各ステップが実行されました。`with` で指定したパラメータの値も反映されています。
 
 ![実行結果](https://i.gyazo.com/7f9fef6319e74461539c6fdc83e013f0.png)
 
 ## 最後に
+以上、private リポジトリの Action と再利用可能ワークフローが呼び出せるようになったことを確認しました。
+
 OSS ではないプロジェクトで Action や再利用可能ワークフローを自前で作りたい場合、これまでは public にしないといけないのがネックになるケースがあったかと思います。Action は単機能なので公開してもさほど差し支えない場合が多いですが、再利用可能ワークフローでは、ビルド・デプロイされるプロダクトの名前が表に出たり、ワークフロー内で機密情報を扱う場合もあったりと、公開の障壁が特に高くなります。
 
 筆者は数年前のプロジェクトで private の Action リポジトリを利用側のワークフローから checkout して実行していました。もうそのようなワークアラウンドは不要です。再利用可能ワークフローも当時はありませんでしたが、ワークフローを共有する仕組みがあればという話はよく上がっていました。

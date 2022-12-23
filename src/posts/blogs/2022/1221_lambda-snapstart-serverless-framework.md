@@ -52,6 +52,11 @@ serverless -v
 > SDK: 4.3.2
 ```
 
+:::info:更新情報
+2022-12-22に、SnapStart対応のServerless Frameworkのv3.26.0がリリースされています。
+現在は上記のようにバージョンを直接指定する必要はありません。最新の安定版でSnapStartが利用できます。
+:::
+
 ## サンプルのLambda関数を作成する
 
 今回はJavaマイクロサービスフレームワークの[Micronaut](https://micronaut.io/)を使用して、Lambda関数を作成します。

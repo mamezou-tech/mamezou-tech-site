@@ -70,7 +70,7 @@ openssl pkcs8 -in jwt.key.p1 -out jwt.key -topk8 -nocrypt
 
 鍵の準備は以上です。記事ではこの2つの鍵を使ってサンプルを説明していきます。
 
-## トークンの生成実装(RsaJwtProvider)
+## トークンの生成実装(RsaJwtProducer)
 公開鍵方式でトークンを生成する実装は次のようになります。
 
 ```java
@@ -149,9 +149,9 @@ public class RsaJwtProducer {
 [^3]: Privacy Enhanced Mailの略。鍵のバイナリデータをBASE64エンコードでテキストにしたものにヘッダー行とフッター行を付けたもの。
 
 ### RsaJwtProducerの実行
-それではRsaJwtProviderクラスを実行してみましょう。
+それではRsaJwtProducerクラスを実行してみましょう。
 
-秘密鍵はクラスパス直下の`/jwt.key`[^4]に配置しているので、環境変数`KEY_PATH`にこの値を設定します。また、RsaJwtProviderは`-jar`オプションで起動可能なExecutable Jar形式でビルドしています。
+秘密鍵はクラスパス直下の`/jwt.key`[^4]に配置しているので、環境変数`KEY_PATH`にこの値を設定します。また、RsaJwtProducerは`-jar`オプションで起動可能なExecutable Jar形式でビルドしています。
 [^4]: ソースツリー上は`/src/main/resources/jwt.key`
 
 実行した結果は次のとおりです。
@@ -166,7 +166,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJJRDEyMzQ1IiwiaXNzIjoiUnNhSnd0UHJ
 実行結果からヘッダーとペイロード、シグニチャが`.`(ドット)で連結されたトークンを取得することができました。
 
 ::: alert: 秘密鍵の管理と置き場は慎重に！
-今回はサンプルのためjarの中に秘密鍵を格納していますが、いわずもがなですが秘密鍵は漏洩することのないように厳格に管理する必要があります。鍵情報の管理はそれだけで本が一冊書けるくらい深いテーマのため、ここでは触れませんが、少なくともプロダクション環境で今回のサンプルように単にjarに同梱しただけというのはやめましょう。
+今回はサンプルのためjarの中に秘密鍵を格納していますが、いわずもがなですが秘密鍵は漏洩することのないように厳格に管理する必要があります。鍵情報の管理はそれだけで本が一冊書けるくらい深いテーマのため、ここでは触れませんが、少なくともプロダクション環境で今回のサンプルのように単にjarに同梱しただけというのはやめましょう。
 :::
 
 ## トークンの検証実装(RsaJwtConsumer)

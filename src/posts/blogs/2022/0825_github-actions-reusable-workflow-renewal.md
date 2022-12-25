@@ -12,7 +12,9 @@ date: 2022-08-25
 > 3. 呼び出し元ワークフローで定義されたワークフローレベルの環境変数は呼び出されたワークフローに伝播されない
 > 4. strategy プロパティは、再利用可能ワークフローを呼び出すジョブではサポートされない
 
-このたびのリリースで、1と4の制約が解消され、再利用可能ワークフローのネスト呼び出しが可能となるとともに、呼び出し元からの Matrix strategy も使えるようになりました。
+このたびのリリースで、1と4の制約が解消され、再利用可能ワークフローのネスト呼び出しが可能となるとともに、呼び出し元からの Matrix strategy も使えるようになりました[^2]。
+
+[^2]: 2の制約も2022年12月に解消されました。詳細は「[GitHub Actions - private リポジトリの Action と再利用可能ワークフローが呼び出しが可能に](/blogs/2022/12/24/sharing-private-actions-and-reusable-workflows/)」を参照してください。
 
 [GitHub Actions&#058; Improvements to reusable workflows | GitHub Changelog](https://github.blog/changelog/2022-08-22-github-actions-improvements-to-reusable-workflows-2/)
 
@@ -149,9 +151,9 @@ jobs:
 もしワークフローでコンテナアプリケーションの CI/CD を行う場合、ビルドは1度だけでデプロイ先の差異は環境変数で対応するのが王道ですが、ここはあくまでサンプルということでご了承ください。
 :::
 
-実行すると、matrix が展開され各環境のジョブが実行されました。
+実行すると、matrix が展開され各環境のジョブが実行されました。以下のスクリーンショットは、プロダクションビルドの実行結果を開いたところです。
 
-![再利用可能ワークフロー matrix 実行結果](https://i.gyazo.com/4d92273606c0a02e4d9be8c9333e466c.png)
+![再利用可能ワークフロー matrix 実行結果](https://i.gyazo.com/edaa2830397276a6d1b061dbf04ee75d.png)
 
 :::info
 ちなみに matrix とネスト呼び出しを混在させることはできますが、ジョブに依存関係を定義したりすると意図した動きをしませんでした。あまり凝ったことはできない模様です。

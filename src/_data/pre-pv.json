@@ -1,12 +1,20 @@
 {
   "ranking": [
     {
+      "title": "自然言語処理初心者が「GPT2-japanese」で遊んでみた",
+      "url": "/blogs/2022/07/08/gpt-2-japanese/"
+    },
+    {
+      "title": "AWSが公開したFinchでコンテナ実行/イメージビルドをする",
+      "url": "/blogs/2022/12/05/finch-intro/"
+    },
+    {
       "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
       "url": "/nuxt/nuxt3-rendering-mode/"
     },
     {
-      "title": "自然言語処理初心者が「GPT2-japanese」で遊んでみた",
-      "url": "/blogs/2022/07/08/gpt-2-japanese/"
+      "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
+      "url": "/nuxt/nuxt3-routing/"
     },
     {
       "title": "ORマッパーのTypeORMをTypeScriptで使う",
@@ -21,24 +29,16 @@
       "url": "/nuxt/nuxt3-state-management/"
     },
     {
-      "title": "第1回 OpenAPI Generator を使ったコード生成",
-      "url": "/blogs/2022/06/04/openapi-generator-1/"
-    },
-    {
       "title": "Jest再入門 - 関数・モジュールモック編",
       "url": "/testing/jest/jest-mock/"
     },
     {
-      "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
-      "url": "/nuxt/nuxt3-routing/"
+      "title": "基本から理解するJWTとJWT認証の仕組み",
+      "url": "/blogs/2022/12/08/jwt-auth/"
     },
     {
-      "title": "EC2にS3をマウントする方法",
-      "url": "/blogs/2022/01/23/ec2-s3-mount/"
-    },
-    {
-      "title": "GitHub Codespaces を使いはじめる",
-      "url": "/blogs/2022/05/18/start-using-codespaces/"
+      "title": "第1回 OpenAPI Generator を使ったコード生成",
+      "url": "/blogs/2022/06/04/openapi-generator-1/"
     }
   ]
 }

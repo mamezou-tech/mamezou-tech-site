@@ -13,8 +13,8 @@ tags: [retrospective]
 
 ## ランディングページ・連載の動向
 
-### [フロントエンド](/frontend/)
-フロントエンドのランディングページを新設しました。Nuxt3、Netlify、Deno、Tauri、Electron などの記事を集めました。
+### フロントエンド
+[フロントエンドのランディングページ](](/frontend/))を新設しました。Nuxt3、Netlify、Deno、Tauri、Electron などの記事を集めました。
 
 ### アジャイル開発
 アジャイル開発現場における Tips を紹介する新連載が始まりました。
@@ -25,7 +25,7 @@ tags: [retrospective]
 
 - [新米スクラムマスターの思考メモ](/agile/#新米スクラムマスターの思考メモ)
 
-### IOT
+### IoT
 MQTT と FreeRTOS の連載が公開中です。
 
 - [MQTT編](/iot/#mqtt編)
@@ -44,7 +44,7 @@ Contract Test ツール、Google Test の連載記事が追加されました。
 ### マイクロサービス
 日本では唯一無二と言っていい超詳しい MicroProfile 連載。RestClient 3.0、Fault Tolerance、Metrics、OpenTracing、JWT Auth の記事が追加になっています。
 
-[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
+- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
 ### 学び
 オンライン研修の設計勘所の連載が進行中です。
@@ -54,7 +54,7 @@ Contract Test ツール、Google Test の連載記事が追加されました。
 ## アドベントカレンダー開催
 豆蔵デベロッパーサイト1周年記念企画としてアドベントカレンダー20022を開催しました。
 
-[アドベントカレンダー2022](/events/advent-calendar/2022/)
+- [アドベントカレンダー2022](/events/advent-calendar/2022/)
 
 初の企画モノということで、枠が埋まるのか始める前は不安もありましたが、無事コンプリートできました。16名が記事を執筆し、うち7名は初投稿でした。記事のテーマもバラエティに富んでおり、豆蔵社員の興味関心が反映されたアドベントカレンダーが出来上がりました。アドベントカレンダーでデビューした執筆者がまた書いてくれることを期待しています。
 

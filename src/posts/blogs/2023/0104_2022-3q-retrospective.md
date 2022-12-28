@@ -14,7 +14,7 @@ tags: [retrospective]
 ## ランディングページ・連載の動向
 
 ### フロントエンド
-[フロントエンドのランディングページ](](/frontend/))を新設しました。Nuxt3、Netlify、Deno、Tauri、Electron などの記事を集めました。
+[フロントエンドのランディングページ](/frontend/)を新設しました。Nuxt3、Netlify、SSG、Deno、Tauri、Electron などの記事を集めました。
 
 ### アジャイル開発
 アジャイル開発現場における Tips を紹介する新連載が始まりました。

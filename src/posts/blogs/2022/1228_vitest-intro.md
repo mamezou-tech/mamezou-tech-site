@@ -12,7 +12,7 @@ Jestはそれ単体でテストランナー、マッチャーからモックま�
 今回はJestに代わる新しいテスティングフレームワークの[Vitest](https://vitest.dev/)を試してみたいと思います。
 VitestはWebpackに代わる高速ビルドツールの[Vite](https://vitejs.dev/)を基盤としています[^1]。
 Viteのパイプラインとして実行されますので、テストも高速になるはずです。
-Vitestの公式サイトを見ると`Blazing Fast Unit Test Framework`と宣伝してるところからも期待できそうです。
+Vitestの公式サイトでも、`Blazing Fast Unit Test Framework`と宣伝してるところからも期待できそうです。
 
 また、API自体もJestと互換性を保つように設計されていますので、既存のJestベースのテストからの移行も比較的簡単にできそうです。
 
@@ -51,7 +51,7 @@ export default defineConfig({
 });
 ```
 
-通常はdefineConfig配下にビルド設定を記述しますが、Vitestの設定は`test`配下に記述します。
+通常はdefineConfigにビルド設定を記述しますが、Vitestの設定は`test`配下に記述します。
 ここでは`globals`をtrueとしています。これはJestのようにtest/itやExpect API等の利用頻度の高いAPIをimport不要でグローバルに利用するためです。
 その他の設定可能な項目は、以下公式ドキュメントを参照してください。
 

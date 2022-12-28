@@ -11,7 +11,8 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 - [新米スクラムマスターの思考メモ（その１　スクラムマスターになるまで）](/blogs/2022/11/24/newcomer-scrum-master-01/)
 - [新米スクラムマスターの思考メモ（その２　Retrospective編）](/blogs/2022/12/05/newcomer-scrum-master-02/)
-- [新米スクラムマスターの思考メモ（その３　Sprint Planning編）](/blogs/2022/12/05/newcomer-scrum-master-03/)
+- [新米スクラムマスターの思考メモ（その３　Sprint Planning編）](/blogs/2022/12/17/newcomer-scrum-master-03/)
+
 
 今回の記事では、DailyScrumではどのようなことを感じ、行動したかについてまとめてみたいと思います。
 

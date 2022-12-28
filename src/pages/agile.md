@@ -25,3 +25,11 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 - [アジャイル開発現場におけるTips：笑い声](/agile/agile-tips_01/)
 - [アジャイル開発現場におけるTips：仕様書としてのテスト](/agile/agile-tips_02/)
 
+## 新米スクラムマスターの思考メモ
+
+初めてスクラムマスターを担当することになった社員が、新米スクラムマスターの視点で感じたことや考えたことなどをまとめていく連載です。
+
+- [新米スクラムマスターの思考メモ（その１　スクラムマスターになるまで）](/blogs/2022/11/24/newcomer-scrum-master-01/)
+- [新米スクラムマスターの思考メモ（その２　Retrospective編）](/blogs/2022/12/05/newcomer-scrum-master-02/)
+- [新米スクラムマスターの思考メモ（その３　Sprint Planning編）](/blogs/2022/12/17/newcomer-scrum-master-03/)
+- [新米スクラムマスターの思考メモ（その４　DailyScrum編）](/blogs/2022/12/28/newcomer-scrum-master-04/)

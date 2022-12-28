@@ -66,7 +66,7 @@ Contract Test ツール、Google Test の連載記事が追加されました。
 - [Slack の GitHub インテグレーションで GitHub Actions ワークフローのイベントを通知可能に](/blogs/2022/12/12/notify-github-actions-workflow-to-slack/)
 
 ## 最後に
-以上、2022年第3四半期のまとめでした。アクセスも順調に伸びており、Google 検索での流入は直近で3.5万を超えました。
+以上、2022年第3四半期のまとめでした。アクセスも順調に伸びており、Google 検索での流入は直近1ヶ月で3.5万を超えるようになりました。
 今後も役立つ記事をお届けできるように精進してまいります。
 
 よかったら[フィード](/feed)の購読、[Twitter アカウント](https://twitter.com/MamezouDev)のフォローもお願いします。

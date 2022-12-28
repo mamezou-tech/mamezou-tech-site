@@ -1,0 +1,7 @@
+{
+  "tags": ["2023年"],
+  "layout": "post",
+  "permalink": "/blogs/{{ page.date | date: '%Y/%m/%d' }}/{{ page.fileSlug | blogPage }}/",
+  "pageNavigationTag": "posts",
+  "category": "ブログ"
+}

@@ -1,7 +1,7 @@
 ---
 title: 新米スクラムマスターの思考メモ（その４　DailyScrum編）
 author: hiroaki-taka
-date: 2022-12-31
+date: 2022-12-28
 tags: [スクラム, アジャイル開発]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---

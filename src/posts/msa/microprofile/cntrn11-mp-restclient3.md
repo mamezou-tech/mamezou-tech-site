@@ -19,7 +19,7 @@ MicroProfileをテーマにブログを連載しています。他の記事も�
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile RestClient 3.0をもとに作成しています。
-MicroProfile RestClientの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-rest-client-3.0/microprofile-rest-client-spec-3.0.html)を参照くだい。
+MicroProfile RestClientの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-rest-client-3.0/microprofile-rest-client-spec-3.0.html)を参照ください。
 :::
 
 # MicroProfile RestClient 3.0までの主な変更内容

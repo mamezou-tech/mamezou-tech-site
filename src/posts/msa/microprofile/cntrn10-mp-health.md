@@ -19,7 +19,7 @@ MicroProfileをテーマにブログを連載しています。他の記事も�
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Health 4.0をもとに作成しています。
-MicroProfile Healthの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-health-4.0/microprofile-health-spec-4.0.html)を参照くだい。
+MicroProfile Healthの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-health-4.0/microprofile-health-spec-4.0.html)を参照ください。
 :::
 
 ## MP Healthとは

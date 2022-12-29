@@ -36,10 +36,8 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - [第13回 MicroProfile Fault Tolerance(2) - 例で理解する非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)
 - [第14回 MicroProfile Fault Tolerance(3) - 例で理解する設定編](/msa/mp/cntrn14-mp-faulttolerance3/)
 - [第15回 MicroProfile Metricsの機能と利用](/msa/mp/cntrn15-mp-metrics/)
-- [第16回 MicroProfile OpenTracingとJeagerで理解する分散トレーシング](/msa/mp/cntrn16-mp-tracing/) <span style="color: red;">★NEW★</span>
-
-～ 今後の連載予定 ～
-- MicroProfile JWT Authを眺めてみる <span style="color:red">Coming Soon!</span>
+- [第16回 MicroProfile OpenTracingとJeagerで理解する分散トレーシング](/msa/mp/cntrn16-mp-tracing/)
+- [第17回 MicroProfile JWT Authがやってくれること・できること](/msa/mp/cntrn17-mp-jwt/) <span style="color: red;">★NEW★</span>
 
 （番外編）
 - [Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)

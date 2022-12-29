@@ -19,7 +19,7 @@ nextPage: ./src/posts/msa/microprofile/cntrn16-mp-tracing.md
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Metrics 4.0をもとに作成しています。
-MicroProfile Metricsの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-metrics-4.0/microprofile-metrics-spec-4.0.html)を参照くだい。
+MicroProfile Metricsの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-metrics-4.0/microprofile-metrics-spec-4.0.html)を参照ください。
 :::
 
 # MicroProfile Metricsを使ってできること

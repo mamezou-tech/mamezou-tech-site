@@ -20,7 +20,7 @@ MicroProfileをテーマにブログを連載しています。他の記事も�
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile OpenAPI 3.0.1をもとに作成しています。
-MicroProfile OpenAPIの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-open-api-3.0/microprofile-openapi-spec-3.0.html)を参照くだい。
+MicroProfile OpenAPIの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-open-api-3.0/microprofile-openapi-spec-3.0.html)を参照ください。
 :::
 
 # 紹介する新機能

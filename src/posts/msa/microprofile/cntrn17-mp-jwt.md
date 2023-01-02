@@ -49,7 +49,7 @@ MP JWTはJWT認証を行う側のアプリに関するものという理解を�
   - groupsクレームをもとにしたJAX-RSのエンドポイントに対するロールベースアクセス制御(RBAC)
 
 :::column: MicroProfile JWT Authに関する仕様名の揺らぎ
-実装で使われている`org.eclipse.microprofile.jwt.*`パッケージをもとに記事ではMicroProfileのJWT認証に関する仕様名をMicroProfile JWT Authとしていますが、この用語に関して公式情報では次の3つ用語が使われています。
+記事ではMicroProfileのJWT認証に関する仕様名をMicroProfile JWT Authとしていますが、この用語に関して公式情報では次の3つ用語が使われています。
 - [microprofile.io](https://microprofile.io/)の公式ページで使われている”JWT Propagation”
 - [GitHubのリポジトリ名](https://github.com/eclipse/microprofile-jwt-auth)に使われている”JWT Auth”
 - [Specification Document](https://download.eclipse.org/microprofile/microprofile-jwt-auth-2.0/microprofile-jwt-auth-spec-2.0.html)で使われている”JWT RBAC”
@@ -58,7 +58,7 @@ MP JWTはJWT認証を行う側のアプリに関するものという理解を�
 :::
 
 # MP JWTを使った実装例
-機能ごとの説明に行く前に説明で利用するサンプルアプリを説明します。
+機能ごとの説明に行く前に記事で利用するサンプルアプリを説明します。
 
 ## サンプルアプリの構成
 説明には商品の1件取得と全件検索、新規登録が行える簡単なRESTアプリケーション(商品サービス)を使います。商品サービスの利用には認証が必要となりますが、この認証は商品サービスとは別のSimpleIDProviderで行い、SimpleIDProviderで発行されたIDトークンを商品サービスのリクエストごとに提示するようにしてます。このサンプルアプリの全体のイメージは次のようになります。
@@ -162,7 +162,7 @@ public class ProductApplication extends Application {
 :::check: @PermitAllと@LoginConfigの優先度は仕様に明記されていない
 @LoginConfigが付けられたApplicationクラスに登録されたRESTリソースのアクセスにはJWT認証が必要となりますが、例外としてjakarta.annotation.security.PermitAllアノテーションを付けたメソッドはJWT認証がバイパスされ誰でもアクセスが可能となります。
 
-@LoginConfigは認証が必要であることを意味すのに対して@PermitAllは認可が不要という意味となり、@LoginConfigと@PermitAllは相反する設定となります。現時点のHelindonの実装や他のランタイムでは上述のとおり@PermitAllを優先した動作をしますが、MP JWTの仕様にはそのどちらが優先されるかは明記されていません。
+@LoginConfigは認証が必要であることを意味すのに対して@PermitAllは認可が不要という意味となり、@LoginConfigと@PermitAllは相反する設定となります。現時点のHelidonの実装や他のランタイムでは上述のとおり@PermitAllを優先した動作をしますが、MP JWTの仕様にはそのどちらが優先されるかは明記されていません。
 
 筆者としては@LoginConfigが優先されるべきで、@PermitAllはあくまでもロールが不要、もしくはどのロールでもアクセスを許可する意味のため、認証まで不要となることには違和感を覚えるとともに意味的な不自然さを感じます。このため本文では「Applicationクラスを分けられるようにしておくのが無難です」という説明をしています。
 :::

@@ -36,6 +36,10 @@ pre[class*="language-"] {
   max-width: calc(100vw - 2rem);
 }
 
+:is(ul, ol) li pre[class*="language-"] {
+  max-width: calc(100vw - 3.2rem);
+}
+
 pre[class*="language-"]::-moz-selection,
 pre[class*="language-"] ::-moz-selection,
 code[class*="language-"]::-moz-selection,

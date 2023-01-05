@@ -26,14 +26,14 @@ Kafka を Cloud で提供している Confluent Platform では専用の Web UI 
 
 - 複数クラスター管理
 - メトリクスダッシュボードによるパフォーマンスモニター
-- Kafka Broker 監視
+- Kafka Brokers 監視
 - Kafka Topics 監視
 - Consumer Group 監視
 - メッセージの参照
 - 動的な Topic 設定
-- 設定可能な認証
-- カスタムのシリアライザー/デシリアライザー
-- UI への RBAC によるアクセス制御
+- OAuth 2.0による認証オプション(GitHub/GitLab/Google)
+- カスタムのシリアライズ/デシリアライズプラグイン(AWS Glue, Smile)
+- RBAC によるきめ細かい UI アクセス制御
 - メッセージデータのマスキング
 
 ## docker-compose による構築
@@ -55,11 +55,11 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
 ```
 
-`KAFKA_CLUSTERS_N_XXX` (Nは番号)形式で管理対象の Kafka cluster の対応する環境変数を指定します。複数のクラスターを管理する場合、`KAFKA_CLUSTERS_N` のプリフィクスの番号を変えて指定します。
+`KAFKA_CLUSTERS_N` (N:番号)というプリフィクス付きの環境変数で管理対象の Kafka cluster の設定を指定します。複数のクラスターを管理する場合、プリフィクスの番号を変えて指定します。
 
 [kafka-ui/docker-compose.md at master · provectus/kafka-ui](https://github.com/provectus/kafka-ui/blob/master/docker-compose.md)
 
-Kafka を含めた環境を docker-compose で構築する例です。Confluent の ZooKeeper と Kafka Broker のコンテナイメージを利用しています。
+Kafka cluster と kafka-ui を全て docker-compose で構築する例です。Kafka Broker と Zookeeper のコンテナイメージは Confluent のものを利用しています。
 
 - docker-compose.yml
 
@@ -105,7 +105,7 @@ services:
       KAFKA_CLUSTERS_0_NAME: kafka-0
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka0:29092
 ```
-services で ZooKeeper ← Kafka Broker(kafka0) ← kafka-ui という依存関係を定義しています。Kafka Broker をポート番号9092で公開し、kafka-ui の 環境変数 `KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS` に `Kafka Broker のサービス名:ポート番号`の形で Kafka Broker を指定します。kafka-ui 自信ののポート番号は3000にしました。
+services で ZooKeeper ← Kafka Broker(kafka0) ← kafka-ui という依存関係を定義しています。Kafka Broker をポート番号9092で公開し、kafka-ui の 環境変数 `KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS` に `Kafka Broker のサービス名:ポート番号`の形で Kafka Broker を指定します。kafka-ui 自身のポート番号は3000にしました。
 
 docker-compose で起動します。
 
@@ -113,19 +113,19 @@ docker-compose で起動します。
 docker-compose up -d
 ```
 
-localhost:3000 にアクセスすると、kafka-ui のダッシュボードが表示されます。トップレベルには管理対象の Kafka Cluster のリストが表示され、Broker、Partition、Topics の総数、送信されたメッセージ、消費されたメッセージのバイト数などのサマリー情報を見ることができます。
+起動後 localhost:3000 にアクセスすると、kafka-ui のダッシュボードが表示されます。トップレベルには管理対象の Kafka Cluster のリストが表示され、Broker、Partition、Topics の総数、送信されたメッセージ、消費されたメッセージのバイト数などのサマリー情報を見ることができます。
 
 ![Dashboard](https://i.gyazo.com/cc87aaa13a879e51c524f2d91dc6d446.png)
 
-## Topic のメッセージを UI で確認
-docker-compose で起動した Kafka Broker のコンテナ(kafka0) に入って、kafka-console-consumer でを使って Consumer を起動し、適当なトピック名(hoge)を指定してサブスクライブしてみます。
+## Topic の状態を UI で確認
+docker-compose で起動した Kafka Broker のコンテナ(kafka0) に入って、kafka-console-consumer を使って Consumer を起動し、適当なトピック名(hoge)を指定してサブスクライブしてみます。
 
 ```shell
 docker-compose exec kafka0 \                         
   kafka-console-consumer --bootstrap-server kafka0:29092 --topic hoge
 ```
 
-`Consumers` には `console-consumer-xxxx` の形式で採番された Group ID で  kafka-console-consumer が `STABLE` 状態で起動していることが表示されました。
+`Consumers` 画面に `console-consumer-xxxx` の形式の Group ID で Consumer が `STABLE` 状態で起動していることが表示されました。
 
 ![Consumers](https://i.gyazo.com/a6b952c071193752a19ef7e9ae211ccf.png)
 
@@ -133,14 +133,14 @@ Consumer の詳細情報を表示させることもできます。
 
 ![Consumer detail](https://i.gyazo.com/41009178f6d43dceba653ef1e2e74044.png)
 
-起動時に指定した Topic 名(hoge)の Topic は自動作成されます[^1]。
+起動時に指定した Topic 名(hoge)の Topic は自動作成され、`Topics` 画面で確認できます[^1]。
 
 ![Topics](https://i.gyazo.com/316dcaa82bb5d20b732715fe527168bc.png)
 
 [^1]: Kafka Broker のデフォルトでは、Topic は自動作成になっています。
 
 :::info
-スクリーンショットの Topic 一覧にある、`__consumer_offsets` は、Topic の Group ID ごとの消費済みオフセット情報を保持するために Kafka 自身が管理する特殊な Topic です。
+スクリーンショットの Topic の一覧にある、`__consumer_offsets` は、Topic の Group ID ごとの消費済みオフセット情報を保持するために Kafka 自身が使用する特殊な Topic です。
 :::
 
 Topic の詳細画面です。
@@ -284,9 +284,9 @@ kafka-ui のデフォルトでは、Topic の作成・削除などの Kafka に�
 ```
 
 ## 最後に
-以上、kafka-ui を試してみました。ローカルの Docker でネットワーク遅延がないせいもありますが、サクサク動いていい感じです。公式の README にはスクリーンキャプチャーもありますので、実行しなくても雰囲気は掴めると思います。
+以上、kafka-ui を試してみました。ローカルの Docker でネットワーク遅延がないせいもありますが、サクサク動いていい感じです。[公式の README](https://github.com/provectus/kafka-ui/blob/master/README.md) にはスクリーンキャプチャーもありますので、実行しなくても雰囲気は掴めると思います。
 
-今回取り上げていませんが、以下のような用途別の docker-compose ファイルも提供されていますので、参考になると思います。
+今回取り上げていませんが、以下のような用途別の docker-compose ファイルも提供されていますので参考になると思います。
 
 - スキーマレジストリ(メッセージのスキーマを管理するサーバー)を立てて kafka-ui で管理する
 - Kafka Connect を設定して kafka-ui で管理する

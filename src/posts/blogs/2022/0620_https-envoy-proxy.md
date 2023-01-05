@@ -171,3 +171,7 @@ Keycloak へのアクセスで使用する端末に PC を使う場合は、こ�
 この記事で説明した方法を使えば、Keycloak を任意の Web アプリケーションに代えて HTTPS アクセスに対応させることができ、特に開発中や試行中に AWS などのクラウドにかかるコストを抑制することが可能になります。
 
 この記事で説明した `docker-compose.yml` などのコードの全体は [GitHub リポジトリ](https://github.com/edward-mamezou/hibernation-pod/tree/feature/v0.3.0/keycloak) にあります。
+
+:::info:2023年1月5日追記
+Kubernetes 環境に Keycloak をインストールする場合 Helm チャートが使用できます。また Apple Silicon にも対応しています。詳細なインストール手順は「[KeycloakのSAML2 IdPをAmazon Cognito user poolsと連携する](https://s-edword.hatenablog.com/entry/2023/01/04/112949)」を参照してください。
+:::

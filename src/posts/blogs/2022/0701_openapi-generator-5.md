@@ -15,7 +15,7 @@ tags: [envoy, "openapi-generator", "spring-boot", OPA, "実践マイクロサー
 
 ## JWT 認証
 
-OpenID Connect で使用される ID Token は [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519) で標準化されている JWT (JSON Web Tokens) です。
+OpenID Connect で使用される ID Token は [RFC 7515](https://datatracker.ietf.org/doc/html/rfc7515) で標準化されている JWS (JSON Web Signature) ですが、一般的には JWT と呼ばれているので、この記事中も JWT とします。
 
 JWT は `.` (ドット) で区切られた3つの部分から構成され、ヘッダ (header)、ペイロード (payload)、署名 (signature) をそれぞれ URL Safe な Base64 でエンコードした文字列です。
 
@@ -53,6 +53,11 @@ Envoy Proxy の [JWT Authentication](https://www.envoyproxy.io/docs/envoy/latest
 ```
 
 発行者 (iss) を issuer に設定し、クライアント ID (aud) を audiences に設定します。また、公開鍵取得のためにアクセスする URI を remote_jwks の http_uri に設定します。
+
+:::info:2023年1月5日追記
+JWKS のエンドポイントから取得される公開鍵は [RFC 7517](https://datatracker.ietf.org/doc/html/rfc7517) で標準化されている JSON 配列フォーマットです。JSON 形式の公開鍵から Java の PublicKey を生成するコードサンプルが RSA のみですが「[OpenID Connect のメモ](https://s-edword.hatenablog.com/entry/2019/11/20/011812)」にあります。
+:::
+
 
 ID Token を必要としない、つまり認証が不要な API はこのフィルタをスキップさせるため、rules でフィルタが必要なパスのプレフィックス (prefix) を設定します。
 
@@ -373,6 +378,10 @@ OpenAPI Generator と Spring Boot を使ってマイクロサービスを構築�
 今回の記事で、セキュリティ向上のためドメインに組み込まなかった認証認可をサイドカーパターンで実現し、全体のサービスを完成しました。
 
 この記事のコード全体は [GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-6) にあります。
+
+:::info:2023年1月5日追記
+Kubernetes 環境に Keycloak をインストールする場合 Helm チャートが使用できます。また Apple Silicon にも対応しています。詳細なインストール手順は「[KeycloakのSAML2 IdPをAmazon Cognito user poolsと連携する](https://s-edword.hatenablog.com/entry/2023/01/04/112949)」を参照してください。
+:::
 
 ## 参考
 

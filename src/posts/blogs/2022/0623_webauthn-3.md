@@ -262,6 +262,7 @@ auth:
 
 OpenID Connect の [Discovery 仕様](https://openid.net/specs/openid-connect-discovery-1_0.html) に設定ファイルで使用する、Authorization Endpoint や Token Endpoint また ID トークン等の署名検証時の公開鍵取得のエンドポイントの取得方法も記載されています。
 
+
 Keycloak の場合は、次の URL にアクセスして取得できます。
 - `https://[Keycloak のホスト]/auth/realms/[レルム名]/.well-known/openid-configuration`
 
@@ -271,6 +272,10 @@ Amazon Cognito Userpools の場合は、次の URL にアクセスして取得�
 ## まとめ
 
 この記事では、Keycloak を OpenID Connect の IdP (アイデンティティプロバイダ) として設定する方法について説明しました。この記事のコード全体は、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-5) にあります。
+
+:::info:2023年1月5日追記
+Kubernetes 環境に Keycloak をインストールする場合 Helm チャートが使用できます。また Apple Silicon にも対応しています。詳細なインストール手順は「[KeycloakのSAML2 IdPをAmazon Cognito user poolsと連携する](https://s-edword.hatenablog.com/entry/2023/01/04/112949)」を参照してください。
+:::
 
 ## 過去の記事
 

@@ -29,6 +29,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 - [ペアワイズ法テストケース生成ツール「PictMaster」のサブモデルを使う](/blogs/2022/09/11/pictmaster-submodel-option/)
 - [ペアワイズ法テストケース生成ツール「PictMaster」の無効値を使う](/blogs/2022/10/01/pictmaster-Invalid-value-option/)
 - [ペアワイズ法テストケース生成ツール「PictMaster」のカバレッジ指定を使う](/blogs/2022/11/27/pictmaster-coverage-option/)
+- [ペアワイズ法テストケース生成ツール「PictMaster」の原型シートを使う(水準編)](/blogs/2023/01/06/pictmaster-prototype-sheet-option/)
 
 ### テスト技法 - Contract Test
 

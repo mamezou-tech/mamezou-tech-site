@@ -239,4 +239,8 @@ JWT Authentication / External Authorization については「[第5回 Open Poli
 
 ## おわりに
 
-この記事のサンプルコードは、[GitHub Repository](https://github.com/takesection-sandbox/envoyproxy-examples/tree/feature/code-flow/front-proxy-login) にあります。
+この記事のサンプルコードは、[GitHub Repository](https://github.com/takesection-sandbox/envoyproxy-examples/tree/main/front-proxy-login) にあります。
+
+:::info:2023年1月6日追記
+[GitHub Repository](https://github.com/takesection-sandbox/envoyproxy-examples/tree/main/front-proxy-login) に Kubernetes 環境にインストールするための Helm チャートを追加しました。
+:::

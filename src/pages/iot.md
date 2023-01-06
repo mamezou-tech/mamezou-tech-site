@@ -35,3 +35,9 @@ FreeRTOSの仕組みと特徴、各種実装についてご紹介します。
 - [IoT を使ってみる（その１０：FreeRTOSタスク編）](/iot/internet-of-things-10/)
 - [IoT を使ってみる（その１１：FreeRTOSタスク優先度編）](/iot/internet-of-things-11/)
 - [IoT を使ってみる（その１２：FreeRTOS排他制御編）](/iot/internet-of-things-12/)
+
+## 外部機器編
+
+IoTデバイスに接続して使用するセンサモジュールなどについてご紹介します。
+
+- [IoT を使ってみる（その１３：温湿度センサモジュールDHT11編）](/iot/internet-of-things-13/)

@@ -177,7 +177,8 @@ nerdctl run -it --rm --name envoy -v `pwd`/front-envoy.yaml:/etc/front-envoy.yam
 
 # 参考
 
-* [S3 の静的 Web サイトを Envoy でホスティング](https://developer.mamezou-tech.com/blogs/2022/02/16/hosting-a-static-website-using-s3-with-envoy/)
-* [Envoy と Open Policy Agent を使用した認可](https://developer.mamezou-tech.com/blogs/2022/02/20/envoy-authz/)
+* [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)
+* [S3 の静的 Web サイトを Envoy でホスティング](/blogs/2022/02/16/hosting-a-static-website-using-s3-with-envoy/)
+* [Envoy と Open Policy Agent を使用した認可](/blogs/2022/02/20/envoy-authz/)
 * [Envoy Docs](https://www.envoyproxy.io/docs.html)
     * [JWT Authentication](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/jwt_authn_filter)

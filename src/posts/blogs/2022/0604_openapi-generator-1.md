@@ -19,7 +19,7 @@ REST API の仕様を記述する [OpenAPI Specification](https://swagger.io/spe
 
 ドメイン駆動設計 (DDD - Domain-driven design) の主に戦略的設計で活用するイベントストーミングと、サイドカーパターンを紹介します。
 
-認証認可等の横断的関心事は、ドメインロジックを実装する Spring Boot を使ったアプリケーション本体には組み込まず、サイドカーで処理をする多層アーキテクチャ (Multi-Tier Architecture) について説明します。
+OpenID Connect の ID トークンである JWT (正確には JWS) を使う認証認可等の横断的関心事は、ドメインロジックを実装する Spring Boot を使ったアプリケーション本体には組み込まず、サイドカーで処理をする多層アーキテクチャ (Multi-tier Architecture) で説明します。
 
 参考: 「[ドメイン駆動設計と「コントロールプレーン」、「データプレーン」](https://s-edword.hatenablog.com/entry/2022/12/09/020834)」
 
@@ -33,7 +33,7 @@ OpenAPI Generator のようなコード生成の活用でポイントとなる G
 
 ### [第5回 Open Policy Agent とサイドカーパターンによる認可の実装](/blogs/2022/07/01/openapi-generator-5/)
 
-このシリーズを通して採用している多層アーキテクチャ (Multi-Tier Architecture) の1層である、サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。
+このシリーズを通して採用している多層アーキテクチャ (Multi-tier Architecture) の1層である、サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。
 
 [[TOC]]
 

@@ -2,7 +2,7 @@
 title: ディープラーニング初心者がOpenVINOを使ってみる（その１：インストール編）
 author: shuichi-takatsu
 date: 2023-01-09
-tags: [ディープラーニング, openvino]
+tags: [ディープラーニング, 深層学習, 機械学習, openvino]
 ---
 
 今回から数回に分けて「ディープラーニング・アプリケーション開発キット”[OpenVINO](https://www.intel.co.jp/content/www/jp/ja/internet-of-things/openvino-toolkit.html)”」について紹介したいと思います。  

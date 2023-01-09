@@ -21,23 +21,23 @@ Keycloak は Red Hat 社が開発しているオープンソースの認証管�
 
 iPad から Keycloak に Safari でアクセスします。
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-001.PNG)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-001.PNG)
 
 Username または Email を入力します。
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-002.PNG)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-002.PNG)
 
 Password 入力画面で、`Try Another Way` をクリックします。
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-003.PNG)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-003.PNG)
 
 Security Key をクリックします。
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-004.PNG)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-004.PNG)
 
 「Sign in with Security Key」ボタンをクリックして、指紋認証の Touch ID などを使ってサインインできます。
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-005.PNG)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-005.PNG)
 
 ## 構成
 
@@ -51,12 +51,12 @@ Route 53 のホストゾーンを作成するドメイン名は必ずしも AWS 
 
 Keycloak の公式のコンテナイメージを [AWS Fargate](https://aws.amazon.com/jp/fargate/) で実行します。
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-1.png)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-1.png)
 
-上図の構成を構築する CloudFormation テンプレートは [GitHub リポジトリ](https://github.com/edward-mamezou/hibernation-pod/blob/feature/v0.0.2/infrastructure/infra.yaml) にあります。
+上図の構成を構築する CloudFormation テンプレートは [GitHub リポジトリ](https://github.com/edward-mamezou/hibernation-pod/blob/v0.0.2/infrastructure/infra.yaml) にあります。
 
 :::stop
-この記事で構築する Keycloak はデモンストレーション用に簡素化しています。そして永続化しません。つまり、こらから述べる手順で構築した後、コンテナを停止 (サービスを停止) すると初期状態に戻ります。永続化のためには、データベース等も必要になります。冗長化や永続化については、最後に紹介しているリンクも参考にしてください。
+この記事で構築する Keycloak はデモンストレーション用に簡素化しています。そして永続化しません。つまり、これから述べる手順で構築した後、コンテナを停止 (サービスを停止) すると初期状態に戻ります。永続化のためには、データベース等も必要になります。冗長化や永続化については、最後に紹介しているリンクも参考にしてください。
 :::
 
 ## Keycloak の起動
@@ -75,15 +75,15 @@ Keycloak の公式のコンテナイメージを [AWS Fargate](https://aws.amazo
 
 Administration Console のリンクをクリックして、`Username or email` に `admin`、`Password` に `password` を入力して Sign In します。
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-2.png)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-2.png)
 
 新しい Realm を作成するため、左上の Master のあたりにマウスを置いて「Add realm」ボタンをクリックします。
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-4.png)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-4.png)
 
 Add realm の Name に `passengers` と入力します。
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-6.png)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-6.png)
 
 左側にある `Authentication` をクリックします。
 
@@ -93,7 +93,7 @@ Add realm の Name に `passengers` と入力します。
 2. 新しい名前として `WebAuthn Browser` と入力します。
 3. WebAuthn Browser Forms の下にある「Username Password Form」、「WebAuthn Browser Browser - Conditional OTP」、「Condition - User Configured」と「OTP Form」の右にある `Actions` から `Delete` を選んで削除します。
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-9.png)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-9.png)
 
 4. WebAuthn Browser Forms の右にある `Actions` の `Add execution` をクリックして、`Provider` から `Username Form` を選択して「Save」ボタンをクリックします。
 5. WebAuthn Browser Forms の右にある `Actions` の `Add flow` をクリックして `Alias` に `Password Or Two-factor` を入力して「Save」ボタンをクリックします。このフローは `REQUIRED` に設定します。
@@ -102,7 +102,7 @@ Add realm の Name に `passengers` と入力します。
 8. Password And Two-factor WebAuthn の右にある `Actions` の `Add execution` をクリックして `Provider` から `Password Form` を選択して「Save」ボタンをクリックします。このフローは `REQUIRED` に設定します。
 9. 最後に Password And Two-factor WebAuthn の右にある `Actions` の `Add execution` をクリックして `Provider` から `WebAuthn Authenticator` を選択して「Save」ボタンをクリックします。このフローは `REQUIRED` に設定します。
     
-![](https://github.com/edward-mamezou/hibernation-pod/raw/feature/v0.0.2/image/keycloak-10.png)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.0.2/image/keycloak-10.png)
 
 ### Bindings
 

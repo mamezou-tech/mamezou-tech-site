@@ -184,6 +184,12 @@ workflow_dispatch(手動)、pull_request の他に、schedule として crontab 
 
 [GitHub - github/codeql-action: Actions for running CodeQL analysis](https://github.com/github/codeql-action)
 
+:::info:2023.01.10追記
+Python / JavaScript / Ruby のリポジトリではワークフローファイルを追加しなくても簡単に Code scanning を有効化できるようになりました。
+
+[Default setup: A new way to enable GitHub code scanning | The GitHub Blog](https://github.blog/2023-01-09-default-setup-a-new-way-to-enable-github-code-scanning/)
+:::
+
 このワークフローファイルをリポジトリに登録して実行すると結果が GitHub にアップロードされます。
 
 ![](https://i.gyazo.com/03b171fb31b21d77619b444a9f115758.png)

@@ -7,7 +7,6 @@ tags: AWS
 
 最近はAWS関連の話題から少し遠ざかっていたので、今回は AWS IoT Device Client を紹介します。
 
-[[TOC]]
 
 ## AWS IoT Device Client とは
 

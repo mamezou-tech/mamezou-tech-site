@@ -8,7 +8,6 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
  
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第22日目の記事です。
 
-[[TOC]]
 
 ## 概要
 ここ数年、マイクロサービスの開発に携わっています。

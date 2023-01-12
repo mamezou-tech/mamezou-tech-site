@@ -15,7 +15,6 @@ nextPage: ./src/posts/msa/microprofile/cntrn17-mp-jwt.md
 また、MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
-[[TOC]]
 
 :::info
 この記事はJava17+Helidon 3.0.2 + MicroProfile OpenTracing 3.0 + Jeager 1.39をもとに作成しています。

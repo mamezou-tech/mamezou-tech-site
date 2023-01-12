@@ -13,7 +13,6 @@ Change Data Capture (CDC) は、データベースで発生した変更をキャ
 
 この記事では Debezium の概要を簡単に説明し、PostgreSQL と Debezium を使った開発環境を macOS 上に構築する手順を示します。
 
-[[TOC]]
 
 # Debezium の概要
 [Debezium](https://debezium.io/) は、Red Hat が OSS として開発している CDC のためのプラットフォームであり、Kafka Connect として動作します。

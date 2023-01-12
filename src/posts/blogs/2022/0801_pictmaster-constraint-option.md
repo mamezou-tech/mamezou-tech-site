@@ -8,7 +8,6 @@ tags: [テスト, pairwise, pict, pictmaster]
 [前回](/blogs/2022/07/23/pictmaster/)はペアワイズ法をGUIから使う便利ツール「PictMaster」の基本操作を紹介しました。  
 今回は「PictMaster」の「制約表」について紹介します。
 
-[[TOC]]
 
 ## テストケースに制約を付けたいとき
 

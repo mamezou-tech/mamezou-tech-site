@@ -8,7 +8,6 @@ tags: [AWS, "認証/認可", envoy, ZTA]
 いくつか Envoy Proxy の JWT Authentication や External Authorization を使った認証や認可の記事を書いてきました。
 今回は OAuth2 Filter を使った例を説明します。
 
-[[TOC]]
 
 あらためて説明すると、[Envoy Proxy](https://www.envoyproxy.io/) は C++ で書かれた軽量かつ高速なプロキシです。
 

@@ -28,7 +28,6 @@ Finchはコンテナのビルドから実行までコンテナを利用した開
 [^1]: とはいえ、Docker DesktopでGUIを使っている方をあまり見かけたことがありませんが。
 [^2]: Kubernetesを使う場合は、minikubeやRancher Desktop等を検討すると良いかと思います。
 
-[[TOC]]
 
 ## Finchをインストールする
 

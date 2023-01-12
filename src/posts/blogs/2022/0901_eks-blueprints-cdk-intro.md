@@ -25,7 +25,6 @@ EKS BlueprintsはネットワークやEKSクラスタはもちろん、アドオ
 
 今回はAWS CDKの方で試してみます(Terraformの方も後日トライします)。
 
-[[TOC]]
 
 ## AWS CDKプロジェクトを作成する
 

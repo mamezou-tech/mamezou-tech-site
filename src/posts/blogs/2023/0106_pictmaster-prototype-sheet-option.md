@@ -8,7 +8,6 @@ tags: [テスト, pairwise, pict, pictmaster]
 [前回](/blogs/2022/11/27/pictmaster-coverage-option/)はペアワイズ法テストケース生成ツール「PictMaster」の”カバレッジ指定”機能について紹介しました。  
 今回はPictMasterの”原型シート”機能について紹介したいと思います。
 
-[[TOC]]
 
 ## 既存のテストケースを再利用する
 

@@ -11,7 +11,6 @@ nextPage: ./src/posts/jest/jest-custom-matchers.md
 これを実現するには、モックやスタブが必要になってきます。
 Jestはモック機能が標準で備わっています。今回はJestのモック機能を見ていきましょう。
 
-[[TOC]]
 
 ## 関数のモック化
 

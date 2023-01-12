@@ -24,7 +24,6 @@ Java17にBump upしてみたの後編の今回は[前編](/blogs/2022/06/06/bump
 -	規模はプロダクトコードが8.7kstepでクラス数は244クラス(Sonar Cloudの[Measuresのより](https://sonarcloud.io/component_measures?metric=ncloc&id=extact-io_rms))
 :::
 
-[[TOC]]
 
 
 ## Recordクラスの導入

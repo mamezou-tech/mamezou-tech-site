@@ -10,7 +10,6 @@ tags: [Analytics]
 
 今回も統計解析ツール[jamovi](https://www.jamovi.org/)を使ってデータ分析を行っていきます。
 
-[[TOC]]
 
 ## お題「品質改善前後の効果の確認」
 

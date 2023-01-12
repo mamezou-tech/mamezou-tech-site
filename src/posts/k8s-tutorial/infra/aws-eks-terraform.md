@@ -16,7 +16,6 @@ TerraformはHashiCorp社で開発されたマルチクラウド対応のIaCツ�
 [Terraform Language](https://www.terraform.io/docs/language/index.html)(拡張子が`.tf`)という独自の構成記述言語を採用しており、YAML/JSONを使うCloudFormationよりも高い表現力で簡潔に設定を記述できます。
 有償版もありますが、CLIだけであれば無償で利用でき、実際にこのツールでクラウドインフラを管理しているプロジェクトもかなり多いのではと思います。
 
-[[TOC]]
 
 ## 事前準備
 

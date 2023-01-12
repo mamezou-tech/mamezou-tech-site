@@ -29,7 +29,6 @@ useStateとPiniaとの比較は以下記事に詳細が載っていますので�
 - [Nuxt 3 State Management: Pinia vs useState](https://www.vuemastery.com/blog/nuxt-3-state-mangement-pinia-vs-usestate/)
 :::
 
-[[TOC]]
 
 ## ref/reactiveの欠点
 

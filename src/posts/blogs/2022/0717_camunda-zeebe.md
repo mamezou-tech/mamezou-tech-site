@@ -7,7 +7,6 @@ date: 2022-07-17
 
 先日の、[Tauri のアプリケーション開発の記事](/blogs/2022/07/08/writing-app-with-tauri/)で BPMN モデリングのライブラリ bpmn.js を取り上げましたが、これは、Camunda というプロセスオーケストレーター製品を提供している会社の OSS でした。本記事では、Camunda のプロセスオーケストレーターのエンジンである Zeebe の概要と、ローカルの開発環境構築について記述します。
 
-[[TOC]]
 
 ## Camunda プロセスオーケストレーター(Zeebe) 概要
 [The Universal Process Orchestrator | Camunda](https://camunda.com/)

@@ -11,7 +11,6 @@ nextPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md
 [前回](/nuxt/nuxt3-rendering-mode/)はNuxtの基本的なレンダリングモードを説明しました。
 第2回は、実際に簡単なNuxtアプリケーションを作成し、Nuxt3の開発フローを見ていきます。
 
-[[TOC]]
 
 ## 事前準備
 

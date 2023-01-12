@@ -44,7 +44,6 @@ OpenTelemetryはメトリクスの回で紹介しています。
 各コンポーネントにはOpenTelemetryのSDK(クライアントライブラリ)を組み込み、イベント発生時にOpenTelemetry Collector経由でJaegerにトレース情報を送信します。
 最終的にはJaegerのUIを利用して、蓄積したトレース情報を可視化していきます。
 
-[[TOC]]
 
 ## 事前準備
 

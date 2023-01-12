@@ -7,7 +7,6 @@ date: 2022-12-12
 [前回](/iot/internet-of-things-09/)はESP32などの安価なIoTデバイスで利用できる「FreeRTOS」を紹介しました。  
 今回はFreeRTOSの詳細に入っていきたいと思います。
 
-[[TOC]]
 
 ## FreeRTOSのタスク
 

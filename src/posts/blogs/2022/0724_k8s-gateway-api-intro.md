@@ -27,7 +27,6 @@ Kubernetes Gateway API(以下Gateway API)はこのような欠点を解消すべ
 - [Google Cloud GKEドキュメント - Gateway](https://cloud.google.com/kubernetes-engine/docs/concepts/gateway-api)
 :::
 
-[[TOC]]
 
 ## Kubernetes Gateway APIが提供するリソース
 

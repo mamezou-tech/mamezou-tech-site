@@ -77,6 +77,6 @@ function Recommendation({ tags }) {
   `;
 }
 
-export function render({ tags }, el) {
+export function renderRecommendation({ tags }, el) {
   return preactRender(html` <${Recommendation} tags=${tags} />`, el);
 }

@@ -10,7 +10,6 @@ Rのバージョンを”うっかり”4.2系にバージョンアップした�
 R4.2系のままRstanを導入する際の助けになればと思います。
 （Rの操作は[RStudio](https://www.rstudio.com/)から行います）
 
-[[TOC]]
 
 ## StanとRstan
 

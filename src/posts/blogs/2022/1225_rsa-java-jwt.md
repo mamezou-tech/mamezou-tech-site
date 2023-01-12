@@ -15,7 +15,6 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 JWT認証で使われる文字列は正しくはJWS(JSON Web Signature)ですが、記事では一般的な呼び方にならいJWSを単にトークンまたは認証トークンと呼んでいます。
 :::
 
-[[TOC]]
 
 # 利用するJWTライブラリ
 共通鍵方式と同じ次のjava-jwtライブラリを使います。

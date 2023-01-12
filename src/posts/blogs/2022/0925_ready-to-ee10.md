@@ -14,7 +14,6 @@ tags: [java, mp]
 [^1]: 各プロダクトのJakarta EE 10の対応状況は[JAKARTA EE COMPATIBLE PRODUCTS](https://jakarta.ee/compatibility/certification/10/)を参照。
 [^2]: Jakarta EE 9.1はJakarta EE 9に対してJavaSE 11のサポートが加わっただけで内容的に違いはないため、記事では両者を区別せず表記しています。
 
-[[TOC]]
 
 ## バージョンアップしたアプリの概要
 バージョンアップに使ったアプリが利用しているフレームワークやJakarta EEの仕様は次のとおりです。

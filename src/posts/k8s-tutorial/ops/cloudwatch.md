@@ -18,7 +18,6 @@ CloudWatchは、OpenSearchのように構成を考えたり、別途セットア
 
 [^1]: CloudWatchは[メトリクス可視化](/containers/k8s/tutorial/ops/opentelemetry/)でも使用しましたが、今回はログ分析に使用します。
 
-[[TOC]]
 
 ## 事前準備
 

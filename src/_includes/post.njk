@@ -5,6 +5,15 @@ layout: base.njk
 {% include 'sitenav.njk' %}
 
 <main class="tdbc-container">
+  <is-land on:idle>
+    <div id='toc'></div>
+    <template data-island>
+	  <script type="module">
+      import { renderToc } from '/components/preact/bundle.mjs';
+      renderToc(document.getElementById("toc"));
+	  </script>
+    </template>
+  </is-land>
   <article class="post tdbc-mx-auto">
     <header class="post__header">
       <h1>{{ title }}</h1>

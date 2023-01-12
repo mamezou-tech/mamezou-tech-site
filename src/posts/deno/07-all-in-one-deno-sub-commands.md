@@ -8,7 +8,6 @@ prevPage: ./src/posts/deno/06-serving-files-on-deno-deploy.md
 
 ここまで Deno の様々な機能を見てきました。今回は、Deno のツール(サブコマンド)について見ていきます。
 
-[[TOC]]
 
 ## Deno のサブコマンド
 [第1回](/deno/getting-started/01-introduction/#deno-のツール)でも軽く紹介したように、deno CLI は多くのサブコマンドを提供しています。表にして本連載で取り上げたものは該当の箇所にリンクを貼ってみました。

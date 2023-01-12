@@ -17,7 +17,6 @@ Nuxt3では、アプリケーションの設定はRuntime Config(またはApp Co
 
 なお、ここでいう設定情報はNuxt自体のものではなく、アプリケーション内で利用する設定情報です。
 
-[[TOC]]
 
 ## Runtime Config
 

@@ -8,7 +8,6 @@ tags: [テスト, pairwise, pict, pictmaster]
 [前回](/blogs/2022/10/01/pictmaster-Invalid-value-option/)はペアワイズ法テストケース生成ツール「PictMaster」の”無効値”機能について紹介しました。  
 今回はPictMasterの”カバレッジ指定”機能について紹介したいと思います。
 
-[[TOC]]
 
 ## ２因子より多い組み合わせ数を指定する
 

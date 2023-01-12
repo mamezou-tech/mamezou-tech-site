@@ -32,7 +32,6 @@ tags: [自然言語処理,機械学習,GPT-2,OpenAI,ファインチューニン�
 まずGPT-2の概略を紹介した後に、今回GPT-2を扱う環境であるGoogle Colaboratoryの新規作成方法と「GPT2-japanese」のインストールについて軽く説明します。
 その後にGPT-2による文章作成とファインチューニングのやり方と結果をご紹介します。
 
-[[TOC]]
 
 # 「GPT2-japanese」の概要
 ## GPTとは

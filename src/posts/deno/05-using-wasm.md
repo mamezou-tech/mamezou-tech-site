@@ -16,7 +16,6 @@ Deno v1.28 がリリースされました。新しく `Deno.Command` API が追�
 
 さて、今回は Deno における WebAssembly(WASM) 利用について見ていきましょう。
 
-[[TOC]]
 
 ## Web 標準 API による WASM サポート
 Deno ランタイムでは Web 標準の WASM 用 API が提供されていますので、Web ブラウザー用にビルドされた WASM を利用できます。

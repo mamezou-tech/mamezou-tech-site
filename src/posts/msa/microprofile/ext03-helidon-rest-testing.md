@@ -16,7 +16,6 @@ HTTPプロトコルを用いた結合レベルのRESTリソースのテストは
 MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
-[[TOC]]
 
 :::info
 この記事はJava11 + Helidon 2.4.2 + MicroProfile RestClient 1.4 + Helidon MP Testing With JUnit5をもとに作成しています。MicroProfile RestClientやHelidon MP Testing With JUnit5の説明は本記事では行いませんので、ご存じない方は以下を一読されることをお勧めします。

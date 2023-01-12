@@ -32,7 +32,6 @@ EC2でタグ付けを強制したい場合は、IAMレベルで指定できま�
 - [Tag EC2 Instances & EBS Volumes on Creation](https://aws.amazon.com/jp/blogs/aws/new-tag-ec2-instances-ebs-volumes-on-creation/)
 :::
 
-[[TOC]]
 
 ## Cloud Custodianをインストールする
 

@@ -19,7 +19,6 @@ Fastly は自社開発の WASI をサポートする WASM ランタイム Lucet 
 [GitHub - bytecodealliance/lucet: Lucet, the Sandboxing WebAssembly Compiler.](https://github.com/bytecodealliance/lucet)
 :::
 
-[[TOC]]
 
 ## WASI 対応 WASM の開発フロー
 

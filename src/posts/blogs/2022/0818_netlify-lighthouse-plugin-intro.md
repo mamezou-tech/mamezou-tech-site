@@ -16,7 +16,6 @@ ChromeのDevToolsで使われていることが多い印象ですが、Lighthous
 今回は[Netlify](https://www.netlify.com/)でサイトデプロイ時にLighthouseを使って評価する仕組みを紹介します。
 これを使用すると、Lighthouseスコアの計算に加えて、しきい値を下回った場合はデプロイを失敗させるといったこともできます。
 
-[[TOC]]
 
 ## Lighthouseプラグイン導入
 

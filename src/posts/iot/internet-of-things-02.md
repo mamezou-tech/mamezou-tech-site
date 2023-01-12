@@ -8,7 +8,6 @@ tags: AWS
 [前回](/iot/internet-of-things-01/)は、AWS IoTの簡単接続手順(チュートリアル)を実行してIoTデバイス(Raspberry Pi)とAWS IoTの通信を行ってみました。  
 今回はチュートリアルを使わずに、AWS IoTコンソールを使って最初から「モノ」を登録していきましょう。
 
-[[TOC]]
 
 ## 前置き
 

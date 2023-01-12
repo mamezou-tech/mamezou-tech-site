@@ -35,7 +35,6 @@ OpenAPI Generator のようなコード生成の活用でポイントとなる G
 
 このシリーズを通して採用している多層アーキテクチャ (Multi-tier Architecture) の1層である、サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。
 
-[[TOC]]
 
 ## OpenAPI Specification
 

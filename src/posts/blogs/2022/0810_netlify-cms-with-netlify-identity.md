@@ -40,7 +40,6 @@ Netlify Identity自体はNetlify CMS専用のサービスではなく、汎用�
 
 [^1]: 認証時に別途Netlifyのドメインを登録することでローカル環境でも動作は可能でした。
 
-[[TOC]]
 
 ## Netlifyにサイトをデプロイする
 

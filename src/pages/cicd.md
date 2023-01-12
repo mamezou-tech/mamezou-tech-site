@@ -14,7 +14,6 @@ CI/CDパイプラインは、現代のソフトウェア開発に必要不可欠
 
 幅広いCI/CDツールを充実させていく予定ですので、ご参考いただければ幸いです。
 
-[[TOC]]
 
 ## GitHub Actions
 [GitHub Actions](https://github.com/features/actions)は[GitHub](https://github.com/)が提供するCI/CDサービスです。

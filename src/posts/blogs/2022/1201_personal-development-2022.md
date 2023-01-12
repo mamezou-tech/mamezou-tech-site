@@ -14,7 +14,6 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 言い出しっぺなので初日の記事を担当することにしました。この記事では筆者の2022年の個人開発活動について書いてみようと思います。
 
-[[TOC]]
 
 ## Write Code Every Day
 筆者は2018年の途中から GitHub の contribution graph に毎日草を生やし続けています[^2]。

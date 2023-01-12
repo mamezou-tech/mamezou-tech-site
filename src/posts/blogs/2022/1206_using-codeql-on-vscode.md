@@ -16,7 +16,6 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 この記事では、CodeQL 拡張で CodeQL データベースを取得し分析する方法を見ていきます。また、ローカル環境で CodeQL データベースを作る手順も試してみます。
 
-[[TOC]]
 
 ## CodeQL 拡張のインストール
 まず、CodeQL 拡張をインストールします。

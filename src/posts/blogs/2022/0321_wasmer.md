@@ -20,7 +20,6 @@ Kubernetes でも Krustlet という Wasm ランタイムをコンテナとし�
 
 今回は Wasmer の概要を見てみます。macOS にインストールしてみました。
 
-[[TOC]]
 
 # Wasmer のインストール
 [Wasmer - The Universal WebAssembly Runtime](https://wasmer.io/)

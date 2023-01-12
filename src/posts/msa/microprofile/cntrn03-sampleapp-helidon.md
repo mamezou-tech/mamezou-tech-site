@@ -14,7 +14,6 @@ nextPage: ./src/posts/msa/microprofile/cntrn04-spec-ranking.md
 MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
-[[TOC]]
 
 ## サンプルアプリの紹介
 サンプルアプリはレンタル品を予約するシステム（レンタル品予約システム）を題材にしたアプリで、コードはGitHubで公開しています。アプリは次のようにいくつかのリポジトリで構成されていますが、MicroProfileのサンプルはrmsリポジトリとなります。

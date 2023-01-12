@@ -8,7 +8,6 @@ tags: [テスト, pairwise, pict, pictmaster]
 [前回](/blogs/2022/09/11/pictmaster-submodel-option/)はペアワイズ法テストケース生成ツール「PictMaster」の”サブモデル”機能について紹介しました。  
 今回はPictMasterの”無効値”機能について紹介したいと思います。
 
-[[TOC]]
 
 ## 特定の因子・水準同士の組み合わせを制限したい場合
 

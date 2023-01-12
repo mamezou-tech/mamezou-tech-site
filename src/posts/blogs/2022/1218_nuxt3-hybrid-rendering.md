@@ -36,7 +36,6 @@ Nuxt3でようやくこれに追い付いた形です。各ルートに対して
 - [Nitro Doc - routeRules](https://nitro.unjs.io/config#routerules)
 :::
 
-[[TOC]]
 
 ## ハイブリッドレンダリングを試す
 

@@ -15,7 +15,6 @@ MicroProfileを語る上で標準であるJakarta EE（Java EE/J2EE）は切っ�
 MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
-[[TOC]]
 
 ## Java EEの登場から今
 

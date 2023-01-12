@@ -18,7 +18,6 @@ Vitestの公式サイトでも、`Blazing Fast Unit Test Framework`と宣伝し�
 
 [^1]: [こちら](/blogs/2022/11/16/jamstack-survey-insight/)の記事でも言及してますが、Viteはフロントエンド向けの高速ビルドツールとしてかなりシェアを伸ばしています。
 
-[[TOC]]
 
 ## Vitestを導入する
 

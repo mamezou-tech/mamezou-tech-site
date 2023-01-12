@@ -25,7 +25,6 @@ AWSには[X-Ray](https://aws.amazon.com/jp/xray/)という分散トレーシン�
 前回の構成との違いはJaegerがAWS X-Rayに置き換わっただけです。 トレース情報の収集や転送に使うOpenTelemetryは同じものです。
 OpenTelemetryは特定の製品に依存しない標準仕様ですので、バックエンドサービスの切り替えは非常に簡単です。
 
-[[TOC]]
 
 ## 事前準備
 

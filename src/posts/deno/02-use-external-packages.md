@@ -11,7 +11,6 @@ nextPage: ./src/posts/deno/03-server-side-rendering.md
 
 今回は、外部ライブラリの利用方法について見ていきます。
 
-[[TOC]]
 
 ## 外部コードのインポート
 

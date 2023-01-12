@@ -8,7 +8,6 @@ tags: [テスト, googletest, vscode]
 [前回](/blogs/2022/11/14/google-test-03/)は Google Test のテストフィクスチャを使うことで、テストケースを実行する前に、データをテストケースに渡すことができることを確認しました。  
 今回はテストケースの実行をサポートするVSCode拡張機能「GoogleTest Adapter」の設定や使い方を紹介したいと思います。   
 
-[[TOC]]
 
 ## VSCode拡張機能「GoogleTest Adapter」 とは
 

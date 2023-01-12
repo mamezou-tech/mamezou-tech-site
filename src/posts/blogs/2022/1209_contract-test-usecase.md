@@ -12,7 +12,6 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 今回は、Contract Testをどのように開発に取り入れるのが効果的なのかを、同じようにサンプルコードを使いながら考察していきます。
 
-[[TOC]]
 
 ## 前回のおさらい
 

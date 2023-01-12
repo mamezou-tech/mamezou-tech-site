@@ -8,7 +8,6 @@ tags: [テスト, pairwise, pict, pictmaster]
 [前回](/blogs/2022/09/03/pictmaster-weight-option/)はペアワイズ法テストケース生成ツール「PictMaster」の”重み”機能について紹介しました。  
 今回はPictMasterの”サブモデル”機能について紹介したいと思います。
 
-[[TOC]]
 
 ## 一部の因子の組み合わせ網羅数を他の因子よりも多くしたい場合
 

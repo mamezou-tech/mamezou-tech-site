@@ -16,7 +16,6 @@ tags: [Analytics]
 
 今回は２択の結果を検定する方法「２項検定」を[jamovi](https://www.jamovi.org/)を使って説明していきます。
 
-[[TOC]]
 
 ## ２項検定とは
 

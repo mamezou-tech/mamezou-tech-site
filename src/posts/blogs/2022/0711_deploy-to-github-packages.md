@@ -9,7 +9,6 @@ GitHub Packages は、Docker イメージ、npm、Maven、NuGet、RubyGems な�
 
 この記事では、[OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator) で生成した TypeScript モジュールを GitHub Actions を使って GitHub Packages にデプロイする方法を説明します。
 
-[[TOC]]
 
 ## OpenAPI Generator
 

@@ -8,7 +8,6 @@ tags: [テスト, googletest]
 これから数回に分けて「Google Test」についてご紹介したいと思います。  
 Windows＋VSCode(Visual Studio Code)環境で Google Test を紹介している例があまり無かったので、今回は Google Test をソースコードで取得してビルドし、Google Test環境を準備するところまでご紹介します。  
 
-[[TOC]]
 
 ## Google Test とは
 

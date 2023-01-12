@@ -11,7 +11,6 @@ electron-quick-start は Electron でのプロジェクトのひな形となる�
 
 Electron が1.0に到達する以前の2015年からメンテナンスされています。Electron の進化とともにファイル構成やプログラミングモデルも変わってきました。その歴史をコミット履歴から見ていきましょう。
 
-[[TOC]]
 
 ## 2015/10/17 io.js からスタート
 [8113791cebec956796e5a10562b64fa965754f7e](https://github.com/electron/electron-quick-start/tree/8113791cebec956796e5a10562b64fa965754f7e)

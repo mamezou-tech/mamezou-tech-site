@@ -15,7 +15,6 @@ nextPage: ./src/posts/msa/microprofile/cntrn07-mp-restclient.md
 MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
-[[TOC]]
 
 :::info
 この記事はJava11+Helidon 2.4.2 + MicroProfile Config 1.4をもとに作成しています。MicroProfile Config 3.0は [第8回 Microprofile Config 3.0へのキャッチアップ](/msa/mp/cntrn08-mp-config3/) で紹介しています。

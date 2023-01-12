@@ -25,7 +25,6 @@ prevPage: ./src/posts/nuxt3/nuxt3-state-management.md
 Nuxt3のサーバーエンジンである[Nitro](https://nitro.unjs.io/)は、マルチプラットフォームで動作可能です。
 今回は代表的なサーバーレスサービスの[AWS Lambda](https://aws.amazon.com/lambda/)に、Nuxtアプリケーションをデプロイしてみたいと思います。
 
-[[TOC]]
 
 ## LambdaにNuxtアプリケーションをデプロイする
 

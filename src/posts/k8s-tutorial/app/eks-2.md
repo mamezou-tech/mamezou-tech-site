@@ -40,7 +40,6 @@ app/k8s/v3
         └── patches
 ```
 
-[[TOC]]
 
 ## base
 

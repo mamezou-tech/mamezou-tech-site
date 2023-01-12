@@ -11,7 +11,6 @@ nextPage: ./src/posts/deno/04-using-os-and-ffi.md
 
 今回は、Deno の有力なユースケースの1つである  Web アプリケーションの Server side rendering (SSR) について見ていきましょう。
 
-[[TOC]]
 
 ## Deno の JSX サポートによる SSR
 Deno は React の HTML ライク DSL である JSX による DOM 操作をサポートしています[^1]。JSX は JavaScript に事前コンパイルされブラウザ上で DOM 操作に使用されます(下記のフローでは、サーバーからの JavaScript などのアセット受信は省略しています)。

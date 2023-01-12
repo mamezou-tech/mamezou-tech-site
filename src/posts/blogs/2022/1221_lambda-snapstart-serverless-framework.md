@@ -31,7 +31,6 @@ CRaCは本サイトの以下記事で詳細に説明されていますので、�
 - [CRaCによるJavaの高速化](/blogs/2022/12/02/jdk-crac/)
 :::
 
-[[TOC]]
 
 ## Serverless Frameworkを導入する
 

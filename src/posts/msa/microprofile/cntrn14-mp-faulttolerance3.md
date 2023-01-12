@@ -14,7 +14,6 @@ MicroProfile Fault Tolerance(MP Fault Tolerance)を紹介する最後は設定�
 MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
-[[TOC]]
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Fault Tolerance 4.0をもとに作成しています。

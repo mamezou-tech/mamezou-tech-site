@@ -19,7 +19,6 @@ nextPage: ./src/posts/deno/07-all-in-one-deno-sub-commands.md
 
 今回は「Deno Deploy で JSON などの静的なファイルを配信する」というシナリオで、ダッシュボードやツールの利用方法などについて見ていきたいと思います。
 
-[[TOC]]
 
 ## Playground によるデプロイ
 

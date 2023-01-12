@@ -8,7 +8,6 @@ tags: [Analytics]
 前回の[ブログ記事](https://developer.mamezou-tech.com/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)では統計解析ツールjamoviを使って1標本t検定を行う例をご紹介しました。   
 今回は再度jamoviを使いつつ、データ分析をする上でネックになる”外れ値”を箱ひげ図を使って確認し、分析に適用していく方法をご紹介します。
 
-[[TOC]]
 
 ## 外れ値とは
 

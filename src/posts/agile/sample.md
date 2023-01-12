@@ -10,7 +10,6 @@ eleventyExcludeFromCollections: true
 サンプルページです。
 このページは削除して構いません。
 
-[[TOC]]
 
 ## アジャイルとは？
 

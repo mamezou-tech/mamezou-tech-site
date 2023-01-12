@@ -23,7 +23,6 @@ PSS/PSAはビルトイン機能として、設定のシンプルさを追求し�
 - [jsPolicy](https://www.jspolicy.com/)
 :::
 
-[[TOC]]
 
 ## 環境準備
 今回はminikubeでKubernetes環境を準備します。minikubeをローカル環境にインストールします。

@@ -33,7 +33,6 @@ SealedSecrets以外にも、Vault等の専用プロダクトやクラウドプ�
 より厳格にシークレット管理をしたい場合は、このようなツール導入を検討するのが良いと思います。
 :::
 
-[[TOC]]
 
 ## SealedSecrets CLI(kubeseal)をインストールする
 

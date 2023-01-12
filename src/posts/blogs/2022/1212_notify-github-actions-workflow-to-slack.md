@@ -23,7 +23,6 @@ Slack の GitHub インテグレーションを使えば、PR(Pull Request) や 
 Changelog には Microsoft Teams でも同様にワークフローイベントの通知が受けられるようになったことがアナウンスされています。この記事では Slack 通知について記述します。
 :::
 
-[[TOC]]
 
 ## GitHub リポジトリからの通知の種類
 GitHub + Slack Integration の README に通知の種類や設定方法の詳細があります。

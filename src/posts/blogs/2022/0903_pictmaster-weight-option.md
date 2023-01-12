@@ -8,7 +8,6 @@ tags: [テスト, pairwise, pict, pictmaster]
 [前回](/blogs/2022/08/08/pictmaster-alias-option/)はペアワイズ法テストケース生成ツール「PictMaster」の”エイリアス”について紹介しました。  
 今回はPictMasterの”重み”機能について紹介したいと思います。
 
-[[TOC]]
 
 ## 組み合わせの一部を他より多くテストしたい場合
 

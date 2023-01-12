@@ -20,7 +20,6 @@ private リポジトリでの Action と再利用可能ワークフローの共�
 
 [Sharing actions and workflows from your private repository - GitHub Docs](https://docs.github.com/en/actions/creating-actions/sharing-actions-and-workflows-from-your-private-repository)
 
-[[TOC]]
 
 ## private リポジトリの Action を呼び出す
 

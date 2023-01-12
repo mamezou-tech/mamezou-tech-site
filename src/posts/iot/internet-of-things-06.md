@@ -7,7 +7,6 @@ date: 2022-10-08
 [前回](/iot/internet-of-things-05/)記事でMQTTを紹介しました。  
 今回はMQTTブローカー「Mosquitto」について説明したいと思います。
 
-[[TOC]]
 
 ## MQTT通信のおさらい
 

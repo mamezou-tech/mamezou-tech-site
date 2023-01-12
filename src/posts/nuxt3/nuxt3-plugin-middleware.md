@@ -23,7 +23,6 @@ nextPage: ./src/posts/nuxt3/nuxt3-state-management.md
 
 プラグイン、ミドルウェアともにNuxt2からあるものですが、Nuxt3では若干使い方が変わっています。
 
-[[TOC]]
 
 ## プラグイン
 

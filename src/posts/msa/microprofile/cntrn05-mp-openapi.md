@@ -17,7 +17,6 @@ nextPage: ./src/posts/msa/microprofile/cntrn06-mp-config.md
 MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
-[[TOC]]
 
 :::info
 この記事はJava11+Helidon 2.4.2 + MicroProfile OpenAPI 1.2をもとに作成しています。MicroProfile OpenAPI 3.0は [第9回 MicroProfile OpenAPI 3.0の新機能と既存機能の比較](/msa/mp/cntrn09-mp-openapi3/) で紹介しています。

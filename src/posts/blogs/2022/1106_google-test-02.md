@@ -8,7 +8,6 @@ tags: [テスト, googletest]
 [前回](/blogs/2022/11/04/google-test-01/)は「Google Test」が実行できる環境を整えました。  
 今回は Google Test を使った簡単なサンプルプログラムを動かしてみます。
 
-[[TOC]]
 
 ## なぜ単体テストフレームワークを使うのか
 

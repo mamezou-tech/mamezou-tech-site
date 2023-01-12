@@ -12,7 +12,6 @@ tags: [container, vscode]
 
 ということで今回はコンテナを使った開発環境の一例として、Libertyとliberty-maven-pluginによるコンテナ連携とVSCodeによるコンテナアプリのデバッグ方法を紹介します。
 
-[[TOC]]
 
 ## 使うもの
 - Maven

@@ -8,7 +8,6 @@ tags: [テスト, pairwise, pict, pictmaster]
 [前回](/blogs/2023/01/06/pictmaster-prototype-sheet-option/)はペアワイズ法テストケース生成ツール「PictMaster」の”原型シート”機能(水準編)について紹介しました。  
 前回は水準のみ変更しましたが、今回は「因子」を変更してみようと思います。  
 
-[[TOC]]
 
 ## 既存のテストケースに因子を追加する
 

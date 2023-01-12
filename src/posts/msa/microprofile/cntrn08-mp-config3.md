@@ -14,7 +14,6 @@ Helidon 3.0がリリースされMicroProfile5.0準拠となり、ついにHelido
 MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
-[[TOC]]
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Config 3.0.1をもとに作成しています。

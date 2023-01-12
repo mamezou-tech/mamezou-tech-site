@@ -23,7 +23,6 @@ nextPage: ./src/posts/k8s-tutorial/app/batch.md
 WebアプリケーションはVue.jsで作成されたユーザーインターフェースです。
 これがタスク管理API(task-service)を通じて、バックエンドのDynamoDBにタスク情報を登録、照会するものです。
 
-[[TOC]]
 
 ## 事前準備
 

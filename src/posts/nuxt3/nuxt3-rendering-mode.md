@@ -17,7 +17,6 @@ Vue3やNitro、Vite等、多くの変更がある[Nuxt3](https://nuxt.com/)で�
                                                 
 今回は、新しいVueコンポーネントを作成せずに初期状態のNuxtのWelcomeページで見ていきます。
 
-[[TOC]]
 
 ## Nuxt3が提供するレンダリングモード
 

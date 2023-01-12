@@ -29,7 +29,6 @@ Cert Managerは、CRD(Custom Resource Definitions)として提供されるIssuer
 
 ![](https://i.gyazo.com/fa39261af82bfefe43878d5f31e4b638.png)
 
-[[TOC]]
 
 ## 事前準備
 以下のいずれかの方法で、事前にEKS環境を作成しておいてください。

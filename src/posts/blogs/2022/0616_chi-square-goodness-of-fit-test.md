@@ -7,7 +7,6 @@ tags: [Analytics]
 
 取り得る状態が「はい・いいえ」など２つのみのデータの検定（２項検定）を[以前のブログ](https://developer.mamezou-tech.com/blogs/2022/06/10/binomial-test/)で扱いましたが、今回は「多値」データの検定についてご紹介します。
 
-[[TOC]]
 
 ## カイ２乗検定とは
 

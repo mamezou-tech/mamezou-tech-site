@@ -14,7 +14,6 @@ Vue.jsのようなコンポーネントフレームワークを使ってある�
 
 今回は[Vue.js](https://vuejs.org/)(v3)のコンポーネントをnpmモジュール化し、[AWS CodeArtifact](https://aws.amazon.com/jp/codeartifact/)にデプロイする方法を紹介します。
 
-[[TOC]]
 
 ## Vueコンポーネントライブラリのプロジェクト作成
 

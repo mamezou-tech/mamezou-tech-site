@@ -16,7 +16,6 @@ MicroProfileをテーマにブログを連載しています。他の記事も�
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
 
-[[TOC]]
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile OpenAPI 3.0.1をもとに作成しています。

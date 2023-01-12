@@ -15,7 +15,6 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 [秘密保持契約（NDA）](https://aws.amazon.com/jp/certification/certification-agreement/)があるため、詳細な試験内容については触れることができませんので、ご了承ください。
 :::
 
-[[TOC]]
 
 ## 筆者について
 

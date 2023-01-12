@@ -18,7 +18,6 @@ nextPage: ./src/posts/k8s-tutorial/delivery/flux.md
 
 ![](https://i.gyazo.com/bfb19af214cdbf34f1342a84a869f943.png)
 
-[[TOC]]
 
 ## EKS環境向けのパッチ・マニフェスト作成(overlays/prod)
 

@@ -11,7 +11,6 @@ updated: 2022-04-07
 [前回](/containers/k8s/tutorial/ops/prometheus)はPrometheusとGrafanaを利用して、Kubernetesおよびアプリケーションに関するメトリクスの収集・可視化を行いました。
 今回は[OpenTelemetry](https://opentelemetry.io/)と[CloudWatch](https://aws.amazon.com/jp/cloudwatch/)を使って同じことをしてみましょう。
 
-[[TOC]]
 
 ## OpenTelemetryとは？
 OpenTelemetryは、メトリクス、トレース、ログ等のテレメトリー[^1]情報のやりとりに関するインターフェースを規定する仕様です(現状ログはまだドラフトです)。

@@ -27,7 +27,6 @@ Netlify CMS自体は、Netlify本体と直接依存関係がある訳ではな�
 
 - [Netlify CMS - Platform Guides](https://www.netlifycms.org/docs/site-generator-overview/)
 
-[[TOC]]
 
 ## eleventy(11ty)プロジェクトを作成する
 

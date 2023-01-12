@@ -8,7 +8,6 @@ tags: AWS
 [前々回(AWS IoT モノの準備編)](/iot/internet-of-things-02/)、[前回(AWS IoT プログラム編)](/iot/internet-of-things-03/)で、AWS IoTとIoTデバイスを接続するための準備ができました。  
 今回は双方向にデータ通信をさせて、IoT接続が確立していることを確認していきましょう。
 
-[[TOC]]
 
 ## AWS IoT MQTTテストクライアント
 

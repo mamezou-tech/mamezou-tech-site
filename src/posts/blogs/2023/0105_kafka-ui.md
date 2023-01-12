@@ -19,7 +19,6 @@ Kafka を Cloud で提供している Confluent Platform では専用の Web UI 
 [Apache Kafka GUI Management and Monitoring - Confluent](https://www.confluent.io/product/confluent-platform/gui-driven-management-and-monitoring/)
 :::
 
-[[TOC]]
 
 ## kafka-ui のフィーチャー
 [README](https://github.com/provectus/kafka-ui/blob/master/README.md)によると kafka-ui では以下のフィーチャーが提供されています。

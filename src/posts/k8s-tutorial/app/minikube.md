@@ -33,7 +33,6 @@ minikubeはKubernetes公式コミュニティ(SIGs)で開発・運用されて�
 
 **なお、ここでの作業はDocker DesktopのKubernetesでも代用可能ですので、Docker Desktop導入済みの場合はスキップしても構いません。**
 
-[[TOC]]
 
 ## minikubeセットアップ
 

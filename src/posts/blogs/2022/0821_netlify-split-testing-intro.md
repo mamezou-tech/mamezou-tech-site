@@ -27,7 +27,6 @@ NetlifyのSplit Testing機能は現在ベータバージョンでの提供とな
 
 ![Netlify Split Testing summary](https://i.gyazo.com/7fd7e2fa17b9b2a1f7a8df7cd4eabb2e.png)
 
-[[TOC]]
 
 ## Netlifyでサイトを作成する
 

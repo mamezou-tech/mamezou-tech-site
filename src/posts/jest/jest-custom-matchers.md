@@ -18,7 +18,6 @@ JestのExpect APIには、組み込みで多くのマッチャーが提供され
 - [jest-extended](https://github.com/jest-community/jest-extended)
 :::
 
-[[TOC]]
 
 ## カスタムマッチャーの基本
 最初は、シンプルなケースでカスタムマッチャーを作成します。

@@ -15,7 +15,6 @@ nextPage: ./src/posts/msa/microprofile/cntrn13-mp-faulttolerance2.md
 MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
-[[TOC]]
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Fault Tolerance 4.0をもとに作成しています。

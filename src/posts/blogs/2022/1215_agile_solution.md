@@ -12,7 +12,6 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 弊社のアジャイルチームには、そんなアジャイルに対する質問が日々社員から飛んできます。
 広くアジャイルを実践している方々の役に立つのではないかと思い、そんなアジャイルに対する質疑応答をここに公開します。
 
-[[TOC]]
 
 # ユーザーストーリーの見積もりとタイミング
 

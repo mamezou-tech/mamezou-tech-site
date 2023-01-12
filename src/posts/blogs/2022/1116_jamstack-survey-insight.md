@@ -26,7 +26,6 @@ tags: []
 
 なお、本文で使用しているデータは全て上記Jamstack Community Surveyのサイトより引用しています。
 
-[[TOC]]
 
 ## リモートワーク普及
 

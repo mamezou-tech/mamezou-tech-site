@@ -16,7 +16,6 @@ tags: [AWS, サーバーレス, serverless-framework, lambda]
 
 今回はこの新機能を試してみます。
 
-[[TOC]]
 
 ## 事前準備
 

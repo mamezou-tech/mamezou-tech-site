@@ -8,7 +8,6 @@ tags: [テスト, pairwise, pict, pictmaster]
 [前々回](/blogs/2022/07/11/pairwise-test/)、[前回](/blogs/2022/07/15/pairwise-test-case-creation-tool-pict/)とペアワイズ法に関する情報を発信してきました。  
 今回は前回紹介したPICTをGUIから利用できるようにした便利ツールである「PictMaster」について紹介します。
 
-[[TOC]]
 
 ## PictMasterとは
 

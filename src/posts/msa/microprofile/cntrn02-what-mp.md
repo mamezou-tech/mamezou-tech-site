@@ -12,7 +12,6 @@ nextPage: ./src/posts/msa/microprofile/cntrn03-sampleapp-helidon.md
 MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
 - [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
 
-[[TOC]]
 
 ## MicroProfileがカバーする仕様
 早速ですがMicroProfile5.0に含まれている仕様[^1]を並べると下のとおりとなります。

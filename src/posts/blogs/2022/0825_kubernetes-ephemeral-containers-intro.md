@@ -24,7 +24,6 @@ PSP(Pod Security Policy)の削除等、多くの変更がありますが、Ephem
 
 ここでは、これを解消するための`kubectl debug`の使い方を簡単に見てみます。
 
-[[TOC]]
 
 ## DistrolessイメージでPodデプロイ
 

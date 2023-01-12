@@ -11,7 +11,6 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 [^1]:[serverlessのtypescript用テンプレート](https://www.serverless.com/framework/docs/providers/aws/cli-reference/create)の中で見つけました。 `npx serverless create --template aws-nodejs-typescript`で雛形を作成できます。
 
-[[TOC]]
 
 # AWSにおけるLambdaの位置づけとミドルウエア処理の必要性
 

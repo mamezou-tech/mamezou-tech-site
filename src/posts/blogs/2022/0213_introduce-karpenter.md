@@ -19,7 +19,6 @@ KarpenterはASG経由ではなく、直接NodeとなるEC2インスタンスを�
 
 今回はこのKarpenterを使ってNodeのスケールアウト/ダウンを試してみました。
 
-[[TOC]]
 
 ## Karpenterインストール
 

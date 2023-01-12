@@ -55,7 +55,6 @@ IstioやLinkerd、AWS App Mesh等のサービスメッシュやNginx/Traefik等�
 
 Kubernetes環境はローカルのMinikubeを使いますが、基本的にどのKubernetesディストリビューションでもFlaggerの使い方は同じはずです。
 
-[[TOC]]
 
 ## Nginx Ingress Controllerのインストール
 

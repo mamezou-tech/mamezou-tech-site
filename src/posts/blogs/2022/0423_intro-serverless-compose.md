@@ -14,7 +14,6 @@ tags: [AWS, サーバーレス, serverless-framework, lambda, IaC]
 
 今回はこの新機能を使ってみたいと思います。
 
-[[TOC]]
 
 ## 事前準備
 

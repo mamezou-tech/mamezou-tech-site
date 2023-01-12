@@ -20,7 +20,6 @@ TypeORMは非常に多機能ですので、今回は基本的な機能をピッ�
 
 [^1]: 新規導入する場合で素のJavaScriptを使うメリットはほぼないと思いますが、興味のある方は[こちら](https://typeorm.io/usage-with-javascript)を参照してください。
 
-[[TOC]]
 
 ## セットアップ
 

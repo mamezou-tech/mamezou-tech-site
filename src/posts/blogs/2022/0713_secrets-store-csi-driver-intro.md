@@ -22,7 +22,6 @@ Secrets Store CSI Driverはその名の通りCSI(Container Storage Interface)と
 ここではKubernetes環境として、AWS上に構築したEKS環境を対象とします。
 また、シークレット情報の格納にはAWSが提供するマネージドサービスの[AWS Secrets Manager](https://aws.amazon.com/secrets-manager/)と[AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html)を利用します。
 
-[[TOC]]
 
 ## Secrets Store CSI DriverとAWS Providerをインストールする
 

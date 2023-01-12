@@ -21,7 +21,6 @@ APIの結合性をデプロイ前に検証するアイデアとしてContract Te
 [^2]: [実践 Pact:マイクロサービス時代のテストツール](https://techlife.cookpad.com/entry/2016/06/28/164247)
 
 
-[[TOC]]
 
 ## Contract Testとは
 

@@ -31,7 +31,6 @@ function Toc() {
         }
         return acc;
       }, []);
-    console.log(newData);
     setData(newData);
 
     document.addEventListener("scroll", (event) => {

@@ -60,9 +60,24 @@
       list-style-type: square;
     }
   }
+  .post__toc_preact {
+    display: block;
+    margin: 1rem;
+    border-style: none;
+    background-color: $tdbc-color-toc;
+    ul {
+      padding-inline-start: 10px;
+    }
+    li {
+      list-style-type: none;
+      font-size: 0.8rem;
+    }
+    position: fixed;
+    width: calc((100vw - 80ch)/2 - 3rem);
+    right: 0;
+  }
   .toc-container-header {
     margin: 0.5rem;
-    font-family: $tdbc-title-font-family;
   }
 }
 

@@ -134,4 +134,13 @@ layout: base.njk
   </script>
   {% initClipboardJS %}
   {% mermaid_js %}
+  <is-land on:idle>
+    <div id='toc'></div>
+    <template data-island>
+	  <script type="module">
+      import { renderToc } from '/components/preact/bundle.mjs';
+      renderToc(document.getElementById("toc"));
+	  </script>
+    </template>
+  </is-land>
 </main>

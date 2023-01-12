@@ -36,7 +36,7 @@ function Toc() {
     document.addEventListener("scroll", (event) => {
       const toc = document.querySelector(".post__toc_preact");
       if (!toc) return;
-      const top = 370 - window.scrollY;
+      const top = 300 - window.scrollY;
       toc.style.top = top < 0 ? 0 : `${top}px`;
     });
   }, []);

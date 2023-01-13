@@ -34,6 +34,7 @@ CI/CDパイプラインは、現代のソフトウェア開発に必要不可欠
 - [カスタムワークフローで GitHub Pages デプロイが可能に](/blogs/2022/09/08/github-pages-new-deploy-method/)
 - [Slack の GitHub インテグレーションで GitHub Actions ワークフローのイベントを通知可能に](/blogs/2022/12/12/notify-github-actions-workflow-to-slack/)
 - [GitHub Actions - private リポジトリの Action と再利用可能ワークフローが呼び出しが可能に](/blogs//2022/12/24/sharing-private-actions-and-reusable-workflows/)
+- [GitHub Actions - オーガニゼーションレベルの required workflows (public beta) を試す](/blogs/2023/01/13/github-actions-required-workflows/)
 
 豆蔵有志でも、特定ユースケースに対応したActionをOSSとして公開しています。
 

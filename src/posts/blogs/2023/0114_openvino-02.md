@@ -1,5 +1,5 @@
 ---
-title: ディープラーニング初心者がOpenVinoを使ってみる（その２：MobileNet画像分類編）
+title: ディープラーニング初心者がOpenVINOを使ってみる（その２：MobileNet画像分類編）
 author: shuichi-takatsu
 date: 2023-01-14
 tags: [ディープラーニング, openvino]

@@ -177,3 +177,8 @@ Kubernetes 環境に Keycloak をインストールする場合 Helm チャー�
 :::
 
 [次回](/blogs/2022/06/23/webauthn-3/) は構築したパスワードレス認証基盤をアプリケーションで使用するサンプル実装を説明します。
+
+## シリーズ記事の紹介
+
+- [WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)
+- [OpenID Connect でパスワードレス認証を使う](/blogs/2022/06/23/webauthn-3/)

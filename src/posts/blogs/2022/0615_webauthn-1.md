@@ -175,8 +175,14 @@ Sign Out して、もう一度 Sign In すると、Password を入力する画�
 
 今回は、パスワードレス認証をデモンストレーションしました。[次回](/blogs/2022/06/20/https-envoy-proxy/)以降でより深堀りした記事を投稿する予定です。
 
+## シリーズ記事の紹介
+
+- [Envoy Proxy による HTTPS Proxy](/blogs/2022/06/20/https-envoy-proxy/)
+- [OpenID Connect でパスワードレス認証を使う](/blogs/2022/06/23/webauthn-3/)
+
 ## 参考
 
+- [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)
 - [Red Hat Single Sign-onで、WebAuthnがGAに](https://rheb.hatenablog.com/entry/2022/07/26/005014)
 - [インフラ管理不要なコンテナ環境のAWS FargateでKeycloakを動かしてみる](https://qiita.com/wadahiro/items/0837729e7c57becbfd06)
 - [Server Administration Guide](https://www.keycloak.org/docs/latest/server_admin/index.html#managing-webauthn-credentials-as-a-user)

@@ -282,4 +282,8 @@ Kubernetes 環境に Keycloak をインストールする場合 Helm チャー�
 - [WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)
 - [Envoy Proxy による HTTPS Proxy](/blogs/2022/06/20/https-envoy-proxy/)
 
+## 参考
+
+- [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)
+
 [^1]: QRコードは株式会社デンソーウェーブの登録商標です。

@@ -197,3 +197,7 @@ sequenceDiagram
 GitHub ID プロバイダから発行される ID Token を AWS の IAM 外部プロバイダとして使用することで、AWS のクレデンシャルを直接指定する必要は無くなり、誤って公開されるリスクが大きく減少しました。本記事では、さらに AWS アカウント ID も直接指定しない方法を紹介しました。
 
 この記事のコードサンプルは、[GitHub リポジトリ](https://github.com/edward-mamezou/aws-mustache-example) にあります。
+
+## 参考
+
+- [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)

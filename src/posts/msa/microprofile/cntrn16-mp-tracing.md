@@ -54,7 +54,7 @@ MP OpenTracingのテーマそのものとなる"分散トレーシング"につ�
 MP OpenTracingは計測対象のアプリケーションにMP OpenTracingを組み込んで有効化することで、自動でテレメトリーデータを取得し、取得したデータをJeagerなどのバックエンドに自動で送信します。なお、MP OpenTracingの有効化はMicroProfileランタイムごとに異なるため、詳細は利用するランタイムのマニュアルを参照ください。
 
 :::column: HelidonにおけるMicroProfile OpenTracingの有効化
-MicroProfile OpenTracingを問わずHelidonの各機能はCDI Extensionにより機能が有効化されます。よって、MicroProfile OpenTracingの有効化はCDI Extensionを含むjarをクラスパスに含めることになります。この有効化に必要なdependencyの設定は次のとおりになります。
+MicroProfile OpenTracingを問わずHelidonの各機能はCDI Extensionにより機能が有効化されます。よって、MicroProfile OpenTracingの有効化はCDI Extensionを含むjarをクラスパスに含めることになります。この有効化に必要なdependencyの設定は次のとおりです。
 
 ```xml
 <dependency>

@@ -53,6 +53,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 - [JUnit5のExtension実装 - テストライフサイクルコールバックと引数の解決](/blogs/2022/05/30/junit5-extension/)
 - [今さら聞けないMaven - JUnit5のテストクラスがなぜか実行されない](/blogs/2022/08/24/maven-junit5-not-running/)
 - [今さら聞けないMaven – コンテナも一緒にビルドしたい。テスト実行前にコンテナを起動したい](/blogs/2022/08/31/docker-with-maven/)
+- [今さら聞けないMaven – インタフェースと実装のスコープを分ける](/blogs/2023/01/15/maven-separate-impl/)
 
 ### ArchUnit
 

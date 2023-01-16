@@ -20,9 +20,11 @@ GitHub Actions ワークフローで Configuration variables (構成変数) が�
 
 |名称|スコープ|用途|
 |:--|:--|:--|
-| Organization variables | オーガニゼーション内のリポジトリのワークフローから参照可能 | オーガニゼーション全体で利用する値 |
+| Organization variables | オーガニゼーション内の全リポジトリの全ワークフローから参照可能[^3] | オーガニゼーション全体で利用する値 |
 | Repository variables   | リポジトリ内の全てのワークフローから参照可能 | リポジトリ全体で利用する値 |
 | Enveronments variables | リポジトリ内の全てのワークフローが特定環境用に実行される際に参照可能 | リポジトリで定義した環境によって値を変える |
+
+[^3]: 参照可能なリポジトリを選択することもできます。
 
 一番使うのがリポジトリ単位の変数 Repository variables でしょう。Enveronments variables は development、production などのデプロイターゲットに応じて値を変えたい変数がある場合に利用します。
 
@@ -35,7 +37,7 @@ GitHub Actions ワークフローで Configuration variables (構成変数) が�
 ## オーガニゼーションレベルの構成変数
 まず、オーガニゼーションレベルの構成変数(Organization variables)の設定です。
 
-オーガニゼーションの Settings > Security > Secrets and variables を開きます。
+オーガニゼーションの Settings > Security > Secrets and variables > Actions を開きます。
 
 ![Organization settings](https://i.gyazo.com/bcac80e78457e9768ac82f7b6609918d.png)
 
@@ -69,7 +71,7 @@ GitHub Actions ワークフローで Configuration variables (構成変数) が�
 ## 環境変数の定義
 最後はリポジトリの環境(Environments)単位の変数(Environment variable)です。
 
-Environments はデプロイターゲットを記述するために使用され、Environments ごとに保護ルールとシークレットを設定可能です。保護ルールを使うと、Environments を参照するジョブで承認を要求する、特定のブランチに制限するなどの条件を指定できます。詳細はドキュメントを参照してください。
+Environments はデプロイターゲットを記述するために使用され、Environments ごとに保護ルールとシークレット・構成変数を設定可能です。保護ルールを使うと、Environments を参照するジョブで承認を要求する、特定のブランチに制限するなどの条件を指定できます。詳細はドキュメントを参照してください。
 
 [Using environments for deployment - GitHub Docs](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment)
 

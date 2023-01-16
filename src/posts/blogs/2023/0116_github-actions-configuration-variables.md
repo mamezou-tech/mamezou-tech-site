@@ -22,11 +22,11 @@ GitHub Actions ワークフローで Configuration variables (構成変数) が�
 |:--|:--|:--|
 | Organization variables | オーガニゼーション内の全リポジトリの全ワークフローから参照可能[^3] | オーガニゼーション全体で利用する値 |
 | Repository variables   | リポジトリ内の全てのワークフローから参照可能 | リポジトリ全体で利用する値 |
-| Enveronments variables | リポジトリ内の全てのワークフローが特定環境用に実行される際に参照可能 | リポジトリで定義した環境によって値を変える |
+| Environments variables | リポジトリ内の全てのワークフローが特定環境用に実行される際に参照可能 | リポジトリで定義した環境によって値を変える |
 
 [^3]: 参照可能なリポジトリを選択することもできます。
 
-一番使うのがリポジトリ単位の変数 Repository variables でしょう。Enveronments variables は development、production などのデプロイターゲットに応じて値を変えたい変数がある場合に利用します。
+一番使うのがリポジトリ単位の変数 Repository variables でしょう。Environments variables は development、production などのデプロイターゲットに応じて値を変えたい変数がある場合に利用します。
 
 [Variables - GitHub Docs](https://docs.github.com/en/actions/learn-github-actions/variables#defining-configuration-variables-for-multiple-workflows)
 

@@ -11,12 +11,18 @@ tags: [AWS, "認証/認可", keycloak, ZTA, webauthn]
 
 試してみたところ、いくつか課題が見つかりました。
 
-記事の通りに進めようとした場合の課題は次の通りです。
+旧記事の通りに進めようとした場合の課題は次の通りです。
 
 - Apple シリコンに対応した最新の Keycloak をインストールできない。
 - 最新と古いバージョン間でパスワードレス認証を有効にする画面が (微妙に) 異なる。
 
 さらに今回は Kubernetes で動作するようにしたいとも考えました。
+
+:::info
+旧記事「[WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)」では、Keycloak のコンテナイメージを [Docker Hub](https://hub.docker.com/r/jboss/keycloak) から取得していました。しかし、最新の Keycloak コンテナイメージは [Quay.io](https://quay.io/repository/keycloak/keycloak) で公開されています。
+
+この記事で紹介する Helm チャートのイメージの指定も Docker Hub ではなく Quay.io から pull するようになっています。
+:::
 
 ## 前提
 
@@ -31,12 +37,6 @@ tags: [AWS, "認証/認可", keycloak, ZTA, webauthn]
 ### Keycloak のインストール
 
 Helm チャートを使ってインストールします ([ArtifactHUB](https://artifacthub.io/packages/helm/codecentric/keycloak))。
-
-デフォルトの [values.yaml](https://github.com/codecentric/helm-charts/blob/master/charts/keycloak/values.yaml) に若干変更が必要なため、[takesection/keycloak-install](https://github.com/takesection/keycloak-install) を clone してください。
-
-```shell
-git clone https://github.com/takesection/keycloak-install.git
-```
 
 この記事では Rancher Desktop に同梱されている Ingress である traefik を使用します。
 
@@ -79,7 +79,18 @@ DNS にレコードを追加してから、それがローカル環境で認識�
 
 成功すると、この例であれば `/etc/letsencrypt/live/example.com` ディレクトリに証明書ファイルが生成されます。
 
-生成されたファイルを `keycloak-install` にコピーします。
+### Helm コマンドを使ったインストール
+
+Helm チャートリポジトリにあるオリジナルの [values.yaml](https://github.com/codecentric/helm-charts/blob/master/charts/keycloak/values.yaml) に若干変更が必要です。
+
+オプション、Ingress を有効にするための変更を加えた `values.yaml` ファイルを GitHub リポジトリに置いています。[takesection/keycloak-install](https://github.com/takesection/keycloak-install) を clone してください。
+
+```shell
+git clone https://github.com/takesection/keycloak-install.git
+cd keycloak-install
+```
+
+certbot で生成されたファイルをクローンした `keycloak-install` にコピーします。
 
 ```shell
 sudo cp /etc/letsencrypt/live/example.com/fullchain.pem /etc/letsencrypt/live/example.com/privkey.pem ./
@@ -99,7 +110,7 @@ kubectl create secret tls tls-secret --cert=fullchain.pem --key=privkey.pem
 cp values.yml local-values.yml
 ```
 
-`local-values.yml` の298行目、306行目にある ingress の設定を、証明書のドメイン名に合わせて編集します。例えば、使用するドメイン名が `keycloak.example.com` であれば、以下のようになります。
+`local-values.yml` の298行目、306行目にある ingress の設定を、証明書のドメイン名に合わせて編集します。例えば、使用するドメイン名が `keycloak.example.com` であれば、次のようになります。
 
 {% raw %}
 ```yaml

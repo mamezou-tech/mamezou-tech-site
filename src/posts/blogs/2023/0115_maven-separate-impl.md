@@ -9,10 +9,10 @@ tags: [java, maven, 今さら聞けないMaven]
 
 このようなことを防ぐにはCheckStyleやArchUnitなどの静的解析ツールで検知することや属人的にコードレビューで指摘するといった方法も考えられますが、一番リーズナブルなのはdependencyのスコープをcompileとruntimeに分けて定義することです。
 
-インタフェースと実装を分けて使いたい例としてよくあるのがJakarta Persistence(JPA)とだと思います。ですので今回はその実装のHibernateを例にどのようなことかを説明してみます。
+インタフェースと実装を分けて使いたい例としてよくあるのがJakarta Persistence(JPA)とだと思いますので今回はその実装のHibernateを例にどのようなことかを説明してみます。
 
 ## 丸っとcompileスコープの問題
-Hibernateを使うがAPIの依存はJPA/JTA(Jakarta Transactions)に留めるといったお題があった場合、皆さんpomのdependencyはどのように定義していますか？もしかして、こんな感じでHibernateだけしか定義しなかったりしませんか？
+Hibernateを使うがAPIの依存はJPA/JTA(Jakarta Transactions)に留めるといったお題があった場合、皆さんはpomのdependencyをどのように定義しますか？もしかして、こんな感じでHibernateだけしか定義しなかったりしませんか？
 
 ```xml
 <dependency>

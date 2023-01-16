@@ -103,7 +103,7 @@ development と同様に、staging や production の環境も追加しました
 
 ![Three environments](https://i.gyazo.com/bcca6b6584ce1432b41bca8a17b417d7.png)
 
-Actions variables の画面では、全ての Envronment variables が値と共に参照できます。
+Actions variables の画面では、全ての Environment variables が値と共に参照できます。
 
 ![Added variable for each environment](https://i.gyazo.com/2c07729424e1646b84fc7bff6c42ec3e.png)
 

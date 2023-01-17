@@ -13,6 +13,8 @@ REST API の仕様を記述する [OpenAPI Specification](https://swagger.io/spe
 
 初回のこの記事では、OpenAPI Generator を使って簡単な Spring Boot アプリを作成します。
 
+この記事のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/v0.1.0)にあります。
+
 本題に入る前に、このシリーズの記事の紹介を先にしたいと思います。
 
 ### [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)

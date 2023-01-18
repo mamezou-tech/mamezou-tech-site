@@ -30,7 +30,7 @@ OpenAPI Generator には Node.js を使う別の [CLI](https://github.com/OpenAP
 
 ## Generation Gap パターンを適用できない生成例
 
-前回までの記事で、application モジュールの生成パラメータに [application.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-3/application.yaml) を使っていました。生成時 -DsupportingFiles を設定していましたが、次のようにこの設定なしで生成してみます。
+前回までの記事で、application モジュールの生成パラメータに [application.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.3.0/application.yaml) を使っていました。生成時 -DsupportingFiles を設定していましたが、次のようにこの設定なしで生成してみます。
 
 ```shell
 java -jar /tmp/openapi-generator-cli.jar batch application.yaml
@@ -44,7 +44,7 @@ mvn spring-boot:run
 
 生成されたコードを実行するだけで `http://localhost:8080/example/hello` にアクセスして `Hello World` のレスポンスが得られます。
 
-このレスポンスは [openapi.yml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-3/openapi.yml) の `example` に設定された値です。
+このレスポンスは [openapi.yml](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.3.0/openapi.yml) の `example` に設定された値です。
 
 ここから、実際のアプリケーションを構築するためには、生成された `ExampleApiController` クラスのコードに手を入れる必要があります。
 
@@ -111,7 +111,7 @@ API 定義 (openapi.yml) に変更があった場合等で、再び OpenAPI Gene
 
 前回までの記事で使用していない別の例を示します。
 
-[application.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-3/application.yaml) の最後に以下を追記してコード生成します。
+[application.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.3.0/application.yaml) の最後に以下を追記してコード生成します。
 
 ```yaml
   delegatePattern: true
@@ -127,7 +127,7 @@ API 定義 (openapi.yml) に変更があった場合等で、再び OpenAPI Gene
 
 「[OpenAPI Generatorを使ったコードの自動生成とインタフェースの守り方](https://zenn.dev/angelica/articles/3b7ac906f73638)」にも書かれていますが、この一連の記事では、`interfaceOnly=true` を使って Generation Gap パターンを適用しています。
 
-このパラメータが設定されているファイルは [controller.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/5251e4936ef5dd7082a31d27fdb9b0b2cac19be1/controller.yaml#L15) です。
+このパラメータが設定されているファイルは [controller.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.3.0/controller.yaml#L15) です。
 
 ```shell
 java -jar /tmp/openapi-generator-cli.jar batch controller.yaml
@@ -167,7 +167,7 @@ application モジュールのコードをコンパイルした `.class` ファ�
 
 したがって、application モジュールをパッケージングしたアーティファクトを別のプロジェクトの Maven や Gradle 依存ライブラリの定義に加えても application モジュールに定義されたクラスやインターフェースを参照できません。
 
-記事では Gradle を使用したため、[build.gradle](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-3/build.gradle) で次のようなタスクを使って application モジュールの `BOOT-INF/classes` 以下を取り込むように設定しました。
+記事では Gradle を使用したため、[build.gradle](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.3.0/build.gradle) で次のようなタスクを使って application モジュールの `BOOT-INF/classes` 以下を取り込むように設定しました。
 
 ```groovy
 configurations {
@@ -247,7 +247,7 @@ API の定義自体が変わらなかったとしても、脆弱性に対応し�
 
 OpenAPI Generator に設定可能なパラメータも多くあります。パラメータのメンテナンスを考えると、この記事で採用したように YAML ファイルなどにまとめて変更しやすくすることをおすすめします。
 
-そして、GitHub Actions のような自動デプロイの[スクリプト](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-3/.github/workflows/build.yml)で、生成、ビルド、デプロイをどのようなステップで実行するかを可視化することも有益です。
+そして、GitHub Actions のような自動デプロイの[スクリプト](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.3.0/.github/workflows/build.yml)で、生成、ビルド、デプロイをどのようなステップで実行するかを可視化することも有益です。
 
 [次回](/blogs/2022/06/24/openapi-generator-4/)はこのサンプルサービスを完成させるため、ドメイン駆動設計 (Domain-driven design) の戦術的設計を説明します。
 

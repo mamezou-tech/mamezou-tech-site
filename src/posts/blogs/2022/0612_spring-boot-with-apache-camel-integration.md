@@ -17,7 +17,7 @@ tags: [java, "apache-camel", "spring-boot", DDD, MQTT, iot]
 
 題材としては、別の[シリーズ記事](/blogs/2022/06/09/openapi-generator-2/)に書いた宇宙船の冬眠カプセルを使うことにします。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/5251e4936ef5dd7082a31d27fdb9b0b2cac19be1/event-storming/event-storming-1.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.2.0/event-storming/event-storming-1.png)
 
 この図を描いた当初は中央のクラスタが、開いた冬眠カプセルを特定し、冬眠カプセルのホスト名を取得して挨拶の音声の再生を要求しようと考えていました。
 

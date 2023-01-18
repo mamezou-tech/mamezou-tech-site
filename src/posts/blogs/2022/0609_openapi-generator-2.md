@@ -7,7 +7,7 @@ tags: [java, "openapi-generator", "spring-boot", DDD, "実践マイクロサー�
 
 この記事は、「[第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)」の続編です。
 
-この記事のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-2)に置いています。
+この記事のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/v0.2.0)に置いています。
 
 前回の記事では、簡単に Spring Boot アプリが作成できるということを強調するためにシンプルな構成のコードにしていました。
 
@@ -17,7 +17,7 @@ tags: [java, "openapi-generator", "spring-boot", DDD, "実践マイクロサー�
 
 早速、イベントストーミングに取り掛かり次のようなアウトプットを得ました。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-2/event-storming/event-storming-1.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.2.0/event-storming/event-storming-1.png)
 
 :::info
 イベントストーミングは、「[モノリスからマイクロサービスへ](https://www.amazon.co.jp/dp/4873119316/)」や「[Learning Domain-Driven Design](https://www.amazon.co.jp/dp/B09J2CMJZY/)」で紹介されているドメイン境界を導きだす手法で、付箋の色によって、「ドメインイベント」(オレンジ)、「コマンド」(青)、「ポリシー」(紫)、「集約」(黄)、「外部システム」(ピンク) をホワイトボード等に時系列に並べて整理します。
@@ -32,7 +32,7 @@ tags: [java, "openapi-generator", "spring-boot", DDD, "実践マイクロサー�
 
 とはいえ、なるべく作成するコードではこのような条件を意識したくないため、次のような構成で動作するアプリケーションとすることに決定しました。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-2/image/openapi-generator-2.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.2.0/image/openapi-generator-2.png)
 
 :::info
 サイドカーパターンは、「[分散システムの設計](https://azure.microsoft.com/ja-jp/resources/designing-distributed-systems/)」や「[Istio in Action](https://www.amazon.co.jp/dp/1617295825/)」で詳しい解説をみることができます。
@@ -52,7 +52,7 @@ Envoy Proxy を使った認証認可については、後で紹介する[記事]
 
 ## コントローラ層
 
-コントローラのクラス名は前回作成した時と同じ [`ExampleApiController`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/main/java/com/mamezou_tech/example/controller/api/ExampleApiController.java) です。
+コントローラのクラス名は前回作成した時と同じ [`ExampleApiController`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.2.0/src/main/java/com/mamezou_tech/example/controller/api/ExampleApiController.java) です。
 
 Envoy Proxy で ID Token で認証認可を行ったのち、ヘッダの `payload` にこの JWT Token のペイロードを設定したものが連携されるため、コントローラは、HTTP Request のヘッダにアクセスする必要があります。そのため、以下のようなメソッドを追加しています。
 
@@ -81,7 +81,7 @@ Envoy Proxy で ID Token で認証認可を行ったのち、ヘッダの `paylo
 
 ## アプリケーション層
 
-コントローラのレイヤーは単純に HTTP のハンドリングだけにとどめるようにしています。ヘッダから `payload` が得られたら、アプリケーションサービス [`HelloService`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/main/java/com/mamezou_tech/example/application/HelloService.java) を呼び出すように実装しました。
+コントローラのレイヤーは単純に HTTP のハンドリングだけにとどめるようにしています。ヘッダから `payload` が得られたら、アプリケーションサービス [`HelloService`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.2.0/src/main/java/com/mamezou_tech/example/application/HelloService.java) を呼び出すように実装しました。
 
 主要なメソッドを抜粋します。
 
@@ -97,7 +97,7 @@ Optional の flatMap や map は値がある場合に実行され、変換され
 
 ## インフラストラクチャー層
 
-ドメイン層の前に、先にインフラストラクチャー層の説明をします。今回は、[Amazon Polly](https://aws.amazon.com/jp/polly/) を使用する予定の音声イメージの生成は実装していません。そのため、インフラストラクチャー層の実装はテキストを作成するだけのシンプルなコード ([`VoiceFactoryImpl`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/main/java/com/mamezou_tech/example/infrastructure/VoiceFactoryImpl.java)) になっています。
+ドメイン層の前に、先にインフラストラクチャー層の説明をします。今回は、[Amazon Polly](https://aws.amazon.com/jp/polly/) を使用する予定の音声イメージの生成は実装していません。そのため、インフラストラクチャー層の実装はテキストを作成するだけのシンプルなコード ([`VoiceFactoryImpl`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.2.0/src/main/java/com/mamezou_tech/example/infrastructure/VoiceFactoryImpl.java)) になっています。
 
 ```java
 package com.mamezou_tech.example.infrastructure;
@@ -120,7 +120,7 @@ public class VoiceFactoryImpl implements VoiceFactory {
 
 この API のドメインには、集約、エンティティ、リポジトリ等はなく、バリューオブジェクトとファクトリーだけになりました。次以降で、音声イメージの生成まで実装した場合は、ドメインイベント「挨拶の音声が生成された」を実装することになるでしょう。
 
-ファクトリー ([`VoiceFactory`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/main/java/com/mamezou_tech/example/domain/factory/VoiceFactory.java)) は、`interface` で定義し、Spring の依存注入 (DI) によりインフラストラクチャー層の実装を取り込みます。
+ファクトリー ([`VoiceFactory`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.2.0/src/main/java/com/mamezou_tech/example/domain/factory/VoiceFactory.java)) は、`interface` で定義し、Spring の依存注入 (DI) によりインフラストラクチャー層の実装を取り込みます。
 
 2 つのバリューオブジェクトは共に `record` で定義しました。
 
@@ -128,7 +128,7 @@ public class VoiceFactoryImpl implements VoiceFactory {
 record は、JDK 14 と JDK 15 でプレビュー機能として導入され、[JDK 16 で正式に導入された機能](https://www.infoq.com/jp/news/2020/08/java16-records-instanceof/)です。
 :::
 
-ファーストネームを保持する [`Person`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/main/java/com/mamezou_tech/example/domain/valueobject/Person.java) は次の通りです。
+ファーストネームを保持する [`Person`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.2.0/src/main/java/com/mamezou_tech/example/domain/valueobject/Person.java) は次の通りです。
 
 ```java
 package com.mamezou_tech.example.domain.valueobject;
@@ -137,7 +137,7 @@ public record Person(String firstName) {
 }
 ```
 
-今回は挨拶のテキストだけを保持することになる [`HelloVoice`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/main/java/com/mamezou_tech/example/domain/valueobject/HelloVoice.java) は次の通りです。
+今回は挨拶のテキストだけを保持することになる [`HelloVoice`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.2.0/src/main/java/com/mamezou_tech/example/domain/valueobject/HelloVoice.java) は次の通りです。
 
 ```java
 package com.mamezou_tech.example.domain.valueobject;
@@ -148,7 +148,7 @@ public record HelloVoice(String message) {
 
 ## テストコード
 
-モダンな開発で、テストコードがないということは考えられません。今回作成したテストコードは十分とは考えていませんが、以下のコード ([`OpenApiGeneratorApplicationTests`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/src/test/java/com/mamezou_tech/example/controller/api/OpenApiGeneratorApplicationTests.java)) を作成しています。
+モダンな開発で、テストコードがないということは考えられません。今回作成したテストコードは十分とは考えていませんが、以下のコード ([`OpenApiGeneratorApplicationTests`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.2.0/src/test/java/com/mamezou_tech/example/controller/api/OpenApiGeneratorApplicationTests.java)) を作成しています。
 
 ```java
 package com.mamezou_tech.example.controller.api;
@@ -199,7 +199,7 @@ class OpenApiGeneratorApplicationTests {
 
 GitHub リポジトリには GitHub Actions を使って、OpenAPI Generator で生成したモジュールを GitHub Packages にデプロイしています。
 
-GitHub Actions の コードはリンク [`build.yml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-2/.github/workflows/build.yml) を参照してください。
+GitHub Actions の コードはリンク [`build.yml`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.2.0/.github/workflows/build.yml) を参照してください。
 
 ## 実行
 
@@ -211,7 +211,7 @@ curl -H 'payload: eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiY3VzdG9tOmZpcnN0bmFtZSI6Ik
 
 :::info
 JWT トークンは、3つのパートにわかれています。それぞれのパートは、文字 '.' で区切られた Base64 でエンコードされた文字列です。先頭のパートはヘッダ部でここには署名に使う暗号化アルゴリズムや公開鍵IDなどがJSON形式で設定されています。2番目のパートはペイロード (payload) と呼ばれる部分で、Issuer (`iss`)、Audience (`aud`)、有効期限 (`exp`) のように決められた属性の他、任意の属性を含めることができます。この記事では、このペイロードに "custom:firstname" や "custom:type" を含められていることを想定しています。ペイロードも JSON 形式です。最後の部分は署名です。ヘッダで指定された暗号化アルゴリズムを使った署名が設定されています。
-この記事では、サイドカーが JWT トークンの検証を行い、ペイロード部のみを ヘッダ `payload` に設定してアプリケーションが呼び出されるように設計しています。ペイロードの元となる JSON は、[テストコード](https://github.com/edward-mamezou/use-openapi-generator/blob/647823e5c956714120eed8d107f57420abbae12f/src/test/java/com/mamezou_tech/example/controller/api/OpenApiGeneratorApplicationTests.java#L21)にある文字列です。これを Base64 に変換すると、"eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiY3VzdG9tOmZpcnN0bmFtZSI6IkphbWVzIiwiYXVkIjoiQVBQQ0xJRU5USUQiLCJleHAiOjE2NTQ3NTg3NTcsImN1c3RvbTp0eXBlIjoiSHVtYW4ifQ==" が得られます。
+この記事では、サイドカーが JWT トークンの検証を行い、ペイロード部のみを ヘッダ `payload` に設定してアプリケーションが呼び出されるように設計しています。ペイロードの元となる JSON は、[テストコード](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.2.0/src/test/java/com/mamezou_tech/example/controller/api/OpenApiGeneratorApplicationTests.java#L21)にある文字列です。これを Base64 に変換すると、"eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiY3VzdG9tOmZpcnN0bmFtZSI6IkphbWVzIiwiYXVkIjoiQVBQQ0xJRU5USUQiLCJleHAiOjE2NTQ3NTg3NTcsImN1c3RvbTp0eXBlIjoiSHVtYW4ifQ==" が得られます。
 :::
 
 ## まとめ
@@ -222,8 +222,8 @@ JWT トークンは、3つのパートにわかれています。それぞれの
 
 - [良いコード／悪いコードで学ぶ設計入門](https://www.amazon.co.jp/dp/B09Y1MWK9N/)
 - [Event Storming](https://www.eventstorming.com/)
-- [基本から理解するJWTとJWT認証の仕組み](https://developer.mamezou-tech.com/blogs/2022/12/08/jwt-auth/)
-- [Auth0 java-jwtを使った素のJWT認証](https://developer.mamezou-tech.com/blogs/2022/12/10/java-jwt-auth/)
+- [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)
+- [Auth0 java-jwtを使った素のJWT認証](/blogs/2022/12/10/java-jwt-auth/)
 - [OpenID Connect のメモ](https://s-edword.hatenablog.com/entry/2019/11/20/011812)
 - [リアクティブシステムとドメイン駆動設計の学習コンテンツ](https://s-edword.hatenablog.com/entry/2022/12/06/212621)
 - [ドメイン駆動設計と「コントロールプレーン」、「データプレーン」](https://s-edword.hatenablog.com/entry/2022/12/09/020834)

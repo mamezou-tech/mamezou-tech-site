@@ -12,11 +12,11 @@ GitHub Packages は、Docker イメージ、npm、Maven、NuGet、RubyGems な�
 
 ## OpenAPI Generator
 
-このサンプルでは OpenAPI の定義 ([openapi.yml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/openapi.yml)) から OpenAPI Generator で axios を使うモジュールのコードを生成します。
+このサンプルでは OpenAPI の定義 ([openapi.yml](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/openapi.yml)) から OpenAPI Generator で axios を使うモジュールのコードを生成します。
 
 OpenAPI の定義を `openapi.yml` ファイルに記述します。
 
-OpenAPI Generator の設定ファイル [`client.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/client.yaml) は次の通りです。
+OpenAPI Generator の設定ファイル [`client.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/client.yaml) は次の通りです。
 
 ```yaml
 inputSpec: 'openapi.yml'
@@ -131,7 +131,7 @@ GitHub Actions は GitHub リポジトリのルートに `.npmrc` ファイル�
 
 `npm publish` コマンドで、ビルドと GitHub Packages にデプロイします。
 
-ここで説明した全体のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-6) にあります。
+ここで説明した全体のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/v0.6.0) にあります。
 
 ## パッケージの使用方法
 

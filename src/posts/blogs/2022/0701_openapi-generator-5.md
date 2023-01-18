@@ -9,7 +9,7 @@ tags: [envoy, "openapi-generator", "spring-boot", OPA, "実践マイクロサー
 
 この記事では、このコマンドの実行権限チェックに [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) を使って説明します。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-6/image/sidecar.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.6.0/image/sidecar.png)
 
 図のようにサービスは、3つのコンテナイメージで構成された、docker-compose または [Pod](https://kubernetes.io/ja/docs/concepts/workloads/pods/pod-overview/) です。
 
@@ -27,7 +27,7 @@ Envoy Proxy の [JWT Authentication](https://www.envoyproxy.io/docs/envoy/latest
 
 妥当な場合、フィルタはペイロード部分をフォワードするリクエストの HTTP Header に追加もできます。Hello コマンドは、HTTP Header へ `payload` の追加を前提にしています。
 
-[サンプル](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example)のフィルタの設定部分は次のとおりです。
+[サンプル](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/envoy/front-envoy-docker.yaml.example)のフィルタの設定部分は次のとおりです。
 
 ```yaml
     - name: envoy.filters.http.jwt_authn
@@ -87,7 +87,7 @@ brew install opa
 
 ### コード
 
-Hello コードを実行できるのは Human です。次のような[コード](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/opa/example-policy.rego)にしました。
+Hello コードを実行できるのは Human です。次のような[コード](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/opa/example-policy.rego)にしました。
 
 ```text
 package envoy.authz
@@ -110,7 +110,7 @@ allow := action_allowed {
 }
 ```
 
-[テストコード](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/opa/example-policy-test.rego) は次のとおりです。
+[テストコード](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/opa/example-policy-test.rego) は次のとおりです。
 
 ```text
 package envoy.authz
@@ -164,7 +164,7 @@ OPA の Rego で、パスを変えたい場合、レスポンスの `headers` �
 - [response.go](https://github.com/open-policy-agent/opa-envoy-plugin/blob/main/envoyauth/response.go)
 :::
 
-[サンプル](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example)のフィルタの設定部分は次のとおりです。
+[サンプル](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/envoy/front-envoy-docker.yaml.example)のフィルタの設定部分は次のとおりです。
 
 ```yaml
     - name: envoy.filters.http.ext_authz
@@ -196,7 +196,7 @@ GitHub Actions を使ってビルドしたイメージが [GitHub Packages](http
 
 Docker Compose は、以前は docker コマンドとは別の docker-compose というコマンドでしたが、今では docker コマンドで run などの代わりに compose をタイプして実行できます。
 
-Docker Compose で実行する場合の [docker-compose.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/docker-compose.yml) は次のようになりました。
+Docker Compose で実行する場合の [docker-compose.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/docker-compose.yml) は次のようになりました。
 
 ```yaml
 version: "3"
@@ -224,17 +224,17 @@ services:
       AWS_REGION: ap-northeast-1
 ```
 
-[`sidecar/envoy/front-envoy.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example)、[`sidecar/application.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/application.yaml.example) ファイルの作成は、利用している OpenID Connect の IdP (Identity Provider) 等の環境に合わせてください。
+[`sidecar/envoy/front-envoy.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/envoy/front-envoy-docker.yaml.example)、[`sidecar/application.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/application.yaml.example) ファイルの作成は、利用している OpenID Connect の IdP (Identity Provider) 等の環境に合わせてください。
 
 ## Kubernetes の例
 
 この記事では、このサービスの動作が確認できる最低限の説明にとどめます。
 
-Docker Compose の場合と同じく [`sidecar/envoy/front-envoy.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-pod.yaml.example)、[`sidecar/application.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/application.yaml.example) ファイルの作成は、利用している OpenID Connect の IdP (Identity Provider) 等の環境に合わせてください。
+Docker Compose の場合と同じく [`sidecar/envoy/front-envoy.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/envoy/front-envoy-pod.yaml.example)、[`sidecar/application.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/application.yaml.example) ファイルの作成は、利用している OpenID Connect の IdP (Identity Provider) 等の環境に合わせてください。
 
 Kubernetes は Docker よりセキュリティが向上しています。同一 Pod 内のコンテナ間の通信には、ローカル・ループバック・アドレス (127.0.0.1) が使われます。このため `front-envoy.yaml` で設定される Envoy Proxy が Hello サービス (example) や OPA へのアクセスに使用する IP Address は 127.0.0.1 となります。
 
-設定ファイルのサンプルが、Docker Compose 用の [`sidecar/envoy/front-envoy-docker.yaml.example`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-docker.yaml.example) と Pod 用の [`sidecar/envoy/front-envoy-pod.yaml.example`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/envoy/front-envoy-pod.yaml.example) の2つ用意したのはそのためです。
+設定ファイルのサンプルが、Docker Compose 用の [`sidecar/envoy/front-envoy-docker.yaml.example`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/envoy/front-envoy-docker.yaml.example) と Pod 用の [`sidecar/envoy/front-envoy-pod.yaml.example`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/envoy/front-envoy-pod.yaml.example) の2つ用意したのはそのためです。
 
 Kubernetes に設定ファイルをマウントするために、次のコマンドで ConfigMap と Secret を作成します。AWS のクレデンシャル、Hello サービスのポリシー、IdP のシークレットが設定されるファイルは ConfigMap ではなく、セキュアな Secret を使用します。
 
@@ -251,7 +251,7 @@ Pod をデプロイします。
 kubectl apply -f deployment.yaml
 ```
 
-[deployment.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-6/sidecar/deployment.yaml) は次のとおりです。
+[deployment.yaml](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/sidecar/deployment.yaml) は次のとおりです。
 
 ```yaml
 kind: Deployment
@@ -377,7 +377,7 @@ OpenAPI Generator と Spring Boot を使ってマイクロサービスを構築�
 
 今回の記事で、セキュリティ向上のためドメインに組み込まなかった認証認可をサイドカーパターンで実現し、全体のサービスを完成しました。
 
-この記事のコード全体は [GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-6) にあります。
+この記事のコード全体は [GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/v0.6.0) にあります。
 
 :::info:2023年1月5日追記
 Kubernetes 環境に Keycloak をインストールする場合 Helm チャートが使用できます。また Apple Silicon にも対応しています。詳細なインストール手順は「[KeycloakのSAML2 IdPをAmazon Cognito user poolsと連携する](https://s-edword.hatenablog.com/entry/2023/01/04/112949)」を参照してください。

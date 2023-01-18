@@ -11,13 +11,13 @@ tags: [AWS, "認証/認可", keycloak, OIDC, java, ZTA]
 
 題材は宇宙船の冬眠ポッド (hibernation pod) です。冬眠ポッド毎にログインする URL は違いますが間違いやすいため、認証画面にアクセスする QRコード[^1] を冬眠ポッドのディスプレイに表示しています。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-5/image/index.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.5.0/image/index.png)
 
 iPhone 等のカメラを通して QRコード のリンクをブラウザで開くと Keycloak の認証画面が表示されます。認証されると、iPhone 等のブラウザに、OpenID Connect の ID トークンとポッド ID が表示されます。
 
 ## Keycloak の設定
 
-前回までの記事では、停止すると設定が失われる環境を説明しました。これは非常に不便なので停止しても設定が失われないようにします。Keycloak はデフォルトでは [h2](https://www.h2database.com/html/main.html) データベースを使用します。データが保存されるディレクトリは、コンテナ内の `/opt/jboss/keycloak/standalone/data` ですので、このディレクトリにローカルストレージを割り当てることで可能になります。[`docker-compose.yml`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-5/keycloak/docker-compose.yml) ファイルを次のように修正しました。
+前回までの記事では、停止すると設定が失われる環境を説明しました。これは非常に不便なので停止しても設定が失われないようにします。Keycloak はデフォルトでは [h2](https://www.h2database.com/html/main.html) データベースを使用します。データが保存されるディレクトリは、コンテナ内の `/opt/jboss/keycloak/standalone/data` ですので、このディレクトリにローカルストレージを割り当てることで可能になります。[`docker-compose.yml`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.5.0/keycloak/docker-compose.yml) ファイルを次のように修正しました。
 
 ```yaml
 version: "3"
@@ -49,7 +49,7 @@ services:
 
 サービスが使用するクライアントを作成します。「Clients」をクリックして、「Create」ボタンをクリックします。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-5/image/oidc-1.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.5.0/image/oidc-1.png)
 
 Client ID に `hibernation-pod` と入力して「Save」ボタンをクリックします。
 
@@ -59,7 +59,7 @@ Client ID に `hibernation-pod` と入力して「Save」ボタンをクリッ�
 - `Implicit Flow Enabled` は、最初は `ON` にしておくとテストしやすいと思います。この記事では `OFF` のままで問題ありません。
 - `Valid Redirect URIs` は、`http://localhost:8080/example/callback` と PC のホスト名、例えば `mymac` という名前であれば `http://mymac.local:8080/example/callback` を設定します。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-5/image/oidc-2.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.5.0/image/oidc-2.png)
 
 入力したら「Save」ボタンをクリックします。
 
@@ -67,13 +67,13 @@ Client ID に `hibernation-pod` と入力して「Save」ボタンをクリッ�
 
 Credentials のタブを選択します。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-5/image/oidc-3.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.5.0/image/oidc-3.png)
 
 表示された `Secret` の値を記録しておいてください。サービスの設定ファイルで使用します。
 
 ### Mappers
 
-ID トークン等の JWT のペイロードには独自の属性を追加できます。この記事で構築しようとしている認証サービスは、宇宙船の冬眠ポッドが開いた時にコマンドを実行する別の記事「[第2回 イベントストーミングとドメイン駆動設計の戦略的設計](https://developer.mamezou-tech.com/blogs/2022/06/09/openapi-generator-2/)」の要素の1つです。そのため、`custom:firstname` と `custom:type` を ID トークンに含められるようマッピングを作成します。
+ID トークン等の JWT のペイロードには独自の属性を追加できます。この記事で構築しようとしている認証サービスは、宇宙船の冬眠ポッドが開いた時にコマンドを実行する別の記事「[第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)」の要素の1つです。そのため、`custom:firstname` と `custom:type` を ID トークンに含められるようマッピングを作成します。
 
 「Mappers」タブを選択して、「Create」ボタンをクリックします。
 
@@ -83,7 +83,7 @@ ID トークン等の JWT のペイロードには独自の属性を追加でき
 - `Token Claim Name` に `custom:firstname` と入力します。
 - `Claim JSON Type` は `String` を選択します。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-5/image/oidc-4.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.5.0/image/oidc-4.png)
 
 「Save」ボタンをクリックします。
 
@@ -107,7 +107,7 @@ Keycloak で OpenID Connect を有効にするための設定は以上です。
 
 ### インデックスページ
 
-インデックスページの [OpenAPI 定義](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-5/openapi.yml)は次の部分です。
+インデックスページの [OpenAPI 定義](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.5.0/openapi.yml)は次の部分です。
 
 ```yaml
   /index:
@@ -164,13 +164,13 @@ Keycloak で OpenID Connect を有効にするための設定は以上です。
 
 >推奨。リクエストとコールバックの間で維持される不透明な値。通常、Cross-Site Request Forgery (CSRF、XSRF) の軽減はこのパラメータの値を暗号化してブラウザ Cookie にバインドすることによって実行します。
 
-ログインページのコードは、[`AuthApiController.java`](https://github.com/edward-mamezou/use-openapi-generator/blob/3f5250d3e847333b1fe53ecb85c3f49aba797f7b/src/main/java/com/mamezou_tech/example/controller/api/AuthApiController.java#L99-118) を参照してください。
+ログインページのコードは、[`AuthApiController.java`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.5.0/src/main/java/com/mamezou_tech/example/controller/api/AuthApiController.java#L99-118) を参照してください。
 
 ### コールバック
 
 Code Flow は認証が成功した時、短時間有効な code がレスポンスされます。この code を使って Keycloak のトークンエンドポイントにアクセスして ID トークンを取得できます。
 
-コールバックを実装したインフラストラクチャー層の [`CodeFlow.java`](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-5/src/main/java/com/mamezou_tech/example/infrastructure/oidc/CodeFlow.java) は次の通りです。
+コールバックを実装したインフラストラクチャー層の [`CodeFlow.java`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.5.0/src/main/java/com/mamezou_tech/example/infrastructure/oidc/CodeFlow.java) は次の通りです。
 
 ```java
 package com.mamezou_tech.example.infrastructure.oidc;
@@ -271,7 +271,7 @@ Amazon Cognito Userpools の場合は、次の URL にアクセスして取得�
 
 ## まとめ
 
-この記事では、Keycloak を OpenID Connect の IdP (アイデンティティプロバイダ) として設定する方法について説明しました。この記事のコード全体は、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-5) にあります。
+この記事では、Keycloak を OpenID Connect の IdP (アイデンティティプロバイダ) として設定する方法について説明しました。この記事のコード全体は、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/v0.5.0) にあります。
 
 :::info:2023年1月5日追記
 Kubernetes 環境に Keycloak をインストールする場合 Helm チャートが使用できます。また Apple Silicon にも対応しています。詳細なインストール手順は「[KeycloakのSAML2 IdPをAmazon Cognito user poolsと連携する](https://s-edword.hatenablog.com/entry/2023/01/04/112949)」を参照してください。

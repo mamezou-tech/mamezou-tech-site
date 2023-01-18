@@ -11,13 +11,13 @@ tags: [java, "openapi-generator", "spring-boot", "spring-integration", DDD, "実
 
 説明の前に「[Spring Boot と Apache Camel の統合](/blogs/2022/06/12/spring-boot-with-apache-camel-integration/)」の議論を受けて冬眠カプセルを冬眠ポッド (hibernation pod) へ、船員を旅行者 (passenger) へとユビキタス言語の変更等イベントストーミングの修正がありました。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-4/event-storming/event-storming-2.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.4.0/event-storming/event-storming-2.png)
 
 このサービスは、冬眠ポッドにドメインイベントを発行する [publish/subscribe](https://www.enterpriseintegrationpatterns.com/PublishSubscribeChannel.html) のために MQTT を使用します。MQTT は非常に軽量な代わりに [Kafka](https://kafka.apache.org/) や [Amazon Kinesis](https://aws.amazon.com/jp/kinesis/) のようなイベントストアになりません。つまり、購読者 (subscriber または consumer) が接続していない間に発行されるイベントは残らないということを意味します。
 
 従ってイベントストーミングの見直しで、後で受信されなかったイベントの再発行を可能にするため「発行済みイベント」集約をこのサービスに持ちました。「[実践ドメイン駆動設計](https://www.amazon.co.jp/dp/479813161X/)」でもドメインイベントの発行は集約を通しています。
 
-イベントストーミングの成果をさらに「[Context Mapper](https://contextmapper.org/docs/home/)」ツールを使って[モデリング](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-4/context-map/example.cml)しました。
+イベントストーミングの成果をさらに「[Context Mapper](https://contextmapper.org/docs/home/)」ツールを使って[モデリング](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.4.0/context-map/example.cml)しました。
 
 ```text
 ContextMap {
@@ -68,7 +68,7 @@ BoundedContext ExampleContext {
 
 PlantUML を使って出力した図は下のようになります。
 
-![](https://github.com/edward-mamezou/use-openapi-generator/raw/feature/openapi-generator-4/out/src-gen/example_BC_ExampleContext/example_BC_ExampleContext.png)
+![](https://github.com/edward-mamezou/use-openapi-generator/raw/v0.4.0/out/src-gen/example_BC_ExampleContext/example_BC_ExampleContext.png)
 
 「[エリック・エヴァンスのドメイン駆動設計](https://www.amazon.co.jp/dp/4798121967/)」に集約 (aggregate) と集約ルート (aggregate root) の説明があります。
 
@@ -91,7 +91,7 @@ PlantUML を使って出力した図は下のようになります。
 
 このサービスは Spring Boot バージョン 2.7.0 を採用しています。現在はまだ、このバージョンの Spring Boot に対応した Apache Camel が存在しないため、今回は Spring Integration を使うことにしました。
 
-Spring Integration のドメイン固有言語 (DSL) を使って [MQTT ブローカーを定義](https://github.com/edward-mamezou/use-openapi-generator/blob/78cb728867dd24ac3387477464dbc935b348f927/src/main/java/com/mamezou_tech/example/controller/configuration/HelloConfiguration.java#L30-L34) できます。
+Spring Integration のドメイン固有言語 (DSL) を使って [MQTT ブローカーを定義](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.4.0/src/main/java/com/mamezou_tech/example/controller/configuration/HelloConfiguration.java#L30-L34) できます。
 
 ```java
     @Bean
@@ -104,7 +104,7 @@ Spring Integration のドメイン固有言語 (DSL) を使って [MQTT ブロ�
 
 この定義を使用するときは、`@Autowired` 等を使う Spring による依存性注入 (DI) が必要です。Spring の DI コンテナに登録されるコンポーネントは、コード通りに生成されたインスタンスではなく、Spring の内部の仕組みでコードが付加されている場合があります。ここで定義した `IntegrationFlow` もその1つです。
 
-注入された `IntegrationFlow` を使ってイベントを発行する[コード](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-4/src/main/java/com/mamezou_tech/example/infrastructure/repository/HelloEventRepositoryImpl.java)は次のようになります。
+注入された `IntegrationFlow` を使ってイベントを発行する[コード](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.4.0/src/main/java/com/mamezou_tech/example/infrastructure/repository/HelloEventRepositoryImpl.java)は次のようになります。
 
 ```java
     mqttOutbound.getInputChannel().send(message);
@@ -112,11 +112,11 @@ Spring Integration のドメイン固有言語 (DSL) を使って [MQTT ブロ�
 
 ## レイヤードアーキテクチャ
 
-2回目の[記事](https://developer.mamezou-tech.com/blogs/2022/06/09/openapi-generator-2/)で説明したときとドメイン層以外のレイヤー構成に変化はありません。以前はドメイン層を設けなかったため、アプリケーション層から直接インフラストラクチャー層を実行するようにしていました。
+2回目の[記事](/blogs/2022/06/09/openapi-generator-2/)で説明したときとドメイン層以外のレイヤー構成に変化はありません。以前はドメイン層を設けなかったため、アプリケーション層から直接インフラストラクチャー層を実行するようにしていました。
 
 ### インフラストラクチャー層
 
-インフラストラクチャー層について少し補足します。[Amazon Polly](https://aws.amazon.com/jp/polly/) を使う[音声の合成](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-4/src/main/java/com/mamezou_tech/example/infrastructure/aws/Polly.java)、[mp3 から wave 形式への変換](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-4/src/main/java/com/mamezou_tech/example/infrastructure/audio/AudioConverter.java)、[MQTT へのイベント発行](https://github.com/edward-mamezou/use-openapi-generator/blob/feature/openapi-generator-4/src/main/java/com/mamezou_tech/example/infrastructure/repository/HelloEventRepositoryImpl.java)等が増えたため、インフラストラクチャー層内部もパッケージを分割しました。
+インフラストラクチャー層について少し補足します。[Amazon Polly](https://aws.amazon.com/jp/polly/) を使う[音声の合成](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.4.0/src/main/java/com/mamezou_tech/example/infrastructure/aws/Polly.java)、[mp3 から wave 形式への変換](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.4.0/src/main/java/com/mamezou_tech/example/infrastructure/audio/AudioConverter.java)、[MQTT へのイベント発行](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.4.0/src/main/java/com/mamezou_tech/example/infrastructure/repository/HelloEventRepositoryImpl.java)等が増えたため、インフラストラクチャー層内部もパッケージを分割しました。
 
 ドメイン駆動設計はビジネスドメインにフォーカスして、ビジネスドメインをドメイン層に隔離します。
 
@@ -212,7 +212,7 @@ public class HelloEvents {
 
 メッセージングに Spring Integration を使って、ドメイン駆動設計によるドメイン層を実装してサービスを完成させました。[次回](/blogs/2022/07/01/openapi-generator-5/)は、このサービスで採用している多層アーキテクチャ (Multi-tier Architecture) を実現するサイドカーパターンについて説明します。
 
-この記事のコード全体は [GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/feature/openapi-generator-4) にあります。
+この記事のコード全体は [GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/v0.4.0) にあります。
 
 ## 参考
 

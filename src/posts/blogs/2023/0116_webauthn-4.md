@@ -24,6 +24,10 @@ tags: [AWS, "認証/認可", keycloak, ZTA, webauthn]
 この記事で紹介する Helm チャートのイメージの指定も Docker Hub ではなく Quay.io から pull するようになっています。
 :::
 
+## Keycloak
+
+[Keycloak](https://www.keycloak.org/) は SAML の Identity Provider (IdP) としてあるいは OpenID Connect (OIDC) の OpenID Provider (OP) として使用できる認証プロダクトです。クラウド環境やオンプレミス環境で使用可能です。
+
 ## 前提
 
 動作確認に使用した環境は次の通りです。

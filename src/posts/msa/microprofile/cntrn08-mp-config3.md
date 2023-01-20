@@ -1,5 +1,5 @@
 ---
-title: 第8回 MicroProfile Config 3.0へのキャッチアップ
+title: MicroProfile Config 3.0へのキャッチアップ
 author: toshio-ogiwara
 date: 2022-09-12
 tags: ["逆張りのMicroProfile"]

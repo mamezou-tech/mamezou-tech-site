@@ -1,5 +1,5 @@
 ---
-title: 第1回 MicroProfileってなにそれ？ - MicroProfileの登場
+title: MicroProfileってなにそれ？ - MicroProfileの登場
 author: toshio-ogiwara
 date: 2022-03-02
 tags: ["逆張りのMicroProfile"]

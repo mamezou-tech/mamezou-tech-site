@@ -1,5 +1,5 @@
 ---
-title: 第7回 らくらくMicroProfile RestClient
+title: らくらくMicroProfile RestClient
 author: toshio-ogiwara
 date: 2022-04-27
 tags: ["逆張りのMicroProfile"]

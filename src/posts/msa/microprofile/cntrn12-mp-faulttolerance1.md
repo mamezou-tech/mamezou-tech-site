@@ -1,9 +1,9 @@
 ---
-title: 第12回 MicroProfile Fault Tolerance(1) - 例で理解する基本機能編
+title: MicroProfile Fault Tolerance(1) - 例で理解する基本機能編
 author: toshio-ogiwara
 date: 2022-10-20
 tags: ["逆張りのMicroProfile"]
-prevPage: ./src/posts/msa/microprofile/cntrn11-mp-restclient3.md
+prevPage: ./src/posts/msa/microprofile/cntrn16-mp-tracing.md
 nextPage: ./src/posts/msa/microprofile/cntrn13-mp-faulttolerance2.md
 ---
 

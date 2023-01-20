@@ -1,9 +1,10 @@
 ---
-title: 第17回 MicroProfile JWT Authがやってくれること・できること
+title: MicroProfile JWT Authがやってくれること・できること
 author: toshio-ogiwara
 date: 2022-12-29
 tags: ["逆張りのMicroProfile", Security, "認証/認可"]
-prevPage: ./src/posts/msa/microprofile/cntrn16-mp-tracing.md
+prevPage: ./src/posts/msa/microprofile/cntrn11-mp-restclient3.md
+nextPage: ./src/posts/msa/microprofile/cntrn10-mp-health.md
 ---
 今回のテーマはJSON Web Token(JWT)を使ったMicroProfileアプリケーションの認証・認可に関するMicroProfile JWT Auth(MP JWT)です。MP JWTの仕様にはJWTをはじめBearerトークンやOpenID Connect(OIDC), Jakarta EE RBACなど他の規格や標準が多数登場するため難解でかつ、どこまでがMP JWTの話でMP JWTは結局なにをやってくれる仕様なのかがとても分かりづらくなっています。今回はこの辺りを踏まえMP JWTがやってくれること、MP JWTでできることをポイントに説明をしてきたいと思います。
 

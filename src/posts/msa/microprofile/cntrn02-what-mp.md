@@ -1,10 +1,10 @@
 ---
-title: 第2回 MicroProfileってなにそれ？ - MicroProfileの仕様と実装
+title: MicroProfileってなにそれ？ - MicroProfileの仕様と実装
 author: toshio-ogiwara
 date: 2022-03-03
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn01-what-mp.md
-nextPage: ./src/posts/msa/microprofile/cntrn03-sampleapp-helidon.md
+nextPage: ./src/posts/msa/microprofile/cntrn18-mp-specsystem.md
 ---
 
 [前回](/msa/mp/cntrn01-what-mp/)はMicroProfileの登場からMicroProfileが目指すものまで説明しました。今回はMicroProfileの中身となるMicroProfileの仕様と実装について、私見も交えながら説明したいと思います。若干長い説明となりますが、最後まで目を通していただけたら幸いです。

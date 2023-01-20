@@ -1,10 +1,10 @@
 ---
-title: 第16回 MicroProfile OpenTracingとJeagerで理解する分散トレーシング
+title: MicroProfile OpenTracingとJeagerで理解する分散トレーシング
 author: toshio-ogiwara
 date: 2022-11-20
 tags: ["逆張りのMicroProfile", tracing]
 prevPage: ./src/posts/msa/microprofile/cntrn15-mp-metrics.md
-nextPage: ./src/posts/msa/microprofile/cntrn17-mp-jwt.md
+nextPage: ./src/posts/msa/microprofile/cntrn12-mp-faulttolerance1.md
 ---
 
 今回のテーマは前回のMicroProfile Metricsに続き可観測性のもう一角をなす分散トレーシングのMicroProfile OpenTracing(MP OpenTracing)です。MP OpenTracingの仕様は主にランタイム提供ベンダー向けのもので利用する側はランタイムがトレース情報を自動計測してくれるため、その存在を意識することはほぼありません。これは便利で都合がよいことですが、その一方で、どこまでがOpenTracingなどの標準仕様で決められていることで、どこからがMP OpenTracing固有で、そしてJeagerなどの製品が担っているのはどの部分か？などといった、分散トレーシングの構成要素とその役割が分かりづらくなっています。今回の記事ではこの辺りも意識し、MP OpenTracingだけではなく少し視野を広げた説明を行っていきます。

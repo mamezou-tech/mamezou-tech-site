@@ -1,10 +1,9 @@
 ---
-title: 第14回 MicroProfile Fault Tolerance(3) - 例で理解する設定編
+title: MicroProfile Fault Tolerance(3) - 例で理解する設定編
 author: toshio-ogiwara
 date: 2022-10-22
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn13-mp-faulttolerance2.md
-nextPage: ./src/posts/msa/microprofile/cntrn15-mp-metrics.md
 ---
 MicroProfile Fault Tolerance(MP Fault Tolerance)を紹介する最後は設定によるフォールトトレランス機能の指定です。今回も前回同様、MP Fault Toleranceから提供される機能とその設定を「こんなことをしたい」的な利用シーンごとに説明していきます。なお、MP Fault Toleranceの機能は豊富なため説明は前々回の[基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)、前回の[非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)、そして今回の設定編と3回に分けて行っています。
 

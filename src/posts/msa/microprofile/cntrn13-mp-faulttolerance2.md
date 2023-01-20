@@ -1,5 +1,5 @@
 ---
-title: 第13回 MicroProfile Fault Tolerance(2) - 例で理解する非同期編
+title: MicroProfile Fault Tolerance(2) - 例で理解する非同期編
 author: toshio-ogiwara
 date: 2022-10-21
 tags: ["逆張りのMicroProfile"]

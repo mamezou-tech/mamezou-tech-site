@@ -1,5 +1,5 @@
 ---
-title: 第4回 使って分かった！お勧めMicroProfile仕様厳選3選
+title: 使って分かった！お勧めMicroProfile仕様厳選3選
 author: toshio-ogiwara
 date: 2022-03-10
 tags: ["逆張りのMicroProfile"]

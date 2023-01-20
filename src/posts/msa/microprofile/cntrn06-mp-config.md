@@ -1,5 +1,5 @@
 ---
-title: 第6回 お手軽便利MicroProfile Config
+title: お手軽便利MicroProfile Config
 author: toshio-ogiwara
 date: 2022-04-01
 tags: ["逆張りのMicroProfile"]

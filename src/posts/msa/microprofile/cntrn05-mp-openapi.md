@@ -1,5 +1,5 @@
 ---
-title: 第5回 コードが仕様の源泉MicroProfile OpenAPI
+title: コードが仕様の源泉MicroProfile OpenAPI
 author: toshio-ogiwara
 date: 2022-03-25
 tags: ["逆張りのMicroProfile"]

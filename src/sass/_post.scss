@@ -78,7 +78,7 @@
     width: calc((100vw - 80ch)/2 - 3rem);
     right: 0;
     top: 350px;
-    & > a {
+    & > div > a {
       display: inline-block;
       margin-top: 1rem;
     }

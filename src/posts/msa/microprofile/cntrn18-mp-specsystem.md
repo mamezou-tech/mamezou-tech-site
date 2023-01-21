@@ -9,7 +9,7 @@ nextPage: ./src/posts/msa/microprofile/cntrn03-sampleapp-helidon.md
 
 MicroProfileはご存じのとおり、Jakarta EEをベースにマイクロサービスアーキテクチャで必要となるAPIや機能の提供を目的とした仕様ですが、この仕様には大きく2つの区分けがあります。
 
-１つはUmbrella仕様と呼ばれるMicroProfileのコアプラットフォームに相当する仕様と、もう一つはStandalone仕様と呼ばれるオプショナルな仕様になります（Umbrellaと名前が付いているのは恐らくMicroProfileのUmbrella(傘)の下の仕様という意味だと思われます）
+１つはUmbrella仕様と呼ばれるMicroProfileのコアプラットフォームに相当する仕様と、もう一つはStandalone仕様と呼ばれるオプショナルな仕様になります。（Umbrellaと名前が付いているのは恐らくMicroProfileのUmbrella(傘)の下の仕様という意味だと思われます）
 
 執筆時における最新のMicroProfile 6.0のUmbrella仕様(左側の点線四角枠)とStandalone仕様は次のようになっています[^1]。
 [^1]: [逆張りのMicroProfileの連載](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)は実装にHelidonを使っているため、説明はHelidonが準拠するMicroProfile 5.0をベースにしています。

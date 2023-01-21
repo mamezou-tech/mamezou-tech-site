@@ -347,7 +347,7 @@ curl -X GET http://localhost:7001/health/ready -w ':%{http_code}\n'
 ```
 
 ### リファレンスアプリでの利用例
-MP Healthではヘルスチェックの応答が規定されているため、連携先のアプリの詳細を知ることなくヘルスチェックを行うことができます。リファレンスアプリではこの性質とMicroProfile RestClientの利点を活かして「連携先のアプリがすべてReadinessか？」を確認する汎用的な [ReadinessOfOutboundServersHealthCheck](https://github.com/extact-io/msa-rms-platform/blob/main/platform-core/src/main/java/io/extact/msa/rms/platform/core/health/ReadnessOfOutboundServersHealthCheck.java)を作成しています。興味がある方は参考にしてみてください。
+MP Healthではヘルスチェックの応答が規定されているため、連携先のアプリの詳細を知ることなくヘルスチェックを行うことができます。リファレンスアプリではこの性質とMicroProfile RestClientの利点を活かして「連携先のアプリがすべてReadinessか？」を確認する汎用的な [ReadinessOfOutboundServersHealthCheck](https://github.com/extact-io/msa-rms-platform/blob/main/platform-core/src/main/java/io/extact/msa/rms/platform/core/health/ReadinessOfOutboundServersHealthCheck.java)を作成しています。興味がある方は参考にしてみてください。
 
 ### まとめ
 MP Healthによりヘルスチェックに関するプロトコル（URLとメッセージフォーマット）が標準化されているため、MP Health準拠であれば相手がどんなチェックをしているかを知らなくても、決まったURLにリクエストを投げれば、決まった応答が返ってきます。これにより、相手先ごとに相手先ごとの都合によるチェック処理を作らなくてよくなりヘルスチェックAPIを共通化しやすくなります。MP Healthは機能も小さく地味な存在ですが、MP Healthの1番の利点はそんな共通化の促進にあると筆者は考えています。

@@ -10,9 +10,9 @@ MicroProfile Fault Tolerance(MP Fault Tolerance)を紹介する最後は設定�
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/08-fault_tolerance>
 
-MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Fault Tolerance 4.0をもとに作成しています。
@@ -22,7 +22,7 @@ MicroProfile Fault Toleranceの詳細は[公式マニュアル](https://download
 # 設定機能の概要
 MP Fault Toleranceに対する指定は前回まで見てきたとおり、すべてアノテーションで行うことができますが、全体に対する指定やアノテーションで指定した属性値の上書きなどはMicroProfile Config[^1]の設定ファイルで行うことができます。今回はこのMP Fault Toleranceの設定機能を設定例を交えながら説明していきます。
 
-[^1]: MicroProfile Config(MP Config)は[第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)で詳しく説明しています。
+[^1]: MicroProfile Config(MP Config)は「[お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)」で詳しく説明しています。
 
 # アノテーションで指定した設定を上書きしたい
 次の3つのレベルでアノテーションで指定した属性値を上書きできます。

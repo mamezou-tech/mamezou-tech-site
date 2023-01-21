@@ -7,12 +7,13 @@ prevPage: ./src/posts/msa/microprofile/cntrn18-mp-specsystem.md
 nextPage: ./src/posts/msa/microprofile/cntrn04-spec-ranking.md
 ---
 
-[前回](/msa/mp/cntrn02-what-mp/)まではMicroProfile全体に関する軟らかめの話でしたが、今回からはMicroProfileでどのようなことができるか？そして使うのか？などの実装的な側面の話をしていきます。
+[前回](/msa/mp/cntrn18-mp-specsystem/)まではMicroProfile全体に関する軟らかめの話でしたが、今回からはMicroProfileでどのようなことができるか？そして使うのか？などの実装的な側面の話をしていきます。
 
 その初回となる今回は、まずは動くものを見てもらう意味も含めMicroProfileを使ったサンプルアプリを紹介し、その後にMicroProfile実装として利用しているHelidonを説明します。サンプルアプリの中身は以降の回をとおして説明するため、今回はこんなのが有りますよ程度の説明に留めます。
 
-MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 
 ## サンプルアプリの紹介

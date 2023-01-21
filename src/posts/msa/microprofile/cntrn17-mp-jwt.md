@@ -11,9 +11,9 @@ nextPage: ./src/posts/msa/microprofile/cntrn10-mp-health.md
 なお、記事はコードの抜粋を記載しています。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - [GitHub - extact-io/contrarian-microprofile-sample/11-jwt](https://github.com/extact-io/contrarian-microprofile-sample/tree/main/11-jwt)
 
-また、MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.2 + MicroProfile JWT Auth 2.0をもとに作成しています。

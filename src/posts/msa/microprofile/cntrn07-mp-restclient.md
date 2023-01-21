@@ -6,26 +6,25 @@ tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn06-mp-config.md
 nextPage: ./src/posts/msa/microprofile/cntrn08-mp-config3.md
 ---
-MicroProfileの厳選仕様を紹介していくシリーズの最後は[第4回](/msa/mp/cntrn04-spec-ranking/)で紹介した『これは抑えておくベキ、もしくは使っておくベキ』仕様第1位の筆者一押しのMicroProfile RestClient(MP RestClient)です。JAX-RSのAPIはREST向けに設計されているAPIとは言え、そのベースはHTTPプロトコルのためパラメータ送信1つをとっても、それがQueryStringかパスパラメータか、それともbodyのJSON連携かにより呼び出し手順やAPIが異なり、その実装は単調な割には骨の折れる面倒くさいものでした。MP RestClientはそんな面倒くさいREST API呼び出しをローカルAPI呼び出しのように正に「らくらく」に呼び出せる機能となります。
+MicroProfileの厳選仕様を紹介していくシリーズの最後は[前回](/msa/mp/cntrn04-spec-ranking/)紹介した『これは抑えておくベキ、もしくは使っておくベキ』仕様第1位の筆者一押しのMicroProfile RestClient(MP RestClient)です。JAX-RSのAPIはREST向けに設計されているAPIとは言え、そのベースはHTTPプロトコルのためパラメータ送信1つをとっても、それがQueryStringかパスパラメータか、それともbodyのJSON連携かにより呼び出し手順やAPIが異なり、その実装は単調な割には骨の折れる面倒くさいものでした。MP RestClientはそんな面倒くさいREST API呼び出しをローカルAPI呼び出しのように正に「らくらく」に呼び出せる機能となります。
 
 今回はそんな素敵なMP RestClientについてJAX-RSとの比較をとおしてMP RestClientの利用法やそのメリットを説明します。
 
 なお、記事はコードの抜粋を記載してます。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/01-restclient>
 
-MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
-この記事はJava11+Helidon 2.4.2 + MicroProfile RestClient 1.4をもとに作成しています。MicroProfile RestClient 1.4の仕様は[こちら](https://download.eclipse.org/microprofile/microprofile-rest-client-1.4.0/microprofile-rest-client-1.4.0.html)を参照ください。また、MicroProfile RestClient 3.0や今回紹介できなかった機能は [第11回 MicroProfile RestClient 3.0の確認と小技機能の紹介](/msa/mp/cntrn11-mp-restclient3/) で紹介しています。
+この記事はJava11+Helidon 2.4.2 + MicroProfile RestClient 1.4をもとに作成しています。MicroProfile RestClient 1.4の仕様は[こちら](https://download.eclipse.org/microprofile/microprofile-rest-client-1.4.0/microprofile-rest-client-1.4.0.html)を参照ください。また、MicroProfile RestClient 3.0や今回紹介できなかった機能は [MicroProfile RestClient 3.0の確認と小技機能の紹介](/msa/mp/cntrn11-mp-restclient3/) で紹介しています。
 :::
 
 ## 比較に利用するREST API
 まず最初にJAX-RSとMP RestClientの実装比較に利用REST APIを説明します。
 
-実装比較に利用するREST APIはJAX-RSのRESTアプリケーションとして実装された以下のものとなります。参考までにどこかで見たことがあるなぁと思った方はそのとおりで、「[第5回 コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/#サンプルアプリと動作方法)」の説明に利用したPersonアプリと同じです。
+実装比較に利用するREST APIはJAX-RSのRESTアプリケーションとして実装された以下のものとなります。参考までにどこかで見たことがあるなぁと思った方はそのとおりで、「[コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/#サンプルアプリと動作方法)」の説明に利用したPersonアプリと同じです。
 
 - RESTアプリケーションの構造
 
@@ -461,7 +460,7 @@ sequenceDiagram
 [^7]: これは依頼に対して処理可能なオブジェクトが現れるまで、依頼を聞き回るGoFの”Chain of Responsibility”パターンを使った典型的な実装と言えます。
 
 ## リファレンスアプリでの利用例
-[第3回](/msa/mp/cntrn03-sampleapp-helidon/)で紹介したMicroProfileを使ったリファレンスアプリ(RMS)ではこの記事では説明しなかった複数Providerの登録やリクエストヘッダの操作を行うためにMP RestClientに用意されているClientHeadersFactoryインタフェースの利用など広範に渡りMP RestClientの機能を利用しています。
+「[使った、作った、Helidonで！](/msa/mp/cntrn03-sampleapp-helidon/)」で紹介したMicroProfileを使ったリファレンスアプリ(RMS)ではこの記事では説明しなかった複数Providerの登録やリクエストヘッダの操作を行うためにMP RestClientに用意されているClientHeadersFactoryインタフェースの利用など広範に渡りMP RestClientの機能を利用しています。
 
 リファレンスアプリにおけるMP RestClientの利用は以下にまとめていますので興味がある方は見ていただければと思います。
 

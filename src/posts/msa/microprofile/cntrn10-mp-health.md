@@ -12,9 +12,9 @@ MicroProfileの機能を紹介していくシリーズの今回はMicroProfile H
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/04-health>
 
-MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Health 4.0をもとに作成しています。

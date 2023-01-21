@@ -12,9 +12,9 @@ nextPage: ./src/posts/msa/microprofile/cntrn13-mp-faulttolerance2.md
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/08-fault_tolerance>
 
-MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Fault Tolerance 4.0をもとに作成しています。
@@ -28,7 +28,7 @@ MicroProfile Fault Toleranceの詳細は[公式マニュアル](https://download
 
 説明に利用するRESTアプリケーションはHelloクライアントアプリが受け取った挨拶依頼(/client)をMicroProfile RestClientのHelloRestClientインタフェース[^1]を使って後段のHelloサービスアプリに委譲するアプリケーションとなります。記事のなかではHelloクライアントアプリのHelloFautlToleranceServiceに色々な設定をしながら説明を行っていきます。
 
-[^1]: MicroProfile RestClientは[第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)で取り上げています
+[^1]: MicroProfile RestClientは「[らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)」で取り上げています
 
 それではこのアプリを使ってMP Fault Toleranceの各機能を説明していきます。
 

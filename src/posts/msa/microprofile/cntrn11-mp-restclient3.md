@@ -7,14 +7,14 @@ prevPage: ./src/posts/msa/microprofile/cntrn09-mp-openapi3.md
 nextPage: ./src/posts/msa/microprofile/cntrn17-mp-jwt.md
 ---
 
-今回は[第8回](/msa/mp/cntrn08-mp-config3/),[9回](/msa/mp/cntrn09-mp-openapi3/)の続きとしてHelidon 3.0から使えるようになったMicroProfile RestClientの機能を紹介します。ただしMicroProfile RestClientは差分となる機能が多くないため、その差分を簡単に紹介した後に代わりとして以前のバージョンからあった小技的な機能を併せて紹介します。なお、今回の記事は[第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)の理解を前提にしています。まだの方はそちらから読んでいただければと思います。
+今回は[前回](/msa/mp/cntrn09-mp-openapi3/),[前々回](/msa/mp/cntrn08-mp-config3/)の続きとしてHelidon 3.0から使えるようになったMicroProfile RestClientの機能を紹介します。ただしMicroProfile RestClientは差分となる機能が多くないため、その差分を簡単に紹介した後に代わりとして以前のバージョンからあった小技的な機能を併せて紹介します。なお、今回の記事は以前紹介した「[らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)」の理解を前提にしています。まだの方はそちらから読んでいただければと思います。
 
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/07-restclient_3.0>
 
-MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile RestClient 3.0をもとに作成しています。
@@ -45,7 +45,7 @@ MicroProfile RestClient(MP RestClient) 2.0から3.0までに利用者観点で�
 :::
 
 # RestClientBuilderに追加された3つのAPI
-[第7回](/msa/mp/cntrn07-mp-restclient/)で紹介したRestClientの取得方法はインジェクションによるものだけでしたが、もう1つ、実行時にプログラムから接続先などの構成情報を指定して動的にインスタンスを生成する方法もあります。この動的な生成で利用するビルダークラスがRestClientBuilderになります。
+[らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)で紹介したRestClientの取得方法はインジェクションによるものだけでしたが、もう1つ、実行時にプログラムから接続先などの構成情報を指定して動的にインスタンスを生成する方法もあります。この動的な生成で利用するビルダークラスがRestClientBuilderになります。
 
 このRestClientBuilderにMP RestClient 2.0でAPIが追加され、指定可能な構成情報が増えています。
 
@@ -114,7 +114,7 @@ Response response = client.sendMultiValues(Collections.asList("abc", "mno", "xyz
 MP RestClient 2.0で追加された機能の説明は以上となります。
 
 # 便利な小技機能の紹介
-ここからは[第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)で紹介できなかったMP RestClient 1.4(Helidon 2.x)から使える便利な機能として次の3つを紹介します。
+ここからは[らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)で紹介できなかったMP RestClient 1.4(Helidon 2.x)から使える便利な機能として次の3つを紹介します。
 
 - 動的なRestClientインスタンスの生成
 - HTTPヘッダーの設定
@@ -133,7 +133,7 @@ MP RestClient 2.0で追加された機能の説明は以上となります。
 - HelloAggregateサービスから各Helloサービスへの呼び出しは非同期で行い処理を効率化する
 
 ## 動的なRestClientインスタンスの生成
-各Helloサービスに対するRestClientインタフェースは同じですが呼び出すURLはそれぞれ異なります。このため、[第7回で説明した](/msa/mp/cntrn07-mp-restclient/#microprofile-restclientによる実装)接続先などの構成情報をRestClientインタフェースのアノテーションで指定するような静的なRestClientインスタンスの取得は今回のケースに向きません。
+各Helloサービスに対するRestClientインタフェースは同じですが呼び出すURLはそれぞれ異なります。このため、[以前説明した](/msa/mp/cntrn07-mp-restclient/#microprofile-restclientによる実装)接続先などの構成情報をRestClientインタフェースのアノテーションで指定するような静的なRestClientインスタンスの取得は今回のケースに向きません。
 
 このような場合はRestClientBuilderを使って動的に必要な構成情報を指定します。
 

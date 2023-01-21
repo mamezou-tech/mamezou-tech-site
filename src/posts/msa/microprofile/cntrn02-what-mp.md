@@ -9,8 +9,9 @@ nextPage: ./src/posts/msa/microprofile/cntrn18-mp-specsystem.md
 
 [前回](/msa/mp/cntrn01-what-mp/)はMicroProfileの登場からMicroProfileが目指すものまで説明しました。今回はMicroProfileの中身となるMicroProfileの仕様と実装について、私見も交えながら説明したいと思います。若干長い説明となりますが、最後まで目を通していただけたら幸いです。
 
-MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 
 ## MicroProfileがカバーする仕様
@@ -172,7 +173,7 @@ MicroProfile対応製品の各種情報と勝手な一口コメントでこの�
 :::
 
 ## MicroProfileの今後
-[第1回](/msa/mp/cntrn01-what-mp/)のMicroProfileの登場でも軽く触れましたが、MicroProfileの一部であったMicroProfile ConfigはJakarta EE10に取り込まれる予定[^13]となっています。また、MicroProfile Config同様に今後Jakarta EEに取り込まれることが噂されるMicroProfile仕様もいくつかあります。
+[前回](/msa/mp/cntrn01-what-mp/)のMicroProfileの登場でも軽く触れましたが、MicroProfileの一部であったMicroProfile ConfigはJakarta EE10に取り込まれる予定[^13]となっています。また、MicroProfile Config同様に今後Jakarta EEに取り込まれることが噂されるMicroProfile仕様もいくつかあります。
 
 これらのことから、今後はMicroProfileの成果がJakarta EEに積極的にフィードバックされていくのではないかと思われます。
 

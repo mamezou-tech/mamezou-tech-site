@@ -77,7 +77,11 @@
     position: fixed;
     width: calc((100vw - 80ch)/2 - 3rem);
     right: 0;
-    top: 300px;
+    top: 350px;
+    & > a {
+      display: inline-block;
+      margin-top: 1rem;
+    }
   }
   .toc-container-header {
     margin: 0.5rem;

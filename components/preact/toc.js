@@ -40,6 +40,7 @@ function Toc() {
       toc.style.top = top < 0 ? 0 : `${top}px`;
     });
   }, []);
+  const sendGa = (el, name) => typeof window.gtag === 'function' && window.gtag('event', name, { type: 'toc' });
   if (!data.length) return;
 
   const makeList = (nodes) => {
@@ -59,6 +60,12 @@ function Toc() {
     <div className="post__toc_preact">
       <p className="toc-container-header">Contents</p>
       ${makeList(data)}
+      <a href="https://mamezou.connpass.com/" onClick=${(el) => sendGa(el, 'click_mameyose')} target="_blank" rel="noreferrer noopener">
+        <img alt="mameyose" height="60" width="198" src="/img/logo/logo-mameyose_banner60.png" style="background-color: #ffffff" />
+      </a>
+      <a href="https://wwwrecruit.mamezou.com/" onClick=${(el) => sendGa(el, 'click_recruit')} target="_blank" rel="noreferrer noopener">
+        <img alt="recruit" height="60" width="200" src="/img/logo/recruit.jpeg" />
+      </a>
     </div>`;
 }
 

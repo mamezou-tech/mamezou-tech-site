@@ -273,17 +273,11 @@ Amazon Cognito Userpools の場合は、次の URL にアクセスして取得�
 
 この記事では、Keycloak を OpenID Connect の IdP (アイデンティティプロバイダ) として設定する方法について説明しました。この記事のコード全体は、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/v0.5.0) にあります。
 
-:::info:2023年1月5日追記
-Kubernetes 環境に Keycloak をインストールする場合 Helm チャートが使用できます。また Apple Silicon にも対応しています。詳細なインストール手順は「[KeycloakのSAML2 IdPをAmazon Cognito user poolsと連携する](https://s-edword.hatenablog.com/entry/2023/01/04/112949)」を参照してください。
-:::
-
-## 過去の記事
-
-- [WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)
-- [Envoy Proxy による HTTPS Proxy](/blogs/2022/06/20/https-envoy-proxy/)
-
-## 参考
+## 関連記事
 
 - [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)
+- [Apple Touch ID Keyboard を使ったパスワードレス認証](/blogs/2023/01/16/webauthn-4/)
+- [KeycloakのSAML2 IdPをAmazon Cognito user poolsと連携する](https://s-edword.hatenablog.com/entry/2023/01/04/112949)
+- [Envoy Proxy による HTTPS Proxy](/blogs/2022/06/20/https-envoy-proxy/)
 
 [^1]: QRコードは株式会社デンソーウェーブの登録商標です。

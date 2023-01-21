@@ -24,6 +24,7 @@ function Recommendation({ tags }) {
   const [currentPage, setCurrentPage] = useState(0);
   const targetTags = tags.split(",").filter((t) => !ignoreTag.test(t));
   const fetchArticles = async () => {
+    if (!targetTags.length || !targetTags[0]) return;
     const promises = targetTags.map((tag) => fetch(`/tags/${tag}.json`).then((res) => res.json()));
     const articles = (await Promise.all(promises))
       .map((res) => res.articles)

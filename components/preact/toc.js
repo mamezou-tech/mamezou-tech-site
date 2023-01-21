@@ -48,7 +48,8 @@ function Toc() {
     return html`<ul>
       ${nodes.map((node) => {
       if ("children" in node) {
-        return makeList(node.children);
+        return html`
+          <li><a href="${node.anchor}">${node.text}</a>${makeList(node.children)}</li>`;
       } else {
         return html`
           <li><a href="${node.anchor}">${node.text}</a></li>`;

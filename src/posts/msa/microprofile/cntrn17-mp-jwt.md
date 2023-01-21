@@ -1,18 +1,19 @@
 ---
-title: 第17回 MicroProfile JWT Authがやってくれること・できること
+title: MicroProfile JWT Authがやってくれること・できること
 author: toshio-ogiwara
 date: 2022-12-29
 tags: ["逆張りのMicroProfile", Security, "認証/認可"]
-prevPage: ./src/posts/msa/microprofile/cntrn16-mp-tracing.md
+prevPage: ./src/posts/msa/microprofile/cntrn11-mp-restclient3.md
+nextPage: ./src/posts/msa/microprofile/cntrn10-mp-health.md
 ---
 今回のテーマはJSON Web Token(JWT)を使ったMicroProfileアプリケーションの認証・認可に関するMicroProfile JWT Auth(MP JWT)です。MP JWTの仕様にはJWTをはじめBearerトークンやOpenID Connect(OIDC), Jakarta EE RBACなど他の規格や標準が多数登場するため難解でかつ、どこまでがMP JWTの話でMP JWTは結局なにをやってくれる仕様なのかがとても分かりづらくなっています。今回はこの辺りを踏まえMP JWTがやってくれること、MP JWTでできることをポイントに説明をしてきたいと思います。
 
 なお、記事はコードの抜粋を記載しています。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - [GitHub - extact-io/contrarian-microprofile-sample/11-jwt](https://github.com/extact-io/contrarian-microprofile-sample/tree/main/11-jwt)
 
-また、MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.2 + MicroProfile JWT Auth 2.0をもとに作成しています。

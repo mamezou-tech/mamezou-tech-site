@@ -1,5 +1,5 @@
 ---
-title: 第6回 お手軽便利MicroProfile Config
+title: お手軽便利MicroProfile Config
 author: toshio-ogiwara
 date: 2022-04-01
 tags: ["逆張りのMicroProfile"]
@@ -7,17 +7,17 @@ prevPage: ./src/posts/msa/microprofile/cntrn05-mp-openapi.md
 nextPage: ./src/posts/msa/microprofile/cntrn07-mp-restclient.md
 ---
 
-勝手に選んだMicroProfile厳選仕様を紹介していく2回目はMicroProfile Config(MP Config)です。MP Configは[第4回](/msa/mp/cntrn04-spec-ranking/)の概要編で触れたとおりマイクロサービスでの利用が考慮された使い勝手の良い設定機能です。今回はその基本機能から特徴的な機能や応用機能まで実装例をもとに紹介していきます。
+勝手に選んだMicroProfile厳選仕様を紹介していく2回目はMicroProfile Config(MP Config)です。MP Configは[前回](/msa/mp/cntrn04-spec-ranking/)の概要編で触れたとおりマイクロサービスでの利用が考慮された使い勝手の良い設定機能です。今回はその基本機能から特徴的な機能や応用機能まで実装例をもとに紹介していきます。
 
 なお、記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/02-config>
 
-MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
-この記事はJava11+Helidon 2.4.2 + MicroProfile Config 1.4をもとに作成しています。MicroProfile Config 3.0は [第8回 Microprofile Config 3.0へのキャッチアップ](/msa/mp/cntrn08-mp-config3/) で紹介しています。
+この記事はJava11+Helidon 2.4.2 + MicroProfile Config 1.4をもとに作成しています。MicroProfile Config 3.0は [Microprofile Config 3.0へのキャッチアップ](/msa/mp/cntrn08-mp-config3/) で紹介しています。
 :::
 
 ## 設定の読み込み
@@ -421,7 +421,7 @@ person:
 「[設定形式の抽象化](#設定形式の抽象化)」のサンプルに上記のように`config_ordinal`の設定を追加し、YAMLとpropertiesのどちらも有効にした状態（コメントアウトしない状態）で実行すると優先度の低いYAML(優先度:50)の設定値がmicroprofile-config.properties(優先度:100)により上書きされ、必ずmicroprofile-config.properties側の値が返ってくるのが分かります。
 
 ## 設定源の優先度付けを利用した応用例
-優先度の仕組みを理解したところで、その応用例として[第4回](/msa/mp/cntrn04-spec-ranking/)で紹介した環境ごとに環境変数で設定を変更する例を実際にやってみたいと思います。今回のサンプルで行う定義は下の図のとおりになります。
+優先度の仕組みを理解したところで、その応用例として[以前で紹介](/msa/mp/cntrn04-spec-ranking/)した環境ごとに環境変数で設定を変更する例を実際にやってみたいと思います。今回のサンプルで行う定義は下の図のとおりになります。
 
 ![config](../../../img/mp/config_sample.drawio.svg)
 
@@ -491,7 +491,7 @@ MP Configの仕様には環境変数をMP Configの設定として扱う際の�
 :::
 
 ## リファレンスアプリでの利用例
- [第3回](/msa/mp/cntrn03-sampleapp-helidon/)で紹介したMicroProfileを使った[リファレンスアプリ(RMS)](https://github.com/extact-io/rms)ではこの記事では説明しなかったMP Configの拡張（ConfigSourceProviderの実装）や設定源の優先度付けを利用した実践的な設定の上書きなど、広範に渡りMP Configの機能を利用しています。
+ 「[使った、作った、Helidonで！](/msa/mp/cntrn03-sampleapp-helidon/)」で紹介したMicroProfileを使った[リファレンスアプリ(RMS)](https://github.com/extact-io/rms)ではこの記事では説明しなかったMP Configの拡張（ConfigSourceProviderの実装）や設定源の優先度付けを利用した実践的な設定の上書きなど、広範に渡りMP Configの機能を利用しています。
 
 リファレンスアプリにおけるMP Configの利用は以下にまとめていますので興味がある方は見ていただければと思います。
 

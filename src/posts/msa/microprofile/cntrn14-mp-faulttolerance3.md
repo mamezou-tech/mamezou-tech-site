@@ -1,19 +1,18 @@
 ---
-title: 第14回 MicroProfile Fault Tolerance(3) - 例で理解する設定編
+title: MicroProfile Fault Tolerance(3) - 例で理解する設定編
 author: toshio-ogiwara
 date: 2022-10-22
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn13-mp-faulttolerance2.md
-nextPage: ./src/posts/msa/microprofile/cntrn15-mp-metrics.md
 ---
 MicroProfile Fault Tolerance(MP Fault Tolerance)を紹介する最後は設定によるフォールトトレランス機能の指定です。今回も前回同様、MP Fault Toleranceから提供される機能とその設定を「こんなことをしたい」的な利用シーンごとに説明していきます。なお、MP Fault Toleranceの機能は豊富なため説明は前々回の[基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)、前回の[非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)、そして今回の設定編と3回に分けて行っています。
 
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/08-fault_tolerance>
 
-MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Fault Tolerance 4.0をもとに作成しています。
@@ -23,7 +22,7 @@ MicroProfile Fault Toleranceの詳細は[公式マニュアル](https://download
 # 設定機能の概要
 MP Fault Toleranceに対する指定は前回まで見てきたとおり、すべてアノテーションで行うことができますが、全体に対する指定やアノテーションで指定した属性値の上書きなどはMicroProfile Config[^1]の設定ファイルで行うことができます。今回はこのMP Fault Toleranceの設定機能を設定例を交えながら説明していきます。
 
-[^1]: MicroProfile Config(MP Config)は[第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)で詳しく説明しています。
+[^1]: MicroProfile Config(MP Config)は「[お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)」で詳しく説明しています。
 
 # アノテーションで指定した設定を上書きしたい
 次の3つのレベルでアノテーションで指定した属性値を上書きできます。

@@ -1,5 +1,5 @@
 ---
-title: 第1回 MicroProfileってなにそれ？ - MicroProfileの登場
+title: MicroProfileってなにそれ？ - MicroProfileの登場
 author: toshio-ogiwara
 date: 2022-03-02
 tags: ["逆張りのMicroProfile"]
@@ -12,8 +12,9 @@ Javaのエンタープライズの標準仕様はなんですか？と問われ�
 
 MicroProfileを語る上で標準であるJakarta EE（Java EE/J2EE）は切っても切り離せない関係にあります。ですので、MicroProfileの説明に行く前にまずは軽くJava EEのおさらいから始めたいと思います。
 
-MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 
 ## Java EEの登場から今

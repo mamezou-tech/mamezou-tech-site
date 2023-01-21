@@ -20,34 +20,34 @@ JavaEE(現JakartaEE)の仕様をベースとしつつも、マイクロサービ
 ### 逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～
 Javaによるエンタープライズ開発のフレームワークと言えばSpring Frameworkがデファクトで鉄板となっているこの昨今、唯一のメリットは標準と言う錦の御旗だけに見えるJava EEに起源を発するMicroProfileに注目し、そして敢えて世間の逆を本気で行き、結果「マイクロサービスのバックエンドならSpringよりもイケてるね！」の境地に達したSpring好き（だった）エンジニアがMicroProfileへの知見や感想をつづっていく連載ブログ
 
-- [第1回 MicroProfileってなにそれ？ - MicroProfileの登場](/msa/mp/cntrn01-what-mp/)
-- [第2回 MicroProfileってなにそれ？ - MicroProfileの仕様と実装](/msa/mp/cntrn02-what-mp/)
-- [第3回 使った、作った、Helidonで！ - サンプルアプリの紹介](/msa/mp/cntrn03-sampleapp-helidon/)
-- [第4回 使って分かった！お勧めMicroProfile仕様厳選3選](/msa/mp/cntrn04-spec-ranking/)
-- [第5回 コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)
-- [第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)
-- [第7回 らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)
-- [第8回 MicroProfile Config 3.0へのキャッチアップ](/msa/mp/cntrn08-mp-config3/)
-- [第9回 MicroProfile OpenAPI 3.0の新機能と既存機能の比較](/msa/mp/cntrn09-mp-openapi3/)
-- [第10回 MicroProfile Healthの機能と利用](/msa/mp/cntrn10-mp-health/)
-- [第11回 MicroProfile RestClient 3.0の確認と小技機能の紹介](/msa/mp/cntrn11-mp-restclient3/) 
-- [第12回 MicroProfile Fault Tolerance(1) - 例で理解する基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)
-- [第13回 MicroProfile Fault Tolerance(2) - 例で理解する非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)
-- [第14回 MicroProfile Fault Tolerance(3) - 例で理解する設定編](/msa/mp/cntrn14-mp-faulttolerance3/)
-- [第15回 MicroProfile Metricsの機能と利用](/msa/mp/cntrn15-mp-metrics/)
-- [第16回 MicroProfile OpenTracingとJeagerで理解する分散トレーシング](/msa/mp/cntrn16-mp-tracing/)
-- [第17回 MicroProfile JWT Authがやってくれること・できること](/msa/mp/cntrn17-mp-jwt/) <span style="color: red;">★NEW★</span>
+- 概要編
+  - [MicroProfileってなにそれ？ - MicroProfileの登場](/msa/mp/cntrn01-what-mp/)
+  - [MicroProfileってなにそれ？ - MicroProfileの仕様と実装](/msa/mp/cntrn02-what-mp/)
+  - [MicroProfileの仕様体系 - Umbrella仕様とStandalone仕様](/msa/mp/cntrn18-mp-specsystem/)
+- 導入編
+  - [使った、作った、Helidonで！ - サンプルアプリの紹介](/msa/mp/cntrn03-sampleapp-helidon/)
+  - [使って分かった！お勧めMicroProfile仕様厳選3選](/msa/mp/cntrn04-spec-ranking/)
+  - [コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)
+  - [お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)
+  - [らくらくMicroProfile RestClient](/msa/mp/cntrn07-mp-restclient/)
+- Umbrella仕様編
+  - [MicroProfile Config 3.0へのキャッチアップ](/msa/mp/cntrn08-mp-config3/)
+  - [MicroProfile OpenAPI 3.0の新機能と既存機能の比較](/msa/mp/cntrn09-mp-openapi3/)
+  - [MicroProfile RestClient 3.0の確認と小技機能の紹介](/msa/mp/cntrn11-mp-restclient3/) 
+  - [MicroProfile JWT Authがやってくれること・できること](/msa/mp/cntrn17-mp-jwt/)
+  - [MicroProfile Healthの機能と利用](/msa/mp/cntrn10-mp-health/)
+  - [MicroProfile Metricsの機能と利用](/msa/mp/cntrn15-mp-metrics/)
+  - [MicroProfile OpenTracingとJeagerで理解する分散トレーシング](/msa/mp/cntrn16-mp-tracing/)
+  - [MicroProfile Fault Tolerance(1) - 例で理解する基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)
+  - [MicroProfile Fault Tolerance(2) - 例で理解する非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)
+  - [MicroProfile Fault Tolerance(3) - 例で理解する設定編](/msa/mp/cntrn14-mp-faulttolerance3/)
+- Standalone仕様編
+  - 今後、順次追加予定！
 
-（番外編）
-- [Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)
-- [Helidon Tips - Helidon MP Testing with JUnit5を使ってみる](/msa/mp/ext02-helidon-testing/)
-- [Helidon Tips - Helidon MicroProfile RestClientを使ったRESTリソースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)
-- Helidon Tips - Configuration Secretsを使ってみる(公開予定)
-- Helidon Tips - CORS in Helidon MPを使ってみる(公開予定)
-- Helidon Tips - Helidon Web Serverで知っておくと便利な設定(公開予定)
-- Helidon Tips - Meta-configuration機能の紹介(公開予定)
-
-番外編は随時公開していきますので、こうご期待
+- （番外編）
+  - [Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)
+  - [Helidon Tips - Helidon MP Testing with JUnit5を使ってみる](/msa/mp/ext02-helidon-testing/)
+  - [Helidon Tips - Helidon MicroProfile RestClientを使ったRESTリソースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)
 
 ## Spring Boot
 Javaでマイクロサービスを構築するならやはり[Spring Boot](https://spring.io/projects/spring-boot)は外せません。ここではSpring Bootを使った実装をご紹介します。

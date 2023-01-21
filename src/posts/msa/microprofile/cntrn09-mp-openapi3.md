@@ -1,21 +1,20 @@
 ---
-title: 第9回 MicroProfile OpenAPI 3.0の新機能と既存機能の比較
+title: MicroProfile OpenAPI 3.0の新機能と既存機能の比較
 author: toshio-ogiwara
 date: 2022-09-16
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn08-mp-config3.md
-nextPage: ./src/posts/msa/microprofile/cntrn10-mp-health.md
+nextPage: ./src/posts/msa/microprofile/cntrn11-mp-restclient3.md
 ---
 
-Helidon 3.0からMicroprofile OpenAPI 3.0(MP OpenAPI 3.0)が使えるようになりました。今回はMP OpenAPI 2.0からMP OpenAPI 3.0までに取り入れられた新機能を紹介します。今回紹介する新機能はそれほど多くなく、それだけでは少し寂しいため、新機能と既存機能の比較として前回紹介できなかった便利な機能も併せて紹介します。このため、今回の記事は[第5回 コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)の理解を前提にしています。まだの方はそちらから読んでいただければと思います。
+Helidon 3.0からMicroprofile OpenAPI 3.0(MP OpenAPI 3.0)が使えるようになりました。今回はMP OpenAPI 2.0からMP OpenAPI 3.0までに取り入れられた新機能を紹介します。今回紹介する新機能はそれほど多くなく、それだけでは少し寂しいため、新機能と既存機能の比較として前回紹介できなかった便利な機能も併せて紹介します。このため、今回の記事は以前紹介した「[コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)」の理解を前提にしています。まだの方はそちらから読んでいただければと思います。
 
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/06-openapi_3.0>
 
-MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile OpenAPI 3.0.1をもとに作成しています。
@@ -71,7 +70,7 @@ MP OpenAPIランタイムはJavaのデータクラスのclass情報をスキャ�
 ## 特定クラスに対するスキーマ指定の利用法
 LocalDateに対するスキーマ指定を行う前に、その効果が分かるようにLocalDateに対して何も指定しなかった場合の動きを確認してみましょう。
 
-第5回 コードが仕様の源泉MicroProfile OpenAPIの説明で利用した [Personサンプル](/msa/mp/cntrn05-mp-openapi/#サンプルアプリと動作方法)ではPersonのフィールドとしてint型で年齢(age)を持っていましたが、これを次のようにLocalDateの誕生日(birthday)フィールドに変更したものを使って説明してきます。
+コードが仕様の源泉MicroProfile OpenAPIの説明で利用した [Personサンプル](/msa/mp/cntrn05-mp-openapi/#サンプルアプリと動作方法)ではPersonのフィールドとしてint型で年齢(age)を持っていましたが、これを次のようにLocalDateの誕生日(birthday)フィールドに変更したものを使って説明してきます。
 
 -	Personクラス
 ```java
@@ -182,7 +181,7 @@ components:
 それでは3つの共通化の仕組みを見ていきます。なお、今回は例としてスキーマ情報を共通化しているだけで、この3つの機能はスキーマ情報だけでなくOASの他の要素も共通化することができます。
 
 ## @OpenAPIDefinitionによる共通項目の定義
-[第5回 コードが仕様の源泉MicroProfile OpenAPIのアプリケーション情報を定義してみよう！](/msa/mp/cntrn05-mp-openapi/#アプリケーション情報を定義してみよう！)でアプリケーション情報を定義するアノテーションとして`@OpenAPIDefinition`を紹介しましたが、このアノテーションはアプリケーション情報だけではなく、共通的なスキーマ情報やレスポンス情報も定義することができます。
+[コードが仕様の源泉MicroProfile OpenAPIのアプリケーション情報を定義してみよう！](/msa/mp/cntrn05-mp-openapi/#アプリケーション情報を定義してみよう！)でアプリケーション情報を定義するアノテーションとして`@OpenAPIDefinition`を紹介しましたが、このアノテーションはアプリケーション情報だけではなく、共通的なスキーマ情報やレスポンス情報も定義することができます。
 
 では、実際の定義例を見てみます。
 -	PersonApplicationクラス

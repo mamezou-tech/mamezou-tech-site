@@ -1,5 +1,5 @@
 ---
-title: 第13回 MicroProfile Fault Tolerance(2) - 例で理解する非同期編
+title: MicroProfile Fault Tolerance(2) - 例で理解する非同期編
 author: toshio-ogiwara
 date: 2022-10-21
 tags: ["逆張りのMicroProfile"]
@@ -12,9 +12,9 @@ MicroProfile Fault Tolerance(MP Fault Tolerance)を紹介する2回目は非同�
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/08-fault_tolerance>
 
-MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Fault Tolerance 4.0をもとに作成しています。

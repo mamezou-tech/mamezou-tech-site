@@ -1,10 +1,10 @@
 ---
-title: 第16回 MicroProfile OpenTracingとJeagerで理解する分散トレーシング
+title: MicroProfile OpenTracingとJeagerで理解する分散トレーシング
 author: toshio-ogiwara
 date: 2022-11-20
 tags: ["逆張りのMicroProfile", tracing]
 prevPage: ./src/posts/msa/microprofile/cntrn15-mp-metrics.md
-nextPage: ./src/posts/msa/microprofile/cntrn17-mp-jwt.md
+nextPage: ./src/posts/msa/microprofile/cntrn12-mp-faulttolerance1.md
 ---
 
 今回のテーマは前回のMicroProfile Metricsに続き可観測性のもう一角をなす分散トレーシングのMicroProfile OpenTracing(MP OpenTracing)です。MP OpenTracingの仕様は主にランタイム提供ベンダー向けのもので利用する側はランタイムがトレース情報を自動計測してくれるため、その存在を意識することはほぼありません。これは便利で都合がよいことですが、その一方で、どこまでがOpenTracingなどの標準仕様で決められていることで、どこからがMP OpenTracing固有で、そしてJeagerなどの製品が担っているのはどの部分か？などといった、分散トレーシングの構成要素とその役割が分かりづらくなっています。今回の記事ではこの辺りも意識し、MP OpenTracingだけではなく少し視野を広げた説明を行っていきます。
@@ -12,9 +12,9 @@ nextPage: ./src/posts/msa/microprofile/cntrn17-mp-jwt.md
 なお、記事はコードの抜粋を記載しています。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/10-tracing>
 
-また、MicroProfileをテーマにブログを連載しています。他の記事もよければ以下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.2 + MicroProfile OpenTracing 3.0 + Jeager 1.39をもとに作成しています。
@@ -40,11 +40,11 @@ MP OpenTracingのテーマそのものとなる"分散トレーシング"につ�
 そんな素敵な分散トレーシングをMP OpenTracingを使ってどのようなことができるかをみてきます。そもそもOpenTracingとはなにか？などの細かい話しは機能のイメージを掴んでもらった後に説明します。
 
 ## 説明に使用するサンプル
-複数のアプリが協調動作するシンプルなものがよいため、今回は[第11回](/msa/mp/cntrn11-mp-restclient3/)で利用した挨拶を返す次の簡単なRESTアプリケーションを使って説明していきます。
+複数のアプリが協調動作するシンプルなものがよいため、今回は「[MicroProfile RestClient 3.0の確認と小技機能の紹介](/msa/mp/cntrn11-mp-restclient3/)」で利用した挨拶を返す次の簡単なRESTアプリケーションを使って説明していきます。
 
 ![overview](../../../img/mp/11-1_restclient3.drawio.svg)
 
-[第11回](/msa/mp/cntrn11-mp-restclient3/)の説明と重複しますが、このRESTアプリケーションはHelloAggregateサービスが収集(/aggregate)のリクエストを受け取ると配下の3つのHelloサービスに挨拶(/hello)を問い合わせ、各Helloサービスは自身の言語に対する挨拶を返します。HelloAggregateサービスは各Helloサービスから返された挨拶をカンマ区切りで連結してまとめ、その内容をリクエスト元に返すものとなります。
+[前回](/msa/mp/cntrn11-mp-restclient3/)の説明と重複しますが、このRESTアプリケーションはHelloAggregateサービスが収集(/aggregate)のリクエストを受け取ると配下の3つのHelloサービスに挨拶(/hello)を問い合わせ、各Helloサービスは自身の言語に対する挨拶を返します。HelloAggregateサービスは各Helloサービスから返された挨拶をカンマ区切りで連結してまとめ、その内容をリクエスト元に返すものとなります。
 
 ## MicroProfile OpenTracingとJeagerを使ってみる
 上述の挨拶アプリケーションを使ってアプリケーションを跨いだリクエストの流れがどのように記録、可視化されるかをMP OpenTracingとJeagerを使ってみていきます。

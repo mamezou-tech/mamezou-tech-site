@@ -1,19 +1,19 @@
 ---
-title: 第8回 MicroProfile Config 3.0へのキャッチアップ
+title: MicroProfile Config 3.0へのキャッチアップ
 author: toshio-ogiwara
 date: 2022-09-12
 tags: ["逆張りのMicroProfile"]
 prevPage: ./src/posts/msa/microprofile/cntrn07-mp-restclient.md
 nextPage: ./src/posts/msa/microprofile/cntrn09-mp-openapi3.md
 ---
-Helidon 3.0がリリースされMicroProfile5.0準拠となり、ついにHelidonでもMicroProfile Config 3.0(MP Config 3.0)の機能が使えるようになりました。そこで今回は前回紹介できなかった2.0から3.0までに取り入れられた便利な機能をその差分として紹介します。このため、今回の記事は[第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)の理解を前提にしています。まだの方はそちらから読んでいただければと思います。
+Helidon 3.0がリリースされMicroProfile5.0準拠となり、ついにHelidonでもMicroProfile Config 3.0(MP Config 3.0)の機能が使えるようになりました。そこで今回は前回紹介できなかった2.0から3.0までに取り入れられた便利な機能をその差分として紹介します。このため、今回の記事は以前紹介した「[お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)」の理解を前提にしています。まだの方はそちらから読んでいただければと思います。
 
 記事はコードの抜粋を記載します。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/05-config_3.0>
 
-MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
 この記事はJava17+Helidon 3.0.1 + MicroProfile Config 3.0.1をもとに作成しています。
@@ -365,7 +365,7 @@ url=jdbc:h2:tcp://localhost/~/prod-env
 アプリケーションからアクセスされる設定キー(`sample.db.*`)を定義するのは親となる無印の設定ファイルだけとなり、そこにはプロパティ式で値を設定するようにします。プロパティ式の値はプロファイルごとの設定ファイルに定義されているため、Config Profile機能で使用される設定ファイルが切り替わることでプロパティ式の値が変わるようになります。
 
 :::info
-「[第6回 お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)」では紹介していませんでしたが、プロパティ式はMP Config 1.4から使える機能となります。プロパティ式の書式は
+「[お手軽便利MicroProfile Config](/msa/mp/cntrn06-mp-config/)」では紹介していませんでしたが、プロパティ式はMP Config 1.4から使える機能となります。プロパティ式の書式は
 - `${expression:value}` - 式の値が見つからない場合、`:`の後に定義したデフォルト値が返される 
 - `${my.prop${compose}}` - 入れ子の式。内側の式が最初に解決される
 - `${my.prop}${my.prop}` – 複数の式。単にそれぞれを評価した結果が返される

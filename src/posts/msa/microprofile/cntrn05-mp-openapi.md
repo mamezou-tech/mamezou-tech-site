@@ -1,5 +1,5 @@
 ---
-title: 第5回 コードが仕様の源泉MicroProfile OpenAPI
+title: コードが仕様の源泉MicroProfile OpenAPI
 author: toshio-ogiwara
 date: 2022-03-25
 tags: ["逆張りのMicroProfile"]
@@ -14,12 +14,12 @@ nextPage: ./src/posts/msa/microprofile/cntrn06-mp-config.md
 
 なお、記事は必要な部分のコードの抜粋を記載します。全体を見たい場合は適時上記GitHubのリポジトリを参照ください。
 
-MicroProfileは連載を行ってます。よければ他の記事も下のリンクからどうぞ！
-- [逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)
-
+:::column:連載の紹介
+豆蔵デベロッパーサイトではMicroProfileをテーマに「[逆張りのMicroProfile ～ Helidonで始めるマイクロサービスへの一歩 ～](/msa/#逆張りのmicroprofile-～-helidonで始めるマイクロサービスへの一歩-～)」を連載しています。他の記事も是非どうぞ!
+:::
 
 :::info
-この記事はJava11+Helidon 2.4.2 + MicroProfile OpenAPI 1.2をもとに作成しています。MicroProfile OpenAPI 3.0は [第9回 MicroProfile OpenAPI 3.0の新機能と既存機能の比較](/msa/mp/cntrn09-mp-openapi3/) で紹介しています。
+この記事はJava11+Helidon 2.4.2 + MicroProfile OpenAPI 1.2をもとに作成しています。MicroProfile OpenAPI 3.0は [MicroProfile OpenAPI 3.0の新機能と既存機能の比較](/msa/mp/cntrn09-mp-openapi3/) で紹介しています。
 :::
 
 # サンプルアプリと動作方法
@@ -730,7 +730,7 @@ OASを使った開発スタイルとして、プラットフォームや実装�
 :::
 
 # リファレンスアプリでの利用例
-[第3回](/msa/mp/cntrn03-sampleapp-helidon/)で紹介したMicroProfileを使った[リファレンスアプリ(RMS)](https://github.com/extact-io/rms)では上述の「(コラム)サンプルアプリにおけるReDocの利用」と同じ方法でAPI仕様を公開しています。このAPI仕様を定義している実際のコードとそこから生成されるAPI仕様をReDocで公開したものは以下になります。
+「[使った、作った、Helidonで！](/msa/mp/cntrn03-sampleapp-helidon/)」で紹介したMicroProfileを使った[リファレンスアプリ(RMS)](https://github.com/extact-io/rms)では上述の「(コラム)サンプルアプリにおけるReDocの利用」と同じ方法でAPI仕様を公開しています。このAPI仕様を定義している実際のコードとそこから生成されるAPI仕様をReDocで公開したものは以下になります。
 
 - API仕様を定義しているソースコード
   - [ApplicationConfig.java](https://github.com/extact-io/rms/blob/main/rms-server/src/main/java/io/extact/rms/external/webapi/ApplicationConfig.java)

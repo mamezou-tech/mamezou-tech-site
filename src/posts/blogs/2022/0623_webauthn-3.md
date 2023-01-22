@@ -17,6 +17,11 @@ iPhone 等のカメラを通して QRコード のリンクをブラウザで開
 
 ## Keycloak の設定
 
+:::info
+Kubernetes 環境で動作する「[Apple Touch ID Keyboard を使ったパスワードレス認証](/blogs/2023/01/16/webauthn-4/)」に書いた手順を使った場合も設定は失われません。
+この手順を使用して構成した場合は「[クライアントの作成](#クライアントの作成)」までスキップしてください。
+:::
+
 前回までの記事では、停止すると設定が失われる環境を説明しました。これは非常に不便なので停止しても設定が失われないようにします。Keycloak はデフォルトでは [h2](https://www.h2database.com/html/main.html) データベースを使用します。データが保存されるディレクトリは、コンテナ内の `/opt/jboss/keycloak/standalone/data` ですので、このディレクトリにローカルストレージを割り当てることで可能になります。[`docker-compose.yml`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.5.0/keycloak/docker-compose.yml) ファイルを次のように修正しました。
 
 ```yaml

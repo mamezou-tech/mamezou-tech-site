@@ -11,23 +11,23 @@ tags: [AWS, "認証/認可"]
 
 フロントエンドの Web / モバイル開発者が AWS でフルスタックアプリケーションを簡単に構築、デプロイ、ホストするための AWS Amplify がありますが、これには独自に作成した認証画面を使った Cognito user pools でのサインインが可能になっています。
 
-公式ドキュメントは「[Switching authentication flows](https://docs.amplify.aws/lib/auth/switch-auth/q/platform/js/)」です。
+公式ドキュメントの「[Switching authentication flows](https://docs.amplify.aws/lib/auth/switch-auth/q/platform/js/)」で解説されています。
 
 Cognito user pools は、Hosted UI を使用する OAuth2 や OpenID Connect のエンドポイントによる認証フローや外部の SAML IdP (Identity Provider) や OpenID Connect OP (OpenID Provider) と連携するフェデレーションの他に、Cognito API を使用する認証フローが提供されています。
 
-この記事では Hosted UI のカスタマイズではなく、Cognito API を使用する認証フローの利用について説明します。
+この記事では Hosted UI のカスタマイズではなく、Cognito API を使用する認証フローの利用について説明して、最後に Hosted UI との比較をまとめます。
 
-Amplify の[ドキュメント](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html#amazon-cognito-user-pools-custom-authentication-flow)では、認証フローとして「USER_SRP_AUTH」、「USER_PASSWORD_AUTH」、「CUSTOM_AUTH」の3つが挙げられています。
+先に紹介した Amplify の[ドキュメント](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html#amazon-cognito-user-pools-custom-authentication-flow)では、認証フローとして「USER_SRP_AUTH」、「USER_PASSWORD_AUTH」、「CUSTOM_AUTH」の3つが挙げられています。
 
 CUSTOM_AUTH は CAPTCHA 等を実現する Lambda を使って認証フローのカスタマイズを可能にします。このフローについてはこの記事では説明しません。詳細を知りたい場合は、Amazon Cognito の[デベロッパーガイド](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html#amazon-cognito-user-pools-custom-authentication-flow)を参照してください。
 
 ## 使用する Cognito user pools API
 
-Amplify のようなクライアントサイドで認証フローを使用する場合は、InitiateAuth API を使用します。この記事は、サーバサイドの認証フローを説明するため、AdminInitiateAuth API を使って説明します。
+Amplify のようなクライアントサイドで認証フローを使用する場合は、InitiateAuth API を使用します。この記事は、サーバサイドの認証フローを説明します。サーバサイドでは AdminInitiateAuth API を使用します。
 
 ### AdminInitiateAuth API
 
-どちらの API を使用しても認証成功時に取得できるトークンは同じです。
+InitiateAuth と AdminInitiateAuth API のどちらを使用しても認証成功時に取得できるトークンは同じです。
 
 #### USER_SRP_AUTH
 
@@ -53,9 +53,11 @@ aws cognito-idp admin-initiate-auth \
 
 ### AdminRespondToAuthChallenge API
 
-USER_SRP_AUTH の場合や多要素認証 (MFA) が有効になっている場合等は、AdminInitiateAuth API レスポンスの AuthenticationResult ではなく ChallengeName に値が設定されます。認証フローが失敗するか、AuthenticationResult にトークンが設定されて成功するまで、AdminRespondToAuthChallenge API に回答して進める必要があります。
+USER_SRP_AUTH 認証フローや多要素認証 (MFA) が有効になっている場合等は、AdminInitiateAuth API レスポンスの AuthenticationResult ではなく ChallengeName に値が設定されます。ChallengeName に値がある場合は、AdminRespondToAuthChallenge API を使用し、回答して進める必要があります。
 
-この認証フローの進め方は、「[ユーザープール認証フロー](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html)」を参照してください。
+AuthenticationResult にトークンが設定されて成功するか、認証フローが失敗するまで AdminRespondToAuthChallenge API を使って繰り返します。
+
+この認証フローの進め方は「[ユーザープール認証フロー](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html)」に解説があります。
 
 USER_SRP_AUTH のチャレンジにはサーバサイドのみで回答を作成できますが、MFA の場合にはコード入力のための画面をブラウザに返して、入力された値でチャレンジに回答する必要があるかもしれません (著者が以前関わったプロダクトでは MFA コード入力画面を返し入力されたコードを使ってチャレンジに回答するように実装しました)。
 
@@ -69,15 +71,32 @@ MFA や CAPTCHA 等が必要な場合は、追加の入力要素あるいは追�
 
 いずれにせよ、既存の認証画面イメージをそのまま実装できます。
 
-## 取得されるトークン
+## カスタム認証画面のデメリット
 
-Hosted UI を使った認証フローでは、/oauth2/authorize や /login エンドポイントに、scope、response_type、redirect_uri などのパラメータを付して開始します。
+### OIDC エンドポイントの利用不可
+
+Hosted UI は、認可エンドポイント (/oauth2/authorize) や ログインエンドポイント (/login) に、scope、response_type、redirect_uri などのパラメータを付して認証フローを開始します。
+
+このフローの開始には、以前書いた「[Envoy OAuth2 Filter を使ったログイン](/blogs/2022/10/16/envoy-oauth2/)」で Envoy Proxy を使ったように汎用的な実装の利用も可能です。
 
 認証に成功したときのアクセストークン (AccessToken) には認証フローで使った scope 等の値が JWT のペイロードに含まれます。
 
-この記事で説明したカスタム認証画面を使った認証フローでは、scope 等を設定していません。したがって、認証成功時のアクセストークンのペイロードの scope は `aws.cognito.signin.user.admin` のみが設定されます。
+Hosted UI で提供される OIDC エンドポイントは次の表の通りです。
 
-上述の AWS CLI のレスポンスから得られた AccessToken を [jwt.io](https://jwt.io/) を使って確認したペイロード部を示します。
+| エンドポイント名 | エンドポイント |
+|:---:|:---:|
+| [認可エンドポイント](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/authorization-endpoint.html) | /oauth2/authorize |
+| [トークンエンドポイント](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/token-endpoint.html) | /oauth2/token |
+| [UserInfo エンドポイント](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/userinfo-endpoint.html) | /oauth2/userInfo |
+| [ログインエンドポイント](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/login-endpoint.html) | /login |
+| [ログアウトエンドポイント](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/logout-endpoint.html) | /logout |
+| [取り消しエンドポイント](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/revocation-endpoint.html) | /oauth2/revoke |
+
+この記事で説明したカスタム認証画面を使った認証フローでは、scope 等を設定できません。
+
+認証成功時のアクセストークンのペイロードの scope には `aws.cognito.signin.user.admin` のみが設定されます。
+
+前述の AWS CLI のレスポンスから得られた AccessToken を [jwt.io](https://jwt.io/) を使って確認したペイロード部を示します。
 
 ```json
 {
@@ -95,3 +114,15 @@ Hosted UI を使った認証フローでは、/oauth2/authorize や /login エ�
   "username": "test1"
 }
 ```
+
+## おわりに 
+
+Hosted UI を利用する場合とカスタム認証画面 (Cognito API による認証フローの利用) のメリットとデメリットは次のとおりです。
+
+| 機能 | Hosted UI | カスタム認証画面 |
+|:---:|:---:|:---:|
+| OIDC エンドポイントの利用 | 可 | 不可 |
+| scope の利用 | 可 | 不可 |
+| SAML 等のフェデレーション | 可 | 不可 |
+| MFA のサポート | 可 | 可 |
+| UI の柔軟性 | 制限有り | 柔軟 |

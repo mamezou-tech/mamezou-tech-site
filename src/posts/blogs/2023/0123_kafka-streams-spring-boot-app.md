@@ -261,7 +261,7 @@ KTable は C++ 製の軽量データベース RocksDB の抽象化 API です。
 ## 最後に
 Kafka Streams は Kafka プラットフォームに完全に統合されたデータストリーム処理基盤でした。
 
-Streams DSL によりデータ処理に注力できます。この記事で紹介した DSL 以外にデータの Branch や Merge、時間による Window 化なども API もあり、複雑な Topology を構築できます。
+Streams DSL によりデータ処理に注力できます。この記事で紹介した DSL 以外にデータの Branch や Merge、時間による Window 化などの API もあり、複雑な Topology を構築できます。
 
 Apache には他にもストリーム系の基盤となる OSS がありますが、Kafka Streams は専用のサーバーを必要とせず Kafka Cluster さえあれば使えるところがメリットのようです。Java で Consumer を作った経験があれば、比較的簡単に Streams アプリの実装が出来そうです。
 

@@ -218,7 +218,7 @@ kafka-topics --create --bootstrap-server=localhost:9092 --replication-factor 1 -
 kafka-topics --create --bootstrap-server=localhost:9092 --replication-factor 1 --partitions 1 --topic word-output-topic
 ```
 
-Spring Boot アプリを起動して、Inbound topic に適当なメッセージを送信します。key とデータを分けるために key.separator を指定して kafka-console-producer を指定しています。key はなんでも構いません。
+Spring Boot アプリを起動して、Inbound topic に適当なメッセージを送信します。key とデータを分けるために key.separator を指定して kafka-console-producer を起動しています。送信メッセージの key はなんでも構いません。
 
 ```shell
 $ kafka-console-producer --bootstrap-server=localhost:9092 --topic word-input-topic --property "parse.key=true" --property "key.separator=:"

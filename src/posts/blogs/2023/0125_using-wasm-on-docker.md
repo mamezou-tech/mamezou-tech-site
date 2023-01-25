@@ -1,7 +1,7 @@
 ---
 title: Docker＋Wasm で WASM をコンテナとして実行する
 author: masahiro-kondo
-date: 2023-01-26
+date: 2023-01-25
 tags: [WASM]
 ---
 
@@ -203,6 +203,6 @@ localhost:8090 に接続するとデモアプリ(何かの発注画面)が利用
 ## 最後に
 以上、Docker Desktop に統合された WASM 実行環境 Docker+Wasm を動かしてみました。WASM ランタイム入りのイメージを用意することなく直接 Docker が WASM を実行してくれるので、オーバーヘッドもイメージサイズも小さく通常のコンテナとの相互運用も簡単でした。
 
-Kuberenetes の場合、WASM のワークロードを直接実行できる [Krustlet](https://krustlet.dev/) という OSS が開発されています。これは kubelet に相当する実装で、WASM を Pod として実行するソフトウェアです。
+Kuberenetes の場合、WASM のワークロードを直接実行できる [Krustlet](https://krustlet.dev/) という OSS が開発されています。これは kubelet に相当する実装で WASM を Pod として実行するソフトウェアです。
 
 このように、コンテナの世界でも WASM が軽量なワークロードとして、既存のコンテナと共に実行されるのが普通になっていくのではないかと思いました。

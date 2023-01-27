@@ -379,8 +379,8 @@ OpenAPI Generator と Spring Boot を使ってマイクロサービスを構築�
 
 この記事のコード全体は [GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/v0.6.0) にあります。
 
-:::info:2023年1月5日追記
-Kubernetes 環境に Keycloak をインストールする場合 Helm チャートが使用できます。また Apple Silicon にも対応しています。詳細なインストール手順は「[KeycloakのSAML2 IdPをAmazon Cognito user poolsと連携する](https://s-edword.hatenablog.com/entry/2023/01/04/112949)」を参照してください。
+:::info:2023年1月27日追記
+Kubernetes 環境に Keycloak をインストールする場合 Helm チャートが使用できます。また Apple Silicon にも対応しています。詳細なインストール手順は「[Apple Touch ID Keyboard を使ったパスワードレス認証](/blogs/2023/01/16/webauthn-4/)」を参照してください。
 :::
 
 ## 参考

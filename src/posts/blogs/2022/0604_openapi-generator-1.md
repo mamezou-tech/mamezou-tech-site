@@ -12,7 +12,7 @@ REST API の仕様を記述する [OpenAPI Specification](https://swagger.io/spe
 この定義を使うツールに [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator) があります。これを使用すると、さまざまな言語、フレームワークの API Client、あるいは Server のスタブコードを生成できます。
 
 :::info
-OpenAPI のような Schema 定義言語によって規定して開発する SDD (スキーマ駆動開発) は、[日本CTO協会](https://cto-a.org/)が監修・編纂している[DX Criteria](https://dxcriteria.cto-a.org/)でも良いプラクティスとして [SYSTEM-5-4](https://dxcriteria.cto-a.org/f82bd9d0e8344db29cb4e32522fb8957) 等で取り上げられています。
+OpenAPI のような Schema 定義言語によって規定して開発する SDD (スキーマ駆動開発) は、[日本CTO協会](https://cto-a.org/)が監修・編纂している[DX Criteria](https://dxcriteria.cto-a.org/)でも良いプラクティスとして [SYSTEM-5-4](https://dxcriteria.cto-a.org/f82bd9d0e8344db29cb4e32522fb8957) 等であげられています。
 :::
 
 初回のこの記事では、OpenAPI Generator を使って簡単な Spring Boot アプリを作成します。

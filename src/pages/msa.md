@@ -71,3 +71,16 @@ Javaでマイクロサービスを構築するならやはり[Spring Boot](https
   - Spring Boot でエンタープライズインテグレーションパターン (EIPs) を活用するため Apache Camel との統合について説明します。
 - [OpenID Connect でパスワードレス認証を使う](/blogs/2022/06/23/webauthn-3/)
   - Keycloak [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) によるパスワードレス認証を利用する構成を説明します。 
+
+## 非同期メッセージング
+マイクロサービスアーキテクチャで使われるプロセス間通信には REST や gRPC のような一対一の同期的通信だけでなく、一対多の非同期なメッセージングによる通信もあります。ここでは、非同期メッセージングのテクノロジーについてご紹介します。
+
+### Kafka
+Apache Kafka は publish/subscribe 型のメッセージングプラットフォームです。Kafka についてのブログ記事をピックアップしました。
+
+- [Debezium によるチェンジデータキャプチャー](/blogs/2022/02/28/debezium-cdc/)
+- [Strimzi - Kubernetes で Kafka を運用するための Operators](/blogs/2022/05/25/strimzi-kafka-operators/)
+- [Knative EventingのKafka BrokerでリトライとDead Letter Sink（DLS）を試す](/blogs/2022/09/13/knative-broker-dls/)
+- [Kafka を Java のテストプロセスに埋め込める EmbeddedKafka でコンシューマーをテストする](/blogs/2022/10/08/kafka-consumer-test-with-embeddedkafka/)
+- [Kafka の Web UI を提供する kafka-ui を試す](/blogs/2023/01/05/kafka-ui/)
+- [Spring Boot で作る Kafka Streams アプリケーション](/blogs/2023/01/23/kafka-streams-spring-boot-app/)

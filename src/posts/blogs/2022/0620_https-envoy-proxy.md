@@ -180,10 +180,6 @@ Keycloak へのアクセスで使用する端末に PC を使う場合は、こ�
 
 この記事で説明した `docker-compose.yml` などのコードの全体は [GitHub リポジトリ](https://github.com/edward-mamezou/hibernation-pod/tree/2023-02-03-002/keycloak) にあります。
 
-:::info:2023年1月5日追記
-Kubernetes 環境に Keycloak をインストールする場合 Helm チャートが使用できます。また Apple Silicon にも対応しています。詳細なインストール手順は「[KeycloakのSAML2 IdPをAmazon Cognito user poolsと連携する](https://s-edword.hatenablog.com/entry/2023/01/04/112949)」を参照してください。
-:::
-
 [次回](/blogs/2022/06/23/webauthn-3/) は構築したパスワードレス認証基盤をアプリケーションで使用するサンプル実装を説明します。
 
 ## シリーズ記事の紹介

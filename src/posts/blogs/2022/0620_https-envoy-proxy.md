@@ -11,7 +11,7 @@ tags: [envoy, keycloak, ZTA, "認証/認可"]
 
 この記事では「[S3 の静的 Web サイトをセキュアに Envoy でホスティング](/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)」などの記事で取り上げた [Envoy Proxy](https://www.envoyproxy.io/) を HTTPS Proxy として使用し AWS リソースの利用は [Route 53](https://aws.amazon.com/jp/route53/) だけで、プライベートネットワーク上に HTTPS でアクセスする Keycloak 環境を構築します。 
 
-![](https://github.com/edward-mamezou/hibernation-pod/raw/v0.3.0/image/privateip.png)
+![](https://github.com/edward-mamezou/hibernation-pod/raw/2023-02-03-002/image/privateip.png)
 
 ## 証明書
 
@@ -54,7 +54,7 @@ _acme-challenge.example.com TXT "<表示された値>"
 
 ## Docker Compose による起動
 
-Envoy Proxy と Keycloak の2つのコンテナを起動するため、次の [`docker-compose.yml`](https://github.com/edward-mamezou/hibernation-pod/blob/v0.3.0/keycloak/docker-compose.yml) ファイルを作成しました。
+Envoy Proxy と Keycloak の2つのコンテナを起動するため、次の [`docker-compose.yml`](https://github.com/edward-mamezou/hibernation-pod/blob/2023-02-03-002/keycloak/docker-compose.yml) ファイルを作成しました。
 
 ```yaml
 version: "3"
@@ -69,16 +69,24 @@ services:
       - 9901:9901
     command: ["-c", "/etc/front-envoy.yaml", "--service-cluster", "front-proxy"]
   keycloak:
-    image: jboss/keycloak
+    image: quay.io/keycloak/keycloak
+    volumes:
+      - ./datadir:/opt/keycloak/data
+    command:
+      - start
+      - --proxy=edge
+      - --hostname-strict=false
+      - --http-relative-path
+      - auth
     environment:
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
       PROXY_ADDRESS_FORWARDING: true
 ```
 
 `/etc/letsencrypt/live/example.com/` ディレクトリに生成されたファイルは `docker-compose.yml` ファイルがあるディレクトリに `certs` ディレクトリを作成してコピーしてください。
 
-`docker-compose.yml` ファイルがあるディレクトリに [`front-envoy.yaml`](https://github.com/edward-mamezou/hibernation-pod/blob/v0.3.0/keycloak/front-envoy.yaml) ファイルも作成しました。
+`docker-compose.yml` ファイルがあるディレクトリに [`front-envoy.yaml`](https://github.com/edward-mamezou/hibernation-pod/blob/2023-02-03-002/keycloak/front-envoy.yaml) ファイルも作成しました。
 
 ```yaml
 admin:
@@ -170,7 +178,7 @@ Keycloak へのアクセスで使用する端末に PC を使う場合は、こ�
 
 この記事で説明した方法を使えば、Keycloak を任意の Web アプリケーションに代えて HTTPS アクセスに対応させることができ、特に開発中や試行中に AWS などのクラウドにかかるコストを抑制することが可能になります。
 
-この記事で説明した `docker-compose.yml` などのコードの全体は [GitHub リポジトリ](https://github.com/edward-mamezou/hibernation-pod/tree/v0.3.0/keycloak) にあります。
+この記事で説明した `docker-compose.yml` などのコードの全体は [GitHub リポジトリ](https://github.com/edward-mamezou/hibernation-pod/tree/2023-02-03-002/keycloak) にあります。
 
 :::info:2023年1月5日追記
 Kubernetes 環境に Keycloak をインストールする場合 Helm チャートが使用できます。また Apple Silicon にも対応しています。詳細なインストール手順は「[KeycloakのSAML2 IdPをAmazon Cognito user poolsと連携する](https://s-edword.hatenablog.com/entry/2023/01/04/112949)」を参照してください。

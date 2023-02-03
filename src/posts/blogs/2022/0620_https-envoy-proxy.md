@@ -156,7 +156,7 @@ static_resources:
 
 ### 起動
 
-起動は `docker-compose up -d` です。停止は `docker-compose down` です。
+起動は `docker compose up -d` です。停止は `docker compose down` です。
 
 ## DNS レコードの登録
 

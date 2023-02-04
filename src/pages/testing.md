@@ -31,6 +31,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 - [ペアワイズ法テストケース生成ツール「PictMaster」のカバレッジ指定を使う](/blogs/2022/11/27/pictmaster-coverage-option/)
 - [ペアワイズ法テストケース生成ツール「PictMaster」の原型シートを使う(水準編)](/blogs/2023/01/06/pictmaster-prototype-sheet-option/)
 - [ペアワイズ法テストケース生成ツール「PictMaster」の原型シートを使う(因子編)](/blogs/2023/01/08/pictmaster-prototype-sheet-2-option/)
+- [ペアワイズ法テストケース生成ツール「PictMaster」の直交表を使う](/blogs/2023/02/05/pictmaster-orthogonal-table-option/)
 
 ### テスト技法 - Contract Test
 

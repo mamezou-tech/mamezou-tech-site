@@ -17,6 +17,10 @@ npm パッケージには本来 SNAPSHOT の概念はありませんが、この
 
 このサンプルでは OpenAPI の定義 ([openapi.yml](https://github.com/edward-mamezou/use-openapi-generator/blob/2023-02-03/openapi.yml)) から OpenAPI Generator で axios を使うモジュールのコードを生成します。
 
+:::info
+OpenAPI のような Schema 定義言語によって規定して開発する SDD (スキーマ駆動開発) は、[日本CTO協会](https://cto-a.org/)が監修・編纂している[DX Criteria](https://dxcriteria.cto-a.org/)でも良いプラクティスとして [SYSTEM-5-4](https://dxcriteria.cto-a.org/f82bd9d0e8344db29cb4e32522fb8957) 等であげられています。
+:::
+
 OpenAPI の定義を `openapi.yml` ファイルに記述します。
 
 OpenAPI Generator の設定ファイル [`client.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/2023-02-03/client.yaml) は次の通りです。
@@ -107,7 +111,7 @@ GitHub Actions の `actions/setup-node@v3` で GitHub リポジトリのルー�
 ```
 
 :::info
-`actions/setup-node` の設定と生成される `.npmrc` ファイルの関係の詳細は、[GitHub リポジトリ](https://github.com/actions/setup-node/blob/2023-02-03/action.yml)を参照するとよいでしょう。
+`actions/setup-node` の設定と生成される `.npmrc` ファイルの関係の詳細は、[GitHub リポジトリ](https://github.com/actions/setup-node/blob/main/action.yml)を参照するとよいでしょう。
 
 `registry-url` については、次のように書かれています。
 >Optional registry to set up for auth. Will set the registry in a project level .npmrc and .yarnrc file, and set up auth to read in from env.NODE_AUTH_TOKEN.

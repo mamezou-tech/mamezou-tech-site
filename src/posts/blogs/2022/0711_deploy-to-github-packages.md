@@ -9,14 +9,17 @@ GitHub Packages は、Docker イメージ、npm、Maven、NuGet、RubyGems な�
 
 この記事では、[OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator) で生成した TypeScript モジュールを GitHub Actions を使って GitHub Packages にデプロイする方法を説明します。
 
+:::info
+npm パッケージには本来 SNAPSHOT の概念はありませんが、この記事で説明するとおり、OpenAPI Generator で `SNAPSHOT: true` を設定することで、タイムスタンプ付きのパッケージを生成できます。
+:::
 
 ## OpenAPI Generator
 
-このサンプルでは OpenAPI の定義 ([openapi.yml](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/openapi.yml)) から OpenAPI Generator で axios を使うモジュールのコードを生成します。
+このサンプルでは OpenAPI の定義 ([openapi.yml](https://github.com/edward-mamezou/use-openapi-generator/blob/2023-02-03/openapi.yml)) から OpenAPI Generator で axios を使うモジュールのコードを生成します。
 
 OpenAPI の定義を `openapi.yml` ファイルに記述します。
 
-OpenAPI Generator の設定ファイル [`client.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/v0.6.0/client.yaml) は次の通りです。
+OpenAPI Generator の設定ファイル [`client.yaml`](https://github.com/edward-mamezou/use-openapi-generator/blob/2023-02-03/client.yaml) は次の通りです。
 
 ```yaml
 inputSpec: 'openapi.yml'
@@ -104,7 +107,7 @@ GitHub Actions の `actions/setup-node@v3` で GitHub リポジトリのルー�
 ```
 
 :::info
-`actions/setup-node` の設定と生成される `.npmrc` ファイルの関係の詳細は、[GitHub リポジトリ](https://github.com/actions/setup-node/blob/main/action.yml)を参照するとよいでしょう。
+`actions/setup-node` の設定と生成される `.npmrc` ファイルの関係の詳細は、[GitHub リポジトリ](https://github.com/actions/setup-node/blob/2023-02-03/action.yml)を参照するとよいでしょう。
 
 `registry-url` については、次のように書かれています。
 >Optional registry to set up for auth. Will set the registry in a project level .npmrc and .yarnrc file, and set up auth to read in from env.NODE_AUTH_TOKEN.
@@ -131,7 +134,7 @@ GitHub Actions は GitHub リポジトリのルートに `.npmrc` ファイル�
 
 `npm publish` コマンドで、ビルドと GitHub Packages にデプロイします。
 
-ここで説明した全体のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/v0.6.0) にあります。
+ここで説明した全体のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/2023-02-03) にあります。
 
 ## パッケージの使用方法
 
@@ -194,3 +197,10 @@ npm install --save @edward-mamezou/example-client
 
 npm パッケージをインハウスのレジストリ ([AWS CodeArtifact](https://aws.amazon.com/jp/codeartifact/)、Sonatype Nexus、JFrog Artifactory、あるいは GitLab Packages & Registries 等) に登録して共有したい場合も `.npmrc` ファイルの設定等の基本的な部分は GitHub Packages を使う場合と同じです。
 
+## 参考
+
+- [第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)
+- [第2回 イベントストーミングとドメイン駆動設計の戦略的設計](/blogs/2022/06/09/openapi-generator-2/)
+- [第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用](/blogs/2022/06/17/openapi-generator-3/)
+- [第4回 ドメイン層の実装とサービスの完成](/blogs/2022/06/24/openapi-generator-4/)
+- [第5回 Open Policy Agent とサイドカーパターンによる認可の実装](/blogs/2022/07/01/openapi-generator-5/)

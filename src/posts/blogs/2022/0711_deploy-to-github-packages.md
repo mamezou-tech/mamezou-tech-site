@@ -92,7 +92,7 @@ OpenAPI Generator の設定で `snapshot` を true にしたため、バージ�
 
 ## GitHub Actions
 
-GitHub Actions の `actions/setup-node@v3` で GitHub リポジトリのルートに `.npmrc` ファイルを生成します。
+GitHub Actions の `actions/setup-node@v3` で GitHub 上に `.npmrc` ファイルが生成されます。
 
 ```yaml
 - name: Use Node.js

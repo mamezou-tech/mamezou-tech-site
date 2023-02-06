@@ -10,7 +10,7 @@ GitHub Packages は、Docker イメージ、npm、Maven、NuGet、RubyGems な�
 この記事では、[OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator) で生成した TypeScript モジュールを GitHub Actions を使って GitHub Packages にデプロイする方法を説明します。
 
 :::info
-npm パッケージには本来 SNAPSHOT の概念はありませんが、この記事で説明するとおり、OpenAPI Generator で `SNAPSHOT: true` を設定することで、タイムスタンプ付きのパッケージを生成できます。
+npm パッケージには本来 SNAPSHOT の概念はありませんが、この記事で説明するとおり、OpenAPI Generator で `snapshot: true` を設定することで、タイムスタンプ付きのパッケージを生成できます。
 :::
 
 ## OpenAPI Generator
@@ -123,7 +123,7 @@ GitHub Actions の `actions/setup-node@v3` で GitHub リポジトリのルー�
 {% raw %}
 ```yaml
 - run: (cd modules/client; npm install)
-- run: (NPM_CONFIG_USERCONFIG=`pwd`/.npmrc cd modules/client; npm publish)
+- run: (cd modules/client; npm publish)
   env:
     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -132,7 +132,7 @@ OpenAPI Generator の設定により、コードは `modules/client` ディレ�
 
 `npm install` で依存ライブラリを `node_modules` にインストール (ダウンロード) します。
 
-GitHub Actions は GitHub リポジトリのルートに `.npmrc` ファイルを生成するため、環境変数 `NPM_CONFIG_USERCONFIG` で GitHub リポジトリのルートにある `.npmrc` ファイルを使用するよう設定します。
+GitHub Actions (setup-node) が生成する `.npmrc` ファイルのパスは、環境変数 `NPM_CONFIG_USERCONFIG` に設定されます。
 
 `npm publish` で使用する `_authToken` は GitHub から取得して環境変数 `NODE_AUTH_TOKEN` に設定しています。
 

@@ -122,6 +122,11 @@ process.on('SIGINT', () => {
 ## サブプロセスの起動
 OS のコマンドや任意の CLI アプリケーションを起動したい場合は、ランタイム API の `Deno.run` を使用します。RunOptions にコマンドや標準入出力の設定を指定します。コマンドの引数は、`...fileNames` のようにスプレッド構文を使えて、複数ファイルを処理するなどの用途に利用できます。
 
+:::alert
+2023.2.7 追記
+本記事執筆時点の v1.27 では存在しませんでしたが、v1.28 で `Deno.Command` が追加されました。この API が安定化されれば `Deno.run` は非推奨になる見込みです。
+:::
+
 ```typescript
 const fileNames = Deno.args;
 

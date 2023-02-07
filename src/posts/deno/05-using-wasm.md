@@ -73,7 +73,11 @@ $ deno run --allow-net use_wasm.ts
 - [スタンドアローンおよび言語組み込みの WebAssembly ランタイム Wasmer](/blogs/2022/03/21/wasmer/)
 - [Wasmtime が Production Ready に](/blogs/2022/10/02/wasmtime_v1/)
 
-Deno は Web 標準の API で WASM を使用するため WASI には対応していません。
+~~Deno は Web 標準の API で WASM を使用するため WASI には対応していません~~。
+
+2023.2.7 追記
+Deno でもランタイムの API ではなく標準モジュール Wasi モジュールを利用することで、WASI 対応 WASM も利用可能になっています。
+[https://deno.land/std@0.175.0/wasi](https://deno.land/std@0.175.0/wasi)
 :::
 
 ブラウザーでは WASM の処理で UI の処理をブロックしないよう、Web Worker に WASM モジュールを渡してワーカースレッドで処理させることができます。Deno でも Web 標準の Worker API 提供されているのでワーカースレッドでの処理が可能です。

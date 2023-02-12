@@ -8,7 +8,7 @@ tags: [java]
 筆者が普段から使っているHelidonの4.0.0 ALPHA-4の[リリースノート](https://github.com/helidon-io/helidon/releases/tag/4.0.0-ALPHA4)を眺めていたところ"Logging: Change JUL to System.Logger in most modules"という変更が目に留まり"System.Logger"ってなんだ？と調べてみたところ、なっ、なっ、なんとJava9からLoggerのインタフェースが標準化されているではないですかー！！ということで今回は登場背景も交えながらSystem.Loggerを今さら紹介してみたいと思います。
 
 # System.Loggerとは
-System.Loggerを一言でいうと、ロギングライブラリのブリッジとしてよく使われるOSSの[SLF4J](https://www.slf4j.org/)や[Apache Commons Logging](https://commons.apache.org/proper/commons-logging/)のJava標準版です。ここでのJava標準版とはjava.lang.Stringなどと同様にJavaの標準ライブラリとしてJDKに含まれものを指していますが、System.Loggerは`java.lang.Sysmte.Logger`インタフェースとしてJava9からJava標準ライブラリに含まれるようになりました。
+System.Loggerを一言でいうと、ロギングライブラリのブリッジとしてよく使われるOSSの[SLF4J](https://www.slf4j.org/)や[Apache Commons Logging](https://commons.apache.org/proper/commons-logging/)のJava標準版です。ここでのJava標準版とはjava.lang.Stringなどと同様にJavaの標準ライブラリとしてJDKに含まれものを指していますが、System.Loggerは`java.lang.System.Logger`インタフェースとしてJava9からJava標準ライブラリに含まれるようになりました。
 
 SLF4JやApache Commons Loggingを知っている人への説明は以上で終了！なのですが、これだけでは少々乱暴すぎるため、そのモチベーション(背景)や仕組みなども含めSystem.Loggerについてもう少し深掘りしてみたいと思います。
 
@@ -17,10 +17,10 @@ SLF4JやApache Commons Loggingを知っている人への説明は以上で終�
 
 この標準が取り入れられた背景には主に次の2つのことがあります。
 
-1つ目はJavaの標準ロギング機能としてのjava.util.loggin(通称JUL)の存在です。
+1つ目はJavaの標準ロギング機能としてのjava.util.logging(通称JUL)の存在です。
 使っている人がいるかどうかは別として建前上はJULがあることでJava(JDK)の標準仕様でロギングも行えることになっていますが、Java9から導入されたモジュールシステムにより、標準ライブラリが細かくモジュール化（分割）されたことで、今まで前提として成り立っていたJavaが動作する実行環境では常にJULが使えるという前提が成り立たなくなりました[^1]。
 
-[^1]: JULは`java.loggin`として`java.base`モジュールから切り離されました。このためモジュールシステムによって依存を制限されている場合やjlinkで必要な標準ライブラリしか含まないJREが実行環境で使われている場合などで実行時にJULを使えないケースが発生します。
+[^1]: JULは`java.logging`として`java.base`モジュールから切り離されました。このためモジュールシステムによって依存を制限されている場合やjlinkで必要な標準ライブラリしか含まないJREが実行環境で使われている場合などで実行時にJULを使えないケースが発生します。
 
 この変更によりJavaとしては具体的なロギング機能ではなく、抽象的なロギングAPIを提供し、利用するロギング機能は実行時に決定する仕組みが必要となりました。
 

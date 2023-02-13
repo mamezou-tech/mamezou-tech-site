@@ -188,6 +188,7 @@ Sign Out して、もう一度 Sign In すると、Password を入力する画�
 
 ## 参考
 
+- [米国国立標準技術研究所 (NIST) Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
 - [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)
 - [Red Hat Single Sign-onで、WebAuthnがGAに](https://rheb.hatenablog.com/entry/2022/07/26/005014)
 - [インフラ管理不要なコンテナ環境のAWS FargateでKeycloakを動かしてみる](https://qiita.com/wadahiro/items/0837729e7c57becbfd06)

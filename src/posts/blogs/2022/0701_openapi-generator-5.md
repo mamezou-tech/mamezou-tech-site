@@ -13,6 +13,12 @@ tags: [envoy, "openapi-generator", "spring-boot", OPA, "実践マイクロサー
 
 図のようにサービスは、3つのコンテナイメージで構成された、docker-compose または [Pod](https://kubernetes.io/ja/docs/concepts/workloads/pods/pod-overview/) です。
 
+:::info
+米国国立標準技術研究所 (NIST) が発行している「[Zero Trust Architecture (NIST SP 800-207)](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf)」と、この記事の構成の対応関係は次のようになります。
+
+![ZTA](https://github.com/takesection-sandbox/envoyproxy-examples/raw/main/image/zta.png)
+:::
+
 ## JWT 認証
 
 OpenID Connect で使用される ID Token は [RFC 7515](https://datatracker.ietf.org/doc/html/rfc7515) で標準化されている JWS (JSON Web Signature) ですが、一般的には JWT と呼ばれているので、この記事中も JWT とします。

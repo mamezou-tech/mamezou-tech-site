@@ -13,7 +13,7 @@ tags: [envoy, "openapi-generator", "spring-boot", OPA, "実践マイクロサー
 
 図のようにサービスは、3つのコンテナイメージで構成された、docker-compose または [Pod](https://kubernetes.io/ja/docs/concepts/workloads/pods/pod-overview/) です。
 
-:::info
+:::info:ゼロトラストアーキテクチャ (ZTA)
 米国国立標準技術研究所 (NIST) が発行している「[Zero Trust Architecture (NIST SP 800-207)](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf)」と、この記事の構成の対応関係は次のようになります。
 
 ![ZTA](https://github.com/takesection-sandbox/envoyproxy-examples/raw/main/image/zta.png)

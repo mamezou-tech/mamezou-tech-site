@@ -391,6 +391,8 @@ Kubernetes 環境に Keycloak をインストールする場合 Helm チャー�
 
 ## 参考
 
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
+- [NIST SP 800-207 Zero Trust Architecture](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf)
 - [ゼロトラストネットワーク](https://www.amazon.co.jp/dp/4873118883/)
 
 Keycloak を IdP として実行する場合は、次の記事も参照してください。

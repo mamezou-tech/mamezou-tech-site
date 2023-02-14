@@ -2,7 +2,7 @@
 title: 第3回 OpenAPI Generator 利用時の Generation Gap パターンの適用
 author: shigeki-shoji
 date: 2022-06-17
-tags: [java, "openapi-generator", "spring-boot", "実践マイクロサービス", ZTA]
+tags: [java, "openapi-generator", "spring-boot", "実践マイクロサービス"]
 ---
 
 [前回](/blogs/2022/06/09/openapi-generator-2/)はドメイン駆動設計の話題を中心に説明しました。

@@ -2,7 +2,7 @@
 title: 第4回 ドメイン層の実装とサービスの完成
 author: shigeki-shoji
 date: 2022-06-24
-tags: [java, "openapi-generator", "spring-boot", "spring-integration", DDD, "実践マイクロサービス", ZTA]
+tags: [java, "openapi-generator", "spring-boot", "spring-integration", DDD, "実践マイクロサービス"]
 ---
 
 シリーズ4回目は [Spring Integration](https://spring.io/projects/spring-integration) を使うドメインイベントの発行 (publish) について説明します。

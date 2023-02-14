@@ -223,13 +223,9 @@ JWT トークンは、3つのパートにわかれています。それぞれの
 - [良いコード／悪いコードで学ぶ設計入門](https://www.amazon.co.jp/dp/B09Y1MWK9N/)
 - [Event Storming](https://www.eventstorming.com/)
 - [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)
-- [Auth0 java-jwtを使った素のJWT認証](/blogs/2022/12/10/java-jwt-auth/)
 - [OpenID Connect のメモ](https://s-edword.hatenablog.com/entry/2019/11/20/011812)
-- [リアクティブシステムとドメイン駆動設計の学習コンテンツ](https://s-edword.hatenablog.com/entry/2022/12/06/212621)
-- [ドメイン駆動設計と「コントロールプレーン」、「データプレーン」](https://s-edword.hatenablog.com/entry/2022/12/09/020834)
-- [S3 の静的 Web サイトをセキュアに Envoy でホスティング](/blogs/2022/03/26/hosting-a-static-website-using-s3-with-envoy-2/)
-- [Envoy と Open Policy Agent を使用した認可](/blogs/2022/02/20/envoy-authz/)
-- [Envoy を使用して ID Token (OIDC) を検証する](/blogs/2022/02/20/envoy-authn/)
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
+- [NIST SP 800-207 Zero Trust Architecture](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf)
 
 ## 関連記事
 

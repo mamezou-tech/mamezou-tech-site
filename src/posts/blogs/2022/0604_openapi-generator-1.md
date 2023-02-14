@@ -2,7 +2,7 @@
 title: 第1回 OpenAPI Generator を使ったコード生成
 author: shigeki-shoji
 date: 2022-06-04
-tags: [java, "openapi-generator", "spring-boot", "実践マイクロサービス", ZTA]
+tags: [java, "openapi-generator", "spring-boot", "実践マイクロサービス"]
 ---
 
 REST API の仕様を記述する [OpenAPI Specification](https://swagger.io/specification/) があります。この仕様では、JSON または YAML で API の仕様を記述します。
@@ -326,7 +326,3 @@ gradle bootRun
 この記事では、OpenAPI Generator を使用して Spring Boot のサーバーアプリケーションが容易に作成できることを説明しました。
 
 [次回](/blogs/2022/06/09/openapi-generator-2/)以降の記事で、ここで作成したサンプルをさらに深掘りして説明します。
-
-## 参考
-
-- [リアクティブシステムとドメイン駆動設計の学習コンテンツ](https://s-edword.hatenablog.com/entry/2022/12/06/212621)

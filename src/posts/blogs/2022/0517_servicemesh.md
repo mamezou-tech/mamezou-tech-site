@@ -2,7 +2,7 @@
 title: サービスメッシュが解決しようとしている課題 
 author: shigeki-shoji
 date: 2022-05-17
-tags: [k8s, container, msa, service-mesh]
+tags: [k8s, container, msa, service-mesh, ZTA]
 ---
 
 この記事では、サービスメッシュがどのような課題を解決しようとしているかについて概説します。
@@ -80,3 +80,5 @@ Docker や Kubernetes の登場によりサービスをコンテナとして提�
 - [サービスメッシュ必読ガイド - 第2版: 次世代のマイクロサービス開発](https://www.infoq.com/jp/articles/service-mesh-ultimate-guide-2021/)
 - [分散システムデザインパターン](https://www.amazon.co.jp/dp/4873118751/)
 - [マイクロサービスアーキテクチャのためのアプリケーション統合：サービスメッシュはESBではない](https://www.infoq.com/jp/articles/application-integration-service-mesh/)
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
+- [NIST SP 800-207 Zero Trust Architecture](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf)

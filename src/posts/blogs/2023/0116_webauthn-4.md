@@ -2,7 +2,7 @@
 title: Apple Touch ID Keyboard を使ったパスワードレス認証
 author: shigeki-shoji
 date: 2023-01-16
-tags: [AWS, "認証/認可", keycloak, ZTA, webauthn]
+tags: [AWS, "認証/認可", keycloak, webauthn]
 ---
 
 弊社では隔月で有志によるハッカソンを開催しています。
@@ -315,3 +315,7 @@ Password を入力する画面の下のリンク `Try Another Way` をクリッ�
 ## おわりに
 
 昨年記事を書いた時点では Apple 社のブラウザ Safari 以外ではパスワードレス認証ができなかったと記憶しています。この記事にある通り、今では Google Chrome ブラウザでも Touch ID に対応したパスワードレス認証ができています。
+
+## 参考
+
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)

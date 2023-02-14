@@ -2,7 +2,7 @@
 title: WebAuthn でパスワードの無い世界へ
 author: shigeki-shoji
 date: 2022-06-15
-tags: [AWS, "認証/認可", keycloak, ZTA, webauthn]
+tags: [AWS, "認証/認可", keycloak, webauthn]
 ---
 
 複数のサービスにアクセスするための異なるパスワードを記憶しておくことは困難で、結果としてパスワードを使いまわすといったセキュリティリスクの高い行動パターンをとりがちです。

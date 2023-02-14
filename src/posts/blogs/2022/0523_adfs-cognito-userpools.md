@@ -2,7 +2,7 @@
 title: ADFSとCognito Userpoolsの連携
 author: shigeki-shoji
 date: 2022-05-23
-tags: [AWS, "認証/認可", ZTA]
+tags: [AWS, "認証/認可"]
 ---
 
 ブラウザなどの UI からアクセスするマイクロサービスでは JWT 認証 ([OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) 等) を利用することが一般的です。AWS を利用している場合には、[Amazon Cognito user pools](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/cognito-user-identity-pools.html) (Cognito Userpools) で JWT の発行が可能です。
@@ -80,6 +80,7 @@ AWS の特徴として Lambda を使ってさまざまなイベントに対処�
 
 ## 参考
 
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
 - [マイクロサービスの Active Directory の活用](/blogs/2021/12/18/active-directory/)
 - [Active Directory: Designing, Deploying, and Running Active Directory](https://www.amazon.co.jp/dp/B00CBM1WES/)
 - [脱オンプレミス! クラウド時代の認証基盤 Azure Active Directory 完全解説](https://www.amazon.co.jp/dp/B01IB6Q79W/)

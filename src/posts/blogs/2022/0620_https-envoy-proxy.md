@@ -2,7 +2,7 @@
 title: Envoy Proxy による HTTPS Proxy
 author: shigeki-shoji
 date: 2022-06-20
-tags: [envoy, keycloak, ZTA, "認証/認可"]
+tags: [envoy, keycloak, "認証/認可"]
 ---
 
 「[WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)」の記事では、[AWS Fargate](https://aws.amazon.com/jp/fargate/) を使って [Keycloak](https://www.keycloak.org/) を起動してデモンストレーション環境を構築しました。
@@ -186,3 +186,4 @@ Keycloak へのアクセスで使用する端末に PC を使う場合は、こ�
 
 - [WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)
 - [OpenID Connect でパスワードレス認証を使う](/blogs/2022/06/23/webauthn-3/)
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)

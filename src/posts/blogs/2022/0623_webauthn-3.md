@@ -2,7 +2,7 @@
 title: OpenID Connect でパスワードレス認証を使う
 author: shigeki-shoji
 date: 2022-06-23
-tags: [AWS, "認証/認可", keycloak, OIDC, java, ZTA]
+tags: [AWS, "認証/認可", keycloak, OIDC, java]
 ---
 
 「[WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)」に続く「[Envoy Proxy による HTTPS Proxy](/blogs/2022/06/20/https-envoy-proxy/)」の記事でプライベートネット内にパスワードレス認証ができる環境構築の方法を説明しました。この記事では、OpenID Connect の [Code Flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth) を使ってパスワードレス認証を説明します。
@@ -288,5 +288,6 @@ Amazon Cognito Userpools の場合は、次の URL にアクセスして取得�
 
 - [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)
 - [Apple Touch ID Keyboard を使ったパスワードレス認証](/blogs/2023/01/16/webauthn-4/)
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
 
 [^1]: QRコードは株式会社デンソーウェーブの登録商標です。

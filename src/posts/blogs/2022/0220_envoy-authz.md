@@ -261,6 +261,9 @@ nerdctl compose up
 
 # 参考
 
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
+- [NIST SP 800-207 Zero Trust Architecture](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf)
+- [OpenID Connect のメモ](https://s-edword.hatenablog.com/entry/2019/11/20/011812)
 * [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)
 * [S3 の静的 Web サイトを Envoy でホスティング](/blogs/2022/02/16/hosting-a-static-website-using-s3-with-envoy/)
 * [Envoy を使用して ID Token (OIDC) を検証する](/blogs/2022/02/20/envoy-authn/)

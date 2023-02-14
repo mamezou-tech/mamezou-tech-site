@@ -2,7 +2,7 @@
 title: マイクロサービスの Active Directory の活用
 author: shigeki-shoji
 date: 2021-12-18
-tags: ["認証/認可", ZTA]
+tags: ["認証/認可"]
 ---
 
 新たなサービスの開発では、誰がサービスを使用できるかを確認するための認証 (Authentication) とサービスのどの機能にアクセスしてよいかを確認するための認可 (Authorization) を考える必要があります。
@@ -67,5 +67,5 @@ Active Directory ドメインのネットワークへの参加は、一般的に
 
 # 参考
 
-* [マイクロサービスアーキテクチャ](https://www.amazon.co.jp/dp/4873117607/)
-* [ゼロトラストネットワーク](https://www.amazon.co.jp/dp/4873118883/)
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
+- [マイクロサービスアーキテクチャ](https://www.amazon.co.jp/dp/4873117607/)

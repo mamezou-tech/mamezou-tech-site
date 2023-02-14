@@ -243,3 +243,10 @@ JWT Authentication / External Authorization については「[第5回 Open Poli
 :::info:2023年1月6日追記
 [GitHub Repository](https://github.com/takesection-sandbox/envoyproxy-examples/tree/main/front-proxy-login) に Kubernetes 環境にインストールするための Helm チャートを追加しました。
 :::
+
+## 参考
+
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
+- [NIST SP 800-207 Zero Trust Architecture](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf)
+- [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)
+- [OpenID Connect のメモ](https://s-edword.hatenablog.com/entry/2019/11/20/011812)

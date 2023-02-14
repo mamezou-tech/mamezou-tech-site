@@ -118,4 +118,8 @@ curl -v -H 'Authorization: Bearer <ID TOKEN>' http://localhost:<PORT NUMBER>/v1.
 
 # 参考
 
-* [DaprのCNCFインキュベーターへの参加とYaron Schneider氏とのQ&A](https://www.infoq.com/jp/news/2021/11/dapr-joins-cncf/)
+- [DaprのCNCFインキュベーターへの参加とYaron Schneider氏とのQ&A](https://www.infoq.com/jp/news/2021/11/dapr-joins-cncf/)
+- [NIST SP 800-63-3 Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
+- [NIST SP 800-207 Zero Trust Architecture](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf)
+- [OpenID Connect のメモ](https://s-edword.hatenablog.com/entry/2019/11/20/011812)
+- [基本から理解するJWTとJWT認証の仕組み](/blogs/2022/12/08/jwt-auth/)

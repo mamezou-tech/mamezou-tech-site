@@ -24,6 +24,7 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 
 - [アジャイル開発現場におけるTips：笑い声](/agile/agile-tips_01/)
 - [アジャイル開発現場におけるTips：仕様書としてのテスト](/agile/agile-tips_02/)
+- [アジャイル開発現場におけるTips：デイリーPO](/agile/agile-tips_03/)
 
 ## 新米スクラムマスターの思考メモ
 

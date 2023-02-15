@@ -8,9 +8,9 @@ tags: [typescript]
 TypeScriptでDecoratorって使っていますか？
 
 DecoratorはJava等のオブジェクト指向言語ではお馴染みのアノテーションです。DI/AOP等のメタプログラミングでよく使われているものです。
-Decorator自体はECMAScriptの仕様の1つで、ドラフトバージョンとしてかなり前から存在していました。
-現時点(v4.9)のTypeScriptでサポートしているDecoratorはStage 2(Draft)の仕様です。
-仕様策定が難航していたDecoratorですが、一部を除いて2022-03にようやくStage 3(Candidate)へと昇格し、TypeScript v5.0(2023-03)からサポートされる予定です。
+Decorator自体はECMAScriptの仕様として、かなり前から存在していました。
+現時点(v4.9)のTypeScriptでサポートしているDecoratorは、Stage 2(Draft)の仕様です。
+仕様策定が難航していたDecoratorですが、一部を除いて2022-03にようやくStage 3(Candidate)へと昇格し、TypeScript v5.0(2023-03リリース予定)から正式サポートされる予定です。
 
 - [Announcing TypeScript 5.0 Beta](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0-beta/)
 

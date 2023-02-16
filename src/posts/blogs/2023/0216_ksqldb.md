@@ -334,7 +334,7 @@ push query 実行中の(待ち状態の) ksql シェルでは、マウンテン�
 ```
 
 ## Table (マテリアライズド・ビュー)の利用
-Stream "riderLocations" をベースに、ライダーの最新の位置を表示するマテリアライズド・ビューを作成します。ビューの SQL では上記で作成した Stream riderLocations から最新の位置情報を取得して格納します。`LATEST_BY_OFFSET` 関数によりライダー毎の最新の位置情報が Stream から取得されます。
+Stream "riderLocations" をベースに、ライダーの最新の位置を表示するマテリアライズド・ビュー "currentLocation" を作成します。ビューの SQL では riderLocations から最新の位置情報を取得して格納します。`LATEST_BY_OFFSET` 関数によりライダー毎の最新の位置情報が取得できます。
 
 ```sql
 CREATE TABLE currentLocation AS
@@ -346,7 +346,7 @@ CREATE TABLE currentLocation AS
   EMIT CHANGES;
 ```
 
-上記で作成したマテリアライズド・ビュー currentLocation から派生する別のマテリアライズド・ビューを作成します。以下は各ライダーがマウンテンビューからどのぐらいの距離にいるのかを GEO_DISTANCE 関数を使って集計する例です。COLLECT_LIST は条件に一致するカラムのデータを配列形式に纏めて取得する関数です。
+この currentLocation から派生する別のマテリアライズド・ビューを作成します。以下は各ライダーがマウンテンビューからどのぐらいの距離にいるのかを GEO_DISTANCE 関数を使って集計する例です。COLLECT_LIST は条件に一致するカラムのデータを配列形式に纏めて取得する関数です。
 
 ```sql
 CREATE TABLE ridersNearMountainView AS
@@ -357,13 +357,13 @@ CREATE TABLE ridersNearMountainView AS
   GROUP BY ROUND(GEO_DISTANCE(la, lo, 37.4133, -122.1162), -1);
 ```
 
-マテリアライズドビュー ridersNearMountainView に対してマウンテンビューから10マイル以内にいるライダーを問い合わせる pull query の例です。
+マテリアライズド・ビュー ridersNearMountainView に対してマウンテンビューから10マイル以内にいるライダーを問い合わせる pull query の例です。
 
 ```sql
 SELECT * from ridersNearMountainView WHERE distanceInMiles <= 10;
 ```
 
-実行すると、次の2行が出力されて完了しました。
+実行すると、次の2行が出力されて完了しました。RIDERS カラムには、各距離に位置するすべてのライダーが配列で取得されています。
 
 ```
 +------------------------+-------------------------------+-------------------------+

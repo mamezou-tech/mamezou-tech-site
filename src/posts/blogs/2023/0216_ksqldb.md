@@ -101,7 +101,7 @@ services:
 :::info
 ksqldb-server / ksqldb-cli は amd64 アーキテクチャのイメージのみ提供されています。今回は、Intel 版 MacBook Pro の Docker Desktop で環境を構築しました。
 
-Quickstart のコードスニペットでは、ksqldb-server / ksqldb-client のタグが `0.28.3` になっていますが、このイメージは現在存しないのでエラーになります。1つ前のパッチバージョンを指定すると起動しました。
+Quickstart のコードスニペットでは、ksqldb-server / ksqldb-client のタグが `0.28.3` になっていますが、このイメージは記事執筆時点では存在せずエラーになりました。1つ前のパッチバージョンを指定すると起動しました。
 :::
 
 この docker-compose.yml を配置したディレクトリで docker compose を実行します。
@@ -188,7 +188,7 @@ CREATE STREAM s1 (c1 VARCHAR, c2 INTEGER)
   WITH (kafka_topic='s1', value_format='json');
 ```
 
-上記の SQL は Topic s1 も一緒に作るため、partitions など作成に必要な情報を付加しています。
+Topic s1 も一緒に作るためには partitions など作成に必要な情報を付加します。
 :::
 
 Topic と Stream の一覧を表示すると Topic (s1) と Stream(S1) ができています。
@@ -299,7 +299,9 @@ Message
 ドキュメントにはサンプルのシナリオは説明されていませんが、ライダーは配送業務などを行う従業員で、位置情報はスマホや車載機器などから取得しているのでしょう。
 :::
 
-Stream に対して、マウンテンビューから5マイル以内の距離にあるすべての行を GEO_DISTANCE 関数を使って出力する push query を実行します。
+Stream に対して、マウンテンビュー[^4]から5マイル以内の距離にあるすべての行を GEO_DISTANCE 関数を使って出力する push query を実行します。
+
+[^4]: アメリカ合衆国カリフォルニア州の都市
 
 ```sql
 SELECT * FROM riderLocations
@@ -344,7 +346,7 @@ CREATE TABLE currentLocation AS
   EMIT CHANGES;
 ```
 
-上記で作成したマテリアライズド・ビュー currentLocation から派生する別のマテリアライズドビューを作成します。以下は各ライダーがマウンテンビューからどのぐらいの距離にいるのかを GEO_DISTANCE 関数を使って集計する例です。COLLECT_LIST は条件に一致するカラムのデータを配列形式に纏めて取得する関数です。
+上記で作成したマテリアライズド・ビュー currentLocation から派生する別のマテリアライズド・ビューを作成します。以下は各ライダーがマウンテンビューからどのぐらいの距離にいるのかを GEO_DISTANCE 関数を使って集計する例です。COLLECT_LIST は条件に一致するカラムのデータを配列形式に纏めて取得する関数です。
 
 ```sql
 CREATE TABLE ridersNearMountainView AS
@@ -415,7 +417,7 @@ CREATE SINK CONNECTOR elasticsearch_sink WITH (
 ```
 
 ## 最後に
-ksqlDB の環境を構築して、ストリーム処理作成を体験してみました。ksqlDB 単体で Stream 処理、connector、マテリアライズドビューを賄え、しかもすべて DDL で作成できるため、運用はシンプルになりそうです。Stream 処理もほぼ普通の SQL なので、Kafka Streams API で Spring Boot アプリを作るのに比べ、開発・デプロイのサイクルが格段に短くて済み、迅速にパイプラインを構築できそうです。
+ksqlDB の環境を構築してストリーム処理作成を体験してみました。ksqlDB 単体で Stream 処理、connector、マテリアライズド・ビューを、しかもすべて DDL で作成できるため、構築・運用は非常にシンプルです。Stream 処理もほぼ普通の SQL なので、Kafka Streams API で Spring Boot アプリを作るのに比べ、開発・デプロイのサイクルが格段に短く、迅速にパイプラインを構築できそうです。
 
 ksqlDB のドキュメントサイトで色々なユースケースのチュートリアルやサンプルが参照可能です。
 

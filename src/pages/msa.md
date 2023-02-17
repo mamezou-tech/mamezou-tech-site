@@ -84,3 +84,4 @@ Apache Kafka は publish/subscribe 型のメッセージングプラットフォ
 - [Kafka を Java のテストプロセスに埋め込める EmbeddedKafka でコンシューマーをテストする](/blogs/2022/10/08/kafka-consumer-test-with-embeddedkafka/)
 - [Kafka の Web UI を提供する kafka-ui を試す](/blogs/2023/01/05/kafka-ui/)
 - [Spring Boot で作る Kafka Streams アプリケーション](/blogs/2023/01/23/kafka-streams-spring-boot-app/)
+- [Kafka Streams パイプラインを迅速に作成できる ksqlDB を触ってみる](/blogs/2023/02/16/ksqldb/)

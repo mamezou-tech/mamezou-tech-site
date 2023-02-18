@@ -5,6 +5,8 @@ date: 2022-07-01
 tags: [envoy, "openapi-generator", "spring-boot", OPA, "実践マイクロサービス", ZTA, rego]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 前回の記事で、「挨拶の音声を生成する」コマンド (以降 Hello コマンドまたは Hello サービスといいます) を完成させました。
 
 この記事では、このコマンドの実行権限チェックに [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) を使って説明します。

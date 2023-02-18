@@ -5,6 +5,8 @@ date: 2022-06-17
 tags: [java, "openapi-generator", "spring-boot", "実践マイクロサービス"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 [前回](/blogs/2022/06/09/openapi-generator-2/)はドメイン駆動設計の話題を中心に説明しました。
 
 今回は [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator) の使い方について説明します。

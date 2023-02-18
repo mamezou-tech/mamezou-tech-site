@@ -5,6 +5,8 @@ date: 2022-01-03
 tags: [container, k8s, ZTA, iot, "認証/認可", AWS]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 マイクロサービスのように、多言語プログラミング (polyglot programming) が前提の環境では、認証認可やログのような横断的関心事 (cross-cutting concern) をアプリケーションのコードとして実装すると、各言語やフレームワークごとに移植が必要となり最新化への足かせとなります。
 
 この記事では、分散アプリケーションランタイムの [Dapr](https://dapr.io/) によって [OpenID Connect](https://openid.net/connect/) の ID トークンの有効性の確認という横断的関心事の処理をアプリケーションコードの外側で実行するサンプルについて説明します。Jetson Nano のような IoT デバイス向けの Kubernetes としてフットプリントの軽い Rancher の [K3S](https://k3s.io/) を利用します。

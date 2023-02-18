@@ -5,6 +5,8 @@ date: 2022-10-16
 tags: [AWS, "認証/認可", envoy, ZTA]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 いくつか Envoy Proxy の JWT Authentication や External Authorization を使った認証や認可の記事を書いてきました。
 今回は OAuth2 Filter を使った例を説明します。
 

@@ -5,6 +5,8 @@ date: 2022-05-23
 tags: [AWS, "認証/認可"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 ブラウザなどの UI からアクセスするマイクロサービスでは JWT 認証 ([OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) 等) を利用することが一般的です。AWS を利用している場合には、[Amazon Cognito user pools](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/cognito-user-identity-pools.html) (Cognito Userpools) で JWT の発行が可能です。
 
 Cognito Userpools を利用する場合には、システムにアクセスするユーザーをこのサービスに登録する必要があります。しかし、組織内の Active Directory を ADFS ([Active Directory フェデレーションサービス](https://docs.microsoft.com/ja-jp/windows-server/identity/active-directory-federation-services)) を使用して SAML2 の IdP (identity provider) として実行し、Cognito Userpools に ADFS を [ID プロバイダーに追加](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/cognito-user-pools-saml-idp.html)することで、ユーザー情報の移行が不要になります。

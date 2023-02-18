@@ -5,6 +5,8 @@ date: 2022-07-04
 tags: [container, "rancher-desktop"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 M1 mac にインストールした Rancher Desktop では Amd64 のコンテナイメージの実行ができません。
 
 しかし、Rancher Desktop が利用している lima の [GitHub リポジトリ](https://github.com/lima-vm/lima) にはマルチアーキテクチャについての[ドキュメント](https://github.com/lima-vm/lima/blob/master/docs/multi-arch.md)があります。

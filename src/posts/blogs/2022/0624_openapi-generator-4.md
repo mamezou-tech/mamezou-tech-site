@@ -5,6 +5,8 @@ date: 2022-06-24
 tags: [java, "openapi-generator", "spring-boot", "spring-integration", DDD, "実践マイクロサービス"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 シリーズ4回目は [Spring Integration](https://spring.io/projects/spring-integration) を使うドメインイベントの発行 (publish) について説明します。
 
 ## ドメイン駆動設計 (DDD - Domain-driven design)

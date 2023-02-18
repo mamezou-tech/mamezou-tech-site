@@ -5,6 +5,8 @@ date: 2022-06-12
 tags: [java, "apache-camel", "spring-boot", DDD, MQTT, iot]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 2002年の「[Patterns of Enterprise Application Architecture](https://www.amazon.co.jp/dp/0321127420/) ([エンタープライズアプリケーションアーキテクチャパターン](https://www.amazon.co.jp/dp/B01B5MX2O2/))」と2003年の「[Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.amazon.co.jp/dp/0321125215/) ([エリック・エヴァンスのドメイン駆動設計](https://www.amazon.co.jp/dp/B00GRKD6XU/))」、「[Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions](https://www.amazon.co.jp/dp/0321200683/) (通称 EIPs)」は20年近く経った今でも人気のある書籍です。
 
 唯一日本語の訳本のない「EIPs」ですが、ここに書かれているパターンを認知しているかは別としてソフトウェア開発の中では当然のように使われているものが多数あります。

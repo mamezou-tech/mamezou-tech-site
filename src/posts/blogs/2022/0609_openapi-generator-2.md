@@ -5,6 +5,8 @@ date: 2022-06-09
 tags: [java, "openapi-generator", "spring-boot", DDD, "実践マイクロサービス", ZTA]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 この記事は、「[第1回 OpenAPI Generator を使ったコード生成](/blogs/2022/06/04/openapi-generator-1/)」の続編です。
 
 この記事のコードは、[GitHub リポジトリ](https://github.com/edward-mamezou/use-openapi-generator/tree/v0.2.0)に置いています。

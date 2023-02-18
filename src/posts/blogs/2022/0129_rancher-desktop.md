@@ -5,6 +5,8 @@ date: 2022-01-29
 tags: [k8s, container, "rancher-desktop"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 つい先日 (2022年1月21日) に、[lima 紹介](/blogs/2022/01/21/lima/) という記事を書いたばかりですが、Mac (M1/Intel) と Windows のどちらにも対応し (さらに Linux にも)、それぞれ Lima と WSL2 を利用してコンテナランタイムを実行する、[Rancher Desktop](https://rancherdesktop.io/) がついに v1.0.0 に到達したというニュースを受け取りました。
 
 Rancher Desktop では、Rancher らしく、Kubernetes には、以前の[記事](/blogs/2022/01/03/dapr-on-jetson-nano-with-k3s/) でも紹介した [k3s](https://k3s.io/) を利用します。

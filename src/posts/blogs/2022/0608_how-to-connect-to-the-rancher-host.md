@@ -5,6 +5,8 @@ date: 2022-06-08
 tags: [k8s, container, "rancher-desktop"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 [Rancher Desktop](https://rancherdesktop.io/) で実行しているコンテナ内からホストにアクセスしたくなる場合があります。
 
 コンテナはそれぞれ固有のIPアドレスを持っています。コンテナをグルーピングして特定のコンテナ間でセキュアな通信もできます。これを応用して[サイドカーパターン](https://azure.microsoft.com/ja-jp/resources/designing-distributed-systems/)などが実現できますが、逆にいうと、コンテナからホストにアクセスしたいと考えて `localhost` を指定してもそれは単にコンテナ自身をしているということになります。

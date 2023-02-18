@@ -5,6 +5,8 @@ date: 2022-11-29
 tags: [AWS, GitHub, "CI/CD"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 GitHub Actions で AWS にアクセスする場合 GitHub の OIDC プロバイダから発行される ID Token を AWS の IAM 外部プロバイダとして使用できます。
 
 これにより、AWS_ACCESS_KEY_ID や AWS_SECRET_ACCESS_KEY のような永続的なクレデンシャルを設定する必要がなくなり、誤って公開されるリスクが大きく減少しました。

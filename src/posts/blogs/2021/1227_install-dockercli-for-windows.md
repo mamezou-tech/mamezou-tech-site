@@ -5,6 +5,8 @@ date: 2021-12-27
 tags: [container, docker]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 Docker は背後で Docker デーモンが実行されて、Docker コマンドは Unix ドメインソケット (Linux や macOS の場合) または tcp ソケットで Docker デーモンと通信します。
 
 Linux にインストールした Docker デーモンは設定により Unix ドメインではなく tcp で外部マシンからのアクセスもできます。これは、Windows Subsystem for Linux 2 にインストールした Docker デーモンの場合も同様です。

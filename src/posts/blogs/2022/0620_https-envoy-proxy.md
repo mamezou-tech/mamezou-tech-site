@@ -5,6 +5,8 @@ date: 2022-06-20
 tags: [envoy, keycloak, "認証/認可"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 「[WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)」の記事では、[AWS Fargate](https://aws.amazon.com/jp/fargate/) を使って [Keycloak](https://www.keycloak.org/) を起動してデモンストレーション環境を構築しました。
 
 記事で説明した環境は、Keycloak のための AWS Fargate 以外に、ロードバランサ ([ALB](https://aws.amazon.com/jp/elasticloadbalancing/)) など時間課金のリソースも含んでいました。

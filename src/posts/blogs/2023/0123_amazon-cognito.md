@@ -5,6 +5,8 @@ date: 2023-01-23
 tags: [AWS, "認証/認可"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 [Amazon Cognito user pools](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/cognito-user-identity-pools.html) は Web やモバイルアプリケーションの認証、認可、およびユーザ管理機能を提供する Amazon Cognito のユーザディレクトリサービスです。
 
 Cognito user pools を使用するといわゆる JWT 認証に利用できる AccessToken、IdToken などを得られます。

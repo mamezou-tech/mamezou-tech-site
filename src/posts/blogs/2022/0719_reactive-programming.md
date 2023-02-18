@@ -5,6 +5,8 @@ date: 2022-07-19
 tags: [FRP, "reactive-streams"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 リアクティブプログラミング (Reactive Programming) とは、データストリームとその変更の伝搬を関心事とする宣言的プログラミングパラダイムです。
 
 次のような命令型プログラミングによるコードがあったとします。

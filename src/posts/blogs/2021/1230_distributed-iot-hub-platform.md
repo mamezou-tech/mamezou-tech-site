@@ -5,6 +5,8 @@ date: 2021-12-30
 tags: [iot, MQTT]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 グローバルに展開する IoT プロダクトの場合、IoT デバイスとの通信のレイテンシーが非常に大きな課題となります。また、それぞれの地域で異なるセキュリティポリシーの課題もあり、可能な限りデバイスに近接したロケーションで処理を行い、中央との通信をフィルターし、通信量の低減も求められます。
 
 AI の領域では、2021年11月8日の QCon Plus での [Katharine Jarmul](https://plus.qconferences.com/plus2021/speakers/katharine-jarmul) 氏のセッション「[Machine Learning at the Edge](https://plus.qconferences.com/plus2021/presentation/machine-learning-edge)」で説明されたように、連合機械学習 (Federated Machine Learning) によって、エッジデバイスで低レイテンシーな ML を実現することも可能となってきました。

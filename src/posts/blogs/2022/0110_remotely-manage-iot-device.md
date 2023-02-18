@@ -5,6 +5,8 @@ date: 2022-01-10
 tags: [AWS, iot] 
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 遠隔地にサーバや Raspberry Pi や Jetson Nano などの IoT デバイスを配置する場合、これらのメンテナンスのためのアクセス手段をセキュアに構築する方法を考えることは頭の痛い課題の一つです。特に、このために ssh ポートを開放することは攻撃者に絶好の口を提供することになります。
 
 この記事では、AWS Systems Manager を使って、リモートで Shell コマンドの実行や Ansible Playbook の適用ができるようにするため、[以前の記事](/blogs/2022/01/03/dapr-on-jetson-nano-with-k3s/) で紹介した Jetson Nano に amazon-ssm-agent をインストールする方法と Run Command の使い方を概説します。

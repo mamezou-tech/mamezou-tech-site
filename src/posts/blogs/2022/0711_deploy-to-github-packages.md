@@ -5,6 +5,8 @@ date: 2022-07-11
 tags: [npm, "openapi-generator", GitHub]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 GitHub Packages は、Docker イメージ、npm、Maven、NuGet、RubyGems などさまざまな言語で書かれたモジュール/パッケージを管理できます。
 
 この記事では、[OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator) で生成した TypeScript モジュールを GitHub Actions を使って GitHub Packages にデプロイする方法を説明します。

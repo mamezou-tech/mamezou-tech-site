@@ -4,6 +4,8 @@ author: shigeki-shoji
 date: 2022-05-17
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 この記事では、Windows、macOS で sshfs を使用する手順を説明しますが、この説明の前に、sshfs について調べるきっかけになった背景を記述させてください。
 
 私は Docker Desktop の代替として [Rancher Desktop](https://rancherdesktop.io/) を使っています。macOS 上では Rancher Desktop の仮想 Linux 環境に [lima](https://github.com/lima-vm/lima) が利用されています。

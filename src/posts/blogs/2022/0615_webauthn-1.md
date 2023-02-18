@@ -5,6 +5,8 @@ date: 2022-06-15
 tags: [AWS, "認証/認可", keycloak, webauthn]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 複数のサービスにアクセスするための異なるパスワードを記憶しておくことは困難で、結果としてパスワードを使いまわすといったセキュリティリスクの高い行動パターンをとりがちです。
 
 最近のスマートフォンやPCでは指紋認証や顔認証のような生体情報を用いた認証が可能になっています。このようなデバイスを活用してより安全性の高い認証の仕様として、[FIDO2](https://fidoalliance.org/fido2-2/fido2-web-authentication-webauthn/) (WebAuthn) があります。

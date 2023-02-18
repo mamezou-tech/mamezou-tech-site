@@ -5,7 +5,7 @@ date: 2023-01-16
 tags: [AWS, "認証/認可", keycloak, webauthn]
 ---
 
-弊社では隔月で有志によるハッカソンを開催しています。
+[庄司](https://github.com/edward-mamezou)です。弊社では隔月で有志によるハッカソンを開催しています。
 
 1 月のハッカソンで、私は年が明けてすぐに購入した「[Appleシリコン搭載Macモデル用Touch ID搭載Magic Keyboard - 英語(US)](https://amzn.asia/d/jc5XwLf)」を、昨年公開した記事「[WebAuthn でパスワードの無い世界へ](/blogs/2022/06/15/webauthn-1/)」の通りに利用することをテーマに参加しました。
 

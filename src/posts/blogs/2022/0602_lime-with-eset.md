@@ -5,6 +5,8 @@ date: 2022-06-02
 tags: [k8s, container, macOS, "rancher-desktop"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 皆さんは mac でセキュリティ対策ソフトウェアに何をお使いでしょうか。私は [ESET](https://eset-info.canon-its.jp/) を使用しています。
 
 ESET のファイアウォール機能を有効にして Docker Desktop の代替として [Rancher Desktop](https://developer.mamezou-tech.com/blogs/2022/01/29/rancher-desktop/) や [lima](https://developer.mamezou-tech.com/blogs/2022/01/21/lima/) を使用していると、イメージを pull するときにエラーが発生し困ったことがあり、その回避方法について調べてみました。

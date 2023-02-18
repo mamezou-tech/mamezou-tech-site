@@ -5,6 +5,8 @@ date: 2022-06-04
 tags: [java, "openapi-generator", "spring-boot", "実践マイクロサービス"]
 ---
 
+[庄司](https://github.com/edward-mamezou)です。
+
 REST API の仕様を記述する [OpenAPI Specification](https://swagger.io/specification/) があります。この仕様では、JSON または YAML で API の仕様を記述します。
 
 この業界標準の仕様で API を定義すると、開発に利用しやすいフォーマットされたドキュメントの提供やテスト用のモックを提供できます。
@@ -40,7 +42,6 @@ OpenAPI Generator のようなコード生成の活用でポイントとなる G
 ### [第5回 Open Policy Agent とサイドカーパターンによる認可の実装](/blogs/2022/07/01/openapi-generator-5/)
 
 このシリーズを通して採用している多層アーキテクチャ (Multi-tier Architecture) の1層である、サイドカーパターンで Open Policy Agent を使ってサービス全体を完成します。
-
 
 ## OpenAPI Specification
 

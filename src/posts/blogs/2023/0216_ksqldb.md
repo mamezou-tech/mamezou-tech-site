@@ -14,7 +14,7 @@ ksqlDB は、Kafka クラスター上にリアルタイム性の高いアプリ�
 先日の記事「[Spring Boot で作る Kafka Streams アプリケーション](/blogs/2023/01/23/kafka-streams-spring-boot-app/)」で紹介した Streams パイプラインは Kafka Streams API を使用して Spring Boot アプリケーションとして実装する方式でした。ksqlDB は SQL だけで Kafka Streams の処理が実現できます。この記事では公式ドキュメントを参照しながら ksqlDB を体験してみます。
 
 ## アーキテクチャ
-ksqlDB の開発元である Confluent が ksqlDB のアーキテクチャーを説明している開発者用コンテンツがあります。
+ksqlDB の開発元である Confluent が ksqlDB のアーキテクチャを説明している開発者用コンテンツがあります。
 
 [How ksqlDB Works: Advanced Concepts, Queries, and Functions](https://developer.confluent.io/learn-kafka/inside-ksqldb/streaming-architecture/)
 
@@ -299,7 +299,7 @@ Message
 ドキュメントにはサンプルのシナリオは説明されていませんが、ライダーは配送業務などを行う従業員で、位置情報はスマホや車載機器などから取得しているのでしょう。
 :::
 
-Stream に対して、マウンテンビュー[^4]から5マイル以内の距離にあるすべての行を GEO_DISTANCE 関数を使って出力する push query を実行します。
+Stream に対して、マウンテンビュー[^4]から5マイル以内の距離にあるすべての行を `GEO_DISTANCE` 関数を使って出力する push query を実行します。
 
 [^4]: アメリカ合衆国カリフォルニア州の都市
 
@@ -346,7 +346,7 @@ CREATE TABLE currentLocation AS
   EMIT CHANGES;
 ```
 
-この currentLocation から派生する別のマテリアライズド・ビューを作成します。以下は各ライダーがマウンテンビューからどのぐらいの距離にいるのかを GEO_DISTANCE 関数を使って集計する例です。COLLECT_LIST は条件に一致するカラムのデータを配列形式に纏めて取得する関数です。
+この currentLocation から派生する別のマテリアライズド・ビューを作成します。以下は各ライダーがマウンテンビューからどのぐらいの距離にいるのかを GEO_DISTANCE 関数を使って集計する例です。`COLLECT_LIST` は条件に一致するカラムのデータを配列形式に纏めて取得する関数です。
 
 ```sql
 CREATE TABLE ridersNearMountainView AS

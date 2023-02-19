@@ -36,8 +36,9 @@ sample-console.jarはsample-service.jarに対する依存があり、sample-pare
 # 必要なpomとworkflowの定義(お題の答え)
 ここでは上述のお題を実現するために必要となるpomの定義とworkflow定義をまずは見てもらい、その後に必要な手順や定義を個別に説明しながらハマりどころや注意点などをコラム形式で紹介していくスタイルで説明します。
 
-では早速必要となるpomの定義とworkflow定義は次のとおりになります。記事の説明に使用したリポジトリやpom定義等はすべてGitHubの[こちら](https://github.com/extact-io/github-packages-sample-registry)に格納してあります。
+では早速必要となるpomの定義とworkflow定義は次のとおりになります。記事の説明に使用したリポジトリやpom定義等はすべてGitHubの[こちら](https://github.com/extact-io/github-packages-sample-registry)[^1]に格納してあります。
 
+[^1]: GitHubのサンプルは`sample-console`は`github-packages-sample-console`のようにそれぞれのリポジトリ名の先頭に`github-packages-`を付けています。
 
 - 用意するリポジトリ
 
@@ -171,7 +172,12 @@ jobs:
         REPOSITORY_SERVER_PASSWORD: ${{ secrets.REPOSITORY_SERVER_PASSWORD }}
 ```
 
-3つリポジトリで利用するものはすべて同じでOKです（問題を簡単にするため共通化は敢えてしてないけど、実際は共通化した方がいいよ。この記事見るといいよ）
+3つリポジトリで利用するものはすべて同じでOKです。
+
+::: check: ワークフロー定義の共通化
+今回は問題を簡単にするためワークフロー定義の共通化は敢えてしていませんが実際に利用する際は共通化した方がよいです。ワークフローの共通化手段はいくつかありますが、今回のケースであれば[こちらの記事](/blogs/2022/03/08/github-actions-reuse-workflows/)で紹介されている再利用可能ワークフローが適してると思います。
+:::
+
 
 それでは手順やポイントを順に説明してきます。
 
@@ -228,7 +234,7 @@ with:
   cache: 'maven'
 ```
 
-キャッシュされたライブラリはpomが修正されるまで有効となります。したがって、pomを変更しない限り、ライブラリのダウンロードが発生しないため、ワークフローの実行が高速化します。
+キャッシュされたライブラリの有効期間は簡単にいうとpomが修正されるまでとなります。したがって、pomを変更しない限り、ライブラリのダウンロードが発生しないため、ワークフローの実行が高速化します。
 
 このキャッシュの有効期間、つまりキャッシュを破棄してライブラリを再取得するタイミングは必要な依存関係はすべてpomに定義されているため、pomが変更されない限り必要な依存ライブラリは変わらないという考えに基づいていると思いますが、これには1つ落とし穴があります。
 
@@ -251,7 +257,7 @@ sample-serviceモジュールを変更してsample-console側には反映され�
 ## GitHub Packagesにアクセスする認証情報をシークレットに登録する
 GtiHub Actionsのワークフローから別のリポジトリのGitHub Packagesにアクセスするために必要となる認証情報をリポジトリのシークレットに設定します。
 
-::: check
+::: check: シークレットとPATに関する手順
 シークレットの登録方法とPersonal Access Token (PAT)の発行方法については説明しません。GitHubのマニュアルやネットに豊富に情報はありますが、筆者として以下が分かりやすくてお勧めです。
 - [暗号化されたシークレット - GitHub Docs](https://docs.github.com/ja/actions/security-guides/encrypted-secrets)
 - [GitHub「Personal access tokens」の設定方法 - Qiita](https://qiita.com/kz800/items/497ec70bff3e555dacd0) 
@@ -280,11 +286,12 @@ GitHub Packagesは1つのリポジトリにつき、1つの独立したパッケ
 
 また、途中で参照権限を与える必要なことが分かりましたが、その与え方がPATしかないことに辿りつくまでこれまた時間が掛かりました。PATは有効期限の問題などもあるので可能であれば避けたいので別の方法を頑張って探しましたが、ないことが分かったので素直にRepository secretsにPATを定義することにしました。
 
-なお、今回は別のリポジトリにあるGitHub PackagesにアクセスするためPATが必要になりましたが、同じリポジトリのGitHub Packagesへのアクセスについては書き込みも含め`GITHUB_TOKEN`権限で行うことができます。
+なお、今回は別のリポジトリにあるGitHub PackagesにアクセスするためPATが必要になりましたが、同じリポジトリのGitHub Packagesへのアクセスについては書き込みも含め`GITHUB_TOKEN`権限で行うことができます。これについては後述のコラムでもう少し詳しく説明します。
 :::
 
 ## Packagesに対するsetup-javaアクションの設定
-今回の例ではsetup-javaアクションの設定を次のようにやっていますが、この設定の中でPackagesの利用に関する設定はserver-id, server-username, server-password, settings-pathの4つになります。
+今回の例ではsetup-javaアクションの設定を次のようにやっていますが、この設定の中でGitHub Packagesの利用に関する設定は`server-id`, `server-username`, `server-password`, `settings-path`の4つになります。
+
 ```yaml
 - name: Set up JDK 17
   uses: actions/setup-java@v3
@@ -311,7 +318,11 @@ setup-javaアクションはこの設定内容をもとにMavenを実行する�
 </settings>
 ```
 
-設定項目と生成されたsetteings.xmlとのマッピングは見てそのままだと思いますが、ポイントは`username`と`password`に対する設定です。感覚的に先ほど登録したシークレットの値が参照されて、その値がsettings.xmlに直接展開されるように思いますが、そうはなっていません。`username`と`password`に設定されているのは環境変数を参照することを意味する`${env.REPOSITORY_SERVER_USER}`と`${env.REPOSITORY_SERVER_PASSWORD}`です。
+設定項目と生成されたsetteings.xmlとのマッピングを見ていきます。
+
+`id`にはsetup-javaアクションの`server-id`で設定した値がマッピングされます。Mavenはこのidをもとにpomに定義されている`repository`と突合せ接続先情報を取得します。したがって、`server-id`に設定する値はpomに定義されている`repository`のidとなります。
+
+次のポイントは`username`と`password`に対する設定です。これは`id`で指定されたリポジトリへの接続に使用する認証情報となります。感覚的に先ほど登録したシークレットの値が参照されて、その値がsettings.xmlに直接展開されるように思いますが、そうはなっていません。`username`と`password`に設定されているのは環境変数を参照することを意味する`${env.REPOSITORY_SERVER_USER}`と`${env.REPOSITORY_SERVER_PASSWORD}`です。
 
 GitHub Actionsに慣れている方であればこれを見てsettings.xmlはMavenが読み込み解釈する設定であり`${env.VAL}`の記法はGitHub Actions独自のモノなのでMavenからすれば`${env.xxx}`は単なる文字列でしかないのでは？と思われると思います。
 
@@ -343,8 +354,29 @@ Maven実行時にIDとパスワードが環境変数から取得されるのが�
 筆者は環境変数とシークレットの紐づけの仕組みをきちんと理解してなかっため、変数名指定の誤りに気がつくのに非常に時間が掛かりました。mvn実行時にPackagesに対する認証エラーが出る場合は上記のお約束を確認してみるとよいです。
 :::
 
+::: check: 同じリポジトリのGitHub Packagesの利用は簡単
+今回はワークフローを実行するリポジトリはは別のGithub Packagesを使うため`server-id`などの設定が必要ですが、同じリポジトリのGitHub Packagesを利用する場合は、setup-javaはデフォルトの設定のままでよく、mvnコマンドの実行ステップの環境変数に下記のように`GITHUB_TOKEN'を設定するだけで使うことができます。
+```yaml
+- name: Set up JDK 11
+  uses: actions/setup-java@v3
+  with:
+    distribution: '<distribution>'
+    java-version: '11'
+- name: Publish to GitHub Packages Apache Maven
+  run: mvn deploy
+  env:
+    GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
+```
+
+ただし`server-id`には`github`が使われますのでこのidに対するpomのリポジトリ設定は必要となります。
+:::
+
 # 最後に
-コラムで説明したとおりGitHub Packagesはpublicリポジトリでもその参照(ダウンロード)にはPATが必要となるため、Maven Centralのように不特定多数にモジュールを公開するといったことはできません。このため、GitHub Packagesの用途は個人やチーム内での利用に限られますが、言い換えれば個人やチーム内利用であれば十分に利用する価値のあるパッケージレジストリサービスといえます。
+コラムで説明したとおりGitHub Packagesはpublicリポジトリでもその参照(ダウンロード)にはPATが必要となるため、Maven Centralのように不特定多数にモジュールを公開するといったことはできません。このため、GitHub Packagesの用途は個人やチーム内での利用に限られますが、言い換えれば個人やチーム内利用であればその手軽さから十分に利用する価値のあるパッケージレジストリサービスといえます。
+
+GitHub Packagesは今回紹介した以外にも色々な使い方ができます。setup-javaアクションの公式ページには設定の詳細はパターンに応じた設定例なども豊富に記載されているため、なにか調べたいことがあればまずは[こちら](https://github.com/actions/setup-java)公式ページを見るのが一番の近道です。
+
+今回はJavaのモジュールを例にした紹介となりますが、GitHub PackagesではJavaに限らず様々なモジュールに対するパッケージレジストリとして使うことができます。npmモジュールでの使い方については同じ豆蔵デベロッパーサイトの[こちらの記事](/blogs/2022/07/11/deploy-to-github-packages/)で紹介してますので、興味があればこちらも見ていただければと思います。
 
 ---
 参照資料

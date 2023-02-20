@@ -41,7 +41,7 @@ Cognito user pools を OP として利用する Hosted UI では次の OIDC エ�
 
 JWT 認証は、マイクロサービスなどのバックエンドだけでなく、Kubernetes コントロールプレーン、GitHub Actions、GitLab CI/CD、CircleCI などさまざまなところで活用されています。
 
-例えば、GitHub Actions の場合、GitHub ID プロバイダの getIDToken エンドポイントにリクエストすることで JWT 認証のための IdToken が取得できます。
+例えば、GitHub Actions の場合、GitHub ID プロバイダの getIDToken エンドポイントにリクエストすることで JWT 認証のための IdToken が取得でき、GitLab CI/CD の場合は、環境変数 [CI_JOB_JWT_V2](https://docs.gitlab.com/ee/ci/cloud_services/aws/) に IdToken が設定されています。
 
 Cognito user pools の場合も API を使用して AccessToken や IdToken が取得できます。
 

@@ -35,3 +35,4 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 - [新米スクラムマスターの思考メモ（その２　Retrospective編）](/blogs/2022/12/05/newcomer-scrum-master-02/)
 - [新米スクラムマスターの思考メモ（その３　Sprint Planning編）](/blogs/2022/12/17/newcomer-scrum-master-03/)
 - [新米スクラムマスターの思考メモ（その４　DailyScrum編）](/blogs/2022/12/28/newcomer-scrum-master-04/)
+- [新米スクラムマスターの思考メモ（その５　まとめ）](/blogs/2023/02/21/newcomer-scrum-master-05/)

@@ -23,7 +23,9 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(codeClipboard, {
     buttonClass: "tdbc-copy-button"
   });
-  eleventyConfig.addPlugin(pluginMermaid);
+  eleventyConfig.addPlugin(pluginMermaid, {
+    mermaid_js_src: "https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"
+  });
 
   eleventyConfig.addWatchTarget("./src/sass/");
   eleventyConfig.addWatchTarget("./11ty/");

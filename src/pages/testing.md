@@ -33,7 +33,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 - [ペアワイズ法テストケース生成ツール「PictMaster」の原型シートを使う(因子編)](/blogs/2023/01/08/pictmaster-prototype-sheet-2-option/)
 - [ペアワイズ法テストケース生成ツール「PictMaster」の直交表を使う](/blogs/2023/02/05/pictmaster-orthogonal-table-option/)
 
-### テスト技法 - Contract Test
+## テスト技法 - Contract Test
 
 - [Contract TestツールPactの紹介](/blogs/2022/12/03/contract-test-with-pact/)
 - [Contract Testの使いどころを考える](/blogs/2022/12/09/contract-test-usecase/)

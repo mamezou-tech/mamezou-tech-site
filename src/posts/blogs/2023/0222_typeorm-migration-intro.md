@@ -5,8 +5,8 @@ date: 2023-02-22
 tags: [type-orm, typescript, ORマッパー]
 ---
 
-以前JavaScript/TypeScript版ORマッパーの[TypeORM](https://typeorm.io/)の[導入記事](/blogs/2022/07/27/typeorm-with-typescript/)を書きました。
-この記事は予想に反して(？)多くのアクセスをいただき、JavaScript/TypeScriptでもORマッパーの需要は結構高いのかなと思いました。
+少し前ですがJavaScript/TypeScript版ORマッパーの[TypeORM](https://typeorm.io/)の[導入記事](/blogs/2022/07/27/typeorm-with-typescript/)を書きました。
+この記事は予想に反して(？)多くのアクセスをいただいており、JavaScript/TypeScriptでのORマッパーの需要は結構高いのかなと思いました。
 
 そこで今回は、その時に紹介できなかったTypeORMのスキーママイグレーションの機能についてご紹介しようと思います。
 

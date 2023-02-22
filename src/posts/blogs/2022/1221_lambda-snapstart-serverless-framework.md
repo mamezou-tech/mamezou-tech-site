@@ -2,7 +2,7 @@
 title: Lambda SnapStartをServerless Frameworkでデプロイする
 author: noboru-kudo
 date: 2022-12-21
-tags: [serverless-framework, lambda, aws, java, サーバーレス]
+tags: [serverless-framework, lambda, AWS, java, サーバーレス]
 ---
 
 先日、AWSからLambda SnapStartの発表がありました。

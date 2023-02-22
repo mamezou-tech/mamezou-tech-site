@@ -2,7 +2,7 @@
 title: S3で疑似的にフォルダを管理する方式の検討と実装
 author: ryo-nakagaito
 date: 2022-12-23
-tags: [aws, s3, advent2022]
+tags: [AWS, s3, advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第23日目の記事です。

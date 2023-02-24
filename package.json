@@ -51,7 +51,7 @@
     "cross-env": "^7.0.3",
     "cssnano": "^5.0.16",
     "dotenv": "^8.6.0",
-    "eleventy-plugin-code-clipboard": "^0.0.9",
+    "eleventy-plugin-code-clipboard": "^0.0.10",
     "emoji-regex": "^9.2.2",
     "goober": "^2.1.11",
     "htm": "^3.1.1",

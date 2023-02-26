@@ -2,6 +2,7 @@ import { html } from "htm/preact";
 import render from "preact-render-to-string";
 import { hydrate as preactHydrate } from "preact";
 import { useEffect, useState } from "preact/hooks";
+import { useHeadsObserver } from './hooks';
 
 function slugify(target) {
   return target
@@ -13,6 +14,8 @@ function slugify(target) {
 
 function Toc() {
   const [data, setData] = useState([]);
+  const {activeId} = useHeadsObserver();
+
   useEffect(() => {
     const tags = document.querySelectorAll("h1,h2");
     const newData = [...tags].slice(1)
@@ -49,10 +52,16 @@ function Toc() {
       ${nodes.map((node) => {
       if ("children" in node) {
         return html`
-          <li><a href="${node.anchor}">${node.text}</a>${makeList(node.children)}</li>`;
+          <li><a
+            href="${node.anchor}"
+            class="${slugify(`${activeId}`) === slugify(`${node.text}`) ? 'toc-current-header' : ''}"
+          >${node.text}</a>${makeList(node.children)}</li>`;
       } else {
         return html`
-          <li><a href="${node.anchor}">${node.text}</a></li>`;
+          <li><a
+            href="${node.anchor}"
+            class="${slugify(`${activeId}`) === slugify(`${node.text}`) ? 'toc-current-header' : ''}"
+          >${node.text}</a></li>`;
       }
     })}
     </ul>`;

@@ -1,5 +1,7 @@
 @import "typography";
 
+$toc-highlight-color: #ebe0fb;
+
 .post {
   display: flex;
   flex-direction: column;
@@ -73,6 +75,14 @@
     li {
       list-style-type: none;
       font-size: 0.8rem;
+
+      a {
+        display: block;
+        width: 65%;
+
+        &:hover { background-color: desaturate($toc-highlight-color, 80%); }
+        &.toc-current-header { background-color: $toc-highlight-color; }
+      }
     }
     position: fixed;
     width: calc((100vw - 80ch)/2 - 3rem);

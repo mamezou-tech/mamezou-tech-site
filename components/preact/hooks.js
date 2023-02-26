@@ -34,7 +34,7 @@ export function useHeadsObserver() {
             setActiveId(activeId)
         };
 
-        // viewportの上部10%の領域と監視対象のヘッダーがintersectしたらコールバック処理
+        // viewportの上部5%の領域と監視対象のヘッダーがintersectしたらコールバック処理
         observer.current = new IntersectionObserver(handleObserver, { rootMargin: "0% 0% -95% 0%" });
 
         const elements = document.querySelectorAll('h1, h2');

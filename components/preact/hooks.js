@@ -11,12 +11,8 @@ export function useHeadsObserver() {
             }
 
             // intersectしているヘッダーがあれば、目次内のそのヘッダーをハイライト対象とする。
-            let activeId = "";
-            entries.find((entry) => {
-                if (entry?.isIntersecting) {
-                    activeId = entry.target.id;
-                }
-            });
+            const entry = entries.find(entry => entry.isIntersecting);
+            let activeId = entry?.target.id;
 
             // FIXME もっとスマートな方針ありそう
             // interctしているヘッダーがない場合、viewport上端との差（絶対値）が最も近いヘッダーをハイライト対象とする。
@@ -25,10 +21,10 @@ export function useHeadsObserver() {
             // 1. viewport内にヘッダーが見えていれば、viewportの上端（＝画面の一番上側にあるもの）をハイライト対象とする。
             // 2. viewport内にいずれのヘッダーも見えていない場合、上方向にスクロールした場合に現れる（＝現時点では隠れている）最も近いヘッダーをハイライト対象とする。
             if (!activeId) {
-                let activeEntry = [...entries].reduce((v1, v2) => {
+                const activeEntry = [...entries].reduce((v1, v2) => {
                     return Math.abs(v1?.boundingClientRect.top) < Math.abs(v2?.boundingClientRect.top) ? v1 : v2;
                 });
-                activeId = activeEntry.target.id;
+                activeId = activeEntry?.target.id;
             }
 
             setActiveId(activeId)

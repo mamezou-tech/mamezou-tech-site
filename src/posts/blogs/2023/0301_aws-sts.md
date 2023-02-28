@@ -1,5 +1,5 @@
 ---
-title: "OIDCを使ってAWSへの一時的な認証情報を取得"
+title: "OIDCトークンによるAWSの一時的な認証情報の取得方法"
 author: shigeki-shoji
 date: 2023-03-01
 tags: [AWS, "aws-sts"]

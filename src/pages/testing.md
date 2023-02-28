@@ -77,3 +77,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 ### Vitest
 
 - [Viteベースの高速テスティングフレームワークVitestを使ってみる](/blogs/2022/12/28/vitest-intro/)
+
+### Pytest
+
+- [Pytestを使ってみる（その１：準備編）](/blogs/2023/03/01/using-pytest-01/)

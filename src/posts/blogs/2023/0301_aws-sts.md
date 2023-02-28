@@ -19,7 +19,7 @@ AWS へのアクセスでは、これらはどれも [AWS Security Token Service
 
 ## AWS Security Token Service とは
 
-[AWS Organizations](https://aws.amazon.com/jp/organizations/) 等で複数の AWS アカウント ID を使用して管理コンソールを利用している場合、[Switch Role (ロールの切り替え)](https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_roles_use_switch-role-console.html) を使われたことはあるだろうと思います。
+[AWS Organizations](https://aws.amazon.com/jp/organizations/) 等で複数の AWS アカウント ID を使用して管理コンソールを利用している場合、[Switch Role (ロールの切り替え)](https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_roles_use_switch-role-console.html) を使ったことがあるでしょう。
 
 この仕組みも AWS STS が利用されています。
 
@@ -42,7 +42,7 @@ AWS STS で一時的な認証情報を取得する場合、ロールの切り替
 
 Cognito user pools のクライアントと AWS Identity and Access Management (IAM) を連携させるため、管理コンソールを開いて、IAM - アクセス管理 - ID プロバイダ の「プロバイダを追加」ボタンをクリックします。
 
-![](cognito-1.png)
+![](/img/blogs/2023/0301_cognito-1.png)
 
 プロバイダの設定のプロバイダのタイプに「OpenID Connect」を選択します。
 
@@ -52,7 +52,7 @@ Cognito user pools のクライアントと AWS Identity and Access Management (
 
 対象者には、Cognito user pools のクライアント ID を入力します。
 
-![](cognito-2.png)
+![](/img/blogs/2023/0301_cognito-2.png)
 
 「プロバイダを追加」ボタンをクリックします。
 
@@ -60,25 +60,25 @@ Cognito user pools のクライアントと AWS Identity and Access Management (
 
 次に、IAM ロールを追加します。IAM - アクセス管理 - ロール の「ロールを作成」ボタンをクリックします。
 
-![](cognito-3.png)
+![](/img/blogs/2023/0301_cognito-3.png)
 
 信頼されたエンティティタイプに「ウェブアイデンティティ」を選択します。
 
 ウェブアイデンティティのアイデンティティプロバイダーには、追加した ID プロバイダ を選択し、Audience は追加した ID プロバイダの対象者に設定した クライアント ID を選択します。
 
-![](cognito-4.png)
+![](/img/blogs/2023/0301_cognito-4.png)
 
 「次へ」ボタンをクリックします。
 
-ここでは、許可を追加で、許可ポリシーに「AmazonS3ReadOnlyAccess」を選択しておきましょう。
+ここでは、許可ポリシーに「AmazonS3ReadOnlyAccess」を選択しておきましょう。
 
-![](cognito-5.png)
+![](/img/blogs/2023/0301_cognito-5.png)
 
 「次へ」ボタンをクリックします。
 
 ロール名に「TestRole」と入力して「ロールを作成」ボタンをクリックします。
 
-![](cognito-6.png)
+![](/img/blogs/2023/0301_cognito-6.png)
 
 ### 実験開始
 
@@ -87,10 +87,14 @@ Cognito user pools のクライアントと AWS Identity and Access Management (
 まず、aws cli を使って、OIDC トークンを取得します。
 
 ```text
-aws cognito-idp admin-initiate-auth --user-pool-id {プールID} --client-id {クライアントID} --auth-flow ADMIN_USER_PASSWORD_AUTH --auth-parameters 'USERNAME={ユーザ名},PASSWORD={パスワード}
+aws cognito-idp admin-initiate-auth \
+  --user-pool-id {プールID} \
+  --client-id {クライアントID} \
+  --auth-flow ADMIN_USER_PASSWORD_AUTH \
+  --auth-parameters 'USERNAME={ユーザ名},PASSWORD={パスワード}
 ```
 
-認証をパスすれば、次のようなイメージの JSON が返されます。
+認証をパスすれば、次のようなイメージの JSON が返ります。
 
 ```json
 {
@@ -126,7 +130,7 @@ curl https://sts.amazonaws.com/ \
       <AssumedRoleId>...</AssumedRoleId>
       <Arn>arn:aws:sts::{ACCOUNT ID}:assumed-role/TestRole/app1</Arn>
     </AssumedRoleUser>
-    <Provider>cognito-idp.{REGION}.amazonaws.com/{プールID}</Provider>
+    <Provider>cognito-idp.{リージョン}.amazonaws.com/{プールID}</Provider>
     <Credentials>
       <AccessKeyId>...</AccessKeyId>
       <SecretAccessKey>...</SecretAccessKey>
@@ -171,6 +175,6 @@ aws s3api list-buckets
 
 ## おわりに
 
-この記事では、ベストプラクティスとされる OIDC トークンを使用して一時的認証情報を取得する AWS STS のフローをデモしました。
+この記事では、ベストプラクティスとされる OIDC トークンを使用して一時的認証情報を取得する AWS STS のフローを解説しました。
 
-CI/CD で OIDC トークンから一時的認証情報がどのよう取得されるかの理解の助けになれば幸いです。
+CI/CD で OIDC トークンから一時的認証情報がどのように取得されるかを理解する一助になれば幸いです。

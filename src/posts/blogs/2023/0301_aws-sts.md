@@ -91,7 +91,7 @@ aws cognito-idp admin-initiate-auth \
   --user-pool-id {プールID} \
   --client-id {クライアントID} \
   --auth-flow ADMIN_USER_PASSWORD_AUTH \
-  --auth-parameters 'USERNAME={ユーザ名},PASSWORD={パスワード}
+  --auth-parameters 'USERNAME={ユーザ名},PASSWORD={パスワード}'
 ```
 
 認証をパスすれば、次のようなイメージの JSON が返ります。

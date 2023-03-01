@@ -2,7 +2,7 @@
 title: Vue3+D3.js アプリを Nuxt3 に移植して Netlify にデプロイしてみた
 author: masahiro-kondo
 date: 2023-03-02
-tags: [Nuxt, Netlify]
+tags: [nuxt, netlify]
 ---
 
 「[Vue 3 と D3.js で作る可視化アプリ](/blogs/2023/02/10/visualization-with-vue3-and-d3/)」の記事では、D3.js を使った可視化のための簡単な Web アプリを Vue3 の SPA で作成しました。

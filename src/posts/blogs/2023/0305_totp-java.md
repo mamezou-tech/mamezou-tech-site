@@ -23,7 +23,7 @@ TOTP の仕様は次のドキュメントがあります。
 
 また、さまざまなサービスの MFA でサポートされているアプリケーション Google Authenticator のソースコードは [GitHub リポジトリ](https://github.com/google/google-authenticator)に公開されています。
 
-## Secret
+## シークレット (Secret)
 
 MFA を有効にするとき、最初にQRコード[^1]を読んで初期化することが多いでしょう。読み込むと次のような URI が書かれています。
 

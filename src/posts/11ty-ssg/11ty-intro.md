@@ -415,7 +415,7 @@ const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight);
-  eleventyConfig.addWatchTarget("./src/sass/");
+  eleventyConfig.addPassthroughCopy("./src/css");
 
   return {
     dir: {
@@ -435,7 +435,7 @@ module.exports = function(eleventyConfig) {
 
 この例では以下のようなページが出力されます。
 
-![screen](https://i.gyazo.com/deb0d6ab455091bc7f49d03127a180d2.png)
+![screen](https://i.gyazo.com/627648cb99bdb7af9a94e0159b5a13dc.png)
 
 ## まとめ
 

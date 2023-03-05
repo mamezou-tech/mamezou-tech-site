@@ -1,7 +1,7 @@
 ---
 title: Eleventy(11ty)入門 - 導入編
 author: noboru-kudo
-date: 2023-03-25
+date: 2023-03-08
 ---
 
 本サイトは開設当初から静的サイトジェネレーター(SSG)として[Eleventy](https://www.11ty.dev/)を使っています。

@@ -1,5 +1,5 @@
 ---
-title: Eleventy(11ty)入門 - 概要編
+title: Eleventy(11ty)入門 - 導入編
 author: noboru-kudo
 date: 2023-03-25
 ---
@@ -428,12 +428,14 @@ module.exports = function(eleventyConfig) {
 ~~~
 
 シンタックスハイライトを有効にしていますので、コードスニペットを記述してみました。
+また、メタ情報(Front Matter)に`permalink`を追加し、ページのURLに`/sample`を指定しました。
+これを指定しない場合は`src`ディレクトリからのパスとして`/post/sample`がURLとなります。
 
 ### 出力結果
 
 この例では以下のようなページが出力されます。
 
-![screen](https://i.gyazo.com/120b0b1e6b43e92ce6ea31c720f5db63.png)
+![screen](https://i.gyazo.com/deb0d6ab455091bc7f49d03127a180d2.png)
 
 ## まとめ
 

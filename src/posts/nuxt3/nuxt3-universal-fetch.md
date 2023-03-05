@@ -2,7 +2,6 @@
 title: Nuxt3入門(第3回) - ユニバーサルフェッチでデータを取得する
 author: noboru-kudo
 date: 2022-10-06
-templateEngineOverride: md
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-develop-sample-app.md
 nextPage: ./src/posts/nuxt3/nuxt3-routing.md

@@ -1,0 +1,6 @@
+{
+  "tags": ["11ty", "SSG"],
+  "category": "Eleventy(11ty)入門",
+  "layout": "post",
+  "permalink": "/11ty/{{ page.fileSlug }}/"
+}

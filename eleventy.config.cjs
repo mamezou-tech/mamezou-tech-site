@@ -132,7 +132,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.setLibrary("md", markdownLibrary);
 
   return {
-    passthroughFileCopy: true,
     dir: {
       input: "src",
       output: "public"

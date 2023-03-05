@@ -2,7 +2,6 @@
 title: Nuxt3入門(第4回) - Nuxtのルーティングを理解する
 author: noboru-kudo
 date: 2022-10-09
-templateEngineOverride: md
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md
 nextPage: ./src/posts/nuxt3/nuxt3-app-configuration.md
@@ -79,11 +78,13 @@ Nuxt3では`[...slug].vue`というファイル名でページコンポーネン
 
 作成するページコンポーネントは以下のような通常のVueコンポーネントです。
 
+{% raw %}
 ```html
 <template>
   <p>{{ $route.params.slug }} Catch-all Route</p>
 </template>
 ```
+{% endraw %}
 
 テンプレートのみのシンプルなコンポーネントです。
 `route.params.slug`の部分には、ファイル名のスプレッド演算子から推測できるようにパスの配列(`/`区切り)が入ります。

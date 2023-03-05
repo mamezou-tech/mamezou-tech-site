@@ -2,7 +2,6 @@
 title: Nuxt3入門(第2回) - 簡単なNuxtアプリケーションを作成する
 author: noboru-kudo
 date: 2022-10-02
-templateEngineOverride: md
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-rendering-mode.md
 nextPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md

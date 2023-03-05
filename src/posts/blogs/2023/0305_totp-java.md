@@ -33,7 +33,7 @@ otpauth://totp/{user}@{servicename}?secret={secret}
 
 TOTP で使用するのは、シークレット (`secret`) の部分になります。このシークレットは、[Base32](https://www.rfc-editor.org/rfc/rfc4648#section-6) フォーマットによりエンコードされているため、Java 標準ライブラリでデコードできません。
 
-かわりに [Apache Commons Codec](https://commons.apache.org/proper/commons-codec/) の Base32 のデコードが使用可能です。
+かわりに [Apache Commons Codec](https://commons.apache.org/proper/commons-codec/) の Base32 が使用可能です。
 
 ```java
 import org.apache.commons.codec.binary.Base32;

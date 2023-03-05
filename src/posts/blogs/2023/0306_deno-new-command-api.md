@@ -1,5 +1,5 @@
 ---
-title: Deno 1.31 で安定化されたプロセス起動 API Deno.Command を使ってみる
+title: Deno 1.31で安定化されたプロセス起動 API Deno.Command を使ってみる
 author: masahiro-kondo
 date: 2023-03-06
 tags: [Deno]
@@ -48,7 +48,7 @@ Deno.exit(code);
 
 Deno.run のオプションで、標準出力、標準エラー出力をパイプで受け取るようにしています。Deno.run はサブプロセスのオブジェクトを返却するので、そのプロパティから結果コード・標準出力・標準エラー出力を取得しています。標準出力および標準エラー出力は、`Uint8Array` なので、`TextDecoder` を使ってデコードしています。
 
-この Deno.run API は Deno.command の安定化に伴い、非推奨化が決まっているようです。
+この Deno.run API は Deno.Command の安定化に伴い、非推奨化が決まっているようです。
 
 ## Deno.Command
 Deno.Command の API ドキュメントは以下です。

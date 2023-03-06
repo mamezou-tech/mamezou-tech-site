@@ -106,7 +106,7 @@ mvn -Daether.enhancedLocalRepository.split install
 ```
 リポジトリ直下が`cached`ディレクトと`installed`ディレクトリの2つに分けられ、`cached`ディレクトにはリモートリポジトリから取得したアーティファクトが、そして`installed`ディレクトリにはローカルインストールした`sample:hello-world`アーティファクトが格納されるようになります。
 
-# releaseとsnapshotバージョンの分割
+## releaseとsnapshotバージョンの分割
 今度は上記に加え、さらにreleaseバージョンとsnapshotバージョンが別になるようにしてみます。これには先ほどの指定に`-Daether.enhancedLocalRepository.splitLocal`と`-Daether.enhancedLocalRepository.splitRemote`オプション(値なし)を追加して次のように実行します。
 
 ```shell
@@ -142,7 +142,7 @@ mvn -Daether.enhancedLocalRepository.split \
 
 今回はリモートリポジトリから取得したアーティファクトもreleaseとsnapshotバージョンで分けるようにしたため、`-Daether.enhancedLocalRepository.splitRemote`を指定しましたが、リモートリポジトリ側の分割が不要な場合はこの指定を省略します。
 
-# ローカルインストールディレクトリの指定
+## ローカルインストールディレクトリの指定
 ローカルインストールしたアーティファクトのディレクトリ名はこれまで`installed`でしたが、これは`-Daether.enhancedLocalRepository.localPrefix`オプションで変えることができます。
 
 このオプションを指定することでブランチごとにローカルリポジトリ内のローカルインストールディレクトリを変えることができるようになります。例えば、`feature/maven-split-local-repository`ブランチのローカルインストールディレクトリを作る場合は次のようになります。
@@ -176,7 +176,7 @@ mvn -Daether.enhancedLocalRepository.split \
 
 なお、上記はローカルインストール側のディレクトリを指定する例でしたが、必要な場合はリモートリポジトリ側のディレクトリ名も`-Daether.enhancedLocalRepository.remotePrefix`オプションで`cached`から変更することもできます。
 
-# 最後に
+## 最後に
 Mavenのリリースノートには制約として「Maven 3.8.7 と比較すると、大規模なビルドで約 10% の速度低下が観察されました」とあるため、ローカルリポジトリの分割機能を使うことによる(極)多少のデメリットはあります。ですが、この機能によりアーティファクトのメンテナンスが各段に行いやすくなるのは間違いないため、10%くらいは目をつぶって常用していきたいと思います。
 
 ---

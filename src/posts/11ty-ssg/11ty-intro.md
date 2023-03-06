@@ -266,9 +266,10 @@ LiquidテンプレートにマークダウンのコンテンツがHTMLに変換�
 これらは後述のEleventyの設定ファイルを利用してEleventyに適用可能です。
 :::
 
-## Eleventyの設定ファイル
+## Eleventyの設定ファイルを理解する
 
-これまでは全てデフォルトを使ってきましたが、Eleventyを使いこなすには、設定ファイルを理解する必要があります。
+ここでは実践的なサイトに変えていきます。
+これまでは全てデフォルトの状態で使ってきましたが、Eleventyを使いこなすには、設定ファイルを理解する必要があります。
 
 Eleventyの設定ファイルは、プロジェクトルートに配置します。
 デフォルトでは、以下のいずれかのファイル名で作成します。
@@ -428,14 +429,45 @@ module.exports = function(eleventyConfig) {
 ~~~
 
 シンタックスハイライトを有効にしていますので、コードスニペットを記述してみました。
-また、メタ情報(Front Matter)に`permalink`を追加し、ページのURLに`/sample`を指定しました。
+また、メタ情報(Front Matter)に`permalink`を追加し、ページURLに`/sample`を指定しました。
 これを指定しない場合は`src`ディレクトリからのパスとして`/post/sample`がURLとなります。
+
+:::column:ディレクトリレベルで共通のデータをまとめる
+ここではマークダウンのメタ情報としてレイアウトやページURLを指定していますが、これらは通常はディレクトリレベルで指定したいところです。
+Eleventyではディレクトリ名と同名のJSON(またはJavaScript)を配置することで、該当ディレクトリ内のファイルに適用可能です。
+
+この例では、`src/post`ディレクトリ内に以下の`post.json`を作成しす。
+{% raw %}
+```json
+{
+  "layout": "base",
+  "permalink": "{{ page.fileSlug }}"
+}
+```
+{% endraw %}
+
+こうすることで、マークダウンに記述したメタ情報を削除しても、同じ効果が得られます。マークダウンのメタ情報はディレクトリレベルのデータとマージされますが、同名の場合はマークダウン(ページレベル)の方が優先されます。
+
+なお、ここで使っている`page.fileSlug`はEleventyが提供する変数です。詳細は以下公式ドキュメントを参照してください。
+
+- [Eleventy Doc - ELEVENTY SUPPLIED DATA - page VARIABLE](https://www.11ty.dev/docs/data-eleventy-supplied/#page-variable)
+:::
 
 ### 出力結果
 
 この例では以下のようなページが出力されます。
 
 ![screen](https://i.gyazo.com/627648cb99bdb7af9a94e0159b5a13dc.png)
+
+:::column:スタータープロジェクトで実践的なサイトを手早く構築する
+最初はEleventyの設定ファイルは機能が多くて、どこから手を付けてよいか分からないかもしれません。
+Eleventyではコミュニティ駆動のスタータープロエジェクトが公開されています。
+まずはこの中から好みのものを見つけて、カスタマイズしていく形にすると実践的なサイトを簡単に構築できると思います。
+
+- [Eleventy Doc - STARTER PROJECTS](https://www.11ty.dev/docs/starter/)
+
+Lighthouseのスコアも掲載されていますので、参考にすると良いでしょう。
+:::
 
 ## まとめ
 

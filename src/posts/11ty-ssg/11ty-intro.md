@@ -26,6 +26,9 @@ EleventyはNode.jsベースの静的サイトジェネレーターです。
 - クライアント(ブラウザ)で動作するJavaScriptなし。パフォーマンスやSEOに強い。
 
 このような特性から、ブログやドキュメントサイトのようなコンテンツベースの静的サイトが得意です。
+類似のツールとしては、[Astro](https://astro.build/)が近いのかなと思います[^2]。
+
+[^2]: 本サイトの移行候補として最有力なのはAstroです。TypeScriptのファーストクラスサポートが魅力です。Astroは本サイトの[記事](/blogs/2022/09/07/build-doc-site-with-astro/)でも紹介しています。
 
 :::column:好みのフレームワークでクライアント処理を追加する
 デフォルトではクライアントで動作するJavaScriptはありませんので、リアクティブ特性やリアルタイムフェッチ等を利用することはできません。
@@ -43,7 +46,7 @@ EleventyはNode.jsベースの静的サイトジェネレーターです。
 - [Eleventy Doc - BUILD PERFORMANCE](https://www.11ty.dev/docs/performance/#build-performance)
 
 :::column:JamstackトレンドでみるEleventyの成長
-2022年の[Jamstackトレンド](https://jamstack.org/survey/2022/)の結果から見ても、Eleventyは静的サイトジェネレーターで一定のシェア(19%)と満足度スコア(3.8)を獲得していることが伺えます。
+2022年の[Jamstack Servey](https://jamstack.org/survey/2022/)の結果から見ても、Eleventyは静的サイトジェネレーターで一定のシェア(19%)と満足度スコア(3.8)を獲得しています。
 
 これを受けたNetlifyの予想記事では、2023年も静的サイトジェネレーターとしてEleventyは成長が継続すると予想しています。
 
@@ -89,9 +92,9 @@ Eleventyはビルド時のみで実行環境(クライアント側)はありま�
 一見HTMLですが、{% raw %}{{ eleventy.version }}{% endraw %}の部分は、[Liquid](https://www.11ty.dev/docs/languages/liquid/)というテンプレート言語の文法になっています。
 特徴のところでも触れましたが、Eleventyは複数のテンプレート言語をサポートしており、Liquidはその1つで公式ドキュメントでよく使われているものの1つです。
 
-ここではEleventy組み込みの変数(eleventy.version)からバージョンを出力しています[^2]。
+ここではEleventy組み込みの変数(eleventy.version)からバージョンを出力しています[^3]。
 
-[^2]: Eleventy組み込み変数の詳細は[公式ドキュメント](https://www.11ty.dev/docs/data-eleventy-supplied/)を参照してください。
+[^3]: Eleventy組み込み変数の詳細は[公式ドキュメント](https://www.11ty.dev/docs/data-eleventy-supplied/)を参照してください。
 
 :::column:Eleventyでサポートするテンプレート
 Eleventyでは多数のテンプレートを併用可能です。
@@ -220,10 +223,10 @@ Eleventyのドキュメントはこちらです！！
 - [Eleventy Doc](https://www.11ty.dev/)
 ``` 
 
-上部のメタ情報(Front Matterといいます)に`layout: base`としてテンプレートを指定しています[^3]。
+上部のメタ情報(Front Matterといいます)に`layout: base`としてテンプレートを指定しています[^4]。
 こうするとEleventyは、`_include`ディレクトリ内のbaseレイアウト(つまり先程作成したbase.liquid)の子テンプレートとして認識します。
 
-[^3]: ここではYAMLで記述していますが、JavaScriptやJSON形式もサポートしています。
+[^4]: ここではYAMLで記述していますが、JavaScriptやJSON形式もサポートしています。
 
 それ以降は通常のマークダウン記法で記述するだけです。
 Eleventyではマークダウンパーサーのライブラリとして[markdown-it](https://github.com/markdown-it/markdown-it)を使ってHTMLに変換します。
@@ -278,9 +281,9 @@ Eleventyの設定ファイルは、プロジェクトルートに配置します
 - eleventy.config.js
 - eleventy.config.cjs
 
-このうち、eleventy.config.js/eleventy.config.cjsはv2.0.0以降から登場しています[^4]。
+このうち、eleventy.config.js/eleventy.config.cjsはv2.0.0以降から登場しています[^5]。
 
-[^4]: これ以外を設定ファイルとして使用する場合は、CLIオプション(--config)で指定します。
+[^5]: これ以外を設定ファイルとして使用する場合は、CLIオプション(--config)で指定します。
 
 このEleventy設定で、よく使うものだと以下のようなものがあります。
 
@@ -311,7 +314,7 @@ module.exports = function(eleventyConfig) {
       // ③
       input: "src",
       // ④
-      output: "dist"
+      output: "public"
     }
   };
 };
@@ -322,7 +325,7 @@ module.exports = function(eleventyConfig) {
 - ① Eleventyプラグインでマークダウンのコードスニペットのシンタックスハイライト有効化
 - ② CSSファイルを出力先にコピー
 - ③ ベースディレクトリを`src`配下に変更(デフォルトはプロジェクトルート)
-- ④ ビルド結果の出力先を`dist`に変更(デフォルトは`_site`)
+- ④ ビルド結果の出力先を`public`に変更(デフォルトは`_site`)
 
 この設定であれば、プロジェクトのディレクトリ構成は以下のようなものとなります。
 
@@ -335,7 +338,7 @@ module.exports = function(eleventyConfig) {
 │   │   └── style.css
 │   └── post
 │       └── sample.md
-├── dist // ビルド結果出力先
+├── public // ビルド結果出力先
 │   ├── css
 │   │   └── style.css
 │   └── post
@@ -345,7 +348,8 @@ module.exports = function(eleventyConfig) {
 └── package.json
 ```
 
-個人的には、ベースディレクトリはデフォルトのプロジェクトルートよりも、`src`のように専用ディレクトリ上にした方が入力/出力が分離されて見栄えが良くなると思います。
+勘が鋭い方は分かったかもしれません。[Astro](https://docs.astro.build/en/core-concepts/project-structure/)のプロジェクト構造を模倣しています。
+個人的にはベースディレクトリは`src`/`public`で入力/出力が分離されて見栄えが良くなると思います。
 
 先程作成したサイトをベースにすると、`src`配下のファイルは以下のようなものになります。
 
@@ -375,6 +379,7 @@ footer {
 
 ### レイアウトファイル(src/_includes/base.liquid)
 
+{% raw %}
 ```html
 <html lang="ja">
 <head>
@@ -394,7 +399,8 @@ footer {
 </footer>
 </body>
 </html>
-``` 
+```
+{% endraw %}
 
 headタグ内に2つのCSSリンクを追加しています。
 
@@ -421,7 +427,7 @@ module.exports = function(eleventyConfig) {
   return {
     dir: {
       input: "src",
-      output: "dist"
+      output: "public"
     }
   };
 };
@@ -474,6 +480,5 @@ Lighthouseのスコアも掲載されていますので、参考にすると良�
 
 今回はEleventyを使い始める手順についてご紹介しました。
 EleventyはNPMプロジェクトと同じ感覚で作成でき、すぐに始められることが分かっていただけたと思います。
-本サイトも現在500ページ近くありますが、増分ビルドで快適に執筆活動ができています。
 
 次回は、Eleventyのプラグインやマークダウンパーサー(markdown-it)のカスタマイズについて書きたいと思います。

@@ -1,5 +1,5 @@
 ---
-title: Eleventy(11ty)入門 - 導入編
+title: Eleventy入門(第1回) - 11tyで手早く静的サイトを作成する
 author: noboru-kudo
 date: 2023-03-08
 ---

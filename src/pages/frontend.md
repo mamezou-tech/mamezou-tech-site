@@ -31,8 +31,6 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 [^1]: 豆蔵デベロッパーサイトのホスティングにも使っています。
 
 ### プリレンダリングフレームワーク
-- [Eleventyで生成したマークダウン記事の画像を拡大する](/blogs/2022/05/19/11ty-zoom-image/)
-- [Eleventyで生成したサイトでNetlify Edge Functionsを使ってみる](/blogs/2022/08/17/netlify-edge-functions-with-11ty/)
 - [コンテンツ重視の静的サイトジェネレーター Astro でドキュメントサイトを構築する](/blogs/2022/09/07/build-doc-site-with-astro/)
 - [Fresh - Deno の 次世代 Web フレームワーク](/blogs/2022/07/04/fresh-deno-next-gen-web-framework/)
 - [Astro 2.0 + MDX + Recharts で Markdown ページにインタラクティブなチャートを描画する](/blogs/2023/01/29/astro-2.0-mdx/)
@@ -43,6 +41,11 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 - [Netlify Identityを使ってNetlify CMSのユーザー認証をする](/blogs/2022/08/10/netlify-cms-with-netlify-identity/)
 - [NetlifyのLighthouseプラグインでWebサイトのメトリクスを継続的に評価する](/blogs/2022/08/17/netlify-lighthouse-plugin-intro/)
 - [Netlify Split TestingでGitブランチベースのA/Bテストをする](/blogs/2022/08/21/netlify-split-testing-intro/)
+
+### Eleventy(11ty)
+- [Eleventy入門(第1回) - 11tyで手早く静的サイトを作成する](/11ty/11ty-intro/)
+- [Eleventyで生成したマークダウン記事の画像を拡大する](/blogs/2022/05/19/11ty-zoom-image/)
+- [Eleventyで生成したサイトでNetlify Edge Functionsを使ってみる](/blogs/2022/08/17/netlify-edge-functions-with-11ty/)
 
 ## Deno
 Deno は高速でセキュアな JavaScript ランタイムです。Node.js に比べ開発体験も向上しています。ここでは、Deno の導入や活用についてご紹介します。

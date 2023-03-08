@@ -2,7 +2,6 @@
 title: Nuxt3入門(第9回) - Nuxt3アプリケーションをサーバーレス環境にデプロイする
 author: noboru-kudo
 date: 2022-11-02
-templateEngineOverride: md
 tags: [SSR, AWS, サーバーレス, serverless-framework, lambda]
 prevPage: ./src/posts/nuxt3/nuxt3-state-management.md
 ---

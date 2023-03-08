@@ -2,7 +2,6 @@
 title: Nuxt3入門(第7回) - Nuxt3のプラグイン・ミドルウェアを使う
 author: noboru-kudo
 date: 2022-10-23
-templateEngineOverride: md
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-error-handling.md
 nextPage: ./src/posts/nuxt3/nuxt3-state-management.md
@@ -63,6 +62,7 @@ Nuxt3では、defineNuxtPlugin内でプラグインを実装します。
 このファイルを`plugins`配下に配置して、Nuxtアプリケーションを実行するとVueコンポーネント内でユーティリティメソッドが利用できます。
 具体的には以下のような形です。
 
+{% raw %}
 ```html
 <script setup lang="ts">
 const price = ref(1000);
@@ -79,6 +79,7 @@ console.log(nuxtApp.$yen(price.value));
   </div>
 </template>
 ```
+{% endraw %}
 
 上記のように全てのVueコンポーネントから、プラグインで追加したユーティリティが利用できます(メソッドには`$`プリフィックスがつきます)。
 今度は同様のユーティリティを、Vueの[カスタムディレクティブ](https://vuejs.org/guide/reusability/custom-directives.html)で定義してみます。

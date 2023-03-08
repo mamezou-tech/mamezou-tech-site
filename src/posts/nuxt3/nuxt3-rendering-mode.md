@@ -2,7 +2,6 @@
 title: Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する
 author: noboru-kudo
 date: 2022-09-25
-templateEngineOverride: md
 tags: [SSG, SSR]
 nextPage: ./src/posts/nuxt3/nuxt3-develop-sample-app.md
 ---

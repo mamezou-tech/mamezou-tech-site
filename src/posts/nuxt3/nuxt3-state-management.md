@@ -2,7 +2,6 @@
 title: Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する 
 author: noboru-kudo
 date: 2022-10-28
-templateEngineOverride: md
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-plugin-middleware.md
 nextPage: ./src/posts/nuxt3/nuxt3-serverless-deploy.md

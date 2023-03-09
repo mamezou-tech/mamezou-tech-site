@@ -43,7 +43,7 @@ npx create-next-app front --typescript
 ```
 
 ## APIクライアントのライブラリの準備
-フロントエンドからのAPI呼出し処理ですが、OpenAPIGeneratorがTypescriptにも対応しているので引き続き利用していきます。
+フロントエンドからのAPI呼出し処理ですが、OpenAPI GeneratorがTypescriptにも対応しているので引き続き利用していきます。
 前回の記事ではライブラリを介したGenerationGapパターン[^5]を実現していたので、それを踏襲してAPIのクライアントライブラリをnpmのプライベートリポジトリにデプロイして利用するようにしましょう。
 
 [^5]:　自動生成したソースコードと人が手を加えるコードを継承を利用して分離する(要は再生成した際に手を加えた部分が影響を受けないよう、自動生成コードには直接手を加えない)手法です。[当デベロッパーサイト](/blogs/2022/06/17/openapi-generator-3/)をはじめとして様々に紹介されていますので詳細は省略させて下さい。
@@ -59,7 +59,7 @@ npx create-next-app front --typescript
   ```
 
 - package.json 
-  アプリケーション開発時に型情報を利用するために、TypescriptのソースコードをOpenAPI Genaratorで生成し、JavaScriptにトランスパイルしたライブラリをビルドするための設定を定義します。
+  アプリケーション開発時に型情報を利用するために、TypescriptのソースコードをOpenAPI Generatorで生成し、JavaScriptにトランスパイルしたライブラリをビルドするための設定を定義します。
   Generatorの実行スクリプトは`openapi-generator-cli generate -g <利用するgenerator名> -i <入力スキーマ> -o <出力先>`で設定できますのでtsコンパイラの設定(後述)とパスを合わせるように設定していきます。
   ライブラリの公開(publish)の際に必要な処理が実行されるように`prepublishOnly`スクリプトにGeneratorの実行とトランスパイル処理を定義しました。また、ライブラリのバージョンは前回記事時点のAPIバージョンとあわせています。
   APIのクライアントライブラリにはaxiosを利用していますが、Generatorが出力可能なソースコードであれば何を利用してもライブラリのビルドは可能です。
@@ -89,7 +89,7 @@ npx create-next-app front --typescript
 
 - tsconfig.json 
   アプリケーションから呼出し可能なライブラリを作成するためのTSコンパイラの設定を行います。あまり凝った設定はせずにライブラリとして動作する条件になっています。
-  前述のとおり、OpenAPI Genaratorの出力先「gen」以下を入力とし、「src」以下にライブラリのコードを出力します。
+  前述のとおり、OpenAPI Generatorの出力先「gen」以下を入力とし、「src」以下にライブラリのコードを出力します。
   型情報の出力(declaration)を有効にしているため、ライブラリは型定義(.d.ts)ファイルを含んで出力されます。
   ```json
   {
@@ -226,7 +226,7 @@ yarn add -D jest-pact @pact-foundation/pact@^10.0.2
 
 これでContract Testの準備が整いました。シンプルにAPIモジュールを対象[^7]とした場合、以下のようなテストコードになります。
 
-[^7]:　コンポーネントのテストで接続先をPactのモックサーバにすることも技術的には可能と思いますが、レンダリング処理等でテストコードが複雑になるためApiのテストにしました。
+[^7]:　コンポーネントのテストで接続先をPactのモックサーバにすることも技術的には可能と思いますが、レンダリング処理等でテストコードが複雑になるためGreetApiのテストにしました。
 
 - Greet.contract.test.ts 
   ```ts

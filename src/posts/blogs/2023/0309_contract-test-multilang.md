@@ -213,7 +213,7 @@ Provider側のテストはJUnit5と統合されているため、Pactに必要�
 :::
 
 ## フロントエンドのContract Test
-Contract Testを実装するために、テスティングフレームワークjestを利用したTypescriptの環境を構築し、Node.js上からpactを使用するためのライブラリ(@pact-foundation/pact[^6]、jest-pact)を依存関係に追加(`yarn add -D`)します。
+Contract Testを実装するために、テスティングフレームワークJestを利用したTypescriptの環境を構築し、Node.js上からPactを使用するためのライブラリ(@pact-foundation/pact[^6]、jest-pact)を依存関係に追加(`yarn add -D`)します。
 ```shell
 yarn add -D jest ts-jest @types/jest
 yarn ts-jest config:init

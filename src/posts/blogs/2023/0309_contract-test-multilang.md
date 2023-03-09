@@ -21,6 +21,8 @@ tags: [テスト]
 
 実際の開発では、サービス毎に適した技術を選定しAPIを接点として開発を進めることも多いと思います。そのようなケースで様々な言語に対応するPactは有効な選択肢となり得ます。
 
+この記事のコードサンプルは、[Gitlab リポジトリ](https://gitlab.com/shinichiro-iwaki/testexample/-/tree/feature-ts-front/) にありますので、興味がある方はあわせてご利用下さい。
+
 ## 想定する開発シナリオ
 
 開発中のサンプルアプリを見た上司が、「このUIなんか古臭いんだよねー。イマドキっぽくReactとかで作り直さない?[^2]」などと無茶振りをしてきたことにします。
@@ -31,12 +33,12 @@ tags: [テスト]
 
 [^3]:　この辺は無根拠に筆者の好み(2023/03現在)を含みます。ツッコミ入れたくなった方は生暖かい目で見守っていただけると幸いです。
 
-アプリケーション側は記事の本筋ではないので、細かい設定には拘らず公式ドキュメントに倣ってフロントエンドの環境を作っていきます。[Node.js](https://nodejs.org/ja/download/)を導入済みの端末で、以下のコマンドを入力するだけ［^4］で「front」フォルダ以下にアプリケーション開発に必要な雛型プロジェクトを作成してくれます。
+アプリケーション側は記事の本筋ではないので、細かい設定には拘らず公式ドキュメントに倣ってフロントエンドの環境を作っていきます。[Node.js](https://nodejs.org/ja/download/)を導入済みの端末で、以下のコマンドを入力するだけ[^4]で「front」フォルダ以下にアプリケーション開発に必要な雛型プロジェクトを作成してくれます。
 以後の説明は筆者の好みで[yarn](https://yarnpkg.com/getting-started/install)を使って進めていきますが、標準のnpmでも同様のことができます。
 
 [^4]:　こういったテンプレートの充実は参入障壁を下げてくれるので有難いですよね。Reactを「完全に理解した」レベルでも簡単に開発を開始できるのがNext.jsが浸透していっている一因ではないかと思います。
 
-```
+```shell
 npx create-next-app front --typescript
 ```
 
@@ -51,16 +53,16 @@ npx create-next-app front --typescript
 - .npmrc 
   パッケージの名前空間「@shinichiro-iwaki」に対しインハウスリポジトリのURLを設定し、リポジトリアクセスに使用する認証情報を定義します。
   認証情報は公開してしまうとまずいので、インハウスへのアクセスが必要なタイミングで記載し、リモートにはpushしないような使い方を想定しています。
-  ```
+  ```shell
   @shinichiro-iwaki:registry=https://gitlab.com/api/v4/projects/41356985/packages/npm/
   gitlab.com/api/v4/projects/41356985/packages/npm/:_authToken=<リポジトリにアクセス可能なトーク>
   ```
 
 - package.json 
-  アプリケーション開発時に型情報を利用するために、TypescriptのソースコードをOpenapi Genaratorで生成し、JavaScriptにトランスパイルしたライブラリをビルドするための設定を定義します。
+  アプリケーション開発時に型情報を利用するために、TypescriptのソースコードをOpenAPI Genaratorで生成し、JavaScriptにトランスパイルしたライブラリをビルドするための設定を定義します。
   Generatorの実行スクリプトは`openapi-generator-cli generate -g <利用するgenerator名> -i <入力スキーマ> -o <出力先>`で設定できますのでtsコンパイラの設定(後述)とパスを合わせるように設定していきます。
   ライブラリの公開(publish)の際に必要な処理が実行されるように`prepublishOnly`スクリプトにGeneratorの実行とトランスパイル処理を定義しました。また、ライブラリのバージョンは前回記事時点のAPIバージョンとあわせています。
-  apiのクライアントライブラリにはaxiosを利用していますが、Generatorが出力可能なソースコードであれば何を利用してもライブラリのビルドは可能です。
+  APIのクライアントライブラリにはaxiosを利用していますが、Generatorが出力可能なソースコードであれば何を利用してもライブラリのビルドは可能です。
   ```json
   {
     "name": "@shinichiro-iwaki/greeter-api",
@@ -87,7 +89,7 @@ npx create-next-app front --typescript
 
 - tsconfig.json 
   アプリケーションから呼出し可能なライブラリを作成するためのTSコンパイラの設定を行います。あまり凝った設定はせずにライブラリとして動作する条件になっています。
-  前述のとおり、Openapi Genaratorの出力先「gen」以下を入力とし、「src」以下にライブラリのコードを出力します。
+  前述のとおり、OpenAPI Genaratorの出力先「gen」以下を入力とし、「src」以下にライブラリのコードを出力します。
   型情報の出力(declaration)を有効にしているため、ライブラリは型定義(.d.ts)ファイルを含んで出力されます。
   ```json
   {
@@ -147,7 +149,7 @@ APIの呼出し処理はクライアントライブラリで実装されてい�
 }
 ```
 
-生成されたライブラリのAPI定義(api.d.ts)には用途に応じたモジュールが定義されていますが、今回はシンプルにApiのクラスモジュールを利用してフロントエンドを実装していきます。
+生成されたライブラリのAPI定義(api.d.ts)には用途に応じたモジュールが定義されていますが、今回はシンプルにAPIのクラスモジュールを利用してフロントエンドを実装していきます。
 
 APIの応答結果を表示するコンポーネントは、例えばReactのuseEffect/useStateフックを用いて以下のように実装可能です。
 
@@ -211,8 +213,8 @@ Provider側のテストはJUnit5と統合されているため、Pactに必要�
 :::
 
 ## フロントエンドのContract Test
-Contract Testを実装するために、テスティングフレームワークのjestと、pact[^6]およびjestからpactを利用するためのアダプタ(jest-pact)を依存関係に追加(`yarn add -D`)します。
-```
+Contract Testを実装するために、テスティングフレームワークjestを利用したTypescriptの環境を構築し、Node.js上からpactを使用するためのライブラリ(@pact-foundation/pact[^6]、jest-pact)を依存関係に追加(`yarn add -D`)します。
+```shell
 yarn add -D jest ts-jest @types/jest
 yarn ts-jest config:init
 yarn add -D jest-pact @pact-foundation/pact@^10.0.2
@@ -274,16 +276,14 @@ pact-brokerへのPactの登録はCLIツールを利用して`pact-broker publish
 
 もちろん、今回のフロントエンドのPactを利用して前回作成したバックエンドとの整合性の検証が可能です。採用技術が異なるConsumerとPeoviderの間の検証にも使えますし、リプレースの際のAPI互換性の確認にも有効ですね。
 
-### ちょっとしたPactの活用
-
+:::column: Pactを利用した便利機能
 Pactライブラリに同梱されるCLIツールを利用すると、Pactファイルを利用したスタブサーバを簡単に利用できます。
-
 `pact-stub-service <スタブ応答の入力となるPact> --port <サーバのポート番号>`でlocalhostにPactに従った応答をするスタブサーバが起動されますので、後続のフロントエンドアプリを起動しての作業[^9]などにも流用可能です。
+:::
+
 
 [^9]:　と紹介しましたが、今回のアプリはaxiosを利用しているためスタブサーバに繋いで動作させるには一工夫(スタブのレスポンスヘッダにAllowedOriginを設定する、preflightリクエストを抑制するなど)必要になります。サンプル実装前にもっと調べておけばよかったと後悔している部分です、、
 
 ## まとめ
 
 分量的には本題のContract TestよりもNode.jsプロジェクトの説明が多くなってしまいましたが、フロントエンド(Consumer)アプリケーションでのContract Testの実装について紹介しました。次回はContract TestのCI組み込みについて紹介できればと思います。
-
-この記事のコードサンプルは、[Gitlab リポジトリ](https://gitlab.com/shinichiro-iwaki/testexample/-/tree/feature-ts-front/) にありますので、興味がある方はあわせてご利用下さい。

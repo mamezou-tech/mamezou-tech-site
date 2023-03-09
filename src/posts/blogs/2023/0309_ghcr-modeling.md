@@ -47,6 +47,7 @@ tags: [GitHub, container, docker, モデリング]
   - PATはAccount単位で払い出されるため、特定のRepositoryに紐づくものでなくAccountが持つすべてのRepositoryに対するものとなる。このためPATにRepositoryの色はない。
   - 一方のGITHUB_TOKENはRepository単位で払い出されるめ、GITHUB_TOKENで操作できるのはそれを払い出したRepositoryのみとなる。よって、GITHUB_TOKENが使われた場合、対象としているRepositoryを特定できる。
 
+
 次に初回登録時の挙動を補足すると、以下に説明するとおり、その挙動は登録時に使われたPermissionと登録時のコンテナイメージのLABELの有無で変わってきます。
 
 - Connectの作成(コンテナイメージとRepositoryとの紐づけ)

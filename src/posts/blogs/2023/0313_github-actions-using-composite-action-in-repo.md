@@ -125,7 +125,7 @@ MySQL などは Helm Chart でインストールしています。Helm Chart の
 
 ```shell
 .
-├── github
+├── .github
 │   └── workflows # Action を利用するワークフローファイル
 │       ├── e2e-test1.yml
 │       └── e2e-test2.yml
@@ -183,7 +183,6 @@ runs:
 {% endraw %}
 
 Action では secret を扱えないため inputs の `action-token` でパラメータとして受け取るようにしています。
-
 steps の定義は元のワークフローとほぼ同じで、各 step に `shell: bash` の1行を追加するだけです。
 
 ここで、Action の step 内で元のワークフロー定義と同じように values.yaml や setup.sql を利用していることに気付かれた方もいるでしょう。Action 実行時は、ワークフロー実行時と同様、ルートディレクトリからの相対パスでリポジトリ内のファイルを指定可能です。独立した Action の場合、全て inputs 経由で渡す必要がありますが、リポジトリ内に配置して実行するため、呼び出し側のコンテキストと密結合にすることができます。

@@ -12,7 +12,7 @@ GitHub Actions の Action は、独立したリポジトリに配置して複数
 
 ![share action over repos](https://i.gyazo.com/49e83112c1635b358bae86dda3664667.png)
 
-一方、独立した(専用の)リポジトリではなくプロダクトコードを管理する単一のリポジトリ内に Action を配置しリポジトリ内の複数のワークフローから利用するという使い方もできます。
+一方、独立した(専用の)リポジトリではなくプロダクトコードを管理する単一のリポジトリ内に Action を配置し、リポジトリ内の複数のワークフローから利用するという使い方もできます。
 
 ![share action in repo](https://i.gyazo.com/b36acb5f8c39ec72db1a9bd7602a1522.png)
 
@@ -223,7 +223,7 @@ jobs:
 {% endraw %}
 
 ## まとめ
-以上、GitHub Actions ワークフローの step を切り出して、リポジトリ内の Composite Action として再利用する方法を紹介しました。
+以上、GitHub Actions ワークフローの step を切り出してリポジトリ内の Composite Action として再利用する方法を紹介しました。
 
 Action は再利用可能性の高い部品として作成するものですが、ワークフローの step を切り出したような Action は、他のリポジトリから再利用できるものでもないため、利用するリポジトリ内に配置して問題ないでしょう[^2]。
 

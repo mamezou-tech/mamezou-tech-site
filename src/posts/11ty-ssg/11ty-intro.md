@@ -2,6 +2,7 @@
 title: Eleventy入門(第1回) - 11tyで手早く静的サイトを作成する
 author: noboru-kudo
 date: 2023-03-08
+nextPage: ./src/posts/11ty-ssg/11ty-reusable-components.md
 ---
 
 本サイトは開設当初から静的サイトジェネレーター(SSG)として[Eleventy](https://www.11ty.dev/)を使っています。
@@ -76,7 +77,7 @@ Eleventyは実行環境(クライアント側)としてのJavaScriptはありま
 プロジェクトルートに、以下の内容でindex.liquidというファイルを配置します。
 
 {% raw %}
-```html
+```liquid
 <html lang="ja">
 <head>
   <title>Eleventyサンプル</title>
@@ -89,7 +90,7 @@ Eleventyは実行環境(クライアント側)としてのJavaScriptはありま
 ```
 {% endraw %}
 
-一見HTMLですが、{% raw %}`{{ eleventy.version }}`{% endraw %}の部分は、[Liquid](https://www.11ty.dev/docs/languages/liquid/)というテンプレート言語の文法になっています。
+一見HTMLですが、{% raw %}`{{ eleventy.version }}`{% endraw %}の部分は、[Liquid](https://shopify.github.io/liquid/)というテンプレート言語の文法になっています。
 特徴のところでも触れましたが、Eleventyは複数のテンプレート言語をサポートしています。Liquidはその中の1つで、Shopifyで開発されているものです。
 
 ここでは組み込みの変数(eleventy.version)からEleventyのバージョンを出力しています[^3]。
@@ -406,7 +407,7 @@ footer {
 ### レイアウトファイル(src/_includes/base.liquid)
 
 {% raw %}
-```html
+```liquid
 <html lang="ja">
 <head>
     <title>Eleventyサンプル</title>
@@ -513,3 +514,8 @@ Lighthouseのスコアも掲載されていますので、選択の参考にす�
 本サイトでも、既に総ページ数は600ページを超えてきましたが、Eleventyで快適(?)な執筆活動ができています。
 
 次回以降、Eleventyのプラグインやショートコード・フィルター等について書きたいと思います。
+
+---
+関連記事
+
+- [Eleventy入門(第2回) - テンプレート・コードを部品化する](/11ty/11ty-reusable-components/)

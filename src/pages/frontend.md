@@ -44,6 +44,7 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 
 ### Eleventy(11ty)
 - [Eleventy入門(第1回) - 11tyで手早く静的サイトを作成する](/11ty/11ty-intro/)
+- [Eleventy入門(第2回) - テンプレート・コードを部品化する](/11ty/11ty-reusable-components/)
 - [Eleventyで生成したマークダウン記事の画像を拡大する](/blogs/2022/05/19/11ty-zoom-image/)
 - [Eleventyで生成したサイトでNetlify Edge Functionsを使ってみる](/blogs/2022/08/17/netlify-edge-functions-with-11ty/)
 

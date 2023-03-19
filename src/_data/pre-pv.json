@@ -17,6 +17,10 @@
       "url": "/nuxt/nuxt3-routing/"
     },
     {
+      "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
+      "url": "/nuxt/nuxt3-state-management/"
+    },
+    {
       "title": "ORマッパーのTypeORMをTypeScriptで使う",
       "url": "/blogs/2022/07/27/typeorm-with-typescript/"
     },
@@ -25,16 +29,12 @@
       "url": "/nuxt/nuxt3-universal-fetch/"
     },
     {
-      "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
-      "url": "/nuxt/nuxt3-state-management/"
+      "title": "Jest再入門 - 関数・モジュールモック編",
+      "url": "/testing/jest/jest-mock/"
     },
     {
       "title": "Nuxt3入門(第7回) - Nuxt3のプラグイン・ミドルウェアを使う",
       "url": "/nuxt/nuxt3-plugin-middleware/"
-    },
-    {
-      "title": "Jest再入門 - 関数・モジュールモック編",
-      "url": "/testing/jest/jest-mock/"
     },
     {
       "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",

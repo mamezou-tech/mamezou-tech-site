@@ -1,5 +1,5 @@
 ---
-title: ChatGPTのベースになった自然言語処理モデル「Transformer」を調べていたら「HuggingFace」に行き着いた
+title: ChatGPTのベースになった自然言語処理モデル「Transformer」を調べていたら「Hugging Face」に行き着いた
 author: shuichi-takatsu
 date: 2023-03-20
 tags: [ディープラーニング, 深層学習, 機械学習, chatgpt, transformer, huggingface]
@@ -97,22 +97,22 @@ GPT-1に続き、GPT-2、GPT-3、GPT-4と次々に新しいトランスフォー
 最新の GPT-4 は2023年3月14日に公開されたようです。
 
 ミーハーな筆者としては「とにかく簡単にトランスフォーマーを試してみたい」ということで、色々と調べました。  
-すると [HuggingFace](https://huggingface.co/) というサイトを見つけました。
+すると [Hugging Face](https://huggingface.co/) というサイトを見つけました。
 
-## HuggingFace を使って事前学習済みモデルで遊ぶ
+## Hugging Face を使って事前学習済みモデルで遊ぶ
 
-折角なので「HuggingFace」について ChatGPT に問い合わせてみましょう。  
+折角なので「Hugging Face」について ChatGPT に問い合わせてみましょう。  
 以下のような応答がありました。  
 > 「Hugging Faceは、自然言語処理（NLP）の分野で活躍する人々のためのオープンソースのライブラリやツールを提供している企業です。Hugging Faceは、トランスフォーマーなどのニューラルネットワークモデルを中心に、NLPの最新の研究成果を共有し、開発者がより簡単にNLPアプリケーションを構築できるように支援しています。Hugging Faceの最も有名な製品は、Transformersと呼ばれるオープンソースのライブラリです。Transformersは、多くの事前学習済み言語モデルを提供し、これらを特定のタスクに微調整することで、高度なNLPアプリケーションを構築できるようになっています。また、Hugging Faceは、多言語対応の機械翻訳、感情分析、テキスト生成など、さまざまなNLPタスクをカバーするライブラリも提供しています。」
 
-HuggingFace では様々な事前学習済みモデルを公開しているようです。  
+Hugging Face では様々な事前学習済みモデルを公開しているようです。  
 
-さっそく [HuggingFace](https://huggingface.co/) に登録して使用してみます。  
+さっそく [Hugging Face](https://huggingface.co/) に登録して使用してみます。  
 登録画面で「メールアドレス」と「パスワード」を登録すると、確認メールが送信されてくるので確認を実行して登録が完了します。  
 ログインすると以下のような画面が表示されました。  
 ![](https://gyazo.com/23225c5a924d8143de0d7cfa3207994b.png)
 
-HuggingFace サイトの中の「[models](https://huggingface.co/models)」を選択します。  
+Hugging Face サイトの中の「[models](https://huggingface.co/models)」を選択します。  
 ![](https://gyazo.com/dc185998880726b88bab8428406cfefc.png)
 
 様々な種類の機械学習モデルが用意されているようです。  
@@ -148,7 +148,7 @@ ChatGPT へ続く自然言語処理の一端を見れたように思います。
 
 ## 今後について
 
-HuggingFaceで想像以上に遊べることがわかったので、今後は
+Hugging Faceで想像以上に遊べることがわかったので、今後は
 - Python(PyTorchやTensorflow)でプログラムから機械学習モデルを呼び出してみる
 - Attensionの可視化をグラフで表現してみる
 

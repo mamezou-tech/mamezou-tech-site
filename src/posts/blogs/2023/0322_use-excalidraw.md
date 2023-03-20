@@ -149,7 +149,7 @@ function App() {
 
   return (
     <>
-      <div style={{ height: "97vh" }}>
+      <div style={{ height: '97vh' }}>
         <Excalidraw
           ref={(api: ExcalidrawImperativeAPI) => setExcalidrawAPI(api)}
           viewModeEnabled={viewModeEnabled}

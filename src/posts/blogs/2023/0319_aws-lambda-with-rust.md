@@ -59,7 +59,7 @@ cargo lambda new sample-rust-lambda --http-feature=apigw_rest
     └── main.rs
 ```
 
-`src/main.rs`がLambdaのイベントハンドラです。
+`src/main.rs`がLambda関数本体です。
 なお、`src/bin/*.rs`という形の複数バイナリクレートのパッケージにすれば、複数Lambdaを1パッケージで作成できます。
 
 ここで生成されたソースコードは、以下のようになっていました。
@@ -237,7 +237,7 @@ cdk init app --language typescript
 npm install cargo-lambda-cdk
 ```
 
-初期化された生成された`sample-rust-lambda/cdk/lib/cdk-stack.ts`に、AWSリソースの構成を記述していきます。
+生成された`sample-rust-lambda/cdk/lib/cdk-stack.ts`に、AWSリソースの構成を記述していきます。
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';

@@ -88,7 +88,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 model_path = "rinna/japanese-gpt2-medium"
 tokenizer = AutoTokenizer.from_pretrained(model_path)
-model = AutoModelWithLMHead.from_pretrained(model_path)
+model = AutoModelForCausalLM.from_pretrained(model_path)
 ```
 
 プログラムを実行しても警告は出なくなりました。  
@@ -142,7 +142,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 model_path = "rinna/japanese-gpt2-medium"
 tokenizer = AutoTokenizer.from_pretrained(model_path, padding_side='left')
-model = AutoModelWithLMHead.from_pretrained(model_path)
+model = AutoModelForCausalLM.from_pretrained(model_path)
 
 def generate_text(model, tokenizer, prompt, length=50):
     input_ids = tokenizer.encode(prompt, return_tensors='pt', padding=True, truncation=True)

@@ -31,3 +31,6 @@ description: 新入社員やこれからエンジニアを目指す方、新人�
 - [その０：そもそも研修設計とは研修設計していますか？](/blogs/2022/09/20/instructional_d-001/)
 - [その１：学習内容の構造化](/blogs/2022/10/13/instructional_d-002/)
 - [その２：学びを促進するストーリー展開](/blogs/2022/12/21/instructional_d-003/)
+
+## その他
+- [スクラム『で』教育する](/blogs/2023/03/22/education_on_scrum/)

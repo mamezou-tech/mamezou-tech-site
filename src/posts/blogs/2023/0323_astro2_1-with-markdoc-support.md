@@ -1,19 +1,19 @@
 ---
-title: Astro 2.1 で実験的サポートが導入された Markdoc を触ってみる
+title: Astro 2.1 で実験的サポートされた Markdoc Integration を触ってみる
 author: masahiro-kondo
 date: 2023-03-23
 tags: [Astro, SSG]
 ---
 
-人気の静的サイトジェネレーター Astro 2.1 がリリースされました。
+人気の静的サイトジェネレーター Astro 2.1がリリースされました。
 
 [Astro 2.1 | Astro](https://astro.build/blog/astro-210/)
 
-2.1 では Markdoc の実験的サポートが入りました。Markdoc は Stripe 社によって開発された Markdown ベースのコンテンツフォーマット・フレームワークです。
+2.1では Markdoc の実験的サポートが入りました。Markdoc は Stripe 社によって開発された Markdown ベースのコンテンツフレームワークです。
 
 [A powerful, flexible, Markdown-based authoring framework](https://markdoc.dev/)
 
-Astro では Markdown に JSX を混在可能な MDX が従来からサポートされていました。Markdoc サポートのモチベーションとしては、ビルド時間の削減があるようです。Astro 2.1 リリースのブログによると、MDX が大量に処理される場合に、顕著な速度低下が見られる問題があるそうです。
+Astro では Markdown に JSX を埋め込み可能な MDX が従来からサポートされていました。Markdoc サポートのモチベーションとしては、ビルド時間の削減があるようです。Astro 2.1 リリースのブログによると、MDX が大量に処理される場合に顕著な速度低下が見られる問題があるそうです。
 
 :::info
 Markdoc サポートの PR に Markdown / MDX / Markdoc のレンダリングを比較したベンチマークが掲載されており、これによると、Astro components や React components を含む場合 MDX と比較して Markdoc のビルド速度は最大3倍のパフォーマンスを示したようです。また同ベンチマークによるとプレーンなコンテンツのレンダリングでも Markdoc のパフォーマンスが優っています。
@@ -28,14 +28,18 @@ Markdoc のパーサーには markdown-it が使用され、レンダリング�
 
 [What is Markdoc?](https://markdoc.dev/docs/overview)
 
-## Astro 2.1 へのアップデートと Markdoc サポートの追加
+独自のタグ、属性、変数、関数を追加でき、Markdown の要素を Node として独自に拡張できたりします。
+
+[The Markdoc syntax](https://markdoc.dev/docs/syntax)
+
+## Astro 2.1 へのアップデートと Markdoc Integration の追加
 以前の記事、「[Astro 2.0 + MDX + Recharts で Markdown ページにインタラクティブなチャートを描画する](/blogs/2023/01/29/astro-2.0-mdx/)」で MDX を使うプロジェクトを Blog テンプレートで作成していましたので、まずはこのプロジェクトを Astro 2.1 にアップデートしました。
 
 プロジェクトのリポジトリは以下にあります。
 
 [GitHub - kondoumh/astro-blog-example](https://github.com/kondoumh/astro-blog-example)
 
-プロジェクトに Markdoc サポートを追加します。
+プロジェクトに Markdoc Integration を追加します。
 
 ```shell
 cd astro-blog-example
@@ -107,10 +111,11 @@ Markdoc のカスタムタグは、テキストエディタ上はテーブルに
 ![render markdoc](https://i.gyazo.com/a3f449325c6b99584926fea10b38dc87.png)
 
 ## カスタムタグを適用してみる
-
-astro-ink は Markdoc を使った Astro の Blog テーマです。このテーマを参考に記事本文に埋め込む注意書きなどに使用する Callout タグを取り込んでみました。
+次にカスタムのタグを追加してみます。Markdoc を使った Astro の Blog テーマに astro-ink があります。
 
 [GitHub - one-aalam/astro-ink: Crisp, minimal, personal blog theme for Astro](https://github.com/one-aalam/astro-ink)
+
+このテーマを参考に記事本文に埋め込む注意書きなどに使用する Callout タグを取り込んでみました。
 
 src/components/mdoc 配下に Callout コンポーネントを配置しました。CalloutType (check、error、note、warning) に応じて、Callout のアイコンやタイトルの色を変えるようにしています。
 
@@ -180,7 +185,7 @@ const { Content } = await post.render();
 </BlogPost>
 ```
 
-astro.config.mjs では、カスタムタグ定義を追加します。オリジナルの Callout.astro で Tailwind によるスタイリングを使っていたので、@astrojs/tailwind も使うようにしました。
+astro.config.mjs では、カスタムタグ定義を追加します。オリジナルの Callout.astro で Tailwind によるスタイリングを使っていたので、Tailwind Integration も使うようにしました。
 
 - astro.config.mjs
 ```javascript
@@ -246,9 +251,9 @@ Callout のタイプに応じたレンダリングが実行されました。
 ![Render callout tag](https://i.gyazo.com/af9dec30f098c0cefefa95705384f23f.png)
 
 ## 最後に
-Astro 2.1 の Markdoc を試してみました。現在は実験的サポートということですので、今後の動向に注目したいと思います。
+以上、Astro 2.1 の Markdoc Integration を試してみました。現在は実験的サポートということですので、今後の動向に注目したいと思います。
 MDX のサポートは継続されますが、将来的に Markdoc へのマイグレーションがガイドされるのかもしれません。
 
-Markdoc そのものに関しては、Markdown に独自タグのテンプレートが混ざっていて、プログラマ向けのフォーマットという感じが否めません。一方でドキュメントをコンポーネントに分割して高度に構造化したいユースケースでは有効なソリューションになりそうな印象を持ちました。サイト内で統一したルック＆フィールが実現できて拡張が容易そうなのがアピールポイントかなと思います。
+Markdoc そのものに関しては、開発者向けという感じは否めません(Markup じゃなく Markdown なのに)。一方でドキュメントをコンポーネントに分割して高度に構造化したいユースケースでは有効なソリューションになりそうです(まさにそれが Markdoc が解決したい問題だと思いますが)。
 
-React や Next でも使えて、その上 Astro で本格的にサポートされたら普及していくのかもしれません。
+Markdoc はすでに React や Next で利用できます。今後 Astro で本格サポートされたらさらに普及していくのかもしれません。

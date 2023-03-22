@@ -24,7 +24,7 @@ OpenAIのアカウントを作成し、API Keyを生成してください。
 
 ```shell
 cd openai
-OPENAI_API_KEY=<openai-api-key> npm run review:gpt src/posts/blogs/2023/0319_aws-lambda-with-rust.md
+OPENAI_API_KEY=<openai-api-key> npm run review:gpt -- src/posts/blogs/2023/0319_aws-lambda-with-rust.md
 ```
 
 コンソール上にレビュー結果が表示されます。また、ここで消費したトークンも表示しますので、確認するようにしましょう（total_tokensが課金対象です）。
@@ -33,4 +33,4 @@ OpenAIのAPI KeyはOSの自分の環境変数に入れておくと省略でき�
 
 ## カスタマイズ
 
-ChatGPTへのプロンプトをカスタマイズする場合は`prompt.ts`を修正してください。これがいいよっていうのがあればこちらを採用します。
+ChatGPTへのプロンプトをカスタマイズする場合は`prompt.ts`を修正してください。これがいいよっていうのがあればそちらを採用します。

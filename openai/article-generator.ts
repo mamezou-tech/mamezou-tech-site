@@ -36,7 +36,7 @@ async function loop(userId: string, prompt: Message[]) {
     name: 'ask',
     message: '(qで終了)',
     async validate(input: any): Promise<boolean | string> {
-      if (!input) return "ChatGPTに依頼してください(qで終了)";
+      if (!input) return "ChatGPTに依頼してください";
       return true;
     }
   }]);
@@ -50,7 +50,7 @@ async function loop(userId: string, prompt: Message[]) {
     userId
   });
   writeResponse(resp);
-  await loop(userId, prompt);
+  await loop(userId, newMessages);
 }
 
 function writeResponse(resp: CreateChatCompletionResponse) {

@@ -18,12 +18,14 @@ export async function ask(request: Request): Promise<CreateChatCompletionRespons
   }
 
   try {
+    if (process.env.DEBUG) console.log("sending...", request.message);
     const resp = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
       // max_tokens: 4097,
       user: request.userId,
       messages: Array.isArray(request.message) ? request.message : [request.message]
     });
+    if (process.env.DEBUG) console.log("result", resp);
     console.log(`課金トークン消費量: ${JSON.stringify(resp.data.usage)}`);
     return resp.data;
   } catch (e) {

@@ -160,6 +160,7 @@ Blog のテンプレートである `[...slug]`.astro を Callout タグを使�
 
 - src/pages/blog/`[...slug]`.astro
 
+{% raw %}
 ```javascript
 ---
 import { CollectionEntry, getCollection } from 'astro:content';
@@ -184,6 +185,7 @@ const { Content } = await post.render();
 	<Content components={{ Callout }}/>
 </BlogPost>
 ```
+{% endraw %}
 
 astro.config.mjs では、カスタムタグ定義を追加します。オリジナルの Callout.astro で Tailwind によるスタイリングを使っていたので、Tailwind Integration も使うようにしました。
 

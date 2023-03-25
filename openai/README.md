@@ -29,7 +29,7 @@ export OPENAI_API_KEY=<openai-api-key>
 チェックしたいファイルを引数に以下を実行してください。
 
 ```shell
-npm run review:gpt -- src/posts/blogs/2023/0319_aws-lambda-with-rust.md
+npm run review:article src/posts/blogs/2023/0319_aws-lambda-with-rust.md
 ```
 
 コンソール上にレビュー結果が表示されます。また、ここで消費したトークンも表示しますので、確認するようにしましょう（total_tokensが課金対象です）。
@@ -45,6 +45,7 @@ npm run generate:article draft-output.md
 ```
 
 記事のテーマを最初に聞かれます。生成後に気に入らない内容の場合はChatGPTとやり取りをしながら改善できます。
+ChatGPTへの会話ごとにファイルを上書きしますので、記事生成以外のやり取りは入力しないでください。
 
 ## カスタマイズ
 

@@ -5,13 +5,15 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "review:gpt": "ts-node-esm review-article.ts",
-    "generate:article": "ts-node-esm article-generator.ts"
+    "review:article": "ts-node-esm bin/review-article.ts",
+    "generate:article": "ts-node-esm bin/generate-article.ts",
+    "generate:image": "ts-node-esm bin/generate-image.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/inquirer": "^9.0.3",
+    "front-matter": "^4.0.2",
     "inquirer": "^9.1.5",
     "openai": "^3.2.1",
     "uuid": "^9.0.0"

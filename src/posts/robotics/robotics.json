@@ -1,0 +1,6 @@
+{
+  "tags": ["ロボット"],
+  "category": "ロボット",
+  "layout": "post",
+  "permalink": "/robotics/{{ page.fileSlug }}/"
+}

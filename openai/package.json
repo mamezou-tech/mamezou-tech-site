@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "review:article": "ts-node-esm bin/review-article.ts",
+    "lint:article": "ts-node-esm bin/lint-article.ts",
     "generate:article": "ts-node-esm bin/generate-article.ts",
     "generate:image": "ts-node-esm bin/generate-image.ts"
   },

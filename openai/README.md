@@ -26,6 +26,8 @@ export OPENAI_API_KEY=<openai-api-key>
 
 ## ChatGPTに記事をレビューしてもらう
 
+記事全体のレビューをして、10点満点評価します。
+
 チェックしたいファイルを引数に以下を実行してください。
 
 ```shell
@@ -33,6 +35,16 @@ npm run review:article src/posts/blogs/2023/0319_aws-lambda-with-rust.md
 ```
 
 コンソール上にレビュー結果が表示されます。また、ここで消費したトークンも表示しますので、確認するようにしましょう（total_tokensが課金対象です）。
+
+## Lint(スペルチェック/日本語)
+
+もう少し細かいスペルチェックをします。
+
+```shell
+npm run lint:article src/posts/blogs/2023/0319_aws-lambda-with-rust.md
+```
+
+100行を超える記事は、エラーにならないように分割してChatGPTにチェックしてもらいます。
 
 ## ChatGPTに記事のドラフトを作ってもらう
 

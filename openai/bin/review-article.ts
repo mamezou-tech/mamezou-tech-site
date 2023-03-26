@@ -43,7 +43,7 @@ ${content}
   };
 
   return await ask({
-    temperature: 0.5,
+    temperature: config.reviewArticle.temperature,
     maxTokens: maxTokens,
     messages: [systemMessage, userMessage]
   });

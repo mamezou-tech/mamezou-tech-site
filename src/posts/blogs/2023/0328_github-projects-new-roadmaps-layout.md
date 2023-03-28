@@ -30,7 +30,7 @@ Table ビューや Projects のオートメーションについて以下の記�
 
 ## Roadmap レイアウトの特徴
 
-roadmaps レイアウトでは、アカウント内、オーガニゼーション内の任意のリポジトリの issue / PR / Draft PR をタイムラインに配置して計画と進捗管理ができます。issue に Milestone が設定されていればタイムラインに反映されますし、Roadmap 側でイテレーションを定義して issue や PR を含めることもできます。
+Roadmap レイアウトでは、アカウント内、オーガニゼーション内の任意のリポジトリの issue / PR / Draft PR をタイムラインに配置して計画と進捗管理ができます。issue に Milestone が設定されていればタイムラインに反映されますし、Roadmap 側でイテレーションを定義して issue や PR を含めることもできます。
 
 Roadmap の利用方法については公式ドキュメントの以下のページに記載されています。
 
@@ -68,7 +68,7 @@ issue が未登録の場合はこの画面から登録もできます。
 ![issues added](https://i.gyazo.com/312bf483c99fadf83e9f85b3ee781ef6.png)
 
 ## Iteration の作成
-Iteration は issue の属性ではなく Roadmap 固有の概念です。issue の右の `+` ボタンをクリックすることで iteration を作成できます。
+Iteration は issue の属性ではなく Roadmap 固有の概念です。issue の右の `+` ボタンをクリックすることで Iteration を作成できます。
 
 ![Add iteration](https://i.gyazo.com/ec02e5b57798ba53286fcc795b0bebec.png)
 
@@ -93,7 +93,7 @@ Marker で Milestone と Iteration をチェックしておくと、タイムラ
 
 ![zoom](https://i.gyazo.com/effc8799b3502cbd29a4c2c90d62d9da.png)
 
-issue を iteration に割り当てるには、対象の iteration 期間にカーソルを当てます。期間と iteration 名がポップアップされます。
+issue を Iteration に割り当てるには、対象の Iteration 期間にカーソルを当てます。期間と Iteration 名がポップアップされます。
 
 ![assign candate](https://i.gyazo.com/d67431e2436ea805bb9ff2c355a49e8a.png)
 
@@ -105,7 +105,7 @@ issue を iteration に割り当てるには、対象の iteration 期間にカ�
 
 ![move assignment](https://i.gyazo.com/728bcb2e5315780f04bbd4b57e02902f.gif)
 
-とりあえず、ストーリーの issue を iteration に割り当ててみました。
+各ストーリーの issue を Iteration に割り当てました。
 
 ![assign complete](https://i.gyazo.com/b78ba78405b2a901020d832ea0608ac7.png)
 
@@ -123,9 +123,9 @@ Iteration 単位で見やすくグルーピングします。ビューのメニ�
 ![Grouped view](https://i.gyazo.com/f1841ef56143e2bd0a1def56bc536b5b.png)
 
 ## フィルタリング
-大規模なプロジェクトでは、issue が多くなり期間も長くなるため、ビューのフィルタリングが必要になります。Roadmap では iteration / 担当者 / 状態などでフィルタリングができます。
+大規模なプロジェクトでは、issue が多くなり期間も長くなるため、ビューのフィルタリングが必要になります。Roadmap では Iteration / 担当者 / 状態などでフィルタリングができます。
 
-iteration によるフィルタリング。
+Iteration によるフィルタリング。
 
 ![filter by iteration](https://i.gyazo.com/5eb649c252ab58d1af6b7e3c52332836.png)
 

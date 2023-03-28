@@ -133,12 +133,12 @@ issue の担当者(assignee)によるフィルタリング。
 
 ![filter by assignee](https://i.gyazo.com/2fbabe2ee04d5d31ccde9935abd4bb6b.png)
 
-issue の状態によるフィルタリング。
+issue か PR か、もしくは issue / PR の状態によるフィルタリング。
 
 ![filter by status](https://i.gyazo.com/29699f40a210ba87cf2a7b6fb4c2db2a.png)
 
 ## 最後に
-以上、新しい Roadmap レイアウトによる issue の管理についてご紹介しました。今回は1つのリポジトリの issue のみを対象にしましたが、当然マルチリポジトリでも使えますし、PR や Draft PR もタイムライン上で同時に管理にできます。
+以上、GitHub Projects の新しい Roadmap レイアウトの使用方法をご紹介しました。今回は1つのリポジトリの issue のみを対象にしましたが、当然マルチリポジトリでも使えますし、PR や Draft PR もタイムライン上で同時に管理にできます。
 
 issue を Excel に転記して進捗報告をしている現場が(もしかしたら現在も)あるかもしれませんが、ここまで GitHub で管理できるならそろそろ脱 Excel も可能かもしれません[^1]。
 

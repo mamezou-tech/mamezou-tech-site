@@ -39,7 +39,7 @@ Roadmap の利用方法については公式ドキュメントの以下のペー
 ## 計画時の issue 登録
 計画フェーズでは、ユーザーストーリーや機能などを issue として登録し、Milestone を定義しておおよそのスケジュールを登録しておくとよいと思います。Roadmap では Iteration を定義してより細かくタイムボックス管理することになります。
 
-以下のように issue と milestone を登録しました。サンプルなので中身が適当なのはご了承ください。
+以下のように issue と Milestone を登録しました。サンプルなので中身が適当なのはご了承ください。
 
 - サンプルの issues
 
@@ -78,7 +78,7 @@ Iteration は issue の属性ではなく Roadmap 固有の概念です。issue 
 
 ![Settings](https://i.gyazo.com/8cfaf426d10d685cd57a8b450259be46.png)
 
-以下のように Iteration を定義しました。最初の Iteration を作って week 単位で長さが決まれば、あとは、`Add Iteratioon` をクリックするだけで新しい Iteration を追加できます。「イテレーションじゃなくスプリントがいい」という人は Field name を Sprint にすればよいでしょう。
+以下のように Iteration を定義しました。最初の Iteration を作って week 単位で長さが決まれば、あとは、`Add Iteratioon` をクリックするだけで新しい Iteration を追加して連番も期間設定も自動でやってくれます。「イテレーションじゃなくスプリントがいい」という人は Field name を Sprint にすればよいでしょう。
 
 ![iterations](https://i.gyazo.com/b690eb2eeb59dae0e4e46d328812801f.png)
 

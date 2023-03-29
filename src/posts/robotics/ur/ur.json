@@ -1,0 +1,5 @@
+{
+  "layout": "post",
+  "permalink": "/robotics/ur/{{ page.fileSlug }}/",
+  "category": "ロボット - UR"
+}

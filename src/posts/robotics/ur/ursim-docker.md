@@ -4,7 +4,9 @@ author: masayuki-kono
 date: 2023-03-29
 ---
 
-ロボットシステムの開発には欠かせないシミュレータですが、ここではURのシミュレータについてご紹介いたします。
+[Universal Robots社](https://www.universal-robots.com/)の協働ロボットであるURのシミュレータについてご紹介いたします。
+
+URは[Universal Robots+(UR+)](https://www.universal-robots.com/ja/plus/)に対応した周辺機器(ロボットハンドなど)と容易に接続でき、[オリックス・レンテック](https://www.orixrentec.jp/roboren/product/industrial_robot/ur.html)などでレンタルも可能なので、ロボット導入前のPoC(Proof of Concept)や研究開発でURを活用される方も多いと思います。
 
 安川電機の[MotoSim EG](https://www.e-mechatronics.com/product/robot/related/MotoSimEG/feature.html)やデンソーウェーブの[WINCAPSⅢ](https://www.denso-wave.com/ja/robot/product/software/wincaps3.html)など産業用ロボットのシミュレータは有償で提供されているものがほとんどですが、URでは以下の形式でシミュレータが公開されており無償で使用可能です。
 

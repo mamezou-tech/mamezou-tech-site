@@ -1,6 +1,5 @@
 ---
 title: ロボット
-eleventyExcludeFromCollections: true
 description: ロボットシステム開発の技術紹介
 date: git Last Modified
 ---
@@ -24,3 +23,7 @@ date: git Last Modified
 ここではそんなURに関する記事をまとめていきます。
 
 - [URのシミュレータ環境をDockerで構築する](/robotics/ur/ursim-docker/)
+
+## ロボットビジョン
+
+coming soon

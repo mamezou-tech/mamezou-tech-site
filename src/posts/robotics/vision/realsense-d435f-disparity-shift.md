@@ -5,7 +5,7 @@ date: 2023-03-31
 ---
 
 Intel社のRealSenseシリーズの[D435f](https://www.intelrealsense.com/depth-camera-d435f/)をハンドアイ構成で(ロボットの手先に固定して)ビンピッキング[^1]を行う研究開発を行いました。
-その際にRealSenseのカメラパラメータである Disparity Shift のチューニングに取り組んだのでご紹介いたします。
+その際にRealSenseのカメラパラメータである Disparity Shift を調整してワークの撮像距離の最適化に取り組んだのでご紹介いたします。
 
 [^1]: ばら積みピッキングとも言います。容器内にランダムで積まれたワークをつかむ作業をさします。
 

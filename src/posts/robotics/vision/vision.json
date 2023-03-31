@@ -1,0 +1,5 @@
+{
+  "layout": "post",
+  "permalink": "/robotics/vision/{{ page.fileSlug }}/",
+  "category": "ロボット - ロボットビジョン"
+}

@@ -7,6 +7,7 @@ title: 今月の記事
 
 
 <p>投稿数：{{ collections.currentMonthPosts.length }}</p>
+<p>総記事数：{{ collections.articles.length }}</p>
 
 {% for post in collections.currentMonthPosts %}
   [{{ post.data.title }} https://developer.mamezou-tech.com{{ post.url }}]<br />

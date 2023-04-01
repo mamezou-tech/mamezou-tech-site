@@ -13,7 +13,7 @@ function log(authorArticles) {
       }
       return acc;
     }, []);
-    console.log(v.name, result.filter(r => r.ym === '2022-10'));
+    console.log(v.name, result);
   });
 }
 

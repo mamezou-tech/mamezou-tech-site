@@ -38,6 +38,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 - [Contract TestツールPactの紹介](/blogs/2022/12/03/contract-test-with-pact/)
 - [Contract Testの使いどころを考える](/blogs/2022/12/09/contract-test-usecase/)
 - [異言語間でContract Testを実施する](/blogs/2023/03/09/contract-test-multilang/)
+- [Contract TestをGitlab CIのパイプラインに組み込む](/blogs/2023/04/03/contract-test-pipeline/)
 
 ## 自動テスト導入事例
 豆蔵社員が実践した自動テストのノウハウをご紹介します。

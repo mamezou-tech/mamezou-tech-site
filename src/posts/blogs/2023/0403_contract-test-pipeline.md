@@ -102,7 +102,7 @@ pact-broker can-i-deploy --pacticipant Greet_Front --version 1.1.1 --to-environm
 ### Consumer側の設定変更
 Consumer側のContract Testは、テストの結果出力されるPactファイルをPact Brokerに公開し、デプロイ前に可否を検証する流れになります。  
 
-Pactファイルの公開は(package.jsonに定義したscriptで)pact-brokerのcliツールを利用して実現していますので、このアクセス先を変更する必要があります。pact-broker-cliツールがpact-brokerにアクセスするための情報はオプションでの指定のみでなく[環境変数から参照させることも可能](https://docs.pact.io/pact_broker/client_cli/readme#usage---cli)です。パイプライン中で実行時にしていすることを想定し、scriptから`consumer-app-version`と`broker-base-url`の指定を除外しておきます。  
+Pactファイルの公開は(package.jsonに定義したscriptで)pact-brokerのcliツールを利用して実現していますので、このアクセス先を変更する必要があります。pact-broker-cliツールがpact-brokerにアクセスするための情報はオプションでの指定のみでなく[環境変数から参照させることも可能](https://docs.pact.io/pact_broker/client_cli/readme#usage---cli)です。パイプライン中で実行時に指定することを想定し、scriptから`consumer-app-version`と`broker-base-url`の指定を除外しておきます。  
 
 ```json
 {

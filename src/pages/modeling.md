@@ -21,8 +21,8 @@ UMLモデルを説明に使用している記事を集めていきます。
 ### コードの可視化
 実装の説明にもUMLは有効です。クラス図などを利用している記事をピックアップします。
 
-- [自動打鍵テスト - 画面操作・検証だけでなくテストコード自体も自動生成してしまう真の自動化](http://localhost:8081/blogs/2022/08/27/automatic_operation_test/)
-- [コードが仕様の源泉MicroProfile OpenAPI](http://localhost:8081/msa/mp/cntrn05-mp-openapi/)
+- [自動打鍵テスト - 画面操作・検証だけでなくテストコード自体も自動生成してしまう真の自動化](/blogs/2022/08/27/automatic_operation_test/)
+- [コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)
 
 ## モデリングツール
 ### Enterprise Architect

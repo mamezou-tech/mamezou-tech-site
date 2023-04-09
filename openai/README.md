@@ -7,10 +7,8 @@ OpenAIの課金については公式ドキュメントを参照してくださ�
 
 ## インストール
 
-```shell
-cd openai
-npm install
-```
+[Rust](https://doc.rust-lang.org/cargo/getting-started/installation.html)をインストールしてください。
+Cargoを使います。
 
 ## API Key生成
 
@@ -31,34 +29,21 @@ export OPENAI_API_KEY=<openai-api-key>
 チェックしたいファイルを引数に以下を実行してください。
 
 ```shell
-npm run review:article src/posts/blogs/2023/0319_aws-lambda-with-rust.md
+cargo run --bin scoring src/posts/11ty-ssg/11ty-reusable-components.md
 ```
 
 コンソール上にレビュー結果が表示されます。また、ここで消費したトークンも表示しますので、確認するようにしましょう（total_tokensが課金対象です）。
 
 ## Lint(スペルチェック/日本語)
 
-もう少し細かいスペルチェックをします。
+スペルや冗長な表現等をチェックします。textlintのChatGPT版(?)です。
 
 ```shell
-npm run lint:article src/posts/blogs/2023/0319_aws-lambda-with-rust.md
+cargo run --bin lint src/posts/11ty-ssg/11ty-reusable-components.md
 ```
 
 100行を超える記事は、エラーにならないように分割してChatGPTにチェックしてもらいます。
 
-## ChatGPTに記事のドラフトを作ってもらう
-
-ChatGPTと会話しながら記事のドラフトを作成してもらえます。
-
-ドラフトとなる出力マークダウンを引数に以下を実行してください。
-
-```shell
-npm run generate:article draft-output.md
-```
-
-記事のテーマを最初に聞かれます。生成後に気に入らない内容の場合はChatGPTとやり取りをしながら改善できます。
-ChatGPTへの会話ごとにファイルを上書きしますので、記事生成以外のやり取りは入力しないでください。
-
 ## カスタマイズ
 
-ChatGPTへのプロンプトをカスタマイズする場合は`prompt-message.ts`を修正してください。これがいいよっていうのがあればそちらを採用します。
+ChatGPTへのプロンプトをカスタマイズする場合は`config.toml`を修正してください。

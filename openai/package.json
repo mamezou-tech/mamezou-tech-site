@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "review:article": "ts-node-esm bin/review-article.ts",
-    "lint:article": "ts-node-esm bin/lint-article.ts",
-    "generate:article": "ts-node-esm bin/generate-article.ts",
-    "generate:image": "ts-node-esm bin/generate-image.ts"
+    "review:article": "ts-node-esm ts/bin/review-article.ts",
+    "lint:article": "ts-node-esm ts/bin/lint-article.ts",
+    "generate:article": "ts-node-esm ts/bin/generate-article.ts",
+    "generate:image": "ts-node-esm ts/bin/generate-image.ts"
   },
   "author": "",
   "license": "ISC",

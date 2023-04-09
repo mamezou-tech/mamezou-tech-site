@@ -1,0 +1,17 @@
+[package]
+name = "openai-mz"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+async-openai = "0.10.2"
+config = "0.13.3"
+futures = "0.3.28"
+gray_matter = "0.2.6"
+regex = "1.7.3"
+serde = { version = "1.0.159", features = ["derive"] }
+serde_derive = "1.0.159"
+tiktoken-rs = "0.4.0"
+tokio = { version = "1.27.0", features = ["full"] }

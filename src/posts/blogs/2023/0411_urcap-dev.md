@@ -2,6 +2,7 @@
 title: 「Universal Robots」のUR+でURCap開発
 author: kazuki-ogawa
 date: 2023-04-11
+tags: [UR, Universal Robots, ロボット, URCaps, UR+]
 ---
 
 こんにちは。[小川](https://developer.mamezou-tech.com/authors/kazuki-ogawa/)です。  

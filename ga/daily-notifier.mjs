@@ -7,6 +7,7 @@ import {
   makePvRequest,
   makeUserCountRequest
 } from "./ga-requests.mjs";
+import { ask } from "./chat-gpt.mjs";
 
 Settings.defaultZone = "Asia/Tokyo";
 
@@ -61,6 +62,9 @@ async function runReport() {
       }
     })
 
+
+  const gptMessage =  await fetchGptMessage(articles[0].title);
+
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
 
@@ -106,6 +110,13 @@ async function runReport() {
           text: ":trophy:*ユーザー数TOP20* :bigboss:\n" + articles.map(makeEntry).join("\n"),
         }
       },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: gptMessage,
+        }
+      },
     ]
   })
 }
@@ -137,6 +148,22 @@ function makeEntry(article, index) {
       break;
   }
   return `${index + 1}. <https://${article.url}|${article.title}> : ${article.user}${prize}`
+}
+
+async function fetchGptMessage(theme) {
+  try {
+    const resp = await ask({
+      temperature: 1.0,
+      messages: [{
+        content: `「${theme}」の記事が今日のランキング1位でした。これに対して称賛のコメントを元気な感じでお願いします。そして最後はジョークで締めてください。`,
+        role: "user"
+      }]
+    });
+    return resp.choices[0].message.content;
+  } catch (e) {
+    console.error(e);
+    return "";
+  }
 }
 
 await runReport();

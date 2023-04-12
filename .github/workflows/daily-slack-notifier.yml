@@ -35,6 +35,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS_FILE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_FILE }}
           GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           set -eu
           cd ${GITHUB_WORKSPACE}/ga

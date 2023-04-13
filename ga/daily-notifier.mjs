@@ -62,8 +62,7 @@ async function runReport() {
       }
     })
 
-
-  const gptMessage =  await fetchGptMessage(articles[0].title);
+  const gptMessage =  await fetchGptMessage(getRandomTitle(articles));
 
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
@@ -150,12 +149,30 @@ function makeEntry(article, index) {
   return `${index + 1}. <https://${article.url}|${article.title}> : ${article.user}${prize}`
 }
 
-async function fetchGptMessage(theme) {
+function getRandomTitle(articles) {
+  const i = Math.floor(Math.random() * 20);
+  return {
+    title: articles[i]?.title ?? articles[0].title,
+    rank: i + 1,
+  };
+}
+
+
+async function fetchGptMessage({title, rank}) {
+  if (!title) return "";
   try {
     const resp = await ask({
       temperature: 1.0,
       messages: [{
-        content: `「${theme}」の記事が今日のランキング1位でした。これに対して称賛のコメントを元気な感じでお願いします。そして最後はジョークで締めてください。`,
+        content: `「${title}」の記事が今日のランキング${rank}位でした。
+これに対して称賛のコメントをお願いします。
+
+コメントは以下の制約条件を守ってください。
+- 最初の1行は「今日のピックアップ記事：${rank}位 ${title}」
+- 2行目以降にコメントを元気な感じで出力
+- AI Chatの一人称は「豆香」を使う
+- コメントの最後の行はジョークで終わらせる
+`,
         role: "user"
       }]
     });

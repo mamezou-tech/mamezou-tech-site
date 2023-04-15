@@ -361,7 +361,7 @@ Slash Commandは何でもいいですが、ここでは豆香ちゃんキャラ�
 今回API GatewayをLambdaの前に配置していませんので、Request URLにはLambda Function URLを指定します。
 これは、chatgpt-slack-gateway関数のAWSマネジメントコンソールから取得できます。
 
-![Lambda Function URL](https://i.gyazo.com/45d7a621119315ae6198c14c813786af.png)
+![Lambda Function URL](https://i.gyazo.com/5f1a1163ad1e54867bbf7a716c10f606.png)
 
 ## SlackのSlash Commandで会話してみる
 

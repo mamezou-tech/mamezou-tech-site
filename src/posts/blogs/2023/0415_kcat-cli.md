@@ -37,22 +37,24 @@ kafka-console-producer と kafka-console-consumer はそれぞれ kafka.tools.Co
 - [kafka/ConsoleConsumer.scala at master · a0x8o/kafka](https://github.com/a0x8o/kafka/blob/master/core/src/main/scala/kafka/tools/ConsoleConsumer.scala)
 :::
 
-kafka-console-producer は毎回メッセージを手打ちする必要がありますし、ヒストリー機能もないので、送信したメッセージをちょっと編集して送信するといったことができません。あと JVM を使うので起動がやや遅いです。
+kafka-console-producer / kafka-console-consumer は JVM を使うので起動がやや遅いです。kafka-console-producer にはヒストリー機能もないので、送信したメッセージをちょっと編集して送信するといったことができません。
 
 ## kcat の概要
-kcat は Kafka トピックとのメッセージ送受信が簡単にできる CLI です。以前は kafkacat という名前だったようです。
+kcat は Kafka トピックとのメッセージ送受信が簡単にできる CLI です。以前は kafkacat という名前だったようです[^1]。
+
+[^1]: README には、ASF の商標ポリシーに準拠するためにリネームされたとあります。
 
 [GitHub - edenhill/kcat: Generic command line non-JVM Apache Kafka producer and consumer](https://github.com/edenhill/kcat)
 
-個人開発の OSS ですが、Confluent のドキュメントにも kcat の利用方法が記載されていますので、実質公式認定ツールと言ってよいようです[^1]。
+個人開発の OSS ですが、Confluent のドキュメントにも kcat の利用方法が記載されていますので、実質公式認定ツールと言ってよいようです[^2]。
 
-[^1]: 最終リリースは 2021年8月とやや時間が経っているのが気になりますが。
+[^2]: 最終リリースは kcat にリネームされた2021年8月とやや時間が経っているのが気になりますが。
 
 [Use kcat (formerly kafkacat) to test and debug Apache Kafka deployments &#124; Confluent Documentation](https://docs.confluent.io/platform/current/clients/kafkacat-usage.html)
 
-C で書かれており高速に起動します。標準入出力を使えるためシェルとの親和性が高いという特徴があります。メッセージの送受信だけでなく、Kafka クラスター、トピック、Partition のメタデータを出力することもできます[^2]。Kafka クラスターとの接続に SSL と SASL による認証も可能、Avro によるバイナリーメッセージにも対応しているなどかなり高機能です。
+C で書かれており高速に起動します。標準入出力を使えるためシェルとの親和性が高いという特徴があります。メッセージの送受信だけでなく、Kafka クラスター、トピック、Partition のメタデータを出力することもできます[^3]。Kafka クラスターとの接続に SSL と SASL による認証も可能、Avro によるバイナリーメッセージにも対応しているなどかなり高機能です。
 
-[^2]: Kafka 標準では kafka-topics などの別のシェルスクリプトで提供されています。
+[^3]: Kafka 標準では kafka-topics などの別のシェルスクリプトで提供されています。
 
 ## kcat のインストール
 macOS の場合 Homebrew でインストール可能です。
@@ -63,7 +65,7 @@ brew install kcat
 その他の OS へのインストールについては、README の [Install](https://github.com/edenhill/kcat#install) セクションを参照してください。
 
 ## kcat を使う
-トピックにメッセージを送信する場合、echo でパイプ渡しするのが簡単です。
+トピックにメッセージを送信する場合、echo でパイプ渡しできます。
 
 ```shell
 echo `{"greeting":"hello","name":"Bob"}` | kcat -b localhost:9092 -t topic-01
@@ -80,6 +82,9 @@ kcat には kafka-console-producer 同様の producer モードもあり、メ�
 ```shell
 echo `{"greeting":"hello","name":"Alice"}` | kcat -b localhost:9092 -t topic-01 -H Header-Key=header-value
 ```
+:::info
+kcat の設定は Kafka の C++ クライアントライブラリ [confluentinc/librdkafka](https://github.com/confluentinc/librdkafka) の属性が指定可能です。`~/.config/kcat.conf` に設定ファイルを配置することも可能です。
+:::
 
 Producer の機能しか紹介しませんでしたが、README の [Eexamples](https://github.com/edenhill/kcat#examples) に豊富なサンプルがあるので参照してください。
 

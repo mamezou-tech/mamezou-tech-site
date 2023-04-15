@@ -1,5 +1,5 @@
 ---
-title: Rust + AWS LambdaでSlackからChatGPTと会話する
+title: Rust + AWS Lambdaを使ってSlackでChatGPTと会話する
 author: noboru-kudo
 date: 2023-04-15
 tags: [サーバーレス, lambda, AWS, chatgpt, slack, rust]
@@ -20,8 +20,8 @@ ChatGPT開発元のOpenAIが提供する[Chat API](https://platform.openai.com/d
 
 ## アプリの全体構造
 
-多くの方がSlackのイベントAPIを使って、ChatGPTをチャンネルメンバーとして召喚して、メンションに反応するように実装しているようです。
-チャットBotとしてはイベントAPIの方が適切ですが、今回は実装が簡単なSlackの[Slash Command](https://api.slack.com/interactivity/slash-commands)でワンショットの会話をすることにします。
+多くの方がSlackの[イベントAPI](https://api.slack.com/apis/connections/events-api)を使って、ChatGPTをチャンネルメンバーとして召喚して、メンションに反応するように実装しているようです。
+チャットBotの用途としてはイベントAPIを使うのが適切だと思いますが、今回は実装が簡単なSlackの[Slash Command](https://api.slack.com/interactivity/slash-commands)でワンショットの会話をすることにします。
 
 ここで課題となるのは、Slack APIの初期レスポンスには3秒という制約があるということです。ChatGPT同様にChat APIにとって3秒はかなり厳しいです。
 とはいえ、Slack APIは後でレスポンスを返すためのURL(response_url)を一緒に連携してくれていますのでこれが使えます。

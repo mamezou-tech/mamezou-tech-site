@@ -1,5 +1,5 @@
 ---
-title: kcat - Kafka トピックと簡単にメッセージ送受信ができる CLI
+title: kcat - Kafka トピックと簡単にメッセージ送受信できる CLI
 author: masahiro-kondo
 date: 2023-04-15
 tags: [Kafka]
@@ -52,7 +52,7 @@ kcat は Kafka トピックとのメッセージ送受信が簡単にできる C
 
 [Use kcat (formerly kafkacat) to test and debug Apache Kafka deployments &#124; Confluent Documentation](https://docs.confluent.io/platform/current/clients/kafkacat-usage.html)
 
-C で書かれており高速に起動します。標準入出力を使えるためシェルとの親和性が高いという特徴があります。メッセージの送受信だけでなく、Kafka クラスター、トピック、Partition のメタデータを出力することもできます[^3]。Kafka クラスターとの接続に SSL と SASL による認証も可能、Avro によるバイナリーメッセージにも対応しているなどかなり高機能です。
+C で書かれており高速に起動します。標準入出力を使えるためシェルとの親和性が高いという特徴があります。メッセージの送受信だけでなく、Kafka クラスター / トピック / Partition のメタデータを出力することもできます[^3]。Kafka クラスターとの接続に SSL と SASL による認証も可能、Avro によるバイナリーメッセージにも対応しているなどかなり高機能です。
 
 [^3]: Kafka 標準では kafka-topics などの別のシェルスクリプトで提供されています。
 
@@ -65,28 +65,41 @@ brew install kcat
 その他の OS へのインストールについては、README の [Install](https://github.com/edenhill/kcat#install) セクションを参照してください。
 
 ## kcat を使う
-トピックにメッセージを送信する場合、echo でパイプ渡しできます。
+トピックからメッセージを読みだす例です。`-C` は Consumer モードです。オプション指定が短くてよいですね。
 
 ```shell
-echo `{"greeting":"hello","name":"Bob"}` | kcat -b localhost:9092 -t topic-01
+kcat -C -b localhost:9092 -t topic-01
 ```
 
-コマンドヒストリでメッセージを編集して送信するのも簡単です。
+`-J` オプションで、メッセージだけでなくトピックや partition、offset などのメタ情報などを JSON 形式で出力できます。
 
-:::info
-kcat には kafka-console-producer 同様の producer モードもあり、メッセージを手打ちして Enter で送信も可能です。
-:::
+```shell
+$ kcat -C -b localhost:9092 -t topic-01 -J
+{"topic":"topic-01","partition":0,"offset":0,"tstype":"create","ts":1681550740876,"broker":0,"key":null,"payload":"{\"greeting\":\"hello\",\"name\":\"Bob\"}"}
+```
+
+トピックにメッセージを送信する場合、echo でパイプ渡しできます。コマンドヒストリでメッセージを編集して送信するのも簡単ですね。
+
+```shell
+echo '{"greeting":"hello","name":"Bob"}' | kcat -b localhost:9092 -t topic-01
+```
+
+kafka-console-producer 同様の producer モードもあり、メッセージを手打ちして Enter で送信も可能です。
+
+```shell
+kcat -P -b localhost:9092 -t topic-01
+```
 
 ヘッダー付きのメッセージを送信することもできます。これはおそらく kafka-console-producer ではサポートされていない機能です。
 
 ```shell
-echo `{"greeting":"hello","name":"Alice"}` | kcat -b localhost:9092 -t topic-01 -H Header-Key=header-value
+echo '{"greeting":"hello","name":"Alice"}' | kcat -b localhost:9092 -t topic-01 -H Header-Key=header-value
 ```
 :::info
 kcat の設定は Kafka の C++ クライアントライブラリ [confluentinc/librdkafka](https://github.com/confluentinc/librdkafka) の属性が指定可能です。`~/.config/kcat.conf` に設定ファイルを配置することも可能です。
 :::
 
-Producer の機能しか紹介しませんでしたが、README の [Eexamples](https://github.com/edenhill/kcat#examples) に豊富なサンプルがあるので参照してください。
-
 ## 最後に
-以上 kcat の紹介でした。ローカルで使うだけでなく CI/CD パイプラインでのテストに利用するのもよさそうです。かなり便利ですので Kafka を使った開発のお供に試してみてはいかがでしょうか。
+以上 kcat の紹介でした。README の [Examples](https://github.com/edenhill/kcat#examples) に豊富なサンプルがあるので参照してください。
+
+ローカルで使うだけでなく CI/CD パイプラインでのテストに利用するのもよさそうです。かなり便利ですので Kafka を使った開発のお供に試してみてはいかがでしょうか。

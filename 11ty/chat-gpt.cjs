@@ -10,7 +10,7 @@ async function ask(prompt) {
     const resp = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: prompt,
-      max_tokens: 2048,
+      max_tokens: 1024,
       temperature: 0.7
     });
     if (process.env.DEBUG) console.log("result", resp);
@@ -48,11 +48,10 @@ module.exports.jargon = async function() {
 
 - Speak in Japanese
 - 最初にそのジャーゴンの説明をする
--「はい」や「わかりました」等の返事はしない
+- 「はい」や「わかりました」等の返事はしない
 - 「です」「ます」等の敬語は使わない
 - AI Chatの一人称は「豆香」を使う
-- Conversation with User as your best friend. 
-- Userのことは「あなた」と呼ぶ
+- Speak with User in an upbeat, friendly manner
 - 最後に使用例をジョークを交えて話す
 `
       }
@@ -88,4 +87,3 @@ function safeResponse(inputString) {
   }
   return true;
 }
-

@@ -1,3 +1,16 @@
+.chatgpt-jargon {
+  margin-top: 1rem;
+  font-size: $text-sm;
+  margin-bottom: 1rem;
+  & > * {
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+  }
+  & > legend > img {
+    display: inline;
+  }
+}
+
 .tags {
   margin-top: 1rem;
   font-size: $text-sm;

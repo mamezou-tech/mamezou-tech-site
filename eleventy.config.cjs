@@ -40,7 +40,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`);
   eleventyConfig.addShortcode("packageVersion", () => `v${packageVersion}`);
   eleventyConfig.addShortcode("shortDesc", require("./11ty/short-desc.cjs"));
-  eleventyConfig.addAsyncShortcode("jargon", require("./11ty/chat-gpt.cjs").jargon);
 
   eleventyConfig.addFilter("slug", require("./11ty/slug.cjs"));
   eleventyConfig.addFilter("head", require("./11ty/head.cjs"));

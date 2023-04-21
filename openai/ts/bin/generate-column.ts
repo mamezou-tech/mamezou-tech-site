@@ -18,9 +18,8 @@ async function main(path: string) {
   const json: Gpt = JSON.parse(fs.readFileSync(path).toString());
 
   const prompt: ChatCompletionRequestMessage = {
-    content: `ITデベロッパーがプログラミングで使うジャーゴンで、笑ってしまうくらい面白いものを20個改行区切りで出力してください。
-順番や「はい」や「わかりました」等の返事やジャーゴンの説明は不要です。
-`,
+    content: `ITデベロッパーがプログラミングで使うジャーゴン(隠語)で、笑えるものを20個改行区切りで出力してください。
+順番や「はい」や「わかりました」等の返事やジャーゴンの説明は不要です。`,
     role: 'user'
   };
   const keywordsResponse = await ask({
@@ -38,7 +37,7 @@ async function main(path: string) {
       content: message
     }, {
       role: 'user',
-      content: `${keyword}についてその内容を元気に説明してください。
+      content: `${keyword}についてその内容を明るく元気に説明してください。
 以下の制約事項を守ってください。
 
 - Speak in Japanese

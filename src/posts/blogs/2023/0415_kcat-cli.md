@@ -84,6 +84,14 @@ $ kcat -C -b localhost:9092 -t topic-01 -J
 echo '{"greeting":"hello","name":"Bob"}' | kcat -b localhost:9092 -t topic-01
 ```
 
+:::info:2023.04.21追記
+記事を書いた時点では、kafka-console-producer は標準入力からデータを送れないと思っていたのですが、ちゃんとできました。この機能だけのために kcat を別途インストールする必要はありません。
+
+```shell
+echo '{"greeting":"hello","name":"Bob"}' | kafka-console-producer --bootstrap-server localhost:9092 --topic topic-01
+```
+:::
+
 kafka-console-producer 同様の producer モードもあり、メッセージを手打ちして Enter で送信も可能です。
 
 ```shell

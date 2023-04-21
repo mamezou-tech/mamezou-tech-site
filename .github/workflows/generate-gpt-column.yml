@@ -14,7 +14,7 @@ jobs:
       - name: Create Branch for GPT generated page
         id: create-gpt-branch
         run: |
-          BRANCH=feature/$(date +"%Y-%m-%d")-gpt
+          BRANCH=feature/$(date +"%Y-%m-%d-%H%M%S")-gpt
           git checkout -b $BRANCH
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 

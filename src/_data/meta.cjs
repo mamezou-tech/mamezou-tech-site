@@ -8,4 +8,5 @@ module.exports = {
   published: "2021-11-29T00:00:00Z",
   env: process.env.ELEVENTY_ENV,
   branch: process.env.BRANCH || "main",
+  netlifyContext: process.env.CONTEXT || "unknown",
 };

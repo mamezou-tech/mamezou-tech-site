@@ -53,7 +53,7 @@ async function main(path: string) {
     maxTokens: 2048,
     temperature: 0.7
   });
-  const column = result.choices[0].message?.content || '';
+  const column = result.choices[0].message?.content.trim() || '';
   if (!column) throw new Error('no content');
   if (!safeResponse(column) || !safeResponse(column)) new Error(`un-safe content found: ${column}`);
 
@@ -72,7 +72,7 @@ async function main(path: string) {
   const today = new Date();
   await web.chat.postMessage({
     // channel: "C034MCKP4M6",
-    channel: "D041BPULN4S",
+    channel: "C04F1QJDLJD", // ops
     mrkdwn: true,
     text: "豆香コラムPRのお知らせ",
     unfurl_media: false,

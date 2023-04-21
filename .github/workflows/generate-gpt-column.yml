@@ -45,7 +45,7 @@ jobs:
         run: |
           set -eu
           cd ${GITHUB_WORKSPACE}/openai
-          npm run generate:gpt-column
+          npm run generate:column
           git add ${GITHUB_WORKSPACE}/src/_data
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"
@@ -54,13 +54,13 @@ jobs:
           fi
 
       - name: Commit report
-        if: steps.generate-ga-pv-report.outputs.changed == 'true'
+        if: steps.update-for-gpt-column.outputs.changed == 'true'
         run: |
           set -eu
           git config --local user.email "github-actions@mamezou.com"
           git config --local user.name "github-actions"
           git commit -m "chore: Add GPT generated column"
-          git push -u origin ${{ steps.create-ga-branch.outputs.branch }}
+          git push -u origin ${{ steps.create-gpt-branch.outputs.branch }}
 
       # https://github.com/marketplace/actions/github-pull-request-action
       - name: Create Pull Request
@@ -68,7 +68,7 @@ jobs:
         with:
           destination_branch: "main"
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ steps.create-ga-branch.outputs.branch }}
+          source_branch: ${{ steps.create-gpt-branch.outputs.branch }}
           pr_title: "Update GPT column by github-actions"
           pr_reviewer: kudoh
           pr_body: "Check the GPT generated column."

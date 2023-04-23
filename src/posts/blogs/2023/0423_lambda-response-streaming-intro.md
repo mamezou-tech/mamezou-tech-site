@@ -365,8 +365,8 @@ curl https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.lambda-url.ap-northeast-1.on.aws/ 
 
 ## レスポンスストリーミング向けのUIを作成する
 
-ここで、UIも作成します。今回はNuxt3を使って作成してみます。
-以下プロジェクトを作成します。
+ここで、レスポンスストリーミングを活用したUIを作成します。今回はNuxt3を使います。
+以下でプロジェクトを作成します。
 
 ```shell
 npx nuxi init nuxt-app

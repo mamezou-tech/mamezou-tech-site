@@ -12,7 +12,7 @@ tags: [サーバーレス, lambda, AWS, chatgpt, slack, rust]
 これを使って何か実用的なものを開発して、楽しくRustのスキルを上げたいなと思っていました。
 
 そこで、最近のChatGPTブームに乗っかることにしました。
-ChatGPT開発元のOpenAIが提供する[Chat API](https://platform.openai.com/docs/guides/chat)を通して、Slack上でChatGPTと会話できる機能をRust + Lambdaで実装してみます。
+ChatGPT開発元のOpenAIが提供する[Chat API](https://platform.openai.com/docs/guides/chat)を通して、Slack上でChatGPT(正確にはChatGPTと同じモデル)と会話できる機能をRust + Lambdaで実装してみます。
 
 少しググると無数のSlack+ChatGPTネタの記事がヒットします。今更感のあるテーマで公開するのを悩みましたが、それは考えないことにしましたｗ
 

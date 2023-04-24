@@ -126,7 +126,7 @@ const producer = kafka.producer(); // 1
 
 await producer.connect(); // 2
 await producer.send({ // 3
-  topic: 'test',
+  topic: 'test-topic',
   messages: [
     {
       value: 'Hello KafkaJS user!',

@@ -94,7 +94,7 @@ await consumer.run({
 2. Kafka クライアントの `consumer` メソッドで `groupId` を指定して、Consumer を生成します。
 3. Consumer オブジェクトの `connect` メソッドで Kafka クライアント生成時に定義した Kafka クラスターに接続します。
 4. 対象の Kafka トピックに subscribe します。
-5. Consumer オブジェクトの `run` メソッドに `eachMessage` ハンドラーを定義して Kafka トピックから取り出したメッセージを処理する function を書ききます。
+5. Consumer オブジェクトの `run` メソッドに `eachMessage` ハンドラーを定義して Kafka トピックから取り出したメッセージを処理する function を書きます。
 6. メッセージを取得します。ログを出力しているだけですが、本来はメッセージに応じたビジネスロジックを実行します。
 7. ヘッダー情報の取り出しです。
 

@@ -11,9 +11,13 @@ Envoy proxy は API を使って動的に構成すると無停止で設定変更
 
 この一連の記事では Envoy proxy 単体の機能を説明するために静的な設定を用いて説明しています。
 
-以前構築した S3 にアクセスする [Envoy proxy](https://developer.mamezou-tech.com/blogs/2022/02/16/hosting-a-static-website-using-s3-with-envoy/) を拡張して、Amazon Cognito Userpool で認証されたユーザのみがこの静的コンテンツにアクセスできるようにしたいと思います。
+以前構築した S3 にアクセスする [Envoy proxy](https://developer.mamezou-tech.com/blogs/2022/02/16/hosting-a-static-website-using-s3-with-envoy/) を拡張して、Amazon Cognito user pools で認証されたユーザのみがこの静的コンテンツにアクセスできるようにしたいと思います。
 
 ![図1](https://github.com/takesection-sandbox/envoyproxy-examples/raw/main/image/jwt-authn.png)
+
+:::info
+認証されたユーザとは、あらかじめ Amazon Cognito user pools にログインして OIDC トークン (JWT トークン) を取得済みで、トークンを Authorization ヘッダ等に含むリクエストでアクセスされることをここでは指しています。
+:::
 
 # Envoy proxy の構成
 

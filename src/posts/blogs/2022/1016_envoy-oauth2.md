@@ -16,9 +16,9 @@ tags: [AWS, "認証/認可", envoy, ZTA]
 Envoy Proxy は構成を動的に変更でき、ゼロダウンタイムで反映できる特徴を持っています。
 Kubernetes 環境のような頻繁にスケールアウト/インするサービスへのルーティングを設定して、個々のサービスの実装に接続先サービスの位置やポートのハードコーディングを不要とする、サービスメッシュパターンなどで多く利用されるコンポーネントです。
 
-## Amazon Cognito User Pool の UI を使用して認証する
+## Amazon Cognito user pools の UI を使用して認証する
 
-次の構成ファイルは [Amazon Cognito User Pool](https://aws.amazon.com/jp/cognito/) でホストされた Web UI を使用したログインの設定例です。
+次の構成ファイルは [Amazon Cognito user pools](https://aws.amazon.com/jp/cognito/) でホストされた Web UI を使用したログインの設定例です。
 
 front-envoy.yaml:
 ```yaml
@@ -150,7 +150,7 @@ static_resources:
 
 | キー | 説明 |
 |---|---|
-| Your client secret here | Cognito User Pool の「全般設定」-「アプリクライアント」の詳細で表示される「アプリクライアントのシークレット」 |
+| Your client secret here | Cognito user pools の「全般設定」-「アプリクライアント」の詳細で表示される「アプリクライアントのシークレット」 |
 | Your hmac secret here | hmac 署名のためのシークレット (任意の値のシークレット) |
 | Your amazon cognito userpools domain here | 「アプリの統合」-「ドメイン名」に設定した Cognito でホストする Web UI のドメイン名 |
 | Your client id here | 「全般設定」-「アプリクライアント」の「アプリクライアント ID」 |
@@ -187,7 +187,7 @@ docker build -t envoy-proxy .
 docker run -p 8081:8081 -e AWS_ACCESS_KEY_ID={Your access key here} -e AWS_SECRET_ACCESS_KEY={Your secret access key here} envoy-proxy
 ```
 
-:::info:Amazon Cognito User Pool 以外で使用する
+:::info:Amazon Cognito user pools 以外で使用する
 
 上述の構成ファイルは、[Okta](https://www.okta.com/) の利用例を説明する「[Protecting web applications via Envoy OAuth2 filter](https://www.jpmorgan.com/technology/technology-blog/protecting-web-applications-via-envoy-oauth2-filter)」の場合とほとんど同じです。
 
@@ -200,7 +200,7 @@ docker run -p 8081:8081 -e AWS_ACCESS_KEY_ID={Your access key here} -e AWS_SECRE
 
 上記のコンテナを実行して、コンテンツにアクセスする場合のシーケンスは図のようになります。
 
-1. ユーザが静的コンテンツにアクセスすると、未ログイン時には、Cognito User Pool の Web UI にリダイレクト
+1. ユーザが静的コンテンツにアクセスすると、未ログイン時には、Cognito user pools の Web UI にリダイレクト
 2. ログインが成功すると、[Code Flow](https://openid.net/specs/openid-connect-basic-1_0.html#CodeFlow) にしたがって `/callback` にリダイレクト 
 3. Bearer Token (持参人トークン) により認証を確認
 4. AWS_ACCESS_TOKEN、AWS_SECRET_ACCESS_KEY を使ったリクエスト署名で S3 にアクセス

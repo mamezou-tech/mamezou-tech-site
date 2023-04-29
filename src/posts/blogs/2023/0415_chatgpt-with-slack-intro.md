@@ -110,11 +110,12 @@ async fn function_handler(
     client: &aws_sdk_lambda::Client,
 ) -> Result<Response<Body>, Error> {
     // 1. Slackからのリクエスト解析
-    let params: SlackRequest = serde_qs::from_bytes(event.body()).unwrap();
-    let payload = serde_json::to_vec(&json!({
-        "response_url": params.response_url, // 後でレスポンスを返すURL
-        "text": params.text // 問い合わせ内容
-    }))?;
+    let params: SlashCommandRequest = serde_qs::from_bytes(event.body()).unwrap();
+    let slack_request = SlackRequest {
+        response_url: params.response_url,
+        text: params.text,
+    };
+    let payload = serde_json::to_vec(&slack_request)?;
 
     // 2. chatgpt-api-caller関数を非同期で呼出
     client

@@ -37,17 +37,20 @@ async function main(path: string) {
       content: message
     }, {
       role: 'user',
-      content: `${keyword}についてその内容を明るく元気に説明してください。
+      content: `プログラミングジャーゴンの「${keyword}」についてその内容を説明してください。
+説明には以下の要素を必ず含めてください。
+- ジャーゴンの説明
+- ジャーゴンに関するジョーク
+
 以下の制約事項を守ってください。
 
 - Speak in Japanese
-- 最初にそのジャーゴンの説明をする
 - 「はい」や「わかりました」等の返事はしない
+- 明るく元気な口語口調で話す
+- 挨拶はしない
 - 「です」「ます」等の敬語は使わない
 - AI Chatの一人称は「豆香」を使う
-- Speak with User in an upbeat, friendly manner
-- ユーザーのことは「あなた」と呼ぶ
-- 最後に使用例をジョークを交えて話す`
+- AI Chatは美少女キャラクターとして話す`
     }],
     maxTokens: 2048,
     temperature: 0.7

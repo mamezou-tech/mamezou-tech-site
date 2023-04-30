@@ -321,27 +321,28 @@ export class CdkStack extends cdk.Stack {
 それ以外は、AWS CDKで提供されている各コンストラクトを使ってAWSリソース全体の構成を記述しています。
 
 :::column:1パッケージ内に複数Lambdaがある場合(複数バイナリクレート)
-Rustパッケージを複数バイナリクレート構成にして複数Lambdaをデプロイする場合は、デプロイする数分だけRustFunctionを記述します。
-このとき第2引数のパッケージ名にはバイナリクレート名を入れます。
+Rustパッケージを複数バイナリクレート構成にして複数Lambdaをデプロイする場合は、デプロイする数分だけRustFunctionを記述し、binaryNameにクレート名を設定することで動作しました。
 
 例えば、/userでPOST/GETのエンドポイント(Lambda)を用意する場合は、以下のようになります。
 
 ```typescript
-// Lambda: POST /user, バイナリクレート: /src/bin/post-user.rs
-const postUserFn = new RustFunction(this, 'post-user', {
+// Lambda: POST /user, バイナリクレート: /src/bin/post_user.rs
+const postUserFn = new RustFunction(this, 'PostUserFunction', {
   manifestPath: '../Cargo.toml',
   functionName: 'sample-rust-lambda-post-user',
   description: 'User Creation Lambda Function',
+  binaryName: 'post_user',
   environment: {
     USER_TABLE: userTable.tableName
   },
   role
 });
-// Lambda: GET /user, バイナリクレート: /src/bin/get-user.rs
-const getUserFn = new RustFunction(this, 'get-user', {
+// Lambda: GET /user, バイナリクレート: /src/bin/get_user.rs
+const getUserFn = new RustFunction(this, 'GetUserFunction', {
   manifestPath: '../Cargo.toml',
   functionName: 'sample-rust-lambda-get-user',
   description: 'User Retrieval Lambda Function',
+  binaryName: 'get_user',
   environment: {
     USER_TABLE: userTable.tableName
   },

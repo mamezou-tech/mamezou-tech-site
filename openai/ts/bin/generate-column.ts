@@ -37,10 +37,10 @@ async function main(path: string) {
       content: message
     }, {
       role: 'user',
-      content: `プログラミングジャーゴンの「${keyword}」についてその内容を説明してください。
+      content: `用語「${keyword}」についてその内容を説明してください。
 説明には以下の要素を必ず含めてください。
-- ジャーゴンの説明
-- ジャーゴンに関するジョーク
+- 用語の説明
+- 用語のジョーク
 
 以下の制約事項を守ってください。
 

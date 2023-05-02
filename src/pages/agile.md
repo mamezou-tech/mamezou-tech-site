@@ -40,3 +40,9 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 - [新米スクラムマスターの思考メモ（その４　DailyScrum編）](/blogs/2022/12/28/newcomer-scrum-master-04/)
 - [新米スクラムマスターの思考メモ（その５　まとめ）](/blogs/2023/02/21/newcomer-scrum-master-05/)
 - [スクラム『で』教育する～メンバーを育てながら開発を進める～](/blogs/2023/03/22/education_on_scrum/)
+
+## プロダクトオーナーの煩悩
+
+社内開発でプロダクトオーナーが、開発現場での悩みや気づきなど、わりと赤裸々に書いていきます。
+
+- [プロダクトオーナーの煩悩： スクラムの価値基準](/agile/agile-po-complaints_01/)

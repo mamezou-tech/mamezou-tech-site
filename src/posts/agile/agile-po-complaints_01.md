@@ -1,7 +1,7 @@
 ---
 title: プロダクトオーナーの煩悩： スクラムの価値基準
 author: kazuya-nakamura
-date: 2023-05-02
+date: 2023-05-03
 tags: [スクラム]
 ---
 

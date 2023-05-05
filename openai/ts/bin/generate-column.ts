@@ -65,7 +65,7 @@ async function main(path: string) {
     created: new Date().toISOString(),
   };
   json.columns.unshift(item);
-  json.columns = json.columns.slice(0, 10);
+  json.columns = json.columns.slice(0, 20);
   fs.writeFileSync(path, JSON.stringify(json, null, 2));
 
   const token = process.env.SLACK_BOT_TOKEN;

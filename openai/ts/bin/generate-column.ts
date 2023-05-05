@@ -73,17 +73,17 @@ async function main(path: string) {
 
   const today = new Date();
   await web.chat.postMessage({
-    // channel: "C034MCKP4M6",
-    channel: "C04F1QJDLJD", // ops
+    channel: "C034MCKP4M6",
+    // channel: "C04F1QJDLJD", // ops
     mrkdwn: true,
-    text: "豆香コラムPRのお知らせ",
+    text: "今日の豆香の豆知識コラム(予告)",
     unfurl_media: false,
     blocks: [
       {
         type: "header",
         text: {
           type: "plain_text",
-          text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香コラム(PR)`
+          text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(予告)`
         }
       },
       {
@@ -98,13 +98,6 @@ async function main(path: string) {
         text: {
           type: "mrkdwn",
           text: column,
-        }
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "https://github.com/mamezou-tech/mamezou-tech-site/pulls",
         }
       },
     ]

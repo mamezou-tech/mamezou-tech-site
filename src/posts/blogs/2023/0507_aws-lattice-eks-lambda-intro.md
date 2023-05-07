@@ -35,12 +35,12 @@ Latticeは、KubernetesのGateway APIの実装としても使えます。
 
 - [Deploying the AWS Gateway API Controller](https://www.gateway-api-controller.eks.aws.dev/deploy/)
 
-ポイントとして、通常のEKSセットアップだけでなく、Latticeからのインバウンドトラフィックを許可するようKubernetesクラスターのセキュリティグループ修正が別途必要です。
+注意点として、通常のEKSセットアップだけでなく、Latticeからのインバウンドトラフィックを許可するようKubernetesクラスターのセキュリティグループ修正が別途必要です。
 
 ![](https://i.gyazo.com/5d79f29ea871bacdffa98540de368f82.png)
 
 :::column:Security Groupのソース指定にプレフィックスリストIDを使う
-Gateway APIのドキュメントの通りに実施すると、ソースにCIDRを指定することになりますが、以下記事のようにプレフィックスリストIDを指定した方が良いと思います。
+Gateway APIのドキュメントの通りに実施すると上記のようにソースにCIDRを指定することになりますが、以下記事で紹介されているようにプレフィックスリストIDを指定した方が良いと思います。
 
 - [DeveloperIO - Amazon VPC Lattice ターゲットのセキュリティグループではプレフィックスリストを使おう](https://dev.classmethod.jp/articles/use-prefix-lists-for-security-grouops-of-vpc-lattice/)
 :::
@@ -54,7 +54,7 @@ kubectl get gatewayclass
 > amazon-vpc-lattice   application-networking.k8s.aws/gateway-api-controller   True       75s
 ```
 
-- Gateway APIコントローラー
+- AWS Gateway APIコントローラー
 ```shell
 kubectl get pod -n aws-application-networking-system
 > NAME                                      READY   STATUS    RESTARTS   AGE
@@ -75,7 +75,7 @@ Service NetworkはLatticeの最上位レイヤーで、マイクロサービス�
 Service Networkは複数VPCを関連付け可能で、サービスクライアント側は所属しているVPCを関連付ける必要があります。
 一方で、サービスプロバイダー側では、別途Serviceリソースを作成してこのService Networkに関連付ける必要があります。
 
-Service Network自体はAWS CLIやCloudFormation等でも作成できますが、ここではKubernetesのGateway APIコントローラーを使って作成します。
+もちろんService Network自体はAWS CLIやCloudFormation等でも作成できますが、ここではKubernetesのGateway APIコントローラーを使って作成します。
 以下のマニフェスト(`gateway.yaml`)を用意しました。
 
 ```yaml
@@ -207,8 +207,11 @@ resources:
 
 functionsセクションの通り、hello関数のみの構成です。
 なお、ここでイベントトリガー(API Gateway等)の作成はしていません。
+
 ここでのイベントトリガーはLatticeになりますが、現時点ではServerless Frameworkは未対応です。
 このため、resourcesセクション配下にCloudFormationのテンプレートで、Latticeに必要な各リソースを定義しました。
+Service Networkに加えて、これらのリソースの役割を正確に把握することがLatticeを理解するポイントになってきそうです。
+とはいえ、ListenerやTarget GroupはELBでもお馴染みですので、言葉だけでもイメージできる方は多いかと思います。
 
 :::column:複雑なルーティングルールを指定する
 今回は指定していませんが、`AWS::VpcLattice::Rule`リソースを作成することで、パスやヘッダベースで追加のルーティングルールを作成できます。
@@ -219,9 +222,6 @@ functionsセクションの通り、hello関数のみの構成です。
 - [AWS CloudFormation Doc - AWS::VpcLattice::Rule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-vpclattice-rule.html)
 :::
  
-Service Networkに加えて、これらのコンポーネントの役割を把握することがLatticeを理解するポイントになってるようです。
-とはいえリスナーや、ターゲットグループはELBでお馴染みですので、言葉だけでもイメージできる方は多いかと思います。
-
 
 ### デプロイ
 

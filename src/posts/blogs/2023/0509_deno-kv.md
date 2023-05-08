@@ -1,7 +1,7 @@
 ---
 title: Deno のビルトイン key-value データベース Deno KV が登場
 author: masahiro-kondo
-date: 2023-05-10
+date: 2023-05-09
 tags: [deno]
 ---
 

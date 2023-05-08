@@ -23,7 +23,7 @@ async function main(path: string) {
 - 20個を改行区切りのフォーマットで出力
 - 順番や「はい」や「わかりました」等の返事やジャーゴンの説明はしない
 - 出力するジャーゴンは既知のもののみ
-- 一般的に使われていないものや未知のものは結果に含めない`,
+- 一般的に使われていないものや未知のものは出力結果に含めない`,
     role: 'user'
   };
   const keywordsResponse = await ask({
@@ -34,6 +34,7 @@ async function main(path: string) {
   const message = keywordsResponse.choices[0].message?.content || '';
 
   const arr = message.split('\n').filter(x => !!x).map(x => x.replace(/\d+\. /, ''));
+  console.log(arr)
   const keyword = pickup(arr, json.columns.map(column => column.title));
   const result = await ask({
     messages: [prompt, {
@@ -76,36 +77,36 @@ async function main(path: string) {
   const web = new WebClient(token);
 
   const today = new Date();
-  await web.chat.postMessage({
-    channel: "C034MCKP4M6",
-    // channel: "C04F1QJDLJD", // ops
-    mrkdwn: true,
-    text: "今日の豆香の豆知識コラム(予告)",
-    unfurl_media: false,
-    blocks: [
-      {
-        type: "header",
-        text: {
-          type: "plain_text",
-          text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(予告)`
-        }
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: item.title,
-        }
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: column,
-        }
-      },
-    ]
-  })
+  // await web.chat.postMessage({
+  //   channel: "C034MCKP4M6",
+  //   // channel: "C04F1QJDLJD", // ops
+  //   mrkdwn: true,
+  //   text: "今日の豆香の豆知識コラム(予告)",
+  //   unfurl_media: false,
+  //   blocks: [
+  //     {
+  //       type: "header",
+  //       text: {
+  //         type: "plain_text",
+  //         text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(予告)`
+  //       }
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: item.title,
+  //       }
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: column,
+  //       }
+  //     },
+  //   ]
+  // })
 }
 
 function pickup(arr: string[], excludes: string[]): string {

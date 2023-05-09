@@ -2,7 +2,7 @@
 title: Deno のビルトイン key-value データベース Deno KV が登場
 author: masahiro-kondo
 date: 2023-05-09
-tags: [deno]
+tags: [Deno]
 ---
 
 4月末の Deno 1.33 のリリースで、ビルトインの key-value データベースである Deno KV が 導入されました。

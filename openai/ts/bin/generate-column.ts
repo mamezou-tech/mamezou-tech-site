@@ -77,36 +77,36 @@ async function main(path: string) {
   const web = new WebClient(token);
 
   const today = new Date();
-  // await web.chat.postMessage({
-  //   channel: "C034MCKP4M6",
-  //   // channel: "C04F1QJDLJD", // ops
-  //   mrkdwn: true,
-  //   text: "今日の豆香の豆知識コラム(予告)",
-  //   unfurl_media: false,
-  //   blocks: [
-  //     {
-  //       type: "header",
-  //       text: {
-  //         type: "plain_text",
-  //         text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(予告)`
-  //       }
-  //     },
-  //     {
-  //       type: "section",
-  //       text: {
-  //         type: "mrkdwn",
-  //         text: item.title,
-  //       }
-  //     },
-  //     {
-  //       type: "section",
-  //       text: {
-  //         type: "mrkdwn",
-  //         text: column,
-  //       }
-  //     },
-  //   ]
-  // })
+  await web.chat.postMessage({
+    channel: "C034MCKP4M6",
+    // channel: "C04F1QJDLJD", // ops
+    mrkdwn: true,
+    text: "今日の豆香の豆知識コラム(予告)",
+    unfurl_media: false,
+    blocks: [
+      {
+        type: "header",
+        text: {
+          type: "plain_text",
+          text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(予告)`
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: item.title,
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: column,
+        }
+      },
+    ]
+  })
 }
 
 function pickup(arr: string[], excludes: string[]): string {

@@ -18,12 +18,13 @@ async function main(path: string) {
   const json: Gpt = JSON.parse(fs.readFileSync(path).toString());
 
   const prompt: ChatCompletionRequestMessage = {
-    content: `ITデベロッパーがプログラミングで使うジャーゴン(隠語)で、笑えるものを出力してください。
-以下の制約を守ってください。
-- 20個を改行区切りのフォーマットで出力
-- 順番や「はい」や「わかりました」等の返事やジャーゴンの説明はしない
-- 出力するジャーゴンは既知のもののみ
-- 一般的に使われていないものや未知のものは出力結果に含めない`,
+    content: `Output funny jargon used by IT developers in programming.
+
+Please follow the restrictions below.
+- No need to reply message
+- 20 output words in newline delimited format
+- Only known jargon to be output
+- Used around the world`,
     role: 'user'
   };
   const keywordsResponse = await ask({
@@ -51,7 +52,7 @@ async function main(path: string) {
 
 - Speak in Japanese
 - 「はい」や「わかりました」等の返事はしない
-- 明るく元気な口語口調で話す
+- 明るく元気な口語で話す
 - 挨拶はしない
 - 「です」「ます」等の敬語は使わない
 - AI Chatの一人称は「豆香」を使う

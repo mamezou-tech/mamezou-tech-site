@@ -88,6 +88,7 @@ initは状態が初期化されてない場合のみ実行されます。これ�
 
 まず、最初のページ(`pages/user.vue`)は以下のようにしました。
 
+{% raw %}
 ```html
 <script lang="ts" setup>
 const user = useState<{ id: string, name: string, mail: string }>('login-user', () => {
@@ -107,11 +108,13 @@ const user = useState<{ id: string, name: string, mail: string }>('login-user', 
   </div>
 </template>
 ```
+{% endraw %}
 
 setupの最初で、useStateを使ってユーザー情報を初期化しています。ここでは固定値ですが、実運用では外部の認証システム等から取得することを想定しています。
 テンプレートではNuxtLinkを使ってユーザー詳細ページ(`pages/user-detail.vue`)に遷移するようにしています。
 ユーザー詳細ページは以下のようにしました。
 
+{% raw %}
 ```html
 <script lang="ts" setup>
 const user = useState('login-user')
@@ -125,6 +128,7 @@ const user = useState('login-user')
   </div>
 </template>
 ```
+{% endraw %}
 
 先程useStateで指定したものと同じキーで取得し、ユーザー情報を表示しています。
 

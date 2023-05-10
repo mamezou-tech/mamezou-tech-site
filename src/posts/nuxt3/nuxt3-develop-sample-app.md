@@ -2,6 +2,7 @@
 title: Nuxt3入門(第2回) - 簡単なNuxtアプリケーションを作成する
 author: noboru-kudo
 date: 2022-10-02
+updated: 2023-05-10
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-rendering-mode.md
 nextPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md
@@ -10,6 +11,9 @@ nextPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md
 [前回](/nuxt/nuxt3-rendering-mode/)はNuxtの基本的なレンダリングモードを説明しました。
 第2回は、実際に簡単なNuxtアプリケーションを作成し、Nuxt3の開発フローを見ていきます。
 
+:::info
+2023-05-10 コード例で使用していたVueのテンプレートの一部構文(Mustache)が、ページ生成時に別のテンプレート構文(Liquid)と判定され、消えていたのを修正しました。
+:::
 
 ## 事前準備
 
@@ -43,6 +47,7 @@ Nuxt2同様にページファイルは`pages`ディレクトリにVueコンポ�
 なお、各コンポーネントは冗長な記述となっていますが、この後に順を追って改善していきます。
 
 - index.vue
+{% raw %}
 ```html
 <script setup lang="ts">
 const articles = ref<{ id: number, title: string }[]>([]);
@@ -90,7 +95,10 @@ footer {
 }
 </style>
 ```
+{% endraw %}
+
 - details.vue
+{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -140,6 +148,7 @@ footer {
 }
 </style>
 ```
+{% endraw %}
 
 作成したページは、ブログサイトのトップページ(`index.vue`)と詳細ページ(`details.vue`)を想定したものです。
 トップページでブログの一覧を表示し、ブログをクリックすると詳細ページでその記事の内容を表示します。
@@ -152,7 +161,7 @@ Composition API自体の使い方は、本題ではありませんのでここ�
 - [Composition API FAQ](https://vuejs.org/guide/extras/composition-api-faq.html)
 
 もう一点気づくことは、上記はref()やuseRoute()等でimport文が記述されていません。これはNuxt3のAuto Importの仕組みを利用しているためです。
-Nuxt3では、Nuxt本体やVueの頻出APIはもちろん、自作のVueコンポーネント(`components`配下)、Composition APIのモジュール(`composables`配下)では明示的なimport記述は不要です[^2]。
+Nuxt3では、Nuxt本体やVueの頻出APIはもちろん、自作のVueコンポーネント(`components`配下)、Composition APIのモジュール(`composables`/`utils`配下)では明示的なimport記述は不要です[^2]。
 
 [^2]: IDEでコードアシストを使うには、Nuxtアプリを一度ビルドして、TypeScriptの型宣言ファイル(d.ts)を`.nuxt`ディレクトリに作成する必要があります。
 
@@ -173,6 +182,7 @@ Nuxt2でも同様ですが、このようなレイアウトは`layouts`ディレ
 
 ここでは`layouts`ディレクトリ内に`default.vue`を作成し、ヘッダ、フッタを切り出します。
 
+{% raw %}
 ```html
 <template>
   <div>
@@ -201,12 +211,14 @@ footer {
 }
 </style>
 ```
+{% endraw %}
 
 実際の各ページのコンテンツを挿入する部分は`<slot />`とします。Nuxt2のときは`<Nuxt />`でしたので、間違えないように注意してください。
 
 これで冗長だったページコンポーネントからヘッダやフッタを削除できます。
 
 - index.vue
+{% raw %}
 ```html
 <script setup lang="ts">
 const articles = ref<{ id: number, title: string }[]>([]);
@@ -233,7 +245,10 @@ articles.value = [{
   </div>
 </template>
 ```
+{% endraw %}
+
 - details.vue
+{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -262,7 +277,7 @@ article.value = articles.find(article => +id === article.id)
   </div>
 </template>
 ```
-
+{% endraw %}
 先程と比較して、ヘッダ、フッタやスタイル適用がなくなってスッキリしました。
 ここでNuxtアプリのエントリーポイントも修正しておきます。
 プロジェクト直下の`app.vue`の内容が初期状態のWelcomeページを表示するようになっていますので修正します。
@@ -344,6 +359,7 @@ Composition APIの導入によって、ステートフルなものでも機能�
 各ページファイルで、このモジュール(Composable)を使うように修正します。
 
 - index.vue
+{% raw %}
 ```html
 <script setup lang="ts">
 const { fetchArticles, articles } = useArticles();
@@ -364,8 +380,10 @@ fetchArticles();
   </div>
 </template>
 ```
+{% endraw %}
 
 - details.vue
+{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -387,6 +405,7 @@ fetchArticle(+id);
   </div>
 </template>
 ```
+{% endraw %}
 
 だいぶシンプルになりました。
 
@@ -401,6 +420,7 @@ article取得部分を先程のComposableの公開関数・変数を使うよう
 VueコンポーネントはNuxt2同様に`components`ディレクトリ内に作成します。
 以下の`Advertisement.vue`ファイルを作成しました。
 
+{% raw %}
 ```html
 <script setup lang="ts">
 const ads = ref<{ id: number, title: string, url: string }[]>([]);
@@ -423,11 +443,13 @@ ads.value = [{
   </ul>
 </template>
 ```
+{% endraw %}
 
 固定で複数の広告リンクを表示するだけのシンプルなものです。
 これを各ページに挿入します。
 
 - index.vue
+{% raw %}
 ```html
 <script setup lang="ts">
 const { fetchArticles, articles } = useArticles();
@@ -448,9 +470,12 @@ fetchArticles();
     <!-- ↓追加 -->
     <Advertisement />
   </div>
+</template>
 ```
+{% endraw %}
 
 - details.vue
+{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -470,6 +495,7 @@ fetchArticle(+id);
   </div>
 </template>
 ```
+{% endraw %}
 
 スクリプトの変更はありません。テンプレートに先程の広告コンポーネントを追加しているだけです。
 `components`配下もNuxt3のAuto Importは機能しますので、Composable同様にコンポーネントもimport文の記述は不要です。

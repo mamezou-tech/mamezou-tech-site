@@ -125,6 +125,7 @@ Nuxt2では`pages/details/_id.vue`のようなアンダースコアをつけて�
 
 このパスパラメータを利用するようindex.vueを修正します。
 
+{% raw %}
 ```html
 <script setup lang="ts">
 const {data: articles, refresh} = await useFetch('/api/blogs');
@@ -147,10 +148,12 @@ const {data: articles, refresh} = await useFetch('/api/blogs');
   </div>
 </template>
 ```
+{% endraw %}
 
 `NuxtLink`の`to`プロパティをパスパラメータに変更しています。
 `details/[id].vue`の方は以下のようになります。
 
+{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -171,6 +174,7 @@ const { data: article } = await useFetch(`/api/blogs/${id}`);
   </div>
 </template>
 ```
+{% endraw %}
 
 基本はdetails.vueと同じですが、クエリパラメータ(route.query)として取得していた部分を、パスパラメータ(`route.params`)に変更しました。
 これでNuxtアプリケーションをビルドすると、パスパラメータでページ遷移するようになります。

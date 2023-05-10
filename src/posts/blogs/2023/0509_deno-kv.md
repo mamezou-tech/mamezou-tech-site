@@ -92,11 +92,11 @@ const BOOKS_ISBN = new URLPattern({ pathname: "/books/:isbn" });
 
 // ハンドラーの定義
 async function handler(req: Request): Promise<Response> {
-  const machIsbn = BOOKS_ISBN.exec(req.url);
+  const matchIsbn = BOOKS_ISBN.exec(req.url);
   const matchBooks = BOOKS.exec(req.url);
 
-  if (machIsbn) {
-    const isbn = machIsbn.pathname.groups.isbn;
+  if (matchIsbn) {
+    const isbn = matchIsbn.pathname.groups.isbn;
     if (req.method === "GET") {
       // キーで取得する
       const res = await kv.get(["books", isbn]);  // ["books", isbn] がキー
@@ -185,7 +185,7 @@ $ curl -X POST -H "Content-Type: application/json" localhost:8000/books -d '{"is
 00000000000001cd0000
 
 # 削除
-$  curl -X DELETE localhost:8000/books/978-1-09-123456-5                               
+$ curl -X DELETE localhost:8000/books/978-1-09-123456-5                               
 OK
 ```
 

@@ -16,6 +16,7 @@ type Gpt = {
 async function main(path: string) {
   console.log('talk to AI Chat...');
   const json: Gpt = JSON.parse(fs.readFileSync(path).toString());
+  const pastTitles = json.columns.map(column => column.title);
 
   const prompt: ChatCompletionRequestMessage = {
     content: `Output funny jargon used by IT developers in programming.
@@ -24,7 +25,11 @@ Please follow the restrictions below.
 - No need to reply message
 - 20 output words in newline delimited format
 - Only known jargon to be output
-- Used around the world`,
+- Speak in English
+
+Do not output the following words.
+${pastTitles.map(title => `- ${title}`).join('\n')}
+`,
     role: 'user'
   };
   const keywordsResponse = await ask({
@@ -36,7 +41,7 @@ Please follow the restrictions below.
 
   const arr = message.split('\n').filter(x => !!x).map(x => x.replace(/\d+\. /, ''));
   console.log(arr)
-  const keyword = pickup(arr, json.columns.map(column => column.title));
+  const keyword = pickup(arr, pastTitles);
   const result = await ask({
     messages: [prompt, {
       role: 'assistant',
@@ -78,36 +83,36 @@ Please follow the restrictions below.
   const web = new WebClient(token);
 
   const today = new Date();
-  await web.chat.postMessage({
-    channel: "C034MCKP4M6",
-    // channel: "C04F1QJDLJD", // ops
-    mrkdwn: true,
-    text: "今日の豆香の豆知識コラム(予告)",
-    unfurl_media: false,
-    blocks: [
-      {
-        type: "header",
-        text: {
-          type: "plain_text",
-          text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(予告)`
-        }
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: item.title,
-        }
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: column,
-        }
-      },
-    ]
-  })
+  // await web.chat.postMessage({
+  //   channel: "C034MCKP4M6",
+  //   // channel: "C04F1QJDLJD", // ops
+  //   mrkdwn: true,
+  //   text: "今日の豆香の豆知識コラム(予告)",
+  //   unfurl_media: false,
+  //   blocks: [
+  //     {
+  //       type: "header",
+  //       text: {
+  //         type: "plain_text",
+  //         text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(予告)`
+  //       }
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: item.title,
+  //       }
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: column,
+  //       }
+  //     },
+  //   ]
+  // })
 }
 
 function pickup(arr: string[], excludes: string[]): string {

@@ -85,3 +85,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 
 - [Pytestを使ってみる（その１：準備編）](/blogs/2023/03/01/using-pytest-01/)
 - [Pytestを使ってみる（その２：VSCode拡張機能編）](/blogs/2023/03/05/using-pytest-02/)
+
+### Allure
+
+- [テストのフレイキーさを簡単に確認するためにレポートツールAllureを利用する](/blogs/2023/05/11/flaky-test-allure/)

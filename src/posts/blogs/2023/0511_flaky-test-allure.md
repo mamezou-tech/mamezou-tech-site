@@ -7,7 +7,7 @@ tags: [テスト]
 
 フレイキーなテスト(flaky test[^1])とは、ソースコードに変更を加えていないにも関わらず成功と失敗の両方の結果を出すテストです。ソフトウェアテストのシンポジウムJaSSTでのGoogleのJohn Micco氏の講演[^2]などが有名ですね。  
 
-[^1]:　余談ですが、flakyって語彙は「薄片/フレーク状の」から転じて「風変り」や「信用できない」ような俗語的な意味があるようです。筆者は「壊れやすくて儚い」ようなロマンチックな妄想をしていましたが、snowflake(雪の結晶)に引っ張られすぎていたようです。  
+[^1]:　余談ですが、flakyって語彙は「薄片/フレーク状の」から転じて「風変り」や「信用できない」ような俗語的な意味(日本語の「薄っぺらい奴」のような感覚でしょうか)があるようです。筆者は「壊れやすくて儚い」ようなロマンチックな妄想をしていましたが、snowflake(雪の結晶)に引っ張られすぎていたようです。  
 
 [^2]:　[講演資料](https://www.jasst.jp/symposium/jasst18tokyo/pdf/A1.pdf)によると当時のGoogle社においても16%ほどのテストが何かしらのフレイキーさを有し、開発者の誤判断を誘発したりテスト再実行の無駄コストを生んでいた模様です。  
 
@@ -22,6 +22,8 @@ tags: [テスト]
 今回は「フレイキーさ」を分析する一歩目として、簡易に導入可能なレポーティングツールのAllureをサンプルコードを交えて紹介します。
 
 この記事のコードサンプルは、[Gitlab リポジトリ](https://gitlab.com/shinichiro-iwaki/testexample/) にありますので、興味がある方はあわせてご利用下さい。
+
+※2023/5/12 細かな誤記に気付きましたので修正しました  
 
 ## Allureの導入
 
@@ -84,13 +86,13 @@ pages:
     # gradle pluginを利用してbackend-build-and-testジョブの成果物として引き継いだデータ、及びキャッシュ保持したhistoryからレポート生成
     - ./gradlew allureReport 
     # allure-reportに出力されたhistoryデータをGitlabのキャッシュとして保持するために上書き
-    - cp -rf build/allure-reports/history/* build/allure-results/history
+    - cp -rf build/reports/allure-report/allureReport/history/* build/allure-results/history
     - cd ../
   script: 
     - echo "prepare reports for Gitlab Pages"
     # 生成したレポートファイルをGitlab Pagesを利用した公開対象パスに移動
     - mkdir -p .public
-    - mv build/allure-reports/history/* .public
+    - mv back/build/reports/allure-report/allureReport/* .public
     - mv .public public
   artifacts:
     paths:

@@ -1,6 +1,8 @@
+import { DateTime } from 'luxon';
+
 const propertyId = process.env.GA_PROPERTY_ID || "";
 
-export function makeGoogleSearchClicksRequest(from, to) {
+export function makeGoogleSearchClicksRequest(from: DateTime, to: DateTime) {
   return {
     property: `properties/${propertyId}`,
     dateRanges: [
@@ -18,7 +20,7 @@ export function makeGoogleSearchClicksRequest(from, to) {
   }
 }
 
-export function makeUserCountRequest(from, to) {
+export function makeUserCountRequest(from: DateTime, to: DateTime) {
   return {
     property: `properties/${propertyId}`,
     dateRanges: [
@@ -36,7 +38,7 @@ export function makeUserCountRequest(from, to) {
   }
 }
 
-export function makePvRequest(from, to) {
+export function makePvRequest(from: DateTime, to: DateTime) {
   return {
     property: `properties/${propertyId}`,
     dateRanges: [
@@ -68,7 +70,7 @@ export function makePvRequest(from, to) {
   }
 }
 
-export function makePopularPosts(from, to) {
+export function makePopularPosts(from: DateTime, to: DateTime) {
   return {
     property: `properties/${propertyId}`,
     dateRanges: [

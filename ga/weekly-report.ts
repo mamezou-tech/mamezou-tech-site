@@ -13,7 +13,14 @@ const analyticsDataClient = new BetaAnalyticsDataClient();
 const now = DateTime.now();
 const oneWeekAgo = now.minus({weeks: 1});
 
-async function runReport(reportFile) {
+type Rank = {
+  title: string,
+  path: string,
+  url: string,
+  pv: number,
+}
+
+async function runReport(reportFile: string) {
   const [response] = await analyticsDataClient.runReport({
     property: `properties/${propertyId}`,
     dateRanges: [
@@ -61,18 +68,18 @@ async function runReport(reportFile) {
     limit: 1000,
   });
 
-  const articles = response.rows
+  const articles: Rank[] = response.rows!
     .slice()
-    .sort((a, b) => b.metricValues[0].value - a.metricValues[0].value)
-    .filter((row) => row.dimensionValues[1].value !== "developer.mamezou-tech.com/") // exclude top page
+    .sort((a, b) => +b.metricValues![0].value! - +a.metricValues![0].value!)
+    .filter((row) => row.dimensionValues![1].value !== "developer.mamezou-tech.com/") // exclude top page
     .slice(0, 10)
     .map((row) => {
-      const [title, url] = row.dimensionValues.map((v) => v.value);
-      const pv = row.metricValues[0].value;
+      const [title, url] = row.dimensionValues!.map((v) => v.value);
+      const pv = +(row.metricValues![0].value || 0);
       return {
-        title: title.replace(" | 豆蔵デベロッパーサイト", ""),
-        path: url.replace("developer.mamezou-tech.com", ""),
-        url,
+        title: title!.replace(" | 豆蔵デベロッパーサイト", ""),
+        path: url!.replace("developer.mamezou-tech.com", ""),
+        url: url || '',
         pv,
       };
     });
@@ -82,7 +89,7 @@ async function runReport(reportFile) {
   await notifyToSlack(articles);
 }
 
-async function notifyToSlack(articles) {
+async function notifyToSlack(ranks: Rank[]) {
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
   await web.chat.postMessage({
@@ -103,7 +110,7 @@ async function notifyToSlack(articles) {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: articles.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.pv}`).join("\n"),
+          text: ranks.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.pv}`).join("\n"),
         }
       },
       {

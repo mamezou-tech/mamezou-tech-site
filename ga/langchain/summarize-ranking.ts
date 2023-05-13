@@ -20,10 +20,10 @@ export async function summarizeRanking(latestRanking: Rank[], preRanking: Rank[]
 結果を要約してください。
 
 - 最新ランキング(記事タイトル: 獲得ユーザー数)
-${latest}
+{latest}
 
 - 前日のランキング(記事タイトル: 獲得ユーザー数)
-${pre}
+{pre}
 
 コメントは以下の制約条件を守ってください。
 - コメントを元気な感じで出力

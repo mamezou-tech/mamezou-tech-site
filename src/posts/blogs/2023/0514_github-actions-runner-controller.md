@@ -10,7 +10,7 @@ tags: [GitHub, CI/CD, k8s]
 [GitHub Actions - Actions Runner Controller Public Beta | GitHub Changelog](https://github.blog/changelog/2023-05-10-github-actions-actions-runner-controller-public-beta/)
 
 ## ARC 導入の利点
-これまで、GitHub Actions のセルフホストランナーは、ローカルの PC や VM に構築するものでした。そのため、CI/CD ワークフローの実行時に Runner 用のマシンをプロビジョニングしてワークフロー終了時にマシンを破棄するということが難しく、常に起動状態にしておく必要がありました。
+これまで GitHub Actions のセルフホストランナーは、ローカルの PC や VM に構築するものでした。そのため、CI/CD ワークフローの実行時に Runner 用のマシンをプロビジョニングしてワークフロー終了時にマシンを破棄するということが難しく、常に起動状態にしておく必要がありました。
 
 :::info
 GitHub Actions のセルフホストランナーをローカルマシンで実行する方法については以下の記事を参照してください。
@@ -128,9 +128,9 @@ arc-runner-set-t9flz-runner-9q6k5   0/1     Terminating         1 (2s ago)   29s
 arc-runner-set-t9flz-runner-9q6k5   0/1     Terminating         1 (2s ago)   29s
 ```
 
-ワークフローの起動に応じて、runner-set の Pod が作成されて、`Running` になり、ワークフローの終了とともに、`Terminating` になり破棄されました。
+ワークフローの起動に応じて runner-set の Pod が作成され `Running` になり、ワークフローの終了とともに `Terminating` になり破棄されました。
 
-namespace `arc-systems` にデプロイされた Listener の Pod のログを見てみると、ワークフローの実行に応じて、Runner の起動がリクエストされて、Runner が起動されジョブにアサインされる様子を追うことができました。
+namespace `arc-systems` にデプロイされた Listener の Pod のログを見てみると、ワークフローの実行に応じて Runner の起動がリクエストされて Runner が起動されジョブにアサインされる様子を追うことができました。
 
 ```shell
 kubectl logs arc-runner-set-754b578d-listener -n arc-systems
@@ -157,7 +157,7 @@ kubectl logs arc-runner-set-754b578d-listener -n arc-systems
 2023-05-14T11:24:50Z	INFO	service	waiting for message...
 ```
 
-サンプルのワークフローは、メッセージをエコーするだけの簡単なものでしたので、もう少し現実的なワークフローを動かしてみます。以下のワークフローでは次のステップでジョブを実行しています。
+サンプルのワークフローはメッセージをエコーするだけの簡単なものでしたので、もう少し現実的なワークフローを動かしてみます。以下のワークフローでは次のステップでジョブを実行しています。
 
 - Electron アプリのソースコードをチェックアウト
 - Node.js 環境を setup
@@ -165,6 +165,7 @@ kubectl logs arc-runner-set-754b578d-listener -n arc-systems
 - electron-builder バイナリーをビルド
 - ビルドしたバイナリーを成果物としてアップロード
 
+{% raw %}
 ```yaml
 name: Build electron app Linux installer with Actions Runner Controller
 
@@ -201,6 +202,7 @@ jobs:
         name: electron-example-browserview
         path: electron-example-browserview/dist/**
 ```
+{% endraw %}
 
 `runs-on` には `arc-runner-set` を指定しています。このワークフローを実行すると、無事にビルドが完了して、成果物が Summary ページにアップロードされました。
 

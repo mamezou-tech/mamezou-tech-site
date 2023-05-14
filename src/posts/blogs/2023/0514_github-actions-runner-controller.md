@@ -18,7 +18,7 @@ GitHub Actions のセルフホストランナーをローカルマシンで実�
 [GitHub Actions のセルフホストランナーを M1 Mac で動かす](/blogs/2022/08/05/setup-github-actions-self-hosted-runner/)
 :::
 
-Kubernetes クラスターに ARC をデプロイすると、セルフホストな GitHub Actions Runner (実体は Pod) がオートスケーリングで起動して実行できます。ワークフロー開始時にランナーの Pod が起動されワークフロー終了後に破棄されるため、専用の VM を用意する必要がなく、ランニングコストを下げることが可能です。
+Kubernetes クラスターに ARC をデプロイすると、セルフホストな GitHub Actions Runner (実体は Pod) がオートスケーリングで起動して実行できます。ワークフロー開始時にランナーの Pod が起動されワークフロー終了後に破棄されるため、専用の VM を用意する必要がなくランニングコストを下げることが可能です。
 
 ARC のドキュメントは以下にあります。
 
@@ -58,9 +58,11 @@ NAME                                                   READY   STATUS    RESTART
 arc-gha-runner-scale-set-controller-755f574df6-5hx9z   1/1     Running   0          25s
 ```
 
-ARC で Runner の Pod を実行して、リポジトリ用の Runner として登録するには PAT (Personal Access Token) の作成が必要になります。PAT の scope としては、`repo` と `workflow` を指定しておけばよさそうです。
+ARC で Runner の Pod を実行してリポジトリ用の Runner として登録するには PAT (Personal Access Token) の作成が必要になります[^2]。PAT の scope としては、`repo` と `workflow` を指定しておけばよさそうです。
 
-ARC の Runner を使いたい GitHub リポジトリと PAT を指定して、arc-runner-set の Helm chart をインストールします。以下の例では、`GITHUB_CONFIG_URL` でリポジトリの URL を `GITHUB_PAT` に PAT を環境変数として指定しています。arc とは別の runners 用の namespace (ここでは `arc-runners`) にインストールするのがよさそうです。
+[^2]: 正式公開時には OIDC 認証も使えるようになるといいですね。
+
+GitHub リポジトリと PAT を指定して arc-runner-set の Helm chart をインストールします。以下の例では、`GITHUB_CONFIG_URL` でリポジトリの URL を `GITHUB_PAT` に PAT を環境変数として指定しています。arc とは別の runners 用の namespace (ここでは `arc-runners`) にインストールするのがよさそうです。
 
 ```shell
 GITHUB_CONFIG_URL="https://github.com/<your_account/repo>"

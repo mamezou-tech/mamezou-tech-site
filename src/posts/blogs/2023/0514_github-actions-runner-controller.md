@@ -62,7 +62,7 @@ ARC で Runner の Pod を実行してリポジトリ用の Runner として登�
 
 [^2]: 正式公開時には OIDC 認証も使えるようになるといいですね。
 
-GitHub リポジトリと PAT を指定して arc-runner-set の Helm chart をインストールします。以下の例では、`GITHUB_CONFIG_URL` でリポジトリの URL を `GITHUB_PAT` に PAT を環境変数として指定しています。arc とは別の runners 用の namespace (ここでは `arc-runners`) にインストールするのがよさそうです。
+GitHub リポジトリと PAT を指定して arc-runner-set の Helm chart をインストールします。以下の例では、`GITHUB_CONFIG_URL` でリポジトリの URL を、`GITHUB_PAT` で PAT を helm install 時の環境変数として指定しています。arc とは別の runners 用の namespace (ここでは `arc-runners`) にインストールするのがよさそうです。
 
 ```shell
 GITHUB_CONFIG_URL="https://github.com/<your_account/repo>"

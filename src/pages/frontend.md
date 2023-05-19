@@ -62,6 +62,7 @@ Deno は高速でセキュアな JavaScript ランタイムです。Node.js に�
 
 ### ブログ
 - [Deno による Slack プラットフォーム(オープンベータ)](/blogs/2022/09/27/slack-new-plotform-powered-by-deno/)
+- [Deno のビルトイン key-value データベース Deno KV が登場](/blogs/2023/05/09/deno-kv/)
 
 ## デスクトップアプリ
 フロントエンドの技術は Web アプリだけでなくデスクトップアプリにも応用されています。ここでは、定番の Electron をはじめとするデスクトップアプリケーションのフレームワークの活用についてご紹介します。

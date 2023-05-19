@@ -210,3 +210,9 @@ Cloudflare も [D1 で SQLite の実行をサポート](https://blog.cloudflare.
 [^2]: パフォーマンスチューニングの段階では思いっきり意識すると思いますが。
 
 クローズドベータが使えるようになったら Deno Deploy で試してみたいと思います。
+
+:::info:2023.05.19追記
+Deno KV を Deno Deploy で試した記事を書きました
+
+[Deno KV を Deno Deploy で使う](/blogs/2023/05/18/deno-kv-on-deno-deploy/)
+:::

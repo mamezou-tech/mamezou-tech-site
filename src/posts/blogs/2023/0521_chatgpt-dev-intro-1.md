@@ -18,9 +18,8 @@ tags: [chatgpt, サーバーレス, lambda, AWS]
 ![plugin design](https://i.gyazo.com/82b004d462b3c628aa49f8b147fe60e4.png)
 
 プラグインの機能としては、ChatGPTからのリクエストに応じて、GitHub APIと連携してGitHubレポジトリを検索するシンプルなものとします。
-今回はAWS環境ではなく、この構成を踏まえてローカル環境でChatGPTプラグインを作成してみます。
 
-前半となる今回は、AWS環境自体は使用せずにローカル環境でChatGPTとAPIを連携させてみます。
+前半となる今回はAWS環境ではなく、この構成を踏まえてローカル環境でChatGPTプラグインを作成してみます。
 
 :::alert
 ChatGPTプラグイン機能自体や開発フローは試験的バージョンで流動的な状況です。
@@ -28,7 +27,7 @@ ChatGPTプラグイン機能自体や開発フローは試験的バージョン�
 
 - [OpenAI Doc - Chat Plugins](https://platform.openai.com/docs/plugins/introduction)
 
-また、現時点では全ユーザーに解放されている訳ではなく[waitlist](https://openai.com/waitlist/plugins)への登録が必要です。
+また、現時点ではプラグイン開発は全ユーザーに解放されている訳ではなく[waitlist](https://openai.com/waitlist/plugins)への登録が必要です。
 :::
 
 ## プラグイン用のプロジェクトを作成する

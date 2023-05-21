@@ -461,9 +461,9 @@ curl http://localhost:3000/openapi.yaml
 後は試すだけです。ChatGPTにJavaScriptで人気のあるGitHubレポジトリを探してもらいます。
 以下動画です(Darkだと少し見にくいのでLightテーマにしました)。
 
-<a href="https://gyazo.com/9fb77284f928fe39bed3be265fbac0cc">
-<video alt="Video from Gyazo" width="906" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/9fb77284f928fe39bed3be265fbac0cc.mp4" type="video/mp4" /></video>
-</a>
+<video alt="Video from Gyazo" width="100%" autoplay muted loop playsinline controls>
+<source src="https://i.gyazo.com/9fb77284f928fe39bed3be265fbac0cc.mp4" type="video/mp4" />
+</video>
 
 ChatGPTがプロンプトに応じてこのプラグインを使うと判断し、OpenAPI仕様からパラメータを組み立て、APIコールをしている様子が分かります。
 感心したのは、ChatGPTはレポジトリ検索クエリ作成時に[GitHub独自仕様](https://docs.github.com/en/search-github/searching-on-github/searching-for-repositories)を解釈しているようです(そのような情報はOpenAPI仕様に入れていないのですが...)。

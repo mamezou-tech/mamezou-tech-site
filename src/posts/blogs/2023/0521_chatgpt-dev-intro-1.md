@@ -83,13 +83,11 @@ const CORSHeaders = {
   'Access-Control-Allow-Headers': '*'
 };
 
-type Result = {
-  repos: {
-    full_name: string,
-    url: string,
-    star: number,
-    description: string
-  }[]
+type Repo = {
+  full_name: string,
+  url: string,
+  star: number,
+  description: string
 }
 
 const octokit = new Octokit({
@@ -103,7 +101,7 @@ export const search: APIGatewayProxyHandler = async (event: APIGatewayEvent, con
     order: 'desc',
     per_page: 5
   });
-  const repos: Result['repos'] = resp.data.items.map(item => ({
+  const repos: Repo[] = resp.data.items.map(item => ({
     full_name: item.full_name,
     url: item.url,
     star: item.stargazers_count,
@@ -181,7 +179,7 @@ ChatGPTはユーザーの入力プロンプトからプラグインAPI呼び出�
 
 - [OpenAI ChatGPT Plugin Doc - Writing descriptions](https://platform.openai.com/docs/plugins/getting-started/writing-descriptions)
 
-なお、各種エンドポイントはSAMのローカル実行で使う`localhost:3000`としています。
+なお、各種エンドポイントはSAM CLIのローカル実行で使う`localhost:3000`としています。
 
 ちなみに、`logo_url`や`legal_info_url`のエンドポイントは、この時点では存在しなくても動作上は問題ありませんでした[^1]
 
@@ -237,10 +235,10 @@ components:
           description: The URL of GitHub Repository.
         star:
           type: integer
-          description: Number of stars collected by the GitHub repository
+          description: Number of stars collected by the GitHub repository.
         description:
           type: string
-          description: The description of the GitHub repository
+          description: The description of the GitHub repository.
 ```
 
 プラグインマニフェスト同様にパラメータやフィールドの`description`や`summary`は、ChatGPTがAPI呼び出し時に解釈するものです。

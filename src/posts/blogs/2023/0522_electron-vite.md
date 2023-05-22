@@ -26,7 +26,7 @@ electron-vite の Git リポジトリです。記事執筆時点のバージョ�
 8. `Source Code Protection`: ソースコード保護のため V8 bytecode へのコンパイル
 9. `Out-of-the-box`: 追加設定なしで、TypeScript / Vue/ React / Svelte/ SolidJS などをサポート
 
-素の Electron 開発では renderer process のアセット開発は特にサポートされておらず自前でビルド環境を作る必要があります。ホットリローディングもないので、アプリのデバッグメニューからリロードします。main process や preload script の変更はリロードしても反映されないので、アプリを再起動する必要があります。electron-vite ではこのあたりをかなり改善・省力化してくれます。
+素の Electron アプリ開発では renderer process で使用するアセット開発は特にサポートされておらず、自前でビルド環境を作る必要があります。ホットリローディングもなくアプリのデバッグメニューからリロードします。main process や preload script の変更はアプリを再起動しないと反映されません。electron-vite はこのあたりをかなり改善・省力化してくれます。
 
 :::info
 main process / renderer process / preload といった Electron のプログラミング要素については以下の記事で解説しています。
@@ -36,13 +36,13 @@ main process / renderer process / preload といった Electron のプログラ�
 
 elecrtron-vite の公式ドキュメントからもう少し説明を見てみましょう。
 
-[Getting Started | electron-vite](https://evite.netlify.app/guide/)
+[Introduction | electron-vite](https://evite.netlify.app/guide/introduction.html)
 
-コミュニティリソースに多くある Vite ベースの Electron 開発テンプレートは複雑で補助スクリプトが必要だったり、ソースコードの保護ができないなどの課題がある。electron-vite はこれら課題を解決し、Electron のための俊敏で無駄のない開発体験を提供することを目的としているとのことです。
+コミュニティリソースに多くある Vite ベースの Electron 開発テンプレートは、複雑で補助スクリプトが必要だったり、ソースコードの保護ができないなどの課題がある。electron-vite はこれら課題を解決し Electron のための俊敏で無駄のない開発体験を提供することを目的としているとのことです。
 
-electron-vite では main process / preload スクリプトがバンドルされ、renderer process では Vite の開発サーバで [HMR](https://ja.vitejs.dev/guide/api-hmr.html) が使用されることでビルドや動作確認の手間が削減されます。実際、electron-vite で作業をしていると Vue などで SPA を開発しているのに近い開発体験が得られました。
+electron-vite では main process / preload スクリプトは CommonJS でバンドルされ、renderer process では Vite の開発サーバで ESM としてビルドされ [HMR](https://ja.vitejs.dev/guide/api-hmr.html) が使用されます。これによりビルドや動作確認の手順が大幅に削減されます。実際、electron-vite で作業をしていると Vue などで SPA を開発しているのに近い開発体験が得られました。
 
-さらに electron-vite は Electron の推奨構成(nodeIntegration 無効化、contextIsolation 有効化など)が設計に反映されており、ベストプラクティスに準拠できます。生成されたプロジェクト構成を見ると近年の Electron の推奨構成にほぼ準拠したものでした。
+さらに electron-vite は Electron の推奨構成(nodeIntegration 無効化、contextIsolation 有効化など)が設計に反映されており、ベストプラクティスを利用できます。生成されたプロジェクト構成を見ると近年の Electron の推奨構成にほぼ準拠したものでした。
 
 :::info:サンドボックス化の制限事項
 electron-vite では `sandbox:false` で renderer process のサンドボックスを無効化しています。これは CommonJS module を複数ファイルに分割するために必要な措置とのことです。
@@ -85,7 +85,7 @@ Done. Now run:
   npm run dev
 ```
 
-プロジェクトのディレクトリ構成は、以下のようになりました。src 配下に main process、preload スクリプト、renderer のディレクトリが掘られます。Vue を選択したので renderer 配下は通常の Vue3 のプロジェクト構成になっています。
+プロジェクトのディレクトリ構成は、以下のようになりました。src 配下に main process、preload スクリプト、renderer process のディレクトリが掘られます。Vue を選択したので renderer 配下は通常の Vue3 のプロジェクト構成になっています。
 
 ```shell
 .
@@ -132,12 +132,12 @@ npm run dev
 
 package.json の npm script では、`"dev": "electron-vite dev",` が定義されています。
 
-HMR による renderer process のホットリローディングが可能になっていますので、src/renderer 配下のファイルを編集した場合素早くアプリの画面に反映されます。main process や preload スクリプトを書き換えた際もリロードさせるには、`electron-vite dev` に `--watch` フラグをつけます。
+HMR による renderer process のホットリローディングが可能になっていますので、src/renderer 配下のファイルを編集したら即座にアプリ画面に反映されます。main process や preload スクリプトを書き換えた際もリロードさせるには `electron-vite dev` に `--watch` フラグをつけます。
 
 [Hot Reloading | electron-vite](https://evite.netlify.app/guide/hot-reloading.html)
 
 :::info
-npm script で常時 `--watch` を指定してしまうと、再起動のたびに VS Code からアプリ側にフォーカスを持っていかれますので、必要時に応じて指定するのが無難です。main process や preload スクリプトを微修正する場合に使うのがよいでしょう。以下のように npm script の引数でフラグを指定することも可能です。
+npm script で常時 `--watch` を指定してしまうと、再起動のたびに編集中の IDE からアプリ側にフォーカスを持っていかれますので、必要時だけ指定するのが無難です。main process や preload スクリプトを微修正する場合に使うのがよいでしょう。以下のように npm script の引数でフラグを指定することも可能です。
 
 ```shell
 npm run dev -- --watch
@@ -316,8 +316,8 @@ Elctron に内蔵された Chrome DevTools の方が慣れているので今回�
 
 後発の [Tauri](https://tauri.app/) では最初からこのレベルの環境が提供されていますが、Electron でもここまでのサポートがあれば随分と効率が上がりそうです。
 
-Electron と Web のビルドツールを組み合わせるボイラープレートプロジェクトはこれまでもありましたが、あまり普及しているとは言い難い状況です[^3]。Electron の開発スピードや Web 開発の流行にも追従する必要があり、コミュニティベースでは難しい面があるのでしょう。electron-vite も個人プロジェクトのため継続性については懸念があります。
+Electron と Web のビルドツールを組み合わせるボイラープレートプロジェクトはこれまでもありましたが、あまり普及しているとは言い難い状況です[^3]。Electron の開発スピードや Web 開発の流行にも追従する必要があり、コミュニティベースでのサポートは難しい面があるのでしょう。electron-vite も個人プロジェクトのため継続性については懸念があります。
 
-[^3]: VS Code や Slack などの大きな Electron プロジェクトでは自前で容易しているのでしょう。
+[^3]: VS Code や Slack などの大きな Electron プロジェクトでは自前で用意しているのでしょう。
 
 Web アプリのアセットを保有しており、クイックに Electron アプリ化をしたい時などに採用を検討するのがよいでしょう。

@@ -8,7 +8,7 @@ tags: [electron]
 electron-vite は Electron アプリ開発用に構成された次世代の開発環境を謳っています。名前の通り JavaScript のデファクトビルドツールになりつつある Vite を採用しています。
 
 ## 概要
-electron-vite の Git リポジトリです。記事執筆時点のバージョンは v1.0.22 スター数は922でした。個人開発のプロジェクトです。
+electron-vite の Git リポジトリです。記事執筆時点のバージョンは v1.0.22、スター数は922でした。個人開発のプロジェクトです。
 
 [GitHub - alex8088/electron-vite: Next generation Electron build tooling based on Vite 新一代 Electron 开发构建工具，支持源代码保护](https://github.com/alex8088/electron-vite)
 
@@ -61,7 +61,7 @@ electron-vite を利用した開発では preload スクリプト内でサード
 以下のコマンドで electron-vite を使ったプロジェクトを作成します。
 
 ```shell
-$ npm create @quick-start/electron
+npm create @quick-start/electron
 ```
 
 フレームワークに Vue を選択して作成しました。
@@ -244,7 +244,7 @@ const exportToSvg = () => {
 </script>
 ```
 
-preload スクリプトに、main process に対して SVG ファイルをエクスポートのメッセージを送信するメソッドを追加します。
+main process に対して SVG ファイルエクスポートのメッセージを送信するメソッドを preload スクリプトに追加します。
 
 - src/preload/index.js (抜粋)
 ```javascript

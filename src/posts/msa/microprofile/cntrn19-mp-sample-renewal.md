@@ -11,7 +11,7 @@ MicroProfileを使ったサンプルアプリとして[「使った、作った�
 
 ![overview](../../../img/mp/19-service-overview.drawio.svg)
 
-このアプリはデモサイトで実際に動かして使えるようにしてますので、試したい方は[こちら](https://app.rms.extact.io)のリンクからどうぞ。
+このアプリはデモサイトで実際に動かして使えるようにしているので、試したい方は[こちら](https://app.rms.extact.io)のリンクからどうぞ。
 
 デモサイトはアプリの他にMP OpenAPIで生成されたOAS(OpenAPI Specification)情報をビジュアルに確認できるHelidon独自機能の[OpenAPI UI](https://api.rms.extact.io/openapi/)や[Jaeger](http://api.rms.extact.io:16686/)を使った分散トレースといったMSAでよく使うツールも一緒に動かして見られるようにしています。是非、いろいろ試していただければと思います。
 

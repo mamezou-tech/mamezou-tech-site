@@ -37,7 +37,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
   - [MicroProfile JWT Authがやってくれること・できること](/msa/mp/cntrn17-mp-jwt/)
   - [MicroProfile Healthの機能と利用](/msa/mp/cntrn10-mp-health/)
   - [MicroProfile Metricsの機能と利用](/msa/mp/cntrn15-mp-metrics/)
-  - [MicroProfile OpenTracingとJeagerで理解する分散トレーシング](/msa/mp/cntrn16-mp-tracing/)
+  - [MicroProfile OpenTracingとJaegerで理解する分散トレーシング](/msa/mp/cntrn16-mp-tracing/)
   - [MicroProfile Fault Tolerance(1) - 例で理解する基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)
   - [MicroProfile Fault Tolerance(2) - 例で理解する非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)
   - [MicroProfile Fault Tolerance(3) - 例で理解する設定編](/msa/mp/cntrn14-mp-faulttolerance3/)

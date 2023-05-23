@@ -1,5 +1,5 @@
 ---
-title: MicroProfile OpenTracingとJeagerで理解する分散トレーシング
+title: MicroProfile OpenTracingとJaegerで理解する分散トレーシング
 author: toshio-ogiwara
 date: 2022-11-20
 tags: ["逆張りのMicroProfile", tracing]
@@ -7,7 +7,7 @@ prevPage: ./src/posts/msa/microprofile/cntrn15-mp-metrics.md
 nextPage: ./src/posts/msa/microprofile/cntrn12-mp-faulttolerance1.md
 ---
 
-今回のテーマは前回のMicroProfile Metricsに続き可観測性のもう一角をなす分散トレーシングのMicroProfile OpenTracing(MP OpenTracing)です。MP OpenTracingの仕様は主にランタイム提供ベンダー向けのもので利用する側はランタイムがトレース情報を自動計測してくれるため、その存在を意識することはほぼありません。これは便利で都合がよいことですが、その一方で、どこまでがOpenTracingなどの標準仕様で決められていることで、どこからがMP OpenTracing固有で、そしてJeagerなどの製品が担っているのはどの部分か？などといった、分散トレーシングの構成要素とその役割が分かりづらくなっています。今回の記事ではこの辺りも意識し、MP OpenTracingだけではなく少し視野を広げた説明を行っていきます。
+今回のテーマは前回のMicroProfile Metricsに続き可観測性のもう一角をなす分散トレーシングのMicroProfile OpenTracing(MP OpenTracing)です。MP OpenTracingの仕様は主にランタイム提供ベンダー向けのもので利用する側はランタイムがトレース情報を自動計測してくれるため、その存在を意識することはほぼありません。これは便利で都合がよいことですが、その一方で、どこまでがOpenTracingなどの標準仕様で決められていることで、どこからがMP OpenTracing固有で、そしてJaegerなどの製品が担っているのはどの部分か？などといった、分散トレーシングの構成要素とその役割が分かりづらくなっています。今回の記事ではこの辺りも意識し、MP OpenTracingだけではなく少し視野を広げた説明を行っていきます。
 
 なお、記事はコードの抜粋を記載しています。全体を見たい場合や動作を確認したい場合は以下のGitHubリポジトリを参照ください。
 - <https://github.com/extact-io/contrarian-microprofile-sample/tree/main/10-tracing>
@@ -17,7 +17,7 @@ nextPage: ./src/posts/msa/microprofile/cntrn12-mp-faulttolerance1.md
 :::
 
 :::info
-この記事はJava17+Helidon 3.0.2 + MicroProfile OpenTracing 3.0 + Jeager 1.39をもとに作成しています。
+この記事はJava17+Helidon 3.0.2 + MicroProfile OpenTracing 3.0 + Jaeger 1.39をもとに作成しています。
 MicroProfile OpneTracingの詳細は[公式マニュアル](https://download.eclipse.org/microprofile/microprofile-opentracing-3.0/microprofile-opentracing-spec-3.0.html)を参照ください。
 :::
 :::alert: OpenTelemetryに移行されます
@@ -46,11 +46,11 @@ MP OpenTracingのテーマそのものとなる"分散トレーシング"につ�
 
 [前回](/msa/mp/cntrn11-mp-restclient3/)の説明と重複しますが、このRESTアプリケーションはHelloAggregateサービスが収集(/aggregate)のリクエストを受け取ると配下の3つのHelloサービスに挨拶(/hello)を問い合わせ、各Helloサービスは自身の言語に対する挨拶を返します。HelloAggregateサービスは各Helloサービスから返された挨拶をカンマ区切りで連結してまとめ、その内容をリクエスト元に返すものとなります。
 
-## MicroProfile OpenTracingとJeagerを使ってみる
-上述の挨拶アプリケーションを使ってアプリケーションを跨いだリクエストの流れがどのように記録、可視化されるかをMP OpenTracingとJeagerを使ってみていきます。
+## MicroProfile OpenTracingとJaegerを使ってみる
+上述の挨拶アプリケーションを使ってアプリケーションを跨いだリクエストの流れがどのように記録、可視化されるかをMP OpenTracingとJaegerを使ってみていきます。
 
 ### 準備
-MP OpenTracingは計測対象のアプリケーションにMP OpenTracingを組み込んで有効化することで、自動でテレメトリーデータを取得し、取得したデータをJeagerなどのバックエンドに自動で送信します。なお、MP OpenTracingの有効化はMicroProfileランタイムごとに異なるため、詳細は利用するランタイムのマニュアルを参照ください。
+MP OpenTracingは計測対象のアプリケーションにMP OpenTracingを組み込んで有効化することで、自動でテレメトリーデータを取得し、取得したデータをJaegerなどのバックエンドに自動で送信します。なお、MP OpenTracingの有効化はMicroProfileランタイムごとに異なるため、詳細は利用するランタイムのマニュアルを参照ください。
 
 :::column: HelidonにおけるMicroProfile OpenTracingの有効化
 MicroProfile OpenTracingを問わずHelidonの各機能はCDI Extensionにより機能が有効化されます。よって、MicroProfile OpenTracingの有効化はCDI Extensionを含むjarをクラスパスに含めることになります。この有効化に必要なdependencyの設定は次のとおりです。
@@ -77,16 +77,16 @@ MicroProfile OpenTracingを問わずHelidonの各機能はCDI Extensionにより
     </exclusions>
 </dependency>
 ```
-helidon-microprofile-tracingがMicroProfile OpenTracingを有効化するCDI Extensionを内包するartifact(jar)となります。helidon-tracing-jaegerはjeagerに固有な実装を含むライブラリで今回のようにバックエンドにJeagerを使う場合は必須となります。なお、HelidonでJeager以外にサポートされるバックエンドとしてはZipkinがあります。scopeとexclusionに対する細かい説明は脚注の[^2]と[^3]を参照ください。
+helidon-microprofile-tracingがMicroProfile OpenTracingを有効化するCDI Extensionを内包するartifact(jar)となります。helidon-tracing-jaegerはjaegerに固有な実装を含むライブラリで今回のようにバックエンドにJaegerを使う場合は必須となります。なお、HelidonでJaeger以外にサポートされるバックエンドとしてはZipkinがあります。scopeとexclusionに対する細かい説明は脚注の[^2]と[^3]を参照ください。
 
 [^2]:microprofile-opentracing-apiはhelidon-microprofile-tracingの推移的依存に含まれるため、明示的に設定する必要はありませんが、アプリケーションからの依存を許可するモノ(compile scope)と依存を許可しないモノ(runtime scope)とを分けるため明示的に設定しています。
 [^3]:exclusionの設定は「[Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)」で紹介しているJava Logging Util(JDK14Logger)からSLF4Jへの切り替え設定との相性問題によりStackoverflowErrorが発生するため、それを回避する設定となります。
 :::
 
-MP OpenTracingのアプリケーションへの組み込みができたら次はJeagerの起動になります。
-Jeagerのインストール方法はいくつかありますが、UIも含め必要なものが一式含まれているAll-in-oneのコンテナイメージを使うのが一番簡単なため、ここではAll-in-oneコンテナを使った説明をしてきます。
+MP OpenTracingのアプリケーションへの組み込みができたら次はJaegerの起動になります。
+Jaegerのインストール方法はいくつかありますが、UIも含め必要なものが一式含まれているAll-in-oneのコンテナイメージを使うのが一番簡単なため、ここではAll-in-oneコンテナを使った説明をしてきます。
 
-次のdockerコマンドでJeagerのAll-in-oneコンテナを起動します。
+次のdockerコマンドでJaegerのAll-in-oneコンテナを起動します。
 
 ```shell
 docker run -d --name jaeger \
@@ -104,7 +104,7 @@ docker run -d --name jaeger \
   -p 9411:9411 \
   jaegertracing/all-in-one:1.39
 ```
-コンテナが起動したしたらブラウザから`http://localhost:16686`にアクセスし、下の画面が開けば起動成功です。問題がある場合やAll-in-oneコンテナの詳細についてはJeager公式の[こちら](https://www.jaegertracing.io/docs/1.39/getting-started/#all-in-one)を参考にしてください。
+コンテナが起動したしたらブラウザから`http://localhost:16686`にアクセスし、下の画面が開けば起動成功です。問題がある場合やAll-in-oneコンテナの詳細についてはJaeger公式の[こちら](https://www.jaegertracing.io/docs/1.39/getting-started/#all-in-one)を参考にしてください。
 
 ![start_screen](../../../img/mp/16-capt-1_start_screen.png)
 
@@ -122,7 +122,7 @@ curl localhost:7001/aggregate/sync
 
 この際のリクエストは上の図(再掲)のようにHelloAggregation→HelloService→HelloService→HelloServiceと流れ、それぞれのHelloSeviceの処理時間はスリープにより約1秒程度となっているハズです。
 
-それではこの結果をJeagerで確認してみましょう。
+それではこの結果をJaegerで確認してみましょう。
 挨拶アプリにリクエストを投げた後に先ほどの`http://localhost:16686`の画面の左上の”Service”プルダウンメニューに\[HelloAggregationApplicaiton\]が出てくるので、それを選択し\[FindTraces\]ボタンをクリックします。
 
 ![select_go](../../../img/mp/16-capt-2_capt_select_go.png)
@@ -140,9 +140,9 @@ curl localhost:7001/aggregate/sync
 MP OpenTracingにはこの他にもコードを実装することでより詳細なトレース情報を取得する機能もあります。本記事ではこの機能は取り上げませんが、興味がある方は公式マニュアルの[こちら](https://download.eclipse.org/microprofile/microprofile-opentracing-3.0/microprofile-opentracing-spec-3.0.html#_enabling_explicit_distributed_tracing_code_instrumentation)を参照ください。
 
 # 分散トレーシングの全体像
-MP OpenTracingとJeagerでどのようなことができるかを掴んでもらったところで、次は「だれが」「どこで」「どのように」トレース情報を採っているかを見ていきたいと思います。
+MP OpenTracingとJaegerでどのようなことができるかを掴んでもらったところで、次は「だれが」「どこで」「どのように」トレース情報を採っているかを見ていきたいと思います。
 
-今回のトレース情報の取得から表示に関わる登場人物をもとにその全体像を表すと次のようになります。Jeagerに登場する要素は他にもありますが、本題と余り関係ない要素は省略しています。
+今回のトレース情報の取得から表示に関わる登場人物をもとにその全体像を表すと次のようになります。Jaegerに登場する要素は他にもありますが、本題と余り関係ない要素は省略しています。
 
 ![仕組みの概要](../../../img/mp/16-1_tracing.drawio.svg)
 
@@ -150,13 +150,13 @@ MP OpenTracingはJakarta RESTful Web Services(JAX-RS)のリクエストに対す
 
 ![span_trace](../../../img/mp/16-capt-5_span_trace.png)
 
-MP OpenTracingにより取得されたトレース情報はMP OpenTracingの機能によりJeager Collectorに自動で送信され、Jeager Collectorは受信したトレース情報を蓄積していきます。そしてこの蓄積されたトレース情報をJeager UIを通してビジュアルに表示するといった流れになります。
+MP OpenTracingにより取得されたトレース情報はMP OpenTracingの機能によりJaeger Collectorに自動で送信され、Jaeger Collectorは受信したトレース情報を蓄積していきます。そしてこの蓄積されたトレース情報をJaeger UIを通してビジュアルに表示するといった流れになります。
 
 ここまでの説明を整理する次のようになります。
 - MP OpenTracingによりJAX-RSのリクエストに対するトレース情報の取得とバックエンドへの送信が行われる
-- Jeagerなどのバックエンドによりトレース情報が収集、蓄積されるとともにトレース情報を可視化する機能も提供される
+- Jaegerなどのバックエンドによりトレース情報が収集、蓄積されるとともにトレース情報を可視化する機能も提供される
 
-ポイントはMP OpenTracingとJeagerの双方の役割はトレース情報の取得・送信と収集・蓄積を境に分かれるところになります。この点は理解しておきましょう。
+ポイントはMP OpenTracingとJaegerの双方の役割はトレース情報の取得・送信と収集・蓄積を境に分かれるところになります。この点は理解しておきましょう。
 
 仕組みの説明してきましたがOpenTracingの話はまだ出てきていません。次からはMP OpenTracingの中を少し掘り下げて、MP OpenTracingとOpenTracingの関係を見ていきます。
 
@@ -165,7 +165,7 @@ MP OpenTracingにより取得されたトレース情報はMP OpenTracingの機�
 
 OpenTracingは過去にCloud Native Computing Foundation(CNCF)により策定されたトレースを取得するためのベンダー非依存な仕様で、主にTraceとSpanといったトレースのデータモデルとそのデータモデルを扱うAPI仕様で構成されています。このAPIは主要な各言語に対して提供されており、Javaの場合はio.opentracing.*パッケージ(opentracing-api.jar)がその実体となります。
 
-ただし、OpenTracingは仕様を定めているだけのため、実際のトレース処理にはJeagerなどのOpenTracingに準拠した実装が必要なります。このOpenTracingとJeagerの関係はJakartaEEのJakarta Persistence(JPA)とその実装としてのHibernateやEclipse Linkと同じといえます。
+ただし、OpenTracingは仕様を定めているだけのため、実際のトレース処理にはJaegerなどのOpenTracingに準拠した実装が必要なります。このOpenTracingとJaegerの関係はJakartaEEのJakarta Persistence(JPA)とその実装としてのHibernateやEclipse Linkと同じといえます。
 
 また、JPAを素で使うときと同じようにOpenTracingを素で使う場合は、OpenTracingのAPIを使い下記のようにTraceを取得するロジックをアプリケーションに埋め込むことが必要となります。
 
@@ -192,7 +192,7 @@ OpenTracingを素で使う場合、コードが必要になる一方、MP OpenTr
 ![ソフトウェアスタック](../../../img/mp/16-2_tracing.drawio.svg)
 
 
-アプリケーションからはMicroProfile OpenTracingしか意識することはありませんが、図にあるとおり、その内部における実際のトレースの取得と送信はOpenTracing実装(今回はJeager Client)により行われます。
+アプリケーションからはMicroProfile OpenTracingしか意識することはありませんが、図にあるとおり、その内部における実際のトレースの取得と送信はOpenTracing実装(今回はJaeger Client)により行われます。
 
 :::check: OpenTelemetryとは
 冒頭で触れとおり次のMicroProfile 6.0で準拠する標準がOpenTracingからOpenTelemetryに変わります。OpenTelemetryはメトリクス、トレース、ログの3つの要素から構成されますが、ここではトレース部分について説明します。
@@ -205,11 +205,11 @@ OpenTracingを素で使う場合、コードが必要になる一方、MP OpenTr
 :::
 
 :::column:HelidonのMicroProfile OpenTracing実装
-HelidonのMicroProfile OpenTracing実装は2.xまではJeagerなどのトレースアプリ固有の実装を使っていましたが、3.xからは内部の実装は次のようにOpenTelemetryベースになっています。
+HelidonのMicroProfile OpenTracing実装は2.xまではJaegerなどのトレースアプリ固有の実装を使っていましたが、3.xからは内部の実装は次のようにOpenTelemetryベースになっています。
 
 ![helidon-impl](../../../img/mp/16-3_tracing.drawio.svg)
 
-Helidon 3.xでもトレース情報の取得や送信はOpenTracing APIを経由して行うようになっていますが、その背後にある実装はJeager Clientからshim経由[^6]のOpenTelemetry SDK実装に変わっています。また、これに伴いバックエンドへのトレース情報の送信もHelidon 3.xからはOpenTelemetry SDKによりネイティブのOpenTelemetry Protocol(OTPL)を使って行われます。現時点ではOpenTracing APIの皮を1枚被せていますが、その実装はすべてOpenTelemetryベースになっており、いつもでOpenTelemetryへ移行ができる状態になっています。
+Helidon 3.xでもトレース情報の取得や送信はOpenTracing APIを経由して行うようになっていますが、その背後にある実装はJaeger Clientからshim経由[^6]のOpenTelemetry SDK実装に変わっています。また、これに伴いバックエンドへのトレース情報の送信もHelidon 3.xからはOpenTelemetry SDKによりネイティブのOpenTelemetry Protocol(OTPL)を使って行われます。現時点ではOpenTracing APIの皮を1枚被せていますが、その実装はすべてOpenTelemetryベースになっており、いつもでOpenTelemetryへ移行ができる状態になっています。
 
 [^6]:shim(シム)とはGoFのデザインパターンでいうところのOpenTracing APIに対するAdapter実装となります。
 :::
@@ -283,7 +283,7 @@ curl localhost:7001/aggregate/sync
 
 挨拶結果の4つ目に`チャオ`が追加されていることからRandomHelloも処理に参加していることが確認できます。
 
-次にJeager UIから該当のトレース情報を確認してみます。
+次にJaeger UIから該当のトレース情報を確認してみます。
 
 ![add-trace](../../../img/mp/16-capt-6_add_trace.png)
 
@@ -300,6 +300,6 @@ MicroProfile OpenTracingによる分散トレーシングをみてきました�
 参照資料
 
 - OpenTracing: <https://opentracing.io/docs/>
-- Jeager: <https://www.jaegertracing.io/docs/1.39/>
+- Jaeger: <https://www.jaegertracing.io/docs/1.39/>
 - OpenTelemetry: <https://opentelemetry.io/docs/>
 - Qiita - Kubernetes上のマイクロサービスを分散トレースする: <https://qiita.com/mumoshu/items/d4065a96a9d7e319eceb>

@@ -466,8 +466,11 @@ ChatGPTがプロンプトに応じてこのプラグインを使うと判断し�
 感心したのは、ChatGPTはレポジトリ検索クエリ作成時に[GitHub独自仕様](https://docs.github.com/en/search-github/searching-on-github/searching-for-repositories)を解釈しているようです(そのような情報はOpenAPI仕様に入れていないのですが...)。
 
 今回はここまでです。
-次回は、このプラグインをAWS環境にデプロイしてみたいと思います。
 
 ソースコードは以下GitHubで公開しています。
 
 - [GitHub - kudoh/chatgpt-plugin-example-aws-lambda](https://github.com/kudoh/chatgpt-plugin-example-aws-lambda)
+
+次回は、このプラグインをAWS環境にデプロイしてみたいと思います。
+
+- [AWS LambdaでChatGPTプラグイン開発を試してみる - AWSデプロイ編](/blogs/2023/05/25/chatgpt-dev-intro-2/)

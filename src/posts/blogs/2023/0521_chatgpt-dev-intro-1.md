@@ -468,4 +468,6 @@ ChatGPTがプロンプトに応じてこのプラグインを使うと判断し�
 今回はここまでです。
 次回は、このプラグインをAWS環境にデプロイしてみたいと思います。
 
-後日ソースコードもGitHub上に公開予定です。
+ソースコードは以下GitHubで公開しています。
+
+- [GitHub - kudoh/chatgpt-plugin-example-aws-lambda](https://github.com/kudoh/chatgpt-plugin-example-aws-lambda)

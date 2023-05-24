@@ -9,7 +9,7 @@ tags: [chatgpt, サーバーレス, lambda, AWS]
 - [AWS LambdaでChatGPTプラグイン開発を試してみる - ローカル開発編](/blogs/2023/05/21/chatgpt-dev-intro-1/)
 
 前回はAWS LambdaでChatGPTプラグインを動かすことを前提として、ローカル環境(SAM CLI)で起動したプラグインAPIとChatGPTを連携して感覚を掴みました。
-今回は実際にAWS環境にデプロイしてみたいと思います。
+今回は、実際にAWS環境へデプロイしてみたいと思います。
 
 最終的な構成を再掲します。
 
@@ -266,10 +266,10 @@ curlで疎通確認ができたら、ChatGPTプラグインとして登録しま
 
 <video alt="Video from Gyazo" width="100%" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/35b03a9acf98356f9faa2e24e04e1a23.mp4" type="video/mp4" /></video>
 
-ローカル環境と同様にChatGPTが、プロンプトに応じてプラグインAPIを実行してくれているのが分かります(アイコンが突然「T」に変わってしまったのはなぜだろう...)。
+ローカル環境と同様に、ChatGPTがプロンプトに応じてプラグインAPIを実行してくれているのが分かります(アイコンが突然「T」に変わってしまうのはなぜだろう...)。
 見た目はローカル環境と同じですが、デベロッパーツールを見ていてリモート環境の場合はプラグインAPIの実行はサーバーサイドになるようです。そのためリモート環境の場合はCORS対応は不要でした。
 
-今回は検証できませんでしたが、公式FAQによるとこの状態だとプラグイン開発が可能なユーザーは15名までがこのプラグインを動作させられるようです。
+今回は検証できませんでしたが、公式FAQによるとこの状態で15名までのユーザーがこのプラグインを動作させられるようです。
 
 > Can I invite people to try my plugin?
 > Yes, all unverified plugins can be installed by up to 15 other developers who have plugin access. If your plugin is available in the plugin store, it will be accessible to all ChatGPT plus customers.
@@ -292,4 +292,4 @@ curlで疎通確認ができたら、ChatGPTプラグインとして登録しま
 
 プラグイン開発に習熟してれば、MicrosoftのCopilot製品群のプラグインにもそのスキルは流用できそうです。
 
-まだ、開発スタイルが定着していると言えない状況ですが、ウォッチしておいて損はなさそうな技術ですね。
+まだ、開発スタイルが定着していると言えない状況ですが、ウォッチしておいて損はなさそうなスキルですね。

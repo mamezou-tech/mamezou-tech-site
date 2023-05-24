@@ -330,7 +330,9 @@ export class CdkStack extends cdk.Stack {
       restApiName: 'GitHub Search API',
       description: 'ChatGPT Plugin for GitHub Search'
     });
-    const resource = api.root.addResource('api').addResource('search');
+    const resource = api.root.addResource('api').addResource('search', {
+      defaultCorsPreflightOptions: preflightOptions
+    });
     resource.addMethod('GET', new apigateway.LambdaIntegration(githubSearchFunction));
 
     // ③ ローカル環境固有

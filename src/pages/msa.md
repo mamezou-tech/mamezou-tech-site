@@ -41,6 +41,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
   - [MicroProfile Fault Tolerance(1) - 例で理解する基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)
   - [MicroProfile Fault Tolerance(2) - 例で理解する非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)
   - [MicroProfile Fault Tolerance(3) - 例で理解する設定編](/msa/mp/cntrn14-mp-faulttolerance3/)
+  - [MicroProfileのサンプルリニューアル – 今度はほんとにMSA](/msa/mp/cntrn19-mp-sample-renewal/)<span style="color: red;">★NEW★</span>
 - Standalone仕様編
   - 今後、順次追加予定！
 

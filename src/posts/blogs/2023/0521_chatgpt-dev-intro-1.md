@@ -124,7 +124,7 @@ export const search: APIGatewayProxyHandler = async (event: APIGatewayEvent, con
 
 - [GitHub API Doc - Search repositories](https://docs.github.com/en/rest/search?apiVersion=2022-11-28#search-repositories)
 
-注意点としては、ChatGPTプラグインはクロスオリジンアクセスとなります。
+ローカル環境の確認だけですが、ChatGPTプラグインはクロスオリジンアクセスとなります。
 このため、CORSヘッダーでChatGPTのドメインからのリクエストを許可する必要があります。
 
 ## ローカル環境向けマニフェスト/API仕様を作成する
@@ -150,7 +150,7 @@ AWS CDKだとSAM CLIを使って、ローカル環境でAPIを実行可能です
 
 これを使って確認することにします。まず、プロジェクト配下の`static-local`ディレクトリを作成し、両ファイルを配置しました。
 
-### プラグインマニフェスト(`static-local/.wel-known/ai-plugin.json`)
+### プラグインマニフェスト(`static-local/.well-known/ai-plugin.json`)
 
 ```json
 {
@@ -288,7 +288,7 @@ export const openapi: APIGatewayProxyHandler = async (event: APIGatewayEvent, co
 作成した定義ファイルを返すだけのシンプルなイベントハンドラです。
 ローカル環境のみこの関数を使って、AWS環境ではS3オリジンとしてCDN(CloudFront)から配信します。
 
-## AWS CDKスクリプトを作成する
+## AWS CDKスクリプトを記述する
 
 AWS CDKのスクリプトを作成します。
 初期状態の`cdk/lib/cdk-stack.ts`を以下のように修正しました。
@@ -330,9 +330,7 @@ export class CdkStack extends cdk.Stack {
       restApiName: 'GitHub Search API',
       description: 'ChatGPT Plugin for GitHub Search'
     });
-    const resource = api.root.addResource('api').addResource('search', {
-      defaultCorsPreflightOptions: preflightOptions
-    });
+    const resource = api.root.addResource('api').addResource('search');
     resource.addMethod('GET', new apigateway.LambdaIntegration(githubSearchFunction));
 
     // ③ ローカル環境固有

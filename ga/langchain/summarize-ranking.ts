@@ -12,8 +12,8 @@ type Rank = {
 export async function summarizeRanking(latestRanking: Rank[], preRanking: Rank[]) {
   try {
     const makeEntry = (rank: Rank, index: number) => `${index + 1}. ${rank.title}: ${rank.user}`;
-    const latest = latestRanking.slice(0, 10).map(makeEntry).join('\n');
-    const pre = preRanking.slice(0, 10).map(makeEntry).join('\n');
+    const latest = latestRanking.slice(0, 20).map(makeEntry).join('\n');
+    const pre = preRanking.slice(0, 20).map(makeEntry).join('\n');
 
     const template = new PromptTemplate({
       template: `技術ブログ記事の最新とその前のアクセスランキングは以下の状況でした。

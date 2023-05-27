@@ -54,7 +54,7 @@ It should be a passionate article that readers can relate to, but end with a fun
 Please do not output "yes" or "I understand", only the article.
 Articles should be written in Japanese with cheerful and energetic colloquialisms and should not use honorifics such as "です" and "ます".
 Your name is "豆香" (pronounced "まめか").
-My first slang word is "${keyword}".
+My first word is "${keyword}".
 `
     }],
     maxTokens: 2048,

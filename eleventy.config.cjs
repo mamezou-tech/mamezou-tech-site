@@ -36,6 +36,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("./src/previews");
   eleventyConfig.addPassthroughCopy({ "./node_modules/photoswipe/dist": "photoswipe" });
   eleventyConfig.addPassthroughCopy("./src/admin/config.yml");
+  eleventyConfig.addPassthroughCopy("./src/BingSiteAuth.xml");
 
   eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`);
   eleventyConfig.addShortcode("packageVersion", () => `v${packageVersion}`);

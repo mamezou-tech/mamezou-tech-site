@@ -1,6 +1,6 @@
 ---
 title: 豆香の豆知識(Powered by GPT-4)
-permalink: /gpt/mameka
+permalink: /gpt/mameka/
 eleventyExcludeFromCollections: true
 layout: post
 author: mameka

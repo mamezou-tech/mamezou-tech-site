@@ -7,12 +7,12 @@ function getPosts(collection) {
   }).sort((a, b) => a.date - b.date);
 }
 
-function chop(content) {
-  const firstDotPos = content.lastIndexOf('。', 200);
+function chop(content, count = 150) {
+  const firstDotPos = content.lastIndexOf('。', count);
   if (firstDotPos !== -1) {
     return content.substring(0, firstDotPos) + '...';
   } else {
-    return content.substring(0, content.lastIndexOf('、', 200)) + '...';
+    return content.substring(0, content.lastIndexOf('、', count)) + '...';
   }
 }
 

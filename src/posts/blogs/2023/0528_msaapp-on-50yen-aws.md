@@ -11,7 +11,7 @@ tags: [AWS, msa, java]
 :::
 
 # 動作させるMSAなアプリ
-ケチケチ環境で動かすMSAなアプリは[「MicroProfileのサンプルリニューアル – 今度はほんとにMSA」](/msa/mp/cntrn19-mp-sample-renewal/)でも紹介した次のアプリになります。
+ケチケチ環境で動かすMSAなアプリは「MicroProfileのサンプルリニューアル – 今度はほんとにMSA」でも紹介した次のアプリになります。
 
 ![overview](/img/mp/19-service-overview.drawio.svg)
 

@@ -6,12 +6,13 @@ author: mameka
 eleventyExcludeFromCollections: true
 ---
 
-![mameka](/img/logo/mameka6_100.png)
+<img style="display:block;margin:0.5rem auto" src="/img/logo/mameka-column_500.png" alt="mameka">
 
-豆蔵公式(?)キャラクターの豆香が提供する記事です!!
+トップページに掲載されているサイト公式キャラクター豆香のコラム集です。
+知っておくとちょっと役立つ(?)IT業界のスラング(プログラミングジャーゴン)をジョーク交えて解説します。
 
 :::alert
-コラムはOpenAIが提供するChat Completion APIを使って生成しているものです。内容の正確性を保証するものではありません。
+コラムはOpenAIが提供するChat Completion API(GPT-4)を使って生成しているもので、内容の正確性を保証するものではありません。
 :::
 
 {% for column in gpt.columns %}

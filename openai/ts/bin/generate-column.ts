@@ -40,7 +40,7 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
   const message = keywordsResponse.choices[0].message?.content || '';
 
   const arr = message.split('\n').filter(x => !!x).map(x => x.replace(/\d+\. /, ''));
-  console.log(arr)
+  console.log(arr);
   const keyword = pickup(arr, pastTitles);
   const result = await ask({
     messages: [prompt, {
@@ -67,46 +67,77 @@ My first word is "${keyword}".
   const item = {
     title: keyword,
     text: column.replaceAll(/\r?\n/g, '<br />'),
-    created: new Date().toISOString(),
+    created: new Date().toISOString()
   };
   json.columns.unshift(item);
   json.columns = json.columns.slice(0, 20);
   fs.writeFileSync(path, JSON.stringify(json, null, 2));
 
+  // (おまけラップ)
+  const lyrics = await ask({
+    messages: [{
+      role: 'user',
+      content: `I want you to act as a japanese rapper for a beautiful girl. 
+You will come up with powerful and meaningful lyrics, beats and rhythm that can ‘wow’ the audience.
+Your lyrics should have an intriguing meaning and message which people can relate too.
+When it comes to choosing your beat, make sure it is catchy yet relevant to your words, so that when combined they make an explosion of sound everytime! 
+All of your output should be in Japanese. No English translation required.
+My first request is "I need a rap song about ${keyword}."`
+    }]
+  });
+
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
 
   const today = new Date();
+  const channel = 'C034MCKP4M6';
+  // const channel = 'C04F1QJDLJD'
   await web.chat.postMessage({
-    channel: "C034MCKP4M6",
-    // channel: "C04F1QJDLJD", // ops
+    channel,
     mrkdwn: true,
-    text: "今日の豆香の豆知識コラム(予告)",
+    text: '今日の豆香の豆知識コラム(予告)',
     unfurl_media: false,
     blocks: [
       {
-        type: "header",
+        type: 'header',
         text: {
-          type: "plain_text",
+          type: 'plain_text',
           text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(予告)`
         }
       },
       {
-        type: "section",
+        type: 'section',
         text: {
-          type: "mrkdwn",
-          text: item.title,
+          type: 'mrkdwn',
+          text: item.title
         }
       },
       {
-        type: "section",
+        type: 'section',
         text: {
-          type: "mrkdwn",
-          text: column,
+          type: 'mrkdwn',
+          text: column
         }
-      },
+      }
     ]
-  })
+  });
+  if (lyrics.choices[0].message?.content) {
+    await web.chat.postMessage({
+      channel,
+      mrkdwn: true,
+      text: '豆香のおまけラップ',
+      unfurl_media: false,
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: lyrics.choices[0].message?.content
+          }
+        }
+      ]
+    });
+  }
 }
 
 function pickup(arr: string[], excludes: string[]): string {

@@ -25,6 +25,7 @@ Please follow the restrictions below.
 - No need to reply message
 - 20 output words in newline delimited format
 - Only known jargon to be output
+- Do not include obscene or vulgar words
 - Speak in English
 
 Do not output the following words.

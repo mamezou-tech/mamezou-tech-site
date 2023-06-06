@@ -50,11 +50,6 @@ jobs:
     name: stale repo identifier
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      issues: write
-      repository-projects: read
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -62,7 +57,7 @@ jobs:
     - name: Run stale_repos tool
       uses: docker://ghcr.io/github/stale_repos:v1
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
         ORGANIZATION: mamezou-tech
         INACTIVE_DAYS: 365
 
@@ -82,7 +77,7 @@ Stale Repo Action は Docker Action です。Run stale_repos tool のステッ�
 後続ステップで create-issue-from-file Action を使って出力された Markdown ファイルから issue を作成します。この Action では作成した issue に `assignees` で担当者をアサインすることも可能です。
 
 :::info
-README のサンプルワークフローでは、リポジトリの read 権限を付与した PAT(Personal Access Token) を secret に格納して使用するようになっていました。PAT の発行や更新は面倒なので GITHB_TOKEN を使用しリポジトリや issue などへの permissions を付与する方法にしてみました。
+今回は、repo のスコープを有効化した Personal Access Token (classic) を secret に格納して使用しました。現状 オーガニゼーションのリポジトリにアクセスするには PAT classic の発行が必要なようです。
 :::
 
 このワークフローを実行すると、ワークフローが格納されているリポジトリに issue が作成され非アクティブなリポジトリの一覧表が挿入されました。担当者もアサインされました。
@@ -92,7 +87,7 @@ README のサンプルワークフローでは、リポジトリの read 権限�
 とてもシンプルです。issue として起票されることで、対象リポジトリをアーカイブする、再度アクティブなものにしていくなどのアクションに繋げることができます。このように定期的に非アクティブなリポジトリに対する見直しをかけることが、オーガニゼーション内のリポジトリの鮮度を維持する上で役立ちます。
 
 :::info
-記事執筆時点では public なリポジトリしかリストアップされませんでしたが、private なリポジトリも対象にする PR が出ており、マージされていました。
+最初 private リポジトリがリストアップされていないので疑問に思っていたところ、private なリポジトリも対象にする PR がタイムリーに出てマージされ、ちゃんとリストアップされるようになりました。
 
 [Allow private repos and update test by zkoppert · Pull Request #21 · github/stale-repos](https://github.com/github/stale-repos/pull/21)
 :::

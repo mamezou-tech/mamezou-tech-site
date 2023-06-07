@@ -1,5 +1,5 @@
 ---
-title: ChatGPTプラグイン開発でGitHubのOAuth認証を試す
+title: ChatGPTプラグイン開発でGitHub OAuthを使った認証を試す
 author: noboru-kudo
 date: 2023-06-07
 tags: [chatgpt, サーバーレス, lambda, AWS, "認証/認可"]
@@ -11,15 +11,15 @@ tags: [chatgpt, サーバーレス, lambda, AWS, "認証/認可"]
 - [AWS LambdaでChatGPTプラグイン開発を試してみる - AWSデプロイ編](/blogs/2023/05/25/chatgpt-dev-intro-2/)
 
 ここでは認証なし(auth: none)の実装としていました。
-ユーザー固有のリソースを使うなど認証が必要なケースも多くあるかと思います。
+とはいえ、ユーザー固有のリソースを使う場合等、認証が必要なケースも多くあるかと思います。
 
-現時点ではChatGPTプラグインは、認証方式として以下3タイプを提供しています。
+現時点では、ChatGPTプラグインは以下3タイプの認証方式を提供しています。
 
 - [サービスレベル認証](https://platform.openai.com/docs/plugins/authentication/service-level)
 - [ユーザーレベル認証](https://platform.openai.com/docs/plugins/authentication/user-level)
 - [OAuth](https://platform.openai.com/docs/plugins/authentication/oauth)
 
-今回は、以前の記事で作成したAWS LambdaベースのGitHub検索プラグインを、OAuthを使った認証に切り替えたいと思います。
+今回は、以前の記事で作成したAWS LambdaベースのGitHub検索プラグインをOAuthを使った認証に切り替えたいと思います。
 
 以下のような認証フローになります。
 
@@ -45,7 +45,8 @@ sequenceDiagram
 
 :::alert
 ChatGPTプラグインは実験的フェーズです。本記事は現時点(2023-06-07)の仕様をもとに試したものです。
-今後フィードバックを受けて大きな変更が入ることも予想されます。実際に試す際は最新の公式ドキュメントを参照するようにしてください。
+今後フィードバックを受けて大きな変更が入ることも予想されます。
+実際に試す際は、最新の公式ドキュメントを参照するようにしてください。
 :::
 
 ## Lambda関数の修正
@@ -89,13 +90,13 @@ export const search: APIGatewayProxyHandler = async (event: APIGatewayEvent, con
 };
 ```
 
-ChatGPTではOAuth認証した際のアクセストークンを、HTTPリクエストのAuthorizationヘッダにそのままの形(`Bearer ghu_xxxxxxxx`)で連携してくれます。
+ChatGPTではOAuthで認証した際のアクセストークンを、HTTPリクエストのAuthorizationヘッダにそのままの形(`Bearer ghu_xxxxxxxx`)で連携してくれます。
 ここでは、これをそのままGitHub APIのAuthorizationヘッダに指定するように修正しました。
 
 :::column:AWS CDKスクリプトの修正
 AWS CDK側でも一部修正が必要です。変更点は以下2点です。
 
-- Authorizationヘッダをオリジンまで連携するようキャッシュポリシーのホワイトリストに追加
+- Authorizationヘッダをオリジン(API Gateway + Lambda)まで連携するようキャッシュポリシーのホワイトリストに追加
 - Lambdaの環境変数に指定していたGitHubトークンを削除(ユーザーアクセストークンを使用するので不要)
 
 変更後のソースコードは[こちら](https://github.com/kudoh/chatgpt-plugin-example-aws-lambda/blob/auth/cdk/lib/cdk-stack.ts)です。
@@ -148,7 +149,7 @@ AWS CDK側でも一部修正が必要です。変更点は以下2点です。
 - [Registering a GitHub App](https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/registering-a-github-app)
 - [Generating a user access token for a GitHub App](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
 
-GitHub App作成時のOAuth認証後のコールバックURLの値ですが、ちょっとここはハマりました。
+GitHub App作成時の認証後のコールバックURLの値ですが、ちょっとここはハマりました。
 ChatGPTプラグインでのコールバック先は以下の形式になります。
 
 `https://chat.openai.com/aip/{plugin-id}/oauth/callback`
@@ -173,7 +174,7 @@ ChatGPTプラグインでのコールバック先は以下の形式になりま�
 
 ![](https://i.gyazo.com/697cbb692c65f3710f28a566c2a1c1c0.png)
 
-ここで修正と再デプロイが必要になります。
+ここでプラグインマニフェストの修正と再デプロイが必要になります。
 表示されたトークンを`ai-plugin.json`の`verification_tokens.openai`に設定して再度デプロイします。ここではCloudFront経由ですので、CDNキャッシュもクリアしました。
 
 また、もう1つ重要なことがあります。先ほどGitHub AppのOAuthコールバックURLに指定する必要があったプラグインIDを確認します。
@@ -187,7 +188,7 @@ ChatGPTプラグインでのコールバック先は以下の形式になりま�
 ![](https://i.gyazo.com/49bf9dfb353af85ceb2df52e1ea91c82.png)
 
 上記赤枠部分がプラグインIDのようです。
-先ほど、GitHub App作成時コールバックURLに適当の値を指定していましたが、ここで正しいパスに置き換えて更新しておきます。
+先ほど、GitHub App作成時コールバックURLに適当な値を指定していましたが、ここで正しいパスに置き換えて更新しておきます。
 
 ![](https://i.gyazo.com/1098108571a642d564c6de036cb919df.png)
 
@@ -216,4 +217,4 @@ OAuthに関する実装をすることなく、プラグインからアクセス
 
 今回使ったGitHubレポジトリを検索するだけのプラグインでは、OAuthを使うメリットはほとんどありません。
 ですが、このアクセストークンをうまく活用して機能拡張すれば、レポジトリ作成やコミット、PR作成等、開発作業に必要なことがほぼできてしまいます(もちろんコーディングはChatGPT)。
-ChatGPTと会話しながら、ノーコードで開発を進めていく日も近いのかなと思います。GitHub Copilotが拡張して、そういうサービスが近々でるんだろうなと思ったりもしますが、、、
+ChatGPTと会話しながら、ノーコードで開発を進めていく日も近いのかなと思います。GitHub Copilotが拡張して、そういうサービスが近々出てくるんだろうなと思ったりもしますが、、、

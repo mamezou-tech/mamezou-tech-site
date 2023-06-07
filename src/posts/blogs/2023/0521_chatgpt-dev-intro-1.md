@@ -164,8 +164,7 @@ AWS CDKだとSAM CLIを使って、ローカル環境でAPIを実行可能です
   },
   "api": {
     "type": "openapi",
-    "url": "http://localhost:3000/openapi.yaml",
-    "is_user_authenticated": false
+    "url": "http://localhost:3000/openapi.yaml"
   },
   "logo_url": "http://localhost:3000/logo.png",
   "contact_email": "<mail-address>",

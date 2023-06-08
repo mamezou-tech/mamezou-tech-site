@@ -1,7 +1,7 @@
 ---
-title: GitHub Actions - Larger runners を試す
+title: GitHub Actions でハイスペックな Larger runners を試す
 author: masahiro-kondo
-date: 2023-06-08
+date: 2023-06-09
 tags: [GitHub, CI/CD]
 ---
 

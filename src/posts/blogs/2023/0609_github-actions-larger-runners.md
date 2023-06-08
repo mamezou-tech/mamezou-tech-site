@@ -6,10 +6,10 @@ tags: [GitHub, CI/CD]
 ---
 
 ## Larger runners
-GitHub Actions では GitHub-hosted runners と呼ばれるGitHub がホストする VM でワークフローを実行します。これまで Runner のスペックが足りない場合は、セルフホストランナーでハイスペックマシンを使うしかありませんでした。今後は、通常の Runner よりお高くなりますが CPU コア数やメモリが多く搭載したハイスペックな Larger runners が利用可能になります。
+GitHub Actions では GitHub-hosted runners と呼ばれるGitHub がホストする VM でワークフローを実行します。これまで Runner のスペックが足りない場合は、セルフホストランナーでハイスペックマシンを使うしかありませんでした。今後は、通常の Runner よりお高くなりますが CPU コアやメモリを多く搭載したハイスペックな Larger runners が利用可能になります。
 
 :::info
-記事執筆時点では Larger runner は GitHub Teams または GitHub Enterprise Cloud プランのオーガニゼーションでベータ版です。利用するにはサンアップが必要です。
+記事執筆時点では Larger runners は GitHub Teams または GitHub Enterprise Cloud プランのオーガニゼーションでベータ版です。利用するには waitlist へのサインアップが必要です。
 
 [Using larger runners - GitHub Docs](https://docs.github.com/en/actions/using-github-hosted-runners/using-larger-runners)
 
@@ -31,7 +31,7 @@ GitHub Actions では GitHub-hosted runners と呼ばれるGitHub がホスト�
 - 14 GB of RAM
 - 14 GB of SSD space
 
-ハイスペックな macOS runner は メモリ30GBの12コア の VM ということです。
+ハイスペックな macOS runner は メモリ30GBの12コアの VM ということです。
 
 - 12-core CPU (x86_64)
 - 30 GB of RAM
@@ -50,7 +50,7 @@ GitHub Actions では GitHub-hosted runners と呼ばれるGitHub がホスト�
 ## Electron アプリビルド比較 (macOS runners)
 まず macOS runner から試します。特に設定は不要で、ワークフローで `macos-latest-xl` のラベルを指定するだけで 12コアの runner が有効になります。
 
-Electron アプリをビルドして、バイナリをアップロードするワークフローを作り、3コアの Runner(macos-latest) と12コアの Runner(mac-os-latest-xl) を strategy.matrix で指定して実行しました。
+Electron アプリをビルドして、バイナリをアップロードするワークフローを作り、通常の 3コア runner (macos-latest) と12コアの runner (macos-latest-xl) を strategy.matrix で指定して実行しました。
 
 - .github/workflows/build-electron-app.yml
 {% raw %}
@@ -129,7 +129,7 @@ jobs:
 Electron のビルドはマルチコアの恩恵はあまりないかと思っていましたが、この結果を見るとかなり短縮できることがわかりました。
 
 ## Larger runners の設定
-Larger runners にサインアップして数ヶ月。やっと使えるようになりました。
+Larger runners にサインアップして1ヶ月以上経って使えるようになりました。
 
 ![Runners Settings](https://i.gyazo.com/7b9de1af239f1991bd6085d7e741fe4b.png)
 
@@ -259,13 +259,13 @@ jobs:
 
 Scrapbox データのダウンロードは goroutine(WaitGroup)で3多重実行しています。
 
-Linux の Normal runner と Larger runner (8コア)で実行した結果です。あまり差は出ませんでした。
+Linux の Normal runner と Larger runner (8コア)で実行した結果です。トータルで20秒程度短縮されました。
 
 | ubuntu-latest | ubuntu-latest-l|
 |:----|:----|
 | 4m 15s | 3m 52.5s |
 
-各ステップの比較。ダウンロードもさほど差がありませんでした。3多重程度ではあまりコアを使えてないということでしょうか。
+各ステップの比較。ダウンロードはさほど差がありませんでした。3多重程度ではあまりコアを使えてないということでしょうか。
 
 | | ubuntu-latest | ubuntu-latest-l|
 |:----|:----|:----|

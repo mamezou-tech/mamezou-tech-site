@@ -39,7 +39,7 @@ PodmanはLinux上で動作しますので、Windowsでは動作に必要な仮�
 
 podmanが起動すると、GUIからのコンテナ操作も可能になりますし、ターミナルツールからのコマンドライン操作も可能になります。面白いところではDocker APIを解釈できる[^8]ようですのでdockerの代替としても利用可能です。  
 
-[^8]:　Fedraディストゥリビューション上にdockerも含まれている可能性は完全には否定できないですが、`docker info`の出力情報を見る限りバージョン情報がdockerにしてはあまりに古いバージョン(podmanのバージョンと同じ)になっています。podmanがdockerのサーバとして動作しているようです。  
+[^8]:　Fedraディストリビューション上にdockerも含まれている可能性は完全には否定できないですが、`docker info`の出力情報を見る限りバージョン情報がdockerにしてはあまりに古いバージョン(podmanのバージョンと同じ)になっています。podmanがdockerのサーバとして動作しているようです。  
 
 ![CLI操作](/img/blogs/2023/0609-podman-cli.jpg)  
 
@@ -89,17 +89,17 @@ podman machine start
 
 ![クラスタ作成画面](/img/blogs/2023/0609-podman-kind-cluster-manage.jpg)  
 
-Kind以外にも、Openshift localやDeveloper Sandboxとも統合可能なようです。今回は試せていませんが、Kubernetes/OpenShiftにデプロイするシステムのローカル開発環境としてはかなり簡易に、かつ柔軟に操作ができそうな印象です。  
+Kind以外にも、Openshift localやDeveloper Sandboxとも統合可能なようです。まだあまり試せていませんが、Kubernetes/OpenShiftにデプロイするシステムのローカル開発環境としてはかなり簡易に、かつ柔軟に操作ができそうな印象です。  
 
 ## 設定機能
 
 前述のクラスターリソースの操作以外にリモートレジストリの設定やプロキシ設定などがGUI上から可能です。  
 
-よくある「インターネット接続に制約がある環境」でコンテナを利用する際にプロキシ設定の手間はなかなかですので、GUIで簡便にプロキシ設定できることは大きな魅力だと思います。  
+会社LAN内からなどの「インターネット接続に制約がある環境」でコンテナを利用する際にプロキシ設定の手間はなかなかですので、GUIで簡便にプロキシ設定できることは大きな魅力だと思います。  
 
 検証用にローカルにプロキシを建ててコマンドラインからpullを実行してみましたが、GUI設定のみでプロキシを介した通信が実現できる模様[^9]です。  
 
-[^9]:　断言できていないのはV1リリース前の記事ですが[podman-machine-default側にも名前解決のための設定変更が必要](https://future-architect.github.io/articles/20221227a/)という情報を見つけたからです。今回のパターンだとプロキシが同一マシン上にあるため、この事象が改善していると断言する根拠にはならなそうです。  
+[^9]:　断言できていないのは[podman-machine-default側にも名前解決のための設定変更が必要](https://future-architect.github.io/articles/20221227a/)というV1リリース前の記事を発見したからです。今回のパターンだとプロキシが同一マシン上にあるため、この事象が改善していると断言はできなそうです。  
 
 ![プロキシ経由でのpull](/img/blogs/2023/0609-podman-proxy.jpg)  
 
@@ -111,7 +111,7 @@ podmanがdockerのAPIを解釈するということは、JibやCloudnative Build
 
 ただし、ビルド成功したイメージがcli(`podman images`)ではリストアップされるのにGUI上では確認できないケースがある等、少し不安定な部分は残っていそうです。  
 
-![プロキシ経由でのpull](/img/blogs/2023/0609-podman-gui-cli-difference.jpg)  
+![cliとguiの結果差異](/img/blogs/2023/0609-podman-gui-cli-difference.jpg)  
 
 ## まとめ
 

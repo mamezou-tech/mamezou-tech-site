@@ -23,6 +23,8 @@ tags: [container]
 
 [^5]:　と、言っておきながら筆者が遅筆、かつ触ってみたい機能が多かったため、書き終わる前に1.1がリリースされていたのでタイトルが変わってしまいました。。。  
 
+2023/6/9 細かな加筆修正を加えました。  
+
 ## ツールの導入
 
 Windowsの場合、Podman Desktopは[公式サイト](https://podman-desktop.io/)の提示するインストーラを実行[^6]すればインストール可能です。  
@@ -39,7 +41,7 @@ PodmanはLinux上で動作しますので、Windowsでは動作に必要な仮�
 
 podmanが起動すると、GUIからのコンテナ操作も可能になりますし、ターミナルツールからのコマンドライン操作も可能になります。面白いところではDocker APIを解釈できる[^8]ようですのでdockerの代替としても利用可能です。  
 
-[^8]:　Fedraディストリビューション上にdockerも含まれている可能性は完全には否定できないですが、`docker info`の出力情報を見る限りバージョン情報がdockerにしてはあまりに古いバージョン(podmanのバージョンと同じ)になっています。podmanがdockerのサーバとして動作しているようです。  
+[^8]:　~~Fedraディストリビューション上にdockerも含まれている可能性は完全には否定できないですが、`docker info`の出力情報を見る限りバージョン情報がdockerにしてはあまりに古いバージョン(podmanのバージョンと同じ)になっています。~~ (<- Fedraに含まれるMobyエンジンは[起動処理中で無効化](https://github.com/containers/podman/blob/4d43e1b40d72cd632ac82fff771c37feb440c72e/pkg/machine/ignition.go#LL145C58-L145C58)しているためdockerコマンドの実体はpodman cliである旨教えて頂きました) podmanがdockerのサーバとして動作しているようです。  
 
 ![CLI操作](/img/blogs/2023/0609-podman-cli.jpg)  
 
@@ -89,7 +91,7 @@ podman machine start
 
 ![クラスタ作成画面](/img/blogs/2023/0609-podman-kind-cluster-manage.jpg)  
 
-Kind以外にも、Openshift localやDeveloper Sandboxとも統合可能なようです。まだあまり試せていませんが、Kubernetes/OpenShiftにデプロイするシステムのローカル開発環境としてはかなり簡易に、かつ柔軟に操作ができそうな印象です。  
+Kind以外にも、[Openshift local](https://access.redhat.com/documentation/ja-jp/red_hat_openshift_local/2.2/html/getting_started_guide/introducing_gsg)や[Developer Sandbox](https://developers.redhat.com/developer-sandbox)とも統合可能なようです。まだあまり試せていませんが、Kubernetes / OpenShiftにデプロイするシステムのローカル開発環境としてはかなり簡易に、かつ柔軟に操作ができそうな印象です。  
 
 ## 設定機能
 

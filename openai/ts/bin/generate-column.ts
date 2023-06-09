@@ -74,19 +74,6 @@ My first word is "${keyword}".
   json.columns = json.columns.slice(0, 20);
   fs.writeFileSync(path, JSON.stringify(json, null, 2));
 
-  // (おまけラップ)
-  const lyrics = await ask({
-    messages: [{
-      role: 'user',
-      content: `I want you to act as a japanese rapper for a beautiful girl. 
-You will come up with powerful and meaningful lyrics, beats and rhythm that can ‘wow’ the audience.
-Your lyrics should have an intriguing meaning and message which people can relate too.
-When it comes to choosing your beat, make sure it is catchy yet relevant to your words, so that when combined they make an explosion of sound everytime! 
-All of your output should be in Japanese. No English translation required.
-My first request is "I need a rap song about ${keyword}."`
-    }]
-  });
-
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
 
@@ -122,23 +109,6 @@ My first request is "I need a rap song about ${keyword}."`
       }
     ]
   });
-  if (lyrics.choices[0].message?.content) {
-    await web.chat.postMessage({
-      channel,
-      mrkdwn: true,
-      text: '豆香のおまけラップ',
-      unfurl_media: false,
-      blocks: [
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: lyrics.choices[0].message?.content
-          }
-        }
-      ]
-    });
-  }
 }
 
 function pickup(arr: string[], excludes: string[]): string {

@@ -2,7 +2,7 @@
 title: AWS LambdaでChatGPTプラグイン開発を試してみる - ローカル開発編
 author: noboru-kudo
 date: 2023-05-21
-tags: [chatgpt, サーバーレス, lambda, AWS]
+tags: [chatgpt, OpenAI, サーバーレス, lambda, AWS]
 ---
 
 世界中を席巻しているChatGPTですが、プラグイン機能はリアルタイム情報取得、外部API連携等、ChatGPTの可能性を無限に広げます。

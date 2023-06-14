@@ -32,7 +32,7 @@ export async function ask(request: Request): Promise<CreateChatCompletionRespons
     console.time("Chat API")
     if (process.env.DEBUG) console.log('sending...', request.messages);
     const resp = await openai.createChatCompletion({
-      model: 'gpt-4',
+      model: 'gpt-4-0613',
       user: request.userId,
       messages: request.messages,
       max_tokens: request.maxTokens ?? 1024,

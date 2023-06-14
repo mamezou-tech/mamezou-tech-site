@@ -1,5 +1,5 @@
 ---
-title: OpenAI APIのChat APIに追加されたFunction callingを使ってみる
+title: OpenAIのChat APIに追加されたFunction callingを使ってみる
 author: noboru-kudo
 date: 2023-06-14
 tags: [chatgpt, OpenAI]

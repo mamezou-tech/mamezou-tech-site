@@ -2,7 +2,7 @@ import { PromptTemplate } from 'langchain/prompts';
 import { OpenAI } from 'langchain/llms/openai';
 import { LLMChain } from 'langchain/chains';
 
-const modelName = 'gpt-4';
+const modelName = 'gpt-4-0613';
 
 type Rank = {
   title: string,

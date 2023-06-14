@@ -5,10 +5,13 @@ import { OpenAI } from 'langchain/llms/openai';
 
 type Props = { url: string, title: string, rank: number };
 
-const summarizeModelName = 'gpt-3.5-turbo'; // so cheap!!
-const commentModelName = 'gpt-4';
+const summarizeModelName = 'gpt-3.5-turbo-16k'; // so cheap!!
+const commentModelName = 'gpt-4-0613';
 
-export async function generateArticleComment({ url, title, rank }: Props): Promise<{summary: string, comment: string}> {
+export async function generateArticleComment({ url, title, rank }: Props): Promise<{
+  summary: string,
+  comment: string
+}> {
   const resp = await fetch(url);
   const html = await resp.text();
 
@@ -22,7 +25,11 @@ export async function generateArticleComment({ url, title, rank }: Props): Promi
 `,
     inputVariables: ['text']
   });
-  const combineDocsChain = loadSummarizationChain(new OpenAI({ temperature: 0, modelName: summarizeModelName }), {
+  const combineDocsChain = loadSummarizationChain(new OpenAI({
+    temperature: 0,
+    modelName: summarizeModelName,
+    maxTokens: 15000
+  }), {
     type: 'map_reduce',
     combineMapPrompt: summarizePrompt,
     combinePrompt: summarizePrompt
@@ -53,7 +60,7 @@ export async function generateArticleComment({ url, title, rank }: Props): Promi
 
   const llmchain = new LLMChain({
     llm: new OpenAI({ temperature: 0, modelName: commentModelName }),
-    prompt: commentPrompt,
+    prompt: commentPrompt
     // verbose: true
   });
 
@@ -65,6 +72,6 @@ export async function generateArticleComment({ url, title, rank }: Props): Promi
 
   return {
     summary: summarized.text,
-    comment: comment.text,
+    comment: comment.text
   };
 }

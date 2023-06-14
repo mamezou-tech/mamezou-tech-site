@@ -1,6 +1,7 @@
 import { PromptTemplate } from 'langchain/prompts';
 import { OpenAI } from 'langchain/llms/openai';
 import { LLMChain } from 'langchain/chains';
+import axios from 'axios';
 
 const modelName = 'gpt-4-0613';
 
@@ -43,6 +44,10 @@ export async function summarizeRanking(latestRanking: Rank[], preRanking: Rank[]
 
     return resp.text || '';
   } catch (e) {
+    if (axios.default.isAxiosError(e)) {
+      console.error(e.response?.data)
+      return '';
+    }
     console.error(e);
     return '';
   }

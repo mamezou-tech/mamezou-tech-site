@@ -1,23 +1,23 @@
 ---
-title: OpenAI APIのChatAPIで新しく導入されたFunction callingを使ってみる
+title: OpenAI APIのChat APIに追加されたFunction callingを使ってみる
 author: noboru-kudo
 date: 2023-06-14
 tags: [chatgpt, OpenAI]
 ---
 
-2023-06-13にOpenAIからGPT-3.5-turboとGPT-4のアップデートに加えて、Function callingという機能を追加したと発表しました。
+2023-06-13にOpenAIからGPT-3.5-turboとGPT-4のアップデートに加えて、Function callingという機能をAPIに追加したと発表しました。
 
 - [OpenAI Blog - Function calling and other API updates](https://openai.com/blog/function-calling-and-other-api-updates)
 
-APIで任意の関数呼び出しが実行できるようになるのかと勘違いしましたが、よく読んでみるとコンテキストに応じて実行する(または実行しない)関数を選択し、その関数シグニチャーに従ったパラメータを作成してくれるもののようです。
+最初はAPI内で任意の関数呼び出しが実行できるようになるのかと思いましたが、よく読んでみるとコンテキストに応じて実行する(または実行しない)関数を選択し、その関数シグニチャーに従ったパラメータを作成してくれるものです。
 
-ChatGPTプラグインはコンテキストに応じてプラグインAPIを選択して実行してくれますが、Function callingは実行の直前(関数とパラメータ準備)までを手配してくれる感じでしょうか。
+ChatGPTプラグインは、コンテキストに応じてプラグインAPIを選択して実行してくれますが、Function callingは実行の直前(関数選択とパラメータ準備)までを手配してくれる感じでしょうか。
 
 ここではこのFunction callingを実際に使ってみます。
 
 ## 関数準備
 
-まずは実行する関数を準備します。
+まずは実行するサンプル関数を準備します。
 TypeScriptで以下の関数を用意しました。
 
 ```typescript
@@ -31,12 +31,12 @@ const functions = {
 } as const;
 ```
 
-2つありますが両方とも名前(name)を受け取り、生年月日や会社名を返すものです。
-実際には、社内リソースを使ったり外部APIを実行したりするような感じになると思います。
+2つありますが、両方とも名前(name)を受け取り、生年月日や会社名を返すものです。
+実際には、社内リソースを使ったり外部APIを実行するような関数になると思います。
 
 ## Function calling(functions)を指定する
 
-APIはOpenAIの公式ライブラリを使って実装します。
+OpenAI APIの公式ライブラリを使って実装します。
 Node.jsライブラリでは、`3.3.0`でFunction calling関連のインターフェースが追加されていました。
 
 ```typescript
@@ -91,11 +91,11 @@ const message1 = response1.data.choices[0].message;
 
 Function callingを使う場合は、`function_call`と`functions`というフィールドで制御します。
 
-`function_call`は`auto`または`none`が選択できます。通常は`none`でエンドユーザーとの対話(つまり関数呼び出ししない)になりますが、`auto`にするとChat APIがエンドユーザー対話か関数呼び出しを自動判定するようになります。
+`function_call`は`auto`または`none`が選択できます。通常は`none`でエンドユーザーとの対話(つまり関数呼び出ししない)になりますが、`auto`にするとChat APIにエンドユーザーとの対話 or 関数呼び出しを選ばせるようになります。
 上記では明示的に`auto`を指定していますが、`functions`を指定する場合は`auto`がデフォルトになるようです。
 
-`functions`がFunction callingの本体部分です。Chat APIが実行可能な(実際には呼び出す訳ではないですが)関数のシグニチャを列挙します。
-`name`は必須で、`description`は任意になっていますが、Chat APIが関数呼び出しを判定するための説明なので記述した方が良いかと思います。
+`functions`がFunction callingの本体部分です。Chat APIが実行可能な(実際に呼び出す訳ではないですが)関数を列挙します。
+`name`は必須で関数名です。`description`は任意ですが、関数呼び出しの判定に使っている可能性がありますので記述しておいた方が良いと思います。
 `parameters`配下にChat APIが従うべきパラメータのスキーマを[JSON Schema](https://json-schema.org/)で記述します。
 Chat APIはこのスキーマに準じたパラメータを生成してくれます。
 
@@ -184,7 +184,7 @@ console.log(response2.data.choices[0].message);
 
 今までもLangChain等のライブラリを使えば、割と簡単に関数呼び出しできましたが、OpenAI APIとして正式サポートされたことで外部APIとの連携が急速に広まっていきそうな気がします。
 
-今回の発表では、GPT-3の値下げや16Kトークンまで使える`gpt-3.5-turbo-16k`新設といった開発者にうれしいものもありました。
+今回の発表では、Function callingだけでなくGPT-3の値下げや16Kトークンまで使える`gpt-3.5-turbo-16k`新設といった開発者にうれしいものが多くありました。
 ChatGPTだけでなくOpenAI APIのエコシステムをめぐる動向も引き続き注目が必要そうですね。
 
 ---

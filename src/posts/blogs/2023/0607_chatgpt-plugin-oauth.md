@@ -2,7 +2,7 @@
 title: ChatGPTプラグイン開発でGitHub OAuthを使った認証を試す
 author: noboru-kudo
 date: 2023-06-07
-tags: [chatgpt, サーバーレス, lambda, AWS, "認証/認可"]
+tags: [chatgpt, OpenAI, サーバーレス, lambda, AWS, "認証/認可"]
 ---
 
 少し前にAWS上でChatGPTプラグインを構築する記事を書きました。

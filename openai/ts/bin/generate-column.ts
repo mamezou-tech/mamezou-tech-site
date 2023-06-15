@@ -61,7 +61,7 @@ My first word is "${keyword}".
     maxTokens: 2048,
     temperature: 0.7
   });
-  const column = result.choices[0].message?.content.trim() || '';
+  const column = result.choices[0].message?.content?.trim() || '';
   if (!column) throw new Error('no content');
   if (!safeResponse(column) || !safeResponse(column)) new Error(`un-safe content found: ${column}`);
 

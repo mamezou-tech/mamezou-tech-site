@@ -150,20 +150,8 @@ async function runReport() {
           text: `:white_check_mark: 今日のピックアップ記事: ${pickupArticle.rank}位 ${pickupArticle.title}`
         }
       },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `:memo: 要約: ${pickUpMessage.summary}`
-        }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `:mameka_sd_smile: コメント: ${pickUpMessage.comment}`
-        }
-      }
+      ...(makeBlocks(':memo: 要約:', pickUpMessage.summary)),
+      ...(makeBlocks(':mameka_sd_smile: コメント:', pickUpMessage.comment))
     ]
   });
 }
@@ -202,8 +190,42 @@ function getRandomTitle(articles: Rank[]): { title: string, rank: number, url: s
   return {
     title: articles[i].title,
     rank: i + 1,
-    url: `https://${articles[i].url}`,
+    url: `https://${articles[i].url}`
   };
+}
+
+function makeBlocks(prefix: string, content: string) {
+  function splitChunks(str: string): string[] {
+    const size = 3000;
+    const numChunks = Math.ceil(str.length / size);
+    const chunks = new Array(numChunks);
+    for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
+      chunks[i] = str.substring(o, o + size);
+    }
+    return chunks;
+  }
+
+  const chunks = splitChunks(content);
+  console.log(`chunkSize for ${prefix}`, chunks.length)
+  return chunks.map((chunk, i) => {
+    if (i === 0) {
+      return {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: `${prefix} ${chunk}`
+        }
+      };
+    } else {
+      return {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: chunk
+        }
+      };
+    }
+  });
 }
 
 await runReport();

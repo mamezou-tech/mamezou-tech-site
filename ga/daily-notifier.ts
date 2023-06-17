@@ -136,13 +136,7 @@ async function runReport() {
     text: '今日の豆香コメント',
     unfurl_media: false,
     blocks: [
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: summaryMessage
-        }
-      },
+      ...(makeBlocks('', summaryMessage)),
       {
         type: 'section',
         text: {

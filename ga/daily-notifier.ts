@@ -199,27 +199,15 @@ function makeBlocks(prefix: string, content: string) {
     return chunks;
   }
 
-  const chunks = splitChunks(content);
+  const chunks = splitChunks(`${prefix} ${content}`);
   console.log(`chunkSize for ${prefix}`, chunks.length)
-  return chunks.map((chunk, i) => {
-    if (i === 0) {
-      return {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `${prefix} ${chunk}`
-        }
-      };
-    } else {
-      return {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: chunk
-        }
-      };
+  return chunks.map((chunk, i) => ({
+    type: 'section',
+    text: {
+      type: 'mrkdwn',
+      text: chunk
     }
-  });
+  }));
 }
 
 await runReport();

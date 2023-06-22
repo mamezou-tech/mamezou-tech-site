@@ -14,6 +14,11 @@ GitHub Actions では GitHub-hosted runners と呼ばれるGitHub がホスト�
 [Using larger runners - GitHub Docs](https://docs.github.com/en/actions/using-github-hosted-runners/using-larger-runners)
 
 後述の Faster macOS runners についてはパブリックベータのため全ユーザーが利用できます。
+
+[2023.06.22 追記]
+6月22日に Larger runners が GA になりました。
+
+[GitHub-hosted larger runners for Actions are generally available | GitHub Changelog](https://github.blog/changelog/2023-06-21-github-hosted-larger-runners-for-actions-are-generally-available/)
 :::
 
 ## Faster macOS runners

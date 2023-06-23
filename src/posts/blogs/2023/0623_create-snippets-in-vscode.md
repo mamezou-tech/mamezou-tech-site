@@ -45,7 +45,7 @@ VS Code 用の設定メニューから`ユーザースニペットの構成`を�
 
 ![select markdown](https://i.gyazo.com/5babb494f532d35f0b8ea949eb88c60d.png)
 
-雛形の JSON ファイルが `Users/<user>/Library/Application Support/Code/User/snippets/markdown.json` として作成されますのでこれを編集します。
+macOS の場合、雛形の JSON ファイルが `Users/<user>/Library/Application Support/Code/User/snippets/markdown.json` として作成されて VS Code で開かれますのでこれを編集します。
 
 以下のように定義しました。スニペット名 `Front Matter` としています。
 

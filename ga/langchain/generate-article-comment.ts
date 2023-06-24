@@ -6,7 +6,7 @@ import axios from 'axios';
 
 type Props = { url: string, title: string, rank: number };
 
-const summarizeModelName = 'gpt-3.5-turbo-16k'; // so cheap!!
+const summarizeModelName = 'gpt-3.5-turbo-0613'; // so cheap!!
 const commentModelName = 'gpt-4-0613';
 
 export async function generateArticleComment({ url, title, rank }: Props): Promise<{

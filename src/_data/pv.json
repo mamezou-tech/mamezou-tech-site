@@ -9,10 +9,6 @@
       "url": "/blogs/2023/06/14/gpt-function-calling-intro/"
     },
     {
-      "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
-      "url": "/nuxt/nuxt3-state-management/"
-    },
-    {
       "title": "AWS認定資格を12個すべて取得したので勉強したことなどをまとめます",
       "url": "/blogs/2022/12/12/aws_all_certified/"
     },
@@ -21,8 +17,8 @@
       "url": "/nuxt/nuxt3-routing/"
     },
     {
-      "title": "IoT を使ってみる（その６：MQTTブローカー Mosquitto編）",
-      "url": "/iot/internet-of-things-06/"
+      "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
+      "url": "/nuxt/nuxt3-state-management/"
     },
     {
       "title": "統計学で避けて通れない自由度の話",
@@ -33,12 +29,16 @@
       "url": "/testing/jest/jest-mock/"
     },
     {
-      "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
-      "url": "/nuxt/nuxt3-rendering-mode/"
+      "title": "IoT を使ってみる（その６：MQTTブローカー Mosquitto編）",
+      "url": "/iot/internet-of-things-06/"
     },
     {
-      "title": "自然言語処理初心者が「GPT2-japanese」で遊んでみた",
-      "url": "/blogs/2022/07/08/gpt-2-japanese/"
+      "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
+      "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
+    },
+    {
+      "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
+      "url": "/nuxt/nuxt3-rendering-mode/"
     }
   ]
 }

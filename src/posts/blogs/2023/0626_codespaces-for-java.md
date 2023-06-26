@@ -2,7 +2,7 @@
 title: GitHub CodespacesによるJavaのチーム開発環境の作り方
 author: toshio-ogiwara
 date: 2023-06-26
-tags: [GitHub, Codespaces, java]
+tags: [GitHub, Codespaces, java, vscode]
 ---
 GitHub CodespacesでJavaのチーム開発環境を整備してみたところ、想像の斜め上を行く便利さでした。このデベロッパーサイトでもCodespacesを[何回か紹介](/tags/codespaces/)してきましたが、今回は複数人で使う開発環境としてCodespacesを使うとどのような点がよいのか、そしてそれをどうセットアップするかなど、個人でなく複数人で使う場合の側面からCodespacesを紹介したいと思います。
 
@@ -44,7 +44,7 @@ GitHub CodespacesでJavaのチーム開発環境を整備してみたところ�
 :::
 
 # GitHub Codespacesの基礎知識
-ここからはそんな素敵なJavaの開発環境の作り方を説明してきますが、その前に前提知識としてCodespacesの動作環境を次の図をもとに簡単に説明します。
+今回の記事ではそんな素敵なJavaの開発環境の作り方を説明していきますが、その前に前提知識としてCodespacesの動作環境を次の図をもとに簡単に説明します。
 
 ![fig01](/img/blogs/2023/0626_images/fig_01.drawio.svg)
 
@@ -57,7 +57,7 @@ Codespacesは個人アカウントでも2コアCPU/4GBメモリのリソース�
 :::
 
 # Javaの開発環境の作り方
-前置きが長くなりましたがCodespacesにおけるJavaの開発環境の作り方について、先ほど利点に挙げた点を中心に説明していきます。
+ここからはCodespacesにおけるJavaの開発環境の作り方について、先ほど利点に挙げた点を中心に説明していきます。
 
 :::check: 途中で出てくる案内(Snackbar)は一旦すべて無視する
 開発環境が立ち上がった後や何かアクションをした後に次のような案内(Snackbar)がいくつか出てくる場合がありますが一旦すべて無視して閉じてくだい。なお、下の案内は例なだけでこれ以外にもいろいろな内容があります。
@@ -271,7 +271,7 @@ Codespacesは便利すぎてローカル環境との区別が付かなくなり�
 ![cap19](/img/blogs/2023/0626_images/cap_19.drawio.svg)<br>
 1. 変更した設定の左側の歯車アイコンをクリックし、メニューから”JSONとして設定をコピー”を選択
 ![cap20](/img/blogs/2023/0626_images/cap_20.drawio.svg)<br>
-1. devcontainer.jsonの`customizations.vscode. settings`にコピーした設定を追加
+1. devcontainer.jsonの`customizations.vscode.settings`にコピーした設定を追加
 ```json
 {
 	"name": "Java",

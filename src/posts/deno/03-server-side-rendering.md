@@ -5,6 +5,7 @@ date: 2022-10-21
 templateEngineOverride: md
 prevPage: ./src/posts/deno/02-use-external-packages.md
 nextPage: ./src/posts/deno/04-using-os-and-ffi.md
+tags: Fresh
 ---
 
 [前回](/deno/getting-started/02-use-external-packages/)からしばらく開いてしまいました。この間 Deno v1.26 がリリースされています。

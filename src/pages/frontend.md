@@ -25,28 +25,23 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 ### ブログ
 - [Nuxt3で導入されたハイブリッドレンダリングとNuxt版ISG/ISRを試してみる](/blogs/2022/12/18/nuxt3-hybrid-rendering/)
 
-## プリレンダリング / エッジ環境
-クライアントでの応答性が重要な Web アプリでは SPA(Single Page Application) が発展してきました。一方、コンテンツが重要なサイトでは事前ビルドした静的コンテンツによる MPA(Multi Page Application) が注目されています。コンテンツの配信先を CDN にしてホスト管理プロセスを無くす Jamstack なアーキテクチャも普及してきています。ここでは、プリレンダリングフレームワークや Netlify[^1] をはじめとするエッジの活用についてご紹介します。
-
-[^1]: 豆蔵デベロッパーサイトのホスティングにも使っています。
-
-### プリレンダリングフレームワーク
-- [コンテンツ重視の静的サイトジェネレーター Astro でドキュメントサイトを構築する](/blogs/2022/09/07/build-doc-site-with-astro/)
-- [Fresh - Deno の 次世代 Web フレームワーク](/blogs/2022/07/04/fresh-deno-next-gen-web-framework/)
-- [Astro 2.0 + MDX + Recharts で Markdown ページにインタラクティブなチャートを描画する](/blogs/2023/01/29/astro-2.0-mdx/)
-
-### Netlify
-- [Deno Deploy を基盤とする Netlify Edge Functions を試す](/blogs/2022/07/23/try-netlify-edge-functions/)
-- [Netlify CMSのワークフローでコンテンツ管理をする](/blogs/2022/08/03/netlifycms-workflow-intro/)
-- [Netlify Identityを使ってNetlify CMSのユーザー認証をする](/blogs/2022/08/10/netlify-cms-with-netlify-identity/)
-- [NetlifyのLighthouseプラグインでWebサイトのメトリクスを継続的に評価する](/blogs/2022/08/17/netlify-lighthouse-plugin-intro/)
-- [Netlify Split TestingでGitブランチベースのA/Bテストをする](/blogs/2022/08/21/netlify-split-testing-intro/)
+## プリレンダリング
+クライアントでの応答性が重要な Web アプリでは SPA(Single Page Application) が発展してきました。一方、コンテンツが重要なサイトでは事前ビルドした静的コンテンツによる MPA(Multi Page Application) が注目されています。ここではプリレンダリングフレームワークに関する記事を紹介します。
 
 ### Eleventy(11ty)
 - [Eleventy入門(第1回) - 11tyで手早く静的サイトを作成する](/11ty/11ty-intro/)
 - [Eleventy入門(第2回) - テンプレート・コードを部品化する](/11ty/11ty-reusable-components/)
 - [Eleventyで生成したマークダウン記事の画像を拡大する](/blogs/2022/05/19/11ty-zoom-image/)
 - [Eleventyで生成したサイトでNetlify Edge Functionsを使ってみる](/blogs/2022/08/17/netlify-edge-functions-with-11ty/)
+
+### Astro
+- [コンテンツ重視の静的サイトジェネレーター Astro でドキュメントサイトを構築する](/blogs/2022/09/07/build-doc-site-with-astro/)
+- [Astro 2.0 + MDX + Recharts で Markdown ページにインタラクティブなチャートを描画する](/blogs/2023/01/29/astro-2.0-mdx/)
+- [Astro 2.1 で実験的サポートされた Markdoc Integration を触ってみる](/blogs/2023/03/23/astro2_1-with-markdoc-support/)
+
+### Fresh
+- [Fresh - Deno の 次世代 Web フレームワーク](/blogs/2022/07/04/fresh-deno-next-gen-web-framework/)
+- [Fresh 1.2 へアップグレード - island の新機能など](/blogs/2023/06/27/fresh-1_2/)
 
 ## Deno
 Deno は高速でセキュアな JavaScript ランタイムです。Node.js に比べ開発体験も向上しています。ここでは、Deno の導入や活用についてご紹介します。
@@ -62,7 +57,23 @@ Deno は高速でセキュアな JavaScript ランタイムです。Node.js に�
 
 ### ブログ
 - [Deno による Slack プラットフォーム(オープンベータ)](/blogs/2022/09/27/slack-new-plotform-powered-by-deno/)
+- [Deno 1.31で安定化されたプロセス起動 API Deno.Command を使ってみる](/blogs/2023/03/06/deno-new-command-api/)
+
+## エッジ環境
+コンテンツの配信先を CDN にしてホスト管理プロセスを無くす Jamstack なアーキテクチャが普及してきています。さらに静的コンテンツのみならず、データベース機能も各サービスから提供され始めました。ここでは Netlify[^1] をはじめとするエッジ環境の活用についてご紹介します。
+
+[^1]: 豆蔵デベロッパーサイトのホスティングにも使っています。
+
+### Netlify
+- [Deno Deploy を基盤とする Netlify Edge Functions を試す](/blogs/2022/07/23/try-netlify-edge-functions/)
+- [Netlify CMSのワークフローでコンテンツ管理をする](/blogs/2022/08/03/netlifycms-workflow-intro/)
+- [Netlify Identityを使ってNetlify CMSのユーザー認証をする](/blogs/2022/08/10/netlify-cms-with-netlify-identity/)
+- [NetlifyのLighthouseプラグインでWebサイトのメトリクスを継続的に評価する](/blogs/2022/08/17/netlify-lighthouse-plugin-intro/)
+- [Netlify Split TestingでGitブランチベースのA/Bテストをする](/blogs/2022/08/21/netlify-split-testing-intro/)
+
+### Deno Deploy
 - [Deno のビルトイン key-value データベース Deno KV が登場](/blogs/2023/05/09/deno-kv/)
+- [Deno KV を Deno Deploy で使う](/blogs/2023/05/18/deno-kv-on-deno-deploy/)
 
 ## デスクトップアプリ
 フロントエンドの技術は Web アプリだけでなくデスクトップアプリにも応用されています。ここでは、定番の Electron をはじめとするデスクトップアプリケーションのフレームワークの活用についてご紹介します。

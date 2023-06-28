@@ -11,11 +11,11 @@ GitHub Actions のセキュリティのためのツール actions-permissions �
 
 [New tool to secure your GitHub Actions | The GitHub Blog](https://github.blog/2023-06-26-new-tool-to-secure-your-github-actions/)
 
-2021年以前に作成された GitHub リポジトリにおいて、GitHub Actions ワークフロー実行時に発行されるアクセストークン(GITHUB_TOKEN)はデフォルトでリポジトリの読み取りと書き込みのフルパーミッションが与えられています[^1]。
+2023年2月以前に作成された GitHub リポジトリにおいて、GitHub Actions ワークフロー実行時に発行されるアクセストークン(GITHUB_TOKEN)はデフォルトでリポジトリの読み取りと書き込みのフルパーミッションが与えられています[^1]。
 
 ![Workflow permissions default](https://i.gyazo.com/7a8efa6393ff2b0545ab7ae9db80e167.png)
 
-[^1]: 2021年以降に作成されたリポジトリではデフォルトはリードオンリーに設定されています。
+[^1]: 2023年2月以降に作成されたリポジトリではデフォルトのパーミッションが読み取りのみに設定されています。[GitHub Actions - Updating the default GITHUB_TOKEN permissions to read-only | GitHub Changelog](https://github.blog/changelog/2023-02-02-github-actions-updating-the-default-github_token-permissions-to-read-only/)
 
 セキュリティ向上のためにリポジトリの設定を変更すると既存のワークフローが動かなくなる可能性があります。そこで移行用の支援ツールとして公開されたのが、actions-permissions というわけです。
 
@@ -26,7 +26,7 @@ GitHub Actions のセキュリティのためのツール actions-permissions �
 - GitHub token permissions Monitor action
 - GitHub token permissions Advisor action
 
-Permissions Monitor action をワークフローの step として追加することで、ワークフロー実行に必要な必要最小限のパーミッションをレポートしてくれます。これには利用している Action が要求するパーミッションも含まれます。必要最小限のパーミッションを把握しワークフローに明示的に指定することで、デフォルトを読み取り専用にしてセキュアな状態にすることができます。
+Permissions Monitor action をワークフローの step として追加することで、ワークフロー実行に必要な必要最小限のパーミッションをレポートしてくれます。これには利用している Action が要求するパーミッションも含まれます。必要最小限のパーミッションを把握しワークフローに明示的に指定することで、不要なパーミッションが付与されることなく、リポジトリのデフォルト設定もセキュアな状態にすることができます。
 
 ## Permissions Monitor の利用
 わざとらしい例ですが、ファイルを作成してリポジトリに commit / push する以下のようなワークフローがあるとします。リポジトリへの push 操作を含むので、当然読み取り以上のパーミッションが必要となります。

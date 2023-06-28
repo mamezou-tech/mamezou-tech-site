@@ -92,14 +92,8 @@ dist ディレクトリに移動します。
 ```shell
 mkdir dist
 cd dist
-```
-
-```shell
 clasp login
 clasp create --title 'gas-example'
-```
-
-```shell
 cd ..
 ```
 
@@ -115,7 +109,7 @@ cd ..
 npm i --save-dev @aws-sdk/signature-v4 @aws-crypto/sha256-js
 ```
 
-src ディレクトリに `put-object.test.js` ファイルを次の内容で作成します。
+src ディレクトリに `put-object.test.js` ファイルを次の内容で作成します。後ろのコメントアウト (`/*` と `*/` で囲んだ) 部分の説明は後述します。 
 
 ```javascript
 const { SignatureV4 } = require('@aws-sdk/signature-v4');

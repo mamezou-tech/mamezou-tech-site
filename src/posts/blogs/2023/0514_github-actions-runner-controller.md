@@ -220,3 +220,9 @@ jobs:
 VM に構築したセルフホストランナーはイミュータブルではなくクリーンアップが課題でしたが、Pod で起動するランナーはその課題も解決されています。
 
 セルフホストランナーを多用しているプロジェクトでは正式公開が待ち遠しい機能ではないかと思います。
+
+:::info:2023.07.02追記
+2023年6月30日 Actions runner controller が GA になりました。
+
+[GitHub Actions - Actions Runner General availability | GitHub Changelog](https://github.blog/changelog/2023-06-30-github-actions-actions-runner-general-availability/)
+:::

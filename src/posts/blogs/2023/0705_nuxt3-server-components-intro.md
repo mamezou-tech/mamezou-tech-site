@@ -1,17 +1,17 @@
 ---
-title: Nuxt版のServer Componentsでサーバーサイドのみでレンダリングする
+title: Nuxt版のServer Componentsでサーバー環境限定でレンダリングする
 author: noboru-kudo
 date: 2023-07-05
 tags: [nuxt, vue]
 ---
 
-Server Componentsと言えば、React[^1]/Next.jsのApp Router[^2]を思い浮かべる方が多いと思います。
+Server Componentsと言えば、React[^1]やNext.jsのApp Router[^2]を思い浮かべる方が多いと思います。
 特に、Next.jsのApp RouterはデフォルトでServer Componentsが適用されるので、今後目にするケースが増えていくことと思います。
 
 [^1]: [React Server Components RFC](https://github.com/reactjs/rfcs/blob/main/text/0188-server-components.md)
 [^2]: [Next.js App Router - Server Components](https://nextjs.org/docs/getting-started/react-essentials#server-components)
 
-Server Componentは文字通りサーバーサイドのみでレンダリングされるコンポーネントです。
+Server Componentsは文字通りサーバー環境のみでレンダリングされるコンポーネント技術です。
 これによる制約もありますが、パフォーマンスや効率性が大きく改善されます。
 そんなServer Componentsですが、Nuxtでも実験的扱いですが開発が進められています。
 
@@ -22,7 +22,8 @@ Server Componentは文字通りサーバーサイドのみでレンダリング�
 :::alert
 NuxtのServer Componentsは実験的段階でドキュメントも充実してるとは言えません。現時点ではクリティカルな環境での利用は控えた方が良いと思います。
 
-NuxtでのServer Componentsのロードマップやその状況は、以下GitHub Issueで管理されています。
+検証/利用する場合は、最新の状況を確認してください。
+NuxtでのServer Componentsのロードマップやその進捗状況は、以下GitHub Issueで管理されています。
 
 - [GitHub Nuxt - server component roadmap](https://github.com/nuxt/nuxt/issues/19772)
 :::
@@ -75,7 +76,7 @@ Nuxtの公式ドキュメントの動画を見ながら作りました。
 
 このコンポーネントは、propsで受け取ったページ(page)に対応するブログ(マークダウン形式)を取得し、マークダウンパーサー(markdown-it)でHTMLに変換してレンダリングしています。
 
-Reactも同様ですが、サーバーコンポーネントはサーバーサイドのみでレンダリングされますので、その実装に注意が必要です。
+Reactも同様ですが、サーバーコンポーネントはサーバー環境のみでレンダリングされますので、その実装に注意が必要です。
 以下の機能は使えません。
 
 - ライフサイクルイベント(onMounted等)
@@ -87,7 +88,7 @@ Reactも同様ですが、サーバーコンポーネントはサーバーサイ
 
 また、サーバーコンポーネント内で通常のコンポーネント(ファイル名から`.server`を外したもの)[^3]を使っても、サーバーコンポーネントとして扱われてしまうようです。
 つまり、上記制約が通常コンポーネントに対しても適用されてしまいました。 
-後述しますが、この通常のコンポーネントをサーバーコンポーネントのスロットとして使うことで解消します[^4]。
+後述しますが、この現象は通常コンポーネントをサーバーコンポーネントのスロットとして使うことで解消します[^4]。
 
 [^3]: ここでいう「通常のコンポーネント」はクライアントサイドでリアクティブに動作するコンポーネントを指します。`.client.vue`サフィックスのコンポーネントと区別するために、クライアントコンポーネントの表現は使いませんでした。
 [^4]: [GitHub Nuxt Issue - support client interactivity within server components](https://github.com/nuxt/nuxt/issues/19765)
@@ -141,7 +142,7 @@ node .output/server/index.mjs
 これは、通常コンポーネントではクライアント側のレンダリングのために、コンポーネント自体と外部ライブラリ(この場合はmarkdown-it)のソースコードがバンドルファイルに含まれているためです。
 
 このサーバーコンポーネントもユーザーの入力値(page)が変わると再レンダリングする必要があります。
-通常コンポーネントであれば、入力値の変更に反応してクライアントサイドで再レンダリングされますが、ここではサーバーサイドでレンダリングする仕組みが必要です。
+通常コンポーネントであれば、入力値の変更に反応してクライアントサイドで再レンダリングされますが、ここではサーバー環境でレンダリングする仕組みが必要です。
 Nuxtではサーバーサイド側にGETリクエスト(クエリパラメータとしてpropsを連携)を投げてレンダリング結果をJSONで受け取っていました。
 
 以下はChrome DevToolでこの動を追ってみた様子です。
@@ -152,7 +153,7 @@ Nuxtではサーバーサイド側にGETリクエスト(クエリパラメータ
 
 [^5]: 現時点でこのキャッシュ戦略を変更できるのかは検証できませんでした。
 
-最後に、サーバーコンポーネントを使った場合の動きをシーケンスで整理しておきます。
+ここで、サーバーコンポーネントを使った場合の動きをシーケンスで整理しておきます。
 
 ```mermaid
 sequenceDiagram
@@ -162,8 +163,8 @@ sequenceDiagram
     B ->> SV: 初期ページ要求
     SV ->> SV: ページレンダリング
     SV -->> B: HTML
-    B ->> CDN: Nuxtアプリ(JS)要求
-    CDN -->> B: Nuxtアプリ(JS)<br />※サーバーコンポーネントを含まない
+    B ->> CDN: クライアント向けNuxtアプリ(JS)要求
+    CDN -->> B: クライアント向けNuxtアプリ(JS)<br />※サーバーコンポーネントを含まない
     B ->> B: ハイドレーション
     alt props変更
         B ->> SV: レンダリング要求
@@ -258,5 +259,5 @@ const page = ref('1');
 今回は現時点でのNuxt版Server Componentsの実装について見ていきました。
 まだ実験的段階であるものの、うまく使いことなすとパフォーマンス観点のメリットが大きいと思います。
 
-語弊があるかもしれませんが、大きな潮流としてフロントエンドはサーバーサイドレンダリングに戻ってきているのを感じます。
+語弊があるかもしれませんが、大きな潮流としてフロントエンドはSPA全盛の時代が終わり、サーバーサイドに(グレードアップして)回帰しているのを感じます。
 Next.jsのApp RouterがStableになって、Server Componentsの普及が進んでいくのは確実ですが、Nuxtの方の動きも注目していきたいと思いました。

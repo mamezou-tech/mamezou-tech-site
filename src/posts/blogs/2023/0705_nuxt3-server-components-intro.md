@@ -1,5 +1,5 @@
 ---
-title: Nuxt版のServer Componentsを使ってみる
+title: Nuxt版のServer Componentsでサーバーサイドのみでレンダリングする
 author: noboru-kudo
 date: 2023-07-05
 tags: [nuxt, vue]
@@ -83,7 +83,7 @@ Reactも同様ですが、サーバーコンポーネントはサーバーサイ
 - リアクティブな変数(ref()等)
 - ブラウザでのみ動作するAPI(DOM API等)
 
-これkらは実装したところで、期待通りに動作しません。
+これらは実装したところで、期待通りに動作しません。
 
 また、サーバーコンポーネント内で通常のコンポーネント(ファイル名から`.server`を外したもの)[^3]を使っても、サーバーコンポーネントとして扱われてしまうようです。
 つまり、上記制約が通常コンポーネントに対しても適用されてしまいました。 
@@ -157,7 +157,7 @@ Nuxtではサーバーサイド側にGETリクエスト(クエリパラメータ
 ```mermaid
 sequenceDiagram
     actor B as ブラウザ
-    participant SV as サーバー
+    participant SV as サーバーサイドアプリ
     participant CDN as 静的コンテンツ(CDN)
     B ->> SV: 初期ページ要求
     SV ->> SV: ページレンダリング
@@ -172,6 +172,8 @@ sequenceDiagram
         B ->> B: レンダリング結果反映
     end
 ```
+
+今回はローカル環境(Node.jsサーバー)で動かしていますが、実運用をイメージして上記シーケンスではサーバーサイドアプリ(Nitro)と静的コンテンツとして配信する部分(CDN)はレーンを分けています。
 
 ## サーバーコンポーネントと通常コンポーネントを組み合わせる
 
@@ -253,8 +255,8 @@ const page = ref('1');
 
 ## 最後に
 
-今回はNuxt版のServer Componentsの実装について見ていきました。
+今回は現時点でのNuxt版Server Componentsの実装について見ていきました。
 まだ実験的段階であるものの、うまく使いことなすとパフォーマンス観点のメリットが大きいと思います。
 
 語弊があるかもしれませんが、大きな潮流としてフロントエンドはサーバーサイドレンダリングに戻ってきているのを感じます。
-Next.jsのApp RouterがStableになって、Server Componentsは普及が進んでいくのは確実ですが、Nuxtの方の動きも注目していきたいと思いました。
+Next.jsのApp RouterがStableになって、Server Componentsの普及が進んでいくのは確実ですが、Nuxtの方の動きも注目していきたいと思いました。

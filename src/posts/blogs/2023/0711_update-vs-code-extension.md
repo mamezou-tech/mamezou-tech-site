@@ -202,7 +202,7 @@ VS Code でインストール済みの場合は、ウィンドウ再起動のタ
 ![Update on VS Code](https://i.gyazo.com/34eb30baa3a98ba3eea4db4a169d8449.png)
 
 ## 最後に
-VS Code 拡張をアップデートすることで Codespaces の進化に驚かされました。
+VS Code 拡張をアップデートすることで Codespaces とのインテグレーションに驚かされました。
 ローカルで使っている VS Code 拡張を Codespaces 対応したいケースは増えていくでしょう。ホスト OS の API 呼び出しなど特殊なことをしていなければそのまま動くと思います。
 
 Marketplace への公開は Azure のアカウントで PAT を発行しないといけないため、常日頃使っていない筆者はけっこう手間取りました[^4]。

@@ -6,7 +6,7 @@ tags: [AWS, CI/CD, GitHub]
 ---
 
 代表的なCI/CDサービスの1つになったGitHub Actionsですが、その大きな強みの1つにエコシステムの充実度があげられます。
-[マーケットプレイス](https://github.com/marketplace?type=actions)を覗くと、数多くのActionsが公開されており、様々なツール・サービスとの統合が簡単にできるようになっています。
+[GitHub マーケットプレイス](https://github.com/marketplace?type=actions)を覗くと、数多くのActionsが公開されており、様々なツール・サービスとの統合が簡単にできるようになっています。
 
 AWSにもCodeBuildやCodePipeline、CodeDeployといったCI/CDのマネージドサービスがあります。
 これらはAWSが提供するサービスだけに、AWSリソースと高度に統合されてます。これはAWS中心のプロジェクトでは効率が良いですが、AWS外のツールやサービスを使う場合はシェルで頑張るというケースが多いのかなと思います。

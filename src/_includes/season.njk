@@ -1,0 +1,42 @@
+---
+layout: base.njk
+---
+{% include 'sitenav.njk' %}
+
+<main class="tdbc-container">
+  <article class="season tdbc-mx-auto">
+    <header class="season__header">
+      <h1>{{ title }}</h1>
+      <div style="float: right">
+        <is-land on:idle>
+          <div id="preact-sns">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>
+          <template data-island>
+            <script type="module">
+              import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';
+              hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
+            </script>
+          </template>
+        </is-land>
+      </div>
+    </header>
+
+    <main class="season__content">
+      {{ content | safe }}
+    </main>
+
+    <is-land on:idle style="margin-top:0">
+      <div id='recommendation-app'></div>
+      <template data-island>
+	    <script type="module">
+        import { renderRecommendation } from '/components/preact/bundle.mjs';
+        renderRecommendation({tags : '{{ tags | pageTags }}'}, document.getElementById("recommendation-app"));
+	    </script>
+	  </template>
+    </is-land>
+    <hr class="link-separator" />
+    {%- include "pv-ranking.njk" %}
+    {%- include "links.njk" %}
+  </article>
+  {% initClipboardJS %}
+  {% mermaid_js %}
+</main>

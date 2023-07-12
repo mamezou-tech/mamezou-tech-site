@@ -8,7 +8,7 @@ eleventyExcludeFromCollections: true
 | 7月24日(月) | [toshio-ogiwara](/authors/toshio-ogiwara/) <img src="https://github.com/ogiwarat.png?size=30" /> | RefactorFirstで暑苦しいGodクラスを倒せ(仮) |
 | 7月25日(火) | [toshio-horie](/authors/toshio-horie/) <img src="https://github.com/toshio-horie.png?size=30" /> | Hackathon(社内勉強会)やってます！ |
 | 7月26日(水) | shuji-morimoto <img src="https://github.com/shuji-morimoto.png?size=30" />| リモート環境(デスクまわり)に関すること(仮) |
-| 7月27日(木) | misato-kamei <img src="https://github.com/misato-kamei.png?size=30" />| 駆け出しスクラムマスターのあれこれ相談室(仮) |
+| 7月27日(木) | misato-kamei <img src="https://github.com/misato-kamei.png?size=30" width="30" height="30" />| 駆け出しスクラムマスターのあれこれ相談室(仮) |
 | 7月28日(金) | makiko-nakasato <img src="https://github.com/makiko-nakasato.png?size=30" />| アジャイル実践者に捧ぐちょっぴり(?)ブラックなステークホルダーマネジメント |
 | 7月31日(月) | yuta-nagayoshi | タイトル未定（何か書きます！） |
 | 8月1日(火) | [shinichiro-iwaki](/authors/shinichiro-iwaki) <img src="https://github.com/shinichiro-iwaki.png?size=30" /> | Coverageの血の海から抜けて網羅度のBlueOceanを探そう(仮) |

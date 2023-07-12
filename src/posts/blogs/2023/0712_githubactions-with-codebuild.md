@@ -18,7 +18,7 @@ AWSにもCodeBuildやCodePipeline、CodeDeployといったCI/CDのマネージ�
 最初は、GitHub ActionsのセルフホステッドランナーとしてCodeBuildが使えるようになったのかなくらいに思っていましたが、そうではなくジョブはCodeBuildとして動作するようです。
 さらに、VCSとしてGitHub以外も利用可能だったり、制限はありますがGitHub Actionsのマーケットプレイスで公開されているActionsも利用可能です[^1]。
 
-[^1]: GitHub Actionsのエコシステムにタダ乗りな感じですが、GitHub側の許可は取っているんでしょうかね。。。
+[^1]: GitHub Actionsのエコシステムにタダ乗りな感じですが、GitHub側の承諾は取っているんでしょうかね。。。
 
 - [AWS CodeBuild Doc - GitHub Action runner in AWS CodeBuild](https://docs.aws.amazon.com/codebuild/latest/userguide/action-runner.html)
 

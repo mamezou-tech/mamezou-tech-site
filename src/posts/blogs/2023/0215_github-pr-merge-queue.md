@@ -9,6 +9,12 @@ GitHub で PR のマージキューがパブリックベータになりました
 
 [Pull request merge queue (public beta) | GitHub Changelog](https://github.blog/changelog/2023-02-08-pull-request-merge-queue-public-beta/)
 
+:::info:
+2023年7月12日にマージキューが GA になりました。
+
+[GitHub merge queue is generally available | The GitHub Blog](https://github.blog/2023-07-12-github-merge-queue-is-generally-available/)
+:::
+
 ## マージキューの概要
 ブランチを作成してから PR を作成するまでに発生した main ブランチの変更を取り込む必要があるケースはけっこうあります。特に規模の大きい開発ではマージの作業コストは大きくなります。マージキューの ChangeLog の文章には以下のように書かれています。
 

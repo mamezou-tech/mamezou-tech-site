@@ -16,3 +16,5 @@ eleventyExcludeFromCollections: true
 | 8月3日(木) | [shuichi-takatsu](/authors/shuichi-takatsu/) <img src="https://github.com/shuichi-takatsu.png?size=30" /> | そこのあなた、無闇にメトリクスを増やしていませんか？（仮） |
 | 8月4日(金) | minoru-matsumoto <img src="https://github.com/minosys3.png?size=30" /> | Rust で ML に挑戦してみた（仮） |
 | 8月7日(月) | [takafumi-okubo](/authors/takafumi-okubo/) <img src="https://github.com/TakOkubo.png?size=30" /> | タイトル未定（LLMについて何か書こうと思います） |
+| 8月8日(火) | noriyuki-yagi <img src="https://github.com/NoriyukiYagi.png?size=30" width="30" height="30" /> | Scrapbox で mermaid 記法を使うスクリプトの話（仮） |
+| 8月9日(水) | kohei-tsukano | タイトル未定。新人です！初めての投稿です！ |

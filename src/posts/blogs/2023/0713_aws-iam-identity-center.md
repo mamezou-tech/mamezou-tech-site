@@ -1,5 +1,5 @@
 ---
-title: "AWS Identity Centerのロールから別のロールにCLIでスイッチして操作する"
+title: "AWS IAM Identity Centerのロールから別のロールにCLIでスイッチして操作する"
 author: shigeki-shoji
 date: 2023-07-13
 tags: [AWS]

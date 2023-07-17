@@ -11,6 +11,7 @@ type Rank = {
 }
 
 export async function summarizeRanking(latestRanking: Rank[], preRanking: Rank[]) {
+  console.log('evaluate ranking...')
   try {
     const makeEntry = (rank: Rank, index: number) => `${index + 1}. ${rank.title}: ${rank.user}`;
     const latest = latestRanking.slice(0, 20).map(makeEntry).join('\n');

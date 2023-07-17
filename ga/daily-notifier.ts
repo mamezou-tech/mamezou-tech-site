@@ -140,7 +140,7 @@ async function runReport() {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `:white_check_mark: 今日のピックアップ記事: ${pickupArticle.rank}位 <https://${pickupArticle.url}|${pickupArticle.title}>`
+          text: `:white_check_mark: 今日のピックアップ記事: ${pickupArticle.rank}位 <${pickupArticle.url}|${pickupArticle.title}>`
         }
       },
       ...(makeBlocks(':memo: 要約:', pickUpMessage.summary)),

@@ -1,7 +1,8 @@
 ---
 title: 夏のリレー連載2023
-eleventyExcludeFromCollections: true
 ---
+
+[告知 -「夏のリレー連載2023」](/blogs/2023/07/19/announce-summer-relay/)
 
 | 公開予定日 | 執筆者 | タイトル |
 |:-------|:-------|:---------|

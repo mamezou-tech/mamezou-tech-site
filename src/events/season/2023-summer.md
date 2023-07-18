@@ -1,6 +1,5 @@
 ---
 title: 夏のリレー連載2023
-eleventyExcludeFromCollections: true
 ---
 
 | 公開予定日 | 執筆者 | タイトル |

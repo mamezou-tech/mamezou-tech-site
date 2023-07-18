@@ -2,6 +2,8 @@
 title: 夏のリレー連載2023
 ---
 
+[告知 -「夏のリレー連載2023」始めます](/blogs/2023/07/19/announce-summer-relay/)
+
 | 公開予定日 | 執筆者 | タイトル |
 |:-------|:-------|:---------|
 | 7月24日(月) | [toshio-ogiwara](/authors/toshio-ogiwara/) <img src="https://github.com/ogiwarat.png?size=30" /> | RefactorFirstで暑苦しいGodクラスを倒せ(仮) |

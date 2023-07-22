@@ -13,6 +13,7 @@ export async function generateArticleComment({ url, title, rank }: Props): Promi
   summary: string,
   comment: string
 }> {
+  console.log('generating article comment...')
   const resp = await fetch(url);
   const html = await resp.text();
 

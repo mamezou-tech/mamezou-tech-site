@@ -55,10 +55,10 @@ async function countGoogleSearchClick() {
 
 type Rank = { title: string, url: string, user: number };
 
-function generateRanking(response: protos.google.analytics.data.v1beta.IRunReportResponse): Rank[] {
+function generateRanking(response: protos.google.analytics.data.v1beta.IRunReportResponse, limit = 20): Rank[] {
   return response.rows!
     .sort((a, b) => +b.metricValues![0].value! - +a.metricValues![0].value!)
-    .slice(0, 20)
+    .slice(0, limit)
     .map(r => {
       const [title, url] = r.dimensionValues!.map(v => v.value);
       return {
@@ -73,14 +73,13 @@ async function runReport() {
   // const googleSearchClick = await countGoogleSearchClick();
   const [latestResult] = await analyticsDataClient.runReport(makePopularPosts(yesterday, yesterday));
   const [preResult] = await analyticsDataClient.runReport(makePopularPosts(twoDaysAgo, twoDaysAgo));
-  const latestRanking = generateRanking(latestResult);
-  const preRanking = generateRanking(preResult);
+  const latestRanking = generateRanking(latestResult, 100)
+  const latestTop20Ranking = latestRanking.slice(0, 20);
+  const preTop20Ranking = generateRanking(preResult, 20);
 
-  const summaryMessage = await summarizeRanking(latestRanking, preRanking);
-  // console.log(summaryMessage);
+  const summaryMessage = await summarizeRanking(latestTop20Ranking, preTop20Ranking);
   const pickupArticle = getRandomTitle(latestRanking);
   const pickUpMessage = await generateArticleComment(pickupArticle);
-  // console.log(pickUpMessage);
 
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
@@ -125,7 +124,7 @@ async function runReport() {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: ':trophy:*ユーザー数TOP20* :bigboss:\n' + latestRanking.map(makeEntry).join('\n')
+          text: ':trophy:*ユーザー数TOP20* :bigboss:\n' + latestTop20Ranking.map(makeEntry).join('\n')
         }
       }
     ]
@@ -141,7 +140,7 @@ async function runReport() {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `:white_check_mark: 今日のピックアップ記事: ${pickupArticle.rank}位 ${pickupArticle.title}`
+          text: `:white_check_mark: 今日のピックアップ記事: ${pickupArticle.rank}位 <${pickupArticle.url}|${pickupArticle.title}>`
         }
       },
       ...(makeBlocks(':memo: 要約:', pickUpMessage.summary)),

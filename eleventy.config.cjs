@@ -67,24 +67,19 @@ module.exports = function(eleventyConfig) {
     (contributorArticles, author) => contributorArticles.filter(contributor => contributor.name === author));
   eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));
   eleventyConfig.addFilter('getDate', require('./11ty/get-date.cjs'));
-  eleventyConfig.addFilter('adventCalendarTag', (rawTags) => {
+
+  const eventTagFilter = (tagPrefix) => (rawTags) => {
     if (!rawTags) return;
     const tags = typeof rawTags === 'string' ? [rawTags] : rawTags;
-    const adventTag = tags.find(tag => tag.startsWith('advent'));
-    if (adventTag) {
-      const result = adventTag.match(/advent(?<year>\d{4})/);
+    const eventTag = tags.find(tag => tag.startsWith(tagPrefix));
+    if (eventTag) {
+      const result = eventTag.match(new RegExp(`${tagPrefix}(?<year>\\d{4})`));
       return result ? result.groups.year : undefined;
     }
-  });
-  eleventyConfig.addFilter('summerRelayTag', (rawTags) => {
-    if (!rawTags) return;
-    const tags = typeof rawTags === 'string' ? [rawTags] : rawTags;
-    const adventTag = tags.find(tag => tag.startsWith('summer'));
-    if (adventTag) {
-      const result = adventTag.match(/summer(?<year>\d{4})/);
-      return result ? result.groups.year : undefined;
-    }
-  });
+  };
+  eleventyConfig.addFilter('adventCalendarTag', eventTagFilter('advent'));
+  eleventyConfig.addFilter('summerRelayTag', eventTagFilter('summer'));
+
   eleventyConfig.addCollection('currentMonthPosts', (collection) => getPosts(collection).filter(post => post.date.getMonth() === new Date().getMonth() && post.date.getFullYear() === new Date().getFullYear()));
   eleventyConfig.addCollection('articles', getPosts);
   eleventyConfig.addCollection('tagList', require('./11ty/tag-list.cjs'));

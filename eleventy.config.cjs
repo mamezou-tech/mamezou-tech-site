@@ -76,6 +76,15 @@ module.exports = function(eleventyConfig) {
       return result ? result.groups.year : undefined;
     }
   });
+  eleventyConfig.addFilter('summerRelayTag', (rawTags) => {
+    if (!rawTags) return;
+    const tags = typeof rawTags === 'string' ? [rawTags] : rawTags;
+    const adventTag = tags.find(tag => tag.startsWith('summer'));
+    if (adventTag) {
+      const result = adventTag.match(/summer(?<year>\d{4})/);
+      return result ? result.groups.year : undefined;
+    }
+  });
   eleventyConfig.addCollection('currentMonthPosts', (collection) => getPosts(collection).filter(post => post.date.getMonth() === new Date().getMonth() && post.date.getFullYear() === new Date().getFullYear()));
   eleventyConfig.addCollection('articles', getPosts);
   eleventyConfig.addCollection('tagList', require('./11ty/tag-list.cjs'));

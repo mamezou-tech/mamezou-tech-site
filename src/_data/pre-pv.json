@@ -5,10 +5,6 @@
       "url": "/blogs/2022/12/08/jwt-auth/"
     },
     {
-      "title": "OpenAIのChat APIに追加されたFunction callingを使ってみる",
-      "url": "/blogs/2023/06/14/gpt-function-calling-intro/"
-    },
-    {
       "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
       "url": "/nuxt/nuxt3-routing/"
     },
@@ -21,20 +17,24 @@
       "url": "/nuxt/nuxt3-state-management/"
     },
     {
-      "title": "IoT を使ってみる（その６：MQTTブローカー Mosquitto編）",
-      "url": "/iot/internet-of-things-06/"
+      "title": "OpenAIのChat APIに追加されたFunction callingを使ってみる",
+      "url": "/blogs/2023/06/14/gpt-function-calling-intro/"
     },
     {
       "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
       "url": "/nuxt/nuxt3-rendering-mode/"
     },
     {
-      "title": "統計学で避けて通れない自由度の話",
-      "url": "/blogs/2022/06/20/degrees-of-freedom/"
+      "title": "IoT を使ってみる（その６：MQTTブローカー Mosquitto編）",
+      "url": "/iot/internet-of-things-06/"
     },
     {
       "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
       "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
+    },
+    {
+      "title": "ORマッパーのTypeORMをTypeScriptで使う",
+      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
     },
     {
       "title": "Jest再入門 - 関数・モジュールモック編",

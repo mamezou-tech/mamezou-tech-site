@@ -32,6 +32,9 @@ Android Studioですので、JDKが事前にインストールされてない場
 環境変数のANDROID_HOMEの設定が必要です。
 Windowsでは、ANDROID_HOMEは%USERPROFILE%\AppData\Local\Android\Sdkを設定します。
 
+sdkのplatform-toolsをpathに追加する必要があります。
+Windowsでは、pathに%USERPROFILE%\AppData\Local\Android\Sdk\platform-toolsを追加します。
+
 ### [Node.js](https://nodejs.org/ja) のインストール
 今回の内容には影響ないのですが、AWS Device Farmを利用する場合は、
 Node.jsの18.17.0のnpm-bundleでパッケージ化したときに問題が発生しますので、 16.20.1をインストールしてください。

@@ -2,7 +2,8 @@
 title: 社内Hackathonやってます！
 author: toshio-horie
 date: 2023-07-25
-tags: [Hackathon, 夏リレー]
+tags: [Hackathon, summer2023]
+summerRelayUrl: https://developer.mamezou-tech.com/events/season/2023-summer/
 ---
 
 この記事は[夏のリレー連載2023](/events/season/2023-summer/)第2日目の記事です。

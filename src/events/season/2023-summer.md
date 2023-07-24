@@ -7,7 +7,7 @@ title: 夏のリレー連載2023
 | 公開予定日 | 執筆者 | タイトル |
 |:-------|:-------|:---------|
 | 7月24日(月) | [toshio-ogiwara](/authors/toshio-ogiwara/) <img src="https://github.com/ogiwarat.png?size=30" /> | [RefactorFirstで倒すべき神クラスを探せ！](/blogs/2023/07/24/refactorfirst/) |
-| 7月25日(火) | [toshio-horie](/authors/toshio-horie/) <img src="https://github.com/toshio-horie.png?size=30" /> | 社内Hackathonやってます！ |
+| 7月25日(火) | [toshio-horie](/authors/toshio-horie/) <img src="https://github.com/toshio-horie.png?size=30" /> | [社内Hackathonやってます！](/blogs/2023/07/25/hackathon/) |
 | 7月26日(水) | shuji-morimoto <img src="https://github.com/shuji-morimoto.png?size=30" />| リモート環境(デスクまわり)に関すること(仮) |
 | 7月27日(木) | misato-kamei <img src="https://github.com/misato-kamei.png?size=30" width="30" height="30" /> | 駆け出しスクラムマスターのあれこれ相談室(仮) |
 | 7月28日(金) | [makiko-nakasato](/authors/makiko-nakasato/) <img src="https://github.com/makiko-nakasato.png?size=30" />| アジャイル実践者に捧ぐちょっぴり(?)ブラックなステークホルダーマネジメント |

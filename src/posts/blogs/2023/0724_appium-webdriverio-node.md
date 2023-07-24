@@ -1,23 +1,25 @@
 ---
-title: Appium,WebdriverIO,Node.jsでAndroidエミュレータ経由でスマートフォンのブラウザを操作してみる
+title: AppiumとAndroidエミュレータでスマートフォンのクロスブラウザテスト環境を構築する
 author: fumihiko-kawano
 date: 2023-07-24
-tags: 
+tags: [Appium, テスト]
 ---
 
 ## はじめに
-ToCなWebアプリの場合は、 エンドユーザがスマホでブラウザを起動してアクセスするのが最も一般的な利用形態となっており、
-スマホ端末とブラウザの組み合わせのバリエーションを考慮した動作確認が必須となっています。
+スマートフォン対応の Web アプリの場合は、 エンドユーザがスマホでブラウザを起動してアクセスするのが最も一般的な利用形態となっており、スマホ端末とブラウザの組み合わせのバリエーションを考慮した動作確認が必須となっています。
 
-スマホ端末を利用した自動テストを実現できるソリューションは他にも存在するのですが、AWS Device Farmを利用する事を考慮して、その前段階の投稿として、
-Appium,WebdriverIO,Node.jsを利用した自動テストの実行について記載いたします。
+スマホ端末を利用した自動テストを実現できるソリューションは他にも存在するのですが、[AWS Device Farm](https://aws.amazon.com/jp/device-farm/#:~:text=AWS%20Device%20Farm%20%E3%81%AF%E3%80%81%E5%BA%83%E7%AF%84,%E7%AE%A1%E7%90%86%E3%81%99%E3%82%8B%E5%BF%85%E8%A6%81%E3%81%AF%E3%81%82%E3%82%8A%E3%81%BE%E3%81%9B%E3%82%93%E3%80%82) を利用する事を考慮して、その前段階の投稿として、Appium,WebdriverIO,Node.jsを利用した自動テストの実行について記載いたします。
 
-:::info
+:::info:動作確認時に利用したOSSのバージョン
 動作確認時に利用したバージョンは以下の通りです。
 node 16.20.1
 Appium 2.0.0
 WebdriverIO 8.13.1
 Android Studio Flamingo 2022.2.1
+:::
+
+:::info:AWS Device Farm
+AWS Device Farm は、広範なデスクトップブラウザと実際のモバイルデバイスでテストすることにより、ウェブアプリとモバイルアプリの品質を向上させるアプリケーションテストサービスです。 テストインフラストラクチャをプロビジョニングおよび管理する必要はありません。
 :::
 
 ## 開発環境構築
@@ -36,8 +38,8 @@ sdkのplatform-toolsをpathに追加する必要があります。
 Windowsでは、pathに%USERPROFILE%\AppData\Local\Android\Sdk\platform-toolsを追加します。
 
 ### [Node.js](https://nodejs.org/ja) のインストール
-今回の内容には影響ないのですが、AWS Device Farmを利用する場合は、
-Node.jsの18.17.0のnpm-bundleでパッケージ化したときに問題が発生しますので、 16.20.1をインストールしてください。
+今回の内容には影響ないのですが、AWS Device Farmを利用する場合は、v18系のNode.jsのnpm-bundleでパッケージ化したときに問題が発生しますので、v16系をインストールしてください。
+筆者の環境では16.20.1で動作確認しました。
 
 ### [appium](http://appium.io/docs/en/2.0/) のインストール
 
@@ -47,8 +49,8 @@ appium plugin install relaxed-caps
 appium driver install uiautomator2
 ```
 
-## webdriverioのインストールとテストコードの作成
-### node-sample名でディレクトリを作成し、webdriverioをインストールします。 
+## WebdriverIOのインストールとテストコードの作成
+node-sample名でディレクトリを作成し、WebdriverIOをインストールします。 
 ```shell
 mkdir node-sample
 cd node-sample
@@ -84,7 +86,7 @@ const opts = {
 };
 
 async function main () {
-    //webdriverioのクライアントの生成
+    //WebdriverIOのクライアントの生成
     const client = await wdio.remote(opts);
 
     //seleniumのテスト用サイトのweb-form.htmlをオープン
@@ -148,8 +150,7 @@ main();
 <a id="option-description"></a>
 ### wdio.remoteに渡すoptionの説明
 
-AndroidのplatformVersionに14、deviceNameにsdk_gphone64_x86_64、browserNameにChrome、
-chromeOptionsのw3cをfalseにする事でlegacy modeを有効化するcapabilitiesを設定しております。
+AndroidのplatformVersionに14、deviceNameにsdk_gphone64_x86_64、browserNameにChrome、chromeOptionsのw3cをfalseにする事でlegacy modeを有効化するcapabilitiesを設定しております。
 
 platformVersionとdeviceNameは環境毎に異なる場合がありますので、環境に沿った値を設定する必要があります。
 

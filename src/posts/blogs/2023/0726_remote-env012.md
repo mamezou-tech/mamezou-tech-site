@@ -2,7 +2,8 @@
 title: 豆蔵社員のリモートワーク環境ご紹介 その12 シンプル イズ ベスト
 author: shuji-morimoto
 date: 2023-07-26
-tags: [リモートワーク環境, 夏リレー]
+tags: [リモートワーク環境, summer2023]
+summerRelayUrl: https://developer.mamezou-tech.com/events/season/2023-summer/
 ---
 
 この記事は[夏のリレー連載2023](/events/season/2023-summer/)第3日目の記事です。

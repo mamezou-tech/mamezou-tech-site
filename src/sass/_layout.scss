@@ -40,6 +40,15 @@ article {
   padding: 1rem;
 }
 
+@media screen and (min-width: 1440px) {
+  .tdbc-container {
+    max-width: 180ch;
+  }
+  article {
+    max-width: 110ch;
+  }
+}
+
 .tdbc-column-container {
   display: grid;
   grid-gap: 2em;

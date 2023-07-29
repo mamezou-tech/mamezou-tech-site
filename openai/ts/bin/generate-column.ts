@@ -67,7 +67,7 @@ My first word is "${keyword}".
 
   const item = {
     title: keyword,
-    text: column.replaceAll(/\r?\n/g, '<br />'),
+    text: column.replaceAll(/(\r?\n)+/g, '<br />'),
     created: new Date().toISOString()
   };
   json.columns.unshift(item);

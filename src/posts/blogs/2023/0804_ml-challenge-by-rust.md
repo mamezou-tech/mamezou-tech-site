@@ -61,7 +61,7 @@ crates.io をみると分かりますが、他にも様々な人が crate を作
 この章では、tch crate を使って libtorch を呼び出してみます。
 （tensorflow を使わなかったのは、単に私が PyTorch になれていると言う理由だけです。）
 お題としては、[CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) の画像を NN に学習させてみます。
-最初に全結合型NN（隠れ層512）で学習します。
+最初に全結合型NN（隠れ層1536）で学習します。
 次に CNN→Max Pooling→CNN→Max Pooling で学習します。
 
 ### 4.1 パラメータ学習に使う PC のスペック

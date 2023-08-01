@@ -6,23 +6,22 @@ tags: [rust, 機械学習, summer2023]
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2023-summer/
 ---
 この記事は[夏のリレー連載2023](/events/season/2023-summer/)の10日目の記事です。
----
 
 ## 1. はじめに
 
 こんにちは。この記事が初投稿となります、松本です。よろしくお願いします。
-さて、C/C++ に代わる言語として注目を浴びている Rust ですが、ML や NN の記事量は圧倒的に Python で、Rust で書いた例はググってもあまり見ない気がします。しかし速度を重視する場合は unsafe なメモリ管理しかない C/C++ を使わざるを得ず、安全なメモリ管理を高速で行える Rust は魅力があります。
+さて、C/C++ に代わる言語として注目を浴びている Rust ですが、ML や NN の記事量は圧倒的に Python で、Rust で書いた例はググってもあまり見ない気がします。しかし速度を重視する場合、必ずしもメモリ安全ではない C/C++ を使わざるを得ず、メモリ安全で高速な Rust は魅力があります。
 そこで、Rust 界隈でどのような crate があるか調査してみました。
 
 ## 2. Rust + CUDA で使えそうな crate
 
 最近 Update されていて、面白そうな crate を挙げてみました。
 
-- Rust-CUDA/Rust-GPU
-- darknet(ちょっと違うか)
-- tch
-- tensorflow
-- opencl
+- [Rust-CUDA/Rust-GPU](https://github.com/Rust-GPU/Rust-CUDA)
+- [darknet](https://crates.io/crates/darknet)(ちょっと違うか)
+- [tch](https://crates.io/crates/tch)
+- [tensorflow](https://crates.io/crates/tensorflow)
+- [opencl3](https://crates.io/crates/opencl3)
 
 この中で、革新的な Rust-CUDA/Rust-GPU プロジェクトと　PyTorch を使う tch について触れたいと思います。
 
@@ -41,14 +40,15 @@ LLVM 利用で、CUDA 用のコードも(属性がちょっと鬱陶しいが) R
 是非、Ubuntu 22.04.02 + LLVM15 + CUDA12.2 に対応して欲しいものですが、2022年以来アップデートされていないのが惜しいです。
 
 ### 2.2 tch
+
 |前提条件|
 |:------|
 |PyTordch == 2.0.0|
 |CUDA11.7以上|
 
 libtorch のラッパーなので、PyTorch に可能なことは全部できます。
-また、libtorch を HP からわざわざインストールしなくても、PyTorch がインストールされていれば PyTorch の libtorch.so を指定することで利用可能です。
-アクセラレータは CUDA の他、Apple Silocon の MPS、Vulkan API にも対応しています。
+また、libtorch をわざわざインストールしなくても、PyTorch がインストールされていれば PyTorch の libtorch.so を指定することで利用可能です。
+アクセラレータは CUDA の他、Apple Silicon の MPS(Metal Performance Shaders)、Vulkan API にも対応しています。
 ただし、PyTorch の安定版最新（2.0.1）には対応していません。
 
 ## 3. 生き残る crate はどれだ
@@ -60,9 +60,9 @@ crates.io をみると分かりますが、他にも様々な人が crate を作
 
 この章では、tch crate を使って libtorch を呼び出してみます。
 （tensorflow を使わなかったのは、単に私が PyTorch になれていると言う理由だけです。）
-お題としては、CIFAR-10 の画像を NN に学習させてみます。
+お題としては、[CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) の画像を NN に学習させてみます。
 最初に全結合型NN（隠れ層512）で学習します。
-次に CNN、Max Pooling、CNN、Max Pooling で学習します。
+次に CNN→Max Pooling→CNN→Max Pooling で学習します。
 
 ### 4.1 パラメータ学習に使う PC のスペック
 
@@ -115,9 +115,9 @@ fn main() {
     let mut opt = nn::Adam::default().build(&vs, 1e-02).unwrap();
     let start = Instant::now();
     println!("epoch,time,acc");
-    let images_d = m.train_images.to_device(vs.device()).reshape(&[50000,IMAGE_DIM]);
+    let images_d = m.train_images.to_device(vs.device()).reshape(&[-1,IMAGE_DIM]);
     let label_d = m.train_labels.to_device(vs.deevice());
-    let t_images_d = m.test_images.to_device(vs.device()).reshape(&[10000,IMAGE_DIM]);
+    let t_images_d = m.test_images.to_device(vs.device()).reshape(&[-1,IMAGE_DIM]);
     let t_labels_d = m.test_labels.to_device(vs.device());
     loop {
         let loss = net.forward(&images_d)
@@ -147,8 +147,7 @@ fn main() {
 ### 4.3 CIFAR-10 を CNN で判定する
 
 せっかくの画像データなので、今度は CNN で学習させてみます。
-作成したNNは CNN、 Max Pooling、CNN、Max Pooling、
-linear です。
+作成したNNは CNN→Max Pooling→CNN→Max Pooling→linear です。
 この NN は tch だと以下のように記述できます。
 
 ```rust
@@ -223,7 +222,7 @@ fn main() {
 ### 4.4 おまけ： Autoencoder の実装
 
 CIFAR-10 の画像なので、Autoencoder を構成してみます。
-Encoder は4.3 同様とし、Decoder は ConvTranspose2d×2 を追加しました。
+Encoder は 4.3 同様とし、Decoder は ConvTranspose2d×2 を追加しました。
 画像ファイルの生成には png crate を使用しました。
 
 ```rust
@@ -344,6 +343,6 @@ fn main() {
 
 ## 5. まとめ
 
-Nvidia がネイティブに Rust サポートしてもらえないとバージョン対応が遅れるなど厳しい面があります。
+Nvidia がネイティブに Rust サポートしてくれないとバージョン対応が遅れるなど厳しい面があります。
 推論については Nvidia の TensorRT があるので、あまり旨味がないかも知れません。
 Rust で ML するのはまだ時期早尚なのかもしれません。

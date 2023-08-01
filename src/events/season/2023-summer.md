@@ -11,9 +11,9 @@ title: 夏のリレー連載2023
 | 7月26日(水) | [shuji-morimoto](/authors/shuji-morimoto) <img src="https://github.com/shuji-morimoto.png?size=30" />| [豆蔵社員のリモートワーク環境ご紹介 その12 シンプル イズ ベスト](/blogs/2023/07/26/remote-env012/) |
 | 7月27日(木) | [misato-kamei](/authors/misato-kamei) <img src="https://github.com/misato-kamei.png?size=30" /> | [駆け出しスクラムマスターのあれこれ相談室](/blogs/2023/07/27/consultation-for-fledgling-scrum-masters/) |
 | 7月28日(金) | [makiko-nakasato](/authors/makiko-nakasato/) <img src="https://github.com/makiko-nakasato.png?size=30" />| [アジャイル実践者に捧ぐちょっぴり(?)ダークなステークホルダーマネジメント](/blogs/2023/07/28/stakeholder/) |
-| 7月31日(月) | [yuta-nagayoshi](/authors/yuta-nagayoshi) <img src="https://github.com/mame-nagayoshi.png?size=30" /> | [営業職員、AWS資格の取得を目指します](/blogs/2023/07/31/sales-staff-aws/) |
+| 7月31日(月) | [yuta-nagayoshi](/authors/yuta-nagayoshi/) <img src="https://github.com/mame-nagayoshi.png?size=30" /> | [営業職員、AWS資格の取得を目指します](/blogs/2023/07/31/sales-staff-aws/) |
 | 8月1日(火) | [shinichiro-iwaki](/authors/shinichiro-iwaki/) <img src="https://github.com/shinichiro-iwaki.png?size=30" /> | [コードカバレッジの血の海から抜けて網羅度のBlueOceanを探そう](/blogs/2023/08/01/coverage-pattern/) |
-| 8月2日(水) | shiota <img src="https://github.com/shiota.png?size=30" />| ソフトウェアも密は避けるべき（仮） |
+| 8月2日(水) | [yasunori-shiota](/auhors/yasunori-shiota/) <img src="https://github.com/shiota.png?size=30" />| [ソフトウェアも密を避けるべき](/blogs/2023/08/02/software-coupling/) |
 | 8月3日(木) | [shuichi-takatsu](/authors/shuichi-takatsu/) <img src="https://github.com/shuichi-takatsu.png?size=30" /> | そこのあなた、無闇にメトリクスを増やしていませんか？（仮） |
 | 8月4日(金) | minoru-matsumoto <img src="https://github.com/minosys3.png?size=30" /> | Rust で ML に挑戦してみた（仮） |
 | 8月7日(月) | [takafumi-okubo](/authors/takafumi-okubo/) <img src="https://github.com/TakOkubo.png?size=30" /> | タイトル未定（LLMについて何か書こうと思います） |

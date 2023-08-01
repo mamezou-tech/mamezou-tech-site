@@ -2,7 +2,7 @@
 title: 品質保証者の憂鬱「そこのあなた、無闇にメトリクスを増やしていませんか？」
 author: shuichi-takatsu
 date: 2023-08-03
-tags: [品質保証, QA]
+tags: [品質保証, QA, summer2023]
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2023-summer/
 ---
 

@@ -6,7 +6,6 @@ const { EleventyEdgePlugin } = require('@11ty/eleventy');
 const markdownIt = require('markdown-it');
 const markdownItAnchor = require('markdown-it-anchor');
 const markdownItFootNote = require('markdown-it-footnote');
-const markdownItTableOfContents = require('markdown-it-table-of-contents');
 const markdownItContainer = require('markdown-it-container');
 const packageVersion = require('./package.json').version;
 const codeClipboard = require('eleventy-plugin-code-clipboard');
@@ -35,7 +34,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy('./src/img');
   eleventyConfig.addPassthroughCopy('./src/previews');
   eleventyConfig.addPassthroughCopy({ './node_modules/photoswipe/dist': 'photoswipe' });
-  eleventyConfig.addPassthroughCopy('./src/admin/config.yml');
 
   eleventyConfig.addShortcode('year', () => `${new Date().getFullYear()}`);
   eleventyConfig.addShortcode('packageVersion', () => `v${packageVersion}`);
@@ -89,8 +87,9 @@ module.exports = function(eleventyConfig) {
   // for IsLand Architecture for preact
   eleventyConfig.addWatchTarget('./components/preact');
   eleventyConfig.addPassthroughCopy({
-    'node_modules/@11ty/is-land/is-land.js': 'vendor/is-land.js',
-    'node_modules/preact/dist/preact.mjs': 'vendor/preact.mjs'
+    './node_modules/@11ty/is-land/is-land.js': 'vendor/is-land.js',
+    './node_modules/@11ty/is-land/is-land-autoinit.js': 'vendor/is-land-autoinit.js',
+    './node_modules/preact/dist/preact.mjs': 'vendor/preact.mjs'
   });
   eleventyConfig.addFilter('preact', async (filename, args) => {
     try {
@@ -127,10 +126,6 @@ module.exports = function(eleventyConfig) {
         .replace(/[\s+~\/]/g, '-')
         .replace(/[().`,%·'"!?¿:@*]/g, '')
   }).use(markdownItFootNote)
-    .use(markdownItTableOfContents, {
-      containerClass: 'post__toc',
-      containerHeaderHtml: '<div class="toc-container-header"><p>Contents</p></div>'
-    })
     .use(codeClipboard.markdownItCopyButton, {
       buttonClass: 'tdbc-copy-button'
     })

@@ -2,6 +2,7 @@
 title: 統計解析
 description: 統計解析ツール紹介やその活用方法
 date: git Last Modified
+icon: https://api.iconify.design/ic/outline-analytics.svg?color=%23730099&height=28
 ---
 
 従来、ソフトウェアエンジニアリング分野では、統計解析は主にソースコードの静的解析等の品質管理手法として使われてきました。

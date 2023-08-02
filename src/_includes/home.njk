@@ -14,26 +14,49 @@ layout: base.njk
   .article-area {
     width: 100%;
   }
+  .additional-area {
+    border: #bebaba solid 1px;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 3rem;
+    box-shadow: 5px 5px 2px #4f4f4f;
+    background-image: url('/img/logo/mameka_280.png');
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: right 1rem top 4rem;
+    background-blend-mode: overlay;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  .additional-area h2 {
+    border-bottom: #4f4f4f solid 1px;
+    padding-bottom: 0.7rem;
+    font-size: 1.4rem
+  }
   @media (min-width: 80ch) and (max-width: 768px) {
     .article-area {
-      width: 60%;
+      width: 50%;
       float: left;
+    }
+    .additional-area {
+      width: 50%;
+      float: right;
     }
   }
   @media (min-width: 769px) {
     .article-area {
-      width: 70%;
+      width: 60%;
       float: left;
+    }
+    .additional-area {
+      width: 40%;
+      float: right;
     }
   }
   .post-list {
     padding-inline-start: 0;
   }
-  div.mameka {
-      padding-top: 3rem;
-  }
   .article-area {
-    padding: 0;
+    padding: 0 2rem;
   }
   a.all-article-link {
     font-size: 0.85rem;
@@ -54,7 +77,7 @@ layout: base.njk
     margin: 0.5rem;
     line-height: 1.5rem;
   }
-  .new-box {
+  .icon {
     margin: 0 0.25rem;
     display: inline-flex;
     vertical-align: bottom;
@@ -92,7 +115,8 @@ layout: base.njk
       {%- for page in collections.pages -%}
       <li class="tdbc-card">
         <div class="tdbc-card__content">
-          <a href="{{ page.url }}" class="tdbc-card__title">{{ page.data.title }}</a>
+          <a href="{{ page.url }}" class="tdbc-card__title">{{ page.data.title }}
+            {%- if page.data.icon -%}<img alt="icon" class="icon" width="28px" src="{{ page.data.icon }}" />{%- endif -%}</a>
           <p>{{ page.data.description }}</p>
         </div>
       </li>
@@ -123,9 +147,9 @@ layout: base.njk
     <div class="article-area">
       <article class="tdbc-mx-auto" style="margin-top: 3em">
         <section class="post-list__wrapper recent-article">
-          <h2 class="post-list__heading">新着記事<img alt="new-articles" class="new-box" width="36px" src="/img/icons/new-box.svg" /><a class="all-article-link" href="/articles/">全ての記事を見る</a></h2>
+          <h2 class="post-list__heading">新着記事<img alt="new-articles" class="icon" width="36px" src="/img/icons/new-box.svg" /><a class="all-article-link" href="/articles/">全ての記事を見る</a></h2>
           <ul class="post-list">
-            {% for post in collections.articles | head(-20) | reverse %}
+            {% for post in collections.articles | head(-10) | reverse %}
               <li class="post-list__item">
                 <div>
                   <div class="post-list__meta">
@@ -164,13 +188,20 @@ layout: base.njk
         </section>
       </article>
     </div>
-    <div class="mameka">
-      <img src="/img/logo/mameka_280.png" alt="mameka" width="280px" height="396px" />
+    <div class="additional-area">
+      <article class="tdbc-mx-auto">
+      <h2><img alt="new-articles" class="icon" width="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" />先週の人気記事<img alt="new-articles" class="icon" width="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" /></h2>
+      <ol>
+        {%- for article in pv.ranking -%}
+        {%- set published = collections.all | getDate(article.url) -%}
+        <li><a href="{{ article.url }}">{{ article.title }}</a></li>
+        {%- endfor -%}
+      </ol>
+      </article>
     </div>
   </div>
   <div style="margin: 1rem 0 0 0; padding: 0;">
-  <hr class="link-separator">
-  {%- include "pv-ranking.njk" %}
-  {%- include "links.njk" %}
+  <hr class="link-separator" />
+    {%- include "links.njk" %}
   </div>
 </main>

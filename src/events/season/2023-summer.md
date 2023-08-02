@@ -14,7 +14,7 @@ title: 夏のリレー連載2023
 | 7月31日(月) | [yuta-nagayoshi](/authors/yuta-nagayoshi/) <img src="https://github.com/mame-nagayoshi.png?size=30" /> | [営業職員、AWS資格の取得を目指します](/blogs/2023/07/31/sales-staff-aws/) |
 | 8月1日(火) | [shinichiro-iwaki](/authors/shinichiro-iwaki/) <img src="https://github.com/shinichiro-iwaki.png?size=30" /> | [コードカバレッジの血の海から抜けて網羅度のBlueOceanを探そう](/blogs/2023/08/01/coverage-pattern/) |
 | 8月2日(水) | [yasunori-shiota](/authors/yasunori-shiota/) <img src="https://github.com/shiota.png?size=30" />| [ソフトウェアも密を避けるべき](/blogs/2023/08/02/software-coupling/) |
-| 8月3日(木) | [shuichi-takatsu](/authors/shuichi-takatsu/) <img src="https://github.com/shuichi-takatsu.png?size=30" /> | そこのあなた、無闇にメトリクスを増やしていませんか？（仮） |
+| 8月3日(木) | [shuichi-takatsu](/authors/shuichi-takatsu/) <img src="https://github.com/shuichi-takatsu.png?size=30" /> | [品質保証者の憂鬱「そこのあなた、無闇にメトリクスを増やしていませんか？」](/blogs/2023/08/03/melancholy-of-qaer-07/) |
 | 8月4日(金) | minoru-matsumoto <img src="https://github.com/minosys3.png?size=30" /> | Rust で ML に挑戦してみた（仮） |
 | 8月7日(月) | [takafumi-okubo](/authors/takafumi-okubo/) <img src="https://github.com/TakOkubo.png?size=30" /> | タイトル未定（LLMについて何か書こうと思います） |
 | 8月8日(火) | noriyuki-yagi <img src="https://github.com/NoriyukiYagi.png?size=30" width="30" height="30" /> | Scrapbox で mermaid 記法を使うスクリプトの話（仮） |

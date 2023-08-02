@@ -2,6 +2,7 @@
 title: "OSS"
 description: "豆蔵メンバーが開発しているOSSの紹介"
 titleImage: "/img/logo/mame-kun4_50.png"
+icon: https://api.iconify.design/mdi/volunteer.svg?color=%23730099&height=28
 ---
 
 ## CI/CD

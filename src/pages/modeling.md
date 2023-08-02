@@ -2,6 +2,7 @@
 title: モデリング
 description: システム開発におけるモデリングの活用・ノウハウ
 date: git Last Modified
+icon: https://api.iconify.design/fluent-mdl2/modeling-view.svg?color=%23730099&height=28
 ---
 
 システム開発におけるモデリングの活用・ノウハウを紹介します。

@@ -1,6 +1,7 @@
 ---
 title: "CI/CD"
 description: CI/CDツールの紹介や使い方に関するチュートリアルやTips
+icon: https://api.iconify.design/clarity/factory-solid.svg?color=%23730099&height=28
 ---
 
 ここでは、様々なツールに焦点を当てた記事やチュートリアルをご紹介します。

@@ -2,6 +2,7 @@
 title: アジャイル開発
 description: アジャイル開発のノウハウ・事例紹介
 date: git Last Modified
+icon: https://api.iconify.design/fa6-solid/people-line.svg?color=%23730099&height=28
 ---
 
 アジャイル開発にまつわるあれこれや、実現場からのノウハウをお届けします。

@@ -13,6 +13,15 @@ Scrapboxはそのままでも十分に便利で面白いツールなのですが
 
 今回は、Scrapbox上でMermaid記法のコードを可視化して表示するUserScriptを作成した話をしたいと思います。
 
+## 今回作ったもの
+
+まず最初に、今回作ったUserScriptのデモ動画をご覧ください。
+
+![デモ動画](/img/blogs/2023/0808_mermaid-in-scrapbox_demo.gif)
+
+このような感じでMermaidコードを表示できます。
+
+
 ## UserScriptで扱えるオブジェクトを見てみよう
 
 まずはUserScriptでどんなオブジェクトを扱えるかを調べてみようと思います。
@@ -306,12 +315,6 @@ $(() => {
    }
 })
 ```
-
-## デモ動画
-
-このUserScriptを使うと下のデモ動画のような感じでMermaidコードを表示できます。
-
-![デモ動画](/img/blogs/2023/0808_mermaid-in-scrapbox_demo.gif)
 
 ## おわりに
 

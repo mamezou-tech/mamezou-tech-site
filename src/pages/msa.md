@@ -1,6 +1,7 @@
 ---
 title: マイクロサービス
 description: マイクロサービスアーキテクチャ(MSA)のチュートリアル・実践テクニック
+icon: https://api.iconify.design/carbon/microservices-1.svg?color=%23730099&height=28
 ---
 
 マイクロサービスアーキテクチャは、大規模なシステムを構築する上で有力な選択肢となっています。ここでは、いくつかの実装技術による構築手法をご紹介します。

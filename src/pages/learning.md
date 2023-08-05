@@ -1,6 +1,7 @@
 ---
 title: 学び
 description: 新入社員やこれからエンジニアを目指す方、新人を指導する立場になった方向けの情報
+icon: https://api.iconify.design/iconoir/learning.svg?color=%23730099&height=28
 ---
 
 弊社の教育案件に携わるメンバーが、新入社員やこれからエンジニアを目指す方、新人を指導する立場になった方向けに、様々な情報を投稿していきます。

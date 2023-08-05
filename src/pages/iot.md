@@ -2,6 +2,7 @@
 title: IoT
 description: IoTのチュートリアル・実践テクニック
 date: git Last Modified
+icon: https://api.iconify.design/fluent/iot-16-regular.svg?color=%23730099&height=28
 ---
 
 ここでは、IoT(Internet of Things)に焦点を当てたチュートリアルや実践テクニックをご紹介します。

@@ -6,7 +6,6 @@ const { EleventyEdgePlugin } = require('@11ty/eleventy');
 const markdownIt = require('markdown-it');
 const markdownItAnchor = require('markdown-it-anchor');
 const markdownItFootNote = require('markdown-it-footnote');
-const markdownItTableOfContents = require('markdown-it-table-of-contents');
 const markdownItContainer = require('markdown-it-container');
 const packageVersion = require('./package.json').version;
 const codeClipboard = require('eleventy-plugin-code-clipboard');
@@ -35,7 +34,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy('./src/img');
   eleventyConfig.addPassthroughCopy('./src/previews');
   eleventyConfig.addPassthroughCopy({ './node_modules/photoswipe/dist': 'photoswipe' });
-  eleventyConfig.addPassthroughCopy('./src/admin/config.yml');
 
   eleventyConfig.addShortcode('year', () => `${new Date().getFullYear()}`);
   eleventyConfig.addShortcode('packageVersion', () => `v${packageVersion}`);
@@ -67,15 +65,19 @@ module.exports = function(eleventyConfig) {
     (contributorArticles, author) => contributorArticles.filter(contributor => contributor.name === author));
   eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));
   eleventyConfig.addFilter('getDate', require('./11ty/get-date.cjs'));
-  eleventyConfig.addFilter('adventCalendarTag', (rawTags) => {
+
+  const eventTagFilter = (tagPrefix) => (rawTags) => {
     if (!rawTags) return;
     const tags = typeof rawTags === 'string' ? [rawTags] : rawTags;
-    const adventTag = tags.find(tag => tag.startsWith('advent'));
-    if (adventTag) {
-      const result = adventTag.match(/advent(?<year>\d{4})/);
+    const eventTag = tags.find(tag => tag.startsWith(tagPrefix));
+    if (eventTag) {
+      const result = eventTag.match(new RegExp(`${tagPrefix}(?<year>\\d{4})`));
       return result ? result.groups.year : undefined;
     }
-  });
+  };
+  eleventyConfig.addFilter('adventCalendarTag', eventTagFilter('advent'));
+  eleventyConfig.addFilter('summerRelayTag', eventTagFilter('summer'));
+
   eleventyConfig.addCollection('currentMonthPosts', (collection) => getPosts(collection).filter(post => post.date.getMonth() === new Date().getMonth() && post.date.getFullYear() === new Date().getFullYear()));
   eleventyConfig.addCollection('articles', getPosts);
   eleventyConfig.addCollection('tagList', require('./11ty/tag-list.cjs'));
@@ -85,8 +87,9 @@ module.exports = function(eleventyConfig) {
   // for IsLand Architecture for preact
   eleventyConfig.addWatchTarget('./components/preact');
   eleventyConfig.addPassthroughCopy({
-    'node_modules/@11ty/is-land/is-land.js': 'vendor/is-land.js',
-    'node_modules/preact/dist/preact.mjs': 'vendor/preact.mjs'
+    './node_modules/@11ty/is-land/is-land.js': 'vendor/is-land.js',
+    './node_modules/@11ty/is-land/is-land-autoinit.js': 'vendor/is-land-autoinit.js',
+    './node_modules/preact/dist/preact.mjs': 'vendor/preact.mjs'
   });
   eleventyConfig.addFilter('preact', async (filename, args) => {
     try {
@@ -123,10 +126,6 @@ module.exports = function(eleventyConfig) {
         .replace(/[\s+~\/]/g, '-')
         .replace(/[().`,%·'"!?¿:@*]/g, '')
   }).use(markdownItFootNote)
-    .use(markdownItTableOfContents, {
-      containerClass: 'post__toc',
-      containerHeaderHtml: '<div class="toc-container-header"><p>Contents</p></div>'
-    })
     .use(codeClipboard.markdownItCopyButton, {
       buttonClass: 'tdbc-copy-button'
     })

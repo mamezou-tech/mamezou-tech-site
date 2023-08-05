@@ -1,5 +1,5 @@
 import { CreateChatCompletionResponse } from 'openai/api.js';
-import { AxiosError } from 'axios';
+import axios from 'axios';
 import openai from './openai-client.js';
 import { ChatCompletionRequestMessage } from 'openai';
 
@@ -24,15 +24,11 @@ export class OpenAIServerError extends Error {
 }
 
 export async function ask(request: Request): Promise<CreateChatCompletionResponse> {
-  function isAxiosError(e: any): e is AxiosError {
-    return ('isAxiosError' in e);
-  }
-
   try {
     console.time("Chat API")
     if (process.env.DEBUG) console.log('sending...', request.messages);
     const resp = await openai.createChatCompletion({
-      model: 'gpt-4-0613',
+      model: 'gpt-4',
       user: request.userId,
       messages: request.messages,
       max_tokens: request.maxTokens ?? 1024,
@@ -44,7 +40,7 @@ export async function ask(request: Request): Promise<CreateChatCompletionRespons
     return resp.data;
   } catch (e) {
     // if (process.env.DEBUG) console.log('error', e);
-    if (isAxiosError(e)) {
+    if (axios.default.isAxiosError(e)) {
       if (e.response) {
         if (e.response.data.error) {
           throw new OpenAIServerError(e.response.data.error);

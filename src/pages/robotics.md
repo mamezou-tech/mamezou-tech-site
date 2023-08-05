@@ -2,6 +2,7 @@
 title: ロボット
 description: ロボットシステム開発の技術紹介
 date: git Last Modified
+icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 ---
 
 弊社のロボットシステム開発でこれまで取り組んできた技術に関する記事をご紹介してゆきます。

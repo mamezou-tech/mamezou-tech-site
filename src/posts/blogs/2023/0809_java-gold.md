@@ -1,9 +1,11 @@
 ---
-title: 未経験でもJava Gold
+title: 未経験でもJava Gold取得してきました
 author: kohei-tsukano
 date: 2023-08-09
-tags: [java, 初心者向け]
+tags: [java, 初心者向け, summer2023]
+summerRelayUrl: https://developer.mamezou-tech.com/events/season/2023-summer/
 ---
+この記事は[夏のリレー連載2023](/events/season/2023-summer/)の13日目の記事です。
 
 :::info
 Oracleの定める秘密保持義務のため、本記事では具体的な試験内容には触れられません。あらかじめご了承ください。

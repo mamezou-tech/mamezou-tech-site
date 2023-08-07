@@ -28,9 +28,11 @@ Oracleの定める秘密保持義務のため、本記事では具体的な試�
 # 勉強法
 
 Java SE 11 Programmer II (1Z0-816-JPN) 試験（通称Java Gold）は前提資格として通称Java Silverと呼ばれる以下、
+
 - Oracle Certified Java Programmer, Silver SE 11
 - Oracle Certified Java Programmer, Silver SE 8
 - Oracle Certified Java Programmer, Silver SE 7
+
 のいずれかの試験に合格している必要があります。Javaの勉強は豆蔵に内定をいただいた後から少しずつ始めており、入社前にJava Silverの範囲は勉強を終わらせ入社後すぐに取得しました。
 新人研修でのJavaの講習内容はSilverの範囲のためJava Goldの勉強はほぼ自分で行いました（ほぼとしたのは後述の試験範囲にJDBCも含まれるためです。ここは研修が役立ちました）。
 

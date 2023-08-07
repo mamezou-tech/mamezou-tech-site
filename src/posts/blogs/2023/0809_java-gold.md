@@ -1,5 +1,5 @@
 ---
-title: 未経験がJava Gold取得してきました
+title: プログラミング未経験者がJava Gold取得してきました
 author: kohei-tsukano
 date: 2023-08-09
 tags: [java, 初心者向け, summer2023]
@@ -7,9 +7,7 @@ summerRelayUrl: https://developer.mamezou-tech.com/events/season/2023-summer/
 ---
 この記事は[夏のリレー連載2023](/events/season/2023-summer/)の13日目の記事です。
 
-:::info:
-Oracleの定める秘密保持義務のため、本記事では具体的な試験内容には触れられません。あらかじめご了承ください。
-:::
+
 
 # はじめに
 
@@ -19,16 +17,20 @@ Oracleの定める秘密保持義務のため、本記事では具体的な試�
 ちなみに、私が最近覚えた呪文は、「Gitのプルはフェッチしてマージ」です。
 
 
-少しでも知っている呪文を増やそうと入社時から資格試験の勉強を続けており、
-こんな自分でも8月からの配属に合わせてJava Goldを取得できたので、今回の夏のリレー企画に参加させていただき、
+少しでも知っている呪文を増やそうと入社時から資格試験の勉強を続けています。
+こんな自分でも8月からの配属に合わせてJava Goldを取得できました。そこで、今回の夏のリレー企画に参加させていただき、
 これからJavaの勉強始めようと思っている方や、Java Gold取得しようという方へ向けて勉強法や受験した感想など書いていけたらと思います。
+
+:::info
+Oracleの定める秘密保持義務のため、本記事では具体的な試験内容には触れられません。あらかじめご了承ください。
+:::
 
 # 勉強法
 
 Java SE 11 Programmer II (1Z0-816-JPN) 試験（通称Java Gold）は前提資格として通称Java Silverと呼ばれる以下、
-Oracle Certified Java Programmer, Silver SE 11
-Oracle Certified Java Programmer, Silver SE 8
-Oracle Certified Java Programmer, Silver SE 7
+- Oracle Certified Java Programmer, Silver SE 11
+- Oracle Certified Java Programmer, Silver SE 8
+- Oracle Certified Java Programmer, Silver SE 7
 のいずれかの試験に合格している必要があります。Javaの勉強は豆蔵に内定をいただいた後から少しずつ始めており、入社前にJava Silverの範囲は勉強を終わらせ入社後すぐに取得しました。
 新人研修でのJavaの講習内容はSilverの範囲のためJava Goldの勉強はほぼ自分で行いました（ほぼとしたのは後述の試験範囲にJDBCも含まれるためです。ここは研修が役立ちました）。
 
@@ -45,13 +47,13 @@ Java Goldの勉強は書籍のみで行いました。書籍は未経験から�
 受験の目的として、試験合格ではなくJavaの勉強がメインにあったため、黒本＋紫本での勉強を選びましたが黒本だけでも合格ラインには届くかと思います。
 逆に黒本＋紫本が完璧でも正答率100％は難しいように感じましたので、効率よく合格を求めるなら黒本だけでもいいと思います。
 
-Goldは実務経験がないと難しい、Goldから難易度が一気に上がるとネットで見ていたため、Silverの勉強しかしていなかった自分が手を出していいものか不安でした。
+「Goldは実務経験がないと難しい、Goldから難易度が一気に上がる」とネットで見ていたため、Silverの勉強しかしていなかった自分が手を出していいものか不安でした。
 結果として、Silverの内容が理解できているのであれば未経験であろうが問題なくGoldの勉強を進められると思います。ただし勉強量はSilverの２倍くらい必要です。
 参考までに、試験範囲はOracleの公式HPにて使用するメソッド名やインターフェース名まで含めて細かく掲載されています。
 
 [Java SE11 ProgrammerII(1Z0-816-JPN) 試験 試験内容チェックリスト](https://www.oracle.com/jp/education/certification/1z0-816-jpn-31705-ja.html)
 
-ここにある通り、JDBCに関する知識も問われるため、教本を読み進めるにあたり基本的なDBやSQLに関する勉強はしておいた方がいいかもしれません。とはいっても、SQLの4大命令が分かれば問題ないかと思います。
+ここにある通り、JDBCに関する知識も問われるため、教本を読み進めるにあたり基本的なDBやSQLに関する勉強はしておいた方がいいかもしれません。とはいっても、SQLの4大命令(SELECT、INSERT、UPDATE、DELETE)が分かれば問題ないかと思います。
 
 以上の勉強法で、合格基準63％のところ正答率83％で無事Java Goldに合格できました。
 

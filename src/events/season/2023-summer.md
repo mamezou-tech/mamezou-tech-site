@@ -18,5 +18,5 @@ title: 夏のリレー連載2023
 | 8月4日(金) | [minoru-matsumoto](/authors/minoru-matsumoto/) <img src="https://github.com/minosys3.png?size=30" /> | [Rust でML に挑戦してみた](/blogs/2023/08/04/ml-challenge-by-rust/) |
 | 8月7日(月) | [takafumi-okubo](/authors/takafumi-okubo/) <img src="https://github.com/TakOkubo.png?size=30" /> | [日本語GPTで雑談対話モデルを作ろう](/blogs/2023/08/07/llm_chat_model/) |
 | 8月8日(火) | [noriyuki-yagi](/authors/noriyuki-yagi/) <img src="https://github.com/NoriyukiYagi.png?size=30" width="30" height="30" /> | [ScrapboxでMermaid記法を可視化するUserScriptを作った話](/blogs/2023/08/08/mermaid-in-scrapbox/) |
-| 8月9日(水) | kohei-tsukano <img src="https://github.com/KoheiTsukano.png?size=30" width="30" height="30" /> | プログラミング未経験者がJava Gold取得してきました |
+| 8月9日(水) | [kohei-tsukano](/authors/kohei-tsukano/) <img src="https://github.com/KoheiTsukano.png?size=30" width="30" height="30" /> | [プログラミング未経験者がJava Gold取得してきました](/blogs/2023/08/09/java-gold/) |
 | 8月10日(木) | [yoshifumi-moriya](/authors/yoshifumi-moriya) <img src="https://github.com/morya-530.png?size=30" /> | ミュータブル・イミュータブルについて（仮） |

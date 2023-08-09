@@ -1,8 +1,8 @@
-name: daily-slack-notifier
+name: generate-realtime-report
 
 on:
   schedule:
-    - cron: '0 10 * * *'
+    - cron: '0,30 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -30,19 +30,17 @@ jobs:
           cd ${GITHUB_WORKSPACE}/ga
           npm ci
 
-      - name: Send daily report to Slack
+      - name: Send realtime report to Slack
         env:
           GOOGLE_APPLICATION_CREDENTIALS_FILE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_FILE }}
           GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           set -eu
           cd ${GITHUB_WORKSPACE}/ga
           echo ${GOOGLE_APPLICATION_CREDENTIALS_FILE} | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
           export GOOGLE_APPLICATION_CREDENTIALS=${GITHUB_WORKSPACE}/google_auth.json
-          npm run notify:slack
-          npm run generate:author
+          npm run generate:realtime
 
       - name: Delete google auth file
         run: rm -f ${GITHUB_WORKSPACE}/google_auth.json

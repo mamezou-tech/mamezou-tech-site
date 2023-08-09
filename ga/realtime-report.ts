@@ -1,6 +1,8 @@
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import { WebClient } from '@slack/web-api';
-import { DateTime } from 'luxon';
+import { DateTime, Settings } from 'luxon';
+
+Settings.defaultZone = 'Asia/Tokyo';
 
 const analyticsDataClient = new BetaAnalyticsDataClient();
 

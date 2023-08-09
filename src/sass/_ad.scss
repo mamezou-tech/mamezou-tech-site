@@ -1,0 +1,35 @@
+fieldset.ad {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 7px;
+
+  .ad-text {
+    width: 80%;
+  }
+
+  img {
+    background-color: #ffffff;
+    flex-shrink: 0;
+    max-width: none
+  }
+}
+
+@media (max-width: 600px) {
+  fieldset.ad {
+    legend {
+      font-size: 0.7rem;
+    }
+
+    flex-direction: column;
+
+    .ad-text {
+      width: 100%;
+      font-size: 0.7rem;
+      margin-bottom: 0.2rem;
+    }
+    img {
+      display: none;
+    }
+  }
+}

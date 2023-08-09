@@ -110,6 +110,8 @@ layout: base.njk
   </div>
 </header>
 <main class="tdbc-container">
+  {% set textWidth="80%" %}
+  {%- include "lean.njk" %}
   <div class="tdbc-section">
     <ul class="tdbc-column-container">
       {%- for page in collections.pages -%}

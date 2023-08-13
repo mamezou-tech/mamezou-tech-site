@@ -90,3 +90,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 ### Allure
 
 - [テストのフレイキーさを簡単に確認するためにレポートツールAllureを利用する](/blogs/2023/05/11/flaky-test-allure/)
+
+### Mockito
+
+- [Java用モック・フレームワーク「Mockito」を使ってみる（その１：基本編）](/blogs/2023/08/13/using-mockito-basic/)

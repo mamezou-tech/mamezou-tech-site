@@ -45,18 +45,18 @@ Mavenで環境を構築している場合は以下のように依存関係を設
 
 今回は架空のプロジェクトとして「距離センサーを使用して、対象物との距離を判定するコントローラー」を開発するプロジェクトを想定します。  
 
-対象物との距離を判定するコントローラー「HogeController」を自部門で開発します。Javaのクラスとして実装することにします。  
-この HogeController が実際に対象物の距離を測定するために使用するモジュールが「距離を測定するセンサー ”BarSensor”」です。これはJavaのインターフェイスとして定義します。  
+対象物との距離を判定するコントローラー「FooController」を自部門で開発します。Javaのクラスとして実装することにします。  
+この FooController が実際に対象物の距離を測定するために使用するモジュールが「距離を測定するセンサー ”BarSensor”」です。これはJavaのインターフェイスとして定義します。  
 この距離センサーモジュールは他部門で作成中であり、インターフェイスの仕様は決まっていますが、まだ実装を受け取っていません。  
 
-HogeController と BarSensor の関係  
-![](https://gyazo.com/61b142112bceaa8854e0fb346c21a78d.png)
+FooController と BarSensor の関係  
+![](https://gyazo.com/49ac2fe38e4f7b9e43b01384ce391e21.png)
 
-「HogeController」の仕様を以下のように定義します。  
+「FooController」の仕様を以下のように定義します。  
 
 - コンストラクタでセンサーオブジェクトを受け取る。  
-- 対象物との距離の上限を設定する内部変数「upperLimit」を持つ。（今回は上限値を「200」とする）
-- 対象物との距離の下限を設定する内部変数「lowerLimit」を持つ。（今回は下限値を「100」とする）
+- 対象物との距離の上限を設定する内部変数「UPPER_LIMIT」を持つ。（今回は上限値を「200」とする）
+- 対象物との距離の下限を設定する内部変数「LOWER_LIMIT」を持つ。（今回は下限値を「100」とする）
 - 対象物との距離を判定する「check」メソッドを持ち、このメソッドは上記の上限値／下限値の範囲内に対象物が収まっている場合Trueを返す。それ以外はFalseを返す。（今回は対象物の距離が100から200の範囲内であればTrueを戻す。それ以外はFalseを戻す）
 - センサーオブジェクトがNullの場合は「NullPointerException」例外をThrowする。  
 
@@ -66,17 +66,17 @@ package com.example;
 /**
  * コントローラー
  */
-public class HogeController {
+public class FooController {
 
     /**
      * 上限距離
      */
-    private int upperLimit = 200;
+    private static final int UPPER_LIMIT = 200;
 
     /**
      * 下限距離
      */
-    private int lowerLimit = 100;
+    private static final int LOWER_LIMIT = 100;
 
     /**
      * 距離センサーインスタンス変数
@@ -88,7 +88,7 @@ public class HogeController {
      * 
      * @param barSensor 距離センサーインスタンス
      */
-    public HogeController(BarSensor barSensor) {
+    public FooController(BarSensor barSensor) {
         this.barSensor = barSensor;
     }
 
@@ -100,7 +100,7 @@ public class HogeController {
     public boolean check() {
         if (null == this.barSensor)
             throw new NullPointerException();
-        if (this.upperLimit >= this.barSensor.scan() && this.barSensor.scan() >= this.lowerLimit)
+        if (FooController.UPPER_LIMIT >= this.barSensor.scan() && this.barSensor.scan() >= FooController.LOWER_LIMIT)
             return true;
         return false;
     }
@@ -133,17 +133,17 @@ public interface BarSensor {
 
 ## テストクラス
 
-今回、「HogeController」をテストしたいのですが、まだ距離センサー「BarSensor」の実装が完成していません。  
-BarSensor が完成していない状態で HogeController をテストするために BarSensor をモックで置き換えます。  
+今回、「FooController」をテストしたいのですが、まだ距離センサー「BarSensor」の実装が完成していません。  
+BarSensor が完成していない状態で FooController をテストするために BarSensor をモックで置き換えます。  
 
-テストクラス「HogeControllerTest」を以下のように実装していきます。  
+テストクラス「FooControllerTest」を以下のように実装していきます。  
 
 ```java
 package com.example;
 
-public class HogeControllerTest {
+public class FooControllerTest {
 
-    private HogeController hogeController = null;
+    private FooController fooController = null;
 
     private BarSensor barSensor = null;
 
@@ -165,10 +165,10 @@ BarSensor のモックを作成します。
     this.barSensor = mock(BarSensor.class);
 ```
 
-次のコードで「HogeController」のコンストラクタに先ほど作成したモックを渡して、コントローラーのオブジェクトを作成します。
+次のコードで「FooController」のコンストラクタに先ほど作成したモックを渡して、コントローラーのオブジェクトを作成します。
 
 ```java
-    this.hogeController = new HogeController(this.barSensor);
+    this.fooController = new FooController(this.barSensor);
 ```
 
 これらのコードを JUnitの「BeforeEach」アノテーションを使って、毎テストケース実行前にオブジェクトを生成するように定義します。  
@@ -179,7 +179,7 @@ BeforeEach アノテーションを使ったテストケース実行前のセッ
     @BeforeEach
     void setUp() {
         this.barSensor = mock(BarSensor.class);
-        this.hogeController = new HogeController(this.barSensor);
+        this.fooController = new FooController(this.barSensor);
     }
 ```
 
@@ -191,7 +191,7 @@ BeforeEach アノテーションを使ったテストケース実行前のセッ
 ```java
     @Test
     void testCase() {
-        assertEquals(true, this.hogeController.check(), "成功するケース");
+        assertEquals(true, this.fooController.check(), "成功するケース");
     }
 ```
 
@@ -213,7 +213,7 @@ BeforeEach アノテーションを使ったテストケース実行前のセッ
     @Test
     void testCase() {
         when(this.barSensor.scan()).thenReturn(150);
-        assertEquals(true, this.hogeController.check(), "成功するケース");
+        assertEquals(true, this.fooController.check(), "成功するケース");
     }
 ```
 
@@ -237,34 +237,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class HogeControllerTest {
+public class FooControllerTest {
 
-    private HogeController hogeController = null;
+    private FooController fooController = null;
 
     private BarSensor barSensor = null;
 
     @BeforeEach
     void setUp() {
         this.barSensor = mock(BarSensor.class);
-        this.hogeController = new HogeController(this.barSensor);
+        this.fooController = new FooController(this.barSensor);
     }
 
     @Test
     void testCase01() {
         when(this.barSensor.scan()).thenReturn(50);
-        assertEquals(false, this.hogeController.check(), "距離50 : False");
+        assertEquals(false, this.fooController.check(), "距離50 : False");
     }
 
     @Test
     void testCase02() {
         when(this.barSensor.scan()).thenReturn(150);
-        assertEquals(true, this.hogeController.check(), "距離150 : True");
+        assertEquals(true, this.fooController.check(), "距離150 : True");
     }
 
     @Test
     void testCase03() {
         when(this.barSensor.scan()).thenReturn(250);
-        assertEquals(false, this.hogeController.check(), "距離250 : False");
+        assertEquals(false, this.fooController.check(), "距離250 : False");
     }
 
 }
@@ -280,7 +280,7 @@ JUnit5の実行にはVisual Studio Codeの拡張機能「[Test Runner for Java](
 テストエクスプローラーからテストを実行します。  
 すべてのテストケースが成功と表示されました。  
 
-![](https://gyazo.com/70f14f72c7635fdc40a6a7a967a554da.png)
+![](https://gyazo.com/1b32022cbc77750c0fe8f2803aefd48c.png)
 
 ## もう一つのモック作成方法
 
@@ -288,13 +288,13 @@ Mockito ではモックの作成にアノテーションを使うこともでき
 アノテーションを使ったモック作成方法を以下に示します。  
 
 ```java
-public class HogeControllerTest {
+public class FooControllerTest {
 
     @Mock
     private BarSensor barSensor;
 
     @InjectMocks
-    private HogeController hogeController;
+    private FooController fooController;
 
     @BeforeEach
     void setUp() {

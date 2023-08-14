@@ -8,7 +8,7 @@ tags: [maui, dotnet, vscode]
 ## はじめに
 先日終了した[夏のリレー連載2023](/events/season/2023-summer/)において[社内 Hackathon の紹介記事](/blogs/2023/07/25/hackathon/)が投稿されましたが、その後[年1回のオフラインイベント](https://note.com/mamezou_info/n/n3f7a83419c0f)が開催されました。最近ネタ切れ気味の筆者も参加して .NET MAUI の開発環境を構築してみたので記事にさせていただきます。
 
-.NET MAUI は .NET Xamarin 後継のクロスプラットフォームなネイティブアプリケーションフレームワークです。iOS / Android のアプリはもちろん、Windows / Mac のデスクトップアプリケーションも開発できます。Xamarin 同様、XAML による宣言的な UI 定義と C# の partial class でアプリを構築します[^1]。
+.NET MAUI は .NET Xamarin 後継のクロスプラットフォームなネイティブアプリケーションフレームワークです。iOS / Android のアプリはもちろん、Windows / macOS のデスクトップアプリケーションも開発できます。Xamarin 同様、XAML による宣言的な UI 定義と C# の partial class でアプリを構築します[^1]。
 
 [^1]: XAML から生成されるコードと C# のコードで1つのクラスになります。
 

@@ -2,7 +2,7 @@
 title: VS Code で .NET MAUI の開発環境を構築する(macOS/iOS)
 author: masahiro-kondo
 date: 2023-08-14
-tags: [maui, .net, vscode]
+tags: [maui, dotnet, vscode]
 ---
 
 ## はじめに

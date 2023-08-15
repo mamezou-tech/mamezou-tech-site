@@ -1,7 +1,7 @@
 ---
 title: AWS Device Farmでスマートフォンのクロスブラウザテスト環境を構築する
 author: fumihiko-kawano
-date: 2023-08-16
+date: 2023-08-17
 tags: [Appium, テスト]
 ---
 

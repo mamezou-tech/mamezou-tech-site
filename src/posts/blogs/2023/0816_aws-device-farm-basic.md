@@ -2,12 +2,12 @@
 title: AWS Device Farmでスマートフォンのクロスブラウザテスト環境を構築する
 author: fumihiko-kawano
 date: 2023-08-17
-tags: [Appium, テスト]
+tags: [AWS, Appium, テスト]
 ---
 
 ## はじめに
 
-[AppiumとAndroidエミュレータでスマートフォンのクロスブラウザテスト環境を構築する](https://developer.mamezou-tech.com/blogs/2023/07/24/appium-webdriverio-node/) はローカル環境での実行方法の説明でした。
+[「AppiumとAndroidエミュレータでスマートフォンのクロスブラウザテスト環境を構築する」](https://developer.mamezou-tech.com/blogs/2023/07/24/appium-webdriverio-node/) はローカル環境での実行方法の説明でした。
 今回は[AWS Device Farm](https://aws.amazon.com/jp/device-farm/#:~:text=AWS%20Device%20Farm%20%E3%81%AF%E3%80%81%E5%BA%83%E7%AF%84,%E7%AE%A1%E7%90%86%E3%81%99%E3%82%8B%E5%BF%85%E8%A6%81%E3%81%AF%E3%81%82%E3%82%8A%E3%81%BE%E3%81%9B%E3%82%93%E3%80%82) での実行方法を説明させていただきます。
 
 :::info:AWS Device Farm
@@ -17,11 +17,11 @@ AWS Device Farm は、広範なデスクトップブラウザと実際のモバ�
 ## AWS Device Farmで利用するモジュールの準備
 
 ### テストコード
-実行するコードは[前回](https://developer.mamezou-tech.com/blogs/2023/07/24/appium-webdriverio-node/) とほぼ同じです。
+実行するコードは[前回](https://developer.mamezou-tech.com/blogs/2023/07/24/appium-webdriverio-node/) とほぼ同じで、Node.jsとWebdriverIOを利用して、Seleniumのテスト用サイトの[web-form.html](https://www.selenium.dev/selenium/web/web-form.html) をオープンして操作するコードです。
 
 前回との変更点は以下の3点となります。
 - optsのcapabilitiesを空オブジェクト化
-- AWS Device Farmでは、capabilityでw3をfalseに設定できないのでgetValueで落ちるのでコメントアウト
+- AWS Device Farmでは、capabilityでw3cをfalseに設定できないのでgetValueで落ちるのでコメントアウト
 - スクリーンショットの取得処理追加
 
 node-sampleディレクトリ 直下のandroid-sample.jsは以下のようになります。
@@ -113,8 +113,8 @@ main();
 ```
 
 ### AWS Device Farmにアップロードするモジュールの作成
-node-sampleディレクトリをtarで固め、gzip圧縮し、zip圧縮したファイルを作成します。
-[Appium と AWS Device Farm での作業](https://docs.aws.amazon.com/ja_jp/devicefarm/latest/developerguide/test-types-appium.html)では、npm-bundleを利用して圧縮されたテストパッケージファイルの作成する手順となっていますが、現在サポートされているNode.jsでは意図した構成のパッケージが作成できないので、他の方法で圧縮する必要があります。
+node-sampleディレクトリをtarで固め、gzip圧縮し、さらにzip圧縮したファイルを作成します。
+[Appium と AWS Device Farm での作業](https://docs.aws.amazon.com/ja_jp/devicefarm/latest/developerguide/test-types-appium.html)では、npm-bundleを利用して圧縮されたテストパッケージファイルの作成する手順となっていますが、現在サポートされているNode.js(記事執筆時点では、16.20.1、18.17.1、20.5.1)では意図した構成のパッケージが作成できないので、他の方法で圧縮する必要があります。
 
 以下のコマンドで圧縮してください。
 
@@ -144,7 +144,7 @@ Web Appを選択し、Run Nameはデフォルトのままで「Next」ボタン�
 Setup test frameworkでAppium Node.jsを選択します。
 ![Device Farmのプロジェクト作成5](/img/blogs/2023/0816_images/testrun2.png)
 
-Upload a zip containing your testsの「Chose File」を押下してファイル選択ダイアログを表示してファイルを指定します。
+Upload a zip containing your testsの「Choose File」を押下してファイル選択ダイアログを表示してファイルを指定します。
 この領域にファイルをドラッグ&ドロップすることでも指定可能です。
 指定するファイルはnode-sample.zipとなります。 ファイル指定後に「Next」ボタンをクリックします。
 ![Device Farmのプロジェクト作成6](/img/blogs/2023/0816_images/testrun3.png)

@@ -7,7 +7,7 @@ tags: [Appium, テスト]
 
 ## はじめに
 
-[AppiumとAndroidエミュレータでスマートフォンのクロスブラウザテスト環境を構築する](https://developer.mamezou-tech.com/blogs/2023/07/24/appium-webdriverio-node/) ではローカル環境での実行方法の説明でした。
+[AppiumとAndroidエミュレータでスマートフォンのクロスブラウザテスト環境を構築する](https://developer.mamezou-tech.com/blogs/2023/07/24/appium-webdriverio-node/) はローカル環境での実行方法の説明でした。
 今回は[AWS Device Farm](https://aws.amazon.com/jp/device-farm/#:~:text=AWS%20Device%20Farm%20%E3%81%AF%E3%80%81%E5%BA%83%E7%AF%84,%E7%AE%A1%E7%90%86%E3%81%99%E3%82%8B%E5%BF%85%E8%A6%81%E3%81%AF%E3%81%82%E3%82%8A%E3%81%BE%E3%81%9B%E3%82%93%E3%80%82) での実行方法を説明させていただきます。
 
 :::info:AWS Device Farm
@@ -21,7 +21,7 @@ AWS Device Farm は、広範なデスクトップブラウザと実際のモバ�
 
 前回との変更点は以下の3点となります。
 - optsのcapabilitiesを空オブジェクト化
-- AWS Device Farmではcapabilityでw3をfalseに設定できないのでgetValueで落ちるのでコメントアウト
+- AWS Device Farmでは、capabilityでw3をfalseに設定できないのでgetValueで落ちるのでコメントアウト
 - スクリーンショットの取得処理追加
 
 node-sampleディレクトリ 直下のandroid-sample.jsは以下のようになります。
@@ -114,9 +114,9 @@ main();
 
 ### AWS Device Farmにアップロードするモジュールの作成
 node-sampleディレクトリをtarで固め、gzip圧縮し、zip圧縮したファイルを作成します。
-[Appium と AWS Device Farm での作業](https://docs.aws.amazon.com/ja_jp/devicefarm/latest/developerguide/test-types-appium.html)では、npm-bundleを利用して圧縮されたテストパッケージファイルの作成する手順となっていますが、現在サポートされているNode.jsではうまくいかなにので、他の方法で圧縮する必要があります。
+[Appium と AWS Device Farm での作業](https://docs.aws.amazon.com/ja_jp/devicefarm/latest/developerguide/test-types-appium.html)では、npm-bundleを利用して圧縮されたテストパッケージファイルの作成する手順となっていますが、現在サポートされているNode.jsでは意図した構成のパッケージが作成できないので、他の方法で圧縮する必要があります。
 
-Macの場合、以下のコマンドで圧縮してください。
+以下のコマンドで圧縮してください。
 
 ```shell
 cd node-samplenが含まれるパス
@@ -124,37 +124,37 @@ tar czf node-sample.tgz node-sample
 zip node-sample.zip node-sample.tgz 
 ```
 
-Windowの場合、7zipなどのツールで、node-sample.tgzを作成し、node-sample.tgzをWindowsのzip圧縮で圧縮しnode-sample.zipを作成します。
+Windows環境で、上記コマンドが利用できない場合は、7zipなどのツールでnode-sample.tgzを作成し、node-sample.tgzをWindowsのzip圧縮で圧縮しnode-sample.zipを作成します。
 
 ## AWS Device Farmでの実行
 
 ### Device Farmのプロジェクト作成と実行
 Device Farmで新規のプロジェクトを作成します。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/project1.png)
+![テスト実行](/img/blogs/2023/0816_images/project1.png)
 
 Project Nameにtest-projectと入力し「Create」ボタンをクリックします。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/project2.png)
+![Device Farmのプロジェクト作成2](/img/blogs/2023/0816_images/project2.png)
 
 作成したプロジェクトが開かれた状態となりますので「Create a new run」ボタンをクリックします。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/project3.png)
+![Device Farmのプロジェクト作成3](/img/blogs/2023/0816_images/project3.png)
 
 Web Appを選択し、Run Nameはデフォルトのままで「Next」ボタンをクリックします。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun1.png)
+![Device Farmのプロジェクト作成4](/img/blogs/2023/0816_images/testrun1.png)
 
 Setup test frameworkでAppium Node.jsを選択します。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun2.png)
+![Device Farmのプロジェクト作成5](/img/blogs/2023/0816_images/testrun2.png)
 
-Upload a zip containing your testsのChose Fileを押下してファイル選択ダイアログを表示してファイルを指定します。
+Upload a zip containing your testsの「Chose File」を押下してファイル選択ダイアログを表示してファイルを指定します。
 この領域にファイルをドラッグ&ドロップすることでも指定可能です。
-指定するファイルはnode-sample.zipとなります。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun3.png)
+指定するファイルはnode-sample.zipとなります。 ファイル指定後に「Next」ボタンをクリックします。
+![Device Farmのプロジェクト作成6](/img/blogs/2023/0816_images/testrun3.png)
 
 画面下部にスクロールし「Create a TestSpec」ボタンをクリックします。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun4.png)
+![Device Farmのプロジェクト作成7](/img/blogs/2023/0816_images/testrun4.png)
 
 
-Edit you yamlを編集します。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun100.png)
+Edit your YAMLの下に表示されているyamlを編集します。以降では、このyamlファイルをTestSpecと記載いたします。
+![Device Farmのプロジェクト作成8](/img/blogs/2023/0816_images/testrun100.png)
 
 11行目の``# - nvm install 10.13.0``を``- nvm install 16.20.1``に書き換えます。
 134行目の`` # The test phase includes commands that run your test suite execution.``から
@@ -179,62 +179,62 @@ Edit you yamlを編集します。
       # For e.g. assuming you run your tests locally using command "node YOUR_TEST_FILENAME.js.", enter the same command below:
       - node android-sample.js
 ```
-node-sample.tgzの構造が間違えている事に気づくためにディレクトリ移動を複数回実行し、ls -lを実行して、カレントディレクトリに含まれるファイルを確認しています。
+node-sample.tgzの構造が間違えている事に気づくためにディレクトリ移動を複数回実行し、ls -lを実行して、カレントディレクトリに含まれるファイルを確認できるようにしております。
 $DEVICEFARM_TEST_PACKAGE_PATH/node_modules/node-sample配下にandroid-sample.jsが存在する事を期待するTestSpecとなります。
 
 
-Save asのyamlファイル名を指定し、Save as Newをクリックします。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun101.png)
+Save asのyamlファイル名を指定し、「Save as New」ボタンをクリックします。
+![テスト実行1](/img/blogs/2023/0816_images/testrun101.png)
 
-テストを実行するデバイスを指定します。Create device poolをクリックします。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun7.png)
+テストを実行するデバイスを指定します。「Create device pool」をクリックします。
+![テスト実行2](/img/blogs/2023/0816_images/testrun7.png)
 
 
-Mobile deviceにGoogle Pixel 7aを入力すると、条件に合ったデバイスが表示されますので、選択し「Create」ボタンをクリックします。
+Mobile devicesにGoogle Pixel 7aを入力すると、条件に合ったデバイスのみが表示されますので、選択し「Create」ボタンをクリックします。
 一覧に表示するデバイスを絞り込む必要はないのですが、画像の絵面的に見やすくするための操作となります。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun8.png)
+![テスト実行3](/img/blogs/2023/0816_images/testrun8.png)
 
 指定したデバイスが選択状態で表示されるので、「Next」ボタンをクリックします。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun9.png)
+![テスト実行4](/img/blogs/2023/0816_images/testrun9.png)
 
 画面下部にスクロールし「Confirm and start run」ボタンをクリックします。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun10.png)
+![テスト実行5](/img/blogs/2023/0816_images/testrun10.png)
 
-StatusがPending状態で一覧に表示されます。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/testrun11.png)
+作成したテストがPending状態で一覧に表示されます。
+![テスト実行6](/img/blogs/2023/0816_images/testrun11.png)
 
 実行が成功すれば、3分弱でStatusがPassed状態になります。
 My wab appをクリックすると実行結果の詳細に遷移します。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/runresult1-2.png)
+![テスト実行7](/img/blogs/2023/0816_images/runresult1-2.png)
 
-実行結果の詳細では、デバイス毎の実行結果やなど色々な情報を参照できます。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/runresult2.png)
+実行結果の詳細では、デバイス毎の実行結果など、色々な情報を参照できます。
+![テスト実行8](/img/blogs/2023/0816_images/runresult2.png)
 
 Screenshotsタブをクリックすると、client.saveScreenshotで取得した画像が参照できます。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/screenshot.png)
+![テスト実行9](/img/blogs/2023/0816_images/screenshot.png)
 
 DeviceのGoogle Pixel 7aをクリックするとデバイス毎の結果が参照できます。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/runresult2-2.png)
+![テスト実行10](/img/blogs/2023/0816_images/runresult2-2.png)
 
 Videoタブをクリックすると実行時に取得した動画を見ることができます。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/runresult3.png)
+![テスト実行11](/img/blogs/2023/0816_images/runresult3.png)
 
 動画のイメージは以下のようになります。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/Animation.gif)
+![テスト実行12](/img/blogs/2023/0816_images/Animation.gif)
 
 
 ### 実行が失敗したときの問題解決方法
 
-何らかの理由で、テストが失敗した場合は、以下のようにStatusがFailedになります。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/fail1.png)
+何らかの理由で、テストが失敗した場合は、以下のようにStatusがFailedになります。失敗したテストのNameのリンクをクリックします。
+![テスト実行失敗1](/img/blogs/2023/0816_images/fail1.png)
 
 デバイスをクリックします。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/fail2.png)
+![テスト実行失敗2](/img/blogs/2023/0816_images/fail2.png)
 
-「Files」タブをクリックし、Test spec outputをクリックする実行時のログファイルがダウンロードできます。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/fail4.png)
+「Files」タブをクリックし、Test spec outputをクリックすると実行時のログファイルがダウンロードできます。
+![テスト実行失敗3](/img/blogs/2023/0816_images/fail4.png)
 
-yamlファイルでNode.jsの18.17.1を指定すると何故か失敗するのですが、 nvm install 18.17.1をした時のログの抜粋は以下のようになります。
+TestSpecでNode.jsの18.17.1を指定すると何故か失敗するのですが、 nvm install 18.17.1を指定した時のログの抜粋は以下のようになります。
 
 ```yaml
 ##################                                                        26.2%
@@ -270,7 +270,7 @@ total 9884
 [DEVICEFARM] Tearing down your device. Your tests report will come shortly.
 ```
 
-``[DeviceFarm] npm install *.tgz``が失敗し、``$DEVICEFARM_TEST_PACKAGE_PATH/node_modules``が存在しないのでテストが失敗している事が分かります。
+``npm install *.tgz``が失敗し、``$DEVICEFARM_TEST_PACKAGE_PATH/node_modules``が存在しないのでテストが失敗している事が分かります。
 
 npm install *.tgzが成功したときのログの抜粋は以下のようになります。
 
@@ -305,7 +305,7 @@ found 0 vulnerabilities
 
 ```
 
-cd $DEVICEFARM_TEST_PACKAGE_PATHからls -lでファイル一覧を出力した結果のログの抜粋は以下のようになります。
+``cd $DEVICEFARM_TEST_PACKAGE_PATH``実行後に、ls -lでファイル一覧を出力したログの抜粋は以下のようになります。
 
 ```yaml
 [DeviceFarm] echo "Navigate to test source code"
@@ -325,21 +325,15 @@ drwxrwxr-x 3 device-farm device-farm 4096 Aug 14 08:15 node-sample
 [DeviceFarm] ls -l
 total 672
 -rwxrwxr-x   1 device-farm device-farm   3042 Aug 14 08:15 android-sample.js
--rwxrwxr-x   1 device-farm device-farm 127995 Aug 14 08:15 fifth.png
--rwxrwxr-x   1 device-farm device-farm 126788 Aug 14 08:15 first.png
--rwxrwxr-x   1 device-farm device-farm   1142 Aug 14 08:15 log.txt
 drwxrwxr-x 246 device-farm device-farm  12288 Aug 14 08:15 node_modules
--rwxrwxr-x   1 device-farm device-farm   3676 Aug 14 08:15 node-sample-1.1.0.tgz
 -rwxrwxr-x   1 device-farm device-farm    319 Aug 14 08:15 package.json
 -rwxrwxr-x   1 device-farm device-farm 131845 Aug 14 08:15 package-lock.json
--rwxrwxr-x   1 device-farm device-farm 133286 Aug 14 08:15 second.png
--rwxrwxr-x   1 device-farm device-farm 127995 Aug 14 08:15 third.png
 [DeviceFarm] echo "Start Appium Node test"
 ```
 ### iPhoneのSafariで実行
 
 Create device poolでiPhoneのデバイスを選択して実行します。
-![Device Farmのプロジェクト作成1](/img/blogs/2023/0816_images/iphone1.png)
+![テスト実行](/img/blogs/2023/0816_images/iphone1.png)
 
 ローカル環境でiPhoneのSafariで実行する場合は、capabilitiesで``browserName: "Safari"``を指定する必要があるのですが、AWS Device Farmの場合は、TestSpecのyamlファイルのテンプレートに以下の記載が存在するため、特別な考慮は不要です。
 
@@ -360,4 +354,4 @@ Create device poolでiPhoneのデバイスを選択して実行します。
 
 ## まとめ
 AWS Device Farmで実際にテストを実行する方法を説明させていただきました。
-今回は、Web アプリを対象としたテストの実行でしたが、Web アプリでも端末とブラウザの組み合わせで動作しないといった現象も稀にありますし、スマホ向けのアプリは、端末固有の問題が多く発生しますので、AWS Device Farmで自動テストの仕組みを実現していると、新規OSや新規端末の検証のコストが大幅に削減できると感じます。ただ、仕組みの実現には結構なコストがかかるとも感じます。
+Web アプリでも、端末とブラウザの組み合わせで動作しないといった現象は発生しますし、スマホ向けのアプリは、端末固有の問題がより多く発生しますので、AWS Device Farmで自動テストの仕組みを実現していると、新規OSや新規端末の検証のコストが大幅に削減できると感じます。ただ、仕組みの実現には結構なコストがかかるとも感じます。

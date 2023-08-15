@@ -236,7 +236,7 @@ Videoタブをクリックすると実行時に取得した動画を見ること
 
 TestSpecでNode.jsの18.17.1を指定すると何故か失敗するのですが、 nvm install 18.17.1を指定した時のログの抜粋は以下のようになります。
 
-```yaml
+```shell
 ##################                                                        26.2%
 ##################################################                        69.5%
 ######################################################################## 100.0%
@@ -274,7 +274,7 @@ total 9884
 
 npm install *.tgzが成功したときのログの抜粋は以下のようになります。
 
-```yaml
+```shell
 [DEVICEFARM] Setting up your device. This usually takes 2-3 minutes.
 [DEVICEFARM] ########### Start executing testspec ###########
  
@@ -307,7 +307,7 @@ found 0 vulnerabilities
 
 ``cd $DEVICEFARM_TEST_PACKAGE_PATH``実行後に、ls -lでファイル一覧を出力したログの抜粋は以下のようになります。
 
-```yaml
+```shell
 [DeviceFarm] echo "Navigate to test source code"
 Navigate to test source code
 [DeviceFarm] cd $DEVICEFARM_TEST_PACKAGE_PATH

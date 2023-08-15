@@ -124,7 +124,7 @@ tar czf node-sample.tgz node-sample
 zip node-sample.zip node-sample.tgz 
 ```
 
-Windows環境で、上記コマンドが利用できない場合は、7zipなどのツールでnode-sample.tgzを作成し、node-sample.tgzをWindowsのzip圧縮で圧縮しnode-sample.zipを作成します。
+Windows環境で上記コマンドが利用できない場合は、7zipなどのツールでnode-sample.tgzを作成し、node-sample.tgzをWindowsのzip圧縮で圧縮しnode-sample.zipを作成します。
 
 ## AWS Device Farmでの実行
 

@@ -64,7 +64,7 @@ Composition APIを直接使うよりもシンプルに実装できます。
 ```
 
 VeeValidateが提供するフォーム(`Form`)を配置して、子要素として入力フィールド(`Field`)やエラーメッセージ(`ErrorMessage`)を配置しています。
-各コンポーネントは名前から役割は自明ですね。
+各コンポーネントはその名前から何をするのか自明ですね。
 肝心のバリデーションロジックはFieldの`rules`Propsで指定します。関数自体はOKの場合はtrue、NGの場合はエラーメッセージを返します。
 
 これを実行すると、バリデーションエラー発生時は以下のようなHTMLがレンダリングされます。
@@ -167,7 +167,7 @@ VeeValidate v3では、原則v-modelに指定した値に対してバリデー�
 VeeValidate v4でもv-modelを使って同様のことはできますが、必須ではなくなりました。つまりフィールドの値はVeeValidateで管理します。
 これはVeeValidateがフォームサブミットしていない値をアプリケーションで扱う必要性は少ないという考えを持っているからのようです。
 
-このようにVeeValidate v4ではフォームサブミット機能をネイティブサポートしています。
+v3の頃はフォームサブミットは利用者の実装に委ねられていましたが、v4ではこれをネイティブサポートしています。
 フォームサブミットは、JavaScriptを単純に実行するものでも、HTMLデフォルトのページリロードを伴ってデータを送信するスタイルでも可能です。
 両ケースでVeeValidateは、バリデーションがパスしていなければフォームサブミットを発動しないようにしてくれます(デフォルト)。
 
@@ -188,6 +188,7 @@ const schema = toTypedSchema(
 const submit = (values) => {
   console.log(values)
   // { lastName: 'xxxx', firstName: 'yyyy' }
+  // ...サブミット処理
 }
 </script>
 
@@ -210,7 +211,7 @@ const submit = (values) => {
 ## Composition API
 
 次に、もう1つの利用スタイルのComposition APIです。こちらはVeeValidateが提供するVueコンポーネントでなく、Composableを使用して実装します。
-先ほどはHTMLレンダリングもありましたが、こちらのスタイルはUIには一切関知しませんので、より柔軟な実装ができます。
+先ほどはHTMLレンダリングもありましたが、こちらのスタイルはUIには一切関知しませんので、より自由度の高い実装ができます。
 
 とはいえ、バリデーション実装方法やフォームサブミットの考え方はVueコンポーネントを使うやり方と同じです。
 
@@ -260,12 +261,12 @@ Zodのスキーマ定義自体は、先ほどのVueコンポーネントに指�
 
 その後は、useFormが戻り値として提供する各種関数やデータを駆使してバリデーションと関連するUIを組み立てます。
 
-- defineInputBinds関数: フォームにHTML入力要素(v-bind)を関連づける。対象がVueコンポーネント自体の場合はdefineComponentBinds関数を使用する。
+- defineInputBinds: フォームにHTML入力要素(v-bind)を関連づける。対象がVueコンポーネント自体の場合はdefineComponentBinds関数を使用する。
 - errors: エラー内容を格納するリアクティブデータ。エラー有無の判定やUIにエラーメッセージとして表示する。
 - handleSubmit: フォームサブミットのヘルパー関数。イベント伝播抑止や実行タイミングを制御する。
  
-これ以外にもuseForm Composableは多数の機能を提供します。
-ここでは使っていませんがフィールドレベルバリデーションを提供するuseField Composableもあります。
+これ以外にもuseForm Composableは多数の機能を提供しています。
+また、ここでは使っていませんがフィールドレベルバリデーションを提供するuseField Composableもあります。
 Composableの詳細は公式ドキュメントを参照してください。
 
 - [VeeValidate Doc - useForm](https://vee-validate.logaretm.com/v4/api/use-form/)

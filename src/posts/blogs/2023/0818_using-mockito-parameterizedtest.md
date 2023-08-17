@@ -161,7 +161,7 @@ FooController の checkメソッドの実装を上記のように変更するこ
 
 ## ParameterizedTest を使う
 
-これまで Mockito の「Test」アノテーションを使ってテストケースを定義していましたが、Mockito には「ParameterizedTest」アノテーションというものがあります。  
+これまで JUnit5 の「Test」アノテーションを使ってテストケースを定義していましたが、JUnit5 には「ParameterizedTest」アノテーションというものがあります。  
 このアノテーションを使うとテストケースに引数（パラメータ）を設定することができます。  
 引数は「ValueSource」アノテーションで設定することができます。
 
@@ -278,6 +278,6 @@ public class FooControllerTest {
 }
 ```
 
-今回は複数のテストケースを、１つのテストケースにまとめてみました。  
+JUnit5 の ParameterizedTest 使って Mockito のテストを簡潔に書きつつ網羅性を高めることができました。
 Mockito にはもっと多くの機能がありますので、今後も順次紹介していきたいと思います。  
 ソフトウェアの品質向上に役立てていただければと幸いです。

@@ -278,6 +278,6 @@ public class FooControllerTest {
 }
 ```
 
-JUnit5 の ParameterizedTest 使って Mockito のテストを簡潔に書きつつ網羅性を高めることができました。
+JUnit5 の ParameterizedTest を使って Mockito のテストを簡潔に書きつつ網羅性を高めることができました。
 Mockito にはもっと多くの機能がありますので、今後も順次紹介していきたいと思います。  
 ソフトウェアの品質向上に役立てていただければと幸いです。

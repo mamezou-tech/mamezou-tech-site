@@ -21,24 +21,24 @@
       "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
     },
     {
-      "title": "Viteベースの高速テスティングフレームワークVitestを使ってみる",
-      "url": "/blogs/2022/12/28/vitest-intro/"
+      "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
+      "url": "/nuxt/nuxt3-rendering-mode/"
     },
     {
-      "title": "Jest再入門 - 関数・モジュールモック編",
-      "url": "/testing/jest/jest-mock/"
+      "title": "ORマッパーのTypeORMをTypeScriptで使う",
+      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
+    },
+    {
+      "title": "Viteベースの高速テスティングフレームワークVitestを使ってみる",
+      "url": "/blogs/2022/12/28/vitest-intro/"
     },
     {
       "title": "Nuxt3入門(第7回) - Nuxt3のプラグイン・ミドルウェアを使う",
       "url": "/nuxt/nuxt3-plugin-middleware/"
     },
     {
-      "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
-      "url": "/nuxt/nuxt3-rendering-mode/"
-    },
-    {
-      "title": "Nuxt3入門(第6回) - アプリケーションで発生するエラーに対応する",
-      "url": "/nuxt/nuxt3-error-handling/"
+      "title": "Nuxt3入門(第3回) - ユニバーサルフェッチでデータを取得する",
+      "url": "/nuxt/nuxt3-universal-fetch/"
     }
   ]
 }

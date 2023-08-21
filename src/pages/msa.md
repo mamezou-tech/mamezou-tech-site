@@ -87,3 +87,8 @@ Apache Kafka は publish/subscribe 型のメッセージングプラットフォ
 - [Kafka の Web UI を提供する kafka-ui を試す](/blogs/2023/01/05/kafka-ui/)
 - [Spring Boot で作る Kafka Streams アプリケーション](/blogs/2023/01/23/kafka-streams-spring-boot-app/)
 - [Kafka Streams パイプラインを迅速に作成できる ksqlDB を触ってみる](/blogs/2023/02/16/ksqldb/)
+
+### AsyncAPI
+非同期メッセージングによる API 仕様を定義した AsyncAPI に関する記事です。
+
+- [イベント駆動アーキテクチャ時代の非同期 API 業界標準 AsyncAPI とそのエコシステム](/blogs/2023/08/21/asyncapi-and-ecosystem/)

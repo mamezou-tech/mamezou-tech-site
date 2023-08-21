@@ -8,13 +8,13 @@ tags: [asyncapi, springwolf, Kafka, msa]
 ## はじめに
 イベント駆動アーキテクチャ(Event-Driven-Architectures: EDA)について耳にする機会が増えてきました。EDA ではマイクロサービス間で同期的な通信を行うのではなく、イベントをトリガーとした非同期的な通信を行います。これによりスケーラブルで応答性の高いシステムが構築できる、IoT などの多数のイベントソースからの情報をリアルタイムに処理できるなどのメリットがあります。
 
-メッセージの生成元である Producer はイベントチャネルに対してメッセージを送信、イベントチャネルを購読する Consumer が受信を契機として処理を行います。Apache Kafka や RabbitMQ などがメッセージを配信するための Broker として利用されます。
+イベントの生成元である Producer はイベントチャネルに対してイベントを発行、イベントチャネルを購読する Consumer が受信を契機として処理を行います。Apache Kafka や RabbitMQ などがメッセージを配信するための Broker として利用されます。
 
 :::info
 以前の記事「[Debezium によるチェンジデータキャプチャー](/blogs/2022/02/28/debezium-cdc/)」で紹介した CDC もイベント駆動アーキテクチャで利用される技術の一つと言えます。
 :::
 
-AsyncAPI は EDA アプリケーションのメッセージを契機として実行される機能を API とみなし非同期 API の業界標準を目指して整備されている仕様です。
+AsyncAPI は EDA アプリケーションのイベントを契機として実行される非同期 API の業界標準を目指して整備されている仕様です。
 
 [AsyncAPI Initiative for event-driven APIs](https://www.asyncapi.com/)
 
@@ -38,7 +38,11 @@ RDA と EDA の簡単な比較を表にしてみました。
 
 ## AsyncAPI の概念
 
-メッセージを送信する Producer、受信する Consumer、仲介する Brokerという概念が取り入れられています。
+AsyncAPI ではイベントの上位概念としてメッセージを位置付けています。
+
+[Message | AsyncAPI Initiative for event-driven APIs](https://www.asyncapi.com/docs/concepts/message)
+
+Message を送信する Producer、受信する Consumer、仲介する Broker という概念が取り入れられています。
 
 [Overview | AsyncAPI Initiative for event-driven APIs](https://www.asyncapi.com/docs/concepts)
 
@@ -50,17 +54,17 @@ graph LR
     CB[Consumer B]
     CC[Consumer C]
 
-    P -->|Event A| B
-    P -->|Event B| B
-    B -->|Event A| CA
-    B -->|Event A| CB
-    B -->|Event B| CB
-    B -->|Event C| CC
+    P -->|Message A| B
+    P -->|Message B| B
+    B -->|Message A| CA
+    B -->|Message A| CB
+    B -->|Message B| CB
+    B -->|Message C| CC
 ```
 
 OpenAPI では Server は API がホストされる場所ですが、AsyncAPI における Server は Broker の場所を表します。
 
-Channel はメッセージが publish される先、Conumer が Subscribe する先であり、Kafka でいう Topic にあたります。
+Channel はメッセージが publish される先、Conumer が subscribe する先であり、Kafka でいう Topic にあたります。
 
 ```mermaid
 graph LR
@@ -77,6 +81,7 @@ graph LR
 
 Application は Consumer / Producer 両方に存在します。EDA のアプリケーションは、Consumer または Producer またはその両方になります。
 
+[Application | AsyncAPI Initiative for event-driven APIs](https://www.asyncapi.com/docs/concepts/application)
 
 Kafka や MQTT など実装の違いは Protocol として抽象化されます。
 
@@ -198,7 +203,7 @@ lightMeasuredPayload の定義は以下のようになっており、ルーメ�
       description: Date and time when the message was sent.
 ```
 
-街灯を点灯するイベントを処理する API についても同様なトピック定義、メッセージの定義がされています。この API は Kafka の Consumer として実装されるため、利用側は、当該トピックに turnOnOff のスキーマに準拠したメッセージを送る必要があります。
+街灯を点灯する API についても同様なトピック定義、メッセージの定義がされています。この API は Kafka の Consumer として実装されるため、利用側は、当該トピックに turnOnOff のスキーマに準拠したメッセージを送る必要があります。
 
 ```yaml
   smartylighting.streetlights.1.0.action.{streetlightId}.turn.on:
@@ -553,6 +558,6 @@ springwolf-ui Public archive になっており更新が止まっているよう
 ## 最後に
 以上、AsyncAPI の概要とツール周りのエコシステムを見てみました。EDA なシステムは Polyglot な環境で開発され、開発自体も非同期なケースが多いため、AsyncAPI のような仕様記述とエコシステムが成熟してくれば、開発を円滑に進めることができるでしょう。
 
-スキーマファーストか実装ファーストかというのはプロジェクトの事情により選択するのがよいと思いますが、AsyncAPI をサポートするライブラリやツールも数多く開発されているので、プロジェクトにあったツールセットを選択できそうです。
+スキーマファーストか実装ファーストかというのはプロジェクトの事情により選択するのがよいと思いますが、AsyncAPI をサポートするライブラリやツールも数多く開発されているので、プロジェクトにあったツールセットを見つけられそうです。
 
 ちなみに今回触ってみた Springwolf で生成されたドキュメントを AsyncAPI CLI の validate コマンドで検証したところ、エラーになってしまいました。AsyncAPI バージョンも合っているし AsyncAPI Studio ではちゃんと表示されるので謎です。余計なワークアラウンドが増えるので、ツール間での整合性はちゃんと取って欲しいところですね。

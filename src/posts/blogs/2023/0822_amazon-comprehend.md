@@ -2,7 +2,7 @@
 title: "Amazon Comprehend はアンケート分析に使えるのか試してみた"
 author: hiroaki-taka
 date: 2023-08-22
-tags: [AWS]
+tags: [AWS, 自然言語処理]
 ---
 
 ## はじめに

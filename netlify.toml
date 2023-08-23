@@ -61,18 +61,6 @@
 #    path = "/analytics/"
   [[plugins.inputs.audits]]
     path = "/blogs/"
-#  [[plugins.inputs.audits]]
-#    path = "/cicd/"
-#  [[plugins.inputs.audits]]
-#    path = "/container/"
-#  [[plugins.inputs.audits]]
-#    path = "/learning/"
-#  [[plugins.inputs.audits]]
-#    path = "/msa/"
-#  [[plugins.inputs.audits]]
-#    path = "/testing/"
-#  [[plugins.inputs.audits]]
-#    path = "/oss/"
 
 #[[edge_functions]]
 #  function = "theme-switcher"

@@ -7,7 +7,7 @@ const article = parseArticle(fileName);
 
 console.log(`generating image for ${article.attributes.title}`);
 
-const resp = await openai.createImage({
+const resp = await openai.images.generate({
   size: '256x256',
   prompt: article.attributes.title,
   response_format: 'url',

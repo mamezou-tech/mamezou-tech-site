@@ -1,8 +1,8 @@
 import { config } from '../config.js';
 import { ask } from '../util/chat-gpt.js';
 import { ArticleAttributes, parseArticle } from '../util/parse-article.js';
-import { ChatCompletionRequestMessage, CreateChatCompletionResponse } from 'openai';
 import { FrontMatterResult } from 'front-matter';
+import OpenAI from 'openai';
 
 async function lint(content: FrontMatterResult<ArticleAttributes>) {
   const rows = content.body.split(/\r?\n/).filter(r => !!r);
@@ -20,12 +20,12 @@ async function lint(content: FrontMatterResult<ArticleAttributes>) {
   console.log('DONE!!');
 }
 
-async function request(content: string, maxTokens: number): Promise<CreateChatCompletionResponse> {
-  const systemMessage: ChatCompletionRequestMessage = {
+async function request(content: string, maxTokens: number): Promise<OpenAI.Chat.ChatCompletion> {
+  const systemMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = {
     content: '日本語を話すレビューアーとして会話してください',
     role: 'system'
   };
-  const userMessage: ChatCompletionRequestMessage = {
+  const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = {
     content: `${config.lintArticle.prompt}
     
 ${content}

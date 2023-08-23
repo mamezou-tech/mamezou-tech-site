@@ -1,33 +1,18 @@
-import { CreateChatCompletionResponse } from 'openai/api.js';
-import axios from 'axios';
 import openai from './openai-client.js';
-import { ChatCompletionRequestMessage } from 'openai';
+import OpenAI from 'openai';
 
 type Request = {
   userId?: string;
-  messages: ChatCompletionRequestMessage[];
+  messages: OpenAI.Chat.CreateChatCompletionRequestMessage[];
   temperature?: number;
   maxTokens?: number;
 }
 
-export type ErrorDetail = {
-  type: string;
-  message: string;
-  param: string;
-  code: string;
-}
-
-export class OpenAIServerError extends Error {
-  constructor(readonly detail: ErrorDetail) {
-    super(detail.message);
-  }
-}
-
-export async function ask(request: Request): Promise<CreateChatCompletionResponse> {
+export async function ask(request: Request): Promise<OpenAI.Chat.ChatCompletion> {
   try {
     console.time("Chat API")
     if (process.env.DEBUG) console.log('sending...', request.messages);
-    const resp = await openai.createChatCompletion({
+    const resp = await openai.chat.completions.create({
       model: 'gpt-4',
       user: request.userId,
       messages: request.messages,
@@ -36,22 +21,11 @@ export async function ask(request: Request): Promise<CreateChatCompletionRespons
     });
     if (process.env.DEBUG) console.log('result', resp);
     console.timeEnd("Chat API")
-    console.log(`課金トークン消費量: ${JSON.stringify(resp.data.usage)}`);
-    return resp.data;
+    console.log(`課金トークン消費量: ${JSON.stringify(resp.usage)}`);
+    return resp;
   } catch (e) {
-    // if (process.env.DEBUG) console.log('error', e);
-    if (axios.default.isAxiosError(e)) {
-      if (e.response) {
-        if (e.response.data.error) {
-          throw new OpenAIServerError(e.response.data.error);
-        } else {
-          console.log(e.response.data);
-          throw new Error('Unknown Error');
-        }
-      } else {
-        console.log(e.message);
-        throw new Error('Client Error');
-      }
+    if (e instanceof OpenAI.APIError) {
+      console.log(e.code, e.type, e.message);
     }
     throw e;
   }

@@ -1,9 +1,9 @@
 import { ask } from '../util/chat-gpt.js';
-import { ChatCompletionRequestMessage } from 'openai';
 import fs from 'fs';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { WebClient } from '@slack/web-api';
+import OpenAI from 'openai';
 
 type Gpt = {
   columns: {
@@ -18,7 +18,7 @@ async function main(path: string) {
   const json: Gpt = JSON.parse(fs.readFileSync(path).toString());
   const pastTitles = json.columns.map(column => column.title);
 
-  const prompt: ChatCompletionRequestMessage = {
+  const prompt: OpenAI.Chat.CreateChatCompletionRequestMessage = {
     content: `Output funny jargon used by IT developers in programming.
 
 Please follow the restrictions below.
@@ -71,7 +71,7 @@ My first word is "${keyword}".
     created: new Date().toISOString()
   };
   json.columns.unshift(item);
-  json.columns = json.columns.slice(0, 20);
+  json.columns = json.columns.slice(0, 30);
   fs.writeFileSync(path, JSON.stringify(json, null, 2));
 
   const token = process.env.SLACK_BOT_TOKEN;

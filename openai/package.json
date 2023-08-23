@@ -5,9 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "review:article": "ts-node-esm ts/bin/review-article.ts",
     "lint:article": "ts-node-esm ts/bin/lint-article.ts",
-    "generate:article": "ts-node-esm ts/bin/generate-article.ts",
     "generate:image": "ts-node-esm ts/bin/generate-image.ts",
     "generate:column": "ts-node-esm ts/bin/generate-column.ts"
   },
@@ -18,7 +16,7 @@
     "@types/inquirer": "^9.0.3",
     "front-matter": "^4.0.2",
     "inquirer": "^9.1.5",
-    "openai": "^3.3.0",
+    "openai": "^4.1.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

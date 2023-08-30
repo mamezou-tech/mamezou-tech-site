@@ -126,7 +126,7 @@ index.htmlをWebブラウザで開くと下図のようなお絵描きアプリ�
 
 - 入力
     - value input：ブロックの接続タイプがleft outputのものを入力ブロックとする
-    - statement input：ブロックの接続タイプがtop+bttom connectionsのものを入力ブロックとする
+    - statement input：ブロックの接続タイプがtop+bottom connectionsのものを入力ブロックとする
     - dummy input：入力ブロックがない
 - フィールド (以下、代表的な物のみ)
     - text：文字列フィールド
@@ -367,7 +367,7 @@ window.onload = function() {
 
 ## コード生成処理
 
-Blocklyのワークスペースを作成したのでブロックを組み合わせてプログラムを作成できるようになりましたが、コードの生成ができていません。コードを生成してそのコードから絵を描画してみましょう。
+Blocklyのワークスペースを作成したのでブロックを組み合わせてプログラムを作成できるようになりましたが、コードの生成ができていません。コードを生成してそのコードから絵を描いてみましょう。
 
 ```js
     // スタートアップブロック生成ボタン("button0")をクリックしたときの
@@ -378,7 +378,7 @@ Blocklyのワークスペースを作成したのでブロックを組み合わ�
     // ブロックの追加やプロパティが変更されるとリアルタイムでコード生成を実施します。
     workspace.addChangeListener(_generateCode);
 
-    // キャンパス領域に絵を描くクラスの生成
+    // キャンバス領域に絵を描くクラスの生成
     drawer = new CanvasDrawer(document.getElementById("drawer-canvas"));
 
     // ワークスペース上のブロックをJSON出力する関数
@@ -408,7 +408,7 @@ Blocklyのワークスペースを作成したのでブロックを組み合わ�
 
 ## スタートアップ時の初期ブロック配置
 
-スタートアップブロック生成 ボタンを押すとコード表示領域にワークスペース配置されたブロックの情報がJSONテキストで表示されます。コピーして startup_blocks.jsに下記のように張り付けてください。ブラウザをリロードするとJSONの内容でブロックが初期配置されます。
+スタートアップブロック生成 ボタンを押すとワークスペースに配置されたブロックの情報がJSONテキストで表示されます。それをコピーして startup_blocks.jsに下記のように張り付けてください。ブラウザをリロードするとJSONの内容でブロックが初期配置されます。
 
 ```js
 const startupBlocks =
@@ -419,7 +419,7 @@ const startupBlocks =
 
 ## 描画処理
 
-CanvasDrawerというクラスを作成し、[キャンパスAPI](https://developer.mozilla.org/ja/docs/Web/API/CanvasRenderingContext2D)を利用して各カスタムブロックに対応する関数を作成しています。
+CanvasDrawerというクラスを作成し、[キャンバスAPI](https://developer.mozilla.org/ja/docs/Web/API/CanvasRenderingContext2D)を利用して各カスタムブロックに対応する関数を作成しています。
 
 
 ```js
@@ -461,7 +461,7 @@ CanvasDrawer.prototype.rect = function(x,y,width,height) {
 
 ## 独自言語用コードジェネレータについて
 
-今回はJavaScriptのコードを生成しました。BlocklyはJavaScriptジェネレータをデフォルトで用意してあるため簡単にカスタムブロックを作成できました。(Python, Dart, Lua, PHPもります)
+今回はJavaScriptのコードを生成しました。BlocklyはJavaScriptジェネレータをデフォルトで用意してあるため簡単にカスタムブロックを作成できました。(Python, Dart, Lua, PHPも用意されています)
 
 PythonやJavaScriptはライブラリ・モジュールなどを使うことが多いかと思いますがそれらをカスタムブロックで定義するには適していると思います。今回はCanvasDrawerというモジュールを自作して利用してみました。
 

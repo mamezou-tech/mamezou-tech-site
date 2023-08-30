@@ -1,7 +1,7 @@
 ---
 title: Blocklyによるビジュアルプログラミングの紹介
 author: shuji-morimoto
-date: 2023-09-04
+date: 2023-08-30
 tags: [gui, blockly, ビジュアルプログラミング]
 ---
 

@@ -1,0 +1,5 @@
+{
+  "layout": "post",
+  "permalink": "/robotics/gui/{{ page.fileSlug }}/",
+  "category": "ロボット - GUI"
+}

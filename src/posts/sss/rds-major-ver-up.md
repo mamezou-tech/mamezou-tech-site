@@ -2,10 +2,10 @@
 title: TerraformでのAmazon Aurora PostgreSQLのメジャーバージョンアップ手順
 author: tadashi-nakamura
 date: 2023-09-01
-tags: [How to, SSS, IaC, AWS, RDS, Aurora, PostgreSQL]
+tags: [tips, SSS, IaC, AWS, RDS, Aurora, PostgreSQL]
 ---
 
-営業支援システム(Sales Support System、以下SSS)で実施したAmazon Aurora PostgreSQLのメジャーバージョンアップ手順について紹介します。
+[営業支援システム(Sales Support System)](/in-house-project/sss/intro/)で実施したAmazon Aurora PostgreSQLのメジャーバージョンアップ手順について紹介します。
 
 
 # 前提事項
@@ -67,9 +67,7 @@ resource "aws_rds_cluster_instance" "this" {
 1つ目は適用を即時反映するためのものです。
 2つ目は今回のメジャーバージョンをアップすることを許可するためのものです。
 
-## STEP.1
-
-まず、パラメタグループをデフォルトに変更します。
+## STEP.1 パラメタグループをデフォルトに変更する
 
 ```
 ...
@@ -92,9 +90,9 @@ resource "aws_rds_cluster_instance" "this" {
 - エンジンバージョンは12系のまま
 - パラメタグループは12系のデフォルト
 
-## STEP.2
+## STEP.2 メジャーバージョンを更新する
 
-次に、メジャーバージョンを更新します。対象となるのはクラスタとインスタンスのパラメタグループのファミリー名とエンジンバージョンです。
+対象となるのはクラスタとインスタンスのパラメタグループのファミリー名とエンジンバージョンです。
 実際には、カスタムパラメタグループとエンジンはこの時点では関連していないので、同時に更新する必要はありません。
 しかし、どちらも更新する必要があるので、まとめて行っています。
 
@@ -141,9 +139,7 @@ aws rds describe-db-engine-versions --engine aurora-postgresql  --engine-version
 - エンジンバージョンは14系に更新
 - パラメタグループは14系のデフォルトに更新
 
-## STEP.3
-
-最後に、パラメタグループをデフォルトからカスタムに戻します。
+## STEP.3 パラメタグループをデフォルトからカスタムに戻す
 
 ```
 ...
@@ -166,15 +162,8 @@ resource "aws_rds_cluster_instance" "this" {
 - DBインスタンスパラメータグループ
 - DBクラスターのパラメータグループ
 
-## STEP.4
+## STEP.4 「ライターインスタンス」を再起動する
 
-最後にAWS管理コンソールで「ライターインスタンス」を再起動します。
+最後に**AWS管理コンソールで**「ライターインスタンス」を再起動します。
 
 これでAmazon Aurora PostgreSQLのメジャーバージョンアップは完了となります。
-
-# さいごに
-
-「既に15系がでているのになぜ14系なんだ」と疑問に思われた方もいるかもしれません。
-
-理由は単純で、SSSで踏み台サーバとして利用しているGuimove/bastionのLinuxサーバのパッケージツールが15系に対応していなかったためです。
-15系へ移行する前に踏み台サーバを別のもので作成するか、AMIをデフォルトから移行して作り直すか、といった作業が必要となったため、今回は15系への移行は見送りとしました。

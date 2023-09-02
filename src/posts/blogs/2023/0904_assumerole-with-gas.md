@@ -99,3 +99,7 @@ Google の OIDC トークンを使用する場合、IAM での ID プロバイ�
 IAM ロールの作成時「信頼されたエンティティを選択」で、「ウェブアイデンティティ」を選択し、アイデンティティプロバイダーで「Google」を選択して、進めていくだけです。
 
 Web アプリとしてデプロイした Google Apps Script から、Forms の回答や Sheets にアクセスできるので、それらの集計や分析で AWS との連携に役立てたいと考えています。
+
+## 参考
+
+- [基本から理解するJWTとJWT認証の仕組み](https://developer.mamezou-tech.com/blogs/2022/12/08/jwt-auth/)

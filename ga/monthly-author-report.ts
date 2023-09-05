@@ -21,8 +21,7 @@ async function runReport(ym: string) {
 
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
-  const channel = 'D041BPULN4S';
-  // const channel = 'C04F1QJDLJD';
+  const channel = process.env.SLACK_CHANNEL_ID || 'D041BPULN4S';
 
   if (!currentResp.rows?.length) {
     console.log('no report');

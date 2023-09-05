@@ -41,7 +41,7 @@ jobs:
           cd ${GITHUB_WORKSPACE}/ga
           echo ${GOOGLE_APPLICATION_CREDENTIALS_FILE} | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
           export GOOGLE_APPLICATION_CREDENTIALS=${GITHUB_WORKSPACE}/google_auth.json
-          npm run generate:monthly:author $(date '+%Y-%m')
+          npm run generate:monthly:author $(date -d 'last month' '+%Y-%m')
 
       - name: Delete google auth file
         run: rm -f ${GITHUB_WORKSPACE}/google_auth.json

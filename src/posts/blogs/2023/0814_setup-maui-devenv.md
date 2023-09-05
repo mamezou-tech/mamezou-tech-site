@@ -15,7 +15,7 @@ tags: [maui, dotnet, vscode]
 [.NET MAUI とは - .NET MAUI](https://learn.microsoft.com/ja-jp/dotnet/maui/what-is-maui)
 
 :::info
-.NET MAUI には、C# で Web アプリを開発できる Blazor というフレームワークも含まれてるそうです。Blazor は Web 標準のテクノロジー WASM(WebAssembly) で .NET の CLR を丸ごと動かすという力技で実現されています。元々は、ASP.NET の ビューエンジン Razor を使ってレンダリングを行っていました。MAUI に統合されてももこれは変わらない模様です。
+.NET MAUI には、C# で Web アプリを開発できる Blazor というフレームワークも含まれてるそうです。Blazor は Web 標準のテクノロジー WASM(WebAssembly) で .NET の CLR を丸ごと動かすという力技で実現されています。元々は、ASP.NET の ビューエンジン Razor を使ってレンダリングを行っていました。MAUI に統合されてもこれは変わらない模様です。
 
 [.NET MAUIBlazor Hybrid アプリを構築する | Microsoft Learn](https://learn.microsoft.com/ja-jp/aspnet/core/blazor/hybrid/tutorials/maui?view=aspnetcore-7.0&pivots=macos)
 :::
@@ -184,7 +184,7 @@ GitHub の MAUI のリポジトリに次のような issue がありました。
 
 今回生成したコードは、従来の WPF や Xamarin と同じく、XAML と partial class による MVVM (Model View ViewModel) パターンでした。
 
-MAUI には Vuew も C# のコードで宣言的に書く MVU(Model View Update) パターンをサポートする MauiReactor というライブラリがあります。React や Flutter にインスパイアされたコンポーネントベースライブラリのようです。
+MAUI には View も C# のコードで宣言的に書く MVU(Model View Update) パターンをサポートする MauiReactor というライブラリがあります。React や Flutter にインスパイアされたコンポーネントベースライブラリのようです。
 
 [MauiReactor を使用した .NET MAUI のコンポーネント ベースの UI](https://learn.microsoft.com/ja-jp/shows/on-net/component-based-ui-for-dotnet-maui-with-mauireactor)
 

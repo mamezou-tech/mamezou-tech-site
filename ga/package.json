@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "generate:pv": "ts-node-esm weekly-report.ts",
-    "generate:monthly": "ts-node-esm monthly-report.ts",
-    "notify:slack": "ts-node-esm daily-notifier.ts",
-    "generate:author": "ts-node-esm author-report.ts",
+    "generate:monthly:article": "ts-node-esm monthly-article-report.ts",
+    "generate:monthly:author": "ts-node-esm monthly-author-report.ts",
+    "generate:daily:article": "ts-node-esm daily-article-report.ts",
+    "generate:daily:author": "ts-node-esm daily-author-report.ts",
     "generate:realtime": "ts-node-esm realtime-report.ts"
   },
   "author": "noboru-kudo",

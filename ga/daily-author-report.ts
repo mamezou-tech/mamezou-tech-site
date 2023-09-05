@@ -1,53 +1,23 @@
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import { DateTime, Settings } from 'luxon';
-import { google } from '@google-analytics/data/build/protos/protos.js';
 import { WebClient } from '@slack/web-api';
+import { makeAuthorAccessRequest } from './ga-requests.js';
 
 Settings.defaultZone = 'Asia/Tokyo';
 const analyticsDataClient = new BetaAnalyticsDataClient();
 
-const propertyId = process.env.GA_PROPERTY_ID || '';
 const now = DateTime.now();
 const yesterday = now.minus({ days: 1 });
 
 async function runReport() {
-  const req: google.analytics.data.v1beta.IRunReportRequest = {
-    property: `properties/${propertyId}`,
-    dateRanges: [
-      {
-        startDate: yesterday.toISODate(),
-        endDate: yesterday.toISODate()
-      }
-    ],
-    dimensions: [
-      {
-        name: 'customUser:author'
-      }
-    ],
-    metrics: [
-      {
-        name: 'activeUsers'
-      }
-    ],
-    dimensionFilter: {
-      notExpression: {
-        filter: {
-          fieldName: 'customUser:author',
-          inListFilter: {
-            values: ['', '(not set)']
-          }
-        }
-      }
-    }
-  };
-  const [response] = await analyticsDataClient.runReport(req);
+  const [response] = await analyticsDataClient.runReport(makeAuthorAccessRequest(yesterday, yesterday));
 
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
   // const channel = 'D041BPULN4S';
   const channel = 'C04F1QJDLJD';
 
-  if (!response.rows) {
+  if (!response.rows?.length) {
     console.log('no report');
     return;
   }

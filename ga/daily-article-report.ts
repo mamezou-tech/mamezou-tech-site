@@ -83,8 +83,7 @@ async function runReport() {
 
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
-  const channel = 'C034MCKP4M6';
-  // const channel = 'D041BPULN4S'; // for test
+  const channel = process.env.SLACK_CHANNEL_ID || 'D041BPULN4S';
 
   await web.chat.postMessage({
     channel,

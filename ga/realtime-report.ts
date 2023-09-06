@@ -23,8 +23,9 @@ async function runReport() {
 
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
-  const channel = 'C04F1QJDLJD';
-  if (!response.rows) {
+  const channel = process.env.SLACK_OPS_CHANNEL_ID || 'D041BPULN4S';
+
+  if (!response.rows?.length) {
     console.log('no report');
     return;
   }
@@ -40,12 +41,21 @@ async function runReport() {
       }
     }
   ];
-  if (user > 200) {
+  if (user > 150) {
     blocks.push({
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: 'すごいアクセス数です！！何かバズったかな？:mameka_sd_smile:'
+          text: ':chart_with_upwards_trend:いい感じにアクセス増えてる:bangbang:'
+        }
+      }
+    );
+  } else if (user > 200) {
+    blocks.push({
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: 'すごいアクセス数です:bangbang:何かバズったかな？:mameka_sd_smile:'
         }
       }
     );

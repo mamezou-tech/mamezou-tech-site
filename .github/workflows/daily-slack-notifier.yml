@@ -36,6 +36,8 @@ jobs:
           GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
+          SLACK_OPS_CHANNEL_ID: ${{ vars.OPS_SLACK_CHANNEL_ID }}
         run: |
           set -eu
           cd ${GITHUB_WORKSPACE}/ga

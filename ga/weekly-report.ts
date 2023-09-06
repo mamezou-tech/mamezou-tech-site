@@ -92,9 +92,9 @@ async function runReport(reportFile: string) {
 async function notifyToSlack(ranks: Rank[]) {
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
+  const channel = process.env.SLACK_CHANNEL_ID || 'D041BPULN4S';
   await web.chat.postMessage({
-    // channel: "D041BPULN4S",
-    channel: "C034MCKP4M6",
+    channel,
     mrkdwn: true,
     text: `先週(${oneWeekAgo.toISODate()} ~ ${now.minus({days: 1}).toISODate()})のランキング(PVベース)が確定しました:beers:`,
     unfurl_media: false,

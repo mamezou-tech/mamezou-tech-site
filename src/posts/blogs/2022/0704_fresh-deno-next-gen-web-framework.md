@@ -38,7 +38,7 @@ Fresh のアーキテクチャ目標についての記載はシンプルです�
 
 ここでもアイランドアーキテクチャを採用する決定について言及されています。
 
-[Architecture | fresh docs](https://fresh.deno.dev/docs/concepts/architechture)
+[Architecture | fresh docs](https://fresh.deno.dev/docs/concepts/architecture)
 
 ## 開発環境構築
 

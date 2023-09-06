@@ -76,12 +76,12 @@ Nitroは内部的には[H3](https://github.com/unjs/h3)という軽量サーバ�
 このroutesディレクトリ内のスクリプトは、ファイル名やディレクトリ構成に応じてそのままH3のRouteとしてマッピングされます。明示的なルーティングの定義は不要です。
 実装方法の詳細は、以下NitroドキュメントやH3のドキュメントを参照してください。
 
-- [Nitro - Route Handling](https://nitro.unjs.io/guide/routing.html)
+- [Nitro - Route Handling](https://nitro.unjs.io/guide/routing/)
 
 また、上記スクリプトファイルにはimport文がありませんが、掲載を省略している訳ではありません。
 NitroではAuto Import機能が備わっており、よく利用するものはimportを記述する必要がありません。
 
-- [Nitro - Auto Imports](https://nitro.unjs.io/guide/auto-imports.html)
+- [Nitro - Auto Imports](https://nitro.unjs.io/guide/auto-imports/)
 
 これをローカル環境で起動します。以下のコマンドを実行します。
 
@@ -106,9 +106,9 @@ curl localhost:3000/foo -d '{"name": "mamezou"}' -H 'Content-Type: application/j
 ここでは記載しませんでしたが、REST APIだけでなく、ストレージやキャッシュ、静的リソースのサポートもあります。
 必要に応じて参照してください。
 
-- [Nitro - Storage Layer](https://nitro.unjs.io/guide/storage.html)
-- [Nitro - Cache API](https://nitro.unjs.io/guide/cache.html)
-- [Nitro - Assets Handling](https://nitro.unjs.io/guide/assets.html)
+- [Nitro - Storage Layer](https://nitro.unjs.io/guide/storage/)
+- [Nitro - Cache API](https://nitro.unjs.io/guide/cache/)
+- [Nitro - Assets Handling](https://nitro.unjs.io/guide/assets/)
 :::
 
 ## ローカルでビルド・実行する
@@ -266,5 +266,5 @@ Node.js Serverと同じように、AWS LambdaでNitroのAPIサーバーが使え
 ---
 参考資料
 
-- [Nitroドキュメント](https://nitro.unjs.io/guide/)
+- [Nitroドキュメント](https://nitro.unjs.io/guide/getting-started/)
 - [H3 GitHubレポジトリ](https://github.com/unjs/h3)

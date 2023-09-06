@@ -264,7 +264,7 @@ dev-appsは`app of apps`と呼ばれるもので、サンプルアプリ自体�
 EKS Blueprintsのコアコンセプトの1つにチーム管理があります。
 通常複数チームで1つのクラスタ環境を使うことも多いですので、これを使ってみることにします。
 
-- [EKS Blueprints(CDK) - Teams](https://aws-quickstart.github.io/cdk-eks-blueprints/teams/)
+- [EKS Blueprints(CDK) - Teams](https://aws-quickstart.github.io/cdk-eks-blueprints/teams/teams/)
 
 現時点では、プラットフォームチーム(`PlatformTeam`)とアプリケーションチーム(`ApplicationTeam`)の2種類をサポートしています。
 名前から想像がつく通り、プラットフォームチームはクラスタ全体の管理者、アプリケーションチームは各Namespaceに割り当てられた開発チームです。

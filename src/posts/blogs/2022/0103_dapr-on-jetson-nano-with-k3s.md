@@ -114,7 +114,7 @@ curl -v -H 'Authorization: Bearer <ID TOKEN>' http://localhost:<PORT NUMBER>/v1.
 
 # まとめ
 
-これまで、横断的関心事は、例えば、[Spring](https://spring.io/) であれば [Spring Security](https://spring.io/projects/spring-security) 等の依存ライブラリに組み込まれた AOP 実装を使用してきました。これを、他のフレームワークに切り替えたり、Java 以外の言語による実装に切り替える場合には、検証や移植にコストがかかることを意味していました。
+これまで、横断的関心事は、例えば、[Spring](https://spring.io/) であれば [Spring Security](https://spring.io/projects/spring-security/) 等の依存ライブラリに組み込まれた AOP 実装を使用してきました。これを、他のフレームワークに切り替えたり、Java 以外の言語による実装に切り替える場合には、検証や移植にコストがかかることを意味していました。
 
 クラウドネイティブなアーキテクチャでは、この例のように実装言語に依存せず、ビジネス要件に集中することができるソリューションを活用していくことが可能となります。
 

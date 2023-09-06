@@ -53,7 +53,7 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
 この手の共通処理は、Webフレームワークにおいては**ミドルウエア**の役割とすることが多いです。
 しかしLambda関数の`event`オブジェクトを処理させるために直接Webフレームワークを使うことは不適切です。なぜなら、関数呼び出し時の`event`引数はHTTP Request風のイベントデータですが、もちろんHTTP/1.1のRequestバイナリストリームではありません。そもそもミドルウエア機能を使いたいがためにルーター機能やコネクション管理機能まで持ち込むのはやりすぎです。[^2]
 
-[^2]:代表的なWebFrameworkにおけるミドルウエア -- [express](https://expressjs.com/ja/guide/using-middleware.html), [next.js](https://nextjs.org/docs/advanced-features/middleware) など。
+[^2]:代表的なWebFrameworkにおけるミドルウエア -- [express](https://expressjs.com/ja/guide/using-middleware.html), [next.js](https://nextjs.org/docs/pages/building-your-application/routing/middleware) など。
 Webフレームワークの使用は不適切と書いてはいるが、SSR目的でApiGatewayの統合プロキシ関数としてLambdaハンドラを作成し、[serverless-express](https://github.com/vendia/serverless-express)を使う方法はある。
 
 我々が欲しいのは、AWS Lambdaのeventに適用可能な、Webフレームワークにあるミドルウエアの部分だけです。

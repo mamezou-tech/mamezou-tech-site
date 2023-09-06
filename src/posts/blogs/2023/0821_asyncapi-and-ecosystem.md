@@ -372,7 +372,7 @@ Springwolf は [Springfox](http://springfox.github.io/springfox/) の AsyncAPI �
 
 [Quickstart | Springwolf](https://www.springwolf.dev/docs/quickstart)
 
-[Spring for Apache Kafka](https://spring.io/projects/spring-kafka) を利用するプロジェクトへの追加が前提になります。build.gradle に以下のように springwolf-kafka と springwolf-ui の依存を追加します。また、AsyncAPI ドキュメントの取得や Web UI のため spring-boot-starter-web も必要となります。
+[Spring for Apache Kafka](https://spring.io/projects/spring-kafka/) を利用するプロジェクトへの追加が前提になります。build.gradle に以下のように springwolf-kafka と springwolf-ui の依存を追加します。また、AsyncAPI ドキュメントの取得や Web UI のため spring-boot-starter-web も必要となります。
 
 ```groovy
 dependencies {

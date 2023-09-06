@@ -17,7 +17,7 @@ tags: [テスト]
 
 [^4]:　最近の動向については例えばDevOps Days Tokyo 2022の講演で川口耕介氏が紹介してくれています。[ダイジェスト紹介](https://www.publickey1.jp/blog/22/itjenkinsdevops_days_tokyo_2022.html)ですが、興味のあるかたはご覧いただければ。  
 
-「同じコードに対してテストの結果が変わる」部分を特定するということは、テスト結果を蓄積して分析することに他なりません。テスト結果をDB等に保持して分析しても良いですし、[Launchable](https://www.launchableinc.com/docs/features/insights/)のようなテスト支援サービスや[CircleCI](https://circleci.com/docs/ja/insights-tests/)のようにCI/CDプラットフォームが提供するテスト結果の分析機能もあります。しかしいずれのアプローチでもそれなりのコストがかかりますので、これから取り組む場合はそこにコストをかけるべきかの判断が難しいかもしれません。  
+「同じコードに対してテストの結果が変わる」部分を特定するということは、テスト結果を蓄積して分析することに他なりません。テスト結果をDB等に保持して分析しても良いですし、[Launchable](https://www.launchableinc.com/docs/concepts/insight/)のようなテスト支援サービスや[CircleCI](https://circleci.com/docs/ja/insights-tests/)のようにCI/CDプラットフォームが提供するテスト結果の分析機能もあります。しかしいずれのアプローチでもそれなりのコストがかかりますので、これから取り組む場合はそこにコストをかけるべきかの判断が難しいかもしれません。  
 
 今回は「フレイキーさ」を分析する一歩目として、簡易に導入可能なレポーティングツールのAllureをサンプルコードを交えて紹介します。
 

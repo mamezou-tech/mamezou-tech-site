@@ -5,10 +5,16 @@ tags: [k8s, container]
 date: 2022-05-04
 ---
 
+:::alert
+本記事の内容は古くなっています。MizuはKubesharkにリブランディングされていることを確認しています。
+
+- [GitHub - Kubeshark](https://github.com/kubeshark/kubeshark)
+:::
+
 Kubernetesでおもしろいツールを見つけたので、ご紹介したいと思います。
 その名も**Mizu**です。ロゴを見れば分かるように日本語の「水」から名付けられたものです。
 
-- <https://getmizu.io/>
+- https://getmizu.io/(旧リンク)
 
 その中身はPod間を流れるトラフィックをキャプチャし、可視化してくれるもので、多数のサービスで構成されるシステムの調査で強さを発揮しそうです。
 対象のプロトコルもHTTPだけでなく、gRPCやKafka、AMQP、Redisをサポートします。
@@ -16,8 +22,6 @@ Kubernetesでおもしろいツールを見つけたので、ご紹介したい�
 
 ## Mizuのインストール
 公式サイトにあるように、バイナリファイルをダウンロードするだけです。
-
-- <https://getmizu.io/docs/installing-mizu/downloading-mizu-cli>
 
 ```shell
 # Mac(Intel)の場合
@@ -87,8 +91,6 @@ mizu tap -n sock-shop
 
 また、今回何も指定しませんでしたが、`mizu tap`コマンドで対象のPodを正規表現で絞ることもできます。
 さらに、事前にTraffic Validationファイルを用意しておけば、一定のレスポンスタイム以上のものやレスポンス電文の中身をチェックし、制約違反となったものをUI上でピックアップできるようです。
-
-- [Mizu Traffic Validation](https://getmizu.io/docs/mizu/mizu-traffic-validation)
 
 背後ではMizu CLIがKubernetesの`mizu`というNamespaceにトラフィック収集用のDaemonSetとAPIサーバーを生成し、このUIとやりとりしているようです。
 

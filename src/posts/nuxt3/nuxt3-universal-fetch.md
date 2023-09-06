@@ -52,7 +52,7 @@ server/
 
 Nitroはこのディレクトリ構造をもとに、APIのルートにマッピングします。詳細は以下Nitroドキュメントを参照してください。
 
-- [Nitroドキュメント - Route Handling](https://nitro.unjs.io/guide/routing)
+- [Nitroドキュメント - Route Handling](https://nitro.unjs.io/guide/routing/)
 
 ここに各APIのソースコードを配置します。
 

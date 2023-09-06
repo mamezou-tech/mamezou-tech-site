@@ -1,8 +1,8 @@
 ---
- title: Knative EventingのKafka BrokerでリトライとDead Letter Sink（DLS）を試す
- author: takashi-sato
- date: 2022-09-13
- tags: ["k8s", "Kafka"]
+title: Knative EventingのKafka BrokerでリトライとDead Letter Sink（DLS）を試す
+author: takashi-sato
+date: 2022-09-13
+tags: ["k8s", "Kafka"]
 ---
 
 KafkaをイベントレイヤーとするKnative Eventingの環境をリトライとDLSが可能な様に構成した上で、意図的に処理を失敗させるKnative Servicveをデプロイし、処理失敗時のリトライやDLSへのメッセージ送信を確認しました。

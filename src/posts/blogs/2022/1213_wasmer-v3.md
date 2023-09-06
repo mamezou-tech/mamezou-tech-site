@@ -12,7 +12,7 @@ tags: [wasmer, WASM, advent2022]
 
 先月 Wasmer 3.0 のリリースがアナウンスされました。
 
-[Announcing Wasmer 3.0](https://wasmer.io/posts/announcing-wasmer-3.0)
+[Announcing Wasmer 3.0](https://wasmer.io/posts/announcing-wasmer-3_0)
 
 この記事では Wasmer 3.0 の新機能、特に各プラットフォーム向けバイナリ生成機能について確認していこうと思います。
 

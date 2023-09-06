@@ -7,7 +7,7 @@ tags: [java, "openapi-generator", "spring-boot", "spring-integration", DDD, "実
 
 [庄司](https://github.com/edward-mamezou)です。
 
-シリーズ4回目は [Spring Integration](https://spring.io/projects/spring-integration) を使うドメインイベントの発行 (publish) について説明します。
+シリーズ4回目は [Spring Integration](https://spring.io/projects/spring-integration/) を使うドメインイベントの発行 (publish) について説明します。
 
 ## ドメイン駆動設計 (DDD - Domain-driven design)
 
@@ -89,7 +89,7 @@ PlantUML を使って出力した図は下のようになります。
 
 ## Spring Integration
 
-[Spring Integration](https://spring.io/projects/spring-integration) は、ほとんどの[エンタープライズ統合パターン](https://www.enterpriseintegrationpatterns.com/) をサポートしています。別の記事で紹介した [Apache Camel](/blogs/2022/06/12/spring-boot-with-apache-camel-integration/) は Spring だけでなく Quarkus など他のフレームワークでも利用可能で、統合可能なコンポーネントも豊富にあります。
+[Spring Integration](https://spring.io/projects/spring-integration/) は、ほとんどの[エンタープライズ統合パターン](https://www.enterpriseintegrationpatterns.com/) をサポートしています。別の記事で紹介した [Apache Camel](/blogs/2022/06/12/spring-boot-with-apache-camel-integration/) は Spring だけでなく Quarkus など他のフレームワークでも利用可能で、統合可能なコンポーネントも豊富にあります。
 
 このサービスは Spring Boot バージョン 2.7.0 を採用しています。現在はまだ、このバージョンの Spring Boot に対応した Apache Camel が存在しないため、今回は Spring Integration を使うことにしました。
 
@@ -201,7 +201,7 @@ public class HelloEvents {
 :::stop
 ドメイン駆動設計のリポジトリやエンティティと DAO や DTO は一般的に同じではありません。一般的にはインフストラクチャー層内のオブジェクトとしてのみ扱い、ドメイン層のインターフェースやエンティティに変換する実装をインフラストラクチャー層に別途作成して注入しなければなりません。
 
-[Spring Data JDBC](https://spring.io/projects/spring-data-jdbc) のドキュメントにはドメイン駆動設計との関係について、次のように説明しています。
+[Spring Data JDBC](https://spring.io/projects/spring-data-jdbc/) のドキュメントにはドメイン駆動設計との関係について、次のように説明しています。
 
 >Spring Data repositories are inspired by the repository as described in the book Domain Driven Design by Eric Evans. One consequence of this is that you should have a repository per Aggregate Root. Aggregate Root is another concept from the same book and describes an entity which controls the lifecycle of other entities which together are an Aggregate. An Aggregate is a subset of your model which is consistent between method calls to your Aggregate Root.
 >Spring Data JDBC tries its best to encourage modeling your domain along these ideas.
@@ -221,7 +221,7 @@ public class HelloEvents {
 - [エリック・エヴァンスのドメイン駆動設計](https://www.amazon.co.jp/dp/4798121967/)
 - [エンタープライズ統合パターン](https://www.enterpriseintegrationpatterns.com/)
 - [実践ドメイン駆動設計](https://www.amazon.co.jp/dp/479813161X/)
-- [Spring Integration](https://spring.io/projects/spring-integration)
+- [Spring Integration](https://spring.io/projects/spring-integration/)
 - [ドメイン駆動設計のコンテキストマップ](/blogs/2022/04/21/context-map/)
 - [Reactive Architecture(2): Domain Driven Design](https://academy.lightbend.com/courses/course-v1:lightbend+LRA-DomainDrivenDesign+v1/about)
 

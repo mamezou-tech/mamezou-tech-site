@@ -246,7 +246,7 @@ npx nuxi generate
 
 ![Nuxt universal rendering - prerendering](https://i.gyazo.com/8b49dae0d1dfe517c5c667adbd902a37.png)
 
-[^2]: プリレンダリングではNitroの[prerender](https://nitro.unjs.io/config#prerender)オプションが使用されるようです。
+[^2]: プリレンダリングではNitroの[prerender](https://nitro.unjs.io/config/#prerender)オプションが使用されるようです。
 
 プリレンダリングでは、主要なタスクをビルド時に実行しますので、実行環境はシンプルになります。
 クライアントレンダリングと同じように、単純にいつもの静的サイトとしてデプロイするだけですので、運用も簡単です。

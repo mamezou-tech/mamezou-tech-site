@@ -9,7 +9,7 @@ Server Componentsと言えば、React[^1]やNext.jsのApp Router[^2]を思い浮
 特に、Next.jsのApp RouterはデフォルトでServer Componentsが適用されるので、今後目にするケースが増えていくことと思います。
 
 [^1]: [React Server Components RFC](https://github.com/reactjs/rfcs/blob/main/text/0188-server-components.md)
-[^2]: [Next.js App Router - Server Components](https://nextjs.org/docs/getting-started/react-essentials#server-components)
+[^2]: [Next.js Doc - Rendering - Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
 
 Server Componentsは文字通りサーバー環境のみでレンダリングされるコンポーネント技術です。
 これによる制約もありますが、パフォーマンスや効率性が大きく改善されます。
@@ -180,7 +180,7 @@ sequenceDiagram
 
 Next.jsの場合はコンポーネントツリーのリーフコンポーネントに、リアクティブ性が要求されるコンポーネントを配置すること推奨しています[^6]。
 
-[^6]: [Next.js Doc - Moving Client Components to the Leaves](https://nextjs.org/docs/getting-started/react-essentials#moving-client-components-to-the-leaves)
+[^6]: [Next.js Doc - Moving Client Components Down the Tree](https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns#moving-client-components-down-the-tree)
 
 ただし、前述の通りNuxtではサーバーコンポーネント内に通常のコンポーネントを使ってもリアクティブになりません。
 

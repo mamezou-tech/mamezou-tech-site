@@ -18,7 +18,7 @@ TelepresenceはAPI Gatewayの[Ambassador](https://www.getambassador.io/)でお�
 [^1]: 現在CNCFのサンドボックスプロジェクトとしてホスティングされています。
 
 ![telepresence architecture](https://i.gyazo.com/70c8b6146cbcc4080487fa152676361e.png)
-引用元: <https://www.telepresence.io/docs/latest/reference/architecture/>
+引用元: <https://www.getambassador.io/docs/telepresence-oss/latest/reference/architecture>
 
 このようにTelepresenceは、Kubernetesクラスタ内を流れるトラフィックをインターセプトして、ローカル環境で動作するアプリに流してくれます。
 
@@ -45,15 +45,11 @@ Kubernetesチュートリアルで使用したサンプルアプリを事前にE
 ## Telepresence CLIをインストールする
 
 TelepresenceのCLIをインストールします。
-以下はMacOS(Intel)の場合です。それ以外の環境は[公式ドキュメント](https://www.telepresence.io/docs/latest/install/)を参照してください。
-
-```shell
-brew install datawire/blackbird/telepresence
-```
+詳細は[公式ドキュメント](https://www.getambassador.io/docs/telepresence-oss/latest/install)を参照してください。
 
 MacOSの場合は別途sshfsのセットアップが必要でした。以下でインストールします[^2]。
 
-[^2]: <https://www.telepresence.io/docs/latest/troubleshooting/#volume-mounts-are-not-working-on-macos>
+[^2]: <https://www.getambassador.io/docs/telepresence-oss/latest/troubleshooting#volume-mounts-are-not-working-on-macos>
 
 ```shell
 brew install --cask macfuse
@@ -216,7 +212,7 @@ cat ${AWS_WEB_IDENTITY_TOKEN_FILE}
 また、それ以外にローカル環境でAWSアクセスキー等を環境変数を設定している場合も、そちらが使用されないようにクリアしておいた方が良いかと思います。
 未検証ですが、ローカル環境と分離可能なDockerコンテナでデバッグするという方式もありますので、このような設定が面倒な場合はコンテナを利用した方が良いかもしれません。
 
-- [Telepresence for Docker](https://www.telepresence.io/docs/latest/extension/intro/)
+- [Telepresence Doc - Using Docker for intercepts](https://www.getambassador.io/docs/telepresence-oss/latest/reference/docker-run)
 :::
 
 ## 本物のトラフィックでローカルデバッグをする

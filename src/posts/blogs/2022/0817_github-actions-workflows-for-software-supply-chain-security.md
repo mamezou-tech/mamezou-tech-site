@@ -418,7 +418,7 @@ SLSA とは Supply-chain Levels for Software Artifacts というフレームワ�
 
 [New request for comments on improving npm security with Sigstore is now open | The GitHub Blog](https://github.blog/2022-08-08-new-request-for-comments-on-improving-npm-security-with-sigstore-is-now-open/)
 
-[rfcs/0000-link-packages-to-source-and-build.md at link-packages-to-source-and-build · npm/rfcs](https://github.com/npm/rfcs/blob/link-packages-to-source-and-build/accepted/0000-link-packages-to-source-and-build.md)
+[rfcs/0000-link-packages-to-source-and-build.md at link-packages-to-source-and-build · npm/rfcs](https://github.com/npm/rfcs/blob/main/accepted/0049-link-packages-to-source-and-build.md)
 
 ソフトウェアサプライチェーンのセキュリティについては、従来の脆弱性パッチ適用に加え、リポジトリやCI/CD パイプラインなどの出所情報を透明性のあるログとして署名と共に保存し、誰もが検証可能な状態にすることが求められる時代になっていくようです。
 

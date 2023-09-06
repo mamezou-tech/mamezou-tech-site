@@ -5,7 +5,7 @@ date: 2022-10-08
 tags: [Kafka, テスト]
 ---
 
-[Kafka]((https://kafka.apache.org/)) は人気の分散メッセージングシステムです。[Spring for Apache Kafka](https://spring.io/projects/spring-kafka) を使うと Kafka トピックからのメッセージ取得を契機としてビジネスロジックを実行するコンシューマーの Spring Boot アプリを簡単に作成できます。
+[Kafka]((https://kafka.apache.org/)) は人気の分散メッセージングシステムです。[Spring for Apache Kafka](https://spring.io/projects/spring-kafka/) を使うと Kafka トピックからのメッセージ取得を契機としてビジネスロジックを実行するコンシューマーの Spring Boot アプリを簡単に作成できます。
 
 ![](https://i.gyazo.com/2a0aa01e59c924e221e95a0289d6831d.png)
 

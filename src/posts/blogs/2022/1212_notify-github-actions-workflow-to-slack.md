@@ -86,7 +86,7 @@ Slack の画面に戻って `Enter code` をクリックします。
 ![Connection succeed](https://i.gyazo.com/b3496144e464b55aa018dc7ae271ce83.png)
 
 ## Slack チャネルを GitHub リポジトリにサブスクライブする
-ここからは [Slack のスラッシュコマンド](https://slack.com/intl/ja-jp/help/articles/201259356-Slack-のスラッシュコマンド)を使用して設定を行います。
+ここからは [Slack のスラッシュコマンド](https://api.slack.com/interactivity/slash-commands)を使用して設定を行います。
 
 通知を受けたいチャネルに GitHub アプリを招待します。
 

@@ -52,7 +52,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
   - [Helidon Tips - Helidon MicroProfile RestClientを使ったRESTリソースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)
 
 ## Spring Boot
-Javaでマイクロサービスを構築するならやはり[Spring Boot](https://spring.io/projects/spring-boot)は外せません。ここではSpring Bootを使った実装をご紹介します。
+Javaでマイクロサービスを構築するならやはり[Spring Boot](https://spring.io/projects/spring-boot/)は外せません。ここではSpring Bootを使った実装をご紹介します。
 
 ### Spring Boot による実践マイクロサービス開発
 この連載では、宇宙船の冬眠ポッド (hibernation pod) を題材に [OpenAPI Generator](https://openapi-generator.tech/) を使ってサービスを構築します。

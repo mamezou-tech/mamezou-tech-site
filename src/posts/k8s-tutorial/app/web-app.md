@@ -36,7 +36,7 @@ WebアプリケーションはVue.jsで作成されたユーザーインター�
 
 また、UI/アプリケーションはNode.jsを利用します。こちらも別途インストールしてください。今回は現時点で最新の安定版である`v16.13.1`を利用しています。
 
-- <https://nodejs.org/en/download/>
+- <https://nodejs.org/en/download>
 
 ## 利用するKubernetesリソース
 

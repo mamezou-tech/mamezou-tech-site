@@ -25,9 +25,9 @@ KarpenterはASG経由ではなく、直接NodeとなるEC2インスタンスを�
 現時点で最新の`0.6.1`をセットアップしました。
 Karpenterのインストールは、公式ドキュメントに記載されている通りに実施すれば問題ありませんでした。
 
-- <https://karpenter.sh/v0.6.1/getting-started/>
+- <https://karpenter.sh/docs/getting-started/>
 
-上記はeksctlですが、[kOps](https://karpenter.sh/v0.6.1/getting-started-with-kops/)、[Terraform](https://karpenter.sh/v0.6.1/getting-started-with-terraform/)で構築したEKSでの利用も可能です。
+上記はeksctlですが[Terraform](https://aws-ia.github.io/terraform-aws-eks-blueprints/latest/)で構築したEKSでの利用も可能です。
 
 今回は、以下のeksctl設定でクラスタ環境を作成しました。
 
@@ -134,7 +134,7 @@ spec:
 ```
 
 `requirements`には、Karpenterが作成するNode(EC2)の条件を指定します。今回は安価に利用可能なスポットインスタンスの作成を許可するようにしました。
-これ以外にも、EC2のインスタンスタイプやAZを限定する等の指定も可能です。指定可能なオプションの詳細は、[こちら](https://karpenter.sh/v0.6.1/provisioner/)をご確認ください。
+これ以外にも、EC2のインスタンスタイプやAZを限定する等の指定も可能です。指定可能なオプションの詳細は、[こちら](https://karpenter.sh/docs/concepts/provisioners/)をご確認ください。
 
 `provider`には、EC2インスタンスを起動する際のサブネットやセキュリティグループを指定します。
 ここでは、クラスタ作成時にeksctlで指定したタグを設定しています。
@@ -151,7 +151,7 @@ AWSがサポートされるようになると、ここにクラウドプロバ�
 とはいえ、これを設定することで、現在のクラスタ状態に見合ったインスタンスタイプで定期的に見直しできます。
 一時的なバーストによるオーバースペックのNode(=高コスト)をいつまでも残しておかないよう、一定のサイクルで更新するようにしておいた方が良さそうです。
 
-スケールダウンの詳細は[こちら](https://karpenter.sh/v0.6.1/tasks/deprovisioning/#how-karpenter-nodes-are-deprovisioned)を参照してください。
+スケールダウンの詳細は[こちら](https://karpenter.sh/docs/concepts/deprovisioning/)を参照してください。
 
 この構成でProvisionerを作成しておきます。
 

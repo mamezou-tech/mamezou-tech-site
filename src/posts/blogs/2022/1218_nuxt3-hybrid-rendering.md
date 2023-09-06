@@ -33,7 +33,7 @@ Nuxt3でようやくこれに追い付いた形です。各ルートに対して
 利用する際は、Nuxt、またはハイブリッドレンダリングを実装しているNitroの最新ドキュメントを参照してください。
 
 - [Nuxt Doc - Route Rules](https://nuxt.com/docs/guide/concepts/rendering#route-rules)
-- [Nitro Doc - routeRules](https://nitro.unjs.io/config#routerules)
+- [Nitro Doc - routeRules](https://nitro.unjs.io/config/#routerules)
 :::
 
 

@@ -25,7 +25,7 @@ CUE 言語(cuelang) はJSON のスーパーセットで YAML/JSON と相互変�
 
 [^1]: GitHUb Actions は当初 HCL を採用していましたが、リリースまでに YAML にスイッチしたという歴史があります。
 
-では、[公式ドキュメント](https://docs.dagger.io/getting-started)に従って、ローカルでの環境構築からサンプル動作確認までやってみましょう。
+では、[公式ドキュメント](https://docs.dagger.io/quickstart)に従って、ローカルでの環境構築からサンプル動作確認までやってみましょう。
 
 macOS だと HomeBrew でインストールできます。
 

@@ -13,7 +13,7 @@ nextPage: ./src/posts/k8s-tutorial/ingress/ingress-nginx.md
 [前回](/containers/k8s/tutorial/infra/aws-eks-eksctl/)は[eksctl](https://eksctl.io/)を利用してクラスタ環境を構築しましたが、今回はIaCツールとして高い人気を誇る[Terraform](https://www.terraform.io/)を使います。
 
 TerraformはHashiCorp社で開発されたマルチクラウド対応のIaCツールで、AWSだけでなくAzure、GCP等にも対応します。
-[Terraform Language](https://www.terraform.io/docs/language/index.html)(拡張子が`.tf`)という独自の構成記述言語を採用しており、YAML/JSONを使うCloudFormationよりも高い表現力で簡潔に設定を記述できます。
+[Terraform Language](https://developer.hashicorp.com/terraform/language)(拡張子が`.tf`)という独自の構成記述言語を採用しており、YAML/JSONを使うCloudFormationよりも高い表現力で簡潔に設定を記述できます。
 有償版もありますが、CLIだけであれば無償で利用でき、実際にこのツールでクラウドインフラを管理しているプロジェクトもかなり多いのではと思います。
 
 
@@ -23,7 +23,7 @@ TerraformはHashiCorp社で開発されたマルチクラウド対応のIaCツ�
 
 ### Terraform CLI
 本記事でメインに利用します。現時点で最新の`1.0.8`を使います。
-環境に応じて[こちら](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)よりセットアップしてください。
+環境に応じて[こちら](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli?in=terraform%2Faws-get-started)よりセットアップしてください。
 
 ### kubectl
 kubectlはk8sの操作するための必須ツールです。[こちら](https://kubernetes.io/docs/tasks/tools/#kubectl)を参照して準備してください。
@@ -39,7 +39,7 @@ eksctl同様にTerraformではクラスタの作成をするにはEKSだけで�
 設定が必要なポリシーは以下です。
 1. EKSクラスタ構築: [こちら](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/infra/terraform/terraform-policy.json)に必要なPolicyファイルを用意しました。
 2. Terraformのリモートステートアクセス: こちらはTerraformの公式ページに記載があります。
-  [S3 Bucket Permissions](https://www.terraform.io/docs/language/settings/backends/s3.html#s3-bucket-permissions)
+  [S3 Bucket Permissions](https://developer.hashicorp.com/terraform/language/settings/backends/s3#s3-bucket-permissions)
 
 これでIAMユーザの作成とポリシーの設定をマネジメントコンソールから行ってください。
 次に作成したIAMユーザーのアクセスキー、シークレットを環境変数に指定してください。
@@ -68,7 +68,7 @@ IaCツールであるTerraformは、適用状態をどこかに保管する必�
 
 ここまで準備ができたら、EKSクラスタ環境を作成していきましょう。
 
-Terraformには[Module](https://www.terraform.io/docs/language/modules/index.html)という仕組みがあり、実績のあるサードパーティや社内で作成した設定を再利用する形で利用できます。
+Terraformには[Module](https://developer.hashicorp.com/terraform/language/modules)という仕組みがあり、実績のあるサードパーティや社内で作成した設定を再利用する形で利用できます。
 ここでは、以下のAWS Moduleを利用してクラスタ環境を構築します。
 - [terraform-aws-modules/vpc](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)
 - [terraform-aws-modules/eks](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)
@@ -109,20 +109,20 @@ terraform {
 }
 ```
 
-まず最初に`terraform`ブロックにはTerraform自体の設定を記述します。公式ガイドは[こちら](https://www.terraform.io/docs/language/settings/index.html)です。
+まず最初に`terraform`ブロックにはTerraform自体の設定を記述します。公式ガイドは[こちら](https://developer.hashicorp.com/terraform/language/settings)です。
 
 Terraformはバージョンアップで互換性のない変更が頻繁に発生しますので`required_version`でTerraform CLIのバージョンを指定しておくことをお勧めします。
 
 `backend`ブロックではリモートステート(今回はS3バケット)の情報を記述します。
-今回はここに直接記述していますが、通常は適用する環境によってリモートステートは異なりますので、別ファイルに記述してCLIの入力とすることが多いかと思います([Partial Configuration](https://www.terraform.io/docs/language/settings/backends/configuration.html#partial-configuration)参照)。
+今回はここに直接記述していますが、通常は適用する環境によってリモートステートは異なりますので、別ファイルに記述してCLIの入力とすることが多いかと思います([Partial Configuration](https://developer.hashicorp.com/terraform/language/settings/backends/configuration#partial-configuration)参照)。
 ここでは、先程作成したリモートステート用のS3バケットを`bucket`/`region`に指定します。`key`についてはバケット内で重複しなければ任意の名前で構いません。
 
-`required_providers`ブロックでは利用するTerraformの[Provider](https://www.terraform.io/docs/language/providers/index.html)のバージョンを記述します。
+`required_providers`ブロックでは利用するTerraformの[Provider](https://developer.hashicorp.com/terraform/language/providers)のバージョンを記述します。
 利用できるProviderは[Terraform Registry](https://registry.terraform.io/browse/providers)で管理されています。
 ProviderはAWS、Azure等のクラウドリソースだけでなく、SaaS/ミドルウェア等の様々なProviderが存在します。
 このため、対象Providerがあれば、Terraform内でクラウドリソースと合わせて構成管理対象にできます。
 また、Terraform同様に、Providerについても頻繁にアップデートされていきますので、バージョンはある程度固定することが望ましいです。
-指定するバージョンはレンジ指定も可能です([こちら](https://www.terraform.io/docs/language/expressions/version-constraints.html#version-constraint-syntax)参照)。
+指定するバージョンはレンジ指定も可能です([こちら](https://developer.hashicorp.com/terraform/language/expressions/version-constraints#version-constraint-syntax)参照)。
 今回はVPC/EKSの構築用に[AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest)と[Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest)を利用しますので、こちらの情報を設定しています。
 
 ### AWS Provider
@@ -226,7 +226,7 @@ EKSリソースについても1から作成するにはかなりの労力が必�
 
 - `cluster_version`で作成するKubernetesのバージョンを指定できます。こちらは今後のバージョンアップ運用のためにも指定しておくようにしましょう。利用可能なバージョンは[こちら](https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/kubernetes-versions.html)から確認できます。
 - `cluster_name`は必須です。任意のクラスタ名を指定してください(ここでは`mz-k8s`を指定)。
-- `vpc_id`/`subnet_ids`の部分で作成したVPCリソースのVPC IDとプライベートサブネットを指定し、その上にEKSクラスタを配置するように指示します(値参照のシンタックスは[こちら](https://www.terraform.io/docs/language/expressions/references.html)参照)。
+- `vpc_id`/`subnet_ids`の部分で作成したVPCリソースのVPC IDとプライベートサブネットを指定し、その上にEKSクラスタを配置するように指示します(値参照のシンタックスは[こちら](https://developer.hashicorp.com/terraform/language/expressions/references)参照)。
 - `enable_irsa`はIRSA(IAM Role for ServiceAccount)を有効化しています。これはPodレベルでAWSリソースへのアクセス許可を制限するEKSの機能です。
 - `eks_managed_node_groups`でEKSのマネージドノードグループを作成することを指定しています。他にもセルフマネージドやFargateにも対応しています。 今回はノード数2で`m5.large`のインスタンスタイプでノードを作成するように指定しています。
 
@@ -266,7 +266,7 @@ NamespaceやNetworkPolicy等のインフラリソースは、クラスタ環境�
 
 先程作成したRoot Moduleディレクトリに移動して以下の手順でコマンドを実行します[^4]。
 
-[^4]: パイプラインに載せる場合は[こちら](https://learn.hashicorp.com/tutorials/terraform/automate-terraform)を参照してください。
+[^4]: パイプラインに載せる場合は[こちら](https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform)を参照してください。
 
 ### terraform init
 
@@ -611,7 +611,7 @@ terraform destroy
 ---
 参照資料
 
-- Terraformドキュメント：<https://www.terraform.io/docs/index.html>
+- Terraformドキュメント：<https://developer.hashicorp.com/terraform/docs>
 - Terraform AWS Provider: <https://registry.terraform.io/providers/hashicorp/aws/latest/docs>
 - Terraform Kubernetes Provider: <https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs>
 

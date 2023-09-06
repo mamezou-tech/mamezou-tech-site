@@ -39,7 +39,7 @@ Lambda Function URLは、2022/4より導入された比較的新しいLambdaの�
 
 ### Nitroプリセット指定
 
-Nuxt3をLambdaで動作させるには、サーバーエンジンのNitroの[プリセット設定](https://nitro.unjs.io/deploy#changing-the-deployment-preset)が必要です。
+Nuxt3をLambdaで動作させるには、サーバーエンジンのNitroの[プリセット設定](https://nitro.unjs.io/deploy/#changing-the-deployment-preset)が必要です。
 プリセットは`nuxt.config.ts`または環境変数より指定できますが、今回は`nuxt.config.ts`を使います。
 以下のように修正します。
 
@@ -132,7 +132,7 @@ npx serverless deploy
 先程はLambda単体でNuxtアプリケーションをデプロイしました。
 シンプルで簡単ですが、サーバーサイドレンダリングだけでなく、JavaScript等の静的リソースもLambdaで処理しています。簡単な検証にはいいですが、パフォーマンスやLambdaコストの観点で実用的なものとは言えません。
 
-Nitroの`serveStatic`設定の[ドキュメント](https://nitro.unjs.io/config#servestatic)でも以下のように言及されています。
+Nitroの`serveStatic`設定の[ドキュメント](https://nitro.unjs.io/config/#servestatic)でも以下のように言及されています。
 
 > Note: It is highly recommended that your edge CDN (nginx, apache, cloud) serves the public/ directory instead.
 
@@ -321,4 +321,4 @@ Nuxt2だといろいろ工夫しないとLambdaにデプロイするのは難し
 
 連載はここで一旦終了となりますが、Nuxt3はまだ今も進化しています。面白い機能が出たらまた紹介したいと思います。
 
-[^3]: Nitroがサポートするプラットフォームは[Nitro公式ドキュメント](https://nitro.unjs.io/deploy)を参照してください。
+[^3]: Nitroがサポートするプラットフォームは[Nitro公式ドキュメント](https://nitro.unjs.io/deploy/)を参照してください。

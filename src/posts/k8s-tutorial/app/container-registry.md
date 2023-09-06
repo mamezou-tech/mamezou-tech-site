@@ -57,11 +57,11 @@ git clone https://github.com/mamezou-tech/k8s-tutorial.git
 また、今回AWSリソースのプロビジョニングには[Terraform](https://www.terraform.io/)を利用します[^5]。
 未インストールの場合は、以下よりTerraformのCLIをセットアップしてください。
 
-- <https://learn.hashicorp.com/tutorials/terraform/install-cli>
+- <https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli>
 
 [^5]: もちろんCloudFormationやAWS CLI等でも対応可能ですが、個人的な好みもありTerraformとしました。
 
-また、ECRを作成するために必要なポリシーは、[こちら](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/app/terraform-ans/ecr-policy.json)に準備しました。Terraformを実行するIAMユーザーのポリシーに追加してください。
+また、ECRを作成するために必要なポリシーは、[こちら](https://raw.githubusercontent.com/mamezou-tech/k8s-tutorial/main/app/terraform/ecr-policy.json)に準備しました。Terraformを実行するIAMユーザーのポリシーに追加してください。
 
 ### AWS CLI/Docker CLI
 

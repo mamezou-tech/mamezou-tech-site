@@ -56,7 +56,7 @@ services:
 
 `KAFKA_CLUSTERS_N` (N:番号)というプリフィクス付きの環境変数で管理対象の Kafka cluster の設定を指定します。複数のクラスターを管理する場合、プリフィクスの番号を変えて指定します。
 
-[kafka-ui/docker-compose.md at master · provectus/kafka-ui](https://github.com/provectus/kafka-ui/blob/master/docker-compose.md)
+[kafka-ui/documentation/compose/DOCKER_COMPOSE.md at master · provectus/kafka-ui](https://github.com/provectus/kafka-ui/blob/master/documentation/compose/DOCKER_COMPOSE.md)
 
 Kafka cluster と kafka-ui を全て docker-compose で構築する例です。Kafka Broker と Zookeeper のコンテナイメージは Confluent のものを利用しています。
 
@@ -296,6 +296,6 @@ kafka-ui のデフォルトでは、Topic の作成・削除などの Kafka に�
 
 今回 Docker を使いましたが、Helm Chart も提供されており Kubernetes への導入も簡単になっています。
 
-[kafka-ui/charts/kafka-ui at master · provectus/kafka-ui](https://github.com/provectus/kafka-ui/tree/master/charts/kafka-ui)
+[provectus/kafka-ui-charts](https://github.com/provectus/kafka-ui-charts)
 
 kafka-ui の GitHub リポジトリには、Topic 作成などのオペレーションに関する enhancement issue も多く登録されており、Kafka 運用ツールとしての期待値の高さを伺わせます。今後の開発に注目したいと思います。

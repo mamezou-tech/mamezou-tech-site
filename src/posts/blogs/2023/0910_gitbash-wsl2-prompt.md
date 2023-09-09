@@ -85,7 +85,7 @@ PS1="$PS1"'\[\033[0m\]'        # change color
 #PS1="$PS1"'\n'                 # new line
 PS1="$PS1"'$ '                 # prompt: always $
 ```
-※:デフォルトから変更しているのは前半の8行目までと下から2行目の改行をコメントアウトしている以外はデフォルトの`git-prompt.sh`と同じです
+※:変更しているのは前半の8行目までと下から2行目の改行をコメントアウト部分で、それ以外はデフォルトの`git-prompt.sh`の内容と同じです
 
 新しいターミナルを立ち上げて次のようになっていたらGit Bash側の変更は完了です。
 ![cap03](/img/blogs/2023/0910_prompt-newgitbash.drawio.svg)

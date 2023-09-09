@@ -82,16 +82,17 @@ then
     fi
 fi
 PS1="$PS1"'\[\033[0m\]'        # change color
+#PS1="$PS1"'\n'                 # new line
 PS1="$PS1"'$ '                 # prompt: always $
 ```
-※:デフォルトから変更しているのは前半の8行目まででそれ以降はデフォルトの`git-prompt.sh`と同じです
+※:デフォルトから変更しているのは前半の8行目までと下から2行目の改行をコメントアウトしている以外はデフォルトの`git-prompt.sh`と同じです
 
 新しいターミナルを立ち上げて次のようになっていたらGit Bash側の変更は完了です。
 ![cap03](/img/blogs/2023/0910_prompt-newgitbash.drawio.svg)
 
 
 # Ubuntuのプロンプトの変更
-次にWSL2上のUbuntuです。Ubuntuのプロンプトは一般的なBash環境と同様でUbuntu側のユーザのホームディレクトの`~/bashrc`(Windows側からは` \\wsl.localhost\Ubuntu\home\ogiwarat\bashrc`)に定義されています。
+次にWSL2上のUbuntuです。Ubuntuのプロンプトは一般的なBash環境と同様でUbuntu側のユーザのホームディレクトの`~/bashrc`(Windows側からは` \\wsl.localhost\Ubuntu\home\[ユーザーID]\bashrc`)に定義されています。
 
 筆者は60行目辺りにあるプロンプト定義をGit Bash側と同じようになるように次のように変更しています。
 

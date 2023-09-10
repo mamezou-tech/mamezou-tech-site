@@ -15,7 +15,7 @@ tags: [robocode, java, プログラミング, 学習]
 ロボット（戦車型ロボット）をプログラミングして、他の人が作ったロボットコードと対戦させることが可能です。  
 ロボットを動作させるフレームワークが用意されているので、ロボットコードの作成に専念することができます。  
 対戦で勝ち残るために色々と工夫してプログラミングしていくことで、楽しくプログラミングが学習できるようになっています。  
-当初、プログラミング言語には Java が採用されていましたが、最新版では .Net（C#など）もサポートされていて、[JavaScriptで作る](https://qiita.com/abemaki29/items/84e3ac3d797ea5a6b263)こともできるようです。
+当初、プログラミング言語には Java が採用されていましたが、最新版では .NET（C#など）もサポートされていて、[JavaScriptで作る](https://qiita.com/abemaki29/items/84e3ac3d797ea5a6b263)こともできるようです。
 
 今回は Java版を使用していきます。  
 また、既存のプラットフォームではなく、[現在開発中である新しいプラットフォーム](https://github.com/robocode-dev/tank-royale)を導入して、Robocode の世界に触れてみたいと思います。
@@ -36,12 +36,12 @@ java -version
 [robocode-de/tank-royal](https://github.com/robocode-dev/tank-royale) から、開発中の最新版パッケージをダウンロードします。  
 2023/09/09時点での最新版は [0.20.0](https://github.com/robocode-dev/tank-royale/releases/tag/v0.20.0) です。
 
-[次のサイト](https://robocode-dev.github.io/tank-royale/articles/installation.html)を参照して環境をインストールしていきます。  
+[公式ドキュメント](https://robocode-dev.github.io/tank-royale/articles/installation.html)を参照して環境をインストールしていきます。  
 
-まず「robocode-tankroyale-gui-x.y.z.jar」を[ダウンロード](https://github.com/robocode-dev/tank-royale/releases/download/v0.20.0/robocode-tankroyale-gui-0.20.0.jar)します。  
-（今回「x.y.z」の部分は「0.20.0」とします。）  
-ダウンロードした Jarファイルを適当なフォルダの下に格納します。  
-私は Windows のドキュメントフォルダの下に「bots」フォルダを作成して、その下に Jarファイルを格納しました。
+まず Robocode のGUIアプリケーションをダウンロードします。  
+GUIアプリケーションは[最新版リリースサイト](https://github.com/robocode-dev/tank-royale/releases/latest)にある Assets セクションの「GUI Application (jar)」をダウンロードします。  
+ダウンロードした JARファイルを適当なフォルダの下に格納します。  
+私は Windows のドキュメントフォルダの下に「bots」フォルダを作成して、その下に JARファイルを格納しました。
 
 ```shell
 C:\Users\＜ユーザ名＞\Documents\bots\robocode-tankroyale-gui-0.20.0.jar
@@ -50,8 +50,8 @@ C:\Users\＜ユーザ名＞\Documents\bots\robocode-tankroyale-gui-0.20.0.jar
 次にサウンドファイルをダウンロードします。  
 このサウンドファイルのインストールはオプションですので、ゲームの効果音が不要な場合、セットアップしなくて大丈夫です。  
 
-サウンドファイルを[次のURL](https://github.com/robocode-dev/sounds/releases)からダウンロードします。  
-2023-09-09時点での最新版は [1.0.0](https://github.com/robocode-dev/sounds/releases/download/v1.0.0/sounds.zip) となっています。 
+サウンドファイルは[Robocode音源のリリースサイト](https://github.com/robocode-dev/sounds/releases/latest)にある Assets セクションの「sounds.zip」をダウンロードします。  
+2023-09-09時点での最新版は [1.0.0](https://github.com/robocode-dev/sounds/releases/tag/v1.0.0) です。 
 
 ダウンロードした Zipファイルを解凍して取得した「sound」フォルダを、先ほど作成した「bots」フォルダの下に置きます。  
 （soundフォルダの下にはいくつかの wavファイルが格納されています）  
@@ -82,7 +82,7 @@ GUIアプリケーションを終了する場合は、右上の「✕」ボタ�
 
 ## サンプルBotの実行
 
-[次のURL](https://github.com/robocode-dev/tank-royale/releases/download/v0.20.0/sample-bots-java-0.20.0.zip)からサンプルプログラムをダウンロードします。
+サンプルBot は[最新版リリースサイト](https://github.com/robocode-dev/tank-royale/releases/latest)にある Assets のセクションから「Sample bots for Java (zip)」をダウンロードします。
 
 ダウンロードした Zipファイルを解凍し「bots」フォルダの下に置きます。  
 「bots」フォルダの下は以下のようになっているはずです。  

@@ -1,0 +1,169 @@
+<mxfile host="65bd71144e">
+    <diagram id="ivQfAZ2NkhDs4NAqpTRi" name="service-structure">
+        <mxGraphModel dx="238" dy="787" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="8" value="入金完了イベント受信" style="edgeStyle=none;html=1;" parent="1" source="2" target="4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="申込" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="40" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="入金完了イベント発行" style="edgeStyle=none;html=1;" parent="1" source="3" target="4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="決済" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="160" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="イベントストア" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#B0084D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.queue;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="120" width="70" height="42.18" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="入金情報通知" style="edgeStyle=none;html=1;" parent="1" source="6" target="3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="外部決済" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="320" width="120" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="962_QVYZyOFqDdbU-J_B" name="process">
+        <mxGraphModel dx="1058" dy="1651" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="QONos9-EC78BMdoO5i_A-9" value="" style="swimlane;childLayout=stackLayout;horizontal=1;fillColor=none;horizontalStack=1;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;strokeColor=none;stackBorder=10;stackSpacing=-12;resizable=1;align=center;points=[];whiteSpace=wrap;html=1;strokeWidth=1;" vertex="1" parent="1">
+                    <mxGeometry width="722" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-10" value="API設計" style="shape=step;perimeter=stepPerimeter;fixedSize=1;points=[];whiteSpace=wrap;html=1;strokeColor=default;strokeWidth=1;fillColor=none;" vertex="1" parent="QONos9-EC78BMdoO5i_A-9">
+                    <mxGeometry x="10" y="33" width="150" height="147" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-11" value="API I/Fを&lt;br&gt;自動生成" style="shape=step;perimeter=stepPerimeter;fixedSize=1;points=[];whiteSpace=wrap;html=1;strokeColor=default;strokeWidth=1;fillColor=none;" vertex="1" parent="QONos9-EC78BMdoO5i_A-9">
+                    <mxGeometry x="148" y="33" width="150" height="147" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-12" value="APIの&lt;br&gt;内部実装" style="shape=step;perimeter=stepPerimeter;fixedSize=1;points=[];whiteSpace=wrap;html=1;strokeColor=default;strokeWidth=1;fillColor=none;" vertex="1" parent="QONos9-EC78BMdoO5i_A-9">
+                    <mxGeometry x="286" y="33" width="150" height="147" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-27" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=default;fillColor=default;curved=1;entryX=0.447;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.507;exitY=-0.014;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="QONos9-EC78BMdoO5i_A-9" source="QONos9-EC78BMdoO5i_A-13" target="QONos9-EC78BMdoO5i_A-12">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="500" y="-10"/>
+                            <mxPoint x="353" y="-10"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-13" value="APIの&lt;br&gt;動作確認" style="shape=step;perimeter=stepPerimeter;fixedSize=1;points=[];whiteSpace=wrap;html=1;strokeColor=default;strokeWidth=1;fillColor=none;" vertex="1" parent="QONos9-EC78BMdoO5i_A-9">
+                    <mxGeometry x="424" y="33" width="150" height="147" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-14" value="複数&lt;br&gt;ユースケース&lt;br&gt;のテスト実装" style="shape=step;perimeter=stepPerimeter;fixedSize=1;points=[];whiteSpace=wrap;html=1;strokeColor=default;strokeWidth=1;fillColor=none;" vertex="1" parent="QONos9-EC78BMdoO5i_A-9">
+                    <mxGeometry x="562" y="33" width="150" height="147" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-4" style="edgeStyle=none;html=1;strokeColor=default;fillColor=default;" edge="1" parent="1" source="QONos9-EC78BMdoO5i_A-10" target="QONos9-EC78BMdoO5i_A-2">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="112.06550672157437" y="276.64629339608496" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-5" style="edgeStyle=none;html=1;strokeColor=default;fillColor=default;" edge="1" parent="1" source="QONos9-EC78BMdoO5i_A-2" target="QONos9-EC78BMdoO5i_A-11">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-2" value="OpenAPI&lt;br&gt;ドキュメント" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;strokeColor=default;strokeWidth=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="45" y="240" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-6" value="openapi-generator" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.mscae.enterprise.tool;strokeWidth=1;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="131" width="22.22" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-16" value="サービス" style="shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#EF8F21;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.veeam.2d.restful_apis;strokeWidth=1;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="240" width="44.8" height="44.8" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-17" style="edgeStyle=none;html=1;strokeColor=default;fillColor=default;" edge="1" parent="1" source="QONos9-EC78BMdoO5i_A-12" target="QONos9-EC78BMdoO5i_A-16">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-18" value="REST Client&lt;br&gt;定義ファイル" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;strokeColor=default;strokeWidth=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="459" y="240" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-19" style="edgeStyle=none;html=1;strokeColor=default;fillColor=default;" edge="1" parent="1" source="QONos9-EC78BMdoO5i_A-13" target="QONos9-EC78BMdoO5i_A-18">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-21" value="REST Client" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.mscae.enterprise.tool;strokeWidth=1;" vertex="1" parent="1">
+                    <mxGeometry x="488" y="130" width="22.22" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-22" value="npm, Step CI" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.mscae.enterprise.tool;strokeWidth=1;" vertex="1" parent="1">
+                    <mxGeometry x="629" y="131" width="22.22" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-23" value="ワークフロー定義ファイル" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;strokeColor=default;strokeWidth=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="600.11" y="240" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-24" style="edgeStyle=none;html=1;strokeColor=default;fillColor=default;" edge="1" parent="1" source="QONos9-EC78BMdoO5i_A-14" target="QONos9-EC78BMdoO5i_A-23">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="QONos9-EC78BMdoO5i_A-26" value="APIが安定するまで繰り返し" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;strokeWidth=1;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="-40" width="160" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-CRDIfs9IfDqOydGXVWK-3" style="html=1;strokeColor=default;fillColor=default;" edge="1" parent="1" source="-CRDIfs9IfDqOydGXVWK-4" target="QONos9-EC78BMdoO5i_A-12">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="242.82809493264904" y="240" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="-CRDIfs9IfDqOydGXVWK-2" style="html=1;strokeColor=default;fillColor=default;" edge="1" parent="1" source="QONos9-EC78BMdoO5i_A-11" target="-CRDIfs9IfDqOydGXVWK-4">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="223" y="240" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="-CRDIfs9IfDqOydGXVWK-4" value="API I/F" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;strokeWidth=1;fillColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="183.55" y="240" width="78.89" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="8xZdexoOZmLSXpIoz7NL" name="rc-to-wf">
+        <mxGraphModel dx="1885" dy="482" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="62rDw7DefF5dNmYsYjSo-2" value="&lt;div style=&quot;color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-weight: normal; font-size: 14px; line-height: 19px;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;version&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;&quot;1.1&quot;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;name&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;API間テスト（一連のユースケースの検証）&lt;/span&gt;&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;env&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;protocol&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;http&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;color: rgb(86, 156, 214);&quot;&gt;application&lt;/span&gt;:&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;host&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;localhost:8081&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;service&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;application&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;resource&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;applications&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;tests&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;一連のユースケースを検証&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;steps&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; - &lt;span style=&quot;color: rgb(86, 156, 214);&quot;&gt;name&lt;/span&gt;: &lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;申込&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;http&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;url&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;${{env.protocol}}://${{env.application.host}}/${{env.application.service}}/${{env.application.resource}}&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;method&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;POST&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;headers&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;Content-Type&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;application/json&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;body&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;|&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; {&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &quot;appliedBy&quot;: &quot;申請した人&quot;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &quot;appliedAt&quot;: &quot;2022-12-20T09:00:00+09:00[Asia/Tokyo]&quot;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; // 中略&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; }&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;captures&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;id&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;jsonpath&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;$.id&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;check&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;status&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #b5cea8;&quot;&gt;200&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;statusText&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;OK&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;headers&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;Content-Type&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;application/json&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;jsonpath&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;$.id&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; - &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;isNumber&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;true&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;$.version&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #b5cea8;&quot;&gt;0&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;$.status&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;NEW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="520" width="960" height="730" as="geometry"/>
+                </mxCell>
+                <mxCell id="62rDw7DefF5dNmYsYjSo-3" value="&lt;div style=&quot;color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-weight: normal; font-size: 14px; line-height: 19px;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(106, 153, 85);&quot;&gt;### 申込&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;POST http://localhost:8081/application/applications HTTP/1.1&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;content-type&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;application/json&lt;/span&gt;&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;{&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;&quot;appliedBy&quot;&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;&quot;申請した人&quot;&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;&quot;appliedAt&quot;&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;&quot;2022-12-20T09:00:00+09:00[Asia/Tokyo]&quot;&lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&amp;nbsp; &lt;/span&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;//中略：100項目近くの属性が存在&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;}&lt;/span&gt;&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry width="480" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="62rDw7DefF5dNmYsYjSo-4" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#FF0000;dashed=1;strokeWidth=3;" vertex="1" parent="1">
+                    <mxGeometry y="50" width="450" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="62rDw7DefF5dNmYsYjSo-5" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#FF0000;dashed=1;strokeWidth=3;" vertex="1" parent="1">
+                    <mxGeometry x="600" y="330" width="460" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="62rDw7DefF5dNmYsYjSo-8" value="コピー" style="shape=flexArrow;endArrow=classic;html=1;strokeColor=#FF0000;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fillColor=default;" edge="1" parent="1" source="62rDw7DefF5dNmYsYjSo-4" target="62rDw7DefF5dNmYsYjSo-5">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="480" y="150" as="sourcePoint"/>
+                        <mxPoint x="530" y="100" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="62rDw7DefF5dNmYsYjSo-10" value="ここを元に定義" style="shape=flexArrow;endArrow=classic;html=1;strokeColor=#FF0000;fillColor=default;entryX=0.002;entryY=0.035;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="62rDw7DefF5dNmYsYjSo-2">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="410" y="50" as="sourcePoint"/>
+                        <mxPoint x="550" y="-20" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="62rDw7DefF5dNmYsYjSo-11" value="ここを元に定義" style="shape=flexArrow;endArrow=classic;html=1;strokeColor=#FF0000;exitX=0.854;exitY=0.25;exitDx=0;exitDy=0;exitPerimeter=0;fillColor=default;entryX=0.063;entryY=0.166;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="62rDw7DefF5dNmYsYjSo-3" target="62rDw7DefF5dNmYsYjSo-2">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="420.00000000000006" y="-16.18999999999999" as="sourcePoint"/>
+                        <mxPoint x="480" y="-540" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="iqxW1elmJukHCkZXZxcR-1" value="環境変数：&lt;br&gt;必要に応じて定義" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;strokeColor=default;strokeWidth=1;fillColor=default;direction=south;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="670" y="60" width="220" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="iqxW1elmJukHCkZXZxcR-2" value="リクエストボディ：&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;REST Client定義ファイルからコピペ" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;strokeColor=default;strokeWidth=1;fillColor=default;direction=south;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="850" y="380" width="240" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="iqxW1elmJukHCkZXZxcR-3" value="リクエストヘッダー：&lt;br&gt;REST Client定義ファイルからコピペ" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;strokeColor=default;strokeWidth=1;fillColor=default;direction=south;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="850" y="320" width="240" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="iqxW1elmJukHCkZXZxcR-4" value="URL、HTTPメソッド：&lt;br&gt;REST Client定義ファイルを元に作成。&lt;br&gt;環境によって変動する部分は変数化する。" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;strokeColor=default;strokeWidth=1;fillColor=default;direction=south;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="850" y="250" width="270" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

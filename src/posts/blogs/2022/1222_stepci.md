@@ -2,7 +2,7 @@
 title: API をシナリオベースでテストできる StepCI を試してみた
 author: masato-ubata
 date: 2022-12-22
-tags: [テスト, CI/CD, advent2022]
+tags: [テスト, CI/CD, Step CI, advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
  

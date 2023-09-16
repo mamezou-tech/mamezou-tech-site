@@ -84,7 +84,7 @@ metadata:
 spec:
   profile:
     displayName: noboru-kudo
-    email: noboru-kudo@mamezou.com
+    email: <mail-address>
   memberOf: [mamezou-tech]
 ```
 
@@ -208,7 +208,7 @@ const app = createApp({
 ```
 {% endraw %}
 
-BackstageのSignInPageコンポーネントを追加しました。こうすることでBackstageは、サイト訪問時にGitHubのOAuth認証をするようになります。
+BackstageのSignInPageコンポーネントを追加しました。こうすることでBackstageは、サイト訪問時にGitHubでログインするようになります。
 バックエンド側でも変更が必要です。`packages/backend/src/plugins/auth.ts`に以下を追加します。
 
 ```typescript
@@ -362,7 +362,7 @@ OpenAPIで記述されたAPI仕様が見やすく表示されています。こ�
 
 
 ## まとめ
-今回はGitHubとのOAuth認証と、サンプルテンプレートからBackstage機能の概要を簡単に見てきました。
+今回はGitHubとのログインと、サンプルテンプレートからBackstage機能の概要を簡単に見てきました。
 
 どのように感じたでしょうか？
 私は短期間で急成長したSpotifyで培った開発ノウハウが詰まった製品だと感じました。成長の過程で様々な困難に突き当たり、必要に迫られてこのようなプロダクトができあがったのだろうなと思いを巡らせました。
@@ -371,6 +371,8 @@ OpenAPIで記述されたAPI仕様が見やすく表示されています。こ�
 
 今回紹介したものはコア機能の1つです。多くのプラグインが開発されており、活用方法は無限大です。
 次回は、Backstageのもう1つのコア機能であるテンプレート機能を利用して、実際にコンポーネントを作成し、Backstageのエンティティモデルの詳細を確認していきたいと思います。
+
+- [Backstageで開発者ポータルサイトを構築する - カタログ作成](https://developer.mamezou-tech.com/blogs/2022/05/05/backstage-catalog/)
 
 ---
 参照資料

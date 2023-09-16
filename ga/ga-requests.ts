@@ -1,9 +1,10 @@
 import { DateTime } from 'luxon';
-import { google } from '@google-analytics/data/build/protos/protos.js';
+import * as protos from '@google-analytics/data/build/protos/protos.js';
+import Operation = protos.google.analytics.data.v1beta.Filter.NumericFilter.Operation
 
 const propertyId = process.env.GA_PROPERTY_ID || '';
 
-export function makeGoogleSearchClicksRequest(from: DateTime, to: DateTime): google.analytics.data.v1beta.IRunReportRequest {
+export function makeGoogleSearchClicksRequest(from: DateTime, to: DateTime): protos.google.analytics.data.v1beta.IRunReportRequest {
   return {
     property: `properties/${propertyId}`,
     dateRanges: [
@@ -21,7 +22,7 @@ export function makeGoogleSearchClicksRequest(from: DateTime, to: DateTime): goo
   };
 }
 
-export function makeUserCountRequest(from: DateTime, to: DateTime): google.analytics.data.v1beta.IRunReportRequest {
+export function makeUserCountRequest(from: DateTime, to: DateTime): protos.google.analytics.data.v1beta.IRunReportRequest {
   return {
     property: `properties/${propertyId}`,
     dateRanges: [
@@ -39,7 +40,7 @@ export function makeUserCountRequest(from: DateTime, to: DateTime): google.analy
   };
 }
 
-export function makePvRequest(from: DateTime, to: DateTime): google.analytics.data.v1beta.IRunReportRequest {
+export function makePvRequest(from: DateTime, to: DateTime): protos.google.analytics.data.v1beta.IRunReportRequest {
   return {
     property: `properties/${propertyId}`,
     dateRanges: [
@@ -71,7 +72,7 @@ export function makePvRequest(from: DateTime, to: DateTime): google.analytics.da
   };
 }
 
-export function makePopularPosts(from: DateTime, to: DateTime): google.analytics.data.v1beta.IRunReportRequest {
+export function makePopularPosts(from: DateTime, to: DateTime): protos.google.analytics.data.v1beta.IRunReportRequest {
   return {
     property: `properties/${propertyId}`,
     dateRanges: [
@@ -107,7 +108,7 @@ export function makePopularPosts(from: DateTime, to: DateTime): google.analytics
   };
 }
 
-export function makeAuthorAccessRequest(from: DateTime, to: DateTime): google.analytics.data.v1beta.IRunReportRequest {
+export function makeAuthorAccessRequest(from: DateTime, to: DateTime): protos.google.analytics.data.v1beta.IRunReportRequest {
   return {
     property: `properties/${propertyId}`,
     dateRanges: [
@@ -137,4 +138,42 @@ export function makeAuthorAccessRequest(from: DateTime, to: DateTime): google.an
       }
     }
   };
+}
+
+export function makeRealtimeArticlePV() : protos.google.analytics.data.v1beta.IRunRealtimeReportRequest {
+  return {
+    property: `properties/${propertyId}`,
+    dimensions: [{ 'name': 'unifiedScreenName' }],
+    metrics: [
+      {
+        name: 'screenPageViews'
+      }
+    ],
+    metricFilter: {
+      filter: {
+        fieldName: 'screenPageViews',
+        numericFilter: {
+          // operation: Operation.GREATER_THAN_OR_EQUAL,
+          operation: 5 as Operation,
+          value: {
+            int64Value: 2
+          }
+        }
+      }
+    },
+  }
+}
+
+export function makeRealtimeSummary(): protos.google.analytics.data.v1beta.IRunRealtimeReportRequest {
+  return {
+    property: `properties/${propertyId}`,
+    metrics: [
+      {
+        name: 'activeUsers'
+      },
+      {
+        name: 'screenPageViews'
+      }
+    ]
+  }
 }

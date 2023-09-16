@@ -10,10 +10,12 @@ tags: [サーバーレス, lambda, AWS]
 このフィーチャーフラグの実装方法としては、単純に環境変数やパラメータで指定するものから専用のマネージドサービスを使うものまで幅広い選択肢があります。
 
 AWSでもAWS Systems Managerの[AWS AppConfig](https://docs.aws.amazon.com/appconfig/)(以下AppConfig)がこれを提供しています。
-ただ、AppConfig自体は2021年にリリースされていますが、ググってもあまり情報が見つからず、マイナーな機能と言えそうです。
+このAppConfig自体は2021年にリリースされていますが、ググってもあまり情報が見つからず、マイナーな機能と言えそうです。
 とはいえ、AppConfigはアプリケーションの機能リリースをデプロイなしに安全に行えるフィーチャーフラグ機能を備えています。
 
 少し思うところがあり、改めてAppConfigを使う方法を調べてみましたのでここで紹介します。
+
+なお、この記事のソースコードは[こちら](https://github.com/kudoh/lambda-app-config-example)で公開しています。
 
 ## AppConfigをLambdaで使う方法(Lambda Extension)
 
@@ -21,13 +23,13 @@ AWSでもAWS Systems Managerの[AWS AppConfig](https://docs.aws.amazon.com/appco
 
 AppConfigではセッション開始(StartConfigurationSession)と最新情報取得(GetLatestConfiguration)の2つのAPIを提供しています。
 フィーチャーフラグを取得する場合は、まずセッションを開始してから設定情報を取得するという流れになります(API呼び出し間はトークン引き継ぎが必要)。
-なお、設定が更新されない場合は、最新情報取得(GetLatestConfiguration)ではデータが空になりますのでフィーチャーフラグはキャッシュしておくことも必要です。
+また、設定が更新されない場合は最新情報取得(GetLatestConfiguration)時にデータが空になりますので、フィーチャーフラグはキャッシュしておくことも必要です。
 
 - [AWS AppConfig Doc - About the AWS AppConfig data plane service](https://docs.aws.amazon.com/appconfig/latest/userguide/about-data-plane.html)
 - [AWS AppConfig Doc - Retrieving the configuration](https://docs.aws.amazon.com/appconfig/latest/userguide/appconfig-retrieving-the-configuration.html)
 
 というように使い方が少し面倒です。
-ただ、Lambdaを使う場合は、この部分はLambda Extensionとして提供されていますので実装を大幅に省略できます。
+ただし、Lambdaを使う場合は、この部分はLambda Extensionとして提供されていますのでこの実装を大幅に省略できます。
 
 - [AWS AppConfig Doc - AWS AppConfig integration with Lambda extensions](https://docs.aws.amazon.com/appconfig/latest/userguide/appconfig-integration-lambda-extensions.html)
 
@@ -134,8 +136,10 @@ const url = sampleLambda.addFunctionUrl({
 });
 ```
 
-シンプルなLambda関数ですが、Lambda Extension関係のパラメータはLambda関数の環境変数として指定します(`AWS_APPCONFIG_EXTENSION_XXXX`)。
-詳細な設定は、公式ドキュメントを参照してください。
+シンプルなLambda関数です。
+
+ここでのポイントはLambda Extension関係の設定をLambda関数の環境変数として指定するところくらいです(`AWS_APPCONFIG_EXTENSION_XXXX`)。
+Lambda Extensionの詳細な設定は、以下公式ドキュメントを参照してください。
 
 - [AWS AppConfig Doc - Configuring the AWS AppConfig Lambda extension](https://docs.aws.amazon.com/appconfig/latest/userguide/appconfig-integration-lambda-extensions.html#appconfig-integration-lambda-extensions-config)
 
@@ -203,7 +207,7 @@ CDKの実行でアプリケーション(`sample-app`)や設定プロファイル
 
 AppConfigのフィーチャーフラグが取得できていると確認できました。
 
-機能A(featureA)を有効にします。
+A機能(featureA)を有効にします。
 
 ![AppConfig FeatureFlag2](https://i.gyazo.com/73ee133a2dcc6556e5c3e862a9817ace.png)
 
@@ -215,7 +219,7 @@ AppConfigのフィーチャーフラグが取得できていると確認でき�
 
 ![curl v2](https://i.gyazo.com/0d77808b0f8d9adc4c08d440a2f7702e.png)
 
-機能A(featureA)が有効になっていることが分かります。
+A機能(featureA)が有効になっていることが分かります。
 
 ## 最後に
 

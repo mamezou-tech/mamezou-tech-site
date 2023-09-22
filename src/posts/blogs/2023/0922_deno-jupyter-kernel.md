@@ -101,7 +101,7 @@ await Deno.openKv("https://api.deno.com/databases/<uuid>/connect");
 ```
 接続文字列はプロジェクトページからコピーできます。
 
-![connection string](https://i.gyazo.com/85abd7857fc1b7aa6725b151a006e91b.png)
+![connection string](https://i.gyazo.com/ea8b28d7580520379106eb460586f8e1.png)
 
 以下の例では、上記の記事で作成していた books データベースに接続して、[nodejs-polars](https://www.npmjs.com/package/nodejs-polars)[^2] を使用して、テーブルを表示する例です。
 

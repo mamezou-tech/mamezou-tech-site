@@ -9,27 +9,69 @@ tags: [ spring, spring-boot ]
 
 ## Spring Expression Language(SpEL)とは
 
-[Spring Expression Language](https://spring.pleiades.io/spring-framework/reference/core/expressions.html)(以降は省略して「SpEL」と記載します)は、Spring Framework基盤を担う強力な式言語です。文字列テンプレートとしても機能します。Spring Frameworkを採用しているプロジェクトでは、何かしらかの形で触れる機会が多いのではと思います。言わずもがなSpELはとても便利ですが、以下の制限事項があります。
+[Spring Expression Language](https://spring.pleiades.io/spring-framework/reference/core/expressions.html)(以降は省略して「SpEL」と記載します)は、Spring Framework基盤を担う強力な式言語です。文字列テンプレートとしても機能します。Spring Frameworkを採用しているプロジェクトでは、何かしらかの形で触れる機会があるのではと思います。
+
+### SpELのメリット
+
+#### 柔軟かつ小回りが利く
+
+ちょっとしたコードを簡単に入れられるので、自由度が高く小回りが利きます。
+例えば、以下のようなapplication.ymlがあります。
+```yaml
+web:
+  protocol: https
+  domain: xxx.yyy.com
+  port: 8080
+  context: abc
+```
+そして、bean化するクラスのフィールドに以下のように記述します。
+下記の`#{'${web.port}'.isEmpty() ? '' : ':' + '${web.port}'}`の部分がSpELに相当します。
+```java
+@Value("${web.protocol}://${web.domain}#{'${web.port}'.isEmpty() ? '' : ':' + '${web.port}'}/${web.context}")
+private String url;
+```
+そうすると、各プロパティ値を`web.port`の設定値有無を考慮して連結した値をurlにバインドできるので便利です。
+portが空の場合はコロン「:」が入ってしまわないようになっています。
+
+* portに「8080」と書いた場合：https://xxx.yyy.com:8080/abc
+* portが空の場合：https://xxx.yyy.com/abc
+
+### SpELのデメリット
+
+#### コードの影響範囲から漏れやすくなる
+
+例えば、あるメソッドを修正する際に、そのメソッドを呼び出している箇所はIDEの機能で簡単に漏れなくわかりますが、SpELから呼び出しているものまではさすがに拾ってはくれません。
+SpELが記述してあるテキストも含めてGrep調査も行うようにしないと影響範囲から漏れてしまい、不具合に繋がる恐れがあります。
 
 ## SpELの制限事項
 
-下記についてはSpELでは実現できません。どうしても下記をSpELで利用したい場合は、下記に該当する処理をわざわざ1つのメソッドに切り出して、SpELからそのメソッドを呼び出すようにしなければなりません。
+SpELはとても便利ですが、下記についてはSpELでは実現できません。どうしても下記をSpELで利用したい場合は、下記に該当する処理をわざわざ1つのメソッドに切り出して、SpELからそのメソッドを呼び出すようにしなければなりません。
 
 ### 1. ラムダ式を評価できない
 
 ラムダ式を使いたいと思ったことはないでしょうか？
+例えば、以下のようなイメージです。
+```java
+#{#list.stream().filter(s -> s.contains('s')).map(String::toUpperCase).collect(Collectors.joining(' '))}
+```
 SpELにはラムダ式を評価する機能がないため、記述してもパースエラーになってしまいます。そして、ラムダ式を併用することが多いStream APIも利用がかなり制限されます。SpELではコレクションに対して、[フィルタリング](https://spring.pleiades.io/spring-framework/reference/core/expressions/language-ref/collection-selection.html)と[変換](https://spring.pleiades.io/spring-framework/reference/core/expressions/language-ref/collection-projection.html)を行う機能がありますが、やはりこれだけではやれることに限りがあって、Stream APIと比べると物足りないです。
 
 ### 2. 記述は1ステップのみ
 
 1ステップで処理を書けなくて、あと数ステップだけでいいから書かせてほしいと思ったことはないでしょうか？
+例えば、以下のようなイメージです。
+ちょっと変な例ですが、マップがあって、その要素のキーの1つは「a」であるとわかっていて常に存在しており、もう一つの要素は存在しない、もしくはもう一つだけ存在していて任意の未知のキーで、それぞれの値の文字列の長さが同じかどうかを調べる、といったことをやろうとするとどうしても複数行書かざるを得ないです。2行書ければ実現できるのに惜しいです。
+```java
+#{Optional<String> another = #map.keySet().stream().filter(s -> !'a'.equals(s)).findAny();
+return another.isPresent() && #map.get('a').length() == #map.get(another.get()).length();}
+```
 SpELでは複数ステップ記述に近しいものとして、[三項演算子](https://spring.pleiades.io/spring-framework/reference/core/expressions/language-ref/operator-ternary.html)や[エルビス演算子](https://spring.pleiades.io/spring-framework/reference/core/expressions/language-ref/operator-elvis.html)がありますが、あくまで分岐処理としてしか利用できません。
 
 ## SpELの制限事項をなんとかしたい
 
-私は過去にフレームワークを作っていたことがあり、是非ともSpELを生かしたいと考えていました。しかし、上記の制限事項があるためSpELを導入しても少々不便さを感じていました。情報を検索してみても「できない」という情報しか見当たりません。試しにChatGPTに聞いてみたらなんと「できます」とお返事がありました！`#{ (param1, param2) -> param1 + param2 }` もしこれで動作するなら苦労しませんし、私は本稿を執筆していませんね。残念です。それでも何とかできないかと考えていたら、ちょっとしたアイデアを閃きました。
+私は過去にフレームワークを作っていたことがあり、是非ともSpELを生かしたいと考えていました。しかし、上記の制限事項があるためSpELを導入しても少々不便さを感じていました。情報を検索してみても「できない」という情報しか見当たりません。試しにChatGPTに聞いてみたらなんと「できます」とお返事がありました！`#{ (param1, param2) -> param1 + param2 }` もしこれで動作するなら苦労しませんし、私は本稿を執筆していませんね。残念です。それでも何とかできないかと考えていたら、ちょっとしたアイデアが閃きました。
 そこで、本稿ではSpELに関する解説を交えながら、上記の制限事項を実際に乗り越えた方法について解説します。
-おそらくこんなおかしなことを思いついて試そうとするのは私だけなのではないかと思います。興味のある方はお付き合いくださいませ。
+おそらくこんなおかしなことを思いついて試そうとするのは私ぐらいかもしれません。興味のある方はお付き合いくださいませ。
 
 # 準備
 
@@ -46,7 +88,7 @@ SpELにラムダ式や複数ステップの解釈機能を追加するために�
 
 ### SpEL評価クラス
 
-何はともあれ、まずはSpELを評価する機能を用意します。
+ラムダ式対応や複数ステップ対応の機能を作るためのベースとして、まずはSpELを評価する機能を用意します。
 
 ```java
 @Value
@@ -100,7 +142,7 @@ public class SpelEvaluator {
 
 * `EvaluationContext`
 
-   詳細は[EvaluationContext理解する](https://spring.pleiades.io/spring-framework/reference/core/expressions/evaluation.html#expressions-evaluation-context)参照。
+   詳細は[EvaluationContextを理解する](https://spring.pleiades.io/spring-framework/reference/core/expressions/evaluation.html#expressions-evaluation-context)参照。
    beanを参照できるようにしたいので、`StandardEvaluationContext`を使って`BeanResolver`の設定ができるようにしてあります。その他に、プロパティアクセスなどの記法に関する設定等ができます。
 
 :::column:static finalなメンバ
@@ -472,36 +514,6 @@ public class MultiSpelEvaluator {
 # さらなる改良
 
 さらに改良を加えて、私個人的なこだわりを存分に反映したバージョンです。
-ここまでこだわったサンプルはなかなか出てこないと思います。
-
-* Spring Framework基盤で実際に行われているSpEL評価処理の実装ソースコードを調べて同等の実装を取り込んだ
-* SpEL評価、複数SpEL評価にてvariablesおよびfunctions対応
-    * この対応に伴うSpEL評価の再帰的呼び出し時にvariablesおよびfunctionsを引き継ぐ対応
-* その他軽微な改善
-
-## Spring Framework基盤で実際に行われているSpEL評価処理をどうやって特定したのか
-
-それは失敗から学ぶことができます。しかも簡単です。
-```java
-@Value("#{}")
-String value;
-```
-というフィールドをbean化するクラスに仕込んで、テストでもよいのでとにかくAPを起動するだけです。
-そうすると以下のエラーログが出力されます。
-```
-Caused by: org.springframework.expression.ParseException: Expression [#{}] @0: No expression defined within delimiter '#{}' at character 0
-	at org.springframework.expression.common.TemplateAwareExpressionParser.parseExpressions(TemplateAwareExpressionParser.java:114)
-	at org.springframework.expression.common.TemplateAwareExpressionParser.parseTemplate(TemplateAwareExpressionParser.java:66)
-	at org.springframework.expression.common.TemplateAwareExpressionParser.parseExpression(TemplateAwareExpressionParser.java:52)
-	at org.springframework.context.expression.StandardBeanExpressionResolver.evaluate(StandardBeanExpressionResolver.java:148)
-	... 106 more
-```
-これは`StandardBeanExpressionResolver`([document](https://spring.pleiades.io/spring-framework/docs/current/javadoc-api/org/springframework/context/expression/StandardBeanExpressionResolver.html), [source](https://github.com/spring-projects/spring-framework/blob/main/spring-context/src/main/java/org/springframework/context/expression/StandardBeanExpressionResolver.java))で評価が行われている確たる証拠です。
-ソースコードを見ると、`ExpressionParser`には`SpelExpressionParser`を使っています。`ParserContext`には`TemplateParserContext`と同等のものを使っています。これらを用いてSpEL文字列から生成した`Expression`オブジェクトはキャッシュして使いまわしています。そして、`EvaluationContext`には`StandardEvaluationContext`を使っており、BeanResolverの設定などその他いろいろな設定を加えていることがわかります。`EvaluationContext`もキャッシュしていますが、今回はrootObjectやvariablesを使いたいので利用の都度異なる情報をセットして使うことになるため、このキャッシュ処理は実装には取り込みません。
-
-:::column:おすすめ設定
-`StandardEvaluationContext`の設定で個人的におすすめなのは`MapAccessor`です。SpELでキーがString型のMapの要素にアクセスする際は「マップ物理名['マップキー']」もしくは「マップ物理名.get('マップキー')」と記述する必要があります。`MapAccessor`を設定すると、上述の方法の他に「マップ物理名.マップキー」と記述してもアクセスできるようになります。JavaBeansのメンバーにアクセスする場合と同様にドット「.」繋ぎで簡潔に記述できるので、SpELではMapとJavaBeansのどちらの型であってもアクセスを同様に取り扱えるようになるので便利です。
-:::
 
 ## 完成コード
 
@@ -916,6 +928,39 @@ public class MultiSpelEvaluator {
 
 </details>
 
+### コーディングポイント
+
+以下を改良しました。
+
+* Spring Framework基盤で実際に行われているSpEL評価処理の実装ソースコードを調べて同等の実装を取り込みました。
+* SpEL評価および複数SpEL評価にて、変数（variables）および関数（functions）を受け入れる対応をしました。
+    * この対応に伴って、SpEL評価の再帰的呼び出し時に変数（variables）および関数（functions）を引き継ぐ対応をしました。
+* その他軽微な改善をしました。
+
+#### Spring Framework基盤で実際に行われているSpEL評価処理をどうやって特定したのか
+
+少しトライアンドエラーを繰り返すと簡単に分かります。
+```java
+@Value("#{}")
+String value;
+```
+というフィールドをbean化するクラスに仕込んで、テストでもよいのでとにかくAPを起動するだけです。
+そうすると以下のエラーログが出力されます。
+```
+Caused by: org.springframework.expression.ParseException: Expression [#{}] @0: No expression defined within delimiter '#{}' at character 0
+	at org.springframework.expression.common.TemplateAwareExpressionParser.parseExpressions(TemplateAwareExpressionParser.java:114)
+	at org.springframework.expression.common.TemplateAwareExpressionParser.parseTemplate(TemplateAwareExpressionParser.java:66)
+	at org.springframework.expression.common.TemplateAwareExpressionParser.parseExpression(TemplateAwareExpressionParser.java:52)
+	at org.springframework.context.expression.StandardBeanExpressionResolver.evaluate(StandardBeanExpressionResolver.java:148)
+	... 106 more
+```
+これは`StandardBeanExpressionResolver`([document](https://spring.pleiades.io/spring-framework/docs/current/javadoc-api/org/springframework/context/expression/StandardBeanExpressionResolver.html), [source](https://github.com/spring-projects/spring-framework/blob/main/spring-context/src/main/java/org/springframework/context/expression/StandardBeanExpressionResolver.java))で評価が行われている確たる証拠です。
+ソースコードを見ると、`ExpressionParser`には`SpelExpressionParser`を使っています。`ParserContext`には`TemplateParserContext`と同等のものを使っています。これらを用いてSpEL文字列から生成した`Expression`オブジェクトはキャッシュして使いまわしています。そして、`EvaluationContext`には`StandardEvaluationContext`を使っており、BeanResolverの設定などその他いろいろな設定を加えていることがわかります。`EvaluationContext`もキャッシュしていますが、今回はrootObjectやvariablesを使いたいので利用の都度異なる情報をセットして使うことになるため、このキャッシュ処理は実装には取り込みません。
+
+:::column:おすすめ設定
+`StandardEvaluationContext`の設定で個人的におすすめなのは`MapAccessor`です。SpELでキーがString型のMapの要素にアクセスする際は「マップ物理名['マップキー']」もしくは「マップ物理名.get('マップキー')」と記述する必要があります。`MapAccessor`を設定すると、上述の方法の他に「マップ物理名.マップキー」と記述してもアクセスできるようになります。JavaBeansのメンバーにアクセスする場合と同様にドット「.」繋ぎで簡潔に記述できるので、SpELではMapとJavaBeansのどちらの型であってもアクセスを同様に取り扱えるようになるので便利です。
+:::
+
 # 検証
 
 テストコードを書いて、実際に使ってみて検証してみます。
@@ -923,15 +968,14 @@ public class MultiSpelEvaluator {
 ## 完成テストコード
 
 いきなりですが、完成テストコード全体を示します。
-
-<details open>
-<summary>テストクラス（ここをクリックするとコード全体を表示 or 非表示にします）</summary>
-
 「1. SpEL内でラムダ式を使いたい」で行っていることを複数ステップにばらしたものが「2. 複数SpELを使いたい」になっています。
 「2. 複数SpELを使いたい」に対してさらにvariablesとfunctions引継ぎを使ったのもが「3. 複数SpELを使いたい（variablesやfunctionを引き継いで使いたい）」になっています。
 複数SpELを利用する際の`add`メソッドに渡しているSpEL文字列には二重エスケープが必要なので、少々書きっぷりがうるさくなってしまいますね。
 Streamの終端操作に`reduce`を使っていますが、`Collectors.joining(" ")`とするほうがスマートです。しかし、ラムダ式を何とかしてみせることが本稿の目的なのでここではわざと利用しています。悪しからず。
 余談ですが、文字列リテラルのテキストブロック対応のおかげで長い文字列が書きやすくてありがたいですね。
+
+<details open>
+<summary>テストクラス（ここをクリックするとコード全体を表示 or 非表示にします）</summary>
 
 ```java
 package com.example.spel.util;
@@ -1112,5 +1156,4 @@ public class SpelEvaluatorTest {
 
 # さいごに
 
-以上、SpELでラムダ式を使い、なおかつ複数ステップ記述できるようにすることをSpring Frameworkを改造せずに、何か特別なライブラリを使うこともなく簡単な実装によって実現できました。
-SpELは非常に便利ですが、[コード実行](https://spring.io/security/cve-2022-22963)や[DoS攻撃](https://spring.io/security/cve-2023-20861)といった脆弱性が報告されています。しかし、結局のところ第三者によって外部から渡された情報（SpEL文字列）を受け入れて検証せずにそのまま評価実行してしまっていることが問題なのです。そもそも受け入れずに他の運用を考えるか、どうしても受け入れるならばその内容を慎重に検証して実行できることに制限を設ける必要があります。取り扱い方さえ間違えなければ、本来SpELはとても便利なものなので是非とも活用してみてはいかがでしょうか。
+以上、SpELでラムダ式を使い、なおかつ複数ステップ記述できるようにすることをSpring Frameworkを改造せずに、何か特別なライブラリを使うこともなく簡単な実装によって実現できました。ただし、SpELを多用し過ぎたり、あれこれやり過ぎるとSpELが長く複雑になってメンテナンスも困難になってしまいます。実プロジェクトで使用する場合は、ここぞという場面での利用に止めるようにして、用法容量を守って注意してお使いください。

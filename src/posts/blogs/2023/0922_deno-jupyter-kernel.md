@@ -14,7 +14,7 @@ Jupyter Notebook で Deno をインタラクティブに利用することがで
 
 ## 準備
 
-[JupyterLab](https://jupyter.org/) を事前にインストールします。筆者の環境(macOS Ventula)では Homebrew で Python 3.11 が導入されていました。
+[JupyterLab](https://jupyter.org/) を事前にインストールします。筆者の環境(macOS Ventura)では Homebrew で Python 3.11 が導入されていました。
 
 ```shell
 $ python3 --version
@@ -48,7 +48,7 @@ jupyter lab
 まず Deno を 1.37 に更新します。
 
 ```shell
-Deno upgrade
+deno upgrade
 ```
 
 Deno カーネルをインストールします。 --unstable フラグが必要です。
@@ -65,7 +65,7 @@ $ deno jupyter --unstable --install
 
 ## Deno カーネルを使う
 
-それでは、Deno カーネルを使ってみましょう。上記の JupyterLab の画面で、Notebook セクションに追加された Deno カーネルのアイコンをクリックすると Deno カーネルを使える Jupyter Notebook が開きます。
+それでは、Deno カーネルを使ってみましょう。上記の JupyterLab の画面で、Notebook セクションに追加された Deno カーネルのアイコンをクリックすると Deno が書ける Jupyter Notebook が開きます。
 
 :::info
 以下のサンプルは1.37リリースブログのサンプルの写経がほとんどです。
@@ -75,7 +75,7 @@ $ deno jupyter --unstable --install
 
 ![hello world](https://i.gyazo.com/c9fe081c5f202df3fecb26f0c08fdaf6.png)
 
-Deno の標準 API は import なしで使えます。fetch API を使用する例です。
+Deno の標準 API はインポートなしで使えます。fetch API を使用する例です。
 
 ![Deno API](https://i.gyazo.com/121342275f510b0130118c14d719f0ea.png)
 

@@ -56,6 +56,12 @@ Beta 期間は無料で利用できますが、正式公開後は有料化が予
 サブスクリプションか永久ライセンスかについても検討中のようです。IntelliJ のような年間サブスクリプションになる可能性もありそうです。
 :::
 
+:::column:2023.09.25追記
+OrbStack v1.0 が[リリース](https://orbstack.dev/blog/orbstack-1.0)されました。Free プランと Pro プランがあり、Pro プランは月額10ドル(年払いだと20%オフ)となっています。Free プランは個人の非商用利用に限ります。
+
+[Pricing · OrbStack](https://orbstack.dev/pricing)
+:::
+
 ## インストール
 以下のページから Apple Silicon 版をダウンロードしてインストールしました。
 

@@ -12,14 +12,16 @@ tags: [orbstack, k8s]
 [OrbStack 1.0: Fast, light, easy way to run Docker containers and Linux](https://orbstack.dev/blog/orbstack-1.0)
 
 :::info
-価格も判明しました。非商用の個人利用の場合は無償です。
+価格も判明しました。
 
 [Pricing · OrbStack](https://orbstack.dev/pricing)
 
 商用利用可能な Pro は月10ドル(年払いは月8ドル)と Docker Desktop の Pro 月7ドル(年払いは月5ドル)より高いですが、Docker Desktop にはさらに Team や Business など上位グレードがあり、Team が月11ドル(年払いは月9ドル)なので、ターゲットはこちらかもしれません。
+
+非商用の個人利用に限り無償で利用できす。
 :::
 
-上記のアナウンスブログを見ると、Kubernetes も使えるようになっています。筆者は、ベータ版を更新し続けて使っていましたが、この機能追加には気づいておらず、別途 [Kind](https://kind.sigs.k8s.io/) を起動して使っていました。
+上記のアナウンスブログを見ると Kubernetes も使えるようになっています。筆者は、ベータ版を更新し続けて使っていましたが、この機能追加には気づいておらず、別途 [Kind](https://kind.sigs.k8s.io/) を起動して使っていました。
 
 :::info
 ベータが始まった時点では Kubernetes は「近い将来サポート予定」となっていました。8月末の v0.17.0 でリリースされ、改善が続いていました。
@@ -28,7 +30,7 @@ tags: [orbstack, k8s]
 :::
 
 ## Kubernetes を有効化する
-さっそく、Kubernetes 機能を確認していきます。
+さっそく Kubernetes 機能を確認していきます。
 
 Service タブで `Turn On` をクリックします。
 
@@ -38,7 +40,7 @@ Service タブで `Turn On` をクリックします。
 
 ![Creating cluster](https://i.gyazo.com/b24bc4a278f933e5f9e4a8d0dd3c7461.png)
 
-1分もかからず、クラスター構築が完了しました。
+1分もかからずクラスター構築が完了しました。
 
 ![Cluster created](https://i.gyazo.com/f48e2ae0d2ff801cb405fd58e3b736a9.png)
 
@@ -59,13 +61,13 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 OrbStack に組み込まれた Kubernetes は軽量なシングルノードのクラスターであり、GUI が提供され、ホスト OS のネットワークとの統合が実現されています。
 
-コンテナイメージは、OrbStack の Docker エンジンを利用しており、ローカルでビルドしたイメージをそのまま Pod として起動できます。
+OrbStack の Docker エンジンを利用しており、ローカルでビルドしたイメージをそのまま Pod として起動できます。
 
 :::info
-これは、Docker Desktop でも同様です。Kind を使う場合はコンテナイメージを `kind load docker-image` でクラスターにロードする必要があったのでここは楽になりました。
+これは Docker Desktop でも同様です。Kind を使う場合、コンテナイメージを `kind load docker-image` でクラスターにロードする必要があったのでここは楽になりました。
 :::
 
-Nginx をデプロイしてみます。
+NGINX をデプロイしてみます。
 
 ```shell
 $ kubectl create deployment nginx --image nginx
@@ -109,7 +111,7 @@ Accept-Ranges: bytes
 
 レスポンスが帰ってきました。Pod IP がホストネットワークに統合されておりダイレクトにアクセスできます。
 
-NodePort を指定して、サービスを公開します。
+NodePort を指定してサービスを公開します。
 
 ```shell
 $ kubectl expose pod nginx-77b4fdf86c-5ljw2 --type=NodePort --port=80
@@ -180,7 +182,7 @@ orb delete k8s
 削除後 Start すると Kubernetes クラスターが新規に構築されます。
 
 ## 最後に
-Apple Silicon の Mac では Hyperkit がないため、Doker Desktop より軽量な Minikube を使うことができませんでした[^1]。その状況も軽量・高速でオールインワンの OrbStack の登場により変化しました。コンテナを利用する開発も捗るようになっていくと思います。シンプルですが Pod や Service 用の UI も提供されており、CLI を叩かなくても状態を把握できるのも開発体験という意味ではメリットがあると思います。
+Apple Silicon の Mac では Hyperkit がないため軽量な Minikube が使えず[^1]、Docker Desktop を選択せざるを得ない状況がありました。その状況が OrbStack の登場により変わりました。コンテナを利用する開発も捗るようになっていくと思います。シンプルですが Pod や Service 用の UI も提供されており、CLI を叩かなくても状態を把握できるのも開発体験という意味ではメリットがあると思います。
 
 [^1]: もちろん Docker ドライバーを利用すれば動かすことはできますが、Docker Desktop などが別途必要になりオーバーヘッドが大きいのが課題でした。QEMU ドライバーサポートの開発が続いていますが、難航している模様です([こちらの記事](https://developer.mamezou-tech.com/blogs/2022/06/28/minikube-with-qemu-driver-support/)で紹介しています)。
 

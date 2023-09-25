@@ -8,15 +8,17 @@ layout: base.njk
     <header class="event__header">
       <h1>{{ title }}</h1>
       <div style="float: right">
-        <is-land on:idle>
-          <div id="preact-sns">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>
-          <template data-island>
-            <script type="module">
-              import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';
-              hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
-            </script>
-          </template>
-        </is-land>
+          {#
+<!--        <is-land on:idle>-->
+<!--          <div id="preact-sns">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>-->
+<!--          <template data-island>-->
+<!--            <script type="module">-->
+<!--              import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';-->
+<!--              hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));-->
+<!--            </script>-->
+<!--          </template>-->
+<!--        </is-land>-->
+          #}
       </div>
     </header>
 
@@ -37,6 +39,8 @@ layout: base.njk
     {%- include "pv-ranking.njk" %}
     {%- include "links.njk" %}
   </article>
+  {#
   {% initClipboardJS %}
   {% mermaid_js %}
+  #}
 </main>

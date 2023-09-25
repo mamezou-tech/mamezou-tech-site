@@ -5,21 +5,23 @@ layout: base.njk
 {% include 'sitenav.njk' %}
 
 <main class="tdbc-container">
-  <is-land on:idle>
-    <div id='toc'></div>
-    <template data-island>
-	  <script type="module">
-      import { renderToc } from '/components/preact/bundle.mjs';
-      renderToc(document.getElementById("toc"));
-	  </script>
-    </template>
-  </is-land>
+  {#
+<!--  <is-land on:idle>-->
+<!--    <div id='toc'></div>-->
+<!--    <template data-island>-->
+<!--	  <script type="module">-->
+<!--      import { renderToc } from '/components/preact/bundle.mjs';-->
+<!--      renderToc(document.getElementById("toc"));-->
+<!--	  </script>-->
+<!--    </template>-->
+<!--  </is-land>-->
+  #}
   <article class="post tdbc-mx-auto">
     <header class="post__header">
       <h1>{{ title }}</h1>
       <div class="post__details">
         <time datetime="{{ page.date | htmlDateString }}">
-          {{ page.date | readableDate }}
+          {{ page.data.date | readableDate }}
         </time>
         <span> | </span>
         <span>{{ content | readingTime }} read</span>
@@ -27,7 +29,7 @@ layout: base.njk
       {%- if author %}
         <div style="float: left; margin-bottom: 0.5rem">
         <span> Author: </span>
-        {%- set authors = collections.contributorArticles | byAuthor(author) %}
+        {%- set authors = search.pages() | contributorArticles | byAuthor(author) %}
         {%- if authors.length %}
           {%- set contributor = authors | first %}
           <a href="/authors/{{ author }}" title="{{ author }} の記事一覧">{{ author | safe }}
@@ -38,15 +40,17 @@ layout: base.njk
         </div>
       {% endif %}
       <div style="float: right">
-        <is-land on:idle>
-          <div id="preact-sns">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>
-          <template data-island>
-            <script type="module">
-              import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';
-              hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
-            </script>
-          </template>
-        </is-land>
+          {#
+<!--        <is-land on:idle>-->
+<!--          <div id="preact-sns">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>-->
+<!--          <template data-island>-->
+<!--            <script type="module">-->
+<!--              import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';-->
+<!--              hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));-->
+<!--            </script>-->
+<!--          </template>-->
+<!--        </is-land>-->
+          #}
       </div>
     {%- set adYear = tags | adventCalendarTag %}
     {%- if adYear %}
@@ -76,7 +80,7 @@ layout: base.njk
       <nav class="post__pagination">
         {%- if pageNavigationTag %}
 
-          {%- set previousPost = collections[pageNavigationTag] | getPreviousCollectionItem(page) %}
+          {%- set previousPost = search.previousPage(page.url, pageNavigationTag) %}
           {%- if previousPost %}
 
             <a href="{{ previousPost.url | url }}">
@@ -86,7 +90,7 @@ layout: base.njk
 
           {% endif %}
 
-          {%- set nextPost = collections[pageNavigationTag] | getNextCollectionItem(page) %}
+          {%- set nextPost = search.nextPage(page.url, pageNavigationTag) %}
           {%- if nextPost %}
 
             <a href="{{ nextPost.url | url }}">
@@ -98,7 +102,7 @@ layout: base.njk
 
         {% else %}
           {%- if prevPage %}
-            {%- set prevPostPage = collections.all | inputPath(prevPage) %}
+            {%- set prevPostPage = search.pages() | inputPath(prevPage) %}
             {%- if prevPostPage %}
               <a href="{{ prevPostPage.url | url }}">
                 <span>←</span>
@@ -107,7 +111,7 @@ layout: base.njk
             {% endif %}
           {% endif %}
           {%- if nextPage %}
-            {%- set nextPostPage = collections.all | inputPath(nextPage) %}
+            {%- set nextPostPage = search.pages() | inputPath(nextPage) %}
             {%- if nextPostPage %}
               <a href="{{ nextPostPage.url | url }}">
                 <span>{{ nextPostPage.data.title }}</span>
@@ -118,15 +122,17 @@ layout: base.njk
         {% endif %}
       </nav>
     </aside>
-    <is-land on:idle style="margin-top:0">
-      <div id='recommendation-app'></div>
-      <template data-island>
-	    <script type="module">
-        import { renderRecommendation } from '/components/preact/bundle.mjs';
-        renderRecommendation({tags : '{{ tags | pageTags }}'}, document.getElementById("recommendation-app"));
-	    </script>
-	  </template>
-    </is-land>
+    {#
+<!--    <is-land on:idle style="margin-top:0">-->
+<!--      <div id='recommendation-app'></div>-->
+<!--      <template data-island>-->
+<!--	    <script type="module">-->
+<!--        import { renderRecommendation } from '/components/preact/bundle.mjs';-->
+<!--        renderRecommendation({tags : '{{ tags | pageTags }}'}, document.getElementById("recommendation-app"));-->
+<!--	    </script>-->
+<!--	  </template>-->
+<!--    </is-land>-->
+    #}
     <hr class="link-separator" />
     {%- include "pv-ranking.njk" %}
     {%- include "links.njk" %}
@@ -146,6 +152,8 @@ layout: base.njk
       })
     });
   </script>
+  {#
   {% initClipboardJS %}
   {% mermaid_js %}
+  #}
 </main>

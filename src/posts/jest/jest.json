@@ -1,6 +1,0 @@
-{
-  "tags": ["テスト", "jest"],
-  "category": "テスト - Jest再入門",
-  "layout": "post",
-  "permalink": "/testing/jest/{{ page.fileSlug }}/"
-}

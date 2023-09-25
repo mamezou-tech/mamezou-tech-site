@@ -2,7 +2,7 @@
 title: ExcelテンプレートエンジンJETTの紹介
 author: koshiro-fukushima
 date: 2022-08-16
-tags: [JETT,OSS]
+tags: [JETT,oss]
 ---
 
 Javaで使えるExcelテンプレートエンジン[JETT](http://jett.sourceforge.net/index.html)を紹介させていただきます。導入方法等の詳細については[公式サイト](http://jett.sourceforge.net/installation.html)をご覧ください。

@@ -2,7 +2,7 @@
 title: 機械学習
 description: 機械学習に関する解説・実践テクニック
 date: git Last Modified
-eleventyExcludeFromCollections: true
+exclude: true
 icon: https://api.iconify.design/eos-icons/machine-learning.svg?color=%23730099&height=28
 ---
 

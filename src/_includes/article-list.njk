@@ -1,0 +1,22 @@
+---
+layout: page.njk
+---
+
+
+
+{%- if showTags == true %}
+<div class="tags">
+  {% include "tags-links.njk" %}
+</div>
+{% endif %}
+
+{%- if contributor.github %}
+<a href="https://github.com/{{ contributor.github }}"><img width="60" height="60" style="margin-left: 0.2rem" alt="{{ contributor.name }}" src="https://github.com/{{ contributor.github }}.png?size=40" /></a>
+{% endif %}
+
+{% include "pagination.njk" %}
+
+{% set postslist = results %}
+{% include "posts-list.njk" %}
+
+{% include "pagination.njk" %}

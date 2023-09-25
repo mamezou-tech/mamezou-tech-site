@@ -3,7 +3,7 @@
     <div>
       <a id="tdbc-siteid" href="/">
         <img src="/img/logo/mz-tech-logo-icon.png" />
-        &nbsp;|&nbsp;{{ site.siteName }}
+        &nbsp;|&nbsp;{{ meta.siteName }}
       </a>
     </div>
     <input id="menu-toggle" type="checkbox" />
@@ -11,7 +11,7 @@
       <div class="menu-button"></div>
     </label>
     <ul class="menu">
-      {%- for page in collections.pages -%}
+      {%- for page in search.pages('pages exclude!=true') -%}
       <li>
         <a href="{{ page.url }}">{{ page.data.title }}</a>
       </li>

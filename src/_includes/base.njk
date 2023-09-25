@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
-{%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ site.siteName }}{% endset -%}
-{%- set pageDescription %}{% shortDesc collections.all, page, site.siteDescription %}{% endset -%}
+{%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ meta.siteName }}{% endset -%}
+{%- set pageDescription %}{% shortDesc search.pages(), page, meta.siteDescription %}{% endset -%}
 {%- set pageSocialImg %}{{ meta.url }}/previews/{% if title %}{{ title | slug }}{% else %}home{% endif %}.png{% endset -%}
   <head>
     <meta charset="UTF-8" />
@@ -12,16 +12,6 @@
       content="{{pageDescription}}"
     />
     <link href="{{ '/css/style.css' | url }}" rel="stylesheet" />
-    {% edge 'liquid' %}
-    {% if eleventy.edge.cookies.theme == 'dark' %}
-      {% assign stylecss = '/css/style-dark.css' %}
-      <meta name="theme-color" content="#262525">
-    {% else %}
-      {% assign stylecss = '/css/style.css' %}
-      <meta name="theme-color" content="#ffffff">
-    {% endif %}
-    <link href="{{ stylecss | url }}" rel="stylesheet" />
-    {% endedge %}
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     {% if meta.env === 'prod' %}
@@ -57,8 +47,8 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Mochiy+Pop+One&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
     <meta name="twitter:card" content="summary_large_image" />
-    {% if site.twitterUsername %}
-    <meta name="twitter:creator" content="@{{ site.twitterUsername }}" />
+    {% if meta.twitterUsername %}
+    <meta name="twitter:creator" content="@{{ meta.twitterUsername }}" />
     {% endif %}
     <meta
       name="twitter:title"
@@ -94,7 +84,7 @@
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="RSS Feed for {{ site.siteName }}"
+      title="RSS Feed for {{ meta.siteName }}"
       href="/feed/"
     />
     <link href="/photoswipe/photoswipe.css" rel="stylesheet" />
@@ -103,15 +93,6 @@
     <script type="module" src="/vendor/is-land.js" defer></script>
   <body>
     <div id="fb-root"></div>
-    {% edge 'liquid' %}
-    <div class="tdbc-theme-toggle">
-      {% if eleventy.edge.cookies.theme == 'dark' %}
-        <a href="{{ page.url }}?theme=light">Lightモード切替</a>
-      {% else %}
-        <a href="{{ page.url }}?theme=dark">Darkモード切替</a>
-      {% endif %}
-    </div>
-    {% endedge %}
     {{ content | safe }}
     <footer class="tdbc-background--secondary">
       <div class="tdbc-container tdbc-text-align-center">

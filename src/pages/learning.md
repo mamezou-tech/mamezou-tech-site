@@ -32,7 +32,7 @@ icon: https://api.iconify.design/iconoir/learning.svg?color=%23730099&height=28
 - [その０：そもそも研修設計とは研修設計していますか？](/blogs/2022/09/20/instructional_d-001/)
 - [その１：学習内容の構造化](/blogs/2022/10/13/instructional_d-002/)
 - [その２：学びを促進するストーリー展開](/blogs/2022/12/21/instructional_d-003/)
-- [その３：学習の見える化](/blogs/2023/09/07/instructional_d-004//)
+- [その３：学習の見える化](/blogs/2023/09/07/instructional_d-004/)
 
 
 ## その他

@@ -1,6 +1,0 @@
-{
-  "layout": "post",
-  "permalink": "/containers/k8s/tutorial/app/{{ page.fileSlug }}/",
-  "category": "コンテナ - Kubernetesチュートリアル"
-}
-

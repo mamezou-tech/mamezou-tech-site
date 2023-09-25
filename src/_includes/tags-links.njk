@@ -1,5 +1,5 @@
 <span id="head-tags">
-{% for tag in collections.tagList | limit(50) %}
+{% for tag in search.tags() | validTags | limit(50) %}
   {% set tagUrl %}/tags/{{ tag }}/{% endset %}
   <a href="{{ tagUrl | url }}" class="post-tag">#{{ tag }}</a>
 {% endfor %}
@@ -7,7 +7,7 @@
 </span>
 
 <span id="all-tags" style="display: none">
-{% for tag in collections.tagList %}
+{% for tag in search.tags() | validTags %}
   {% set tagUrl %}/tags/{{ tag }}/{% endset %}
   <a href="{{ tagUrl | url }}" class="post-tag">#{{ tag }}</a>
 {% endfor %}

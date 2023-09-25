@@ -2,7 +2,7 @@
 title: VS Code の CodeQL 拡張と Starter workspace でコード分析する
 author: masahiro-kondo
 date: 2022-12-06
-tags: [codeql, vscode, advent2022, security]
+tags: [codeql, vscode, advent2022, Security]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 ---
 

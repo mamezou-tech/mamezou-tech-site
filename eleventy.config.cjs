@@ -10,9 +10,9 @@ const markdownItContainer = require('markdown-it-container');
 const packageVersion = require('./package.json').version;
 const codeClipboard = require('eleventy-plugin-code-clipboard');
 const pluginMermaid = require('@kevingimbel/eleventy-plugin-mermaid');
-const { getPosts } = require('./11ty/utils.cjs');
+const { getPosts } = require('./11ty/utils.ts');
 const markdownItKatex = require('@traptitech/markdown-it-katex');
-const containerOptions = require('./11ty/markdown-it/container-options.cjs');
+const containerOptions = require('./11ty/markdown-it/container-options.js');
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(EleventyEdgePlugin);
@@ -37,7 +37,7 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addShortcode('year', () => `${new Date().getFullYear()}`);
   eleventyConfig.addShortcode('packageVersion', () => `v${packageVersion}`);
-  eleventyConfig.addShortcode('shortDesc', require('./11ty/short-desc.cjs'));
+  eleventyConfig.addShortcode('shortDesc', require('./11ty/short-desc.ts'));
 
   eleventyConfig.addFilter('slug', require('./11ty/slug.cjs'));
   eleventyConfig.addFilter('head', require('./11ty/head.cjs'));
@@ -53,7 +53,7 @@ module.exports = function(eleventyConfig) {
     }
     return DateTime.fromJSDate(dateObj, options).toFormat('yyyy-LL-dd');
   });
-  eleventyConfig.addFilter('excerpt', require('./11ty/excerpt.cjs'));
+  eleventyConfig.addFilter('excerpt', require('./11ty/excerpt.ts'));
   eleventyConfig.addFilter('pageTags', require('./11ty/page-tags.cjs'));
   eleventyConfig.addFilter('blogPage', require('./11ty/blog-page.cjs'));
   eleventyConfig.addFilter('inputPath', (pages, path) => pages.find((page) => page.inputPath === path));
@@ -64,7 +64,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addFilter('byAuthor',
     (contributorArticles, author) => contributorArticles.filter(contributor => contributor.name === author));
   eleventyConfig.addFilter('selectAuthor', (hrefs, author) => hrefs.filter(href => href.includes(author)));
-  eleventyConfig.addFilter('getDate', require('./11ty/get-date.cjs'));
+  eleventyConfig.addFilter('getDate', require('./11ty/get-date.ts'));
 
   const eventTagFilter = (tagPrefix) => (rawTags) => {
     if (!rawTags) return;
@@ -81,7 +81,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addCollection('currentMonthPosts', (collection) => getPosts(collection).filter(post => post.date.getMonth() === new Date().getMonth() && post.date.getFullYear() === new Date().getFullYear()));
   eleventyConfig.addCollection('articles', getPosts);
   eleventyConfig.addCollection('tagList', require('./11ty/tag-list.cjs'));
-  eleventyConfig.addCollection('contributorArticles', require('./11ty/contributor-articles.cjs'));
+  eleventyConfig.addCollection('contributorArticles', require('./11ty/contributor-articles.ts'));
   eleventyConfig.addCollection('tagArticles', require('./11ty/tag-articles.cjs'));
 
   // for IsLand Architecture for preact

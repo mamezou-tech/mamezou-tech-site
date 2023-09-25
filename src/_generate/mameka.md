@@ -3,7 +3,7 @@ title: 豆香の豆知識(Powered by GPT-4)
 permalink: /gpt/mameka/
 layout: post
 author: mameka
-eleventyExcludeFromCollections: true
+exclude: true
 ---
 
 <img style="display:block;margin:0.5rem auto" src="/img/logo/mameka-column_500.png" alt="mameka">

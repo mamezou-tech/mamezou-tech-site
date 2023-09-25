@@ -2,7 +2,7 @@
     <legend>豆蔵デベロッパーサイト - 先週のアクセスランキング</legend>
     <ol>
         {%- for article in pv.ranking -%}
-            {%- set published = collections.all | getDate(article.url) -%}
+            {%- set published = search.pages() | getDate(article.url) -%}
             <li><a href="{{ article.url }}">{{ article.title }}{% if published %} ({{ published }}){% endif %}</a></li>
         {%- endfor -%}
     </ol>

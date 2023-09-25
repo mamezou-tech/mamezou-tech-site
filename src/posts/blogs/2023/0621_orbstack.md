@@ -63,7 +63,7 @@ OrbStack v1.0 が[リリース](https://orbstack.dev/blog/orbstack-1.0)されま
 
 OrbStack に追加された Kubernetes 機能については別途記事を書きました。
 
-[OrbStack 1.0 付属の Kubernetes を試す](/2023/09/25/orbstack-with-k8s/)
+[OrbStack 1.0 付属の Kubernetes を試す](/blogs/2023/09/25/orbstack-with-k8s/)
 :::
 
 ## インストール

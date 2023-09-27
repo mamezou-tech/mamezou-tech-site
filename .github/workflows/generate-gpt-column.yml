@@ -42,6 +42,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
         run: |
           set -eu
           cd ${GITHUB_WORKSPACE}/scripts

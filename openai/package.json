@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "lint:article": "ts-node-esm ts/bin/lint-article.ts",
-    "generate:image": "ts-node-esm ts/bin/generate-image.ts",
     "generate:column": "ts-node-esm ts/bin/generate-column.ts"
   },
   "author": "",

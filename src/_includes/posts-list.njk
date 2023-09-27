@@ -32,7 +32,7 @@
           <a  href="{{ post.data.url }}">{{ post.data.title }}</a>
         </h3>
 
-        <p class="post-list__excerpt">{{ post.data.content | excerpt | safe  }}</p>
+        <p class="post-list__excerpt">{{ post.data.children | excerpt | safe  }}</p>
 
         <a class="post-list__read-more" href="{{ post.data.url }}">記事を読む</a>
       </li>

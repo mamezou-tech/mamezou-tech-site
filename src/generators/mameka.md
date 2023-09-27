@@ -1,9 +1,10 @@
 ---
 title: 豆香の豆知識(Powered by GPT-4)
-permalink: /gpt/mameka/
-layout: post
+url: /gpt/mameka/
+layout: post.njk
 author: mameka
 exclude: true
+templateEngine: [njk, md]
 ---
 
 <img style="display:block;margin:0.5rem auto" src="/img/logo/mameka-column_500.png" alt="mameka">
@@ -19,5 +20,5 @@ exclude: true
 ## {{ column.title }}
 投稿日: {{ column.created | readableDate }}
 
-{{ column.text }}
+{{ column.text | safe }}
 {% endfor %}

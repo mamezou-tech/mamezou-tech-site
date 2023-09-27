@@ -181,7 +181,7 @@ layout: base.njk
                   <a  href="{{ post.url }}">{{ post.title }}</a>
                 </h3>
 
-                <p class="post-list__excerpt">{{ post.content | excerpt | safe  }}</p>
+                <p class="post-list__excerpt">{{ post.children | excerpt | safe  }}</p>
 
                 <a class="post-list__read-more" href="{{ post.url }}">記事を読む</a>
               </li>

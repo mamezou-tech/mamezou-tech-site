@@ -122,12 +122,15 @@ site.filter('currentMonthPosts', (pages: Page[]) => filterByPost(pages).filter((
   return date.month === now.month && date.year === now.year;
 }));
 
-site.filter('posts', (search: Search) => getPostArticles(search))
+site.filter('posts', (search: Search) => getPostArticles(search));
 site.filter('getNewestCollectionItemDate', (page: Page[]) => {
-  const [first] = page.slice().sort((a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0))
+  const [first] = page.slice().sort((a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0));
   return first.data.date;
-})
-site.filter('isoDate', (d: Date) => DateTime.fromJSDate(d).toISO())
+});
+site.filter('isoDate', (d: Date) => DateTime.fromJSDate(d).toISO());
 site.filter('absoluteUrl', (s: string, base: string) => new URL(s, base).toString());
+
+site.filter('replaceRssUrl', (html, base) => html.replaceAll(
+  /\s(href|src)="([^"]+)"/g, (_: string, attr: string, value: string) => ` ${attr}="${new URL(value, base).href}"`));
 
 export default site;

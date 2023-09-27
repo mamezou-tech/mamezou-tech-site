@@ -24,7 +24,7 @@ exclude: true
 		<updated>{{ page.data.date | isoDate }}</updated>
 		<id>{{ absolutePostUrl }}</id>
 		<summary>{{ pageDescription }}</summary>
-		<content type="html">{{ page.data.children }}</content>
+		<content type="html">{{ page.data.children | replaceRssUrl(meta.url) }}</content>
 	</entry>
 	{%- endfor %}
 </feed>

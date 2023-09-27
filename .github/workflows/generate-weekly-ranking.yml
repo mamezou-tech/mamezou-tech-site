@@ -1,8 +1,8 @@
-name: generate-gpt-column
+name: generate-pv-report
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 15 * * 0'
   workflow_dispatch:
 
 jobs:
@@ -11,10 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create Branch for GPT generated page
-        id: create-gpt-branch
+      - name: Create Branch for GA report
+        id: create-ga-branch
         run: |
-          BRANCH=feature/$(date +"%Y-%m-%d-%H%M%S")-gpt
+          BRANCH=feature/$(date +"%Y-%m-%d")-ga
           git checkout -b $BRANCH
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
@@ -37,15 +37,19 @@ jobs:
           cd ${GITHUB_WORKSPACE}/scripts
           npm ci
 
-      - name: Update page for GPT generated column
-        id: update-for-gpt-column
+      - name: Generate GA PageView report
+        id: generate-ga-pv-report
         env:
+          GOOGLE_APPLICATION_CREDENTIALS_FILE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_FILE }}
+          GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
         run: |
           set -eu
           cd ${GITHUB_WORKSPACE}/scripts
-          npm run generate:column
+          echo ${GOOGLE_APPLICATION_CREDENTIALS_FILE} | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
+          export GOOGLE_APPLICATION_CREDENTIALS=${GITHUB_WORKSPACE}/google_auth.json
+          npm run generate:weekly-ranking
           git add ${GITHUB_WORKSPACE}/src/_data
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"
@@ -54,13 +58,13 @@ jobs:
           fi
 
       - name: Commit report
-        if: steps.update-for-gpt-column.outputs.changed == 'true'
+        if: steps.generate-ga-pv-report.outputs.changed == 'true'
         run: |
           set -eu
           git config --local user.email "github-actions@mamezou.com"
           git config --local user.name "github-actions"
-          git commit -m "chore: Add GPT generated column"
-          git push -u origin ${{ steps.create-gpt-branch.outputs.branch }}
+          git commit -m "Add PV ranking report"
+          git push -u origin ${{ steps.create-ga-branch.outputs.branch }}
 
       # https://github.com/marketplace/actions/github-pull-request-action
       - name: Create Pull Request
@@ -68,7 +72,11 @@ jobs:
         with:
           destination_branch: "main"
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ steps.create-gpt-branch.outputs.branch }}
-          pr_title: "Update GPT column by github-actions"
+          source_branch: ${{ steps.create-ga-branch.outputs.branch }}
+          pr_title: "Update GA Report by github-actions"
           pr_reviewer: kudoh
-          pr_body: "Check the GPT generated column."
+          pr_body: "Check weekly access ranking report."
+
+      - name: Delete google auth file
+        run: rm -f ${GITHUB_WORKSPACE}/google_auth.json
+        if: always()

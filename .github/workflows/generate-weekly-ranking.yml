@@ -1,4 +1,4 @@
-name: generate-pv-report
+name: generate-weekly-ranking
 
 on:
   schedule:

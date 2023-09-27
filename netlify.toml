@@ -1,6 +1,6 @@
-[dev]
-  framework = "#static"
-  command = "npm run start:edge"
+#[dev]
+#  framework = "#static"
+#  command = "npm run start:edge"
 
 [build]
   # Directory to change to before starting a build.
@@ -12,11 +12,11 @@
   # been specified, include it in the publish directory path.
   publish = "public"
 
-  ignore  = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF src 11ty components netlify package-lock.json eleventy.cjs netlify.toml rollup.config.mjs"
+  ignore  = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF src 11ty components _config.ts deno.json netlify.toml rollup.config.mjs"
 
   # Default build command.
 #  command = "AWS_LAMBDA_FUNCTION_NAME=trickpuppeteer npm run build"
-  command = "npm run build:netlify"
+  command = "deno task lume"
 
   [build.environment]
     NODE_VERSION="18"

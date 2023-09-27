@@ -125,7 +125,7 @@ async function notifyToSlack(ranks: Rank[]) {
 }
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const reportDir = `${__dirname}/../src/_data`;
+const reportDir = `${__dirname}/../../src/_data`;
 const reportFile = `${reportDir}/pv.json`;
 if (fs.existsSync(reportFile)) {
   const prevFile = `${reportDir}/pre-pv.json`;

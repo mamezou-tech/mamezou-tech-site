@@ -78,8 +78,7 @@ My first word is "${keyword}".
   const web = new WebClient(token);
 
   const today = new Date();
-  const channel = 'C034MCKP4M6';
-  // const channel = 'C04F1QJDLJD'
+  const channel = process.env.SLACK_CHANNEL_ID || 'D041BPULN4S';
   await web.chat.postMessage({
     channel,
     mrkdwn: true,
@@ -135,7 +134,7 @@ function safeResponse(inputString: string) {
 }
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const reportDir = `${__dirname}/../../../src/_data`;
+const reportDir = `${__dirname}/../../src/_data`;
 const reportFile = `${reportDir}/gpt.json`;
 
 await main(reportFile);

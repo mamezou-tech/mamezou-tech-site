@@ -1,4 +1,4 @@
-name: generate-pv-report
+name: generate-weekly-ranking
 
 on:
   schedule:
@@ -27,14 +27,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.OS }}-node-${{ hashFiles('ga/package-lock.json') }}
+          key: ${{ runner.OS }}-node-${{ hashFiles('scripts/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
 
       - name: Install
         run: |
-          cd ${GITHUB_WORKSPACE}/ga
+          cd ${GITHUB_WORKSPACE}/scripts
           npm ci
 
       - name: Generate GA PageView report
@@ -46,10 +46,10 @@ jobs:
           SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
         run: |
           set -eu
-          cd ${GITHUB_WORKSPACE}/ga
+          cd ${GITHUB_WORKSPACE}/scripts
           echo ${GOOGLE_APPLICATION_CREDENTIALS_FILE} | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
           export GOOGLE_APPLICATION_CREDENTIALS=${GITHUB_WORKSPACE}/google_auth.json
-          npm run generate:pv
+          npm run generate:weekly-ranking
           git add ${GITHUB_WORKSPACE}/src/_data
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"

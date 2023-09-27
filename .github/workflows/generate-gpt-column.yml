@@ -27,14 +27,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.OS }}-node-${{ hashFiles('openai/package-lock.json') }}
+          key: ${{ runner.OS }}-node-${{ hashFiles('scripts/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
 
       - name: Install
         run: |
-          cd ${GITHUB_WORKSPACE}/openai
+          cd ${GITHUB_WORKSPACE}/scripts
           npm ci
 
       - name: Update page for GPT generated column
@@ -44,7 +44,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           set -eu
-          cd ${GITHUB_WORKSPACE}/openai
+          cd ${GITHUB_WORKSPACE}/scripts
           npm run generate:column
           git add ${GITHUB_WORKSPACE}/src/_data
           if ! git diff-index --quiet HEAD --; then

@@ -1,6 +1,5 @@
 import lume, { PluginOptions } from 'lume/mod.ts';
 import jsx_preact from 'lume/plugins/jsx_preact.ts';
-import katex from 'lume/plugins/katex.ts';
 import liquid from 'lume/plugins/liquid.ts';
 import postcss from 'lume/plugins/postcss.ts';
 import prism from 'lume/plugins/prism.ts';
@@ -20,6 +19,7 @@ import { shortDesc } from './11ty/short-desc.ts';
 import anchor from 'npm:markdown-it-anchor@^8.6.5';
 import footNote from 'npm:markdown-it-footnote@^3.0.3';
 import container from 'npm:markdown-it-container@^3.0.0';
+import katex from 'npm:@traptitech/markdown-it-katex@^3.5.0';
 import containerOptions from './11ty/markdown-it/container-options.js';
 import { filterByPost, getPostArticles } from './11ty/utils.ts';
 import { Page } from 'lume/core/filesystem.ts';
@@ -29,23 +29,29 @@ const markdown: Partial<PluginOptions['markdown']> = {
   options: {
     breaks: true
   },
-  plugins: [[anchor, {
-    permalink: anchor.permalink.linkAfterHeader({
-      class: 'tdbc-anchor',
-      style: 'aria-label',
-      assistiveText: (title: string) => `link to '${title}'`,
-      visuallyHiddenClass: 'visually-hidden',
-      symbol: '#',
-      wrapper: ['<div class=\'section-header\'>', '</div>']
-    }),
-    level: [1, 2, 3],
-    slugify: (s: string) =>
-      s
-        .trim()
-        .toLowerCase()
-        .replace(/[\s+~\/]/g, '-')
-        .replace(/[().`,%·'"!?¿:@*]/g, '')
-  }], [footNote], [container, 'flash', containerOptions]]
+  plugins: [
+    [anchor,
+      {
+        permalink: anchor.permalink.linkAfterHeader({
+          class: 'tdbc-anchor',
+          style: 'aria-label',
+          assistiveText: (title: string) => `link to '${title}'`,
+          visuallyHiddenClass: 'visually-hidden',
+          symbol: '#',
+          wrapper: ['<div class=\'section-header\'>', '</div>']
+        }),
+        level: [1, 2, 3],
+        slugify: (s: string) =>
+          s
+            .trim()
+            .toLowerCase()
+            .replace(/[\s+~\/]/g, '-')
+            .replace(/[().`,%·'"!?¿:@*]/g, '')
+      }],
+    [footNote],
+    [container, 'flash', containerOptions],
+    [katex, { 'throwOnError': false, 'errorColor': ' #cc0000' }]
+  ]
 };
 
 const site = lume({
@@ -57,7 +63,6 @@ const site = lume({
 }, { markdown });
 
 site.use(jsx_preact());
-site.use(katex());
 site.use(liquid());
 site.use(postcss());
 site.use(prism());
@@ -90,16 +95,14 @@ site.filter('readableDate', (dateObj: any) => {
 site.filter('excerpt', excerpt);
 site.filter('pageTags', pageTags);
 site.filter('blogPage', blogPage);
-site.filter('inputPath', (pages: any[], path: any) => pages.find((page: any) => page.inputPath === path));
-site.filter('byTag',
-  (tagArticles: any[], tag: any) => tagArticles.filter((tagArticle: any) => tagArticle.tag === tag));
-site.filter('tagUrl', (hrefs: any[], tag: string) => hrefs.filter(href => href.includes(`tags/${tag}`)));
-site.filter('limit', (array: any[], limit: number) => array.slice(0, limit));
+site.filter('inputPath', (pages: Page[], path: string) => pages.find((page: Page) => page.data.inputPath === path));
+site.filter('tagUrl', (hrefs: string[], tag: string) => hrefs.filter(href => href.includes(`tags/${tag}`)));
+site.filter('limit', (array: unknown[], limit: number) => array.slice(0, limit));
 site.filter('byAuthor',
   (contributorArticles: Author[], author: string) => {
     return contributorArticles.filter(contributor => contributor.name === author);
   });
-site.filter('selectAuthor', (hrefs: any[], author: string) => hrefs.filter(href => href.includes(author)));
+site.filter('selectAuthor', (hrefs: string[], author: string) => hrefs.filter(href => href.includes(author)));
 site.filter('getDate', getDate);
 
 const eventTagFilter = (tagPrefix: string) => (rawTags: string[]) => {

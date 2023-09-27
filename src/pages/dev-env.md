@@ -28,6 +28,9 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [Kubernetesチュートリアル ローカル開発環境準備 - 実行環境(minikube)](/containers/k8s/tutorial/app/minikube/)
 - [Kubernetesチュートリアル ローカル開発環境準備 - 自動化ツール(Skaffold)](/containers/k8s/tutorial/app/minikube/)
 - [Kubernetesチュートリアル ローカル開発環境準備 - ローカルAWS(LocalStack)](/containers/k8s/tutorial/app/minikube/)
+- [Podman Desktopがv1.0になったのでwindows版を試してみたところ、気付いたらv1.1に上がるくらいに機能豊富だった話](/blogs/2023/06/09/podman-desktop-win/)
+- [OrbStack - macOS 専用の高速軽量なコンテナ & Linux VM 環境](/blogs/2023/06/21/orbstack/)
+- [OrbStack 1.0 付属の Kubernetes を試す](/blogs/2023/09/25/orbstack-with-k8s/)
 
 ### リモート環境
 
@@ -35,6 +38,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [GitHub Codespaces を使いはじめる](/blogs/2022/05/18/start-using-codespaces/)
 - [GitHub Codespaces の Prebuilding で開発環境をカスタマイズして共有する](/blogs/2022/07/30/prebuilding-github-codespaces/)
 - [全ユーザーに公開された GitHub Codespaces で Codespace Templates を使ってみる](/blogs/2022/11/11/github-codespce-templates/)
+- [GitHub CodespacesによるJavaのチーム開発環境の作り方](/blogs/2023/06/26/codespaces-for-java/)
 
 ## VCS(バージョン管理)の機能を活用する
 
@@ -44,6 +48,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [GitHub Projects の Automated kanban で issue 管理を楽にする](/blogs/2022/07/12/using-github-projects-automated-kanban/)
 - [GitHub Projects がリニューアル - スプレッドシートのビューが利用可能に](/blogs/2022/07/28/github_projects_spreadseets_view/)
 - [GitHub の外部サービス自動リンク参照で英数字の識別子が利用可能に](/blogs/2022/09/02/github-autolinks-with-alphanumeric/)
+- [GitHub Projects に Roadmaps が登場 - issue や PR をタイムラインで管理しよう](/blogs/2023/03/28/github-projects-new-roadmaps-layout/)
 
 ## チーム内外のコミュニケーションを促進する
 
@@ -52,3 +57,4 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [sb2md - Scrapbox ページを Markdown に変換する CLI](/blogs/2022/01/11/sb2md/)
 - [Backstageで開発者ポータルサイトを構築する - 導入編](/blogs/2022/04/29/backstage-intro/)
 - [Backstageで開発者ポータルサイトを構築する - カタログ作成](/blogs/2022/05/05/backstage-catalog/)
+- [ScrapboxでMermaid記法を可視化するUserScriptを作った話](/blogs/2023/08/08/mermaid-in-scrapbox/)

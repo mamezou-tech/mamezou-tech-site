@@ -60,6 +60,10 @@ Beta 期間は無料で利用できますが、正式公開後は有料化が予
 OrbStack v1.0 が[リリース](https://orbstack.dev/blog/orbstack-1.0)されました。Free プランと Pro プランがあり、Pro プランは月額10ドル(年払いだと20%オフ)となっています。Free プランは個人の非商用利用に限ります。
 
 [Pricing · OrbStack](https://orbstack.dev/pricing)
+
+OrbStack に追加された Kubernetes 機能については別途記事を書きました。
+
+[OrbStack 1.0 付属の Kubernetes を試す](/blogs/2023/09/25/orbstack-with-k8s/)
 :::
 
 ## インストール

@@ -24,6 +24,7 @@ import containerOptions from './11ty/markdown-it/container-options.js';
 import { filterByPost, getPostArticles } from './11ty/utils.ts';
 import { Page } from 'lume/core/filesystem.ts';
 import { Search } from 'lume/plugins/search.ts';
+import mermaidPlugin from './11ty/markdown-it/mermaid-plugin.ts';
 
 const markdown: Partial<PluginOptions['markdown']> = {
   options: {
@@ -48,9 +49,10 @@ const markdown: Partial<PluginOptions['markdown']> = {
             .replace(/[\s+~\/]/g, '-')
             .replace(/[().`,%·'"!?¿:@*]/g, '')
       }],
-    [footNote],
+    footNote,
     [container, 'flash', containerOptions],
-    [katex, { 'throwOnError': false, 'errorColor': ' #cc0000' }]
+    [katex, { 'throwOnError': false, 'errorColor': ' #cc0000' }],
+    mermaidPlugin
   ]
 };
 
@@ -136,4 +138,6 @@ site.filter('absoluteUrl', (s: string, base: string) => new URL(s, base).toStrin
 site.filter('replaceRssUrl', (html, base) => html.replaceAll(
   /\s(href|src)="([^"]+)"/g, (_: string, attr: string, value: string) => ` ${attr}="${new URL(value, base).href}"`));
 
+site.helper('mermaidTag',
+  () => `<script async src="https://unpkg.com/mermaid@9.3.0/dist/mermaid.min.js">document.addEventListener('DOMContentLoaded', mermaid.initialize({startOnLoad:true}));</script>`, { type: 'tag' });
 export default site;

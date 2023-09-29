@@ -13,7 +13,7 @@ tags: [AWS認定]
 
 ## 計画前
 
-私は2019年に[AWS Certified Solutions Architect – Associate](https://www.credly.com/earner/earned/badge/1fe512fd-09c4-4bf8-a04f-646e8916d6e2) (SAA) を取得していました。AWS認定は有効期限が3年です。そのまま2022年3月3日に失効してしまいました。
+私は2019年に[AWS Certified Solutions Architect – Associate](https://www.credly.com/badges/1fe512fd-09c4-4bf8-a04f-646e8916d6e2/public_url) (SAA) を取得していました。AWS認定は有効期限が3年です。そのまま2022年3月3日に失効してしまいました。
 
 弊社では、隔月のハッカソンというイベントがあります。2022年6月のハッカソンで12冠を目指している方 (上記記事の著者の白谷さんです) に刺激を受け、2022年9月17日に[AWS Certified Cloud Practitioner](https://aws.amazon.com/jp/certification/certified-cloud-practitioner/) (CLF) を取得しました。
 

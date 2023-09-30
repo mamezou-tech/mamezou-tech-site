@@ -29,6 +29,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [Kubernetesチュートリアル ローカル開発環境準備 - 自動化ツール(Skaffold)](/containers/k8s/tutorial/app/minikube/)
 - [Kubernetesチュートリアル ローカル開発環境準備 - ローカルAWS(LocalStack)](/containers/k8s/tutorial/app/minikube/)
 - [Podman Desktopがv1.0になったのでwindows版を試してみたところ、気付いたらv1.1に上がるくらいに機能豊富だった話](/blogs/2023/06/09/podman-desktop-win/)
+- [WSL2上にUbuntu-22.04LTSを導入し、Dockerをインストールしようとしたら、いろいろとハマった件](/blogs/2023/09/09/docker_ubuntu_on_wsl2/)
 - [OrbStack - macOS 専用の高速軽量なコンテナ & Linux VM 環境](/blogs/2023/06/21/orbstack/)
 - [OrbStack 1.0 付属の Kubernetes を試す](/blogs/2023/09/25/orbstack-with-k8s/)
 

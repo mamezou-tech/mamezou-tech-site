@@ -12,7 +12,7 @@ const codeClipboard = require('eleventy-plugin-code-clipboard');
 const pluginMermaid = require('@kevingimbel/eleventy-plugin-mermaid');
 const { getPosts } = require('./11ty/utils.ts');
 const markdownItKatex = require('@traptitech/markdown-it-katex');
-const containerOptions = require('./11ty/markdown-it/container-options.js');
+const containerOptions = require('./11ty/markdown-it/container-options.ts');
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(EleventyEdgePlugin);
@@ -132,7 +132,7 @@ module.exports = function(eleventyConfig) {
     .use(markdownItContainer, 'flash', containerOptions)
     .use(markdownItKatex, { 'throwOnError': false, 'errorColor': ' #cc0000' })
     .use(require('./11ty/markdown-it/image-swipe-plugin.cjs'))
-    .use(require('./11ty/markdown-it/external-link-plugin.cjs'));
+    .use(require('./11ty/markdown-it/external-link-plugin.ts'));
 
   eleventyConfig.setLibrary('md', markdownLibrary);
 

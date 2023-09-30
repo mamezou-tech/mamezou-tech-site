@@ -20,11 +20,12 @@ import anchor from 'npm:markdown-it-anchor@^8.6.5';
 import footNote from 'npm:markdown-it-footnote@^3.0.3';
 import container from 'npm:markdown-it-container@^3.0.0';
 import katex from 'npm:@traptitech/markdown-it-katex@^3.5.0';
-import containerOptions from './11ty/markdown-it/container-options.js';
+import containerOptions from './11ty/markdown-it/container-options.ts';
 import { filterByPost, getPostArticles } from './11ty/utils.ts';
 import { Page } from 'lume/core/filesystem.ts';
 import { Search } from 'lume/plugins/search.ts';
 import mermaidPlugin from './11ty/markdown-it/mermaid-plugin.ts';
+import externalLinkPlugin from './11ty/markdown-it/external-link-plugin.ts';
 import './prism-deps.ts';
 
 const markdown: Partial<PluginOptions['markdown']> = {
@@ -53,7 +54,8 @@ const markdown: Partial<PluginOptions['markdown']> = {
     footNote,
     [container, 'flash', containerOptions],
     [katex, { 'throwOnError': false, 'errorColor': ' #cc0000' }],
-    mermaidPlugin
+    mermaidPlugin,
+    externalLinkPlugin
   ]
 };
 
@@ -141,7 +143,5 @@ site.filter('replaceRssUrl', (html, base) => html.replaceAll(
 
 site.helper('mermaidTag',
   () => `<script async src="https://unpkg.com/mermaid@9.3.0/dist/mermaid.min.js">document.addEventListener('DOMContentLoaded', mermaid.initialize({startOnLoad:true}));</script>`, { type: 'tag' });
-site.helper('prismjsTag', () => `<script async src="https://unpkg.com/prismjs@v1.29/components/prism-core.min.js"></script>
-<script async src="https://unpkg.com/prismjs@v1.29/plugins/autoloader/prism-autoloader.min.js"></script>`, { type: 'tag' });
 
 export default site;

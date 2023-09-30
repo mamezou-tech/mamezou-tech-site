@@ -26,7 +26,10 @@ import { Page } from 'lume/core/filesystem.ts';
 import { Search } from 'lume/plugins/search.ts';
 import mermaidPlugin from './11ty/markdown-it/mermaid-plugin.ts';
 import externalLinkPlugin from './11ty/markdown-it/external-link-plugin.ts';
+import imageSwipePlugin from './11ty/markdown-it/image-swipe-plugin.ts';
+import codeClipboard, {markdownItCopyButton} from './lume/plugins/code-clipboard/index.ts';
 import './prism-deps.ts';
+
 
 const markdown: Partial<PluginOptions['markdown']> = {
   options: {
@@ -55,7 +58,9 @@ const markdown: Partial<PluginOptions['markdown']> = {
     [container, 'flash', containerOptions],
     [katex, { 'throwOnError': false, 'errorColor': ' #cc0000' }],
     mermaidPlugin,
-    externalLinkPlugin
+    externalLinkPlugin,
+    imageSwipePlugin,
+    markdownItCopyButton,
   ]
 };
 
@@ -75,6 +80,7 @@ site.use(sass());
 site.use(sitemap({
   query: 'exclude!=true'
 }));
+site.use(codeClipboard());
 
 site.copy('fonts');
 site.copy('img');

@@ -510,6 +510,7 @@
       "textlint-rule-aws-spellcheck@^1.3.0": "textlint-rule-aws-spellcheck@1.3.0",
       "textlint-rule-preset-ja-technical-writing@^7.0.0": "textlint-rule-preset-ja-technical-writing@7.0.0_textlint@12.6.1",
       "textlint@^12.2.1": "textlint@12.6.1",
+      "uglify-js@3.17.4": "uglify-js@3.17.4",
       "unidecode@0.1.8": "unidecode@0.1.8"
     },
     "packages": {

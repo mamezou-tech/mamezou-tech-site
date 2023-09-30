@@ -138,7 +138,7 @@ layout: base.njk
     {%- include "links.njk" %}
   </article>
   <script type="module">
-    import PhotoSwipeLightbox from '/photoswipe/photoswipe-lightbox.esm.js';
+    import PhotoSwipeLightbox from 'https://unpkg.com/photoswipe@5.4.2/dist/photoswipe-lightbox.esm.js';
     window.addEventListener('load', function() {
       const anchors = document.querySelectorAll('a.image-swipe');
       anchors.forEach((el) => {
@@ -147,13 +147,11 @@ layout: base.njk
         el.setAttribute('data-pswp-height', img.naturalHeight);
         new PhotoSwipeLightbox({
           gallery: `#${el.id}`,
-          pswpModule: () => import('/photoswipe/photoswipe.esm.js'),
+          pswpModule: () => import('https://unpkg.com/photoswipe@5.4.2/dist/photoswipe.esm.js'),
         }).init();
       })
     });
   </script>
-  {#
-  {% initClipboardJS %}
-  #}
+  {%- initClipboardJS %}
   {%- mermaidTag %}
 </main>

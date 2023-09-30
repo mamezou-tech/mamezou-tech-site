@@ -1,6 +1,6 @@
-import MarkdownIt from 'npm:markdown-it';
-import * as Token from 'npm:markdown-it/lib/token';
-import * as Renderer from 'npm:markdown-it/lib/renderer';
+import MarkdownIt from 'markdown-it';
+import * as Token from 'markdown-it/lib/token';
+import * as Renderer from 'markdown-it/lib/renderer';
 export default (md: MarkdownIt) => {
   function isInternalLink(token: Token) {
     return token.attrIndex("href") === -1 ||

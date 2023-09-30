@@ -25,6 +25,7 @@ import { filterByPost, getPostArticles } from './11ty/utils.ts';
 import { Page } from 'lume/core/filesystem.ts';
 import { Search } from 'lume/plugins/search.ts';
 import mermaidPlugin from './11ty/markdown-it/mermaid-plugin.ts';
+import './prism-deps.ts';
 
 const markdown: Partial<PluginOptions['markdown']> = {
   options: {
@@ -140,4 +141,7 @@ site.filter('replaceRssUrl', (html, base) => html.replaceAll(
 
 site.helper('mermaidTag',
   () => `<script async src="https://unpkg.com/mermaid@9.3.0/dist/mermaid.min.js">document.addEventListener('DOMContentLoaded', mermaid.initialize({startOnLoad:true}));</script>`, { type: 'tag' });
+site.helper('prismjsTag', () => `<script async src="https://unpkg.com/prismjs@v1.29/components/prism-core.min.js"></script>
+<script async src="https://unpkg.com/prismjs@v1.29/plugins/autoloader/prism-autoloader.min.js"></script>`, { type: 'tag' });
+
 export default site;

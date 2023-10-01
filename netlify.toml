@@ -62,10 +62,6 @@
   [[plugins.inputs.audits]]
     path = "/blogs/"
 
-#[[edge_functions]]
-#  function = "theme-switcher"
-#  path = "/*"
-#
-#[[edge_functions]]
-#  function = "eleventy-edge"
-#  path = "/*"
+[[edge_functions]]
+  function = "og"
+  path = "/og/*"

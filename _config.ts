@@ -84,7 +84,6 @@ site.use(codeClipboard());
 
 site.copy('fonts');
 site.copy('img');
-site.copy('previews');
 
 site.helper('year', () => `${new Date().getFullYear()}`, { type: 'tag' });
 site.helper('shortDesc', shortDesc, { type: 'tag' });

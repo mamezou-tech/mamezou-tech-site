@@ -27,3 +27,4 @@ kvs-node-localstorage
 # netlify/edge-functions/_generated
 # for now, disable netlify edge functions
 netlify/
+!netlify/edge-functions/og.tsx

@@ -26,7 +26,6 @@
     "build:local": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy build:preact social-images",
     "lint": "stylelint 'src/css/**/*.scss' 'src/css/**/**/*.scss' 'src/css/**/**/**/*.scss'",
     "lint:fix": "stylelint --fix 'src/css/**/*.scss' 'src/css/**/**/*.scss' 'src/css/**/**/**/*.scss'",
-    "social-images": "eleventy-social-images --outputDir src --dataFile social/pages.json --templatePath social/template.html --stylesPath ogp-style.css --width 1200 --height 630 --deviceScaleFactor 1",
     "textlint": "textlint"
   },
   "keywords": [],

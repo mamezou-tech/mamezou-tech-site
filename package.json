@@ -23,10 +23,9 @@
     "start:edge": "cross-env ELEVENTY_ENV=dev npm-run-all --parallel build:sass watch:sass watch:preact build:eleventy-edge",
     "start:debug": "cross-env DEBUG=Eleventy* ELEVENTY_ENV=dev npm-run-all build:sass --parallel watch:*",
     "build:netlify": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy build:preact",
-    "build:local": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy build:preact social-images",
+    "build:local": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy build:preact",
     "lint": "stylelint 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
-    "lint:fix": "stylelint --fix 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
-    "social-images": "eleventy-social-images --outputDir src --dataFile social/pages.json --templatePath social/template.html --stylesPath ogp-style.css --width 1200 --height 630 --deviceScaleFactor 1",
+    "lint:fix": "stylelint --fix 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'"
     "textlint": "textlint"
   },
   "keywords": [],

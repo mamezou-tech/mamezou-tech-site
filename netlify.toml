@@ -1,6 +1,8 @@
-#[dev]
-#  framework = "#static"
-#  command = "npm run start:edge"
+[dev]
+  framework = "#static"
+  command = "deno task lume --watch --quiet"
+  targetPort = 3000
+  publish = "public"
 
 [build]
   # Directory to change to before starting a build.
@@ -31,13 +33,14 @@
   [headers.values]
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
-    Content-Security-Policy = '''
-    default-src 'self' *.google-analytics.com *.googletagmanager.com *.google.com csp.withgoogle.com *.googleoptimize.com cdn.jsdelivr.net cdnjs.cloudflare.com unpkg.com *.netlify.com *.netlify.app cdn.segment.com clientstream.launchdarkly.com *.twitter.com *.facebook.com *.facebook.net d33wubrfki0l68.cloudfront.net speakerdeck.com 'unsafe-inline' 'unsafe-eval';
-    img-src *;
-    style-src * 'unsafe-inline';
-    font-src *;
-    media-src *;'''
-#    Referrer-Policy = "same-origin"
+  # netlify dev not working...
+#    Content-Security-Policy = '''
+#    default-src 'self' *.google-analytics.com *.googletagmanager.com *.google.com csp.withgoogle.com *.googleoptimize.com cdn.jsdelivr.net cdnjs.cloudflare.com unpkg.com *.netlify.com *.netlify.app cdn.segment.com clientstream.launchdarkly.com *.twitter.com *.facebook.com *.facebook.net d33wubrfki0l68.cloudfront.net speakerdeck.com 'unsafe-inline' 'unsafe-eval';
+#    img-src *;
+#    style-src * 'unsafe-inline';
+#    font-src *;
+#    media-src *;'''
+    Referrer-Policy = "same-origin"
     Cross-Origin-Embedder-Policy = "false"
     Permissions-Policy = '''
     microphone=(),
@@ -62,10 +65,6 @@
   [[plugins.inputs.audits]]
     path = "/blogs/"
 
-#[[edge_functions]]
-#  function = "theme-switcher"
-#  path = "/*"
-#
-#[[edge_functions]]
-#  function = "eleventy-edge"
-#  path = "/*"
+[[edge_functions]]
+  function = "og"
+  path = "/og/*"

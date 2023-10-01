@@ -15,6 +15,7 @@ social
 #IDE
 .idea
 .vscode
+!.vscode/settings.json
 
 # textlint cache
 kvs-node-localstorage
@@ -25,4 +26,6 @@ kvs-node-localstorage
 # Eleventy Edge Build Data files
 # netlify/edge-functions/_generated
 # for now, disable netlify edge functions
-netlify/
+netlify/generated
+
+test.tsx

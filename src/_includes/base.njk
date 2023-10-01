@@ -2,7 +2,7 @@
 <html lang="ja">
 {%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ meta.siteName }}{% endset -%}
 {%- set pageDescription %}{% shortDesc search.pages(), page, meta.siteDescription %}{% endset -%}
-{%- set pageSocialImg %}{{ meta.url }}/previews/{% if title %}{{ title | slug }}{% else %}home{% endif %}.png{% endset -%}
+{%- set pageSocialImg %}{{ meta.url }}/og/?title={% if title %}{{ title }}{% else %}home{% endif %}{% if category %}&category={{ category }}{% endif %}{% endset -%}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -73,7 +73,7 @@
       name="og:url"
       content="{{ meta.url }}{{ page.url }}"
     />
-    {% if page.fileSlug %}
+    {% if page.data.title %}
     <meta property="og:image" content="{{pageSocialImg}}" />
     <meta name="twitter:image" content="{{pageSocialImg}}" />
     {% else %}

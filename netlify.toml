@@ -1,7 +1,6 @@
 [dev]
   framework = "#static"
   command = "deno task lume --watch --quiet"
-  targetPort = 3000
   publish = "public"
 
 [build]
@@ -17,8 +16,7 @@
   ignore  = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF src 11ty components _config.ts deno.json netlify.toml rollup.config.mjs"
 
   # Default build command.
-#  command = "AWS_LAMBDA_FUNCTION_NAME=trickpuppeteer npm run build"
-  command = "deno task lume"
+  command = "deno task lume --quiet"
 
   [build.environment]
     NODE_VERSION="18"

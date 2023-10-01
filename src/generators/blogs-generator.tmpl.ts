@@ -1,6 +1,6 @@
 import { Search } from 'lume/plugins/search.ts';
 import { PaginateOptions, Paginator } from 'lume/plugins/paginate.ts';
-import { filterByPost } from '../../11ty/utils.ts';
+import { filterByPost } from '../../lume/filters/utils.ts';
 import { Page } from 'lume/core/filesystem.ts';
 
 export const layout = 'article-list.njk';

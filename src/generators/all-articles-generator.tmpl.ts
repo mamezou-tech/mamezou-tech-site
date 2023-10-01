@@ -1,6 +1,6 @@
 import { Search } from 'lume/plugins/search.ts';
 import { PaginateOptions, Paginator } from 'lume/plugins/paginate.ts';
-import { getPostArticles } from '../../11ty/utils.ts';
+import { getPostArticles } from '../../lume/filters/utils.ts';
 
 export const layout = 'article-list.njk';
 export const title = '全ての記事';

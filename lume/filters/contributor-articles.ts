@@ -1,4 +1,4 @@
-import contributorsJson from '../src/_data/contributors.json' assert { type: 'json' };
+import contributorsJson from '../../src/_data/contributors.json' assert { type: 'json' };
 import { Page } from 'lume/core/filesystem.ts';
 import { filterByPost } from './utils.ts';
 // TODO: 廃止

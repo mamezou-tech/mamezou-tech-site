@@ -6,29 +6,27 @@ import prism from 'lume/plugins/prism.ts';
 import sass from 'lume/plugins/sass.ts';
 import sitemap from 'lume/plugins/sitemap.ts';
 import { DateTime } from 'luxon';
-import { blogPage } from './11ty/blog-page.js';
-import { Author, contributorArticles } from './11ty/contributor-articles.ts';
-import { slug } from './11ty/slug.js';
-import { head } from './11ty/head.js';
-import { readingTime } from './11ty/reading-time.js';
-import { excerpt } from './11ty/excerpt.ts';
-import { pageTags } from './11ty/page-tags.js';
-import { getDate } from './11ty/get-date.ts';
-import { validTags } from './11ty/valid-tags.ts';
-import { shortDesc } from './11ty/short-desc.ts';
+import { Author, contributorArticles } from './lume/filters/contributor-articles.ts';
+import { readingTime } from './lume/filters/reading-time.ts';
+import { excerpt } from './lume/filters/excerpt.ts';
+import { pageTags } from './lume/filters/page-tags.ts';
+import { getDate } from './lume/filters/get-date.ts';
+import { validTags } from './lume/filters/valid-tags.ts';
+import { shortDesc } from './lume/filters/short-desc.ts';
 import anchor from 'npm:markdown-it-anchor@^8.6.5';
 import footNote from 'npm:markdown-it-footnote@^3.0.3';
 import container from 'npm:markdown-it-container@^3.0.0';
 import katex from 'npm:@traptitech/markdown-it-katex@^3.5.0';
-import containerOptions from './11ty/markdown-it/container-options.ts';
-import { filterByPost, getPostArticles } from './11ty/utils.ts';
+import containerOptions from './lume/markdown-it/container-options.ts';
+import { filterByPost, getPostArticles } from './lume/filters/utils.ts';
 import { Page } from 'lume/core/filesystem.ts';
 import { Search } from 'lume/plugins/search.ts';
-import mermaidPlugin from './11ty/markdown-it/mermaid-plugin.ts';
-import externalLinkPlugin from './11ty/markdown-it/external-link-plugin.ts';
-import imageSwipePlugin from './11ty/markdown-it/image-swipe-plugin.ts';
+import mermaidPlugin from './lume/markdown-it/mermaid-plugin.ts';
+import externalLinkPlugin from './lume/markdown-it/external-link-plugin.ts';
+import imageSwipePlugin from './lume/markdown-it/image-swipe-plugin.ts';
 import codeClipboard, {markdownItCopyButton} from './lume/plugins/code-clipboard/index.ts';
 import './prism-deps.ts';
+import { head } from './lume/filters/head.ts';
 
 
 const markdown: Partial<PluginOptions['markdown']> = {
@@ -88,12 +86,11 @@ site.copy('img');
 site.helper('year', () => `${new Date().getFullYear()}`, { type: 'tag' });
 site.helper('shortDesc', shortDesc, { type: 'tag' });
 
-site.filter('slug', slug);
-site.filter('head', head);
 site.filter('htmlDateString',
   (dateObj: any) => dateObj ? DateTime.fromJSDate(dateObj, { zone: 'Asia/Tokyo' }).toFormat('yyyy-LL-dd') : '');
 
 site.filter('readingTime', readingTime);
+site.filter('head', head);
 site.filter('readableDate', (dateObj: any) => {
   if (!dateObj) return '';
   const options = { zone: 'Asia/Tokyo' };
@@ -104,7 +101,6 @@ site.filter('readableDate', (dateObj: any) => {
 });
 site.filter('excerpt', excerpt);
 site.filter('pageTags', pageTags);
-site.filter('blogPage', blogPage);
 site.filter('inputPath', (pages: Page[], path: string) => pages.find((page: Page) => page.data.inputPath === path));
 site.filter('tagUrl', (hrefs: string[], tag: string) => hrefs.filter(href => href.includes(`tags/${tag}`)));
 site.filter('limit', (array: unknown[], limit: number) => array.slice(0, limit));

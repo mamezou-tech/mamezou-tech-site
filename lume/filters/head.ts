@@ -1,4 +1,4 @@
-export const head = (array, n) => {
+export const head = (array: unknown[], n: number) => {
   if (!array) {
     return [];
   }

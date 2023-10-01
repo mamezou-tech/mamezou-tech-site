@@ -25,7 +25,7 @@
     "build:netlify": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy build:preact",
     "build:local": "cross-env ELEVENTY_ENV=prod npm-run-all build:sass build:eleventy build:preact",
     "lint": "stylelint 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
-    "lint:fix": "stylelint --fix 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'"
+    "lint:fix": "stylelint --fix 'src/sass/**/*.scss' 'src/sass/**/**/*.scss' 'src/sass/**/**/**/*.scss'",
     "textlint": "textlint"
   },
   "keywords": [],

@@ -3,9 +3,6 @@
 {%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ meta.siteName }}{% endset -%}
 {%- set pageDescription %}{% shortDesc search.pages(), page, meta.siteDescription %}{% endset -%}
 {%- set pageSocialImg %}{{ meta.url }}/og/?title={% if title %}{{ title }}{% else %}home{% endif %}{% if category %}&category={{ category }}{% endif %}{% endset -%}
-{%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ site.siteName }}{% endset -%}
-{%- set pageDescription %}{% shortDesc collections.all, page, site.siteDescription %}{% endset -%}
-{%- set pageSocialImg %}{{ meta.url }}/og/?title={% if title %}{{ title }}{% else %}home{% endif %}{% if category %}&category={{ category }}{% endif %}{% endset -%}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

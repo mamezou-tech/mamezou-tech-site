@@ -78,8 +78,9 @@ $toc-highlight-color: #ebe0fb;
 
       a {
         display: block;
-        width: 65%;
-
+        @media screen and (min-width: 1600px) {
+          width: 65%;
+        }
         &:hover { background-color: desaturate($toc-highlight-color, 80%); }
         &.toc-current-header { background-color: $toc-highlight-color; }
       }

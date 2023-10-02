@@ -258,11 +258,18 @@ sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
 sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 ```
 
+設定後、コマンドプロンプトから WSL2 を終了させます。
+
+```shell
+wsl --shutdown
+```
+
 WSL2 Kernel が nftables をサポートしていないことが原因らしいので、WSL2 が更新されていけば解決する可能性があります。  
 調べてみると、他にもエラーの解消方法は色々とあるようですが、上記の設定で動いているので良しとします。  
 
 ## Docker 版 Hello World！
 
+再度、Ubuntu-22.04 を起動します。  
 Docker が正しく動作するか確認します。  
 以下のコマンドを Ubuntu-22.04 上で実行します。  
 

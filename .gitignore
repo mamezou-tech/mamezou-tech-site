@@ -24,4 +24,7 @@ kvs-node-localstorage
 .netlify/
 
 # Eleventy Edge Build Data files
-netlify/edge-functions/_generated
+# netlify/edge-functions/_generated
+# for now, disable netlify edge functions
+netlify/
+!netlify/edge-functions/og.tsx

@@ -2,7 +2,6 @@
 
 note top of java
 ・紫：Java21で新設されたインターフェース
-・当クラス図は、新設されたインターフェースの実装クラスをピックアップしたものです。
 end note
 
 namespace java {

@@ -1,0 +1,190 @@
+@startuml 1003_java21_jep431
+
+note top of java
+・紫：Java21で新設されたインターフェース
+end note
+
+namespace java {
+  ' namespace lang {
+  '   interface Iterable<T>
+  ' }
+
+  namespace util {
+    '--- interfaces
+    interface Collection<E>
+    ' java.lang.Iterable <|-- Collection
+
+    interface SequencedCollection<E> #BlueViolet {
+      +SequencedCollection<E> reversed()
+      +void addFirst(E)
+      +void addLast(E)
+      +E getFirst()
+      +E getLast()
+      +E removeFirst()
+      +E removeLast()
+    }
+    Collection <|-- SequencedCollection
+
+    interface List<E>
+    SequencedCollection <|-- List
+
+    interface Set<E>
+    Collection <|-- Set
+
+    interface SequencedSet<E> #BlueViolet {
+      +SequencedSet<E> reversed()
+    }
+    SequencedCollection <|-- SequencedSet
+    Set <|-- SequencedSet
+
+    interface SortedSet<E>
+    Set <|-- SortedSet
+    SequencedSet <|-- SortedSet
+
+    interface NavigableSet<E>
+    SortedSet <|-- NavigableSet
+
+    interface Queue<E>
+    Collection <|-- Queue
+
+    interface Deque<E>
+    Queue <|-- Deque
+    SequencedCollection <|-- Deque
+
+    interface Map<K,V>
+
+    interface SequencedMap<K, V> #BlueViolet {
+      +SequencedMap<K, V> reversed()
+      +Map.Entry<K,V> firstEntry()
+      +Map.Entry<K,V> lastEntry()
+      +Map.Entry<K,V> pollFirstEntry()
+      +Map.Entry<K,V> pollLastEntry()
+      +V putFirst(K, V)
+      +V putLast(K, V)
+      +SequencedSet<K> sequencedKeySet()
+      +SequencedCollection<V> sequencedValues()
+      +SequencedSet<Map.Entry<K, V>> sequencedEntrySet()
+    }
+    Map <|-- SequencedMap
+
+    interface SortedMap<K,V>
+    SequencedMap <|-- SortedMap
+
+    interface NavigableMap<K,V>
+    SortedMap <|-- NavigableMap
+
+    '--- abstract classes
+    abstract class AbstractCollection<E>
+    Collection <|.. AbstractCollection
+
+    abstract class AbstractList<E>
+    AbstractCollection <|-- AbstractList
+
+    ' abstract class AbstractSequentialList<E>
+    ' AbstractList <|-- AbstractSequentialList
+
+    abstract class AbstractSet<E>
+    AbstractCollection <|-- AbstractSet
+    Set <|.. AbstractSet
+
+    ' abstract class AbstractQueue
+    ' AbstractCollection <|-- AbstractQueue
+    ' Queue <|.. AbstractQueue
+
+    abstract class AbstractMap<K,V>
+    Map <|.. AbstractMap
+
+    '--- List
+    class ArrayList<E>
+    AbstractList <|-- ArrayList
+    List <|.. ArrayList
+    
+    ' class LinkedList<E>
+    ' AbstractSequentialList <|-- LinkedList
+    ' List <|.. LinkedList
+    ' Deque <|.. LinkedList
+
+    ' class ReverseOrderListView<E>
+    ' List <|.. ReverseOrderListView
+
+    ' class Vector<E>
+    ' AbstractList <|-- Vector
+    ' List <|.. Vector
+
+    ' class Stack<E>
+    ' Vector <|-- Stack
+
+    '---Set
+    class HashSet<E>
+    Set <|.. HashSet
+
+    class LinkedHashSet<E>
+    HashSet <|-- LinkedHashSet
+    SequencedSet <|.. LinkedHashSet
+
+    ' class ReverseOrderSortedSetView<E>
+    ' SortedSet <|.. ReverseOrderSortedSetView
+
+    class TreeSet<E>
+    AbstractSet <|-- TreeSet
+    NavigableSet <|.. TreeSet
+
+    '---Queue
+    class ArrayDeque<E>
+    AbstractCollection <|-- ArrayDeque
+    Deque <|.. ArrayDeque
+
+    ' class ReverseOrderDequeView<E>
+    ' Deque <|.. ReverseOrderDequeView
+
+
+    '---Map
+    class HashMap<K,V>
+    AbstractMap <|-- HashMap
+    Map <|.. HashMap
+
+    class LinkedHashMap<K,V>
+    HashMap <|-- LinkedHashMap
+    SequencedMap <|.. LinkedHashMap
+
+    class TreeMap<K,V>
+    AbstractMap <|-- TreeMap
+    NavigableMap <|.. TreeMap
+
+    ' namespace concurrent {
+
+    '   class CopyOnWriteArrayList<E>
+    '   java.util.List <|.. CopyOnWriteArrayList
+
+    '   class ConcurrentSkipListSet<E>
+    '   java.util.AbstractSet <|-- ConcurrentSkipListSet
+    '   java.util.NavigableSet <|.. ConcurrentSkipListSet
+
+    '   interface BlockingQueue<E>
+    '   java.util.Queue <|-- BlockingQueue
+
+    '   interface BlockingDeque<E>
+    '   java.util.Deque <|-- BlockingDeque
+    '   BlockingQueue <|-- BlockingDeque
+
+    '   class ConcurrentLinkedQueue<E>
+    '   java.util.AbstractQueue <|-- ConcurrentLinkedQueue
+    '   java.util.Queue <|.. ConcurrentLinkedQueue
+
+    '   class ConcurrentLinkedDeque<E>
+    '   java.util.AbstractCollection <|-- ConcurrentLinkedDeque
+    '   java.util.Deque <|.. ConcurrentLinkedDeque
+
+    '   class LinkedBlockingDeque<E>
+    '   java.util.AbstractQueue <|-- LinkedBlockingDeque
+    '   BlockingDeque <|.. LinkedBlockingDeque
+
+    '   class ArrayBlockingQueue<E>
+    '   java.util.AbstractQueue <|-- ArrayBlockingQueue
+    '   BlockingQueue <|.. ArrayBlockingQueue
+
+    ' }
+  }
+}
+
+@enduml

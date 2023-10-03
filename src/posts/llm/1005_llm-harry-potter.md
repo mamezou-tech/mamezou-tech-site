@@ -1,16 +1,17 @@
 ---
 title: 大規模言語モデル初心者がハリーポッター対話モデルを作ってみた
 author: yuma-takao
-date: 2023-10-03
+date: 2023-10-05
 tags: [自然言語処理, 機械学習, ファインチューニング]
 ---
 
 # はじめに
 ChatGPTの普及により、文章生成技術がますます身近になっています。
 ChatGPTをはじめとする生成系AIは、巨大なテキストデータセットから学習した大規模言語モデル（LLM）をベースとしています。
-このLLMは、ファインチューニングによってカスタマイズ可能で、特定の領域に特化したモデルを作成することができます。
+このLLMは、ファインチューニングによってカスタマイズ可能で、特定の領域に特化したモデルを作成できます。
 
-LLM初心者ながらファインチューニングをやってみたいと思い、使えそうなデータを探していたところ、小説ハリーポッターのデータセットが扱いやすそうだなと思いました。
+私はLLM初心者でしたが、ファインチューニングを試してみたいと思っていました。
+LLMについて調べつつ、扱いやすそうなデータがないか探していたところ、小説ハリーポッターのデータセットを見つけました。
 （特別ハリーポッター好きというわけではありませんが、金曜ロードショーでやっていれば見ます）
 
 そこで今回は、ハリーポッター風の回答をするモデルの作成に挑戦しました。
@@ -54,8 +55,8 @@ checkpoint = "bigscience/bloomz-1b1"
 
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 model = AutoModelForCausalLM.from_pretrained(
-        checkpoint, 
-        torch_dtype="auto", 
+        checkpoint,
+        torch_dtype="auto",
         device_map="auto")
 
 if torch.cuda.is_available():
@@ -97,7 +98,7 @@ if torch.cuda.is_available():
 ```
 
 
-データセットはGoogleドライブに配置したものにアクセスしています。
+データセットはGoogleドライブに配置したものへアクセスしています。
 [Google ドライブにマウントし、ファイルへアクセスする方法](https://blog.kikagaku.co.jp/google-colab-drive-mount)
 
 ```python
@@ -145,10 +146,10 @@ Google Colabでの動作環境を考慮し、会話内容とその場面の説�
 # 学習に使用するデータ（一部）
 
 # 会話内容
-{'input': ' Get out, both of you,', 
+{'input': ' Get out, both of you,',
  'output': ' I WANT MY LETTER!'},
 # 会話場面の説明
-{'input': 'Tell me the background information of the Harry Potter.', 
+{'input': 'Tell me the background information of the Harry Potter.',
  'output': 'In this scene, Harry is asked to get the mail by his uncle, but Dudley is instructed to make Harry get it. Harry finds a letter addressed to him, which surprises him since he has never received a letter before. The envelope is thick and heavy, made of yellowish parchment, and the address is written in emerald-green ink. The letter is taken away by Uncle Vernon, who turns pale after reading it, and Harry is kicked out of the room.'},
 ...
 ```
@@ -214,7 +215,7 @@ for i in range(len(data)):
 ## ファインチューニング
 
 ### LoRAモデルの準備
-LoRAモデルの設定を行います。
+LoRAモデルの設定をします。
 ```python
 from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training, TaskType
 
@@ -390,21 +391,18 @@ def generate(instruction,input=None,maxTokens=256):
 日本語で出力することも検討しましたが、Google翻訳等のツールでは、かしこまった日本語になってしまうため、英語のままにしました（勝手な和訳は添えてあります…）。
 
 結果は、想像していたよりも自然なやり取りになっていました。
-ハリーポッターのストーリーに沿っていたりいなかったりですが、登場人物や場所などの固有名詞も認識してくれているようでした。
+ハリーポッターのストーリーに沿っていたり、沿っていなかったりですが、登場人物や場所などの固有名詞も認識してくれているようでした。
 ハリーとその他人物との会話内容だけでなく、会話場面の状況描写「scene」を学習データとして与えてあげた効果かなと感じました。
 
 以下、今回作成したハリーポッターモデルからの返答の一部です。
 <br>
-ハリーは医者になりました。
 
 ```python
 入力：　Who are you?
 ハリー：　I'm a doctor.
 ```
+ハリーは医者になりました。
 <br>
-ウィーズリー（ロン・ウィーズリー？）から話しかけられたような回答になりました。
-<br>ストーリーの前提情報が学習された成果でしょうか。
-
 ```python
 入力：　Oh, hello, Harry, Excellent flying yesterday, really excellent.
        Gryffindor has just taken the lead for the House Cup — you earned fifty points!
@@ -413,15 +411,16 @@ def generate(instruction,input=None,maxTokens=256):
 ハリー：　Yes, thank you, Mr. Weasley.
 　　　　（ありがとう、ウィーズリー）
 ```
+ウィーズリー（ロン・ウィーズリー？）から話しかけられたような回答になりました。
+ストーリーの前提情報が学習された成果でしょうか。
 <br>
-一般的な会話としては成立していますが、「秘密」ではないですね…
-
 ```python
 入力：　Tell me some secret of the Hogwarts School.
 　　　　（何かホグワーツの秘密を教えて）
 ハリー：　I am the wizard of Hogwarts.
 　　　　（僕はホグワーツの魔法使いだ）
 ```
+一般的な会話としては成立していますが、「秘密」ではないですね…
 
 # まとめ
 今回は小説ハリーポッターのデータセットを用いて、ハリーポッター風の回答をするモデルを作成してみました。

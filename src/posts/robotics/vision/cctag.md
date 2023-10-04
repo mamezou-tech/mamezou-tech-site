@@ -11,17 +11,17 @@ date: 2023-10-04
 ロボットと画像認識は切っても切り離せない関係にあり、近年では画像認識により自律的に動作したり、周囲の様子を把握して移動するロボットが多く登場してきています。  
 画像認識には様々な技術がありますが、画像認識を補助するマーカーを用いる事で対象の位置姿勢を推測する手法はよく見受けられます。  
 有名な画像認識用のマーカーの1つにARマーカーがあり、例えばOpenCVで使用できるArUcoマーカーでは単一のマーカーで3次元の位置および姿勢を推定することが出来ます[^1]。
-![Aruco画像](../../../img/robotics/vision/aruco-merge.png)  
+![Aruco画像](/img/robotics/vision/aruco-merge.png)  
   
 [^1]: [Detection of ArUco Markers](https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html)  
 
 
 # CCTagとは
 CCTagとは、複数の円で構成される画像認識用の2次元マーカーです。  
-![CCTag画像](../../../img/robotics/vision/cctags-example.png)  
+![CCTag画像](/img/robotics/vision/cctags-example.png)  
 先ほど紹介したARマーカーとは異なり、CCTagマーカーは2次元の位置しか推定できません。  
 その代わり一般的な2次元マーカーと比べて、以下のようにノイズに屈強なようです[^2]。  
-![CCTag説明](../../../img/robotics/vision/cctag-explanation.png)  
+![CCTag説明](/img/robotics/vision/cctag-explanation.png)  
 [^2]: [CCTag documentation](https://cctag.readthedocs.io/en/latest/index.html)  
 
 マーカーを認識する上で考えらえるノイズとして、マーカー・カメラの移動や焦点のズレによる画像のぼやけ、照明環境の変化による画像の明るさの変化、マーカーの汚れ等、様々なものが想定されます。  
@@ -216,7 +216,7 @@ target_link_libraries(cctag_sample PRIVATE ${OpenCV_LIBRARIES} CCTag::CCTag)
 ```
 
 scene_marker.pngは以下の画像を使用します。  
-![CCTagシーン画像](../../../img/robotics/vision/scene_marker.png)  
+![CCTagシーン画像](/img/robotics/vision/scene_marker.png)  
 
 任意のディレクトリにて、以下のようにファイルを配置します。
 
@@ -238,7 +238,7 @@ make
 ```
 
 以下のように画像が表示されれば成功です。  
-![CCTag認識結果](../../../img/robotics/vision/result.png)  
+![CCTag認識結果](/img/robotics/vision/result.png)  
 
 # マーカー画像の生成
 

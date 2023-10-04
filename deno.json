@@ -8,5 +8,9 @@
     "build": "deno task lume",
     "serve": "deno task lume --serve --quiet --port 8080"
   },
-  "importMap": "import_map.json"
+  "importMap": "import_map.json",
+  "fmt": {
+    "exclude": ["src/"],
+    "include": ["lume/**/*.ts", "_config.ts"]
+  }
 }

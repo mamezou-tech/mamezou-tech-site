@@ -1,29 +1,29 @@
-import * as UglifyJS from 'npm:uglify-js@3.17.4';
-import MarkdownIt from 'markdown-it';
-import * as Token from 'markdown-it/lib/token';
-import * as Renderer from 'markdown-it/lib/renderer';
-import { RenderRule } from 'markdown-it/lib/renderer';
-import Site from 'lume/core/site.ts';
+import * as UglifyJS from "npm:uglify-js@3.17.4";
+import MarkdownIt from "markdown-it";
+import * as Token from "markdown-it/lib/token";
+import * as Renderer from "markdown-it/lib/renderer";
+import { RenderRule } from "markdown-it/lib/renderer";
+import Site from "lume/core/site.ts";
 
 const defaultPluginOptions = {
-  clipboardJSVersion: '2.0.11',
-  buttonClass: 'code-copy',
-  successMessage: 'Copied!',
-  failureMessage: 'Failed...'
+  clipboardJSVersion: "2.0.11",
+  buttonClass: "code-copy",
+  successMessage: "Copied!",
+  failureMessage: "Failed...",
 };
 
 type PluginOptions = typeof defaultPluginOptions;
 
 const defaultRendererOptions = {
-  iconifyUrl: 'https://api.iconify.design/mdi/content-copy.svg',
-  iconStyle: 'width: 16px; height: 16px;',
-  iconClass: '',
-  iconTag: 'span',
-  buttonClass: 'code-copy',
+  iconifyUrl: "https://api.iconify.design/mdi/content-copy.svg",
+  iconStyle: "width: 16px; height: 16px;",
+  iconClass: "",
+  iconTag: "span",
+  buttonClass: "code-copy",
   buttonStyle:
-    'position: absolute; top: 7.5px; right: 6px; padding-top: 3px; cursor: pointer; outline: none; opacity: 0.8;',
-  additionalButtonClass: '',
-  title: 'Copy'
+    "position: absolute; top: 7.5px; right: 6px; padding-top: 3px; cursor: pointer; outline: none; opacity: 0.8;",
+  additionalButtonClass: "",
+  title: "Copy",
 };
 
 type RendererOptions = typeof defaultRendererOptions;
@@ -34,13 +34,13 @@ function renderCode(origRule: RenderRule, rendererOptions: RendererOptions) {
     idx: number,
     options: MarkdownIt.Options,
     env: any,
-    self: Renderer
+    self: Renderer,
   ) => {
     const origRendered = origRule(tokens, idx, options, env, self);
-    if (tokens[idx].tag !== 'code') {
+    if (tokens[idx].tag !== "code") {
       return origRendered;
     }
-    if (!tokens[idx].info || tokens[idx].info === 'mermaid') {
+    if (!tokens[idx].info || tokens[idx].info === "mermaid") {
       return origRendered;
     }
     if (tokens[idx].content.length === 0) {
@@ -60,15 +60,15 @@ function renderCode(origRule: RenderRule, rendererOptions: RendererOptions) {
 }
 
 async function initClipboardJS(options: PluginOptions) {
-  const __dirname = new URL('.', import.meta.url).pathname;
-  const decoder = new TextDecoder("utf-8")
-  const originSource = (await Deno.readFile(`${__dirname}/init-clipboard.js`))
+  const __dirname = new URL(".", import.meta.url).pathname;
+  const decoder = new TextDecoder("utf-8");
+  const originSource = await Deno.readFile(`${__dirname}/init-clipboard.js`);
   const script = decoder.decode(originSource).replace(
-    'new ClipboardJS(\'\')',
-    `new ClipboardJS('.${options.buttonClass}')`
+    "new ClipboardJS('')",
+    `new ClipboardJS('.${options.buttonClass}')`,
   )
-    .replace('Copied!', options.successMessage)
-    .replace('Failed...', options.failureMessage);
+    .replace("Copied!", options.successMessage)
+    .replace("Failed...", options.failureMessage);
   const minified = UglifyJS.minify(script);
   if (minified.error) {
     throw minified.error;
@@ -77,34 +77,34 @@ async function initClipboardJS(options: PluginOptions) {
 <script async src="https://cdn.jsdelivr.net/npm/clipboard@${options.clipboardJSVersion}/dist/clipboard.min.js"></script>`;
 }
 
-export default function(
-  userPluginOptions?: Partial<PluginOptions>
+export default function (
+  userPluginOptions?: Partial<PluginOptions>,
 ) {
   const pluginFallbackOptions = {
     ...defaultPluginOptions,
-    ...userPluginOptions
+    ...userPluginOptions,
   };
   return async (site: Site) => {
     const tag = await initClipboardJS(pluginFallbackOptions);
     site.helper(
-      'initClipboardJS',
+      "initClipboardJS",
       () => tag,
       // { type: 'tag', async: true }
-    { type: 'tag', async: false } // not working for async true
+      { type: "tag", async: false }, // not working for async true
     );
   };
 }
 
 export function markdownItCopyButton(
   md: MarkdownIt,
-  rendererOptions: MarkdownIt.Options
+  rendererOptions: MarkdownIt.Options,
 ) {
   const rendererFallbackOptions = {
     ...defaultRendererOptions,
-    ...rendererOptions
+    ...rendererOptions,
   };
   md.renderer.rules.fence = renderCode(
     md.renderer.rules.fence,
-    rendererFallbackOptions
+    rendererFallbackOptions,
   );
 }

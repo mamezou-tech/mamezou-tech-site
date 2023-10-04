@@ -1,13 +1,21 @@
-import MarkdownIt from 'markdown-it';
-import * as Token from 'markdown-it/lib/token';
-import * as Renderer from 'markdown-it/lib/renderer';
+import MarkdownIt from "markdown-it";
+import * as Token from "markdown-it/lib/token";
+import * as Renderer from "markdown-it/lib/renderer";
 export default (md: MarkdownIt) => {
   function isInternalLink(token: Token) {
     return token.attrIndex("href") === -1 ||
-      token.attrGet("href").match(/^([#\/].*$|https:\/\/developer\.mamezou-tech\.com.*$)/);
+      token.attrGet("href").match(
+        /^([#\/].*$|https:\/\/developer\.mamezou-tech\.com.*$)/,
+      );
   }
 
-  md.renderer.rules.link_open = function(tokens: Token[], idx: number, options: MarkdownIt.Options, env: any, self: Renderer) {
+  md.renderer.rules.link_open = function (
+    tokens: Token[],
+    idx: number,
+    options: MarkdownIt.Options,
+    env: any,
+    self: Renderer,
+  ) {
     if (isInternalLink(tokens[idx])) {
       // skip internal link
       return self.renderToken(tokens, idx, options);

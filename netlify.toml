@@ -13,7 +13,7 @@
   # been specified, include it in the publish directory path.
   publish = "public"
 
-  ignore  = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF src 11ty components _config.ts deno.json netlify.toml rollup.config.mjs"
+  ignore  = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF src lume _config.ts deno.json netlify.toml"
 
   # Default build command.
   command = "deno task lume --quiet"
@@ -56,10 +56,6 @@
   [[plugins.inputs.audits]]
     path = "/"
     output_path = "lighthouse/top.html"
-#  [[plugins.inputs.audits]]
-#    path = "/dev-env/"
-#  [[plugins.inputs.audits]]
-#    path = "/analytics/"
   [[plugins.inputs.audits]]
     path = "/blogs/"
 

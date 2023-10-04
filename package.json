@@ -14,11 +14,7 @@
   "author": "mamezou",
   "license": "ISC",
   "devDependencies": {
-    "@netlify/plugin-lighthouse": "^4.0.3",
-    "@proofdict/textlint-rule-proofdict": "^3.1.2",
-    "textlint": "^12.2.1",
-    "textlint-rule-aws-spellcheck": "^1.3.0",
-    "textlint-rule-preset-ja-technical-writing": "^7.0.0"
+    "@netlify/plugin-lighthouse": "^5.0.0"
   },
   "browserslist": [
     "last 2 versions"

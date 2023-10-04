@@ -5,17 +5,8 @@ layout: base.njk
 {% include 'sitenav.njk' %}
 
 <main class="tdbc-container">
-  {#
-<!--  <is-land on:idle>-->
-<!--    <div id='toc'></div>-->
-<!--    <template data-island>-->
-<!--	  <script type="module">-->
-<!--      import { renderToc } from '/components/preact/bundle.mjs';-->
-<!--      renderToc(document.getElementById("toc"));-->
-<!--	  </script>-->
-<!--    </template>-->
-<!--  </is-land>-->
-  #}
+  <div id='toc'></div>
+  <script src="/components/preact/toc.js"></script>
   <article class="post tdbc-mx-auto">
     <header class="post__header">
       <h1>{{ title }}</h1>
@@ -144,4 +135,8 @@ layout: base.njk
   </script>
   {%- initClipboardJS %}
   {%- mermaidTag %}
+  <script type="module">
+    import { render } from '/components/preact/toc.js';
+    render(document.getElementById("toc"));
+  </script>
 </main>

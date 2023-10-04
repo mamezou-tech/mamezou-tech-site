@@ -49,7 +49,7 @@ function Recommendation({ tags }: { tags: string }) {
   };
   const prevPage = () => setCurrentPage(currentPage - 1);
   const nextPage = () => setCurrentPage(currentPage + 1);
-  const sendGa = (el: MouseEvent) => 'gtag' in window && typeof window.gtag === 'function' && window.gtag('event', 'click_recommend', { title: (el.target as HTMLAnchorElement)?.text });
+  const sendGa = (ev: MouseEvent) => 'gtag' in window && typeof window.gtag === 'function' && window.gtag('event', 'click_recommend', { title: (ev.target as HTMLAnchorElement)?.text });
   useEffect(fetchArticles, []);
 
   if (!articles.length) {

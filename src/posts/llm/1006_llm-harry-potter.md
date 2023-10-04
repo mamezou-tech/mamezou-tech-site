@@ -1,7 +1,7 @@
 ---
 title: 大規模言語モデル初心者がハリーポッター対話モデルを作ってみた
 author: yuma-takao
-date: 2023-10-05
+date: 2023-10-06
 tags: [自然言語処理, 機械学習, ファインチューニング]
 ---
 
@@ -27,7 +27,7 @@ LLMについて調べつつ、扱いやすそうなデータがないか探し�
 ## モデル
 Google Colabでも動かせる程度に軽量で、英語で学習されているモデルから、bigscience/bloomz-1b1　を使ってみることにしました。
 
-- [bigscience/bloomz-1b1](https://huggingface.co/bigscience/bloomz-1b1)
+[bigscience/bloomz-1b1](https://huggingface.co/bigscience/bloomz-1b1)
 
 # bloomz-1b1のファインチューニング
 ## 実行環境

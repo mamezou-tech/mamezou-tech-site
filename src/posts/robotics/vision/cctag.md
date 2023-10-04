@@ -1,6 +1,6 @@
 ---
 title: CCTagマーカーを使ってみた
-author: shitnaro-matsui
+author: shintaro-matsui
 date: 2023-10-04
 ---
 

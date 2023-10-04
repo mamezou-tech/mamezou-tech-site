@@ -42,7 +42,7 @@ layout: base.njk
       <div style="float: right">
         <div id="preact-sns"></div>
         <script type="module">
-          import { render } from '/components/preact/social-plugins.js';
+          import { render } from '/components/preact/social_plugins.js';
           render({url: '{{ meta.url }}', path: '{{ page.data.url }}'}, document.getElementById("preact-sns"));
         </script>
       </div>
@@ -116,17 +116,13 @@ layout: base.njk
         {% endif %}
       </nav>
     </aside>
-    {#
-<!--    <is-land on:idle style="margin-top:0">-->
-<!--      <div id='recommendation-app'></div>-->
-<!--      <template data-island>-->
-<!--	    <script type="module">-->
-<!--        import { renderRecommendation } from '/components/preact/bundle.mjs';-->
-<!--        renderRecommendation({tags : '{{ tags | pageTags }}'}, document.getElementById("recommendation-app"));-->
-<!--	    </script>-->
-<!--	  </template>-->
-<!--    </is-land>-->
-    #}
+    <div style="margin-top:0">
+      <div id='recommendation-app'></div>
+      <script type="module">
+        import { render } from '/components/preact/recommendation.js';
+        render({tags : '{{ tags | pageTags }}'}, document.getElementById("recommendation-app"));
+      </script>
+    </div>
     <hr class="link-separator" />
     {%- include "pv-ranking.njk" %}
     {%- include "links.njk" %}

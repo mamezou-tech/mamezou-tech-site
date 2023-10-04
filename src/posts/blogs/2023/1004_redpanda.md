@@ -49,7 +49,7 @@ Node.js 用の Kafka Client KafkaJS については以下の記事で紹介し�
 :::
 
 ## ローカル環境構築
-docker compose で簡単に試すことができます。公式ドキュメントからシングルノードのクラスターを構築する compose.yml をコピーして compose.yml ファイルとして保存します。
+docker compose で簡単に試すことができます。公式ドキュメントからシングルノードのクラスターを構築する YAML をコピーして compose.yml ファイルとして保存します。
 
 [Redpanda Quickstart](https://docs.redpanda.com/current/get-started/quick-start/)
 
@@ -197,7 +197,7 @@ Kafka では kafka-ui というサードパーティ製の Web UI が開発さ�
 
 ## Kafka Client からアクセス
 
-Kafka Client からの接続を試してみます。kafka-console-consumer を使います。Redpanda の docker compose では Reapanda クラスターの外部ポートは19092に設定されていますので、bootstrap-server オプションにこのポートを指定して chat-room トピックからメッセージを取得します。
+Kafka Client からの接続を試してみます。kafka-console-consumer を使います。Redpanda の docker compose では Redpanda クラスターの外部ポートは19092に設定されていますので、bootstrap-server オプションにこのポートを指定して chat-room トピックからメッセージを取得します。
 
 ```shell
 $ kafka-console-consumer --bootstrap-server 127.0.0.1:19092 --topic chat-room --from-beginning

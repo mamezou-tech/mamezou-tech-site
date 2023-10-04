@@ -19,7 +19,14 @@ GitHub Actions では GitHub-hosted runners と呼ばれるGitHub がホスト�
 6月22日に Larger runners が GA になりました。
 
 [GitHub-hosted larger runners for Actions are generally available | GitHub Changelog](https://github.blog/changelog/2023-06-21-github-hosted-larger-runners-for-actions-are-generally-available/)
+
+[2023.10.03 追記]
+Apple Silicon の macOS larger Runner がパブリックベータになりました。
+
+[GitHub Actions&#058; Apple silicon (M1) macOS runners are now available in public beta!](https://github.blog/changelog/2023-10-02-github-actions-apple-silicon-m1-macos-runners-are-now-available-in-public-beta/)
+
 :::
+
 
 ## Faster macOS runners
 4月に macOS のハイスペックな runner がパブリックベータとして全ユーザーに解放されました。

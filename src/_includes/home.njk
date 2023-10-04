@@ -132,7 +132,7 @@ layout: base.njk
 
   <div>
     <fieldset class="chatgpt-jargon">
-      <legend><img alt="mameka" src="/img/logo/mameka6_30.png" />豆香の豆知識(Powered by GPT-4)</legend>
+      <legend><img alt="mameka" width="30px" height="100%" src="/img/logo/mameka6_30.png" />豆香の豆知識(Powered by GPT-4)</legend>
       <div>今日の言葉: {{ gpt.columns[0].title }}</div>
       <div>{{ gpt.columns[0].text | safe }}</div>
       <div><b>※本コラムはOpenAIのChat Completion APIで生成したものです。存在しない言葉(AIの幻覚/作話)だったり、内容に誤りがある可能性があります。</b></div>
@@ -143,7 +143,7 @@ layout: base.njk
     <div class="article-area">
       <article class="tdbc-mx-auto" style="margin-top: 3em">
         <section class="post-list__wrapper recent-article">
-          <h2 class="post-list__heading">新着記事<img alt="new-articles" class="icon" width="36px" src="/img/icons/new-box.svg" /><a class="all-article-link" href="/articles/">全ての記事を見る</a></h2>
+          <h2 class="post-list__heading">新着記事<img alt="new-articles" class="icon" width="36px" height="100%" src="/img/icons/new-box.svg" /><a class="all-article-link" href="/articles/">全ての記事を見る</a></h2>
           <ul class="post-list">
             {% for post in search.pages('layout^=post exclude!=true', 'date=desc') | limit(10) | data %}
               <li class="post-list__item">

@@ -1,5 +1,5 @@
 ---
-title: CCTagマーカーを使ってみる。
+title: CCTagマーカーを使ってみた
 author: shitnaro-matsui
 date: 2023-10-04
 ---

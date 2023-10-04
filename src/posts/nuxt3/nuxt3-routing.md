@@ -78,13 +78,11 @@ Nuxt3では`[...slug].vue`というファイル名でページコンポーネン
 
 作成するページコンポーネントは以下のような通常のVueコンポーネントです。
 
-{% raw %}
 ```html
 <template>
   <p>{{ $route.params.slug }} Catch-all Route</p>
 </template>
 ```
-{% endraw %}
 
 テンプレートのみのシンプルなコンポーネントです。
 `route.params.slug`の部分には、ファイル名のスプレッド演算子から推測できるようにパスの配列(`/`区切り)が入ります。
@@ -125,7 +123,6 @@ Nuxt2では`pages/details/_id.vue`のようなアンダースコアをつけて�
 
 このパスパラメータを利用するようindex.vueを修正します。
 
-{% raw %}
 ```html
 <script setup lang="ts">
 const {data: articles, refresh} = await useFetch('/api/blogs');
@@ -148,12 +145,10 @@ const {data: articles, refresh} = await useFetch('/api/blogs');
   </div>
 </template>
 ```
-{% endraw %}
 
 `NuxtLink`の`to`プロパティをパスパラメータに変更しています。
 `details/[id].vue`の方は以下のようになります。
 
-{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -174,7 +169,6 @@ const { data: article } = await useFetch(`/api/blogs/${id}`);
   </div>
 </template>
 ```
-{% endraw %}
 
 基本はdetails.vueと同じですが、クエリパラメータ(route.query)として取得していた部分を、パスパラメータ(`route.params`)に変更しました。
 これでNuxtアプリケーションをビルドすると、パスパラメータでページ遷移するようになります。

@@ -143,7 +143,6 @@ GitHubでマルチレポのプロジェクトを作る場合、パッケージ�
 <br/>
 
 - GitHub Actionsのワークフロー定義
-{% raw %}
 ```yaml
 name: Publish to GitHub Packages 
 on:
@@ -172,7 +171,6 @@ jobs:
         REPOSITORY_SERVER_USER: ${{ secrets.REPOSITORY_SERVER_USER }}
         REPOSITORY_SERVER_PASSWORD: ${{ secrets.REPOSITORY_SERVER_PASSWORD }}
 ```
-{% endraw %}
 
 それぞれのリポジトリで利用するワーフクロー定義はすべて上記と同じものとなります。
 
@@ -229,7 +227,6 @@ GitHub Actionsのワークフローは毎回クリーンな環境で実行され
 
 setup-javaアクションはこのデメリットを解消するため、次回以降のワークフローの実行に備えダウンロードしたライブラリをキャッシュする仕組みを持っています。このキャッシュの仕組みは次のように`cache`属性を指定することで有効になります。
 
-{% raw %}
 ```yaml
 uses: actions/setup-java@v3
 with:
@@ -237,7 +234,6 @@ with:
   distribution: 'temurin'
   cache: 'maven'
 ```
-{% endraw %}
 
 キャッシュされたライブラリの有効期間は簡単にいうとpomが変更されるまでとなります。したがって、pomを変更しない限り、ライブラリのダウンロードは発生しないため、ワークフローの実行が高速化します。
 
@@ -295,7 +291,6 @@ GitHub Packagesは1つのリポジトリにつき1つの独立したパッケー
 ## setup-javaアクションの設定
 今回の例ではsetup-javaアクションの設定を次のようにしていますが、この中でGitHub Packagesに関する設定は`server-id`, `server-username`, `server-password`, `settings-path`の4つになります。
 
-{% raw %}
 ```yaml
 - name: Set up JDK 17
   uses: actions/setup-java@v3
@@ -307,7 +302,6 @@ GitHub Packagesは1つのリポジトリにつき1つの独立したパッケー
     server-password: REPOSITORY_SERVER_PASSWORD
     settings-path: ${{ github.workspace }}
 ```
-{% endraw %}
 
 setup-javaアクションはこの設定をもとにMavenの実行に利用するsettting.xmlを`settings-path`で指定されたパスの配下に生成します。今回の例であればワークスペースディレクトリの直下に次のようなsetteings.xmlが生成されます。
 
@@ -337,7 +331,6 @@ run: mvn -B deploy --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
 
 Maven実行時にIDとパスワードが環境変数から取得されるのは分かりましたが、その環境変数と実際のIDとパスワードが設定されているシークレットの値を紐づけているのがmvnコマンドの実行ステップで定義している`env`属性となります。今回の例では次の箇所がこれに該当します。
 
-{% raw %}
 ```yaml
 - name: Publish to GitHub Packages Apache Maven
   run: mvn -B deploy --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
@@ -345,7 +338,6 @@ Maven実行時にIDとパスワードが環境変数から取得されるのは�
     REPOSITORY_SERVER_USER: ${{ secrets.REPOSITORY_SERVER_USER }}
     REPOSITORY_SERVER_PASSWORD: ${{ secrets.REPOSITORY_SERVER_PASSWORD }}
 ```
-{% endraw %}
 
 この定義があることでmvn実行時に`env`属性で定義した環境変数を経由してシークレットが参照されるようになります。
 
@@ -362,7 +354,6 @@ Maven実行時にIDとパスワードが環境変数から取得されるのは�
 ::: check: 同じリポジトリのGitHub Packagesの利用は簡単
 今回はワークフローを実行するリポジトリとは別のGithub Packagesを使うため`server-id`などの設定が必要となりましたが、同じリポジトリのGitHub Packagesを利用する場合はsetup-javaの設定はデフォルトのままでよく、mvnコマンドの実行ステップの環境変数に`GITHUB_TOKEN`を設定するだけで使うことができます。この例は次のようになります。
 
-{% raw %}
 ```yaml
 - name: Set up JDK 11
   uses: actions/setup-java@v3
@@ -374,7 +365,6 @@ Maven実行時にIDとパスワードが環境変数から取得されるのは�
   env:
     GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
 ```
-{% endraw %}
 
 `server-id`には`github`が使われるので、このidに対するpomのリポジトリ設定は必要となります。
 :::

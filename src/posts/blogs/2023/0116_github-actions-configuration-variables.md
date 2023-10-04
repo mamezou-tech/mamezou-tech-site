@@ -110,7 +110,6 @@ Actions variables の画面では、全ての Environment variables が値と共
 ## ワークフローからの構成変数の利用
 では定義した構成変数をワークフローから利用してみましょう。以下のようなワークフローファイルを用意しました。
 
-{% raw %}
 ```yaml
 name: Show variables
 
@@ -138,7 +137,6 @@ jobs:
         echo "Repository variable : ${{ vars.PLATFORM_VERSION }}"
         echo "Environment variable : ${{ vars.SERVICE_URL }}"
 ```
-{% endraw %}
 
 手動実行の入力パラメータとして、ターゲットのデプロイ先(development、staging、production)を選択するようにしました。ここで選択されたターゲットはジョブの `environment` に設定され、デプロイ先に応じた変数が参照されます。ジョブのステップでは、オーガニゼーションレベル、リポジトリ単位、環境単位の変数を表示しています。変数は `vars` コンテキストから取り出すことができます。
 

@@ -53,7 +53,6 @@ jobs:
 
 以下のように、Permissions Monitor を実行するステップを追加します。
 
-{% raw %}
 ```diff
 jobs:
   Build:
@@ -67,7 +66,6 @@ jobs:
     - run: |
         git config --global user.name "github-actions[bot]"
 ```
-{% endraw %}
 
 :::info
 config の指定はなくてもデフォルト値が使用され動作するのですが、明示的に指定することが推奨されています。
@@ -92,7 +90,6 @@ config の指定はなくてもデフォルト値が使用され動作するの�
 それでは、この情報に基づいてワークフローを修正します。
 `permissions` フィールドに `contents: write` を追記して permissions/monitor の step を削除すれば完了です。
 
-{% raw %}
 ```diff
 jobs:
   Build:
@@ -109,7 +106,6 @@ jobs:
     - run: |
         git config --global user.name "github-actions[bot]"
 ```
-{% endraw %}
 
 同じリポジトリのワークフロー全てに必要な修正を施せば、リポジトリのデフォルト設定を変更しても大丈夫です。
 

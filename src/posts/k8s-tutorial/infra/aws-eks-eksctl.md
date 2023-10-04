@@ -248,7 +248,6 @@ roleRef:
 ```shell
 kubectl get cm aws-auth -n kube-system -o yaml
 ```
-{% raw %}
 ```yaml
 # 一部省略/整形
 apiVersion: v1
@@ -269,7 +268,6 @@ data:
       userarn: arn:aws:iam::xxxxxxxxxxxx:user/noboru-kudo
       username: noboru-kudo
 ```
-{% endraw %}
 
 `mapUsers`セクションに今回追加したIAMユーザーが登録されていることが分かります。
 別のターミナルを開いて登録したIAMユーザーでクラスタが参照できることを確認しましょう。

@@ -53,7 +53,6 @@ echo "show clipboard button on code block"
 
 使い方は以下の通りです。下記は[Nunjucks](https://mozilla.github.io/nunjucks/)テンプレートを利用しています（他のテンプレートも使えるはずですが未検証です）。
 
-{% raw %}
 ```html
 <!DOCTYPE html>
 <html>
@@ -68,7 +67,7 @@ echo "show clipboard button on code block"
 </html>
 ```
 `{% initClipboardJS %}`部分でプラグインのShortcodeを実行しています。
-{% endraw %}
+
 これで静的サイトを生成すると、以下のようにソースコードが生成されます。
 
 ```html

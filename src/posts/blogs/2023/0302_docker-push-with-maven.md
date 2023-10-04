@@ -288,7 +288,6 @@ mvn clean package docker:build docker:push -Dimage.tag=`date +%Y%m%dT%H%M%S-%3N`
 最後にGitHub繋がりでGitHub Actionsを使った例を紹介します。
 先ほどのコンテナのビルドからpushまで行う操作は次のようなワークフローを定義することでGitHub Actionsで実行することができます。
 
-{% raw %}
 ```yaml
 name: Publish to GitHub Packages 
 on:
@@ -317,7 +316,6 @@ jobs:
         REPOSITORY_SERVER_USER: ${{ secrets.REPOSITORY_SERVER_USER }}
         REPOSITORY_SERVER_PASSWORD: ${{ secrets.REPOSITORY_SERVER_PASSWORD }}
 ```
-{% endraw %}
 
 ワークフロー実行にはコンテナレジストリへの認証が必要なため`setup-java`アクションの`server-username`パラメータと`server-password`パラメータで認証情報設定していますが、この設定はGitHub Packagesをjarを格納するパッケージレジストリとして使う場合と同じとなります。この詳細については[こちら](/blogs/2023/02/19/github-packages-with-maven/#setup-javaアクションの設定)を参照ください。
 

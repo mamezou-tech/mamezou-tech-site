@@ -31,7 +31,6 @@ Nuxtではありませんが、Vueでは[onErrorCaptured](https://vuejs.org/api/
 例としてサブコンポーネントのmountedでエラーが発生したとします。
 ページコンポーネントのソースコードは以下のようになります。
 
-{% raw %}
 ```html
 <script setup lang="ts">
 const message = ref('');
@@ -49,7 +48,6 @@ onErrorCaptured((err) => {
   </div>
 </template>
 ```
-{% endraw %}
 
 エラーが発生するサブコンポーネント(FlakyComponent)は以下です。
 
@@ -129,7 +127,6 @@ Nuxtアプリケーションの起動時に発生するクリティカルなエ�
 クライアントサイド限定ですが、[NuxtErrorBoundary](https://nuxt.com/docs/api/components/nuxt-error-boundary)を使うと、簡単にエラー発生時の影響を局所化できます。
 [ソースコード](https://github.com/nuxt/framework/blob/main/packages/nuxt/src/app/components/nuxt-error-boundary.ts)を見ればすぐに分かりますが、NuxtErrorBoundaryは前述のonErrorCapturedフックを使って配下のコンポーネントで発生するエラーを監視するNuxtのユーティリティコンポーネントです。
 
-{% raw %}
 ```html
 <script>
 const log = (err) => console.log(err)
@@ -149,7 +146,6 @@ const log = (err) => console.log(err)
   </div>
 </template>
 ```
-{% endraw %}
 
 NuxtErrorBoundaryはデフォルトスロットに対象コンポーネント、名前付きスロット(error)にエラー発生時のフォールバックコンテンツを指定します[^5]。
 
@@ -168,7 +164,6 @@ useFetch/useAsyncData自体は例外をスローしませんので、try-await/c
 
 テンプレートでエラーハンドリングをする例は、以下のようになります。
 
-{% raw %}
 ```html
 <script setup lang="ts">
 const { data: articles, error } = await useFetch('/api/blogs');
@@ -187,8 +182,6 @@ const { data: articles, error } = await useFetch('/api/blogs');
 </template>
 ```
 
-{% endraw %}
-
 なお、`error`はサーバーサイドではエラー詳細が格納されていますが、クライアントサイドのハイドレーション実行後はboolean型(エラー時はtrue)になります。
 これは、不用意にエラー内容をクライアントサイドに公開しないためのNuxtのセキュリティ面での配慮です。
 Errorの内容(ステータスコード等)をクライアントサイドで保持したい場合は、別途状態を保持するように実装する必要があります[^6]。
@@ -205,7 +198,6 @@ Nuxtは、サーバーサイド実行でエラーが発生した場合や、ク�
 カスタムエラーページを作成する場合は、プロジェクトルート直下に`error.vue`を作成するだけです。
 以下のようなものになります。
 
-{% raw %}
 ```html
 <script setup lang="ts">
 import { NuxtApp } from "#app";
@@ -224,7 +216,6 @@ const isDev = process.dev;
 </template>
 ```
 
-{% endraw %}
 
 エラーページも通常のVueコンポーネントです。
 propsとしてエラー発生内容が格納されている`error`を受け取れます。ここでは開発モード(`npm run dev`)の場合のみエラー内容の詳細を表示するようにしています。

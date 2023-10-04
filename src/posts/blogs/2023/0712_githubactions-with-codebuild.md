@@ -81,7 +81,6 @@ CodeBuildの作成は、GitHub Actionsを使わない場合と基本変わりま
 
 作成したCodeBuildプロジェクトには、以下のBuildSpecを登録しました。
 
-{% raw %}
 ```yaml
 version: 0.2
 
@@ -112,7 +111,6 @@ phases:
       - if: ${{ failure() }}
         run: echo "github action failed!!"
 ```
-{% endraw %}
 
 一見すると通常のCodeBuildのBuildSpecですが、buildフェーズ配下が`commands`ではなく、`steps`となっています。
 この部分の記述がGitHub Actionsのものとなっています。

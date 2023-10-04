@@ -217,7 +217,6 @@ const submit = (values) => {
 
 先ほどの最後の例をComposition APIを使ってエミューレートしてみます(Composition APIはUIがないので完全に一致はしていません)。
 
-{% raw %}
 ```html
 <script setup lang="ts">
   import { useForm } from 'vee-validate';
@@ -252,7 +251,6 @@ const submit = (values) => {
   </form>
 </template>
 ```
-{% endraw %}
 
 ポイントはuseForm Composableです。これがフォームレベルバリデーションの基本機能を提供するものです。
 

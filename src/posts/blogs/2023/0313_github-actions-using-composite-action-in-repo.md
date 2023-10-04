@@ -39,7 +39,6 @@ flowchart LR
 
 ワークフローファイルを抜粋すると次のようになります。
 
-{% raw %}
 ```yaml
 on:
   pull_request
@@ -83,7 +82,6 @@ jobs:
       - name: Run test
       # 以下テストシナリオの実行 step が続く
 ```
-{% endraw %}
 
 MySQL などは Helm Chart でインストールしています。Helm Chart の設定を記述する values.yaml や データベース構築用 DDL/DML を記述した setup.sql など、リポジトリ内のファイルを使用しています。
 
@@ -140,7 +138,6 @@ MySQL などは Helm Chart でインストールしています。Helm Chart の
 Action 定義 (action.yml) の抜粋です。
 
 - local-action/action.yml
-{% raw %}
 ```yaml
 name: 'Setup test environment'
 
@@ -180,7 +177,6 @@ runs:
       shell: bash
     # 以降も構築 step が続く
 ```
-{% endraw %}
 
 Action では secret を扱えないため inputs の `action-token` でパラメータとして受け取るようにしています。
 steps の定義は元のワークフローとほぼ同じで、各 step に `shell: bash` の1行を追加するだけです。
@@ -196,7 +192,6 @@ Composite Action (複合アクション)は、GitHub Actions ワークフロー�
 利用側のワークフローです。ローカルパス `./local-action` を指定して Action を実行しています。`with` で GITHUB_TOKEN を渡します。
 
 - .github/workflows/e2e-test1.yml
-{% raw %}
 ```yaml
 on:
   pull_request
@@ -219,7 +214,6 @@ jobs:
       - name: Run test
       # 以下テスト実行 step が続く
 ```
-{% endraw %}
 
 ## まとめ
 以上、GitHub Actions ワークフローの step を切り出してリポジトリ内の Composite Action として再利用する方法を紹介しました。

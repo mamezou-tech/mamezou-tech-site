@@ -509,7 +509,6 @@ spec:
 先程は手動でバージョンを更新しましたが、Fluxで自動化しましょう。
 以下のコマンドを実行します。
 
-{% raw %}
 ```shell
 flux create image update task-tool \
   --git-repo-ref=task-tool \
@@ -549,7 +548,6 @@ spec:
     path: ./app/overlays/prod
     strategy: Setters
 ```
-{% endraw %}
 
 ここで、イメージ更新のGitコミットとプッシュに関する設定をしています。
 上記コミットメッセージは最低限のものですが、テンプレート言語を利用してより詳細なメッセージを作成可能です。詳細は[こちら](https://fluxcd.io/docs/components/image/imageupdateautomations/#commit-message-template-data)を参照しくてださい。

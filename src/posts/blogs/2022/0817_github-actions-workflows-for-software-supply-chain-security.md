@@ -39,7 +39,6 @@ Dockerfile を含むリポジトリへのワークフロー追加時にサジェ
 
 [^1]: サードパーティ製 Action を使用していることから、Action の更新による挙動変更を避けるため、コミットハッシュを指定して Action をチェックアウト・実行するようになっています。
 
-{% raw %}
 ```yaml
 name: Docker
 
@@ -90,7 +89,6 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
 ```
-{% endraw %}
 
 通常の docker build / push に加えて以下のステップが追加されています。
 
@@ -245,7 +243,6 @@ jobs:
 
 プロジェクトのルートに以下のような YAML ファイルを `.slsa-goreleaser.yml` という名前で作成します。主に Go のターゲットプラットフォームやバイナリの名前などを指定しています。
 
-{% raw %}
 ```yaml
 # Version for this file.
 version: 1
@@ -284,7 +281,6 @@ binary: gocli-example-{{ .Os }}-{{ .Arch }}
 #   - "-X main.CommitDate={{ .Env.COMMIT_DATE }}"
 #   - "-X main.TreeState={{ .Env.TREE_STATE }}"
 ```
-{% endraw %}
 
 Go の 簡単な CLI のプロジェクトを作り、この SLSA Go Releaser ワークフローと `.slsa-goreleaser.yml` を追加しました。
 

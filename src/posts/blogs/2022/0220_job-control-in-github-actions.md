@@ -173,7 +173,6 @@ flowchart LR
 
 GitHub Actions ではワークフローの状態は内包するジョブの失敗・成功に依存します。1つでもジョブが失敗していれば、ワークフローの状態は失敗です。ワークフローの状態は success / failure などの関数で取得できるため、`if` 条件文でジョブの実行条件を指定します。
 
-{% raw %}
 ```yaml
   Deploy:
     runs-on: ubuntu-latest
@@ -211,7 +210,6 @@ GitHub Actions ではワークフローの状態は内包するジョブの失�
         SLACK_COLOR: danger
         SLACK_MESSAGE: 'Run number : #${{ github.run_number }}'
 ```
-{% endraw %}
 
 Notify_succeed ジョブと Notify_failure ジョブで、通知内容を結果に応じてタイトルに設定しています。GitHub Actions のビルド番号を `github.run_number` という組み込みの変数で取得して Slack のメッセージに出力しています。
 
@@ -238,10 +236,8 @@ Slack への通知例です。
 
 ワークフローの成功・失敗に関わらず何らかのジョブを実行したい場合は、always 関数を使って以下のように定義できます。
 
-{% raw %}
 ```yaml
   Run_always:
     if: ${{ always() }}
     runs-on: ubuntu-latest
 ```
-{% endraw %}

@@ -62,7 +62,6 @@ Nuxt3では、defineNuxtPlugin内でプラグインを実装します。
 このファイルを`plugins`配下に配置して、Nuxtアプリケーションを実行するとVueコンポーネント内でユーティリティメソッドが利用できます。
 具体的には以下のような形です。
 
-{% raw %}
 ```html
 <script setup lang="ts">
 const price = ref(1000);
@@ -79,7 +78,6 @@ console.log(nuxtApp.$yen(price.value));
   </div>
 </template>
 ```
-{% endraw %}
 
 上記のように全てのVueコンポーネントから、プラグインで追加したユーティリティが利用できます(メソッドには`$`プリフィックスがつきます)。
 今度は同様のユーティリティを、Vueの[カスタムディレクティブ](https://vuejs.org/guide/reusability/custom-directives.html)で定義してみます。

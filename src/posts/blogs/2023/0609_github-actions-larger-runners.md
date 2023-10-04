@@ -65,7 +65,6 @@ Apple Silicon の macOS larger Runner がパブリックベータになりまし
 Electron アプリをビルドして、バイナリをアップロードするワークフローを作り、通常の 3コア runner (macos-latest) と12コアの runner (macos-latest-xl) を strategy.matrix で指定して実行しました。
 
 - .github/workflows/build-electron-app.yml
-{% raw %}
 ```yaml
 name: Build Electron App
 
@@ -107,7 +106,6 @@ jobs:
         name: package-${{ matrix.os }}
         path: electron-example-browserview/dist/*
 ```
-{% endraw %}
 
 ワークフローのステップとしては、以下のようになります。
 
@@ -170,7 +168,6 @@ Larger runners は public リポジトリに対してはデフォルトでは無
 ## Electron アプリビルド比較 (Linux / Windows runners)
 macOS runners で試した Electron アプリのビルドを、Linux / Windows runners でも試しました。ワークフローの strategy.matrix の部分を以下のようにしています。2回実行して平均を取得しました。
 
-{% raw %}
 ```yaml
 jobs:
   build:
@@ -182,7 +179,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, ubuntu-latest-l, windows-latest, windows-latest-l]
 ```
-{% endraw %}
 
 Linux runner の比較です。
 
@@ -229,7 +225,6 @@ Windows も macOS ほどではないですが Electron アプリビルドが遅�
 
 [GitHub - mamezou-tech/sbgraph: Fetch Scrapbox project data and visualize activities.](https://github.com/mamezou-tech/sbgraph)
 
-{% raw %}
 ```yaml
 name: Fetch Scrapbox data
 
@@ -259,7 +254,6 @@ jobs:
     - name: Generate Graph data
       run: sbgraph graph -i=true -j=true
 ```
-{% endraw %}
 
 ワークフローのステップとしては以下のようになります。
 

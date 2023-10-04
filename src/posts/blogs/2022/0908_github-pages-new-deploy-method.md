@@ -25,7 +25,6 @@ Jekyll のワークフローを修正して使えばよさそうということ�
 
 以下のようなワークフローを書きました。Jekyll ではなく、[先日紹介した](/blogs/2022/09/07/build-doc-site-with-astro/) Astro でビルドしています。
 
-{% raw %}
 ```yaml
 name: Deploy GitHub Pages with Astro
 
@@ -76,7 +75,6 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v1
 ```
-{% endraw %}
 
 ポイントとしては、`permission`の　`contents: read` でリポジトリの読み取りを `pages: write` Pages への書き込みを許可しています。`id-token:write` の部分は、GitHub Pages をデプロイするインフラに対して OIDC 認証するために必要なのではないかと推測しています。
 

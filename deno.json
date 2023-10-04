@@ -11,6 +11,6 @@
   "importMap": "import_map.json",
   "fmt": {
     "exclude": ["src/"],
-    "include": ["lume/**/*.ts", "_config.ts"]
+    "include": ["lume/**/*.ts", "_config.ts", "src/components/**/*.ts"]
   }
 }

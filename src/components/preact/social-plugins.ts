@@ -1,10 +1,10 @@
-import { html } from "htm/preact";
-import render from "preact-render-to-string";
-import { hydrate as preactHydrate } from "preact";
-import { useRef, useEffect } from "preact/hooks";
+import htm from 'npm:htm@^3.1.1';
+import { h, render as preactRender } from "npm:preact@^10.18.1";
+import { useRef, useEffect } from "npm:preact@^10.18.1/hooks";
 
-function App({ url, path }) {
-  const followList = useRef();
+const html = htm.bind(h);
+function App({ url, path }: {url: string, path: string}) {
+  const followList = useRef<HTMLElement>(null!);
 
   useEffect(() => {
     // Twitter Follow
@@ -18,12 +18,12 @@ function App({ url, path }) {
     const script = document.createElement("script");
     script.async = true;
     script.defer = true;
-    script.crossorigin = "anonymous";
+    script.crossOrigin = "anonymous";
     script.src =
       "https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v13.0&appId=625393465273959&autoLogAppEvents=1";
     script.nonce = "r6ZSti4e";
     const fbroot = document.querySelector("#fb-root"); // first element of body
-    fbroot.after(script);
+    fbroot?.after(script);
   });
 
   return html` <div className="tdbc-social-plugins">
@@ -76,10 +76,6 @@ function App({ url, path }) {
   </div>`;
 }
 
-export function toHtml(args) {
-  return render(html` <${App} url=${args.url} path=${args.path} />`);
-}
-
-export function hydrate(args, el) {
-  return preactHydrate(html` <${App} url=${args.url} path=${args.path} />`, el);
+export function render({url, path}: {url: string, path: string}, el: HTMLElement) {
+  return preactRender(html` <${App} url=${url} path=${path} />`, el);
 }

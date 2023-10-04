@@ -1,7 +1,7 @@
-import htm from 'htm';
-import { h, render as preactRender } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
-import { styled, setup, keyframes } from 'goober';
+import htm from 'npm:htm@^3.1.1';
+import { h, render as preactRender } from 'npm:preact@^10.11.0';
+import { useEffect, useState } from 'npm:preact@^10.11.0/hooks';
+import { styled, setup, keyframes } from 'npm:goober@^2.1.11';
 
 setup(h);
 const html = htm.bind(h);

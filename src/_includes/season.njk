@@ -8,17 +8,11 @@ layout: base.njk
     <header class="season__header">
       <h1>{{ title }}</h1>
       <div style="float: right">
-          {#
-<!--        <is-land on:idle>-->
-<!--          <div id="preact-sns">{{ "./components/preact/social-plugins.js" | preact({url: meta.url, path: page.url}) | safe }}</div>-->
-<!--          <template data-island>-->
-<!--            <script type="module">-->
-<!--              import { hydrateSocialPlugins } from '/components/preact/bundle.mjs';-->
-<!--              hydrateSocialPlugins({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));-->
-<!--            </script>-->
-<!--          </template>-->
-<!--        </is-land>-->
-          #}
+        <div id="preact-sns"></div>
+        <script type="module">
+          import { render } from '/components/preact/social-plugins.js';
+          render({url: '{{ meta.url }}', path: '{{ page.data.url }}'}, document.getElementById("preact-sns"));
+        </script>
       </div>
     </header>
 

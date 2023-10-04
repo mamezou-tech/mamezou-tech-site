@@ -1,8 +1,8 @@
-import { html } from "htm/preact";
-import render from "preact-render-to-string";
-import { hydrate as preactHydrate } from "preact";
-import { useEffect, useState } from "preact/hooks";
-import { useHeadsObserver } from './hooks';
+import { html } from "npm:htm@^3.1.1/preact";
+import render from "npm:preact-render-to-string@^5.2.4";
+import { hydrate as preactHydrate } from "npm:preact@^10.11.0";
+import { useEffect, useState } from "npm:preact@^10.11.0/hooks";
+import { useHeadsObserver } from './hooks.js';
 
 function slugify(target) {
   return target

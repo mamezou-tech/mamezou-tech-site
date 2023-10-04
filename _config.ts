@@ -83,7 +83,16 @@ site.use(sitemap({
   query: "exclude!=true",
 }));
 site.use(codeClipboard());
-site.use(esbuild());
+site.use(esbuild({
+  extensions: [".tsx", ".jsx", ".js", ".ts"],
+  options: {
+    sourcemap: true,
+    keepNames: true,
+    minify: false,
+    minifyIdentifiers: false,
+    minifySyntax: false,
+  },
+}));
 
 site.copy("fonts");
 site.copy("img");

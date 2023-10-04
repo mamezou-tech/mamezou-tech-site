@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'npm:preact@^10.11.0/hooks';
 
 export function useHeadsObserver() {
     const [activeId, setActiveId] = useState('');

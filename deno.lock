@@ -533,6 +533,7 @@
       "autoprefixer@10.4.16": "autoprefixer@10.4.16_postcss@8.4.31",
       "date-fns@2.30.0": "date-fns@2.30.0",
       "emoji-regex": "emoji-regex@10.2.1",
+      "htm": "htm@3.1.1",
       "liquidjs@10.9.2": "liquidjs@10.9.2",
       "luxon@3.3.0": "luxon@3.3.0",
       "markdown-it": "markdown-it@13.0.2",
@@ -548,6 +549,7 @@
       "postcss-nesting@12.0.1": "postcss-nesting@12.0.1_postcss@8.4.31_postcss-selector-parser@6.0.13",
       "postcss@8.4.31": "postcss@8.4.31",
       "preact": "preact@10.18.0",
+      "preact-render-to-string": "preact-render-to-string@6.2.1_preact@10.18.0",
       "preact-render-to-string@6.2.1": "preact-render-to-string@6.2.1_preact@10.18.0",
       "preact@10.18.0": "preact@10.18.0",
       "prismjs@1.29.0": "prismjs@1.29.0",
@@ -755,6 +757,10 @@
         "dependencies": {
           "function-bind": "function-bind@1.1.1"
         }
+      },
+      "htm@3.1.1": {
+        "integrity": "sha512-983Vyg8NwUE7JkZ6NmOqpCZ+sh1bKv2iYTlUkzlWmA5JD2acKoxd4KVxbMmxX/85mtfdnDmTFoNKcg5DGAvxNQ==",
+        "dependencies": {}
       },
       "immutable@4.3.4": {
         "integrity": "sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==",

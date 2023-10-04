@@ -13,6 +13,6 @@ icon: https://api.iconify.design/eos-icons/machine-learning.svg?color=%23730099&
 
 ChatGPT に代表される、大規模言語モデルによるアプリケーションが社会的な注目を集めており、GPT だけでなく新しい大規模言語モデルが続々と開発され、利活用事例も日々ネットを賑わせています。ここでは、LLM に関する知見をご紹介します。
 
-- [大規模言語モデル初心者がハリーポッター対話モデルを作ってみた](/ml/llm/1003_llm-harry-potter/)
+- [大規模言語モデル初心者がハリーポッター対話モデルを作ってみた](/ml/llm/1006_llm-harry-potter/)
 - [RAGを利用して国会会議録に基づいて質問に回答するLLMを作る方法](/ml/llm/llm-part1/)
 - [日本語GPTで雑談対話モデルを作ろう](/blogs/2023/08/07/llm_chat_model/)

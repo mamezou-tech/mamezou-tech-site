@@ -18,18 +18,19 @@ import anchor from "npm:markdown-it-anchor@^8.6.5";
 import footNote from "npm:markdown-it-footnote@^3.0.3";
 import container from "npm:markdown-it-container@^3.0.0";
 import katex from "npm:@traptitech/markdown-it-katex@^3.5.0";
-import containerOptions from "./lume/markdown-it/container-options.ts";
+import containerOptions from "./lume/markdown-it/container_options.ts";
 import { filterByPost, getPostArticles } from "./lume/filters/utils.ts";
 import { Page } from "lume/core/filesystem.ts";
 import { Search } from "lume/plugins/search.ts";
-import mermaidPlugin from "./lume/markdown-it/mermaid-plugin.ts";
-import externalLinkPlugin from "./lume/markdown-it/external-link-plugin.ts";
-import imageSwipePlugin from "./lume/markdown-it/image-swipe-plugin.ts";
+import mermaidPlugin from "./lume/markdown-it/mermaid_plugin.ts";
+import externalLinkPlugin from "./lume/markdown-it/external_link_plugin.ts";
+import imageSwipePlugin from "./lume/markdown-it/image_swipe_plugin.ts";
 import codeClipboard, {
   markdownItCopyButton,
 } from "./lume/plugins/code-clipboard/index.ts";
 import "./prism-deps.ts";
 import { head } from "./lume/filters/head.ts";
+import { makeAuthorArticles } from './src/generators/articles_by_author.ts';
 
 const markdown: Partial<PluginOptions["markdown"]> = {
   options: {
@@ -190,5 +191,26 @@ site.helper(
     `<script async src="https://unpkg.com/mermaid@9.3.0/dist/mermaid.min.js">document.addEventListener('DOMContentLoaded', mermaid.initialize({startOnLoad:true}));</script>`,
   { type: "tag" },
 );
+site.processAll([".md"], (pages) => {
+  if (!Deno.env.get("MZ_DEBUG")) {
+    return;
+  }
+  const search = new Search(site.searcher, false)
+  Object.values(makeAuthorArticles(search)).forEach((v) => {
+    const result = v.articles.reduce((acc, cur) => {
+      if (!cur.data.date) return acc;
+      const ym = cur.data.date.getFullYear() + "-" +
+        (cur.data.date.getMonth() + 1);
+      const found = acc.findIndex((a) => a.ym === ym);
+      if (found >= 0) {
+        acc[found].count++;
+      } else {
+        acc.push({ ym, count: 1 });
+      }
+      return acc;
+    }, [] as { ym: string; count: number }[]);
+    console.log(v.name, result);
+  });
+});
 
 export default site;

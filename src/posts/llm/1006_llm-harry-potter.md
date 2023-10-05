@@ -18,8 +18,7 @@ LLMについて調べつつ、扱いやすそうなデータがないか探し�
 
 # 学習データとモデルについて
 ## 学習データ
-香港科技大学（The Hong Kong University of Science and Technology：HKUST）による、
-英語・中国語のハリーポッターの小説から作成された、シーンごとの登場人物の会話のデータセットです。
+香港科技大学（The Hong Kong University of Science and Technology：HKUST）による、英語・中国語のハリーポッターの小説から作成された、シーンごとの登場人物の会話のデータセットです。
 会話の内容だけでなく、そのシーンの前提情報、登場人物同士の関係性などもデータセットに組み込まれています。
 
 [Harry-Potter-Dialogue-Dataset](https://github.com/nuochenpku/Harry-Potter-Dialogue-Dataset)
@@ -97,8 +96,7 @@ if torch.cuda.is_available():
         ],
 ```
 
-
-データセットはGoogleドライブに配置したものへアクセスしています。
+ColabからGoogleドライブに配置したデータセットにアクセスする方法は、以下の記事を参考にしました。
 [Google ドライブにマウントし、ファイルへアクセスする方法](https://blog.kikagaku.co.jp/google-colab-drive-mount)
 
 ```python
@@ -197,11 +195,13 @@ tokenize("hi there", tokenizer) # {'input_ids': [2807, 2782], 'attention_mask': 
 
 ## 学習データと検証データの準備
 学習データと検証データをそれぞれ準備します。
+今回は学習データ138件、検証データ35件となっています（約4：1）。
+
 ```python
 VAL_SET_SIZE = 1000
 
-train_dataset = []
-val_dataset = []
+train_dataset = [] # 学習データ
+val_dataset = [] # 検証データ
 
 for i in range(len(data)):
   if i % 5 == 0:
@@ -282,9 +282,9 @@ model.config.use_cache = False
 # 学習の実行
 trainer.train() # 約2分で学習完了
 ```
-<br>
+
 約2分で学習が完了しました。
-<br>学習済みモデルを保存します。
+学習済みモデルを保存します。
 
 ```python
 peft_model_id="lora_results"
@@ -395,14 +395,13 @@ def generate(instruction,input=None,maxTokens=256):
 ハリーとその他人物との会話内容だけでなく、会話場面の状況描写「scene」を学習データとして与えてあげた効果かなと感じました。
 
 以下、今回作成したハリーポッターモデルからの返答の一部です。
-<br>
 
 ```python
 入力：　Who are you?
 ハリー：　I'm a doctor.
 ```
 ハリーは医者になりました。
-<br>
+
 ```python
 入力：　Oh, hello, Harry, Excellent flying yesterday, really excellent.
        Gryffindor has just taken the lead for the House Cup — you earned fifty points!
@@ -413,7 +412,7 @@ def generate(instruction,input=None,maxTokens=256):
 ```
 ウィーズリー（ロン・ウィーズリー？）から話しかけられたような回答になりました。
 ストーリーの前提情報が学習された成果でしょうか。
-<br>
+
 ```python
 入力：　Tell me some secret of the Hogwarts School.
 　　　　（何かホグワーツの秘密を教えて）
@@ -424,9 +423,11 @@ def generate(instruction,input=None,maxTokens=256):
 
 # まとめ
 今回は小説ハリーポッターのデータセットを用いて、ハリーポッター風の回答をするモデルを作成してみました。
-<br>一般的な回答をすることも多く、回答の精度としてはまだまだですが、ハリーポッターっぽさもみられ、ある程度学習の成果はあったと思える結果でした。
+一般的な回答をすることも多く、回答の精度としてはまだまだですが、ハリーポッターらしさもみられ、ある程度学習の成果はあったと思える結果でした。
 学習データの選定・加工、大規模言語モデルの選択などで課題が見つかったので、今後も改良に努めていきたいと思います。
 
+ソースコード全体は、以下のリポジトリをご参照ください。
+[GitHub - llm-harry-potter](https://github.com/yumatakao/llm-harry-potter)
 
 # 参考
 - データセット：　[Harry-Potter-Dialogue-Dataset](https://github.com/nuochenpku/Harry-Potter-Dialogue-Dataset)

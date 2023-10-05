@@ -20,11 +20,10 @@ layout: base.njk
       {%- if author %}
         <div style="float: left; margin-bottom: 0.5rem">
         <span> Author: </span>
-        {%- set authors = search.pages() | contributorArticles | byAuthor(author) %}
-        {%- if authors.length %}
-          {%- set contributor = authors | first %}
+        {%- set github = author | githubName %}
+        {%- if github %}
           <a href="/authors/{{ author }}" title="{{ author }} の記事一覧">{{ author | safe }}
-          <img width="40" height="40" style="margin-left: 0.2rem" alt="{{ author }}の画像" src="https://github.com/{{ contributor.github }}.png?size=40" /></a>
+          <img width="40" height="40" style="margin-left: 0.2rem" alt="{{ author }}の画像" src="https://github.com/{{ github }}.png?size=40" /></a>
         {%- else %}
           <span>{{ author | safe }}</span>
         {%- endif %}

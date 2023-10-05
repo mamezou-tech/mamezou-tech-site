@@ -7,10 +7,7 @@ import sass from "lume/plugins/sass.ts";
 import sitemap from "lume/plugins/sitemap.ts";
 import esbuild from "lume/plugins/esbuild.ts";
 import { DateTime } from "luxon";
-import {
-  Author,
-  contributorArticles,
-} from "./lume/filters/contributor-articles.ts";
+import { githubName } from "./lume/filters/github_name.ts";
 import { readingTime } from "./lume/filters/reading-time.ts";
 import { excerpt } from "./lume/filters/excerpt.ts";
 import { pageTags } from "./lume/filters/page-tags.ts";
@@ -136,11 +133,6 @@ site.filter(
   "limit",
   (array: unknown[], limit: number) => array.slice(0, limit),
 );
-site.filter("byAuthor", (contributorArticles: Author[], author: string) => {
-  return contributorArticles.filter((contributor) =>
-    contributor.name === author
-  );
-});
 site.filter(
   "selectAuthor",
   (hrefs: string[], author: string) =>
@@ -160,7 +152,7 @@ const eventTagFilter = (tagPrefix: string) => (rawTags: string[]) => {
 site.filter("adventCalendarTag", eventTagFilter("advent"));
 site.filter("summerRelayTag", eventTagFilter("summer"));
 site.filter("validTags", validTags);
-site.filter("contributorArticles", contributorArticles);
+site.filter("githubName", githubName);
 
 site.filter(
   "currentMonthPosts",

@@ -10,7 +10,8 @@ date: 2023-10-04
   
 ロボットと画像認識は切っても切り離せない関係にあり、近年では画像認識により自律的に動作したり、周囲の様子を把握して移動するロボットが多く登場してきています。  
 画像認識には様々な技術がありますが、画像認識を補助するマーカーを用いる事で対象の位置姿勢を推測する手法はよく見受けられます。  
-有名な画像認識用のマーカーの1つにARマーカーがあり、例えばOpenCVで使用できるArUcoマーカーでは単一のマーカーで3次元の位置および姿勢を推定することが出来ます[^1]。
+有名な3次元位置姿勢を推定できるマーカーとして、OpenCVのArUcoマーカーがあります。  
+ArUcoマーカーでは単一のマーカーで3次元の位置および姿勢を推定することが出来ます[^1]。
 ![Aruco画像](/img/robotics/vision/aruco-merge.png)  
   
 [^1]: [Detection of ArUco Markers](https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html)  
@@ -19,14 +20,14 @@ date: 2023-10-04
 # CCTagとは
 CCTagとは、複数の円で構成される画像認識用の2次元マーカーです。  
 ![CCTag画像](/img/robotics/vision/cctags-example.png)  
-先ほど紹介したARマーカーとは異なり、CCTagマーカーは2次元の位置しか推定できません。  
-その代わり一般的な2次元マーカーと比べて、以下のようにノイズに屈強なようです[^2]。  
-![CCTag説明](/img/robotics/vision/cctag-explanation.png)  
+先ほど紹介したArUcoマーカーとは異なり、CCTagマーカーは2次元の位置しか推定できません。  
+その代わり一般的なマーカーでは認識困難な環境下でもマーカーの認識ができるようです[^2]。  
+![CCTag説明](/img/robotics/vision/cctags-noise.png)  
 [^2]: [CCTag documentation](https://cctag.readthedocs.io/en/latest/index.html)  
 
-マーカーを認識する上で考えらえるノイズとして、マーカー・カメラの移動や焦点のズレによる画像のぼやけ、照明環境の変化による画像の明るさの変化、マーカーの汚れ等、様々なものが想定されます。  
+認識困難な例として、マーカー・カメラの移動や焦点のズレによる画像のぼやけ、照明環境の変化による画像の明るさの変化等が考えられます。  
 従って環境変化の大きい屋外で動作するロボットや、カメラの画像がブレやすい移動ロボットの画像認識に向いていそうです。  
-上記シーンには該当しませんが、私は屋内における固定ロボットと3Dセンサとのハンドアイキャリブレーション[^3]の精度検証に使用しました。  
+上記シーンには該当しませんが、私は屋内において固定されたロボットと3Dセンサとのハンド-アイキャリブレーション[^3]の精度検証に使用しました。  
 使用できるプログラム言語は現時点ではC++のみであり、ライセンスはMPL2.0です。  
   
 [^3]: ロボットとカメラの間の位置姿勢のキャリブレーション
@@ -73,7 +74,7 @@ sudo make install
 Ubuntu22.04だと以下のように`apt-get install`で十分なようです。
 
 ```shell
-sudo make install libtbb-dev 
+sudo apt-get install libtbb-dev 
 ```
 
 CCTagのソースコードをクローンし、インストールしていきます。
@@ -149,7 +150,7 @@ void drawMarkers(const boost::ptr_list<cctag::ICCTag>& markers, cv::Mat& image)
 int main(int argc, char** argv)
 {
     // マーカーを撮影した画像を読み込み
-    const std::string IMG_PATH{"../scene_marker.png"};
+    const std::string IMG_PATH{"../cctags-detection-scene.png"};
     cv::Mat imageRgb = cv::imread(IMG_PATH, 1);
     if (imageRgb.empty()) {
         std::cerr << "'" << IMG_PATH << "' was not found." << std::endl;
@@ -215,15 +216,15 @@ add_executable(cctag_sample main.cpp)
 target_link_libraries(cctag_sample PRIVATE ${OpenCV_LIBRARIES} CCTag::CCTag)
 ```
 
-scene_marker.pngは以下の画像を使用します。  
-![CCTagシーン画像](/img/robotics/vision/scene_marker.png)  
+cctags-detection-scene.pngは以下の画像を使用します。  
+![CCTagシーン画像](/img/robotics/vision/cctags-detection-scene.png)  
 
 任意のディレクトリにて、以下のようにファイルを配置します。
 
 ```shell
 .
 ├── CMakeLists.txt
-├── scene_marker.png
+├── cctags-detection-scene.png
 └── main.cpp
 ```
 
@@ -238,23 +239,26 @@ make
 ```
 
 以下のように画像が表示されれば成功です。  
-![CCTag認識結果](/img/robotics/vision/result.png)  
+![CCTag認識結果](/img/robotics/vision/cctags-detection-result.png)  
 
 # マーカー画像の生成
 
-[CCTagの導入](#cctagの導入)でcloneしたCCTagリポジトリにマーカー画像を生成するスクリプトが置いてあります。
+マーカーの描画や出力に必要なライブラリをインストールします。
+
+```shell
+sudo apt install libcairo2-dev
+pip install pycairo rlPyCairo svgwrite svglib
+```
+
+[CCTagの導入](#cctagの導入)でクローンしたCCTagリポジトリにマーカー画像を生成するスクリプト、generate.pyが置いてあります。
 
 ```shell
 cd CCTag
 cd markersToPrint/generators
+./generate.py
 ```
 
 generate.pyを実行することで、SVG形式でマーカーが出力されます。  
-実行にはSVG関連のライブラリが必要なのでインストールしておきましょう。  
-
-```shell
-pip install svgwrite svglib
-```
 
 オプションを指定することでPNGやPDF形式で出力したり、マーカーの大きさを変更することが出来ます。  
 例えば、直径500[pix]で、マーカーにIDを追記し、PNG形式にて出力したい場合は以下のように実行します。  
@@ -286,6 +290,6 @@ optional arguments:
 
 今回は少し珍しい2Dマーカー、CCTagの紹介しました。  
 CCTag単体では3次元位置姿勢を検出できませんが、最低3つのマーカーを組み合わせてその配置情報を利用すれば3次元位置姿勢も求める事ができます。  
-ARマーカーでは認識が安定しないような困難な環境にてマーカー認識が必要となった場合等に、ぜひCCTagを使用してみてください。
+ArUcoマーカーでは認識が安定しないような困難な環境にてマーカー認識が必要となった場合等に、ぜひCCTagを使用してみてください。
 
 今回の記事は公式のドキュメントを元に作成しておりますので、更に詳細を知りたい方は確認してみてください（[こちら](https://cctag.readthedocs.io/en/latest/index.html)）。  

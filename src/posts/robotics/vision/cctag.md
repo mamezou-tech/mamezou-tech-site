@@ -108,6 +108,39 @@ CCTagマーカーを認識する簡単なC++のコードを紹介します。
 #include <cctag/CCTag.hpp>
 #include <opencv2/opencv.hpp>
 
+void drawMarkers(const boost::ptr_list<cctag::ICCTag>& markers, cv::Mat& image);
+
+int main(int argc, char** argv)
+{
+    // マーカーを撮影した画像を読み込み
+    const std::string IMG_PATH{"../cctags-detection-scene.png"};
+    cv::Mat imageRgb = cv::imread(IMG_PATH, 1);
+    if (imageRgb.empty()) {
+        std::cerr << "'" << IMG_PATH << "' was not found." << std::endl;
+        return 1;
+    }
+    cv::Mat imageGray;
+    cv::cvtColor(imageRgb, imageGray, cv::COLOR_BGR2GRAY);
+
+    // (1) マーカーのパラメータを設定
+    const std::size_t NUM_CROWNS{3};
+    cctag::Parameters params(NUM_CROWNS);
+    // (2) マーカーを認識
+    boost::ptr_list<cctag::ICCTag> markers{};
+    cctag::cctagDetection(markers, 0, 0, imageGray, params);
+
+    // 認識結果を描画
+    drawMarkers(markers, imageRgb);
+
+    // 認識結果の表示
+    cv::imshow("Result", imageRgb);
+
+    // 何らかのキーを押したら表示終了
+    cv::waitKey(0);
+
+    return 0;
+}
+
 void drawMarkers(const boost::ptr_list<cctag::ICCTag>& markers, cv::Mat& image)
 {
     // 描画パラメータ
@@ -146,37 +179,6 @@ void drawMarkers(const boost::ptr_list<cctag::ICCTag>& markers, cv::Mat& image)
                         THICKNESS);
         }
     }
-}
-
-int main(int argc, char** argv)
-{
-    // マーカーを撮影した画像を読み込み
-    const std::string IMG_PATH{"../cctags-detection-scene.png"};
-    cv::Mat imageRgb = cv::imread(IMG_PATH, 1);
-    if (imageRgb.empty()) {
-        std::cerr << "'" << IMG_PATH << "' was not found." << std::endl;
-        return 1;
-    }
-    cv::Mat imageGray;
-    cv::cvtColor(imageRgb, imageGray, cv::COLOR_BGR2GRAY);
-
-    // (1) マーカーのパラメータを設定
-    const std::size_t NUM_CROWNS{3};
-    cctag::Parameters params(NUM_CROWNS);
-    // (2) マーカーを認識
-    boost::ptr_list<cctag::ICCTag> markers{};
-    cctag::cctagDetection(markers, 0, 0, imageGray, params);
-
-    // 認識結果を描画
-    drawMarkers(markers, imageRgb);
-
-    // 認識結果の表示
-    cv::imshow("Result", imageRgb);
-
-    // 何らかのキーを押したら表示終了
-    cv::waitKey(0);
-
-    return 0;
 }
 ```
 

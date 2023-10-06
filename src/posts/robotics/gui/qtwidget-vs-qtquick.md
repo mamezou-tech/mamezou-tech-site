@@ -56,10 +56,9 @@ QtWidgetsでUIを作成するには[Qt Designer](https://doc.qt.io/qt-6/qtdesign
 ![](/img/robotics/gui/qt_ui_designer.png)
 
 作成したUIはxml形式のui拡張子のファイルとして自動生成されます。
+編集不可のファイルであり、直接読む必要はありません。
 ![](/img/robotics/gui/qt_ui_file.png)
 
-また、このファイルは直接編集不可となっています。
-![](/img/robotics/gui/qt_unable_to_edit.png)
 
 ### QtQuick
 QtQuickでUIを作成するにはQMLファイルを編集します。
@@ -67,7 +66,13 @@ QtQuickでUIを作成するにはQMLファイルを編集します。
 ![](/img/robotics/gui/qt_qml_file.png)
 
 QMLの学習難度は高くないですが、QtWidgetsはノーコードでUIを生成できるため、初心者でも簡単です。
-リッチなUI機能を必要としないシンプルな画面生成においてはQtWidgetsが良いと考えます。
+QtWidgetsは機能ごとにコンポーネントが決まっているため、どのようなアプリを作成しても同じような見た目・操作感を提供します。
+いわゆる枯れた技術で最先端とは行きませんが、広く使われていてノウハウが蓄積されています。
+また、不具合もほぼ出し尽くされているため安定して使える技術と言えます。
+対してQtQuickは独自のUIをユーザに提供できます。
+例えばHTMLのような言語では同じWebの世界でもサイト毎に異なるUIで独自性を前面に出すような作りをしています。
+QMLも同じマークアップ言語であるため、性質はよく似ていると言えます。
+また、QtQuickはリリースを重ねるごとに新たな機能が追加されており、継続的に開発されています。
 
 :::column:QtQuickデザイナ
 QtQuickもQtQuitckデザイナを利用することでドラッグアンドドロップの編集は可能です。
@@ -96,16 +101,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    lineEdit = findChild<QLineEdit*>("lineEdit");
-    pushButton = findChild<QPushButton*>("pushButton");
-    label = findChild<QLabel*>("label");
-
     setBaseSize(400, 200);
 
-    animation = new QPropertyAnimation(label, "geometry");
+    animation = new QPropertyAnimation(ui->label, "geometry");
     animation->setDuration(2000);
 
-    connect(pushButton, &QPushButton::clicked, this, &MainWindow::startAnimation); // ボタン押下でアニメーションスタート
+    connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::startAnimation);
 }
 
 MainWindow::~MainWindow()
@@ -115,13 +116,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::startAnimation()
 {
-    QString text = lineEdit->text();
-    label->setText(text);
+    QString text = ui->lineEdit->text();
+    ui->label->setText(text);
 
-    int labelWidth = label->fontMetrics().boundingRect(text).width();
+    int labelWidth = ui->label->fontMetrics().boundingRect(text).width();
 
-    animation->setStartValue(QRect(0, 0, labelWidth, label->height()));
-    animation->setEndValue(QRect(400, 0, labelWidth, label->height()));
+    animation->setStartValue(QRect(0, 0, labelWidth, ui->label->height()));
+    animation->setEndValue(QRect(400, 0, labelWidth, ui->label->height()));
     animation->start();
 }
 
@@ -183,8 +184,8 @@ ApplicationWindow {
 
 ```
 
-QtWidgetsはUIとプレゼンテーションロジックを分けて記述できますが、UIファイルの可読性が低いです。
-また、UIファイルを編集するためにはQtDesginerが必須となります。
+QtWidgetsはUIとプレゼンテーションロジックを分けて記述できます。
+また、配置したウィジェットはC++のコード上で「ui->{変数名}」の形でインスタンス化処理などの必要がなく参照できるため、とてもシンプルです。
 QtQuickはUIとプレゼンテーションロジックが共存しているため、コード内参照はしやすいです。
 ただし、複雑になる可能性があるため、コード設計に気を遣う必要があります。
 
@@ -399,19 +400,26 @@ ApplicationWindow {
 どちらも再利用性のあるコンポーネントを作成でき、手順も簡便です。
 拡張のしやすさに大きな差がつくとは言えません。
 
-簡単なアプリケーションを作成し、コードやツールを通して比較しましが、組み込み系でC++を扱う方であればQtWidgetsのほうが使いやすい印象を持つのではないかと思います。
+簡単なアプリケーションを作成し、コードやツールを通して比較しましたが、組み込み系でC++を扱う方であればQtWidgetsのほうが使いやすい印象を持つのではないかと思います。
 またQMLはデザイナがあるものの使い勝手が良くなく手書きとなり、開発コストがかさむ要因になりえます。
 
+Qtはクロスプラットフォームでアプリケーションを動作可能なフレームワークですのでその点にも触れておきます。
+描画に関していえば、QtWidgetsは各プラットフォームのネイティブAPIで描画しているため、プラットフォーム毎にLook&Feelが異なります。
+対して、QtQuickはGPUによって描画されるため、プラットフォームに依存せず、同じ描画エンジンを使えば基本的には同じLook&Feelとなります。
+
 # 結局どちらを採用するか
+最初にあげた各フレームワークの特徴と利点から予測される通りとなりますが、デスクトップアプリや編集系のアプリ開発はQtWidgets。
+インタラクティブなUIや3D描画がメインの表示系アプリ、CPUスペックが低いがGPUが乗っている組み込み系基盤でのGUI開発ではQtQuickとなります。
+
 さて、この記事を書くにあたって資料をあさっていたのですが、その矢先にQtWidgetsとQtQuickを比較する[Qt公式のビデオ](https://www.qt.io/resources/videos/qt-widgets-or-qt-quick)を発見してしまい、意気消沈しました。
 他にも調べると比較記事やブログは結構出てきます。
-そして結論（極論）は出ています。
+そして最初から結論（極論）は出ていました。
 「クラシックならQtWidgets、モダンならQtQuick、お客さんの要望に合わせて選んでください。」
 
 はい、終わりとはさすがに行きません。
 
 タイトル詐欺になってしまい申し訳ございませんが、ここからが本題です。
-ロボット開発に携わっている、いちGUI開発者としての肌感をお伝えできればと思います。
+ロボット開発に携わっている、いちGUI開発者としての肌感をお伝えすることでこの記事の付加価値を高めようと思います。
 
 ## ティーチングは熟練技
 ティーチングペンダントはロボットシステムを構成する1つの機器にすぎません。  
@@ -432,7 +440,7 @@ ApplicationWindow {
 
 ただ、それらのセンサや認識する物体の設定はどこから行うのでしょうか。
 ダイレクトティーチングで調整しきれない数mmはどうやって動かすのでしょうか。
-ロボット導入済の企業にAIは現状必要なのでしょうか。
+AIを利用するからとGUIは不要になるのでしょうか。
 
 やはり人間とロボットをつなぐインターフェースとしてティーチングペンダントは切っても切れないのです。
 

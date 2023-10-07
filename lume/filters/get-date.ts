@@ -6,7 +6,6 @@ export const getDate = (posts: Page[], url: string) => {
     post.data.url && post.data.url.toLowerCase() === url.toLowerCase()
   );
   if (!post) {
-    console.log("NOT FOUND", url);
     return "";
   }
   return DateTime.fromJSDate(post.data.date).toISODate();

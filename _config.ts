@@ -31,6 +31,7 @@ import codeClipboard, {
 import "./prism-deps.ts";
 import { head } from "./lume/filters/head.ts";
 import { makeAuthorArticles } from './src/generators/articles_by_author.ts';
+import { makeScopeUpdate } from './scope_updates.ts';
 
 const markdown: Partial<PluginOptions["markdown"]> = {
   options: {
@@ -191,10 +192,12 @@ site.helper(
     `<script async src="https://unpkg.com/mermaid@9.3.0/dist/mermaid.min.js">document.addEventListener('DOMContentLoaded', mermaid.initialize({startOnLoad:true}));</script>`,
   { type: "tag" },
 );
+
+// for fast update for markdown
+site.scopedUpdates(...makeScopeUpdate("src"));
+
 site.processAll([".md"], (pages) => {
-  if (!Deno.env.get("MZ_DEBUG")) {
-    return;
-  }
+  if (!Deno.env.has("MZ_DEBUG")) return;
   const search = new Search(site.searcher, false)
   Object.values(makeAuthorArticles(search)).forEach((v) => {
     const result = v.articles.reduce((acc, cur) => {
@@ -211,6 +214,20 @@ site.processAll([".md"], (pages) => {
     }, [] as { ym: string; count: number }[]);
     console.log(v.name, result);
   });
+});
+
+site.addEventListener("beforeUpdate", (event) => {
+  if (!Deno.env.has("MZ_DEBUG")) return;
+  console.log("New changes detected");
+  console.log(event.files); // The files that have changed
+});
+
+site.addEventListener("afterUpdate", (event) => {
+  if (!Deno.env.has("MZ_DEBUG")) return;
+  console.log("Site updated");
+  // console.log(event.files); // The files that have changed
+  console.log(event.pages.map(p => p.data.url)); // The pages that have been rebuilt
+  console.log(event.staticFiles.map(f => f.entry.path)); // The static files that have been copied again
 });
 
 export default site;

@@ -26,3 +26,4 @@ import "prismjs/components/prism-hcl.js";
 import "prismjs/components/prism-c.js";
 import "prismjs/components/prism-lisp.js";
 import "prismjs/components/prism-rego.js";
+import "prismjs/components/prism-scss.js";

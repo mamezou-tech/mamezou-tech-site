@@ -34,7 +34,6 @@ function _makeBlogScope(path: string, base: string): ScopeFilter[] {
           i.toString().padStart(2, "0")
         }.*\\\.md~?$`,
       );
-      console.log(regex);
       result.push((path) => regex.test(path));
     }
   }

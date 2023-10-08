@@ -3422,6 +3422,9 @@
       }
     }
   },
+  "redirects": {
+    "https://deno.land/x/escape_html/mod.ts": "https://deno.land/x/escape_html@1.0.0/mod.ts"
+  },
   "remote": {
     "https://64e8753eae24930008fac6d9--edge.netlify.com/bootstrap/account.ts": "2a728e5787f089e638732dd9a1bd782770d83d403b60bd6d35977045f77ecf70",
     "https://64e8753eae24930008fac6d9--edge.netlify.com/bootstrap/blobs.ts": "a4ee4d3211e8fd3ef942957e384f829610c7d813de5d75e815353f91fd2a7929",

@@ -189,7 +189,7 @@ layout: base.njk
       <h2><img alt="new-articles" class="icon" width="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" />先週の人気記事<img alt="new-articles" class="icon" width="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" /></h2>
       <ol>
         {%- for article in pv.ranking -%}
-        {%- set published = search.pages('exclude!=true') | getDate(article.url) -%}
+        {%- set published = search.pages('exclude!=true') | articleDate(article.url) -%}
         <li><a href="{{ article.url }}">{{ article.title }}</a></li>
         {%- endfor -%}
       </ol>

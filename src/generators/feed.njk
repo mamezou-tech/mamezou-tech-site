@@ -9,7 +9,7 @@ exclude: true
 	{% set absoluteUrl %}{{ '/feed/' | url | absoluteUrl(meta.url) }}{% endset %}
 	<link href="{{ absoluteUrl }}" rel="self"/>
 	<link href="{{ meta.url }}"/>
-	<updated>{{ search | posts | getNewestCollectionItemDate | isoDate }}</updated>
+	<updated>{{ search | posts | newestDate | isoDate }}</updated>
 	<id>{{ meta.url }}/</id>
 	<author>
 		<name>{{ meta.authorName }}</name>
@@ -24,7 +24,7 @@ exclude: true
 		<updated>{{ page.data.date | isoDate }}</updated>
 		<id>{{ absolutePostUrl }}</id>
 		<summary>{{ pageDescription }}</summary>
-		<content type="html">{{ page.data.children | replaceRssUrl(meta.url) }}</content>
+		<content type="html">{{ page.data.children | rssUrl(meta.url) }}</content>
 	</entry>
 	{%- endfor %}
 </feed>

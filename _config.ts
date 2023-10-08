@@ -8,12 +8,12 @@ import sitemap from "lume/plugins/sitemap.ts";
 import esbuild from "lume/plugins/esbuild.ts";
 import { DateTime } from "luxon";
 import { githubName } from "./lume/filters/github_name.ts";
-import { readingTime } from "./lume/filters/reading-time.ts";
+import { readingTime } from "./lume/filters/reading_time.ts";
 import { excerpt } from "./lume/filters/excerpt.ts";
-import { pageTags } from "./lume/filters/page-tags.ts";
-import { getDate } from "./lume/filters/get-date.ts";
-import { validTags } from "./lume/filters/valid-tags.ts";
-import { shortDesc } from "./lume/filters/short-desc.ts";
+import { pageTags } from "./lume/filters/page_tags.ts";
+import { articleDate } from "./lume/filters/article_date.ts";
+import { validTags } from "./lume/filters/valid_tags.ts";
+import { shortDesc } from "./lume/filters/short_desc.ts";
 import anchor from "npm:markdown-it-anchor@^8.6.5";
 import footNote from "npm:markdown-it-footnote@^3.0.3";
 import container from "npm:markdown-it-container@^3.0.0";
@@ -70,6 +70,7 @@ const site = lume({
   dest: "./public",
   server: {
     open: false,
+    port: 8080,
   },
 }, { markdown });
 
@@ -140,7 +141,7 @@ site.filter(
   (hrefs: string[], author: string) =>
     hrefs.filter((href) => href.includes(author)),
 );
-site.filter("getDate", getDate);
+site.filter("articleDate", articleDate);
 
 const eventTagFilter = (tagPrefix: string) => (rawTags: string[]) => {
   if (!rawTags) return;
@@ -167,7 +168,7 @@ site.filter(
 );
 
 site.filter("posts", (search: Search) => getPostArticles(search));
-site.filter("getNewestCollectionItemDate", (page: Page[]) => {
+site.filter("newestDate", (page: Page[]) => {
   const [first] = page.slice().sort((a, b) =>
     (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0)
   );
@@ -179,7 +180,7 @@ site.filter(
   (s: string, base: string) => new URL(s, base).toString(),
 );
 
-site.filter("replaceRssUrl", (html, base) =>
+site.filter("rssUrl", (html, base) =>
   html.replaceAll(
     /\s(href|src)="([^"]+)"/g,
     (_: string, attr: string, value: string) =>

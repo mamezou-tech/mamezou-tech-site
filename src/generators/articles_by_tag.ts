@@ -1,5 +1,5 @@
 import { Search } from 'lume/plugins/search.ts';
-import { validTags } from '../../lume/filters/valid-tags.ts';
+import { validTags } from '../../lume/filters/valid_tags.ts';
 import { getPostArticles } from '../../lume/filters/utils.ts';
 import { Page } from 'lume/core/filesystem.ts';
 

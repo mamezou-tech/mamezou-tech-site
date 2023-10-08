@@ -1,4 +1,4 @@
-export const readingTime = (postOrContent) => {
+export const readingTime = (postOrContent: string | { content: string }) => {
   const htmlContent = typeof postOrContent === "string"
     ? postOrContent
     : postOrContent.content;

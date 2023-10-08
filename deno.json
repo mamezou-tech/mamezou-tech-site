@@ -6,12 +6,12 @@
   "tasks": {
     "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
     "build": "deno task lume",
-    "serve": "deno task lume --serve --quiet --port 8080",
+    "serve": "deno task lume --serve --quiet",
     "lint": "deno run -A lint.ts"
   },
   "importMap": "import_map.json",
   "fmt": {
     "exclude": ["src/"],
-    "include": ["lume/**/*.ts", "_config.ts", "src/components/preact/**/*.ts"]
+    "include": ["lume/**/*.ts", "_config.ts", "src/components/preact/**/*.ts", "lint.ts"]
   }
 }

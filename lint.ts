@@ -15,7 +15,7 @@ const presetRules = Object.entries(jpPreset.rules).map(([id, module]) => ({
   },
 })).filter((rule) => !excludes.includes(rule.ruleId));
 
-const descriptor = new TextlintKernelDescriptor({
+const descriptor: TextlintKernelDescriptor = new TextlintKernelDescriptor({
   rules: [
     {
       ruleId: "aws-spellcheck",
@@ -42,7 +42,7 @@ const descriptor = new TextlintKernelDescriptor({
 });
 
 const linter = createLinter({
-  descriptor: descriptor as any,
+  descriptor: descriptor,
 });
 const results = await linter.lintFiles([...Deno.args]);
 const formatter = await loadLinterFormatter({ formatterName: "stylish" });

@@ -31,7 +31,7 @@ import codeClipboard, {
 import "./prism-deps.ts";
 import { head } from "./lume/filters/head.ts";
 import { makeAuthorArticles } from "./src/generators/articles_by_author.ts";
-import { makeScopeUpdate } from "./scope_updates.ts";
+import { makeScopeUpdate } from "./lume/scope_updates.ts";
 
 const markdown: Partial<PluginOptions["markdown"]> = {
   options: {

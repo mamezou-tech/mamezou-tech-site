@@ -7,7 +7,7 @@
     "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
     "build": "deno task lume",
     "serve": "deno task lume --serve --quiet",
-    "lint": "deno run -A lint.ts"
+    "lint": "deno run -A --lock deno-lint.lock lint.ts"
   },
   "importMap": "import_map.json",
   "fmt": {

@@ -6,7 +6,7 @@ export default {
   authorName: "mamezou-tech",
   twitterUsername: "MamezouDev",
   published: "2021-11-29T00:00:00Z",
-  env: Deno.env.get('ELEVENTY_ENV'),
+  env: Deno.env.get('CONTEXT'),
   branch: Deno.env.get('BRANCH') || "main",
   netlifyContext: Deno.env.get('CONTEXT') || "unknown",
 };

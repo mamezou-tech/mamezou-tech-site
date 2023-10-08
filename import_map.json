@@ -4,7 +4,6 @@
     "luxon": "npm:luxon@3.3.0",
     "prismjs/": "npm:/prismjs@1.29.0/",
     "markdown-it": "npm:markdown-it@13.0.1",
-    "markdown-it/": "npm:/markdown-it@13.0.1/",
-    "textlint": "npm:textlint@^12.2.1"
+    "markdown-it/": "npm:/markdown-it@13.0.1/"
   }
 }

@@ -30,8 +30,8 @@ import codeClipboard, {
 } from "./lume/plugins/code-clipboard/index.ts";
 import "./prism-deps.ts";
 import { head } from "./lume/filters/head.ts";
-import { makeAuthorArticles } from './src/generators/articles_by_author.ts';
-import { makeScopeUpdate } from './scope_updates.ts';
+import { makeAuthorArticles } from "./src/generators/articles_by_author.ts";
+import { makeScopeUpdate } from "./scope_updates.ts";
 
 const markdown: Partial<PluginOptions["markdown"]> = {
   options: {
@@ -198,7 +198,7 @@ site.scopedUpdates(...makeScopeUpdate("src"));
 
 site.processAll([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;
-  const search = new Search(site.searcher, false)
+  const search = new Search(site.searcher, false);
   Object.values(makeAuthorArticles(search)).forEach((v) => {
     const result = v.articles.reduce((acc, cur) => {
       if (!cur.data.date) return acc;
@@ -226,8 +226,8 @@ site.addEventListener("afterUpdate", (event) => {
   if (!Deno.env.has("MZ_DEBUG")) return;
   console.log("Site updated");
   // console.log(event.files); // The files that have changed
-  console.log(event.pages.map(p => p.data.url)); // The pages that have been rebuilt
-  console.log(event.staticFiles.map(f => f.entry.path)); // The static files that have been copied again
+  console.log(event.pages.map((p) => p.data.url)); // The pages that have been rebuilt
+  console.log(event.staticFiles.map((f) => f.entry.path)); // The static files that have been copied again
 });
 
 export default site;

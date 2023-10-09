@@ -63,20 +63,20 @@ layout: base.njk
       <nav class="post__pagination">
         {%- if pageNavigationTag %}
 
-          {%- set previousPost = search.previousPage(page.url, pageNavigationTag) %}
+          {%- set previousPost = search.previousPage(page.data.url, pageNavigationTag) %}
           {%- if previousPost %}
 
-            <a href="{{ previousPost.url | url }}">
+            <a href="{{ previousPost.data.url | url }}">
               <span>←</span>
               <span>{{ previousPost.data.title }}</span>
             </a>
 
           {% endif %}
 
-          {%- set nextPost = search.nextPage(page.url, pageNavigationTag) %}
+          {%- set nextPost = search.nextPage(page.data.url, pageNavigationTag) %}
           {%- if nextPost %}
 
-            <a href="{{ nextPost.url | url }}">
+            <a href="{{ nextPost.data.url | url }}">
               <span>{{ nextPost.data.title }}</span>
               <span>→</span>
             </a>
@@ -85,18 +85,18 @@ layout: base.njk
 
         {% else %}
           {%- if prevPage %}
-            {%- set prevPostPage = search.pages() | inputPath(prevPage) %}
+            {%- set prevPostPage = search.pages() | pageByPath(prevPage) %}
             {%- if prevPostPage %}
-              <a href="{{ prevPostPage.url | url }}">
+              <a href="{{ prevPostPage.data.url | url }}">
                 <span>←</span>
                 <span>{{ prevPostPage.data.title }}</span>
               </a>
             {% endif %}
           {% endif %}
           {%- if nextPage %}
-            {%- set nextPostPage = search.pages() | inputPath(nextPage) %}
+            {%- set nextPostPage = search.pages() | pageByPath(nextPage) %}
             {%- if nextPostPage %}
-              <a href="{{ nextPostPage.url | url }}">
+              <a href="{{ nextPostPage.data.url | url }}">
                 <span>{{ nextPostPage.data.title }}</span>
                 <span>→</span>
               </a>

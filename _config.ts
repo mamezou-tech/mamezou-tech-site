@@ -123,9 +123,17 @@ site.filter("readableDate", (dateObj: any) => {
 site.filter("excerpt", excerpt);
 site.filter("pageTags", pageTags);
 site.filter(
-  "inputPath",
-  (pages: Page[], path: string) =>
-    pages.find((page: Page) => page.data.inputPath === path),
+  "pageByPath",
+  (pages: Page[], path: string) => {
+    const index = path.lastIndexOf(".");
+    let normalized = path;
+    if (index !== -1) {
+      normalized = path.substring(0, index);
+    }
+    return pages.find((page: Page) => {
+      return normalized === `./src${page.src.path}`;
+    });
+  },
 );
 site.filter(
   "tagUrl",
@@ -195,7 +203,9 @@ site.helper(
 );
 
 // for fast update for markdown
-site.scopedUpdates(...makeScopeUpdate("src"));
+if (!Deno.env.has("MZ_DEBUG")) {
+  site.scopedUpdates(...makeScopeUpdate("src"));
+}
 
 site.processAll([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;

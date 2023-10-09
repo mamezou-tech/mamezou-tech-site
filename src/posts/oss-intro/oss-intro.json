@@ -1,6 +1,0 @@
-{
-  "tags": ["oss"],
-  "layout": "post",
-  "permalink": "/oss-intro/{{ page.fileSlug }}/",
-  "category": "OSS"
-}

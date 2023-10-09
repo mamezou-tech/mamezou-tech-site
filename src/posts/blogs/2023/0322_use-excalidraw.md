@@ -130,7 +130,6 @@ $ npm install @excalidraw/excalidraw
 
 `src/App.tsx` を以下のように編集します。
 
-{% raw %}
 ```typescript
 import React, { useState, useRef } from "react";
 import { Excalidraw, MainMenu, WelcomeScreen, serializeAsJSON, exportToBlob } from "@excalidraw/excalidraw";
@@ -204,7 +203,6 @@ function App() {
 
 export default App;
 ```
-{% endraw %}
 
 ほとんど手を加えずとも動くのですが、ファイルの保存処理だけは TAURI 向けの実装が必要になります。ローカルへの保存と、png 形式 svg 形式へのエクスポートをメニューに追加しています。
 

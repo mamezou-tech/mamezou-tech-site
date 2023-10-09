@@ -76,7 +76,6 @@ Eleventyは実行環境(クライアント側)としてのJavaScriptはありま
 
 プロジェクトルートに、以下の内容でindex.liquidというファイルを配置します。
 
-{% raw %}
 ```liquid
 <html lang="ja">
 <head>
@@ -88,9 +87,8 @@ Eleventyは実行環境(クライアント側)としてのJavaScriptはありま
 </body>
 </html>
 ```
-{% endraw %}
 
-一見HTMLですが、{% raw %}`{{ eleventy.version }}`{% endraw %}の部分は、[Liquid](https://shopify.github.io/liquid/)というテンプレート言語の文法になっています。
+一見HTMLですが、`{{ eleventy.version }}`の部分は、[Liquid](https://shopify.github.io/liquid/)というテンプレート言語の文法になっています。
 特徴のところでも触れましたが、Eleventyは複数のテンプレート言語をサポートしています。Liquidはその中の1つで、Shopifyで開発されているものです。
 
 ここでは組み込みの変数(eleventy.version)からEleventyのバージョンを出力しています[^3]。
@@ -184,7 +182,6 @@ v2.0.0からは`--ignore-initial`を組み合わせると、初回ビルドす�
 
 その前にコンテンツページ共通のレイアウトを定義します。`_includes`ディレクトリを作成し、その中に以下のファイル(base.liquid)を配置します。
 
-{% raw %}
 ```liquid
 <html lang="ja">
 <head>
@@ -203,7 +200,6 @@ v2.0.0からは`--ignore-initial`を組み合わせると、初回ビルドす�
 </body>
 </html>
 ```
-{% endraw %}
 
 先程と同様に、Liquidテンプレートで記述したものです。
 
@@ -212,7 +208,7 @@ Eleventyでは、このディレクトリ内のファイルは他のテンプレ
 
 [^4]: `_includes`というディレクトリ名は設定により変更可能です。詳細は[公式ドキュメント](https://www.11ty.dev/docs/config/#directory-for-includes)を参照してください。
 
-このレイアウトファイルのポイントは、{% raw %}`{{ content }}`{% endraw %}の部分です。
+このレイアウトファイルのポイントは、`{{ content }}`の部分です。
 Eleventyでは、このcontent変数に子テンプレートの内容(変換結果)が設定されます。
 ここでは、この内容をそのままHTMLに挿入するようにしています。
 
@@ -406,7 +402,6 @@ footer {
 
 ### レイアウトファイル(src/_includes/base.liquid)
 
-{% raw %}
 ```liquid
 <html lang="ja">
 <head>
@@ -427,7 +422,6 @@ footer {
 </body>
 </html>
 ```
-{% endraw %}
 
 以前作成したレイアウトファイルに2つのCSSリンクを追加しています。
 
@@ -470,14 +464,12 @@ module.exports = function(eleventyConfig) {
 これは、ディレクトリ名と同名のJSON(またはJavaScript)を該当ディレクトリに配置することで実現できます。
 
 この例では、`src/post`ディレクトリ内に以下の`post.json`を作成しす。
-{% raw %}
 ```json
 {
   "layout": "base",
   "permalink": "/{{ page.fileSlug }}/"
 }
 ```
-{% endraw %}
 
 こうすることで、マークダウンに記述したメタ情報を削除しても、同じ効果が得られます。
 なお、マークダウンのメタ情報が存在する場合は、ディレクトリレベルのデータとマージされます。両者に同名のキーが含まれる場合はマークダウンの方が優先されます。

@@ -36,7 +36,6 @@ Marketplace のページは以下です。
 
 アナウンスのブログや Action の README にワークフローサンプルがありますので使うのは簡単でしょう。自社のオーガニゼーションのリポジトリにワークフローファイルを追加して試してみました。
 
-{% raw %}
 ```yaml
 name: stale repo identifier
 
@@ -68,7 +67,6 @@ jobs:
         content-filepath: ./stale_repos.md
         assignees: kondoumh
 ```
-{% endraw %}
 
 スケジュール起動では毎月1日の午前0時(UTC) に起動するようにしました。
 

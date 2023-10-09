@@ -1,5 +1,0 @@
-{
-  "category": "event",
-  "layout": "event",
-  "permalink": "/events/advent-calendar/{{ page.fileSlug }}/"
-}

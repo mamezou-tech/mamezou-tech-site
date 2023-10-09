@@ -181,7 +181,6 @@ Backstageは、デフォルトではゲストユーザーとして扱われま�
 これを行うためにはいくつかの変更が必要です。
 まずはフロントエンド側です。`packages/app/src/App.tsx`に以下を追加します。
 
-{% raw %}
 ```tsx
 import { AlertDisplay, OAuthRequestDialog, SignInPage } from '@backstage/core-components';
 import { githubAuthApiRef } from "@backstage/core-plugin-api";
@@ -206,7 +205,6 @@ const app = createApp({
   // ここまで(以下省略)
 });
 ```
-{% endraw %}
 
 BackstageのSignInPageコンポーネントを追加しました。こうすることでBackstageは、サイト訪問時にGitHubでログインするようになります。
 バックエンド側でも変更が必要です。`packages/backend/src/plugins/auth.ts`に以下を追加します。

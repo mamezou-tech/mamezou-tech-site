@@ -1,7 +1,0 @@
-{
-    "tags": ["ML", "LLM","大規模言語モデル"],
-    "category": "LLM",
-    "layout": "post",
-    "permalink": "/ml/llm/{{ page.fileSlug }}/"
-  }
-  

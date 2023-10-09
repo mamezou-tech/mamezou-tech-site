@@ -76,7 +76,6 @@ Markdoc インテグレーションについての公式ドキュメントは以
 
 - src/content/blog/using-markdoc.mdoc
 
-{% raw %}
 ```markdown
 ---
 title: "Using Markdoc"
@@ -104,7 +103,6 @@ pubDate: "Mar 20 2023"
 - `code`
 {% /table %}
 ```
-{% endraw %}
 
 Markdoc のカスタムタグは、テキストエディタ上はテーブルに見えませんが、横に長くなりがちなテーブルを箇条書き形式で書けるようになっています。レンダリングすると、以下のように Markdown 版と同じ見え方になりました。
 
@@ -154,13 +152,10 @@ const { title, type = 'note' } = Astro.props
     </div>
 </div>
 ```
-{% raw %}
 Blog のテンプレートである `[...slug]`.astro を Callout タグを使用できるように修正しました。上記の Callout.astro を import して、`<Content components={{ Callout }}/>` のように指定しています。これにより Markdoc 形式のファイルで `{% callout .. %}` のようにタグを使用することができます。
-{% endraw %}
 
 - src/pages/blog/`[...slug]`.astro
 
-{% raw %}
 ```javascript
 ---
 import { CollectionEntry, getCollection } from 'astro:content';
@@ -185,7 +180,6 @@ const { Content } = await post.render();
 	<Content components={{ Callout }}/>
 </BlogPost>
 ```
-{% endraw %}
 
 astro.config.mjs では、カスタムタグ定義を追加します。オリジナルの Callout.astro で Tailwind によるスタイリングを使っていたので、Tailwind Integration も使うようにしました。
 
@@ -227,7 +221,6 @@ export default defineConfig({
 
 Markdocファイル(.mdoc ファイルで)で Callout タグを使用します。
 
-{% raw %}
 ```markdown
 ## Custom Tag (callout)
 {% callout type="check" title="Check" %}
@@ -246,7 +239,6 @@ Markdocファイル(.mdoc ファイルで)で Callout タグを使用します�
     this is a woaning callout.
 {% /callout %}
 ```
-{% endraw %}
 
 Callout のタイプに応じたレンダリングが実行されました。
 

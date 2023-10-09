@@ -1,14 +1,14 @@
 ---
 layout: page.njk
-permalink: /__monthly-summary/
-eleventyExcludeFromCollections: true
+url: /__monthly-summary/
+exclude: true
 title: 今月の記事
 ---
 
+{%- set target = search.pages('exclude!=true') | currentMonthPosts %}
+<p>投稿数：{{ target.length }}</p>
+<p>総記事数：{{ (search | posts).length }}</p>
 
-<p>投稿数：{{ collections.currentMonthPosts.length }}</p>
-<p>総記事数：{{ collections.articles.length }}</p>
-
-{% for post in collections.currentMonthPosts %}
-  [{{ post.data.title }} https://developer.mamezou-tech.com{{ post.url }}]<br />
+{% for post in target %}
+  [{{ post.data.title }} https://developer.mamezou-tech.com{{ post.data.url }}]<br />
 {% endfor %}

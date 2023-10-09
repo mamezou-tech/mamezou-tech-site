@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "npm:preact"
+  },
+  "tasks": {
+    "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
+    "build": "deno task lume",
+    "serve": "deno task lume --serve --quiet",
+    "lint": "deno run -A --lock deno-lint.lock lint.ts"
+  },
+  "importMap": "import_map.json",
+  "fmt": {
+    "exclude": ["src/"],
+    "include": ["lume/**/*.ts", "_config.ts", "src/components/preact/**/*.ts", "lint.ts"]
+  }
+}

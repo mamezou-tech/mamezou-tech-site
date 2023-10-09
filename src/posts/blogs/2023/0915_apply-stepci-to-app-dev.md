@@ -353,7 +353,6 @@ REST Clientの定義ファイルは業務の流れやバリエーションを意
   ![REST Client定義からワークフロー定義を作成する](/img/blogs/2023/0915_apply-stepci-to-app-dev_rc-to-wf.png)
 
   * ワークフロー定義例
-    {% raw %}
     ```yaml
     version: "1.1"
     name: API間テスト（業務フローに沿った検証）
@@ -458,7 +457,6 @@ REST Clientの定義ファイルは業務の流れやバリエーションを意
                   $.status: ACCEPTED
           # 以下、略
     ```
-    {% endraw %}
 
 ## まとめ
 業務フローに沿ったテストを自動化するツールとして利用すると扱いやすいです。  

@@ -116,7 +116,6 @@ cp values.yml local-values.yml
 
 `local-values.yml` の298行目、306行目にある ingress の設定を、証明書のドメイン名に合わせて編集します。例えば、使用するドメイン名が `keycloak.example.com` であれば、次のようになります。
 
-{% raw %}
 ```yaml
   # List of rules for the Ingress
   rules:
@@ -133,7 +132,6 @@ cp values.yml local-values.yml
         - keycloak.example.com
       secretName: "tls-secret"
 ```
-{% endraw %}
 
 Helm チャートのリポジトリを追加します。
 

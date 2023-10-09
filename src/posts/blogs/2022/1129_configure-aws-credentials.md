@@ -41,7 +41,6 @@ IAM の「アクセス管理」にある「ID プロバイダ」を選択し、�
 
 ロールの「信頼関係」は次のようになります。
 
-{% raw %}
 ```json
 {
     "Version": "2012-10-17",
@@ -61,7 +60,6 @@ IAM の「アクセス管理」にある「ID プロバイダ」を選択し、�
     ]
 }
 ```
-{% endraw %}
 
 AWS Account ID、GitHub User/Organization、Repository Name は使用する環境の値に置換してください。
 
@@ -75,7 +73,6 @@ GitHub リポジトリの Settings タブ - Security - Secrets の Actions を�
 
 ここまでで AWS の認証情報が取得可能かを確認するワークフローは次のようになります。
 
-{% raw %}
 ```yaml
 name: example
 
@@ -99,7 +96,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: "ap-northeast-3"
 ```
-{% endraw %}
 
 認証情報 (Credentials) が取得できれば、このワークフローが成功します。
 
@@ -109,18 +105,15 @@ jobs:
 
 例として次のようなテンプレートファイル (`templates/example.yaml`) を記述してみます。
 
-{% raw %}
 ```yaml
 aws:
   AWS_ACCOUNT_ID: {{ ENV }}
 ```
 
 テンプレートの記述言語は「mustache (口髭)」です。置換する部分の `{{`、`}}` が口髭の形に似ていることから命名されているそうです。
-{% endraw %}
 
 このテンプレートファイルを処理するワークフローは次のようになります。
 
-{% raw %}
 ```yaml
 name: example
 
@@ -150,7 +143,6 @@ jobs:
           input: templates/example.yaml
           output: example.yaml 
 ```
-{% endraw %}
 
 ここでは、テンプレートエンジンのアクションに [mustache-template-action](https://github.com/edgardleal/mustache-template-action) を使用しました。
 テンプレートは、このアクションへの環境変数の値で置換されて、output に指定されたパスのファイルが生成されます。
@@ -159,9 +151,7 @@ jobs:
 
 ここで AWS Actions の [configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) を題材に GitHub Actions をもう少し詳しく説明します。
 
-{% raw %}
 上記のワークフローにある `${{ steps.credentials.outputs.aws-account-id }}` についてです。
-{% endraw %}
 
 GitHub Actions ではフローの実行結果の状態 (STATE) や出力 (OUTPUT) を他のフローに連携できます。
 つまり、上の例のように `id: credentials` フローの出力を `steps.credentials.outputs` のプレフィックスと `aws-account-id` のキーで取得できます。

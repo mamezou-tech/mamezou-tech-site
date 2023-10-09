@@ -1,7 +1,7 @@
 ---
 title: KaTeX Sample
-eleventyExcludeFromCollections: true
-permalink: /katex-sample/
+exclude: true
+url: /katex-sample/
 ---
 
 参考：<https://katex.org/docs/supported.html>

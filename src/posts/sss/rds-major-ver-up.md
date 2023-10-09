@@ -2,7 +2,7 @@
 title: TerraformでのAmazon Aurora PostgreSQLのメジャーバージョンアップ手順
 author: tadashi-nakamura
 date: 2023-09-01
-tags: [tips, SSS, IaC, AWS, RDS, Aurora, PostgreSQL]
+tags: [tips, sss, IaC, AWS, RDS, Aurora, PostgreSQL]
 ---
 
 [営業支援システム(Sales Support System)](/in-house-project/sss/intro/)で実施したAmazon Aurora PostgreSQLのメジャーバージョンアップ手順について紹介します。

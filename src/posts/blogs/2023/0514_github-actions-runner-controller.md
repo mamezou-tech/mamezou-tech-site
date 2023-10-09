@@ -165,7 +165,6 @@ kubectl logs arc-runner-set-754b578d-listener -n arc-systems
 - electron-builder バイナリーをビルド
 - ビルドしたバイナリーを成果物としてアップロード
 
-{% raw %}
 ```yaml
 name: Build electron app Linux installer with Actions Runner Controller
 
@@ -202,7 +201,6 @@ jobs:
         name: electron-example-browserview
         path: electron-example-browserview/dist/**
 ```
-{% endraw %}
 
 `runs-on` には `arc-runner-set` を指定しています。このワークフローを実行すると、無事にビルドが完了して、成果物が Summary ページにアップロードされました。
 

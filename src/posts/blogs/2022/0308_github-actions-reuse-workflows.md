@@ -76,7 +76,6 @@ jobs:
 
 外部の Action を実行するのと同じ構文で、再利用可能ワークフローにパラメータを受け渡すことができます。 パラメータは `with` キーワードで指定します。 secret は `secrets` キーワードで渡せます。
 
-{% raw %}
 ```yaml
 jobs:
   call-workflow-passing-data:
@@ -86,15 +85,11 @@ jobs:
     secrets:
       token: ${{ secrets.TOKEN }}
 ```
-{% endraw %}
 
-{% raw %}
 呼び出されるワークフローでは、パラメータや secret の名前、型などを指定します[^2]。`${{ inputs.username }}`、`${{ secrets.token }}` のよう渡されたパラメータや secret を利用できます。
-{% endraw %}
 
 [^2]: [GitHub Actionsのメタデータ構文 - GitHub Docs](https://docs.github.com/ja/actions/creating-actions/metadata-syntax-for-github-actions#name)
 
-{% raw %}
 ```yaml
 name: Reusable workflow example
 
@@ -118,7 +113,6 @@ jobs:
           username: ${{ inputs.username }}
           token: ${{ secrets.token }}
 ```
-{% endraw %}
 
 >
 再利用可能なワークフローが使えることで、ビルドやテストなどのワークフローを個別のファイルに切り出して E2E テスト用のワークフローやリリース用のワークフローから利用できるようになりました。ワークフローのコード重複を削減するためにうまく利用したいですね。

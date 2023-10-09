@@ -147,7 +147,6 @@ Nuxtではこれをラップした以下のComposableを用意していますの
 前回はComposition APIのComposableを使って実装していましたが、ここではuseFetchを使うようにページコンポーネントを変更します。
 
 - index.vue
-{% raw %}
 ```html
 <script setup lang="ts">
 // 旧実装
@@ -175,10 +174,8 @@ const { data: articles, refresh } = await useFetch('/api/blogs');
   </div>
 </template>
 ```
-{% endraw %}
 
 - details.vue
-{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -203,7 +200,6 @@ const { data: article } = await useFetch(`/api/blogs/${id}`);
   </div>
 </template>
 ```
-{% endraw %}
 
 実装自体は1行追加のみの簡単なものです。
 以下は、useFetch/useLazyFetchの戻り値の型定義です。

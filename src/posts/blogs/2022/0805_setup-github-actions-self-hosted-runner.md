@@ -214,7 +214,6 @@ Current runner version: '2.294.0'
 
 以下のように、`runs-on` を matrix にしたワークフローファイルを準備します。`runner` には、GitHub Actions の utuntu-latest、macos-latest に加えてセルフホストランナーを含めています。
 
-{% raw %}
 ```yaml
 jobs:
   Build:
@@ -226,7 +225,6 @@ jobs:
     steps:
     - run: echo 'This job is running on ${{ matrix.runner }} runner!!'
 ```
-{% endraw %}
 
 これを実行すると、3つのランナーが起動して、別々にジョブが実行されます。
 

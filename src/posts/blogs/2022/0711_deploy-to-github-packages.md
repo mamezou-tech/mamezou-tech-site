@@ -122,14 +122,12 @@ GitHub Actions の `actions/setup-node@v3` で GitHub 上に `.npmrc` ファイ�
 :::
 
 一連の処理を実行する GitHub Actions の定義は次のようになります。
-{% raw %}
 ```yaml
 - run: (cd modules/client; npm install)
 - run: (cd modules/client; npm publish)
   env:
     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
-{% endraw %}
 OpenAPI Generator の設定により、コードは `modules/client` ディレクトリに生成されています。そのため、`npm install` の前に `cd modules/client` でディレクトリを移動しています。
 
 `npm install` で依存ライブラリを `node_modules` にインストール (ダウンロード) します。

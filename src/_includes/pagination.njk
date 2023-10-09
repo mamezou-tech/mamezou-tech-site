@@ -1,7 +1,7 @@
 {%- if (pages | length) > 1 %}
 <nav class="tdbc-pagination" aria-labelledby="tdbc-pagination">
   {%- for unused in pages %}
-    {%- if page.url == hrefs[ loop.index0 ] %}
+    {%- if page.data.url == hrefs[ loop.index0 ] %}
       <span class="current-page">{{ loop.index }}</span>
     {%- else %}
       <a href="{{ hrefs[ loop.index0 ] }}">{{ loop.index }}</a>

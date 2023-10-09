@@ -81,7 +81,6 @@ flowchart LR
 今回の試行用に作成したテストコード。
 ポイントごとに簡単な説明を後述します。
 
-{% raw %}
 ```yaml
 version: "1.1"
 name: stepciを使ってみた
@@ -176,7 +175,6 @@ tests:
               $.approvalBy: 決裁した人
               $.approvalAt: "2022-12-22T00:00:00Z"
 ```
-{% endraw %}
 
 :::info
 * 一般的な認証用の機能が提供されており、認証が必要な環境でも対応しやすいです。
@@ -189,7 +187,6 @@ tests:
 #### リクエスト先の設定
 HTTPメソッド、url、bodyなど、APIのアクセスに必要な情報を設定します。
 
-{% raw %}
 ```yaml
 tests:
   applicatons:
@@ -216,14 +213,12 @@ tests:
             }
 # ～略～
 ```
-{% endraw %}
 
 
 #### 値の記録、利用
 値をキャッシュして、テスト内で利用できます。
 jsonパスだけではなく、ヘッダー、Cookie、CSSセレクタや正規表現に該当する要素なども記録できます。
 
-{% raw %}
 ```yaml
 tests:
   applicatons:
@@ -246,7 +241,6 @@ tests:
           url: ${{env.protocol}}://${{env.host}}/${{env.resource}}/${{captures.id}}/inspected
           # ～略～
 ```
-{% endraw %}
 :::info
 * 値の記録、その利用ともに容易です。
 :::
@@ -255,7 +249,6 @@ tests:
 テスト群、テストに含まれるステップ群を上から順に実行します。
 下の例だと、applicationsの申請→審査→決裁、samplesのサンプル1→サンプル2という実行順序になります。
 
-{% raw %}
 ```yaml
 # テスト群
 # ここに含まれるテストを上から順に実行していきます
@@ -274,12 +267,10 @@ tests:
       -name: サンプル1
       -name: サンプル2
 ```
-{% endraw %}
 
 #### 検証
 check配下にレスポンスの検証仕様を設定します。
 
-{% raw %}
 ```yaml
 tests:
   applicatons:
@@ -303,7 +294,6 @@ tests:
               $.applicationBy: 申請した人
               $.applicationAt: "2022-12-20T00:00:00Z"
 ```
-{% endraw %}
 
 :::info
 * 値の検証も同値比較だけでなく、型チェックや正規表現によるチェックなど、バリエーションも豊富で、実際にテストを組むときに便利です。

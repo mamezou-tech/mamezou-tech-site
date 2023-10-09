@@ -150,7 +150,6 @@ Backstageアプリを再起動すると、追加したエンティティが取�
 
 [^2]: テンプレートエンジンには[Nunjucks](https://mozilla.github.io/nunjucks/)が使われています。NunjucksはJavaScriptで記述されたテンプレートエンジンです。当サイトでもこれを使用しています。
 
-{% raw %}
 ```json
 {
   "name": "${{ values.component_name }}",
@@ -158,13 +157,11 @@ Backstageアプリを再起動すると、追加したエンティティが取�
   (以下省略)
 }
 ```
-{% endraw %}
 
 もう1つ重要なものは各テンプレート内に配置している`catalog-info.yaml`です。
 ここにComponent/APIエンティティの内容を記述します。テンプレートから実際のカタログを作成する際、この情報をもとに各エンティティをBackstageアプリのDBに登録します。
 Expressのテンプレートは、以下のようにしました。
 
-{% raw %}
 ```yaml
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -204,7 +201,6 @@ spec:
     paths: {}
 {%- endif %}
 ```
-{% endraw %}
 
 ここで、カタログのComponent/APIエンティティを定義しています。
 
@@ -246,7 +242,6 @@ Component/APIエンティティの詳細なフォーマットは、[公式ドキ
 このファイルにテンプレートのパラメータやカタログ作成時の振る舞いを指定していきます。
 Expressの方のファイルの中身(`templates/express-api/template.yaml`)は、以下のようにしました。
 
-{% raw %}
 ```yaml
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
@@ -343,7 +338,6 @@ spec:
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
 ```
-{% endraw %}
 
 詳細な説明は省きますが、重要なものは以下2つです。
 

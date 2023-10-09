@@ -37,7 +37,6 @@ jobs:
 
 再利用可能ワークフロー第1階層。パラメータを受けて、さらに、再利用可能ワークフローにパラメータを渡して呼び出ます。
 
-{% raw %}
 ```yaml
 name: Reusable workflow A
 
@@ -55,11 +54,9 @@ jobs:
     with:
       param1: ${{ inputs.param1 }}
 ```
-{% endraw %}
 
 再利用可能ワークフロー第２階層。ここで本命のジョブが動きます。渡ってきたパラメータを出力します。
 
-{% raw %}
 ```yaml
 name: Reusable workflow B
 
@@ -78,7 +75,6 @@ jobs:
       - name: Echo
         run: echo "called from reusable flow with param ${{ inputs.param1 }}!"
 ```
-{% endraw %}
 
 実行してみると、ちゃんと最下層のジョブが実行され、パラメータの受け渡しもできました。
 
@@ -98,7 +94,6 @@ jobs:
 
 呼び出し側のワークフロー。`strategy/matrix` の `target` で `dev`、`stage`、`prod` のようにデプロイ先の環境を matrix で指定しています。再利用可能ワークフローの `target` パラメータにこの matrix を指定することにより、target の要素分のジョブが起動されてパラレルに実行されます。
 
-{% raw %}
 ```yaml
 name: Dploy with matrix strategy
 
@@ -114,11 +109,9 @@ jobs:
     with:
       target: ${{ matrix.target }}
 ```
-{% endraw %}
 
 再利用可能ワークフローの deployment-reusable.yml です。`inputs.target` でデプロイ先の環境を受け取り、ビルド、パッケージ、デプロイを行います(この例は単に echo しているだけ)。
 
-{% raw %}
 ```yaml
 name: Build & Deploy for given tareget
 
@@ -145,7 +138,6 @@ jobs:
       - name: Deploy
         run: echo "Deploy to $TARGET environment"
 ```
-{% endraw %}
 
 :::info
 もしワークフローでコンテナアプリケーションの CI/CD を行う場合、ビルドは1度だけでデプロイ先の差異は環境変数で対応するのが王道ですが、ここはあくまでサンプルということでご了承ください。

@@ -47,7 +47,6 @@ Nuxt2同様にページファイルは`pages`ディレクトリにVueコンポ�
 なお、各コンポーネントは冗長な記述となっていますが、この後に順を追って改善していきます。
 
 - index.vue
-{% raw %}
 ```html
 <script setup lang="ts">
 const articles = ref<{ id: number, title: string }[]>([]);
@@ -95,10 +94,8 @@ footer {
 }
 </style>
 ```
-{% endraw %}
 
 - details.vue
-{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -148,7 +145,6 @@ footer {
 }
 </style>
 ```
-{% endraw %}
 
 作成したページは、ブログサイトのトップページ(`index.vue`)と詳細ページ(`details.vue`)を想定したものです。
 トップページでブログの一覧を表示し、ブログをクリックすると詳細ページでその記事の内容を表示します。
@@ -182,7 +178,6 @@ Nuxt2でも同様ですが、このようなレイアウトは`layouts`ディレ
 
 ここでは`layouts`ディレクトリ内に`default.vue`を作成し、ヘッダ、フッタを切り出します。
 
-{% raw %}
 ```html
 <template>
   <div>
@@ -211,14 +206,12 @@ footer {
 }
 </style>
 ```
-{% endraw %}
 
 実際の各ページのコンテンツを挿入する部分は`<slot />`とします。Nuxt2のときは`<Nuxt />`でしたので、間違えないように注意してください。
 
 これで冗長だったページコンポーネントからヘッダやフッタを削除できます。
 
 - index.vue
-{% raw %}
 ```html
 <script setup lang="ts">
 const articles = ref<{ id: number, title: string }[]>([]);
@@ -245,10 +238,8 @@ articles.value = [{
   </div>
 </template>
 ```
-{% endraw %}
 
 - details.vue
-{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -277,7 +268,6 @@ article.value = articles.find(article => +id === article.id)
   </div>
 </template>
 ```
-{% endraw %}
 先程と比較して、ヘッダ、フッタやスタイル適用がなくなってスッキリしました。
 ここでNuxtアプリのエントリーポイントも修正しておきます。
 プロジェクト直下の`app.vue`の内容が初期状態のWelcomeページを表示するようになっていますので修正します。
@@ -359,7 +349,6 @@ Composition APIの導入によって、ステートフルなものでも機能�
 各ページファイルで、このモジュール(Composable)を使うように修正します。
 
 - index.vue
-{% raw %}
 ```html
 <script setup lang="ts">
 const { fetchArticles, articles } = useArticles();
@@ -380,10 +369,8 @@ fetchArticles();
   </div>
 </template>
 ```
-{% endraw %}
 
 - details.vue
-{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -405,7 +392,6 @@ fetchArticle(+id);
   </div>
 </template>
 ```
-{% endraw %}
 
 だいぶシンプルになりました。
 
@@ -420,7 +406,6 @@ article取得部分を先程のComposableの公開関数・変数を使うよう
 VueコンポーネントはNuxt2同様に`components`ディレクトリ内に作成します。
 以下の`Advertisement.vue`ファイルを作成しました。
 
-{% raw %}
 ```html
 <script setup lang="ts">
 const ads = ref<{ id: number, title: string, url: string }[]>([]);
@@ -443,13 +428,11 @@ ads.value = [{
   </ul>
 </template>
 ```
-{% endraw %}
 
 固定で複数の広告リンクを表示するだけのシンプルなものです。
 これを各ページに挿入します。
 
 - index.vue
-{% raw %}
 ```html
 <script setup lang="ts">
 const { fetchArticles, articles } = useArticles();
@@ -472,10 +455,8 @@ fetchArticles();
   </div>
 </template>
 ```
-{% endraw %}
 
 - details.vue
-{% raw %}
 ```html
 <script setup lang="ts">
 const route = useRoute();
@@ -495,7 +476,6 @@ fetchArticle(+id);
   </div>
 </template>
 ```
-{% endraw %}
 
 スクリプトの変更はありません。テンプレートに先程の広告コンポーネントを追加しているだけです。
 `components`配下もNuxt3のAuto Importは機能しますので、Composable同様にコンポーネントもimport文の記述は不要です。

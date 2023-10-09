@@ -1,0 +1,30 @@
+---
+url: /feed/feed.xml
+exclude: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<title>{{ meta.siteName }}</title>
+	<subtitle>{{ meta.siteDescription }}</subtitle>
+	{% set absoluteUrl %}{{ '/feed/' | url | absoluteUrl(meta.url) }}{% endset %}
+	<link href="{{ absoluteUrl }}" rel="self"/>
+	<link href="{{ meta.url }}"/>
+	<updated>{{ search | posts | newestDate | isoDate }}</updated>
+	<id>{{ meta.url }}/</id>
+	<author>
+		<name>{{ meta.authorName }}</name>
+	</author>
+	{%- for page in search | posts | head(100) %}
+	{%- set absolutePostUrl %}{{ page.data.url | url | absoluteUrl(meta.url) }}{% endset -%}
+	{%- set pageDescription %}{% shortDesc search.pages(), page, meta.siteDescription %}{% endset -%}
+	<entry>
+		<title>{{ page.data.title  }}</title>
+		<link href="{{ absolutePostUrl }}"/>
+		<published>{{ page.data.date | isoDate }}</published>
+		<updated>{{ page.data.date | isoDate }}</updated>
+		<id>{{ absolutePostUrl }}</id>
+		<summary>{{ pageDescription }}</summary>
+		<content type="html">{{ page.data.children | rssUrl(meta.url) }}</content>
+	</entry>
+	{%- endfor %}
+</feed>

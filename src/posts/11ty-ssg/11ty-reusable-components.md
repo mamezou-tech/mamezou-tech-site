@@ -24,7 +24,6 @@ prevPage: ./src/posts/11ty-ssg/11ty-intro.md
 
 前回以下のようなLiquidテンプレートのレイアウトファイル(`src/_includes/base.liquid`)を作成しました。
 
-{% raw %}
 ```html
 <html lang="ja">
 <head>
@@ -45,12 +44,10 @@ prevPage: ./src/posts/11ty-ssg/11ty-intro.md
 </body>
 </html>
 ```
-{% endraw %}
 
 シンプルすぎて部品化する価値はありませんが、headerタグを拡張して部品化してみます。
 `src/_includes`配下にheader.liquidファイルを用意します。
 
-{% raw %}
 ```liquid
 <header>
     <h1>{{ title }}</h1>
@@ -59,14 +56,12 @@ prevPage: ./src/posts/11ty-ssg/11ty-intro.md
     {%- endif %}
 </header>
 ```
-{% endraw %}
 
 タイトル(title)と説明(description)を受け取るようにしてみました。
 また、説明(description)はLiquidの[if](https://shopify.github.io/liquid/tags/control-flow/#if)を使って、存在する場合のみ表示しています。
 
 ヘッダーを部品として切り出したので、レイアウトファイルの方もこれを取り込むように修正します。
 
-{% raw %}
 ```liquid
 <html lang="ja">
 <head>
@@ -85,9 +80,8 @@ prevPage: ./src/posts/11ty-ssg/11ty-intro.md
 </body>
 </html>
 ```
-{% endraw %}
 
-{% raw %}`{% render, .... %}`{% endraw %}の部分がポイントです。これはLiquidの[renderタグ](https://shopify.github.io/liquid/tags/template/#render)です[^1]。
+`{% render, .... %}`の部分がポイントです。これはLiquidの[renderタグ](https://shopify.github.io/liquid/tags/template/#render)です[^1]。
 このタグは指定したLiquidファイルの内容をレンダリングするものです。
 ここで先程切り出したheader.liquidのレンダリング結果を取り込んでいます。
 
@@ -122,14 +116,12 @@ permalink: /sample/
 
 マークダウンファイルで使う場合は以下のようになります。
 
-{% raw %}
 ```markdown
 ## マークダウンファイルでテンプレート部品を使う
 以下の記述をすると、マークダウンファイル内のコンテンツとしてLiquidテンプレートのレンダリング結果を表示できます。
 
 {% render 'foo' %}
 ```
-{% endraw %}
 
 このようにマークダウン内にLiquid構文を記述すると、プリプロセッサでLiquidテンプレートとしてfooテンプレートの処理結果が展開されます。
 :::
@@ -137,7 +129,7 @@ permalink: /sample/
 :::column:マークダウンファイルコンテンツの注意点
 マークダウンファイルは、マークダウンパーサーだけでなくLiquidテンプレートとしても処理されますので、コンテンツにLiquid構文が含まれる場合に注意が必要です。
 
-よくハマるケースとしてはGoのテンプレートやGitHub Actionsのパイプラインとしてコードスニペットで{% raw %}`{{...}}`{% endraw %}を記述するケースです。
+よくハマるケースとしてはGoのテンプレートやGitHub Actionsのパイプラインとしてコードスニペットで`{{...}}`を記述するケースです。
 そのままだとこの部分はLiquidテンプレートとして解釈されて、レンダリング結果として何も出力されないということがよくあります。
 その部分をコンテンツとして使いたい場合は、該当部分を[rawタグ](https://shopify.github.io/liquid/tags/template/#raw)で囲ってLiquidテンプレートとして解釈しないよう指定する必要があります[^2]。
 
@@ -156,14 +148,12 @@ permalink: /sample/
 フィルターはLiquid、Nunjucks、Handlebars、JavaScriptテンプレートで利用可能なものです。
 Liquidでは、以下のように使います。
 
-{% raw %}
 ```liquid
 {% assign names = "foo,bar,baz" | split: "," %}
 {%- for name in names %}
 <p>{{ name | upcase }}</p>
 {%- endfor %}
 ```
-{% endraw %}
 
 フィルターは値に対してパイプ`|`で区切って指定します。もちろん複数のフィルターをチェーンでつなげられます。
 上記はsplitとupcaseの2つのLiquidの組み込みフィルターを使っています。
@@ -202,11 +192,9 @@ module.exports = function(eleventyConfig) {
 
 このフィルターはテンプレートでは以下のように使用します。
 
-{% raw %}
 ```liquid
 {{ page.date | jpDate }}
 ```
-{% endraw %}
 
 `page.date`はEleventy提供の[組み込み変数](https://www.11ty.dev/docs/data-eleventy-supplied/#page-variable)でページの作成日が設定されます。
 実際にこれを実行すると、作成日がフォーマット変換されて出力されるはずです。
@@ -248,23 +236,19 @@ module.exports = function(eleventyConfig) {
 
 このショートコードは、Liquidテンプレートからは以下のように使います。
 
-{% raw %}
 ```liquid
 {% item "0001" %}
 ```
-{% endraw %}
 
-これまでに使ったif/render等と同じように{% raw %}`{% ... %}`{% endraw %}内に記述します。つまり、ショートコードは各テンプレート言語のカスタムタグに変換されます。
+これまでに使ったif/render等と同じように`{% ... %}`内に記述します。つまり、ショートコードは各テンプレート言語のカスタムタグに変換されます。
 
 このように、ショートコードはカスタムタグなので、以下のように開始・終了タグ内にコンテンツ自体を含められます。
 
-{% raw %}
 ```liquid
 {% item "0001" %}
 <p style="font: 1.2rem bold;color: red">大好評です！！在庫なくなり次第終了します。</p>
 {% enditem %}
 ```
-{% endraw %}
 
 ここでは、タグのコンテンツとして架空の商品宣伝用のコンテンツを挿入しました。
 

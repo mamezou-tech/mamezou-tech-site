@@ -15,7 +15,6 @@ GitHub Actions のジョブサマリー機能がリリースされました。
 
 各ジョブの最後で Slackに通知する情報を出力しているので、同じ場所でジョブサマリーにも出力します。
 
-{% raw %}
 ```yaml
   TestA:
     runs-on: ubuntu-latest
@@ -32,7 +31,6 @@ GitHub Actions のジョブサマリー機能がリリースされました。
         echo "::set-output name=message::Test A ${{ (job.status == 'success' && '✅') || '❌' }}"
         echo "- TestA : ${{ (job.status == 'success' && '✅') || '❌' }}" >> $GITHUB_STEP_SUMMARY
 ```
-{% endraw %}
 
 ワークフローを実行して、サマリーページを確認すると、下の3つのセクションにワークフローで出力したジョブサマリーが表示されました (この例だと元々表示されているものから情報量は全く増えていませんが)。
 

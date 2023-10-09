@@ -1,5 +1,0 @@
-{
-  "category": "event",
-  "layout": "season",
-  "permalink": "/events/season/{{ page.fileSlug }}/"
-}

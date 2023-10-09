@@ -33,7 +33,6 @@ private リポジトリでの Action と再利用可能ワークフローの共�
 
 - sample-internal-action/action.yml
 
-{% raw %}
 ```yaml
 name: 'Hello World'
 description: 'Greet someone'
@@ -55,7 +54,6 @@ runs:
       run: echo "random-id=$(echo $RANDOM)" >> $GITHUB_OUTPUT
       shell: bash
 ```
-{% endraw %}
 
 :::info
 GitHub Actions の Action は当初 Docker Action と JavaScript Action の2種類がありました。Docker Action は任意の言語(主にシェルスクリプト)で実装、JavaScript Action は GitHub 提供の NPM パッケージを使って JavaScript/TypeScript で実装します。ワークフローと同じ YAML の構文では実装できませんでした。後に Composite Action が登場し、ワークフローと同じ構文で書けるようになりました。
@@ -75,7 +73,6 @@ Action のリポジトリ(sample-internal-action) では、オーガニゼーシ
 
 use-internal-action/.github/workflows/ci.yml
 
-{% raw %}
 ```yaml
 name: CI
 
@@ -94,7 +91,6 @@ jobs:
       - run: echo random-number ${{ steps.foo.outputs.random-number }}
         shell: bash
 ```
-{% endraw %}
 
 実行結果です。挨拶文の出力の後、Action で生成された乱数が出力されました。
 
@@ -120,7 +116,6 @@ CI/CD を意識して入力パラメータ `target` でデプロイ先を受け�
 
 - shared-workflows/.github/workflows/deploy.yml
 
-{% raw %}
 ```yaml
 name: Build & Deploy for given tareget
 
@@ -147,7 +142,6 @@ jobs:
       - name: Deploy
         run: echo "Deploy to $TARGET environment"
 ```
-{% endraw %}
 
 呼び出し側ワークフローを同じアカウントの private リポジトリに配置しました。
 

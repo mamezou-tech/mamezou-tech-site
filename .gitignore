@@ -3,7 +3,6 @@ node_modules
 
 # build artefacts
 public
-src/css
 social
 
 # secrets and errors
@@ -16,6 +15,7 @@ social
 #IDE
 .idea
 .vscode
+!.vscode/settings.json
 
 # textlint cache
 kvs-node-localstorage
@@ -26,5 +26,6 @@ kvs-node-localstorage
 # Eleventy Edge Build Data files
 # netlify/edge-functions/_generated
 # for now, disable netlify edge functions
-netlify/
-!netlify/edge-functions/og.tsx
+netlify/generated
+
+test.tsx

@@ -45,6 +45,9 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 - [Fresh - Deno の 次世代 Web フレームワーク](/blogs/2022/07/04/fresh-deno-next-gen-web-framework/)
 - [Fresh 1.2 へアップグレード - island の新機能など](/blogs/2023/06/27/fresh-1_2/)
 
+### Lume
+- [Lume入門(第1回) - Denoベースの静的サイトジェネレーターLumeで静的サイトを手早く作る](/lume/lume-intro/)
+
 ## Deno
 Deno は高速でセキュアな JavaScript ランタイムです。Node.js に比べ開発体験も向上しています。ここでは、Deno の導入や活用についてご紹介します。
 

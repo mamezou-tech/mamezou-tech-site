@@ -41,3 +41,4 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 ## GUI
 
 - [Blocklyによるビジュアルプログラミングの紹介](/robotics/gui/visual-programing-with-blockly/)
+- [QtWidgets vs QtQuick](/robotics/gui/qtwidget-vs-qtquick/)

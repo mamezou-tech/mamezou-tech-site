@@ -1,7 +1,7 @@
 ---
 title: QtWidgets vs QtQuick
 author: kazuki-ogawa
-date: 2023-09-30
+date: 2023-10-10
 tags: [gui, qt, 画面開発]
 ---
 

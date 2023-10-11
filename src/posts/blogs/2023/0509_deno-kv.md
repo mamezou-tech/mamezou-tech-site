@@ -31,6 +31,10 @@ tags: [Deno]
 
 :::info
 記事執筆時点では Deno KV はベータ版で Deno Deploy での利用はクローズドベータになっています。参加するには waiting list に登録しておく必要があります。
+
+2023.10.11追記
+2023年9月に Deno Deploy での Deno KV 利用がオープンベータになりました。
+[Deno KV is in Open Beta](https://deno.com/blog/kv-open-beta)
 :::
 
 以下のプレイグラウンドでは、グローバルに一貫性のある永続的なカウンターの実装コードが非常に簡単に実装できることが示されています。この例では、アトミックなトランザクションが使用されています。

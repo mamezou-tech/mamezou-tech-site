@@ -26,7 +26,7 @@ Lumeは複数テンプレートエンジンをサポートしています。も�
 import jsx from "lume/plugins/jsx.ts";
 
 const site = lume();
-site.use(jsx())
+site.use(jsx());
 ```
 
 必要に応じて`deno.json`のTypeScriptコンパイラ設定(`compilerOptions`)すれば完了です(今回は特に設定していません)。

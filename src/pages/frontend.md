@@ -47,6 +47,7 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 
 ### Lume
 - [Lume入門(第1回) - Denoベースの静的サイトジェネレーターLumeで静的サイトを手早く作る](/lume/lume-intro/)
+- [Lume入門(第2回) - テンプレートエンジンとしてJSXとMDXを使う](/lume/lume-jsx-mdx/)
 
 ## Deno
 Deno は高速でセキュアな JavaScript ランタイムです。Node.js に比べ開発体験も向上しています。ここでは、Deno の導入や活用についてご紹介します。

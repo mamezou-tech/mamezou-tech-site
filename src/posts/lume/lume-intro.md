@@ -2,7 +2,7 @@
 title: Lume入門(第1回) - Denoベースの静的サイトジェネレーターLumeで静的サイトを手早く作る
 author: noboru-kudo
 date: 2023-10-09
-# nextPage: ./src/posts/11ty-ssg/lume--components.md
+nextPage: ./src/posts/lume/lume-jsx-mdx.md
 ---
 
 当サイトもそろそろ開設から2年になろうとしています。

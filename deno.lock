@@ -19,6 +19,7 @@
       "npm:postcss-import@15.1.0": "npm:postcss-import@15.1.0_postcss@8.4.31",
       "npm:postcss-nesting@12.0.1": "npm:postcss-nesting@12.0.1_postcss@8.4.31_postcss-selector-parser@6.0.13",
       "npm:postcss@8.4.31": "npm:postcss@8.4.31",
+      "npm:preact": "npm:preact@10.18.0",
       "npm:preact-render-to-string@6.2.1": "npm:preact-render-to-string@6.2.1_preact@10.18.0",
       "npm:preact@10.18.0": "npm:preact@10.18.0",
       "npm:prismjs@1.29.0": "npm:prismjs@1.29.0",

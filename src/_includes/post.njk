@@ -8,6 +8,7 @@ layout: base.njk
   <div id='toc'></div>
   <article class="post tdbc-mx-auto">
     <header class="post__header">
+      {%- include "mameyose.njk" %}
       <h1>{{ title }}</h1>
       <div class="post__details">
         <time datetime="{{ page.date | htmlDateString }}">

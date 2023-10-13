@@ -188,12 +188,14 @@ site.filter(
   (s: string, base: string) => new URL(s, base).toString(),
 );
 
-site.filter("rssUrl", (html, base) =>
-  html.replaceAll(
+site.filter("rssUrl", (html, base) => {
+  if (!html) return "";
+  return html.replaceAll(
     /\s(href|src)="([^"]+)"/g,
     (_: string, attr: string, value: string) =>
       ` ${attr}="${new URL(value, base).href}"`,
-  ));
+  );
+});
 
 site.helper(
   "mermaidTag",

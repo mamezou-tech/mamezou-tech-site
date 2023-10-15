@@ -2,6 +2,7 @@ import { Search } from 'lume/plugins/search.ts';
 import { PaginateOptions, Paginator } from 'lume/plugins/paginate.ts';
 import { filterByPost } from '../../lume/filters/utils.ts';
 import { Page } from 'lume/core/filesystem.ts';
+import { encodeUrl } from 'encodeurl';
 
 export const layout = 'layouts/article-list.njk';
 export const title = 'ブログ';
@@ -18,11 +19,12 @@ export default function* ({ search, paginate }: { search: Search; paginate: Pagi
     size: 20
   };
   const result = paginate(posts, options);
-  const hrefs = result.map(r => r.url); // 11ty compatibility
+  const hrefs = result.map(r => encodeUrl(r.url)); // 11ty compatibility
   for (let i = 0; i < result.length; i++) {
     const page = result[i];
     page.hrefs = hrefs;
     page.pages = result;
+    page.current = page.url
     if (i === 0) {
       page.tags = ['pages'];
     }

@@ -1,6 +1,7 @@
 import { Search } from 'lume/plugins/search.ts';
 import { PaginateOptions, Paginator } from 'lume/plugins/paginate.ts';
 import { getPostArticles } from '../../lume/filters/utils.ts';
+import { encodeUrl } from 'encodeurl';
 
 export const layout = 'layouts/article-list.njk';
 export const title = '全ての記事';
@@ -12,10 +13,11 @@ export default function* ({ search, paginate }: { search: Search; paginate: Pagi
     size: 20
   };
   const result = paginate(posts, options);
-  const hrefs = result.map(r => r.url); // 11ty compatibility
+  const hrefs = result.map(r => encodeUrl(r.url)); // 11ty compatibility
   for (const page of result) {
     page.hrefs = hrefs;
     page.pages = result;
+    page.current = page.url
     yield page;
   }
 }

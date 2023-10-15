@@ -1,6 +1,7 @@
 {
   "imports": {
     "lume/": "https://deno.land/x/lume@v1.19.1/",
+    "encodeurl": "https://deno.land/x/encodeurl@1.0.0/mod.ts",
     "luxon": "npm:luxon@3.3.0",
     "prismjs/": "npm:/prismjs@1.29.0/",
     "markdown-it": "npm:markdown-it@13.0.1",

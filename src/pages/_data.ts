@@ -2,7 +2,7 @@ import { Page } from 'lume/core/filesystem.ts';
 
 const data = {
     tags: 'pages',
-    layout: 'page.njk',
+    layout: 'layouts/page.njk',
     url: (page: Page) => `/${page.src.slug}/`
 };
 

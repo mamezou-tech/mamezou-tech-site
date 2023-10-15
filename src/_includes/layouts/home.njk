@@ -1,6 +1,6 @@
 ---
 description:
-layout: base.njk
+layout: layouts/base.njk
 ---
 
 <style>
@@ -146,7 +146,7 @@ layout: base.njk
         <section class="post-list__wrapper recent-article">
           <h2 class="post-list__heading">新着記事<img alt="new-articles" class="icon" width="36px" height="100%" src="/img/icons/new-box.svg" /><a class="all-article-link" href="/articles/">全ての記事を見る</a></h2>
           <ul class="post-list">
-            {% for post in search.pages('layout^=post exclude!=true', 'date=desc') | limit(10) | data %}
+            {% for post in search.pages('layout^=layouts/post exclude!=true', 'date=desc') | limit(10) | data %}
               <li class="post-list__item">
                 <div>
                   <div class="post-list__meta">

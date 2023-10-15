@@ -2,7 +2,7 @@ import { Search } from 'lume/plugins/search.ts';
 import { PaginateOptions, Paginator } from 'lume/plugins/paginate.ts';
 import { makeAuthorArticles } from './articles_by_author.ts';
 
-export const layout = 'article-list.njk';
+export const layout = 'layouts/article-list.njk';
 
 export default function* ({ search, paginate }: { search: Search; paginate: Paginator }) {
   const authorArticles = makeAuthorArticles(search);

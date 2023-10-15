@@ -3,7 +3,7 @@ import { PaginateOptions, Paginator } from 'lume/plugins/paginate.ts';
 import { filterByPost } from '../../lume/filters/utils.ts';
 import { Page } from 'lume/core/filesystem.ts';
 
-export const layout = 'article-list.njk';
+export const layout = 'layouts/article-list.njk';
 export const title = 'ブログ';
 export const description = '豆蔵メンバーの技術ブログ';
 export const icon = 'https://api.iconify.design/material-symbols/article-outline.svg?color=%23730099&height=28';

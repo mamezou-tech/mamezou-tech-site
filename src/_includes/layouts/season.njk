@@ -1,7 +1,7 @@
 ---
 layout: layouts/base.njk
 ---
-{% include 'sitenav.njk' %}
+{{ comp.SiteNav() | safe }}
 
 <main class="tdbc-container">
   <article class="season tdbc-mx-auto">
@@ -28,8 +28,8 @@ layout: layouts/base.njk
       </script>
     </div>
     <hr class="link-separator" />
-    {%- include "pv-ranking.njk" %}
-    {%- include "links.njk" %}
+    {{ comp.ArticleRanking() | safe }}
+    {{ comp.FooterLinks() | safe }}
   </article>
   {%- initClipboardJS %}
 </main>

@@ -1,9 +1,0 @@
-<fieldset class="page-ranking">
-    <legend>豆蔵デベロッパーサイト - 先週のアクセスランキング</legend>
-    <ol>
-        {%- for article in pv.ranking -%}
-            {%- set published = search.pages() | articleDate(article.url) -%}
-            <li><a href="{{ article.url }}">{{ article.title }}{% if published %} ({{ published }}){% endif %}</a></li>
-        {%- endfor -%}
-    </ol>
-</fieldset>

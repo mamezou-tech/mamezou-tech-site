@@ -102,7 +102,7 @@ layout: layouts/base.njk
         render({url: '{{ meta.url }}', path: '{{ page.data.url }}'}, document.getElementById("preact-sns"));
       </script>
     </div>
-    {%- include "google-search.njk" %}
+    {{ comp.GoogleSearch() | safe }}
   </div>
 </header>
 <main class="tdbc-container">
@@ -199,6 +199,6 @@ layout: layouts/base.njk
   </div>
   <div style="margin: 1rem 0 0 0; padding: 0;">
   <hr class="link-separator" />
-    {%- include "links.njk" %}
+    {{ comp.FooterLinks() | safe }}
   </div>
 </main>

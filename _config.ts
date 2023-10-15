@@ -1,5 +1,5 @@
 import lume, { PluginOptions } from "lume/mod.ts";
-import jsx_preact from "lume/plugins/jsx_preact.ts";
+import jsx from "lume/plugins/jsx.ts";
 import liquid from "lume/plugins/liquid.ts";
 import postcss from "lume/plugins/postcss.ts";
 import prism from "lume/plugins/prism.ts";
@@ -74,7 +74,7 @@ const site = lume({
   },
 }, { markdown });
 
-site.use(jsx_preact());
+site.use(jsx());
 site.use(liquid());
 site.use(postcss());
 site.use(prism());

@@ -155,7 +155,7 @@ python data_preparation.py --config config.json --njobs=4
 
 実行に成功すると、ACSにインデックスが作成されます。
 
-![fig1](/img/llm/1018-llm-aoai.png)
+![fig1](/img/llm/llm-aoai-acsindex.png)
 
 以下が登録されているインデックスの抜粋です。
 

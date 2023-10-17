@@ -1,7 +1,6 @@
 ---
 title: コンテナ
 description: Kubernetesを中心としたコンテナエコシステムの環境構築や運用ノウハウ
-layout: page.njk
 titleImage: /img/logo/mameka5_50.png
 icon: https://api.iconify.design/eos-icons/container.svg?color=%23730099&height=28
 ---

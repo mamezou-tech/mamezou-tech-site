@@ -1,7 +1,7 @@
 ---
 title: 豆香の豆知識(Powered by GPT-4)
 url: /gpt/mameka/
-layout: post.njk
+layout: layouts/post.njk
 author: mameka
 exclude: true
 templateEngine: [njk, md]

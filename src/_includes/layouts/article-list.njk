@@ -1,5 +1,5 @@
 ---
-layout: page.njk
+layout: layouts/page.njk
 ---
 
 
@@ -14,9 +14,9 @@ layout: page.njk
 <a href="https://github.com/{{ contributor.github }}"><img width="60" height="60" style="margin-left: 0.2rem" alt="{{ contributor.name }}" src="https://github.com/{{ contributor.github }}.png?size=40" /></a>
 {% endif %}
 
-{% include "pagination.njk" %}
+{{ comp.Pagination({ pages: pages, hrefs: hrefs, current: url}) | safe }}
 
 {% set postslist = results %}
 {% include "posts-list.njk" %}
 
-{% include "pagination.njk" %}
+{{ comp.Pagination({ pages: pages, hrefs: hrefs, current: url}) | safe }}

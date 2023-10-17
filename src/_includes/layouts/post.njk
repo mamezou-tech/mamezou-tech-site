@@ -1,13 +1,14 @@
 ---
-layout: base.njk
+layout: layouts/base.njk
 ---
 
-{% include 'sitenav.njk' %}
+{{ comp.SiteNav() | safe }}
 
 <main class="tdbc-container">
   <div id='toc'></div>
   <article class="post tdbc-mx-auto">
     <header class="post__header">
+      {%- include "mameyose.njk" %}
       <h1>{{ title }}</h1>
       <div class="post__details">
         <time datetime="{{ page.date | htmlDateString }}">
@@ -113,8 +114,8 @@ layout: base.njk
       </script>
     </div>
     <hr class="link-separator" />
-    {%- include "pv-ranking.njk" %}
-    {%- include "links.njk" %}
+    {{ comp.ArticleRanking() | safe}}
+    {{ comp.FooterLinks() | safe }}
   </article>
   <script type="module">
     import PhotoSwipeLightbox from 'https://unpkg.com/photoswipe@5.4.2/dist/photoswipe-lightbox.esm.js';

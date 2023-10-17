@@ -1,8 +1,9 @@
 import { Search } from 'lume/plugins/search.ts';
 import { PaginateOptions, Paginator } from 'lume/plugins/paginate.ts';
 import { makeAuthorArticles } from './articles_by_author.ts';
+import { encodeUrl } from 'encodeurl';
 
-export const layout = 'article-list.njk';
+export const layout = 'layouts/article-list.njk';
 
 export default function* ({ search, paginate }: { search: Search; paginate: Paginator }) {
   const authorArticles = makeAuthorArticles(search);
@@ -12,7 +13,7 @@ export default function* ({ search, paginate }: { search: Search; paginate: Pagi
       size: 10
     };
     const result = paginate(authorArticles[author].articles, options);
-    const hrefs = result.map(r => r.url); // 11ty compatibility
+    const hrefs = result.map(r => encodeUrl(r.url)); // 11ty compatibility
     for (const page of result) {
       page.hrefs = hrefs;
       page.pages = result;
@@ -20,6 +21,7 @@ export default function* ({ search, paginate }: { search: Search; paginate: Pagi
         ...authorArticles[author]
       };
       page.title = `${author} の記事`;
+      page.current = page.url
       yield page;
     }
   }

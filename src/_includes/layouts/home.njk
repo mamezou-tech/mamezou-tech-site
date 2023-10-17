@@ -1,6 +1,6 @@
 ---
 description:
-layout: base.njk
+layout: layouts/base.njk
 ---
 
 <style>
@@ -102,10 +102,11 @@ layout: base.njk
         render({url: '{{ meta.url }}', path: '{{ page.data.url }}'}, document.getElementById("preact-sns"));
       </script>
     </div>
-    {%- include "google-search.njk" %}
+    {{ comp.GoogleSearch() | safe }}
   </div>
 </header>
 <main class="tdbc-container">
+{%- include "mameyose.njk" %}
   <div class="tdbc-section">
     <ul class="tdbc-column-container">
       {%- for page in search.pages('pages exclude!=true') -%}
@@ -145,7 +146,7 @@ layout: base.njk
         <section class="post-list__wrapper recent-article">
           <h2 class="post-list__heading">新着記事<img alt="new-articles" class="icon" width="36px" height="100%" src="/img/icons/new-box.svg" /><a class="all-article-link" href="/articles/">全ての記事を見る</a></h2>
           <ul class="post-list">
-            {% for post in search.pages('layout^=post exclude!=true', 'date=desc') | limit(10) | data %}
+            {% for post in search.pages('layout^=layouts/post exclude!=true', 'date=desc') | limit(10) | data %}
               <li class="post-list__item">
                 <div>
                   <div class="post-list__meta">
@@ -198,6 +199,6 @@ layout: base.njk
   </div>
   <div style="margin: 1rem 0 0 0; padding: 0;">
   <hr class="link-separator" />
-    {%- include "links.njk" %}
+    {{ comp.FooterLinks() | safe }}
   </div>
 </main>

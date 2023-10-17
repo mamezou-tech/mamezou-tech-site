@@ -1,7 +1,7 @@
 ---
-layout: base.njk
+layout: layouts/base.njk
 ---
-{% include 'sitenav.njk' %}
+{{ comp.SiteNav() | safe }}
 
 <header class="tdbc-hero">
   <div class="tdbc-container">
@@ -21,9 +21,9 @@ layout: base.njk
 <main class="tdbc-container">
   <article class="tdbc-mx-auto">
     {{ content | safe }}
-    <hr class="link-separator">
-    {%- include "pv-ranking.njk" %}
-    {%- include "links.njk" %}
+    <hr class="link-separator" />
+    {{ comp.ArticleRanking() | safe }}
+    {{ comp.FooterLinks() | safe }}
   </article>
   {%- initClipboardJS %}
   {%- mermaidTag %}

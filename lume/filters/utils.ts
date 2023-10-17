@@ -4,9 +4,9 @@ import { Search } from "lume/plugins/search.ts";
 export function filterByPost<T extends Page | Data>(pages: T[]): T[] {
   return pages.filter((item) => {
     if (isPage(item)) {
-      return item.data.layout?.startsWith("post");
+      return item.data.layout?.startsWith("layouts/post");
     }
-    return item.layout?.startsWith("post");
+    return item.layout?.startsWith("layouts/post");
   });
 }
 

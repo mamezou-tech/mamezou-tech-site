@@ -1,7 +1,7 @@
 import { Page } from 'lume/core/filesystem.ts';
 
 const data = {
-    layout: 'season.njk',
+    layout: 'layouts/season.njk',
     category: 'event',
     url: (page: Page) => `/events/season/${page.src.slug}/`
 };

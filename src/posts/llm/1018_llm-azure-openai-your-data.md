@@ -41,9 +41,9 @@ tags: [自然言語処理, RAG, Azure, OpenAI, chatgpt]
 そのための登録スクリプトがMircorsoftから公開されているのでそれを利用したいと思います。([Data Preparation](https://github.com/microsoft/sample-app-aoai-chatGPT/blob/main/scripts/readme.md) )
 
 そのスクリプトは基本的にはテキストファイルの登録に対応しているので、まずはPDFファイルからそのテキスト内容を抽出します。
-（Azureの別サービスのAzure AI Document Intelligenceを利用すれば、PDF形式のまま取り込みまで行う方法があるそうなのですが今回は行わないです）
+（Azureの別サービスのAzure AI Document Intelligenceを利用すれば、PDF形式のまま取り込みまで行う方法があるそうなのですが、構成が複雑になるため今回は使用を見送りました。）
 
-事前に `pypdf` をインストールしておいて、
+事前に `pypdf` をインストールしておきます。
 
 ```sh
 pip install pypdf
@@ -206,7 +206,9 @@ pom.xmlのインポート箇所
     </dependency>
 ```
 
-・実行コード
+次のJavaプログラムは標準入力から質問を受け付けAOAIに質問を行います。
+作成済みのACSのエンドポイントURL、管理者キー、インデックス名を指定してあげるだけであとは自動で関連情報を取得して質問してくれました。
+
 ```java
     public static void main(String[] args) {
         String azureOpenaiKey = "AOAIのAPIキー";
@@ -291,8 +293,10 @@ Message:
 
 取り込んだPDFの内容に沿った返答が返ってきました。特に6ページ目の内容でしょうか。
 
+:::column:補足
 回答をよく見ると`[doc5]`という文字列が入っています。これはおそらくACSから取得したデータに付与されている番号だと思うのですが、今回利用しているJavaライブラリでは現状その情報を取得することはできないようでした。
 REST APIによるリクエストのレスポンス例を見ると実際のhttpレスポンスには取得データの情報が入っているようでした。[^curl]
+:::
 
 [^curl]: [cURL コマンドの例](https://learn.microsoft.com/ja-jp/azure/ai-services/openai/use-your-data-quickstart?tabs=command-line&pivots=rest-api#example-curl-commands)
 
@@ -300,7 +304,9 @@ REST APIによるリクエストのレスポンス例を見ると実際のhttp�
 
 今回は独自のデータに基づいてAzure OpenAIに質問する方法を試してみました。
 
-実際にPDFの内容に基づいた回答をできたかなと思います。データの準備が面倒くさいなという印象ですがシステム化はできそうなので今後何かで使えるかもしれないです。
+実際にPDFの内容に基づいた回答をできたかなと思います。ローカルにあるファイルについて質問に答えてくれるチャットボットとして考えると、それは本家のChatGPTでは現状できないことなのでこの機能は便利だなと思いました。
+データの準備が面倒くさいなという印象ですがPDFのテキスト変換からACS取り込みまでは一気にスクリプト実行して手間を省けそうです。
+
 
 インデックスの作成には今回行った方法の他にAzure Blob上のデータを一気にインデックス化してくれる方法や[^dataoption]、検索の方式にはセマンティック検索やベクター検索という方式なども使えるようでした[^searchoptin]。 方法によって回答の品質に変化があるのか気になりました。
 

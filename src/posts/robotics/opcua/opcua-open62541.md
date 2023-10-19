@@ -31,16 +31,15 @@ tag: [iot, opcua]
 - Python3
 - UaExpert
     - OPC-UAクライアントツール
+
 :::
 
 
 ## Visual Studioソリューションの作成
 Visual Stdioソリューションを作成し，プロジェクトを作成するための準備を行います。
 
-
-
-
 Visual Studioを起動し，「新しいプロジェクトを作成する」を選択します。
+
 プロジェクトテンプレートでは，「空のソリューション」を選択します。
 
 ![aaa](/img/robotics/opcua/open62541/visualstudio_startup.PNG)   ![bbb](/img/robotics/opcua/open62541/visualstudio_create_void_solution.PNG)
@@ -58,8 +57,11 @@ Visual Studioを起動し，「新しいプロジェクトを作成する」を�
 `C:\Mamezou\open62541_ws\open62541_ws.sln` が生成されました。
 
 :::info
+
 以降では，`C:\Mamezou\open62541_ws`をソリューションディレクトリと呼ぶこととします。
+
 本記事と異なるディレクトリとした場合は，適宜読み替えてください。
+
 :::
 
 以上でソリューションの作成は完了です。
@@ -93,6 +95,7 @@ $ cmake -S . -B build_VS2022 -G "Visual Studio 17 2022" -DUA_ENABLE_PUBSUB=ON -D
 ```
 
 :::info: CMake時に付与したオプション詳細
+
 CMake時に付与できるオプションは，`cmake-gui`コマンドにて確認できます。
 下記以外の詳細については，Open62541のドキュメント内の「3.2 Build Options」を参照してください。
 
@@ -121,9 +124,9 @@ $ cmake --install build_VS2022 --prefix ../..
 ソリューションディレクトリ内に「bin」「include」「lib」「share」フォルダが生成されます。
 また，「bin」フォルダ内に「open62541.dll」が，「lib」フォルダ内に「open62541.lib」が生成されています。
 
+以上でopen62541のインストールが完了しました。
 
-
-# サンプルプログラムの実行
+# プロジェクトの作成と設定
 ## プロジェクトの新規作成
 Visual Studioを開き，「open62541_ws」ソリューションを開きます。
 左上のタブから「ファイル」→「新規作成」→「プロジェクト」を選択します。
@@ -148,27 +151,149 @@ C++の「コンソールアプリ」を選択します。
 
 
 ## プロジェクトの設定
-Visual Studioでの開発を行うために，プロジェクトの設定を行います。
+Visual Studioでの開発を行いやすくするために，プロジェクトの設定を行います。
 ソリューションエクスプローラー内の「SimpleServer」を右クリックし，プロパティを選択します。
+
 この画面でプロジェクトの設定を行います。
 
 ![](/img/robotics/opcua/open62541/visualstudio_project_property.png)
 
+
 SimpleServerプロパティページの上部にある「構成」を「すべての構成」に設定します。
+
 ![](/img/robotics/opcua/open62541/visualstudio_project_property1.png)
 
 
 ### インクルード設定
+左側の「構成プロパティ」欄から
 
-### ライブラリ設定
+「構成プロパティ」→「C/C++」→「全般」
+
+を選択します。
+
+右側の欄にある「追加のインクルードディレクトリ」に
+
+```
+$(SolutionDir)include
+```
+
+と設定します。
+
+設定したら、画面右下の「適用」をクリックしましょう。
+
+![プロジェクトインクルード設定](/img/robotics/opcua/open62541/visualstudio_project_include_setting.PNG)
+
+
+:::info: Visual Studioで使用可能なマクロについて
+
+[ToDo]使用可能なマクロについて述べる
+
+| マクロ名 | 説明 |
+| ---- | ---- |
+| SolutionDir | |
+| SolutionName | |
+| ProjectDir | |
+| ProjectName | |
+| Configuration | |
+
+![参考リンク](https://learn.microsoft.com/ja-jp/cpp/build/reference/common-macros-for-build-commands-and-properties?view=msvc-170)
+
+:::
+
+
+### ライブラリディレクトリの設定
+左側の欄から
+
+「構成プロパティ」→「リンカ―」→「全般」
+
+を選択する
+
+右側の「追加のライブラリディレクトリ」に
+
+```
+$(SolutionDir)lib
+```
+と設定する。
+
+設定したら、「適用」をクリックしましょう。
+
+![プロジェクト ライブラリディレクトリ設定](/img/robotics/opcua/open62541/visualstudio_project_library_directory_setting.PNG)
+
+
+### 依存ファイル設定
+左側の欄から
+
+「構成プロパティ」→「リンカ―」→「入力」
+
+を選択する
+
+右側の「追加の依存ファイル」に
+
+```
+$(SolutionDir)lib\open62541.lib
+```
+を追記する。
+ここで、設定値のセパレータはセミコロンです。
+
+設定したら、「適用」をクリックしましょう。
+
+![プロジェクト_依存ファイル設定](/img/robotics/opcua/open62541/visualstudio_project_dependent_file_setting.PNG)
+
+
 
 ### 出力ディレクトリ設定
+左側の欄から
+
+「構成プロパティ」→「全般」
+
+を選択する。
+
+右側の「出力ディレクトリ」の横に表示される
+三角形のアイコンをクリックし、「編集...」ボタンをクリックして編集画面を開く。
+
+![プロジェクト_出力ディレクトリ設定](/img/robotics/opcua/open62541/visualstudio_project_outputdirectory_setting.PNG)
+
+
+
+編集画面にて、下記のように設定する。
+
+```
+$(SolutionDir)bin\$(ProjectName)\$(Configuration)\
+```
+
+設定したら、「適用」をクリックしましょう。
+
 
 ### dllファイルコピー設定
+プログラムをビルドした後に実行する場合、アプリケーションの既往時にopeb62541.dllをリンクする必要があります。
+
+ここでは、ビルド後にdllファイルをexeファイルに自動的にコピーするように設定します。
+
+
+左側の欄から
+
+「構成プロパティ」→「ビルドイベント」→「ビルド後のイベント」
+
+を選択する。
+
+右側の「コマンドライン」に下記の2行を入力する
+
+```
+robocopy $(SolutionDir)bin\ $(TargetDir) open62541.dll
+IF %ERRORLEVEL% LSS 8 EXIT 0
+```
+
+![プロジェクト_ビルド後のイベント](/img/robotics/opcua/open62541/visualstudio_post_build_event_setting.PNG)
+
+
+設定出来たら、OKボタンをクリックしてプロパティ画面を閉じます。
+
+以上がプロジェクトの設定となります。
+
 
 
 ## サンプルプログラムの実装
-「https://github.com/open62541/open62541/tree/v1.3.8/examples」内のtutorial_server_variable.cを参考にする
+[https://github.com/open62541/open62541/tree/v1.3.8/examples]内のtutorial_server_variable.cを参考にする
 
 
 ## 動作確認

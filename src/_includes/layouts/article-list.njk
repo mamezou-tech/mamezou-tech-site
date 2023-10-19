@@ -14,7 +14,6 @@ layout: layouts/page.njk
 
 {{ comp.Pagination({ pages: pages, hrefs: hrefs, current: url}) | safe }}
 
-{% set postslist = results %}
-{% include "posts-list.njk" %}
+{{ comp.PostList({ postsList: results}) | safe }}
 
 {{ comp.Pagination({ pages: pages, hrefs: hrefs, current: url}) | safe }}

@@ -1,5 +1,4 @@
 ---
-description:
 layout: layouts/base.njk
 ---
 
@@ -106,7 +105,7 @@ layout: layouts/base.njk
   </div>
 </header>
 <main class="tdbc-container">
-{%- include "mameyose.njk" %}
+  {{ comp.MlWithEngineering() | safe }}
   <div class="tdbc-section">
     <ul class="tdbc-column-container">
       {%- for page in search.pages('pages exclude!=true') -%}

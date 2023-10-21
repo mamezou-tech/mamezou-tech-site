@@ -4,7 +4,7 @@ import { Search } from 'lume/plugins/search.ts';
 export default ({ search }: { search: Search }, filters: Record<string, Helper>) => {
   const validTags: string[] = filters.validTags(search.tags());
   const makeHeadTagLinks = () => {
-    const links = (validTags as string[])
+    const links = validTags
       .slice(0, 50)
       .map(tag => (<>
           <a key={tag}

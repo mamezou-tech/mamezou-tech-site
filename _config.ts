@@ -32,6 +32,7 @@ import "./prism-deps.ts";
 import { head } from "./lume/filters/head.ts";
 import { makeAuthorArticles } from "./src/generators/articles_by_author.ts";
 import { makeScopeUpdate } from "./lume/scope_updates.ts";
+import meta from "./src/_data/meta.ts";
 
 const markdown: Partial<PluginOptions["markdown"]> = {
   options: {
@@ -72,6 +73,7 @@ const site = lume({
     open: false,
     port: 8080,
   },
+  location: new URL(meta.url),
 }, { markdown });
 
 site.use(jsx());
@@ -204,7 +206,7 @@ site.helper(
   { type: "tag" },
 );
 
-// for fast update for markdown
+// fast update for markdown
 if (!Deno.env.has("MZ_DEBUG")) {
   site.scopedUpdates(...makeScopeUpdate("src"));
 }

@@ -101,7 +101,7 @@ layout: layouts/base.njk
         render({url: '{{ meta.url }}', path: '{{ page.data.url }}'}, document.getElementById("preact-sns"));
       </script>
     </div>
-    {{ comp.GoogleSearch() | safe }}
+    <div id="search"></div>
   </div>
 </header>
 <main class="tdbc-container">

@@ -22,10 +22,10 @@ export default ({ search }: { search: Search }, filters: Record<string, Helper>)
       </span>));
   };
   return <>
-    <span key="head" id="head-tags">
+    <span id="head-tags">
       {makeHeadTagLinks()}
     </span>
-    <span key="all" id="all-tags" style={{ display: 'none' }}>
+    <span id="all-tags" style={{ display: 'none' }}>
       {makeAllTagLinks()}
     </span>
   </>;

@@ -1,0 +1,15 @@
+div#search {
+  max-width: 300px;
+  width: 100%;
+  margin: auto;
+  line-height: 1;
+  background-color: #fff;
+  display: block;
+}
+
+@media (max-width: 480px) {
+  section.top-nav div#search {
+    display: none;
+  }
+}
+

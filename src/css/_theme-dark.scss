@@ -65,15 +65,6 @@ $tdbc-spacing: (
   auto: "auto",
 ) !default;
 
-.gsc-control-cse,.google-search {
-  background-color: tdbc-color("hero") !important;
-  border-color: scale-color(tdbc-color("hero"), $lightness: 30%) !important;
-}
-
-.gsc-input-box {
-  border: none !important;
-}
-
 .flash {
   color: tdbc-color("text") !important;
   background-image: none !important;

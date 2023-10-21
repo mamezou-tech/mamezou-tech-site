@@ -12,6 +12,7 @@ export default ({ search, meta }: {
           &nbsp;|&nbsp;{meta.siteName}
         </a>
       </div>
+      <div id="search" />
       <input id="menu-toggle" type="checkbox" />
       <label className="menu-button-container" htmlFor="menu-toggle">
         <div className="menu-button"></div>

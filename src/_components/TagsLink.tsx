@@ -6,10 +6,9 @@ export default ({ search }: { search: Search }, filters: Record<string, Helper>)
   const makeHeadTagLinks = () => {
     const links = validTags
       .slice(0, 50)
-      .map(tag => (<>
-          <a key={tag}
-             href={filters.url(`/tags/${tag}/`)} className="post-tag">#{tag}</a>{'\n'}
-        </>
+      .map(tag => (<span key={tag}>
+          <a href={filters.url(`/tags/${tag}/`)} className="post-tag">#{tag}</a>{'\n'}
+        </span>
       ));
     links.push(<a key="all-tags-link" id="show-all-tags" href="#">...(全てのタグを表示)</a>
     );
@@ -18,16 +17,15 @@ export default ({ search }: { search: Search }, filters: Record<string, Helper>)
 
   const makeAllTagLinks = () => {
     return validTags
-      .map(tag => (<>
-        <a key={tag}
-           href={filters.url(`/tags/${tag}/`)} className="post-tag">#{tag}</a>{'\n'}
-      </>));
+      .map(tag => (<span key={tag}>
+        <a href={filters.url(`/tags/${tag}/`)} className="post-tag">#{tag}</a>{'\n'}
+      </span>));
   };
   return <>
-    <span id="head-tags">
+    <span key="head" id="head-tags">
       {makeHeadTagLinks()}
     </span>
-    <span id="all-tags" style={{ display: 'none' }}>
+    <span key="all" id="all-tags" style={{ display: 'none' }}>
       {makeAllTagLinks()}
     </span>
   </>;

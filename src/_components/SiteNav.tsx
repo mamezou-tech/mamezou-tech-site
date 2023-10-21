@@ -12,14 +12,19 @@ export default ({ search, meta }: {
           &nbsp;|&nbsp;{meta.siteName}
         </a>
       </div>
-      <input id="menu-toggle" type="checkbox" />
-      <label className="menu-button-container" htmlFor="menu-toggle">
-        <div className="menu-button"></div>
-      </label>
-      <ul className="menu">
-        {search.pages('pages exclude!=true').map((page) => <li key={page?.data.url}><a
-          href={page?.data.url}>{page?.data.title}</a></li>)}
-      </ul>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div id="search" style={{ marginRight: '1rem' }} />
+        <div>
+          <input id="menu-toggle" type="checkbox" />
+          <label className="menu-button-container" htmlFor="menu-toggle">
+            <div className="menu-button"></div>
+          </label>
+          <ul className="menu">
+            {search.pages('pages exclude!=true').map((page) => <li key={page?.data.url}><a
+              href={page?.data.url}>{page?.data.title}</a></li>)}
+          </ul>
+        </div>
+      </div>
     </section>
   </nav>
 )

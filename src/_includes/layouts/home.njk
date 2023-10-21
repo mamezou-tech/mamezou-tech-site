@@ -125,7 +125,7 @@ layout: layouts/base.njk
   <div>
     <fieldset class="tags">
       <legend>記事のタグから検索</legend>
-      {%- include "tags-links.njk" %}
+      {{ comp.TagsLink() | safe }}
     </fieldset>
   </div>
   <p style="font-size:1rem;margin:1rem;">本サイトは本家の豆蔵ホームページではありません。会社概要、製品紹介等は<a class="new-tab-link" target="_blank" rel="noreferrer noopener" style="text-decoration:underline" href="https://www.mamezou.com/">こちら</a>、

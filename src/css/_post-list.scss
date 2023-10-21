@@ -16,11 +16,10 @@
   margin-top: 1rem;
   font-size: $text-sm;
   margin-bottom: 1rem;
-  & > * {
+  word-break: break-word;
+  a {
     margin-right: 1rem;
     margin-top: 0.5rem;
-  }
-  a {
     color: tdbc-color("tag");
     text-decoration: none;
   }

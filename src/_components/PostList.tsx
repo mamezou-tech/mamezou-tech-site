@@ -9,7 +9,7 @@ export default ({ postsList, search }: { postsList: Page[], search: Search }, fi
     for (const tag of post.data.tags || []) {
       if (validTags.includes(tag)) {
         const tagUrl = `/tags/${tag}/`;
-        tags.push(<a href={filters.url(tagUrl)}>#{tag}</a>);
+        tags.push(<a key={tag} href={filters.url(tagUrl)}>#{tag}</a>);
       }
     }
     return tags;
@@ -19,7 +19,7 @@ export default ({ postsList, search }: { postsList: Page[], search: Search }, fi
     <section className="post-list__wrapper">
       <ul className="post-list">
         {postsList.map(post => (
-          <li className="post-list__item">
+          <li key={post.data.url} className="post-list__item">
             <div>
               <div className="post-list__meta">
                 <time dateTime="{{ post.data.date | htmlDateString }}">

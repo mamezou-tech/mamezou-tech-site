@@ -9,7 +9,7 @@
   },
   "importMap": "import_map.json",
   "fmt": {
-    "exclude": ["src/"],
-    "include": ["lume/**/*.ts", "_config.ts", "src/components/preact/**/*.ts", "lint.ts"]
+    "exclude": ["src/pages", "src/posts", "src/css", "src/events", "src/img"],
+    "include": ["lume/**/*.ts", "_config.ts", "src/**/*.ts", "src/**/*.tsx", "lint.ts"]
   }
 }

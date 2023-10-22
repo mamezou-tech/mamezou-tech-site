@@ -86,13 +86,11 @@ site.use(sitemap({
 }));
 site.use(codeClipboard());
 site.use(esbuild({
-  extensions: [".tsx", ".jsx", ".js", ".ts"],
+  extensions: [".js", ".ts"],
   options: {
     sourcemap: true,
     keepNames: true,
-    minify: false,
-    minifyIdentifiers: false,
-    minifySyntax: false,
+    minify: true,
   },
 }));
 

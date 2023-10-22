@@ -1,29 +1,29 @@
-import htm from 'npm:htm@^3.1.1';
-import { h, render as preactRender } from 'npm:preact@^10.18.1';
-import { useRef, useEffect } from 'npm:preact@^10.18.1/hooks';
+import htm from "npm:htm@^3.1.1";
+import { h, render as preactRender } from "npm:preact@^10.18.1";
+import { useEffect, useRef } from "npm:preact@^10.18.1/hooks";
 
 const html = htm.bind(h);
 
-function App({ url, path }: { url: string, path: string }) {
+function App({ url, path }: { url: string; path: string }) {
   const followList = useRef<HTMLElement>(null!);
 
   useEffect(() => {
     // Twitter Follow
-    const twitterFollow = document.createElement('script');
+    const twitterFollow = document.createElement("script");
     twitterFollow.async = true;
     twitterFollow.defer = true;
-    twitterFollow.src = 'https://platform.twitter.com/widgets.js';
-    twitterFollow.charset = 'utf-8';
+    twitterFollow.src = "https://platform.twitter.com/widgets.js";
+    twitterFollow.charset = "utf-8";
     followList.current.appendChild(twitterFollow);
     // Facebook Share
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.async = true;
     script.defer = true;
-    script.crossOrigin = 'anonymous';
+    script.crossOrigin = "anonymous";
     script.src =
-      'https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v13.0&appId=625393465273959&autoLogAppEvents=1';
-    script.nonce = 'r6ZSti4e';
-    const fbroot = document.querySelector('#fb-root'); // first element of body
+      "https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v13.0&appId=625393465273959&autoLogAppEvents=1";
+    script.nonce = "r6ZSti4e";
+    const fbroot = document.querySelector("#fb-root"); // first element of body
     fbroot?.after(script);
   });
 
@@ -78,7 +78,13 @@ function App({ url, path }: { url: string, path: string }) {
     </div>`;
 }
 
-export function render({ url, path }: { url: string, path: string }, el: HTMLElement) {
-  return preactRender(html`
-    <${App} url="${url}" path="${path}" />`, el);
+export function render(
+  { url, path }: { url: string; path: string },
+  el: HTMLElement,
+) {
+  return preactRender(
+    html`
+    <${App} url="${url}" path="${path}" />`,
+    el,
+  );
 }

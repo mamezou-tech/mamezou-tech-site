@@ -1,10 +1,10 @@
-import { Page } from 'lume/core/filesystem.ts';
-import { PaginateResult } from 'lume/plugins/paginate.ts';
+import { Page } from "lume/core/filesystem.ts";
+import { PaginateResult } from "lume/plugins/paginate.ts";
 
 interface Props {
-  pages: PaginateResult<Page>[],
-  hrefs: string[],
-  current: string
+  pages: PaginateResult<Page>[];
+  hrefs: string[];
+  current: string;
 }
 
 export default ({ pages, hrefs, current }: Props) => {
@@ -20,4 +20,4 @@ export default ({ pages, hrefs, current }: Props) => {
       })}
     </nav>
   );
-}
+};

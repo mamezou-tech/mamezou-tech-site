@@ -1,7 +1,7 @@
-import { useEffect, useState, useRef } from 'npm:preact@^10.11.0/hooks';
+import { useEffect, useRef, useState } from "npm:preact@^10.11.0/hooks";
 
 export function useHeadsObserver() {
-  const [activeId, setActiveId] = useState('');
+  const [activeId, setActiveId] = useState("");
   const observer = useRef<IntersectionObserver>();
 
   useEffect(() => {
@@ -11,7 +11,7 @@ export function useHeadsObserver() {
       }
 
       // intersectしているヘッダーがあれば、目次内のそのヘッダーをハイライト対象とする。
-      const entry = entries.find(entry => entry.isIntersecting);
+      const entry = entries.find((entry) => entry.isIntersecting);
       let activeId = entry?.target.id;
 
       // FIXME もっとスマートな方針ありそう
@@ -22,7 +22,10 @@ export function useHeadsObserver() {
       // 2. viewport内にいずれのヘッダーも見えていない場合、上方向にスクロールした場合に現れる（＝現時点では隠れている）最も近いヘッダーをハイライト対象とする。
       if (!activeId) {
         const activeEntry = [...entries].reduce((v1, v2) => {
-          return Math.abs(v1?.boundingClientRect.top) < Math.abs(v2?.boundingClientRect.top) ? v1 : v2;
+          return Math.abs(v1?.boundingClientRect.top) <
+              Math.abs(v2?.boundingClientRect.top)
+            ? v1
+            : v2;
         });
         activeId = activeEntry?.target.id;
       }
@@ -31,9 +34,11 @@ export function useHeadsObserver() {
     };
 
     // viewportの上部5%の領域と監視対象のヘッダーがintersectしたらコールバック処理
-    observer.current = new IntersectionObserver(handleObserver, { rootMargin: '0% 0% -95% 0%' });
+    observer.current = new IntersectionObserver(handleObserver, {
+      rootMargin: "0% 0% -95% 0%",
+    });
 
-    const elements = document.querySelectorAll('h1, h2');
+    const elements = document.querySelectorAll("h1, h2");
     Array.from(elements).slice(1).forEach((elem) => {
       observer.current?.observe(elem);
     });

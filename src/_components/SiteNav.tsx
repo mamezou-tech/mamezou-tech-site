@@ -1,8 +1,8 @@
-import { Search } from 'lume/plugins/search.ts';
+import { Search } from "lume/plugins/search.ts";
 
 export default ({ search, meta }: {
-  search: Search,
-  meta: Record<string, any>
+  search: Search;
+  meta: Record<string, any>;
 }) => (
   <nav aria-labelledby="tdbc-siteid" className="tdbc-sitenav">
     <section className="top-nav">
@@ -12,19 +12,26 @@ export default ({ search, meta }: {
           &nbsp;|&nbsp;{meta.siteName}
         </a>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <div id="search" style={{ marginRight: '1rem' }} />
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div id="search" style={{ marginRight: "1rem" }} />
         <div>
           <input id="menu-toggle" type="checkbox" />
           <label className="menu-button-container" htmlFor="menu-toggle">
             <div className="menu-button"></div>
           </label>
           <ul className="menu">
-            {search.pages('pages exclude!=true').map((page) => <li key={page?.data.url}><a
-              href={page?.data.url}>{page?.data.title}</a></li>)}
+            {search.pages("pages exclude!=true").map((page) => (
+              <li key={page?.data.url}>
+                <a
+                  href={page?.data.url}
+                >
+                  {page?.data.title}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
     </section>
   </nav>
-)
+);

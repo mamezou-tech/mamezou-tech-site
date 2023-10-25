@@ -5,6 +5,7 @@
     "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
     "build": "deno task lume",
     "serve": "deno task lume --serve --quiet",
+    "serve:debug": "MZ_DEBUG=1 deno task serve",
     "lint": "deno run -A --lock deno-lint.lock lint.ts"
   },
   "importMap": "import_map.json",

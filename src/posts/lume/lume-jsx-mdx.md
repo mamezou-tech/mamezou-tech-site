@@ -3,9 +3,10 @@ title: Lume入門(第2回) - テンプレートエンジンとしてJSXとMDXを
 author: noboru-kudo
 date: 2023-10-13
 prevPage: ./src/posts/lume/lume-intro.md
+nextPage: ./src/posts/lume/lume-search.md
 ---
 
-[前回](/lume/lume-intro)はLumeの基本的な使い方を見てきました。
+[前回](/lume/lume-intro/)はLumeの基本的な使い方を見てきました。
 
 ここではテンプレート言語として、ビルトインで使えるマークダウンとMozillaのNunjucksを使いました。
 ただ、マークダウンとは違い、Nunjucksはあまり世の中に浸透しているとは言えず(たいしたことはないですが)学習コストも発生します。

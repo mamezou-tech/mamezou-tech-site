@@ -6,16 +6,16 @@ tags: [AWS, CI/CD]
 ---
 
 ## はじめに
-リポジトリへのpushをトリガーとして動作するパイプラインは広く利用されていると思います。
-pushトリガーで起動するのは実行頻度として高すぎるアクションをそのまま実行しているパイプランも多く存在します。
+リポジトリへのプッシュをトリガーとして動作するパイプラインは広く利用されています。
+プッシュトリガーで起動するのでは実行頻度として高すぎるアクションをそのまま実行しているパイプランも多く存在します。
 定期的に実行されるパイプラインは、より良いCI/CD環境を構築・運用するために、今後必要性が注目さていくと感じております。
-本記事では、[Amazon EventBridge Scheduler](https://docs.aws.amazon.com/ja_jp/eventbridge/latest/userguide/scheduler.html)と[CodePipeline](https://aws.amazon.com/jp/codepipeline/) 
-を利用して、定期的に実行されるパイプラインを[AWS CDK](https://docs.aws.amazon.com/ja_jp/cdk/v2/guide/home.html)で構築する方法を説明させていただきます。
+本記事では、[Amazon EventBridge Scheduler](https://docs.aws.amazon.com/ja_jp/eventbridge/latest/userguide/scheduler.html)と[CodePipeline](https://aws.amazon.com/jp/codepipeline/)を利用して、定期的に実行されるパイプラインを[AWS CDK](https://docs.aws.amazon.com/ja_jp/cdk/v2/guide/home.html)で構築する方法を説明させていただきます。
 
 
 ## 環境構築
-今回は、CDKで利用する言語はTypeScriptを利用するので、Node.jsがインストールされている環境を想定しています。
+今回は、TypeScriptでCDKを利用していますので、Node.jsがインストールされている環境を前提としています。
 
+### CDKのインストール
 CDKをインストールします。
 ```shell
 npm install -g aws-cdk
@@ -24,20 +24,27 @@ CDKのバージョンを確認します。
 ```shell
 cdk --version
 ```
-執筆時点で利用したバージョンは2.96.2となりますので、バージョン非互換で動作しない場合は、2.96.2をインストールしてください。
+執筆時点で利用したバージョンは2.103.1です。バージョン非互換で動作しない場合は、2.103.1をインストールしてください。
+
+### CodeCommitリポジトリの作成
+作成するパイプラインに連関付けるリポジトリを作成します。
+```shell
+aws codecommit create-repository --repository-name ScheduledPipelineSourceRepo
+```
+デフォルトブランチ(main)に何らかのファイルを登録してください。登録していない場合、パイプラインのソースアクションが失敗します。
 
 ### CDKプロジェクトの作成
-
 プロジェクトを格納するディレクトリを作成し``cdk init``コマンドを実行します。
 ```shell
 mkdir scheduled-pipeline && cd scheduled-pipeline
 cdk init sample-app --language typescript
 ```
 
-## 実装
+## スタックの実装
+定期的に起動するパイプラインのサンプル実装ですので、内部処理は不要ですが、CDKでパイプラインを構築するためのサンプルとしても利用可能な事を目指し、アーティファクトの出力と参照処理を実装しております。
 ### ./lib/scheduled-pipeline-stack.tsに処理を実装
-
 scheduled-pipeline-stack.tsを以下のように書き換えてください。
+各処理の詳細は後ほど説明させていただきます。
 ```typescript
 import {Fn, Stack, StackProps} from 'aws-cdk-lib';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
@@ -56,9 +63,6 @@ export class ScheduledCodePipelineStack extends Stack {
         const pipeline = this.createPipeline();
         const pipeLineExecutionRole = this.createPipeLineExecutionRole(pipeline.pipelineArn);
         this.createSchedule(pipeline.pipelineArn, pipeLineExecutionRole.roleArn);
-
-        const pipeLineExecutionRoleArn = Fn.importValue("pipeLineExecutionRoleArn")
-        console.log(`pipeLineExecutionRoleArn:${pipeLineExecutionRoleArn}`);
     }
 
     private createPipeline(): Pipeline {
@@ -67,7 +71,7 @@ export class ScheduledCodePipelineStack extends Stack {
             crossAccountKeys: false
         });
 
-        // パイプラインに関連付けるリポジトリを宣言、ScheduledPipelineSourceRepoは既に作成されているリポジトリ
+        // パイプラインに連関付けるリポジトリを宣言、ScheduledPipelineSourceRepoは既に作成されているリポジトリ
         const sourceRepo = codecommit.Repository.fromRepositoryName(this, 'ScheduledPipelineSourceRepo', 'ScheduledPipelineSourceRepo') as codecommit.Repository;
         // パイプラインのソースアクションで取得したリポジトリの中身を格納するアーティファクトを定義
         const sourceOutput = new codepipeline.Artifact();
@@ -199,7 +203,7 @@ export class ScheduledCodePipelineStack extends Stack {
 #### 作成するパイプラインの概要
 Source、Build、Deployのステージを持つパイプラインとなります。
 ![パイプラインの画像](/img/blogs/2023/1030_aws-scheduled-pipeline-1.png)
-#### パイプラインの作成
+#### パイプラインの作成処理
 名前がscheduledPipeLineのパイプラインを定義します。
 ```typescript
         const pipeline = new codepipeline.Pipeline(this, 'scheduledPipeLine', {
@@ -210,10 +214,10 @@ Source、Build、Deployのステージを持つパイプラインとなります
 ``crossAccountKeys: false``は、パイプラインのアーティファクトを格納するS3のサーバサイド暗号化キーを「AWS マネージドキー」に変更する設定です。
 crossAccountKeysを明示的に指定しない場合は、「カスタマーマネージドキー」が自動的に作成され、1カ月はスタックが削除できなくなります。詳細は[「カスタマーマネージドキーの削除待機期間について」](https://docs.aws.amazon.com/ja_jp/kms/latest/developerguide/deleting-keys.html#deleting-keys-how-it-works)を参照ください。
 
-カスタマーキーと AWS キーの詳細については[カスタマーキーと AWS キー](https://docs.aws.amazon.com/ja_jp/kms/latest/developerguide/concepts.html#key-mgmt)
+「カスタマーマネージドキー」と 「AWS マネージドキー」の詳細については、[カスタマーキーと AWS キー](https://docs.aws.amazon.com/ja_jp/kms/latest/developerguide/concepts.html#key-mgmt)を参照ください。
 
-#### パイプラインのソースアクションの設定
-パイプラインですので、インプットとなるソース(リポジトリ)の設定します。
+#### パイプラインのSourceステージの設定
+パイプラインですので、インプットとなるソース(リポジトリ)の設定が必要です。
 CodeCommitの作成済みのリポジトリScheduledPipelineSourceRepoをソースとして設定します。
 
 ```typescript
@@ -238,12 +242,11 @@ CodeCommitの作成済みのリポジトリScheduledPipelineSourceRepoをソー�
         });
 ```
 
-一般的なパイプラインは、リポジトリへのプッシュをトリガーとして起動するので、CDKでパイプラインを作成すると、自動的にトリガーが有効になります。
-今回は[「Amazon EventBridge Scheduler」](https://docs.aws.amazon.com/ja_jp/eventbridge/latest/userguide/scheduler.html)からのみ起動したいので、
-Sourceステージのactionsの``trigger: codepipeline_actions.CodeCommitTrigger.NONE,``をセットしています。
+一般的なパイプラインは、リポジトリへのプッシュをトリガーとして起動するので、CDKでパイプラインを作成すると自動的にトリガーが有効になります。
+今回は[Amazon EventBridge Scheduler](https://docs.aws.amazon.com/ja_jp/eventbridge/latest/userguide/scheduler.html)からのみ起動したいので、Sourceステージのactionsで``trigger: codepipeline_actions.CodeCommitTrigger.NONE``をセットしています。
 
 #### パイプラインのBuildステージの設定
-今回は、「Amazon EventBridge Scheduler」から起動するパイプラインのサンプルとなりますので、echoで実行時刻を標準出力に出力し、仮想ビルド成果物を``$CODEBUILD_SRC_DIR/output``に出力する処理としております。
+echoで実行時刻を標準出力に出力し、仮想的なビルド成果物を``$CODEBUILD_SRC_DIR/output``に出力しています。
 ```typescript
         // パイプラインのBuildステージで実行するCodeBuildのプロジェクトを定義
         const buildProject = new codebuild.PipelineProject(this, `BuildSampleProject`, {
@@ -267,7 +270,7 @@ Sourceステージのactionsの``trigger: codepipeline_actions.CodeCommitTrigger
         });
         
 ```
-このbuildProjectをパイプラインのBuildステージとして追加するのが以下のコードとなります。
+buildProjectをパイプラインのBuildステージに追加するのが以下のコードとなります。
 ```typescript
         // buildProjectをパイプラインに紐づける
         pipeline.addStage({
@@ -302,7 +305,7 @@ Deploy処理は、echoで実行時刻を標準出力に出力し、CodeBuildActi
             })
         });
 ```
-このbuildProjectをパイプラインのDeployステージとして追加するのが以下のコードとなります。
+deployProjectをパイプラインのDeployステージに追加するのが以下のコードとなります。
 ```typescript
         // deployProjectをパイプラインに紐づける
         pipeline.addStage({
@@ -321,7 +324,7 @@ Deploy処理は、echoで実行時刻を標準出力に出力し、CodeBuildActi
 
 
 buildProjectの実行ログは以下のようになります。
-ScheduledPipelineSourceRepoのルートに「リポジトリに登録されているファイル.txt」が登録されている状態で動作した時のログとなります。
+ScheduledPipelineSourceRepoのデフォルトブランチのルートに「リポジトリに登録されているファイル.txt」が登録されている状態で動作した時のログとなります。
 
 ```
 [Container] 2023/10/27 08:18:21.554852 Running command echo BuildSampleProject started on `date "+%Y/%m/%d %H:%M:%S"`
@@ -359,12 +362,12 @@ artifacts: {
     'files': '**/*'
 }
 ```
-と指定しているので、カレントディレクトリには``'touch $CODEBUILD_SRC_DIR/output/result_file_`date "+%Y_%m_%d_%H_%M_%S"`.txt'``で作成されたファイルのみが含まれます。
+と指定しているので、deployProject動作時のカレントディレクトリには``'touch $CODEBUILD_SRC_DIR/output/result_file_`date "+%Y_%m_%d_%H_%M_%S"`.txt'``で作成されたファイルのみが含まれます。
 
 ### パイプラインを起動するロールの作成
-[「Amazon EventBridge Scheduler」](https://docs.aws.amazon.com/ja_jp/eventbridge/latest/userguide/scheduler.html)で何らかの処理を起動する場合は、起動用のロールが必要となります。
+[Amazon EventBridge Scheduler](https://docs.aws.amazon.com/ja_jp/eventbridge/latest/userguide/scheduler.html)で何らかの処理を起動する場合は、起動用のロールが必要となります。
 
-ロールとしての要件は、「Amazon EventBridge Scheduler」から作成したパイプラインを起動できる権限を有する事となります。
+作成するロールの要件は、Amazon EventBridge Schedulerから、作成したパイプラインを起動できる権限を有する事となります。
 
 AWSのロールの定義の具体的なイメージで表現すると、``ServicePrincipal:'scheduler.amazonaws.com'``から作成したパイプラインに対して``codepipeline:StartPipelineExecution``アクションを実行可能となります。
 
@@ -409,28 +412,24 @@ private createSchedule(pipelineArn: string, pipeLineExecutionRoleArn: string) {
 }
 ```
 scheduleExpression以外の説明はコード内のコメントで十分と思います。
-scheduleExpressionには、「特定の時間に実行」もしくは、「一定の間隔で実行」を指定可能です。
+scheduleExpressionには、「特定の時間に実行」もしくは、「一定の間隔で実行」を意味する文字列が指定可能です。
+scheduleExpressionに指定する値の詳細は、[スケジュールに従って実行する Amazon EventBridge ルールの作成スケジュール スケジュールパターンを定義するには](https://docs.aws.amazon.com/ja_jp/eventbridge/latest/userguide/eb-create-rule-schedule.html#eb-create-scheduled-rule-schedule)を参照ください。
 
-### AWSにデプロイ
+### デプロイ
 
+以下のコマンドを実行し、AWSにデプロイします。
 ```shell
 cdk bootstrap
 cdk deploy
 ```
-```cdk bootstrap``は、CDKがデプロイのために使用するS3バケットなどを作成するコマンドです。対象アカウント、対象リージョン毎に1回だけ実行する必要があります。
-cdk deploy実行は3分ぐらいの時間を要します。
+``cdk bootstrap``コマンドは、CDKがデプロイ時に使用するS3バケットなどを作成するコマンドです。
+対象アカウント、対象リージョン毎に1回だけ実行する必要があります。
+``cdk deploy``コマンドの実行にはおよそ3分の時間を要します。
 
 ### AWS マネジメントコンソールの表示イメージ
 
-実際に登録されたスケジュールのAWSコンソールでの表示は以下のようになります。
+実際に登録されたスケジュールは以下のようになります。
 ![スケジュール詳細](/img/blogs/2023/1030_aws-scheduled-pipeline-2.png)
 
-scheduleExpressionに指定する値の詳細は、[スケジュールに従って実行する Amazon EventBridge ルールの作成スケジュール スケジュールパターンを定義するには](https://docs.aws.amazon.com/ja_jp/eventbridge/latest/userguide/eb-create-rule-schedule.html#eb-create-scheduled-rule-schedule)を参照ください。
-
-スケジュールのターゲット設定のAWSコンソールでの表示は以下のようになります。
+スケジュールのターゲット設定は以下のようになります。
 ![スケジュールのターゲット](/img/blogs/2023/1030_aws-scheduled-pipeline-3.png)
-
-
-## まとめ
-定期的に実行されるパイプラインをCDKを用いて構築する方法について説明させていただきました。
-パイプラインの中身も、実際に利用する場面を想定して、3ステージ構成となっておりますので、実際のプロジェクトで利用するテンプレートとして利用いただければ幸いです。

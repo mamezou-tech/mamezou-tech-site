@@ -2,7 +2,7 @@
 title: AWS LambdaでAWS AppConfigのフィーチャーフラグを使う
 author: noboru-kudo
 date: 2023-09-13
-tags: [サーバーレス, lambda, AWS]
+tags: [サーバーレス, lambda, aws-cdk, AWS]
 ---
 
 アプリケーションの機能リリースでフィーチャーフラグ(またはフィーチャートグル)を使うことは結構多いかと思います。

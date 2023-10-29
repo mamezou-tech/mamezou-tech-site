@@ -2,7 +2,7 @@
 title: CDKを利用してAWSで定期的に起動するパイプラインを構築する
 author: fumihiko-kawano
 date: 2023-10-30
-tags: [AWS, CI/CD]
+tags: [AWS, CI/CD, aws-cdk]
 ---
 
 ## はじめに

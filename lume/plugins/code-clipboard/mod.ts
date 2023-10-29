@@ -4,6 +4,7 @@ import * as Token from "markdown-it/lib/token";
 import * as Renderer from "markdown-it/lib/renderer";
 import { RenderRule } from "markdown-it/lib/renderer";
 import Site from "lume/core/site.ts";
+import * as path from "https://deno.land/std@0.204.0/path/mod.ts";
 
 const defaultPluginOptions = {
   clipboardJSVersion: "2.0.11",
@@ -60,7 +61,7 @@ function renderCode(origRule: RenderRule, rendererOptions: RendererOptions) {
 }
 
 async function initClipboardJS(options: PluginOptions) {
-  const __dirname = new URL(".", import.meta.url).pathname;
+  const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
   const decoder = new TextDecoder("utf-8");
   const originSource = await Deno.readFile(`${__dirname}/init-clipboard.js`);
   const script = decoder.decode(originSource).replace(

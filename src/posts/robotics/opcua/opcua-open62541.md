@@ -1,8 +1,8 @@
 ---
-title: Open62541によるOPC-UAサーバ開発
+title: Open62541を使用したOPC-UAサーバ開発
 author: hayato-ota
 date: 2023-10-31
-tag: [iot, opcua]
+tags: [iot, OPC-UA]
 ---
 
 # はじめに
@@ -20,7 +20,7 @@ OPC-UAは，2008年にOPC Foundationから発表され，その後IEC62541とし
 OPC-UAの特徴として下記が挙げられます。
 
 - オープンな規格である点
-    - 特定のベンダー
+    - 特定のベンダーに依存しない
 - 豊富なデータモデルを有している点
     - オブジェクト指向をベースとした情報モデル
     - アドレス空間による表現
@@ -38,8 +38,7 @@ OPC-UAの特徴として下記が挙げられます。
 産業用で使用される通信規格のデファクトスタンダードとなりつつあります。
 
 :::info
-その他の詳細な機能については，OPC Foundationの公式ページをご覧ください。
-https://jp.opcfoundation.org/about/opc-technologies/opc-ua/
+その他の詳細な機能については，OPC Foundationの[公式ページ](https://jp.opcfoundation.org/about/opc-technologies/opc-ua/)をご覧ください。
 :::
 
 ## ロボット開発におけるOPC-UA
@@ -47,21 +46,34 @@ https://jp.opcfoundation.org/about/opc-technologies/opc-ua/
 2019年に発表されたOPC-UAの仕様の1つである「OPC-UA for Robotics」では，
 産業用ロボットとその周辺機器を対象としたインタフェースの共通化を目指すことが記されています。
 
-また，工作機械を対象としたインタフェース規格「umati（**U**niversal **M**achine **T**echnology **I**nterface）」（[※1](https://umati.org/)）でも，OPC-UAが推奨規格として定められています。
+また，工作機械を対象としたインタフェース規格「umati（**U**niversal **M**achine **T**echnology **I**nterface）」[^1]でも，OPC-UAが推奨規格として定められています。
 
-ロボットメーカーの最大手であるFANUC([※2](https://www.fanuc.co.jp/ja/product/new_product/2020/202005_opcua.html))，ABB([※3](https://new.abb.com/products/robotics/ja/%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9/iot-gateway))，安川電機([※4](https://www.e-mechatronics.com/mailmgzn/backnumber/201808/mame.html))，KUKA社([※5](https://www.kuka.com/ja-jp/future-production/industrie-4-0/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%95%E3%82%A1%E3%82%AF%E3%83%88%E3%83%AA%E3%83%BC))でも，産業用ロボットのOPC-UA対応が進められています。
+[^1]: [umati](https://umati.org/)
+
+ロボットメーカーの最大手であるFANUC[^2]，ABB[^3]，安川電機[^4]，KUKA社[^5]でも，産業用ロボットのOPC-UA対応が進められています。
+
+
+[^2]: [ファナックロボットのOPC UA通信対応](https://www.fanuc.co.jp/ja/product/new_product/2020/202005_opcua.html)
+
+[^3]: [IoTゲートウェイを使ったロボット接続 - OPC UAまたはMQTT](https://new.abb.com/products/robotics/ja/%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9/iot-gateway)
+
+[^4]: [データ収集して何をすればいい？データ収集・活用の事例を知りたい！](https://www.e-mechatronics.com/mailmgzn/backnumber/201808/mame.html)
+
+[^5]: [KUKAとともに、デジタルファクトリーへ](https://www.kuka.com/ja-jp/future-production/industrie-4-0/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%95%E3%82%A1%E3%82%AF%E3%83%88%E3%83%AA%E3%83%BC)
+
 
 このように、様々な分野でのインタフェースの統一化に向けた活動においてOPC-UAが推奨されています。
 
 
 ## Open62541とは
 OPC-UA Server/Clientを実装するためのツール群を有するライブラリです。
-C言語にて記述されており，Server/Clientの実装やPublish/Subscribe通信をサポートしています。
+Windows/Linux/VxWorks/QNX/Androidでの動作をサポートしています。
+
+ライブラリはC言語にて記述されており，Server/Clientの実装やPublish/Subscribe通信をサポートしています。
 本記事では，こちらを使用してOPC-UA Serverの実装していきます。
 
 :::info
-詳細な機能についてはOpen62541の[GitHubリポジトリ](https://github.com/open62541/open62541/)，もしくは[公式ドキュメント](https://www.open62541.org/doc/master/toc.html)をご覧ください。
-
+詳細な機能についてはOpen62541の[公式ページ](https://www.open62541.org/)、[GitHubリポジトリ](https://github.com/open62541/open62541/)，もしくは[公式ドキュメント](https://www.open62541.org/doc/master/toc.html)をご覧ください。
 :::
 
 
@@ -78,12 +90,15 @@ C言語にて記述されており，Server/Clientの実装やPublish/Subscribe�
 - Visual Studio
     - 本記事ではVisual Studio 2022 Communityを使用しています
 - OpenSSL
+    - 本記事ではOpenSSL 3.0.7を使用しています
 - CMake
+    - 本記事ではCMake 3.25.0-rc2を使用しています
 - Python3
+    - 本記事ではPython 3.12.0を使用しています
 - UaExpert
     - OPC-UAクライアントツール
-    - インストール時に会員登録が必要です
-    - https://www.unified-automation.com/products/development-tools/uaexpert.html
+    - ダウンロードページは[こちら](https://www.unified-automation.com/products/development-tools/uaexpert.html)
+        - インストール時に会員登録が必要です
 
 
 ## Visual Studioソリューションの作成
@@ -93,7 +108,9 @@ Visual Studioを起動し，「新しいプロジェクトを作成する」を�
 
 プロジェクトテンプレートでは，「空のソリューション」を選択します。
 
-![aaa](/img/robotics/opcua/open62541/visualstudio_startup.PNG)   ![bbb](/img/robotics/opcua/open62541/visualstudio_create_void_solution.PNG)
+![aaa](/img/robotics/opcua/open62541/visualstudio_startup.PNG)
+
+![bbb](/img/robotics/opcua/open62541/visualstudio_create_void_solution.PNG)
 
 任意の場所にソリューションを生成します。
 本記事では下記のように設定しました。
@@ -105,11 +122,11 @@ Visual Studioを起動し，「新しいプロジェクトを作成する」を�
 
 ![](/img/robotics/opcua/open62541/visualstudio_solution_setting.png)
 
-`C:\Mamezou\open62541_ws\open62541_ws.sln` が生成されました。
+「OK」ボタンを押下すると、`C:\Mamezou\open62541_ws\open62541_ws.sln` が生成されます。
 
 :::info
 以降では，`C:\Mamezou\open62541_ws`をソリューションディレクトリと呼ぶことにします。
-本記事と異なるディレクトリを選択した場合は，適宜読み替えてください。
+本記事と異なるディレクトリを選択した場合は適宜読み替えてください。
 :::
 
 以上でソリューションの作成は完了です。
@@ -118,9 +135,10 @@ Visual Studioを起動し，「新しいプロジェクトを作成する」を�
 
 
 ## Open62541のインストール
-ソリューションディレクトリ内に「deps」フォルダを作成します。
-その中にopen62541リポジトリをクローンします。
+ソリューションディレクトリ内に「deps」フォルダを作成し、その中にopen62541リポジトリをクローンします。
+
 バージョンには，2023/10/15時点で最新である「v1.3.8」を指定します。
+
 また，リポジトリ内にサブモジュールも含まれるため，`--recursive`オプションを付与します。
 
 ```shell
@@ -141,9 +159,9 @@ $ cmake -S . -B build_VS2022 -G "Visual Studio 17 2022" -DUA_ENABLE_PUBSUB=ON -D
 :::info: CMake時に付与したオプション詳細
 
 CMake時に付与できるオプションは，`cmake-gui`コマンドにて確認できます。
-下記以外の詳細については，Open62541のドキュメント内の「3.2 Build Options」を参照してください。
+下記以外の詳細については，[Open62541ドキュメント](https://www.open62541.org/documentation/)内の「3.2 Build Options」を参照してください。
 
-| オプション名 | 設定値 | 説明 |
+| オプション名 | 本記事での設定値 | 説明 |
 | ---- | ---- | ---- |
 | BUILD_SHARED_LIBS                         | ON        | 共有ライブラリ（.dll）を生成するか |
 | CMAKE_BUILD_TYPE                          | Release   | ビルドタイプの設定<br>【Debug/Release/MinSizeRel/RelWithDebInfo】|
@@ -336,9 +354,9 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 - 引数に指定した数だけ変数の値に加算するメソッドを持つ
 
 
-C++コードを下記に示します。
+作成したSimpleServer.cpp内に下記のコードを記述します。
 
-```
+```C++
 #include <open62541/plugin/log_stdout.h>
 #include <open62541/server.h>
 #include <open62541/server_config_default.h>
@@ -490,7 +508,7 @@ int main(void) {
 
 ### 変数の登録
 
-```
+```C++
 /// <summary>
 /// OPC-UAサーバに変数を追加する
 /// </summary>
@@ -526,7 +544,7 @@ static void addSampleVariable(UA_Server* server) {
 
 
 ### メソッドの定義
-```
+```C++
 /// <summary>
 /// メソッドのコールバック関数
 /// 変数の値に引数で指定した数だけ加算する
@@ -572,7 +590,7 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
 
 ### メソッドの登録
 
-```
+```C++
 /// <summary>
 /// 新規にメソッド をOPC-UAサーバに追加する
 /// </summary>
@@ -614,7 +632,7 @@ static void addIncreaseVariableMethod(UA_Server* server) {
 
 
 ### メイン関数
-```
+```C++
 /// <summary>
 /// メイン関数
 /// </summary>
@@ -693,6 +711,7 @@ D&Dすると，DataAccessViewにSampleVariableの詳細が表示されます。
 
 :::info
 Value欄内の数字をダブルクリックすると，値を自由に書き換えることができます。
+また、画面右側のAttribute欄でノードの詳細な情報を閲覧できます。
 :::
 
 
@@ -716,7 +735,7 @@ Value欄内の数字をダブルクリックすると，値を自由に書き換
 ![UaExpert_AfterCallMethod](/img/robotics/opcua/open62541/UaExpert_AfterCallMethod.png)
 
 
-# まとめ
+# おわりに
 本記事では下記の事項について説明しました。
 - Open62541のインストール方法
 - Visual Studioでの開発環境構築

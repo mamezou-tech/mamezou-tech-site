@@ -22,7 +22,7 @@ OPC-UAの特徴として下記が挙げられます。
 - オープンな規格である点
     - 特定のベンダー
 - 豊富なデータモデルを有している点
-    - オブジェクト指向をベースとした通信モデル
+    - オブジェクト指向をベースとした情報モデル
     - アドレス空間による表現
 - セキュリティ
     - TLSによるデータ暗号化
@@ -45,13 +45,13 @@ https://jp.opcfoundation.org/about/opc-technologies/opc-ua/
 ## ロボット開発におけるOPC-UA
 産業通信用の規格として策定されたOPC-UAですが，ロボット業界でも注目を浴びています。
 2019年に発表されたOPC-UAの仕様の1つである「OPC-UA for Robotics」では，
-産業用ロボットとその周辺機器を対象としたインタフェースの共通化を目指すことが記されている。
+産業用ロボットとその周辺機器を対象としたインタフェースの共通化を目指すことが記されています。
 
-また，工作機械を対象としたインタフェース規格「umati（**U**niversal **M**achine **T**ool / **T**echnology **I**nterface）」でも，インタフェースの統一化にOPC-UAが推奨規格として定められています。
+また，工作機械を対象としたインタフェース規格「umati（**U**niversal **M**achine **T**echnology **I**nterface）」（[※1](https://umati.org/)）でも，OPC-UAが推奨規格として定められています。
 
-ロボットメーカーの最大手であるFANUC([※1](https://www.fanuc.co.jp/ja/product/new_product/2020/202005_opcua.html))，ABB([※2](https://new.abb.com/products/robotics/ja/%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9/iot-gateway))，安川電機([※3](https://www.e-mechatronics.com/mailmgzn/backnumber/201808/mame.html))，KUKA社([※4](https://www.kuka.com/ja-jp/future-production/industrie-4-0/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%95%E3%82%A1%E3%82%AF%E3%83%88%E3%83%AA%E3%83%BC))でも，産業用ロボットのOPC-UA対応が進められています。
+ロボットメーカーの最大手であるFANUC([※2](https://www.fanuc.co.jp/ja/product/new_product/2020/202005_opcua.html))，ABB([※3](https://new.abb.com/products/robotics/ja/%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9/iot-gateway))，安川電機([※4](https://www.e-mechatronics.com/mailmgzn/backnumber/201808/mame.html))，KUKA社([※5](https://www.kuka.com/ja-jp/future-production/industrie-4-0/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%95%E3%82%A1%E3%82%AF%E3%83%88%E3%83%AA%E3%83%BC))でも，産業用ロボットのOPC-UA対応が進められています。
 
-
+このように、様々な分野でのインタフェースの統一化に向けた活動においてOPC-UAが推奨されています。
 
 
 ## Open62541とは
@@ -521,7 +521,7 @@ static void addSampleVariable(UA_Server* server) {
 
 - `UA_VariableAttributes`型のデータに変数の属性を定義していきます。
 - 変数の追加時には，親のノードIDと参照ノードIDを設定し，どのノードと関連を持つのかを明確に指定する必要があります。
-  - 親ノードの情報を変更すると，登録するノードの位置が変わります。
+    - 親ノードの情報を変更すると，登録するノードの位置が変わります。
 
 
 
@@ -605,10 +605,50 @@ static void addIncreaseVariableMethod(UA_Server* server) {
 ```
 - 引数と戻り値のデータ型として`UA_Variant`型を使用する。
 - `UA_Server_addMethod`関数について
-  - メソッドの属性は第6引数に指定する。
-  - メソッドがコールされた際に実行されるコールバック関数は第7引数で指定する。
-  - 引数もしくは戻り値を定義する場合は第8引数～第11引数で指定する。
+    - メソッドのノードIDは第2引数に指定する。
+    - メソッドノードの配置位置を第3引数で指定する。
+    - メソッドの属性は第6引数に指定する。
+    - メソッドがコールされた際に実行されるコールバック関数は第7引数で指定する。
+    - 引数もしくは戻り値を定義する場合は第8引数～第11引数で指定する。
 
+
+
+### メイン関数
+```
+/// <summary>
+/// メイン関数
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+int main(void) {
+    signal(SIGINT, stopHandler);
+    signal(SIGTERM, stopHandler);
+
+    // サーバの生成
+    UA_Server* server = UA_Server_new();
+    UA_ServerConfig_setDefault(UA_Server_getConfig(server));
+    UA_ServerConfig* config = UA_Server_getConfig(server);
+    config->verifyRequestTimestamp = UA_RULEHANDLING_ACCEPT;
+
+    // 変数の追加
+    addSampleVariable(server);
+
+    // メソッドをサーバに追加する
+    addIncreaseVariableMethod(server);
+
+    // runningがTrueの間サーバを起動する
+    UA_StatusCode retval = UA_Server_run(server, &running);
+
+    // サーバの削除
+    UA_Server_delete(server);
+
+    return retval == UA_STATUSCODE_GOOD ? EXIT_SUCCESS : EXIT_FAILURE;
+}
+```
+
+- サーバの生成と起動を行います。
+- 上記で定義した変数の定義やメソッドの定義を行います。
+- `UA_Server_run`関数では、第2引数であるrunningの値が`True`である間、サーバを実行します。
 
 
 ## 動作確認
@@ -621,6 +661,7 @@ static void addIncreaseVariableMethod(UA_Server* server) {
 サーバが起動できたら，OPC-UAクライアントツールであるUaExpertを起動します。
 
 起動後，左上の「Add Server」ボタン（"＋"状のアイコン）をクリックし，サーバ選択画面を表示させます。
+
 ![UaExpert_AddServerButton](/img/robotics/opcua/open62541/UaExpert_AddServerButton.png)
 
 PC上にサーバを建てているため，「Local」→「open62541-based OPC UA Application」→「None」が表示されます。
@@ -635,16 +676,19 @@ PC上にサーバを建てているため，「Local」→「open62541-based OPC
 
 サーバを追加すると，画面の左下のProject欄内の「Servers」に先ほど選択したサーバが追加されています。
 サーバを選択状態にしたまま，画面上部の「Connect Server」ボタンを押してサーバに接続します。
+
 ![UaExpert_ConnectToServer](/img/robotics/opcua/open62541/UaExpert_ConnectServer.png)
 
 
 ### 変数へのアクセス
 サーバに接続すると，画面左側の「Address Space」欄にサーバが所有するノード一覧が表示されます。
 その中で，「Objects」フォルダ内に存在する「Sample Variable」ノードを選択し，画面中央の「Data Access View」欄にドラッグ&ドロップしましょう。
+
 ![UaExpert_AddVariableToDataAccessView](/img/robotics/opcua/open62541/UaExpert_AddVariableToDataAccessView.png)
 
 D&Dすると，DataAccessViewにSampleVariableの詳細が表示されます。
 値を見てみると，上記のコードで設定した`42`という値が設定されているはずです。
+
 ![UaExpert_SeeVar](/img/robotics/opcua/open62541/UaExpert_SeeVariable.png)
 
 :::info
@@ -655,9 +699,11 @@ Value欄内の数字をダブルクリックすると，値を自由に書き換
 ### メソッドへのアクセス
 上記コード内にて定義したメソッド「IncreaseValue」を実行してみましょう。
 「Address Space」欄にある「IncreaseVariable」を右クリックし，Callを選択します。
+
 ![UaExpert_CallMethodButton](/img/robotics/opcua/open62541/UaExpert_CallMethodButton.png)
 
 引数の入力画面が表示されるため，引数に好きな数字を入れ，右下のCallボタンを押下します。
+
 ![UaExpert_Call_Argument](/img/robotics/opcua/open62541/UaExpert_Call_Argument.png)
 
 :::info
@@ -666,6 +712,7 @@ Value欄内の数字をダブルクリックすると，値を自由に書き換
 :::
 
 メソッドが実行され，SampleVariableの値が指定した分だけ加算されます。
+
 ![UaExpert_AfterCallMethod](/img/robotics/opcua/open62541/UaExpert_AfterCallMethod.png)
 
 

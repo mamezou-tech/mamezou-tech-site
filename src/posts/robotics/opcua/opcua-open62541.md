@@ -14,8 +14,12 @@ tags: [iot, OPC-UA]
 - OPC-UA Serverのサンプル作成
 
 ## OPC-UAとは
-OPC-UAは，2008年にOPC Foundationから発表され，その後IEC62541として国際標準化されたアーキテクチャ技術仕様です。
-1996年にマイクロソフト社が発表した，OPC(Object Linking and Embedding for Process Control) Classicをベースとしています。
+OPC-UA（正式名称: OPC Unified Architecture）は，2008年にOPC Foundationから発表され，その後IEC62541として国際標準化されたアーキテクチャ技術仕様です。
+産業用の通信規格の1つであり、機器間のデータ交換に用いられます。
+
+1996年にマイクロソフト社が発表した，OPC(<u>O</u>bject Linking and Embedding for <u>P</u>rocess <u>C</u>ontrol) Classicをベースとしています。
+
+
 
 OPC-UAの特徴として下記が挙げられます。
 
@@ -105,12 +109,10 @@ Windows/Linux/VxWorks/QNX/Androidでの動作をサポートしています。
 Visual Stdioソリューションを作成し，プロジェクトを作成するための準備をします。
 
 Visual Studioを起動し，「新しいプロジェクトを作成する」を選択します。
+![VisualStudio_CreateNewProject](/img/robotics/opcua/open62541/visualstudio_startup.PNG)
 
 プロジェクトテンプレートでは，「空のソリューション」を選択します。
-
-![aaa](/img/robotics/opcua/open62541/visualstudio_startup.PNG)
-
-![bbb](/img/robotics/opcua/open62541/visualstudio_create_void_solution.PNG)
+![VisualStudio_SelectTemplate](/img/robotics/opcua/open62541/visualstudio_create_void_solution.PNG)
 
 任意の場所にソリューションを生成します。
 本記事では下記のように設定しました。
@@ -235,7 +237,7 @@ SimpleServerプロパティページの上部にある「構成」を「すべ�
 
 右側の欄にある「追加のインクルードディレクトリ」に
 
-```
+```shell
 $(SolutionDir)include
 ```
 
@@ -281,7 +283,7 @@ $(SolutionDir)lib
 
 右側の「追加の依存ファイル」に
 
-```
+```shell
 $(SolutionDir)lib\open62541.lib
 ```
 を追記します。
@@ -309,7 +311,7 @@ $(SolutionDir)lib\open62541.lib
 
 編集画面にて、下記のように設定します。
 
-```
+```shell
 $(SolutionDir)bin\$(ProjectName)\$(Configuration)\
 ```
 
@@ -330,7 +332,7 @@ $(SolutionDir)bin\$(ProjectName)\$(Configuration)\
 
 右側の「コマンドライン」に下記の2行を入力します。
 
-```
+```shell
 robocopy $(SolutionDir)bin\ $(TargetDir) open62541.dll
 IF %ERRORLEVEL% LSS 8 EXIT 0
 ```
@@ -356,7 +358,7 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 
 作成したSimpleServer.cpp内に下記のコードを記述します。
 
-```C++
+```cpp
 #include <open62541/plugin/log_stdout.h>
 #include <open62541/server.h>
 #include <open62541/server_config_default.h>
@@ -508,7 +510,7 @@ int main(void) {
 
 ### 変数の登録
 
-```C++
+```cpp
 /// <summary>
 /// OPC-UAサーバに変数を追加する
 /// </summary>
@@ -544,7 +546,7 @@ static void addSampleVariable(UA_Server* server) {
 
 
 ### メソッドの定義
-```C++
+```cpp
 /// <summary>
 /// メソッドのコールバック関数
 /// 変数の値に引数で指定した数だけ加算する
@@ -590,7 +592,7 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
 
 ### メソッドの登録
 
-```C++
+```cpp
 /// <summary>
 /// 新規にメソッド をOPC-UAサーバに追加する
 /// </summary>
@@ -621,18 +623,18 @@ static void addIncreaseVariableMethod(UA_Server* server) {
         NULL, NULL);
 }
 ```
-- 引数と戻り値のデータ型として`UA_Variant`型を使用する。
+- 引数と戻り値のデータ型として`UA_Variant`型を使用します。
 - `UA_Server_addMethod`関数について
-    - メソッドのノードIDは第2引数に指定する。
-    - メソッドノードの配置位置を第3引数で指定する。
-    - メソッドの属性は第6引数に指定する。
-    - メソッドがコールされた際に実行されるコールバック関数は第7引数で指定する。
-    - 引数もしくは戻り値を定義する場合は第8引数～第11引数で指定する。
+    - メソッドのノードIDは第2引数に指定します。
+    - メソッドノードの配置位置を第3引数で指定します。
+    - メソッドの属性は第6引数に指定します。
+    - メソッドがコールされた際に実行されるコールバック関数は第7引数で指定します。
+    - 引数もしくは戻り値を定義する場合は第8引数～第11引数で指定します。
 
 
 
 ### メイン関数
-```C++
+```cpp
 /// <summary>
 /// メイン関数
 /// </summary>

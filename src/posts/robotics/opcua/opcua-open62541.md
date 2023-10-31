@@ -14,7 +14,7 @@ tags: [iot, OPC-UA]
 - OPC-UA Serverのサンプル作成
 
 ## OPC-UAとは
-OPC-UA（正式名称: OPC Unified Architecture）は，2008年にOPC Foundationから発表され，その後IEC62541として国際標準化されたアーキテクチャ技術仕様です。
+OPC-UA（正式名称: OPC Unified Architecture）は，2008年にOPC Foundationから発表され，その後"IEC 62541"として国際標準化されたアーキテクチャ技術仕様です。
 産業用の通信規格の1つであり、機器間のデータ交換に用いられます。
 
 1996年にマイクロソフト社が発表した，OPC(<u>O</u>bject Linking and Embedding for <u>P</u>rocess <u>C</u>ontrol) Classicをベースとしています。
@@ -319,7 +319,7 @@ $(SolutionDir)bin\$(ProjectName)\$(Configuration)\
 
 
 ### dllファイルコピー設定
-プログラムをビルドした後に実行する場合、アプリケーションの既往時にopeb62541.dllをリンクする必要があります。
+プログラムをビルドした後に実行する際、アプリケーションの起動時にopeb62541.dllをリンクする必要があります。
 
 ここでは、ビルド後にdllファイルを出力ディレクトリにコピーするように設定します。
 
@@ -366,7 +366,6 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 #include <signal.h>
 #include <stdlib.h>
 
-
 /// <summary>
 /// OPC-UAサーバに変数を追加する
 /// </summary>
@@ -385,7 +384,7 @@ static void addSampleVariable(UA_Server* server) {
     // Variable Nodeを情報モデルに追加する
     UA_NodeId sampleVarNodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");  // ノードIDの定義
     UA_QualifiedName sampleVarName = UA_QUALIFIEDNAME(1, (char*)"SampleVar");   // ブラウザ名の定義
-    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);
+    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);      // 親ノードのID
     UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES); // 親参照ノードID
 
     // 定義したVariableNodeをServerに追加する
@@ -436,7 +435,6 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
 /// <summary>
 /// 新規にメソッド をOPC-UAサーバに追加する
 /// </summary>
-/// <param name="server"></param>
 static void addIncreaseVariableMethod(UA_Server* server) {
     // 入力引数の生成
     UA_Argument inputArg;
@@ -464,20 +462,20 @@ static void addIncreaseVariableMethod(UA_Server* server) {
 }
 
 
+
 static volatile UA_Boolean running = true;
 
+/// <summary>
+/// 中止シグナルハンドラ
+/// </summary>
 static void stopHandler(int sign) {
     UA_LOG_INFO(UA_Log_Stdout, UA_LOGCATEGORY_SERVER, "received ctrl-c");
     running = false;
 }
 
-
-
 /// <summary>
 /// メイン関数
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 int main(void) {
     signal(SIGINT, stopHandler);
     signal(SIGTERM, stopHandler);
@@ -596,7 +594,6 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
 /// <summary>
 /// 新規にメソッド をOPC-UAサーバに追加する
 /// </summary>
-/// <param name="server"></param>
 static void addIncreaseVariableMethod(UA_Server* server) {
     // 入力引数の生成
     UA_Argument inputArg;
@@ -638,8 +635,6 @@ static void addIncreaseVariableMethod(UA_Server* server) {
 /// <summary>
 /// メイン関数
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 int main(void) {
     signal(SIGINT, stopHandler);
     signal(SIGTERM, stopHandler);

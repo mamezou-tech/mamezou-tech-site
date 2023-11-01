@@ -1,6 +1,6 @@
-import { PropsWithChildren } from "https://esm.sh/v128/@types/react@18.2.21/index.d.ts";
+import { PageData } from "lume/core.ts";
 
-interface Props {
+interface Props extends PageData {
   title: string;
   lpLink: string;
   image: {
@@ -10,7 +10,7 @@ interface Props {
   };
 }
 
-export default (props: PropsWithChildren<Props>) => (
+export default (props: Props) => (
   <fieldset className="ad">
     <legend>注目イベント！</legend>
     <div className="ad-text">

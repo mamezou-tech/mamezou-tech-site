@@ -1,5 +1,6 @@
 import lume, { PluginOptions } from "lume/mod.ts";
 import jsx from "lume/plugins/jsx.ts";
+import mdx from "lume/plugins/mdx.ts";
 import liquid from "lume/plugins/liquid.ts";
 import postcss from "lume/plugins/postcss.ts";
 import prism from "lume/plugins/prism.ts";
@@ -77,6 +78,7 @@ const site = lume({
 }, { markdown });
 
 site.use(jsx());
+site.use(mdx())
 site.use(liquid());
 site.use(postcss());
 site.use(prism());

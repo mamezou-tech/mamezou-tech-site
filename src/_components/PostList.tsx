@@ -1,9 +1,11 @@
 import { Page } from "lume/core/filesystem.ts";
-import { Search } from "lume/plugins/search.ts";
-import { PageHelpers } from "lume/core.ts";
+import { PageData, PageHelpers } from "lume/core.ts";
 
+interface Props extends PageData {
+  postsList: Page[];
+}
 export default (
-  { postsList, search }: { postsList: Page[]; search: Search },
+  { postsList, search }: Props,
   { validTags, readableDate, url, readingTime, excerpt }: PageHelpers,
 ) => {
   const tags = validTags!(search.tags() as string[]);

@@ -1,4 +1,4 @@
-import { PaginateOptions, Paginator } from "lume/plugins/paginate.ts";
+import { PaginateOptions } from "lume/plugins/paginate.ts";
 import { articlesByTag } from "./articles_by_tag.ts";
 import { encodeUrl } from "encodeurl";
 import { PageData } from "lume/core.ts";

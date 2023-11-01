@@ -3,6 +3,7 @@ title: Lume入門(第3回) - ページをタグ管理して検索性を高める
 author: noboru-kudo
 date: 2023-10-25
 prevPage: ./src/posts/lume/lume-jsx-mdx.md
+nextPage: ./src/posts/lume/lume-components.md
 ---
 
 [前回](/lume/lume-jsx-mdx/)はLumeのテンプレートエンジンとして組み込みのNunjucksでなく、JSX/MDXプラグインを使用する方法を見てきました。
@@ -304,9 +305,9 @@ Paginateプラグインでは`results`に分割結果、`pagination`に現在ペ
 上記は各タグ別に以下のページを生成します。
 
 - 1ページ目: /tags/<タグ名>/
-- 2ページ目: /tags/<タグ名>/2
-- 3ページ目: /tags/<タグ名>/3
-- 4ページ目: /tags/<タグ名>/4
+- 2ページ目: /tags/<タグ名>/2/
+- 3ページ目: /tags/<タグ名>/3/
+- 4ページ目: /tags/<タグ名>/4/
 
 以下実際に生成される一覧ページの1つです。
 

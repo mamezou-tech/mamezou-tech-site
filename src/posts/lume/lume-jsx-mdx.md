@@ -38,7 +38,14 @@ site.use(jsx());
 blog.tsxとして以下のJSXを配置しました。
 
 ```tsx
-export default ({ title, children }: React.PropsWithChildren<{ title: string}>) => (
+import { PageData } from 'lume/core.ts';
+
+interface BlogPageData extends PageData {
+  title: string
+}
+export default (
+  { title, children }: BlogPageData
+) => (
   <html lang="ja">
   <head>
     <meta charSet="UTF-8" />
@@ -112,6 +119,7 @@ site.use(mdx()); // MDXプラグイン
 `_components`ディレクトリを作成し、以下のCardコンポーネント(Card.tsx)を配置します。
 
 ```tsx
+import { PageData } from 'lume/core.ts';
 const styles = {
   card: {
     border: '1px solid #ddd',
@@ -128,9 +136,11 @@ const styles = {
     marginBottom: '10px'
   }
 };
-export default ({ title, children }: React.PropsWithChildren<{
-  title: string
-}>) => {
+interface CardPageData extends PageData {
+  title: string;
+  content: string;
+}
+export default ({ title, children }: CardPageData) => {
   return (
     <div style={styles.card}>
       {title && <div style={styles.title}>{title}</div>}
@@ -146,9 +156,9 @@ export default ({ title, children }: React.PropsWithChildren<{
 
 :::info
 JSXに限らず、他のテンプレート言語で記述された部品もこのディレクトリに配置することでグローバルに利用可能です。
-詳細は公式ドキュメントを参照してください。
+Lumeのコンポーネント機能の詳細は、本連載の第4回で説明しています。
 
-- [Lume Doc - Components](https://lume.land/docs/core/components/)
+- [Lume入門(第4回) - ページ部品をコンポーネント化して再利用する](/lume/lume-components/)
 :::
 
 それでは、このUI部品をMDXで使ってみます。

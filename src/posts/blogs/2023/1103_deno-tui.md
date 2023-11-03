@@ -21,7 +21,7 @@ Deno Tui の Demo サンプルを動かしてみたところです。
 
 マウス操作もできてかなりリッチな UI です。このキャプチャーは macOS のターミナル(正確には VS Code のターミナル)ですが、もちろん Windows Terminal でもちゃんと動作します。
 
-:::infon
+:::info
 筆者は Git 操作をするときに Tig を愛用しているのですが、これも TUI アプリです。
 
 [GitHub - jonas/tig: Text-mode interface for git](https://github.com/jonas/tig)

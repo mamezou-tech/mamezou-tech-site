@@ -58,16 +58,20 @@ Nitroは実装も最小限です。REST APIは`routes`ディレクトリを作�
 - routes/foo.get.ts
 ```typescript
 export default eventHandler((event) => {
-  const { name } = useQuery(event)
-  return `GET: ${name}`
+  // 最新バージョンではこちら
+  const { name } = getQuery(event);
+  // const { name } = useQuery(event)
+  return `GET: ${name}`;
 })
 ```
 
 - routes/foo.post.ts
 ```typescript
 export default eventHandler(async (event) => {
-  const { name } = await useBody<{ name: string }>(event)
-  return `POST: ${name}`
+  // 最新バージョンではこちら
+  const { name } = await readBody<{ name: string }>(event);
+  // const { name } = await useBody<{ name: string }>(event)
+  return `POST: ${name}`;
 })
 ```
 

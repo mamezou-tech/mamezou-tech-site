@@ -9,36 +9,36 @@
       "url": "/blogs/2022/07/04/monty-hall-problem/"
     },
     {
-      "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
-      "url": "/nuxt/nuxt3-routing/"
-    },
-    {
       "title": "AWS認定資格を12個すべて取得したので勉強したことなどをまとめます",
       "url": "/blogs/2022/12/12/aws_all_certified/"
+    },
+    {
+      "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
+      "url": "/nuxt/nuxt3-routing/"
     },
     {
       "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
       "url": "/nuxt/nuxt3-state-management/"
     },
     {
+      "title": "RAGを利用して国会会議録に基づいて質問に回答するLLMを作る方法",
+      "url": "/ml/llm/llm-part1/"
+    },
+    {
       "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
       "url": "/nuxt/nuxt3-rendering-mode/"
     },
     {
-      "title": "Nuxt3入門(第6回) - アプリケーションで発生するエラーに対応する",
-      "url": "/nuxt/nuxt3-error-handling/"
+      "title": "VS Code で .NET MAUI の開発環境を構築する(macOS/iOS)",
+      "url": "/blogs/2023/08/14/setup-maui-devenv/"
     },
     {
-      "title": "ペアワイズ法をGUIから使いこなすツール「PictMaster」の紹介",
-      "url": "/blogs/2022/07/23/pictmaster/"
+      "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
+      "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
     },
     {
-      "title": "Viteベースの高速テスティングフレームワークVitestを使ってみる",
-      "url": "/blogs/2022/12/28/vitest-intro/"
-    },
-    {
-      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
-      "url": "/blogs/2023/03/05/using-pytest-02/"
+      "title": "ORマッパーのTypeORMをTypeScriptで使う",
+      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
     }
   ]
 }

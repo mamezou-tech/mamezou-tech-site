@@ -16,7 +16,7 @@ Vuexの公式ドキュメントのトップには以下のように書かれて�
 > Pinia is now the new default
 > The official state management library for Vue has changed to Pinia. Pinia has almost the exact same or enhanced API as Vuex 5, described in Vuex 5 RFC. You could simply consider Pinia as Vuex 5 with a different name. Pinia also works with Vue 2.x as well.
 
-このように、現在はVueではPiniaが推奨されています。PiniaはVuexのv5と同義の位置付けになっています。
+このように、現在VueではPiniaが推奨されています。PiniaはVuexのv5と同義の位置付けになっています。
 一方でPiniaの[ドキュメント](https://pinia.vuejs.org/introduction.html#Comparison-with-Vuex)を読むと、以下のように書かれています。
 
 > Pinia started out as an exploration of what the next iteration of Vuex could look like, incorporating many ideas from core team discussions for Vuex 5. Eventually, we realized that Pinia already implements most of what we wanted in Vuex 5, and decided to make it the new recommendation instead.
@@ -243,9 +243,10 @@ $patchメソッドの詳細は公式ドキュメントを参照してくださ�
 ストアに定義したActionの実行も通常のメソッド呼び出しと同じです。VuexのようにmapActionsやdispatchメソッドは不要です。
 
 ```typescript
+const article = {...}
 await store.load();
-await store.save();
-await store.update();
+await store.save(article);
+await store.update(article);
 ```
 
 素のVuexを使っていた時代とは比べものにならないほどシンプルになりました。

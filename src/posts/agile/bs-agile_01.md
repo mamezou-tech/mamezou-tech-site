@@ -2,7 +2,6 @@
 title: 業務システムにおけるアジャイル その1：「システム」の範囲
 author: makiko-nakasato
 date: 2023-08-21
-tags: 
 ---
 
 ## はじめに

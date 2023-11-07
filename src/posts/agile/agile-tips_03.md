@@ -2,7 +2,6 @@
 title: アジャイル開発現場におけるTips：デイリーPO
 author: makiko-nakasato
 date: 2023-02-15
-tags: 
 ---
 
 ## はじめに

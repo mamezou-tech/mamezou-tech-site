@@ -2,7 +2,6 @@
 title: アジャイル開発現場におけるTips：人の通り道でアピール
 author: makiko-nakasato
 date: 2023-02-20
-tags: 
 ---
 
 ## はじめに

@@ -2,7 +2,6 @@
 title: アジャイル開発現場におけるTips：同部屋イベント
 author: makiko-nakasato
 date: 2023-03-07
-tags: 
 ---
 
 ## はじめに

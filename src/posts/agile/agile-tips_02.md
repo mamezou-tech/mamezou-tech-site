@@ -2,7 +2,6 @@
 title: アジャイル開発現場におけるTips：仕様書としてのテスト
 author: makiko-nakasato
 date: 2022-10-26
-tags: 
 ---
 
 ## はじめに

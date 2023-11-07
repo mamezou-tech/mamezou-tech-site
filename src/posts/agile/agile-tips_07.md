@@ -2,7 +2,6 @@
 title: アジャイル開発現場におけるTips：黄金体験レア版
 author: makiko-nakasato
 date: 2023-03-13
-tags: 
 ---
 
 ## はじめに

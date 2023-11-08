@@ -2,7 +2,6 @@
 title: アジャイル開発現場におけるTips：複数チームのチーム名
 author: makiko-nakasato
 date: 2023-03-02
-tags: 
 ---
 
 ## はじめに

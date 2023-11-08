@@ -1,17 +1,16 @@
-import { Helper } from "lume/core/renderer.ts";
-import { Search } from "lume/plugins/search.ts";
+import { PageData, PageHelpers } from "lume/core.ts";
 
 export default (
-  { search }: { search: Search },
-  filters: Record<string, Helper>,
+  { search }: PageData,
+  { validTags, url }: PageHelpers,
 ) => {
-  const validTags: string[] = filters.validTags(search.tags());
+  const tags: string[] = validTags!(search.tags());
   const makeHeadTagLinks = () => {
-    const links = validTags
+    const links = tags
       .slice(0, 50)
-      .map((tag) => (
-        <span key={tag}>
-          <a href={filters.url(`/tags/${tag}/`)} className="post-tag">#{tag}</a>
+      .map((t) => (
+        <span key={t}>
+          <a href={url(`/tags/${t}/`)} className="post-tag">#{t}</a>
           {"\n"}
         </span>
       ));
@@ -24,10 +23,10 @@ export default (
   };
 
   const makeAllTagLinks = () => {
-    return validTags
+    return tags
       .map((tag) => (
         <span key={tag}>
-          <a href={filters.url(`/tags/${tag}/`)} className="post-tag">#{tag}</a>
+          <a href={url(`/tags/${tag}/`)} className="post-tag">#{tag}</a>
           {"\n"}
         </span>
       ));

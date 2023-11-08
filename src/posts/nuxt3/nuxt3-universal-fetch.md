@@ -222,7 +222,7 @@ type AsyncData<DataT> = {
 テンプレートに「最新情報取得」ボタンを配置し、クリックするとrefresh関数を呼び出して最新のブログを取得するようにしました。
 
 :::column:複雑なデータフェッチを記述する
-useFetchやuseLazyFetchはシンプルですが、場合によってリクエスト前後にロジックを入れたいこともあるかと思います。
+useFetchやuseLazyFetchはシンプルですが、場合によってはリクエスト前後にロジックを入れたいこともあるかと思います。
 その場合は、以下のComposableを使い、その中で$fetch関数を呼び出します。
 
 - [Nuxt3ドキュメント - useAsyncData](https://nuxt.com/docs/api/composables/use-async-data)

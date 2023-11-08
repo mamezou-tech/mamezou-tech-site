@@ -26,6 +26,13 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 - [URのシミュレータ環境をDockerで構築する](/robotics/ur/ursim-docker/)
 - [「Universal Robots」のUR+でURCap開発](/blogs/2023/04/11/urcap-dev/)
 
+
+## 産業用ネットワーク
+
+### OPC-UA
+
+- [Open62541を使用したOPC-UAサーバ開発](/robotics/opcua/opcua-open62541/)
+
 ## ロボットビジョン
 
 ### 2Dカメラ

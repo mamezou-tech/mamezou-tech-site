@@ -1,15 +1,18 @@
-import { Search } from "lume/plugins/search.ts";
 import { articleDate } from "../../lume/filters/article_date.ts";
 import { Page } from "lume/core/filesystem.ts";
+import { PageData } from "lume/core.ts";
 
-interface Article {
-  title: string;
-  url: string;
+interface Props extends PageData {
+  // from _data/pv.json
+  pv: {
+    ranking: {
+      title: string;
+      url: string;
+    }[];
+  };
 }
 
-export default (
-  { search, pv }: { search: Search; pv: { ranking: Article[] } },
-) => (
+export default ({ search, pv }: Props) => (
   <fieldset className="page-ranking">
     <legend>豆蔵デベロッパーサイト - 先週のアクセスランキング</legend>
     <ol>

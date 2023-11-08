@@ -2,7 +2,6 @@
 title: アジャイル開発現場におけるTips：笑い声
 author: makiko-nakasato
 date: 2022-10-24
-tags: 
 ---
 
 ## はじめに

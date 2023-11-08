@@ -1,9 +1,9 @@
-import { Search } from "lume/plugins/search.ts";
+import { PageData } from "lume/core.ts";
 
-export default ({ search, meta }: {
-  search: Search;
+interface Props extends PageData {
   meta: Record<string, any>;
-}) => (
+}
+export default ({ search, meta }: Props) => (
   <nav aria-labelledby="tdbc-siteid" className="tdbc-sitenav">
     <section className="top-nav">
       <div>

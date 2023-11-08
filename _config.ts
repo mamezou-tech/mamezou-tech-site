@@ -1,5 +1,6 @@
 import lume, { PluginOptions } from "lume/mod.ts";
 import jsx from "lume/plugins/jsx.ts";
+import mdx from "lume/plugins/mdx.ts";
 import liquid from "lume/plugins/liquid.ts";
 import postcss from "lume/plugins/postcss.ts";
 import prism from "lume/plugins/prism.ts";
@@ -27,7 +28,7 @@ import externalLinkPlugin from "./lume/markdown-it/external_link_plugin.ts";
 import imageSwipePlugin from "./lume/markdown-it/image_swipe_plugin.ts";
 import codeClipboard, {
   markdownItCopyButton,
-} from "./lume/plugins/code-clipboard/index.ts";
+} from "./lume/plugins/code-clipboard/mod.ts";
 import "./prism-deps.ts";
 import { head } from "./lume/filters/head.ts";
 import { makeAuthorArticles } from "./src/generators/articles_by_author.ts";
@@ -77,6 +78,7 @@ const site = lume({
 }, { markdown });
 
 site.use(jsx());
+site.use(mdx())
 site.use(liquid());
 site.use(postcss());
 site.use(prism());
@@ -212,7 +214,7 @@ if (!Deno.env.has("MZ_DEBUG")) {
 site.processAll([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;
   const search = new Search(site.searcher, false);
-  Object.values(makeAuthorArticles(search)).forEach((v) => {
+  const summary = Object.values(makeAuthorArticles(search)).map((v) => {
     const result = v.articles.reduce((acc, cur) => {
       if (!cur.data.date) return acc;
       const ym = cur.data.date.getFullYear() + "-" +
@@ -225,8 +227,31 @@ site.processAll([".md"], (pages) => {
       }
       return acc;
     }, [] as { ym: string; count: number }[]);
-    console.log(v.name, result);
+    // console.log(v.name, result);
+    return { name: v.name, result };
   });
+  const encoder = new TextEncoder();
+  const start = DateTime.fromISO("2022-01-01");
+  const end = DateTime.now().startOf("month");
+  const input = summary.map((s) => {
+    let current = start;
+    let numbers: number[] = [];
+    while (!current.equals(end)) {
+      const found = s.result.find((r) =>
+        r.ym === `${current.year}-${current.month}`
+      );
+      if (found) {
+        numbers.push(found.count);
+      } else {
+        numbers.push(0);
+      }
+      current = current.plus({ months: 1 });
+    }
+    return `${s.name}\t${numbers.join("\t")}`;
+  }).join("\n");
+  Deno.writeFile("author.tsv", new Uint8Array(encoder.encode(input))).then(() =>
+    console.log("DONE")
+  );
 });
 
 site.addEventListener("beforeUpdate", (event) => {

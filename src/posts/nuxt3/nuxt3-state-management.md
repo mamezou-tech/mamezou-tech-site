@@ -21,11 +21,15 @@ useStateはVuex程の機能はありませんが、必要最低限のシンプ�
 [^1]: Reactにも同名のフックがありますが、これとは全く別物です。
 
 :::info
-それなりの規模のアプリケーションでは、現時点では[Pinia](https://pinia.vuejs.org/)の利用を検討すると良いかと思います。
+それなりの規模のアプリケーションでは、[Pinia](https://pinia.vuejs.org/)の利用を検討すると良いかと思います。
 こちらはNuxtモジュールとして提供されています。
 useStateとPiniaとの比較は以下記事に詳細が載っていますので、興味のある方はご参照ください。
 
 - [Nuxt 3 State Management: Pinia vs useState](https://www.vuemastery.com/blog/nuxt-3-state-mangement-pinia-vs-usestate/)
+
+導入の際はPiniaのドキュメント参照してください。
+
+- [Pinia Doc - Nuxt.js](https://pinia.vuejs.org/ssr/nuxt.html)
 :::
 
 
@@ -86,7 +90,7 @@ initは状態が初期化されてない場合のみ実行されます。これ�
 では、useStateを使ってみましょう。
 ここではログインユーザー情報を複数コンポーネントで使えるよう、useStateでグローバルに状態変数を定義してみます。
 
-まず、最初のページ(`pages/user.vue`)は以下のようにしました。
+最初のページ(`pages/user.vue`)は以下のようにしました。
 
 ```html
 <script lang="ts" setup>
@@ -108,7 +112,7 @@ const user = useState<{ id: string, name: string, mail: string }>('login-user', 
 </template>
 ```
 
-setupの最初で、useStateを使ってユーザー情報を初期化しています。ここでは固定値ですが、実運用では外部の認証システム等から取得することを想定しています。
+setupの最初でuseStateを使ってユーザー情報を初期化しています。ここでは固定値ですが、実運用では外部の認証システム等から取得することを想定しています。
 テンプレートではNuxtLinkを使ってユーザー詳細ページ(`pages/user-detail.vue`)に遷移するようにしています。
 ユーザー詳細ページは以下のようにしました。
 
@@ -136,7 +140,7 @@ const user = useState('login-user')
 ![user detail](https://i.gyazo.com/c8c71a8f822c74719de7eee5ca803c6b.png)
 
 ユーザーページで初期化されたユーザー情報は、ページを跨って詳細ページでも表示されていることが分かります。
-サーバーサイドのコンソール上にはユーザー情報を取得するログ(`retrieving...`)が出力されますが、クライアンサイドでは出力されません。 
+サーバーサイドのコンソール上にはユーザー情報を取得するログ(`retrieving...`)が出力されますが、クライアントサイドでは出力されません。 
 つまり、init処理はサーバーサイドで1回のみ実行されています。
 
 サーバーサイドでレンダリングされたHTMLを確認すると、以下のようになっていました（フォーマットして必要な部分のみ抜粋）。
@@ -184,7 +188,7 @@ scriptタグ内に、stateとしてサーバーサイドで初期化された情
 - 各ページで指定するキー(key)が単純な文字列なのでタイポしやすい
 - 複数の状態を利用する場合、useStateがあちこちに散らばり、共有している状態管理変数を概観できない
 
-[公式ドキュメント](https://nuxt.com/docs/getting-started/state-management#shared-state)でも言及されていますが、VueのComposition APIを使用して、Vuexのstoreように状態管理を一元管理すると良さそうです。
+[公式ドキュメント](https://nuxt.com/docs/getting-started/state-management#shared-state)でも言及されていますが、VueのComposition APIを使用して、Vuexのstoreのように状態を一元管理すると良さそうです。
 
 `composables/states.ts`を作成し、先程のuseStateを移植するだけです。
 

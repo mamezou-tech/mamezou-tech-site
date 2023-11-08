@@ -26,6 +26,7 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 ### ブログ
 - [Nuxt3で導入されたハイブリッドレンダリングとNuxt版ISG/ISRを試してみる](/blogs/2022/12/18/nuxt3-hybrid-rendering/)
 - [Nuxt版のServer Componentsでサーバー環境限定でレンダリングする](/blogs/2023/07/05/nuxt3-server-components-intro/)
+- [Piniaを使ってNuxtアプリの状態を共有をする](/blogs/2023/11/05/pinia-with-nuxt3/)
 
 ## プリレンダリング
 クライアントでの応答性が重要な Web アプリでは SPA(Single Page Application) が発展してきました。一方、コンテンツが重要なサイトでは事前ビルドした静的コンテンツによる MPA(Multi Page Application) が注目されています。ここではプリレンダリングフレームワークに関する記事を紹介します。
@@ -48,6 +49,8 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 ### Lume
 - [Lume入門(第1回) - Denoベースの静的サイトジェネレーターLumeで静的サイトを手早く作る](/lume/lume-intro/)
 - [Lume入門(第2回) - テンプレートエンジンとしてJSXとMDXを使う](/lume/lume-jsx-mdx/)
+- [Lume入門(第3回) - ページをタグ管理して検索性を高める](/lume/lume-search/)
+- [Lume入門(第4回) - ページ部品をコンポーネント化して再利用する](/lume/lume-components/)
 
 ## Deno
 Deno は高速でセキュアな JavaScript ランタイムです。Node.js に比べ開発体験も向上しています。ここでは、Deno の導入や活用についてご紹介します。

@@ -2,7 +2,7 @@
 title: 独自のデータに基づくAzure OpenAI機能を使ってみた
 author: kotaro-miura
 date: 2023-10-18
-tags: [自然言語処理, RAG, Azure, OpenAI, chatgpt]
+tags: [自然言語処理, RAG, Azure, OpenAI, chatgpt, GPT]
 ---
 
 

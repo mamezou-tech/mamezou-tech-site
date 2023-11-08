@@ -125,7 +125,7 @@ Nuxt2では`pages/details/_id.vue`のようなアンダースコアをつけて�
 
 ```html
 <script setup lang="ts">
-const {data: articles, refresh} = await useFetch('/api/blogs');
+const { data: articles, refresh } = await useFetch('/api/blogs');
 </script>
 
 <template>
@@ -140,7 +140,7 @@ const {data: articles, refresh} = await useFetch('/api/blogs');
         -->
       </li>
     </ul>
-    <button @click="refresh">最新情報取得</button>
+    <button @click="refresh()">最新情報取得</button>
     <Advertisement />
   </div>
 </template>
@@ -194,9 +194,12 @@ export default defineNuxtConfig({
 ```
 
 こうすると/details/1、/details/2がプリレンダリング対象となり、生成結果のHTMLリンク先に対してもクローラーが実行されます。
-Nuxt3のRC版(rc.11)では、Nuxt2のように`generate.routes`に関数を指定できませんでした。ただし、JSDocには関数の指定もできると記載されていますのでGA版では対応されると思われます。
+Nuxt2ではここに関数を指定できましたが、Nuxt3ではできなくなりました。
+これの代替としてはHooksでNitroの設定を更新する方法があります。非同期関数を使うような複雑なページ生成をする場合にご参考ください。
 
-クローラーを実行せずに対象ルートのみをプリレンダリング対象としたい場合は、明示的に`generate.crawler`をfalseに指定します。
+- [GitHub Nuxt Issue - Extending prerender routes](https://github.com/nuxt/nuxt/issues/13949#issuecomment-1397323260)
+
+クローラーを実行せずに対象ルートのみをプリレンダリング対象としたい場合は、明示的に`nitro.prerender.crawlLinks`をfalseに指定します。
 
 なお、動的ルーティングとは関係ありませんが、サンプルアプリで使用しているブログ情報の「最新情報取得」ボタンは、プリレンダリングではAPIサーバーが存在しないため機能しません(404エラー)。
 :::
@@ -236,9 +239,16 @@ routes関数の引数には、Nuxtが作成したファイルシステムベー�
 
 もちろん上記ロジックを修正して、Nuxtデフォルトの方のルートを除外することもできます。
 
+:::info
+Vue Routerを直接拡張する以外にもNuxt Hook(`pages:extend`)を利用する方法もあります。
+詳細は以下公式ドキュメントを参照してください。
+
+- [Nuxt Doc - Custom Routing - Pages Hook](https://nuxt.com/docs/guide/going-further/custom-routing#pages-hook)
+:::
+
 ## まとめ
 
 今回はNuxtが提供するルーティングの概要を見てきました。
-Nuxtデフォルトのファイルシステムベースではマッピングの記述なく、様々なユースケースに対応可能です。
+Nuxtデフォルトのファイルシステムベースでは、マッピングの記述が不要で様々なユースケースに対応可能です。
 
 次回はNuxtアプリで利用する設定情報にフォーカスする予定です。

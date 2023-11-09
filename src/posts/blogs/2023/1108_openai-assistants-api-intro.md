@@ -17,7 +17,7 @@ tags: [OpenAI, GPT]
 Assistants APIは会話履歴をスレッドとして管理してくれます。今までのChat Completion APIでは、文脈を維持するために履歴管理を自前でやる必要がありましたがOpenAIに委ねることができるようになりました。
 
 また、Assistants APIはCode InterpreterやFunction Calling等の各種ツールに加えて、ファインチューニングしたカスタムモデルを使うこともできます。
-これらを調停してくれるのがアシスタントです。アシスタントはリクエストの内容からGPTを使うのか各種ツール(Code InterpreterやFunction Calling)を使うのかを判断するエージェント機能としての役割を果たします。
+これらを調停してくれるのがアシスタントです。アシスタントはリクエストの内容からGPTを使うのか各種ツールを使うのかを判断するエージェント機能としての役割を果たします。
 
 このように、Assistants APIを使えばアプリケーションに高度なGPT機能を組み込むことが簡単になり、その使い方も多様化してくることが想像できますね。
 
@@ -179,7 +179,7 @@ if (currentRun.status === 'requires_action') {
 :::info
 Function callingについては、以下記事で紹介していますので詳細は省略しています。
 
-- [OpenAIのChat APIに追加されたFunction callingを使ってみる](http://localhost:8080/blogs/2023/06/14/gpt-function-calling-intro/)
+- [OpenAIのChat APIに追加されたFunction callingを使ってみる](/blogs/2023/06/14/gpt-function-calling-intro/)
 
 こちらの記事はAssistants APIについてではありませんが、設定内容は同じです。
 :::
@@ -311,7 +311,7 @@ while (true) { // 会話の無限ループ
 }
 ```
 
-これを実行するとこのような感じになりました。
+これを実行すると、以下ような感じになりました。
 
 ![](https://i.gyazo.com/6dd5155a47f1db3df6ffce3c0c22e264.png)
 

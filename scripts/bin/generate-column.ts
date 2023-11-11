@@ -23,7 +23,7 @@ async function main(path: string) {
 
 Please follow the restrictions below.
 - No need to reply message
-- 20 output words in newline delimited format
+- 30 output words in newline delimited format
 - Only known jargon to be output
 - Do not include obscene or vulgar words
 - Speak in English
@@ -51,7 +51,7 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
       role: 'user',
       content: `You are to act as a columnist for a beautiful Japanese girl.
 We will give you one slang word commonly used in the IT industry and you should output a short article about it.
-It should be a passionate article that readers can relate to, but end with a funny joke.
+You need to write passionate articles that readers can relate to. However, the article should include funny jokes.
 Please do not output "yes" or "I understand", only the article.
 Articles should be written in Japanese with cheerful and energetic colloquialisms and should not use honorifics such as "です" and "ます".
 Your name is "豆香" (pronounced "まめか").
@@ -71,7 +71,7 @@ My first word is "${keyword}".
     created: new Date().toISOString()
   };
   json.columns.unshift(item);
-  json.columns = json.columns.slice(0, 30);
+  json.columns = json.columns.slice(0, 40);
   fs.writeFileSync(path, JSON.stringify(json, null, 2));
 
   const token = process.env.SLACK_BOT_TOKEN;
@@ -79,35 +79,35 @@ My first word is "${keyword}".
 
   const today = new Date();
   const channel = process.env.SLACK_CHANNEL_ID || 'D041BPULN4S';
-  await web.chat.postMessage({
-    channel,
-    mrkdwn: true,
-    text: '今日の豆香の豆知識コラム(予告)',
-    unfurl_media: false,
-    blocks: [
-      {
-        type: 'header',
-        text: {
-          type: 'plain_text',
-          text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(予告)`
-        }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: item.title
-        }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: column
-        }
-      }
-    ]
-  });
+  // await web.chat.postMessage({
+  //   channel,
+  //   mrkdwn: true,
+  //   text: '今日の豆香の豆知識コラム(予告)',
+  //   unfurl_media: false,
+  //   blocks: [
+  //     {
+  //       type: 'header',
+  //       text: {
+  //         type: 'plain_text',
+  //         text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(by GPT-4 Turbo)`
+  //       }
+  //     },
+  //     {
+  //       type: 'section',
+  //       text: {
+  //         type: 'mrkdwn',
+  //         text: item.title
+  //       }
+  //     },
+  //     {
+  //       type: 'section',
+  //       text: {
+  //         type: 'mrkdwn',
+  //         text: column
+  //       }
+  //     }
+  //   ]
+  // });
 }
 
 function pickup(arr: string[], excludes: string[]): string {

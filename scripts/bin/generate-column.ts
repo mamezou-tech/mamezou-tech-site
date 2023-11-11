@@ -79,35 +79,35 @@ My first word is "${keyword}".
 
   const today = new Date();
   const channel = process.env.SLACK_CHANNEL_ID || 'D041BPULN4S';
-  // await web.chat.postMessage({
-  //   channel,
-  //   mrkdwn: true,
-  //   text: '今日の豆香の豆知識コラム(予告)',
-  //   unfurl_media: false,
-  //   blocks: [
-  //     {
-  //       type: 'header',
-  //       text: {
-  //         type: 'plain_text',
-  //         text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(by GPT-4 Turbo)`
-  //       }
-  //     },
-  //     {
-  //       type: 'section',
-  //       text: {
-  //         type: 'mrkdwn',
-  //         text: item.title
-  //       }
-  //     },
-  //     {
-  //       type: 'section',
-  //       text: {
-  //         type: 'mrkdwn',
-  //         text: column
-  //       }
-  //     }
-  //   ]
-  // });
+  await web.chat.postMessage({
+    channel,
+    mrkdwn: true,
+    text: '今日の豆香の豆知識コラム(予告)',
+    unfurl_media: false,
+    blocks: [
+      {
+        type: 'header',
+        text: {
+          type: 'plain_text',
+          text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(by GPT-4 Turbo)`
+        }
+      },
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: item.title
+        }
+      },
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: column
+        }
+      }
+    ]
+  });
 }
 
 function pickup(arr: string[], excludes: string[]): string {

@@ -207,8 +207,8 @@ for (const message of messages.data) {
 
 スレッドIDを指定して、メッセージを取得して直近のアシスタントメッセージを表示しています。
 
-なお、レスポンスタイプとしてイメージファイル(`image_file`)もサポートされているはずですが、今回はレスポンスとしてイメージファイルを取得できませんでした。
-この中にはファイルIDが格納されているので、この後で[ファイル取得API](https://platform.openai.com/docs/api-reference/files/retrieve-contents)を実行すれば、イメージファイルも取得できると思われます[^2]。
+なお、レスポンスタイプとしてイメージファイル(`image_file`)もサポートされています(この場合は現時点で最新のモデル`gpt-4-1106-preview`を指定する必要がありました)。
+上記はファイルIDを出力しているだけですが、この後で[ファイル取得API](https://platform.openai.com/docs/api-reference/files/retrieve-contents)を実行すれば、イメージファイルも取得できます[^2]。
 
 [^2]: テキストベースのレスポンスでも注釈(annotations)にファイルIDが含まれていることもあります。詳細は[公式ドキュメント](https://platform.openai.com/docs/assistants/how-it-works/managing-threads-and-messages)を参照してください。
 

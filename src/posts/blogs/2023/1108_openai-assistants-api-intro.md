@@ -248,7 +248,7 @@ const assistant = await openai.beta.assistants.create({
 // スレッド作成
 const thread = await openai.beta.threads.create({});
 
-while (true) { // 会話の無限ループ
+while (true) { // 会話ループ
   const req = await input({ message: '>' });
   if (req === 'q') break; // `q`で終了
   // スレッドにメッセージ追加
@@ -309,6 +309,9 @@ while (true) { // 会話の無限ループ
     }
   }
 }
+
+// クリーンアップ処理
+await Promise.all([openai.beta.threads.del(thread.id), openai.beta.assistants.del(assistant.id)]);
 ```
 
 これを実行すると、以下ような感じになりました。

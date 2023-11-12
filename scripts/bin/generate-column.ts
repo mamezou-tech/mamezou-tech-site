@@ -18,12 +18,17 @@ async function main(path: string) {
   const json: Gpt = JSON.parse(fs.readFileSync(path).toString());
   const pastTitles = json.columns.map(column => column.title);
 
-  const prompt: OpenAI.Chat.CreateChatCompletionRequestMessage = {
+  const prompt: OpenAI.ChatCompletionMessageParam = {
     content: `Output funny jargon used by IT developers in programming.
+JSON format:
+\`\`\`
+{
+  words: [<array of word>]
+}
+\`\`\`
 
 Please follow the restrictions below.
 - No need to reply message
-- 30 output words in newline delimited format
 - Only known jargon to be output
 - Do not include obscene or vulgar words
 - Speak in English
@@ -36,17 +41,17 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
   const keywordsResponse = await ask({
     messages: [prompt],
     maxTokens: 1024,
-    temperature: 0.7
+    temperature: 0.7,
+    responseFormat: 'json_object'
   });
-  const message = keywordsResponse.choices[0].message?.content || '';
+  const keywords: { words: string[] } = JSON.parse(keywordsResponse.choices[0].message?.content!);
 
-  const arr = message.split('\n').filter(x => !!x).map(x => x.replace(/\d+\. /, ''));
-  console.log(arr);
-  const keyword = pickup(arr, pastTitles);
+  console.log(keywords.words);
+  const keyword = pickup(keywords.words, pastTitles);
   const result = await ask({
     messages: [prompt, {
       role: 'assistant',
-      content: message
+      content: keywordsResponse.choices[0].message?.content
     }, {
       role: 'user',
       content: `You are to act as a columnist for a beautiful Japanese girl.

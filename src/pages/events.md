@@ -11,5 +11,5 @@ icon: https://api.iconify.design/mdi/calendar-clock.svg?color=%23730099&height=2
 ## その他イベント
 - [夏のリレー連載2023](/events/season/2023-summer/)
 
-## アナウンス
+## 過去のアナウンス
 [告知 -「夏のリレー連載2023」](/blogs/2023/07/19/announce-summer-relay/)

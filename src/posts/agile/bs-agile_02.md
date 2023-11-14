@@ -3,6 +3,7 @@ title: 業務システムにおけるアジャイル その2：業務フロー�
 author: makiko-nakasato
 date: 2023-11-07
 prevPage: ./src/posts/agile/bs-agile_01.md
+nextPage: ./src/posts/agile/bs-agile_03.md
 ---
 
 ## はじめに

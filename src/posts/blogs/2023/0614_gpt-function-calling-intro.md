@@ -104,7 +104,7 @@ Chat APIはこのスキーマに準じたパラメータを生成してくれま
 :::info
 `functions`に指定する内容も入力トークンとして課金対象となるようです(`system`メッセージ扱い)。
 大量の関数や膨大なスキーマを指定する場合には、トークン最大値制限や課金の状況にも注意が必要です。
-以下[公式ドキュメント](https://platform.openai.com/docs/guides/gpt/function-calling)からの引用です。
+以下[公式ドキュメント](https://platform.openai.com/docs/guides/function-calling)からの引用です。
 
 > Under the hood, functions are injected into the system message in a syntax the model has been trained on. This means functions count against the model's context limit and are billed as input tokens. If running into context limits, we suggest limiting the number of functions or the length of documentation you provide for function parameters.
 :::
@@ -191,4 +191,4 @@ ChatGPTだけでなくOpenAI APIのエコシステムをめぐる動向も引き
 
 参考
 
-- [OpenAI Doc - GPT models - Function calling](https://platform.openai.com/docs/guides/gpt/function-calling)
+- [OpenAI Doc - GPT models - Function calling](https://platform.openai.com/docs/guides/function-calling)

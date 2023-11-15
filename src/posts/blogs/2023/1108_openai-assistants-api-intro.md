@@ -75,11 +75,11 @@ Assistants APIのドキュメントによると、将来的には自作ツール
 > you can specify any GPT-3.5 or GPT-4 models, including fine-tuned models. The Retrieval tool requires gpt-3.5-turbo-1106 and gpt-4-1106-preview models.
 
 :::info
-作成したアシスタントは、OpenAIのUIから参照できます。
+ここで作成したアシスタントはOpenAIのUIから参照できます（新規作成もできます）。
 
 - <https://platform.openai.com/assistants>
 
-作成済みのアシスタントは`openai.beta.assistants.retrieve(assistantId)`で取得できます。
+一度作成したアシスタントは、APIからは`openai.beta.assistants.retrieve(assistantId)`で取得して再利用できます。
 長く使うアシスタントは、都度作成するのではなく事前に登録しておく方が良いのかもしれませんね(現時点で有効期限は確認できませんでした)。
 :::
 

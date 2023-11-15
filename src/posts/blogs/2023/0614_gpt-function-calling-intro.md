@@ -232,8 +232,8 @@ console.log(response2.choices[0].message);
 期待通り1999年に関するニュースが返ってきました。
 
 :::column:並列に関数を実行する
-2023/11のアップデートでChat APIが複数の関数呼び出しを返却し、その実行結果を同時に連携できるようになりました。
-これにより関数の並列実行が可能となり、パフォーマンスを改善できるようになりました。
+2023/11のアップデートでChat APIが複数の関数呼び出しを返却し、その実行結果を一度に連携できるようになりました。
+これにより関数の並列実行が可能となり、ユーザーパフォーマンスの改善が図れるようになりました。
 詳細は以下公式ドキュメントを参照しくてください。
 
 - [OpenAI Doc - Function calling - Parallel function calling](https://platform.openai.com/docs/guides/function-calling/parallel-function-calling)

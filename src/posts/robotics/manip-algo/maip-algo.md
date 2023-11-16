@@ -369,8 +369,9 @@ $$
 
 $$
 \left(
-\begin{array}{cc}
- {\vec{v_t}^T} \\  {\vec{w_t}^T}
+\begin{array}{c}
+ {\vec{v_t}^T} \\
+ {\vec{w_t}^T} \\
  \end{array}
 \right)
 ＝J \Omega^T
@@ -378,11 +379,13 @@ $$
 
 ここで $\omega_i$ {i=1,2,...,6}は各軸の角速度、 $\vec{v_t}$はツール先端の3次元並進速度ベクトル、 $\vec{w_t}$は3次元回転速度ベクトルである。
 一般的には $J$の逆行列 $J^{-1}$は一意に求まるので、
+
 $$
 \Omega^T=J^{-1}
 \left(
-\begin{array}{cc}
- {\vec{v_t}^T} \\ {\vec{w_t}^T}
+\begin{array}{c}
+ {\vec{v_t}^T} \\ 
+ {\vec{w_t}^T} \\
  \end{array}
 \right)
 $$

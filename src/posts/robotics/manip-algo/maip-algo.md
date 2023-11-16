@@ -369,8 +369,8 @@ $$
 
 $$
 \left(
-\begin{array}{}
- \vec{v_t}^T \\  \vec{w_t}^T
+\begin{array}{cc}
+ {\vec{v_t}^T} \\  {\vec{w_t}^T}
  \end{array}
 \right)
 ＝J \Omega^T
@@ -381,8 +381,8 @@ $$
 $$
 \Omega^T=J^{-1}
 \left(
-\begin{array}{c}
- \vec{v_t}^T \\  \vec{w_t}^T
+\begin{array}{cc}
+ {\vec{v_t}^T} \\ {\vec{w_t}^T}
  \end{array}
 \right)
 $$

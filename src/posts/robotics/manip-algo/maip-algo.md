@@ -142,7 +142,6 @@ $$T_7(\Theta)=A_1 A_2 A_3 A_4 A_5 A_6 A_7$$
 
 を計算すれば良い。ここで
 
-
 $$T_i(\Theta)＝\left(
 \begin{array}{cccc}
  u_x & v_x & w_x & q_x \\
@@ -154,15 +153,13 @@ $$T_i(\Theta)＝\left(
 
 とすると、左上の3x3の部分行列 $R_i$（正規直交系）がベース座標系 $\Sigma_0$から見た、座標系の姿勢/方向を表し、4列目が原点の位置を表す。つまりi番目のXYZ座標系の3軸の方向は
 
-$$
-\vec{X_i} = \{u_x,u_y,u_z\}
-,\vec{Y_i} = \{v_x,v_y,v_z\}
-,\vec{Z_i} = \{w_x,w_y,w_z\}
-$$
+$$\vec{X_i} = ( u_x,u_y,u_z )$$
+$$\vec{Y_i} = ( v_x,v_y,v_z )$$
+$$\vec{Z_i} = ( w_x,w_y,w_z )$$
 
 であり、位置は
 
-$$\vec{P_i} = \{q_x,q_y,q_z\}$$
+$$\vec{P_i} = ( q_x,q_y,q_z )$$
 と表すことができる。
 
 ここで3軸の方向はツール先端においては「姿勢」ということになるが、9個もの数値で表現するのは煩わしいので、ZYXオイラー角 $\{\alpha,\beta,\gamma\}$ 3個で表現する。Z軸周りに $\gamma$回転してY軸周りに $\beta$回転してX軸周りに $\alpha$回転したとすると、
@@ -352,7 +349,7 @@ $$
 J＝\left(
 \begin{array}{ccccc}
  [\vec{Z_0} \times (\vec{P_t}-\vec{P_0})]^T & [\vec{Z_1} \times (\vec{P_t}-\vec{P_1})]^T & [\vec{Z_1} \times (\vec{P_t}-\vec{P_2})]^T & ... &[\vec{Z_1} \times (\vec{P_t}-\vec{P_5})]^T&\\
- [\vec{Z_0}]^T  & [\vec{Z_1}]^T & [\vec{Z_2}]^T & ... & [\vec{Z_5}]^T\\
+ \vec{Z_0}^T  & \vec{Z_1}^T & \vec{Z_2}^T & ... & \vec{Z_5}^T\\
  \end{array}
 \right)
 $$
@@ -360,11 +357,7 @@ $$
 このヤコビ行列を用いて下記のように関節軸速度からツール先端の並進速度および回転速度が計算できる。
 
 $$
-\Omega=\left(
-\begin{array}{c}
- \omega_1, \omega_2 , \omega_3 , \omega_4 , \omega_5 , \omega_6 
- \end{array}
-\right)
+\Omega=( \omega_1, \omega_2 , \omega_3 , \omega_4 , \omega_5 , \omega_6  )
 $$
 
 $$

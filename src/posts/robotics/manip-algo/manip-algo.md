@@ -112,7 +112,7 @@ DHパラメータは、ベースのXYZ座標系 $Σ_0$から始めて先端に�
 
 まず、 $\Sigma_{i-1}$から $\Sigma_{i}$のアフィン変換を、4x4の行列としてDHパラメータで表すと下記のようになる。
 
-$$A_i(\Theta)＝\left(
+$$A_i(\Theta)=\left(
 \begin{array}{cccc}
  \cos (\theta_i) & -\cos(\alpha_i)\sin(\theta_i) &  \sin(\alpha_i) \sin (\theta_i) & a_i \cos (\theta_i) \\
  \sin (\theta_i) & \cos(\alpha_i)\cos(\theta_i) & -\sin(\alpha_i)\cos (\theta_i) & a_i \sin (\theta_i) \\
@@ -123,7 +123,7 @@ $$A_i(\Theta)＝\left(
 
 例えば $\Sigma_{1}$の場合
 
-$$A_1(\Theta)＝A_1＝\left(
+$$A_1(\Theta)=A_1=\left(
 \begin{array}{cccc}
  \cos (\theta_1) & 0 & \sin (\theta_1) & a_1 \cos (\theta_1) \\
  \sin (\theta_1) & 0 & -\cos (\theta_1) & a_1 \sin (\theta_1) \\
@@ -142,7 +142,7 @@ $$T_7(\Theta)=A_1 A_2 A_3 A_4 A_5 A_6 A_7$$
 
 を計算すれば良い。ここで
 
-$$T_i(\Theta)＝\left(
+$$T_i(\Theta)=\left(
 \begin{array}{cccc}
  u_x & v_x & w_x & q_x \\
  u_y & v_y & w_y & q_y \\
@@ -351,7 +351,7 @@ int Kinematics::CalcJointAngles6ByIKwithMode(
 ここで" $\times$"はベクトル積、右肩のＴは行列の転置を表す。
 
 $$
-J＝\left(
+J=\left(
 \begin{array}{ccccc}
  [\vec{Z_0} \times (\vec{P_t}-\vec{P_0})]^T & [\vec{Z_1} \times (\vec{P_t}-\vec{P_1})]^T & [\vec{Z_1} \times (\vec{P_t}-\vec{P_2})]^T & ... &[\vec{Z_1} \times (\vec{P_t}-\vec{P_5})]^T&\\
  \vec{Z_0}^T  & \vec{Z_1}^T & \vec{Z_2}^T & ... & \vec{Z_5}^T\\
@@ -372,7 +372,7 @@ $$
  {\vec{w_t}^T} \\
  \end{array}
 \right)
-＝J \Omega^T
+=J \Omega^T
 $$
 
 ここで $\omega_i$ {i=1,2,...,6}は各軸の角速度、 $\vec{v_t}$はツール先端の3次元並進速度ベクトル、 $\vec{w_t}$は3次元回転速度ベクトルである。

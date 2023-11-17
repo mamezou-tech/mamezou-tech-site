@@ -350,7 +350,7 @@ int Kinematics::CalcJointAngles6ByIKwithMode(
 $$
 J=\left(
 \begin{array}{ccccc}
- [\vec{Z_0} \times (\vec{P_t}-\vec{P_0})]^T & [\vec{Z_1} \times (\vec{P_t}-\vec{P_1})]^T & [\vec{Z_1} \times (\vec{P_t}-\vec{P_2})]^T & ... &[\vec{Z_1} \times (\vec{P_t}-\vec{P_5})]^T\\
+ [\vec{Z_0} \times (\vec{P_t}-\vec{P_0})]^T & [\vec{Z_1} \times (\vec{P_t}-\vec{P_1})]^T & [\vec{Z_2} \times (\vec{P_t}-\vec{P_2})]^T & ... &[\vec{Z_5} \times (\vec{P_t}-\vec{P_5})]^T\\
  \vec{Z_0}^T  & \vec{Z_1}^T & \vec{Z_2}^T & ... & \vec{Z_5}^T\\
  \end{array}
 \right)

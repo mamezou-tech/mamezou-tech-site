@@ -19,7 +19,7 @@ layout: layouts/base.njk
     </header>
 
     <main class="event__content">
-      {{ content | safe }}
+      {{ comp.Calendar({ year: page.data.year, weekend: page.data.weekend }) | safe }}
     </main>
 
     <div style="margin-top:0">

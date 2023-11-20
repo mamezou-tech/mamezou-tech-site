@@ -1,0 +1,92 @@
+{
+  "entries": [
+    {
+      "dayOfWeek": "Mon."
+    },
+    {
+      "dayOfWeek": "Tue."
+    },
+    {
+      "dayOfWeek": "Wed."
+    },
+    {
+      "dayOfWeek": "Thu."
+    },
+    {
+      "dayOfWeek": "Fri."
+    },
+    {},
+    {},
+    {},
+    {},
+    {
+      "date": "1"
+    },
+    {
+      "date": "4",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "何か書きまふ"
+    },
+    {
+      "date": "5"
+    },
+    {
+      "date": "6",
+      "author": "noboru-kudo",
+      "githubUser": "kudoh",
+      "title": "何か書きまふ"
+    },
+    {
+      "date": "7"
+    },
+    {
+      "date": "8"
+    },
+    {
+      "date": "11"
+    },
+    {
+      "date": "12"
+    },
+    {
+      "date": "13"
+    },
+    {
+      "date": "14",
+      "author": "shigeki-shoji",
+      "githubUser": "edward-mamezou",
+      "title": "AWS Lambda に関連したことを書きます"
+    },
+    {
+      "date": "15"
+    },
+    {
+      "date": "18",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "IoTネタで何か書きます(家の中がArduinoやESP32であふれかえってて…)"
+    },
+    {
+      "date": "19",
+      "author": "makiko-nakasato",
+      "githubUser": "makiko-nakasato",
+      "title": "(仮)感情、この厄介なもの"
+    },
+    {
+      "date": "20",
+      "author": "kazuki-ogawa",
+      "githubUser": "kazuki-ogawa",
+      "title": "何か書きまふ"
+    },
+    {
+      "date": "21"
+    },
+    {
+      "date": "22"
+    },
+    {
+      "date": "25"
+    }
+  ]
+}

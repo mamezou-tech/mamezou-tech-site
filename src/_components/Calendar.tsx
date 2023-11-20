@@ -1,15 +1,15 @@
 const Entry = ({ dayOfWeek, date, author, githubUser, title, url }) => {
 	const authorImageURL = githubUser ? `https://github.com/${githubUser}.png` : null;
-	const authurLink = author ? `/authors/${author}` : null;
+	const authorLink = author ? `/authors/${author}` : null;
 	return (
 		<div style={{ border: '1px solid #ddd', padding: '6px', margin: '3px', borderRadius: '10px' }}>
  			<p style={{ textAlign: 'center' }}>{dayOfWeek}</p>
 			<p style={{ textAlign: 'center' }}>{date}</p>
       <p style={{fontSize: '14px'}}>
 				{authorImageURL && 
-        <a href={authurLink}><img src={authorImageURL} alt={`Author: ${author}`} style={{ width: '30px', height: '30px', borderRadius: '50%', marginRight: '8px' }} /></a>}
+        <a href={authorLink}><img src={authorImageURL} alt={`Author: ${author}`} style={{ width: '30px', height: '30px', borderRadius: '50%', marginRight: '8px' }} /></a>}
         {author ? (
-        <a href={authurLink}>{author}</a>
+        <a href={authorLink}>{author}</a>
       ) : (
         author
       )}</p>

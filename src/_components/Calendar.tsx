@@ -25,7 +25,7 @@ const Entry = ({ dayOfWeek, date, author, githubUser, title, url }) => {
 };
 
 export default ({ year, weekend, events }) => {
-	const event = events["advent"+year];
+	const event = events.advent[year];
 	const repeat = weekend ? 7 : 5;
 	return (
 		<div>

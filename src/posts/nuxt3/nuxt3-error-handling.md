@@ -232,7 +232,7 @@ propsとしてエラー発生内容が格納されている`error`を受け取�
 ```typescript
 // プログラムでエラーページ表示
 const moveError = () => {
-  showError(createError('FlakyComponentでエラーが発生しました！'))
+  showError('FlakyComponentでエラーが発生しました！')
 }
 // エラー生成時にfatal:trueを指定
 onMounted(() => {

@@ -47,7 +47,10 @@
       "date": "11"
     },
     {
-      "date": "12"
+      "date": "12",
+      "author": "shohei-yamashita",
+      "githubUser": "shohei-yamashit",
+      "title": "vscodeのdevcontainer x Jupyter Notebookの導入で困ったことについて書こうと思います（仮）"
     },
     {
       "date": "13"

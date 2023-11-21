@@ -230,17 +230,18 @@ int Kinematics::CalcJointAngles6ByIKwithMode(
 	double py = qy-d6*wy;
 	double pz = qz-d6*wz;
 	int iret=0;
-		double karm;
-		//check Arm mode
-		if(mode_arm>0){	//Arm Forward
-			karm = 1.0;
-		}else{			//Arm Backward
-			karm = -1.0;
-		}
-		th[1] = atan2(karm*py, karm*px);
-		iret=EvaluateAxisTheta(1, prev_theta, th, dth,  bCheckRange);
-		if(iret<0) return iret;
-		ndif++;
+	double karm;
+
+	//check Arm mode
+	if(mode_arm>0){	//Arm Forward
+		karm = 1.0;
+	}else{			//Arm Backward
+		karm = -1.0;
+	}
+	th[1] = atan2(karm*py, karm*px);
+	iret=EvaluateAxisTheta(1, prev_theta, th, dth,  bCheckRange);
+	if(iret<0) return iret;
+	ndif++;
 
 	//---------------------------------------------------
 	// th[3]
@@ -255,17 +256,19 @@ int Kinematics::CalcJointAngles6ByIKwithMode(
 					+d1*d1 -d4*d4 -2.0*( a1*(px*C1+py*S1) + d1*pz );
 	double denom1 =k2+k3;
 	double t=0.0;
-		// Normal solution
-		// (k2+k3)*t^2 -2*k1*t +(k3-k2) =0 Solve
-		double D  = k1*k1 + k2*k2 - k3*k3;
-		double rootD = sqrt(D);
-		///   Elbow Mode: Above(+1)/Below(-1)
-		if(mode_elbow>0){	//Above(+1)
-			t = (k1-rootD)/denom1;
-		}else{				//Below(-1)
-			t = (k1+rootD)/denom1;
-		}
-		th[3] = 2.0*atan(t);
+
+	// Normal solution
+	// (k2+k3)*t^2 -2*k1*t +(k3-k2) =0 Solve
+	double D  = k1*k1 + k2*k2 - k3*k3;
+	double rootD = sqrt(D);
+
+	///   Elbow Mode: Above(+1)/Below(-1)
+	if(mode_elbow>0){	//Above(+1)
+		t = (k1-rootD)/denom1;
+	}else{				//Below(-1)
+		t = (k1+rootD)/denom1;
+	}
+	th[3] = 2.0*atan(t);
 	iret = EvaluateAxisTheta(3, prev_theta, th, dth,  bCheckRange);
 	if(iret<0) return iret;
 	ndif++;
@@ -284,14 +287,14 @@ int Kinematics::CalcJointAngles6ByIKwithMode(
 	double myu2 = -nyu1;
 	double nyu2 =  myu1;
 	double gamma2 = -d1+pz;
-	//double denom2 = myu2*nyu1-myu1*nyu2;
 	double denom2 = -myu1*myu1-nyu1*nyu1;
-		double C2 =  (gamma2*nyu1-gamma1*nyu2)/denom2;
-		double S2 = -(gamma2*myu1-gamma1*myu2)/denom2;
-			th[2] = atan2(S2,C2);
-			iret=EvaluateAxisTheta(2, prev_theta, th, dth,  bCheckRange);
-			if(iret<0) return iret;
-			ndif++;
+	double C2 =  (gamma2*nyu1-gamma1*nyu2)/denom2;
+	double S2 = -(gamma2*myu1-gamma1*myu2)/denom2;
+
+	th[2] = atan2(S2,C2);
+	iret=EvaluateAxisTheta(2, prev_theta, th, dth,  bCheckRange);
+	if(iret<0) return iret;
+	ndif++;
 
 	//---------------------------------------------------
 	// th[5]
@@ -300,34 +303,37 @@ int Kinematics::CalcJointAngles6ByIKwithMode(
 	const double C23 = cos(th23);
 	const double S23 = sin(th23);
 	double C5 = -wz*C23+(wx*C1+wy*S1)*S23;
-		const double th5 = acos(C5);
-		double S5  = sqrt(1.0-C5*C5);
-		///    Wrist Mode: Up(+1)/Down(-1)
-		if(mode_wrist>0){
-			th[5] = th5;  //Wrist Up
-		}else{
-			th[5] = -th5; //Wrist Down
-			S5  = -S5;
-		}
-		iret=EvaluateAxisTheta(5, prev_theta, th, dth,  bCheckRange);
-		if(iret<0) return iret;
-		ndif++;
+	const double th5 = acos(C5);
+	double S5  = sqrt(1.0-C5*C5);
+
+	/// Wrist Mode: Up(+1)/Down(-1)
+	if(mode_wrist>0){
+		th[5] = th5;  //Wrist Up
+	}else{
+		th[5] = -th5; //Wrist Down
+		S5  = -S5;
+	}
+	iret=EvaluateAxisTheta(5, prev_theta, th, dth,  bCheckRange);
+	if(iret<0) return iret;
+	ndif++;
 
 	//---------------------------------------------------
 	// th[4],th[6]
 	//---------------------------------------------------
-		const double C4 = (wx*C1*C23+wy*C23*S1+wz*S23)/S5;
-		const double S4 = (-wy*C1+wx*S1)/S5;
-			th[4] = atan2(S4,C4);
-			iret=EvaluateAxisTheta(4, prev_theta, th, dth,  bCheckRange);
-			if(iret<0) return iret;
-			ndif++;
-		const double C6 =  ( uz*C23-(ux*C1+uy*S1)*S23)/S5;
-		const double S6 =  (-vz*C23+(vx*C1+vy*S1)*S23)/S5;
-			th[6] = atan2(S6,C6);
-			iret=EvaluateAxisTheta(6, prev_theta, th, dth,  bCheckRange);
-			if(iret<0) return iret;
-			ndif++;
+	const double C4 = (wx*C1*C23+wy*C23*S1+wz*S23)/S5;
+	const double S4 = (-wy*C1+wx*S1)/S5;
+	th[4] = atan2(S4,C4);
+	iret=EvaluateAxisTheta(4, prev_theta, th, dth,  bCheckRange);
+	if(iret<0) return iret;
+	ndif++;
+
+	const double C6 =  ( uz*C23-(ux*C1+uy*S1)*S23)/S5;
+	const double S6 =  (-vz*C23+(vx*C1+vy*S1)*S23)/S5;
+	th[6] = atan2(S6,C6);
+	iret=EvaluateAxisTheta(6, prev_theta, th, dth,  bCheckRange);
+	if(iret<0) return iret;
+	ndif++;
+
 	//--------------------------------
 	// Average angle calculation
 	double d_sum=0.0;

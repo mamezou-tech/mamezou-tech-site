@@ -2,7 +2,7 @@
 title: AWS AmplifyにNuxt3のSSRアプリをゼロコンフィグでデプロイする
 author: noboru-kudo
 date: 2023-11-22
-tags: [aws-amplify, nuxt, SSR, vue]
+tags: [aws-amplify, nuxt, SSR, AWS, vue]
 ---
 
 GAリリースから約1年経過してだいぶ成熟してきた感のあるNuxt3ですが、利用するアプリのタイプに応じてデプロイ方法が異なってきます。

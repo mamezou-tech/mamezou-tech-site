@@ -11,10 +11,6 @@ nextPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md
 [前回](/nuxt/nuxt3-rendering-mode/)はNuxtの基本的なレンダリングモードを説明しました。
 第2回は、実際に簡単なNuxtアプリケーションを作成し、Nuxt3の開発フローを見ていきます。
 
-:::info
-2023-05-10 コード例で使用していたVueのテンプレートの一部構文(Mustache)が、ページ生成時に別のテンプレート構文(Liquid)と判定され、消えていたのを修正しました。
-:::
-
 ## 事前準備
 
 まずは、`npx nuxi create sample-app`を実行し、Nuxtのプロジェクトを作成します。
@@ -155,9 +151,9 @@ Composition API自体の使い方は、本題ではありませんのでここ�
 - [Composition API FAQ](https://vuejs.org/guide/extras/composition-api-faq.html)
 
 もう一点気づくことは、上記はref()やuseRoute()等でimport文が記述されていません。これはNuxt3のAuto Importの仕組みを利用しているためです。
-Nuxt3では、Nuxt本体やVueの頻出APIはもちろん、自作のVueコンポーネント(`components`配下)、Composition APIのモジュール(`composables`/`utils`配下)では明示的なimport記述は不要です[^2]。
+Nuxt3では、Nuxt本体やVueの頻出APIはもちろん、自作のVueコンポーネント(`components`配下)、Composable(`composables`/`utils`配下)は明示的なimport記述は不要です[^2]。
 
-[^2]: IDEでコードアシストを使うには、Nuxtアプリを一度ビルドして、TypeScriptの型宣言ファイル(d.ts)を`.nuxt`ディレクトリに作成する必要があります。
+[^2]: `npx nuxt prepare`を実行すると、TypeScriptの型宣言ファイル(d.ts)が`.nuxt/types`ディレクトリに作成されて、IDEのコード補完が利用できるようになります。
 
 - [Nuxt3ドキュメント - Auto Imports](https://nuxt.com/docs/guide/concepts/auto-imports)
 

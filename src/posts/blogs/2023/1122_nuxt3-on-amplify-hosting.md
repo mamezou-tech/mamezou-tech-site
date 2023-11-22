@@ -122,7 +122,7 @@ Amplifyホスティング仕様の詳細は、公式ドキュメントを参照�
 サーバー(SSR)側のログはCloudWatchから確認できます。
 
 ![computed log](https://i.gyazo.com/7a6b736c9cf07b0cf2fb7161beea5c90.png)
-![cloudwatch logs](https://i.gyazo.com/c58c4c83c7250e0d9a6e93798eefe214.png)
+![cloudwatch logs](https://i.gyazo.com/066bdef2293fb02bec3fe2978bf15423.png)
 
 サーバー側はLambdaで動いているようですね。
 

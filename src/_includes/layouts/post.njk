@@ -31,7 +31,7 @@ layout: layouts/base.njk
       <div style="float: right">
         <div id="preact-sns"></div>
         <script type="module">
-          import { render } from '/js/preact/social_plugins.js';
+          import { render } from '/js/preact/social_plugins.client.js';
           render({url: '{{ meta.url }}', path: '{{ page.data.url }}'}, document.getElementById("preact-sns"));
         </script>
       </div>
@@ -108,7 +108,7 @@ layout: layouts/base.njk
     <div style="margin-top:0">
       <div id='recommendation-app'></div>
       <script type="module">
-        import { render } from '/js/preact/recommendation.js';
+        import { render } from '/js/preact/recommendation.client.js';
         render({tags : '{{ tags | pageTags }}'}, document.getElementById("recommendation-app"));
       </script>
     </div>
@@ -119,7 +119,7 @@ layout: layouts/base.njk
   {%- initClipboardJS %}
   {%- mermaidTag %}
   <script type="module">
-    import { render } from '/js/preact/toc.js';
+    import { render } from '/js/preact/toc.client.js';
     render(document.getElementById("toc"));
   </script>
 </main>

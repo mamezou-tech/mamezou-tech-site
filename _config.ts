@@ -78,7 +78,7 @@ const site = lume({
 }, { markdown });
 
 site.use(jsx());
-site.use(mdx())
+site.use(mdx());
 site.use(liquid());
 site.use(postcss());
 site.use(prism());
@@ -88,11 +88,17 @@ site.use(sitemap({
 }));
 site.use(codeClipboard());
 site.use(esbuild({
-  extensions: [".js", ".ts"],
+  extensions: [".js", ".ts", ".client.tsx"],
   options: {
     sourcemap: true,
     keepNames: true,
     minify: true,
+    tsconfigRaw: {
+      compilerOptions: {
+        jsx: "react-jsx",
+        jsxImportSource: "npm:preact",
+      },
+    },
   },
 }));
 

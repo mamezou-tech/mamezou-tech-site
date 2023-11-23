@@ -84,3 +84,8 @@ $tdbc-alignments: left, center, right !default;
 .tdbc-mb-none {
   margin-bottom: 0;
 }
+
+@keyframes fadeInAnimation {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}

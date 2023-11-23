@@ -1,10 +1,7 @@
-import htm from "npm:htm@^3.1.1";
-import { h, render as preactRender } from "npm:preact@^10.18.1";
+import { render as preactRender } from "npm:preact@^10.18.1";
 import { useEffect, useRef } from "npm:preact@^10.18.1/hooks";
 
-const html = htm.bind(h);
-
-function App({ url, path }: { url: string; path: string }) {
+function SocialPlugins({ url, path }: { url: string; path: string }) {
   const followList = useRef<HTMLElement>(null!);
 
   useEffect(() => {
@@ -25,18 +22,19 @@ function App({ url, path }: { url: string; path: string }) {
     script.nonce = "r6ZSti4e";
     const fbroot = document.querySelector("#fb-root"); // first element of body
     fbroot?.after(script);
-  });
+  }, []);
 
-  return html`
+  return (
     <div className="tdbc-social-plugins">
       <ul>
-        <li ref="${followList}" className="tdbc-twitter-follow">
+        <li ref={followList} className="tdbc-twitter-follow">
           <a
             href="https://twitter.com/MamezouDev?ref_src=twsrc%5Etfw"
             className="twitter-follow-button"
             data-show-count="false"
-          >Follow @MamezouDev</a
           >
+            Follow @MamezouDev
+          </a>
         </li>
         <li>
           <a
@@ -45,24 +43,26 @@ function App({ url, path }: { url: string; path: string }) {
             data-via="MamezouDev"
             data-hashtags="豆蔵デベロッパー"
             data-show-count="false"
-          >Tweet</a
           >
+            Tweet
+          </a>
         </li>
         <li className="tdbc-fb-recommend">
           <div
             className="fb-like"
-            data-href="${url + path}"
+            data-href={url + path}
             data-width=""
             data-layout="button_count"
             data-action="recommend"
             data-size="small"
             data-share="false"
-          ></div>
+          >
+          </div>
         </li>
         <li>
           <div
             className="fb-share-button"
-            data-href="${url + path}"
+            data-href={url + path}
             data-layout="button"
             data-size="small"
           >
@@ -70,12 +70,14 @@ function App({ url, path }: { url: string; path: string }) {
               target="_blank"
               href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
               className="fb-xfbml-parse-ignore"
-            >シェア</a
             >
+              シェア
+            </a>
           </div>
         </li>
       </ul>
-    </div>`;
+    </div>
+  );
 }
 
 export function render(
@@ -83,8 +85,7 @@ export function render(
   el: HTMLElement,
 ) {
   return preactRender(
-    html`
-    <${App} url="${url}" path="${path}" />`,
+    <SocialPlugins url={url} path={path} />,
     el,
   );
 }

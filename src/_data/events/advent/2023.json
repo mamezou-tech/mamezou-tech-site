@@ -20,7 +20,10 @@
     {},
     {},
     {
-      "date": "1"
+      "date": "1",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "Vuetify 3のデータテーブル正式リリースの話を書きまふ"
     },
     {
       "date": "4",

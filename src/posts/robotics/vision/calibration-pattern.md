@@ -22,10 +22,10 @@ OpenCVには標準で検出機能が備わっているキャリブレーショ�
 ステレオカメラを構築したり、画像検出したワークの姿勢をロボット座標に変換したい、といった用途では、外部パラメータの計測が必要になります。  
 
 内部パラメータやレンズの歪曲収差の計測には、キャリブレーションマーカーの格子点を使用します。  
-![marker-grid](/src/img/robotics/vision/calib-pattern-plate-grid.png)  
+<img src="/img/robotics/vision/calib-pattern-plate-grid.png" width="70%">
 
 外部パラメータの計測には、主にキャリブレーションマーカーの姿勢を使用します。  
-![marker-pose](/src/img/robotics/vision/calib-pattern-plate-pose.png)  
+<img src="/img/robotics/vision/calib-pattern-plate-pose.png" width="70%">
 
 計測したい内容によって、適切なキャリブレーションマーカーを選択する必要があります。  
 
@@ -33,15 +33,15 @@ OpenCVには標準で検出機能が備わっているキャリブレーショ�
 代表的なものは以下の4つです。
 - CheckerBoard  
 - CircleGrid  
-- ChArUco  
 - AsymmetryCircleGrid  
+- ChArUco  
 
 いずれのマーカーも[calib.io](https://calib.io/pages/camera-calibration-pattern-generator)にて自在なサイズで生成することが出来ます。  
 
 ## CheckerBoard
 格子模様のマーカーです。  
 ChessBoardとも呼ばれます。  
-![chess](/src/img/robotics/vision/calib-pattern-chess.png)  
+<img src="/img/robotics/vision/calib-pattern-chess.png" width="50%">
 
 ```
 マーカー仕様
@@ -52,16 +52,16 @@ ChessBoardとも呼ばれます。
 
 最も基本的で有名なキャリブレーションマーカーです。  
 内側の格子点がキャリブレーションに使用されます。  
-![chess-detect](/src/img/robotics/vision/calib-pattern-chess-detect.png)  
+![chess-detect](/img/robotics/vision/calib-pattern-chess-detect.png)
 OpenCVでは検出できた格子点をこのように描画できるので、視覚的にもわかりやすいです。  
 
 マーカーをカメラの光軸周りに回転させると姿勢が一意に定まらないので、姿勢検出には使用できません。  
-![chess-pose](/src/img/robotics/vision/calib-pattern-chess-pose.png)  
+![chess-pose](/img/robotics/vision/calib-pattern-chess-pose.png)  
 描画した座標軸に付きましては、X軸が赤、Y軸が緑、Z軸が青です。  
 
 ## CircleGrid
 格子状に並んだドットのマーカーです。  
-![circle-grid](/src/img/robotics/vision/calib-pattern-circle-grid.png)  
+<img src="/img/robotics/vision/calib-pattern-circle-grid.png" width="50%">
 
 ```
 マーカー仕様
@@ -72,17 +72,17 @@ OpenCVでは検出できた格子点をこのように描画できるので、�
 ```
 
 各サークルの重心点が格子点としてキャリブレーションに使用されます。  
-![circle-detect](/src/img/robotics/vision/calib-pattern-circle-detect.png)  
+![circle-detect](/img/robotics/vision/calib-pattern-circle-detect.png)  
 
-サークルドットがカメラに対して傾いた場合、ドットの円形状が楕円になるだけで各ドットの重心点の位置はほとんど変化しません。  
+マーカーがカメラに対して傾いた場合、サークルドットの形状が楕円になるだけで各ドットの重心点の位置はほとんど変化しません。  
 なのでChessBoardと比較してCircleGridの方が精度の良い検出ができると言われています。  
 
 こちらもマーカーをカメラの光軸周りに回転させると姿勢が一意に定まらないので、姿勢検出には使用できません。  
-![circle-pose](/src/img/robotics/vision/calib-pattern-circle-pose.png)  
+![circle-pose](/img/robotics/vision/calib-pattern-circle-pose.png)  
 
 ## Asymmetry-CircleGrid
 斜め格子状に並んだドットのマーカーです。  
-![asyme-circle-grid](/src/img/robotics/vision/calib-pattern-asym-circle-grid.png)  
+<img src="/img/robotics/vision/calib-pattern-asym-circle-grid.png" width="50%">
 
 ```
 マーカー仕様
@@ -93,14 +93,14 @@ OpenCVでは検出できた格子点をこのように描画できるので、�
 ```
 
 CircleGridとの違いは、マーカーが非対称なので姿勢が一意に定まる点です。  
-![asyme-circle-pose](/src/img/robotics/vision/calib-pattern-asym-circle-pose.png)  
+![asyme-circle-pose](/img/robotics/vision/calib-pattern-asym-circle-pose.png)  
 
-上記例は列数が9と奇数ですが、以下のように列数を偶数にしてしまうと点対称になり姿勢が一意に定まらないので注意が必要です。  
-![asyme-circle-grid](/src/img/robotics/vision/calib-pattern-asym-circle-grid88.png)  
+上記例は列数が9と奇数ですが、以下のように列数を偶数にしてしまうと点対称になり姿勢が一意に定まらないので注意が必要です。
+<img src="/img/robotics/vision/calib-pattern-asym-circle-grid88.png" width="50%">
 
 ## ChArUco
 CheckerBoardとArUcoマーカーを組み合わせたキャリブレーションマーカーです。  
-![charuco](/src/img/robotics/vision/calib-pattern-charuco.png)  
+<img src="/img/robotics/vision/calib-pattern-charuco.png" width="50%">
 
 ```
 マーカー仕様
@@ -111,20 +111,20 @@ CheckerBoardとArUcoマーカーを組み合わせたキャリブレーション
 ```
 
 通常のCheckerBoardとしての使用も可能ですが、最大の特徴は散りばめられたArUcoマーカーにあります。  
-通常のCheckerBoardでは姿勢が一意に定まりませんが、ArUcoマーカーを検出することにより姿勢が一意に定まります。  
-![charuco-pose](/src/img/robotics/vision/calib-pattern-charuco-pose.png)  
+通常のCheckerBoardでは姿勢が一意に定まりませんが、ChCrUcoではArUcoマーカーにより姿勢が一意に定まります。  
+![charuco-pose](/img/robotics/vision/calib-pattern-charuco-pose.png)  
 
-また検出されたArUcoマーカーにより、キャリブレーションマーカーの一部が隠れていてもマーカーを補間して姿勢推定が可能です。  
-![charuco-occlusion](/src/img/robotics/vision/calib-pattern-charuco-occlusion.png)  
+またキャリブレーションマーカーの一部が隠れていても、検出されたArUcoマーカーにより隠れを補間しての姿勢推定が可能です。  
+![charuco-occlusion](/img/robotics/vision/calib-pattern-charuco-occlusion.png)  
 
 カメラとロボットの外部パラメータを計測するときには、ロボットの先端にキャリブレーションマーカーを取り付けてカメラで撮影する手法を取ることがあります。  
 その時、ロボットアーム自体がカメラの視界の妨げとなりキャリブレーションマーカーの一部が隠れてしまうことがあるのですが、ChArUcoを用いればそのような場合でも問題なくキャリブレーションできるので重宝しています。  
 
-## まとめ
+## 各マーカー機能のまとめ
 
 各マーカーのキャリブレーション出来る項目についてまとめました。  
 
-|マーカー|内部パラメータ・歪み係数|外部パラメータ| 
+|マーカー|内部パラメータ・レンズの歪曲収差|外部パラメータ| 
 |:---:|:---:|:---:| 
 |CheckerBoard|◯|×| 
 |CircleGrid|◎|×| 

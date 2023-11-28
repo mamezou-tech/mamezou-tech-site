@@ -44,7 +44,10 @@
       "title": "何か書きまふ"
     },
     {
-      "date": "7"
+      "date": "7",
+      "author": "yasuhiko-nishio",
+      "githubUser": "nishio-ys",
+      "title": "いま改めて、セキュリティ・バイ・デザイン（SBD）を考える（仮）"
     },
     {
       "date": "8"

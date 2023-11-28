@@ -32,7 +32,10 @@
       "title": "何か書きまふ"
     },
     {
-      "date": "5"
+      "date": "5",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "テストのシフトライトをネタにしてみようと思いまふ"
     },
     {
       "date": "6",
@@ -47,7 +50,10 @@
       "date": "8"
     },
     {
-      "date": "11"
+      "date": "11",
+      "author": "kazuyuki-shiratani",
+      "githubUser": "k-shiratani",
+      "title": "UMTP L3を受けたまとめ"
     },
     {
       "date": "12",
@@ -89,7 +95,10 @@
       "date": "21"
     },
     {
-      "date": "22"
+      "date": "22",
+      "author": "shuji-morimoto",
+      "githubUser": "shuji-morimoto",
+      "title": "Vimネタ"
     },
     {
       "date": "25"

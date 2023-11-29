@@ -35,8 +35,11 @@ Assistants APIはこの状態管理をスレッドとしてやってくれます
 極力シンプルに必要最低限のサービスで構成しています。主要なロジックは2つのLambdaで実装ています。
 以降でそれぞれの詳細を見ていきます。
 
-ソースコード全体は[こちらTODO]()で公開しています（ソースコードが粗い点はご容赦ください）。
-もし試してみる場合は、OpenAIの課金はそれなり(?)に発生しますのでご注意ください。課金の上限設定をきちんとしておくことをお勧めします。
+ソースコード全体は以下レポジトリで公開しています（ソースコードが粗い点はご容赦ください）。
+
+- <https://github.com/mamezou-tech/slack-github-review-gptbot/>
+
+試してみる場合は、OpenAIの課金はそれなりに発生しますのでご注意ください。課金の上限設定(Usage Limit)をきちんとしておくことを強くお勧めします。
 
 # イベントコールバック(callback)
 
@@ -47,7 +50,7 @@ Assistants APIはこの状態管理をスレッドとしてやってくれます
 
 [^1]: <https://api.slack.com/apis/connections/events-api#responding>
 
-イベントコールバックのソースコードは[functions/callback.tsTODO]()です。以下抜粋です。
+イベントコールバックのソースコードは[functions/callback.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/callback.ts)です。以下抜粋です。
 
 ```typescript
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -156,7 +159,7 @@ sequenceDiagram
 
 ## Lambdaイベントハンドラ
 
-ソースコードは[api-invoker.tsTODO]()です。
+ソースコードは[functions/api-invoker.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/api-invoker.ts)です。
 
 ```typescript
 export const handler: Handler = async (event: LambdaEvent) => {
@@ -194,7 +197,7 @@ export const handler: Handler = async (event: LambdaEvent) => {
 };
 ```
 
-ここはシンプルです。コールバックAPIからのイベントを受け取り、別モジュールで用意したチャットモジュール(chat.ts)に渡しています。
+ここはシンプルです。コールバックAPIからのイベントを受け取り、別モジュールで用意したAssistants APIとやりとりする[chat.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/chat.ts)に移譲しています。
 ここで必要なやりとりが実行されて、その結果をSlackにスレッド返信として投稿します(`thread_ts`を指定)。
 
 以降はchat.ts内部の処理です。
@@ -403,7 +406,7 @@ Slackのスレッドのタイムスタンプ(threadTs)をキーに、既存のAs
 既存のスレッドがない場合は、新規のスレッドを作成し、その紐付け情報をDynamoDBに保存します。
 
 新規でスレッドを作成する場合は、Slack Web APIを使ってSlack側のスレッド(またはチャンネル)からメッセージを取得してSlackで保持する会話文脈を維持するようにしています。
-この部分は本題ではありませんので、ソースコード掲載は省略します。[こちらTODO]()から参照できます。
+この部分は本題ではありませんので、ソースコード掲載は省略します。[こちら](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/chat.ts#L202)から参照できます。
 
 ## Function calling
 
@@ -444,8 +447,8 @@ async function callFunctions(chain: OpenAI.Beta.Threads.Runs.RequiredActionFunct
 ここでは実行要求のあった関数を並列に実行し、その結果をまとめて`threads.runs.submitToolOutputs`で連携しています。
 これでスレッドの実行ステータスは`in_progress`へと戻りポーリング処理が再開します。ここでアシスタントは再度関数を実行するのかGPTから結果を取得するのかを判断することになります。
 
-なお、Function callingで実行する関数はGitHub APIの仕様に従って定義しています。
-ソースコードは[こちらTODOgithub.ts]()になります。ここで関数本体(`functions`)とJSONスキーマを実装しています(
+なお、Function callingで実行する関数群はGitHub APIの仕様に従って定義しています。
+ソースコードは[こちら](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/github.ts)です。ここで関数本体(`functions`)とJSONスキーマを実装しています(
 JSONスキーマはアシスタント生成時に設定しています)。
 関数はシステムメッセージとしてトークン課金の対象となりますので、[GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28)から利用するAPIを取捨選択しています。
 同様に、実行結果の連携(submitToolOutputs)も、GitHub APIのレスポンス全てをそのまま連携せずに、必要な項目を取捨選択するのが望ましいと思います。
@@ -454,13 +457,13 @@ JSONスキーマはアシスタント生成時に設定しています)。
 Function callingは、以下記事で紹介していますので詳細な説明は省略しています。
 
 - [OpenAIのChat APIに追加されたFunction callingを使ってみる](/blogs/2023/06/14/gpt-function-calling-intro/)
-  :::
+:::
 
 # アプリをデプロイする(AWS CDK)
 
 アプリのデプロイはAWS CDKを使います。プロジェクトルート直下の`cdk`ディレクトリにCDKプロジェクトを作成しました。
 
-本題ではありませんので全ソースコードの掲載は省略しますが、[cdk/lib/csk-stack.tsTODO]()より内容が確認できます。
+本題ではありませんので全ソースコードの掲載は省略しますが、[cdk/lib/csk-stack.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/cdk/lib/cdk-stack.ts)より内容が確認できます。
 Lambda自体やIAMロール、DynamoDBテーブルの構成を定義しています。
 
 Lambda関数は以下です。
@@ -607,7 +610,7 @@ GitHub Appの作成も公式ドキュメントの通りにセットアップす�
 作成後はApp ID、プライベートキーを控えておきます。
 いずれもGitHub APIのアクセスで使用しています[^5]。
 
-[^5]: 本題からずれるので本記事では触れていませんが、先程取得したプライベートキーで認証をしています。ソースコードは[github.tsTODO]()です。
+[^5]: 本題からずれるので本記事では触れていませんが、先程取得したプライベートキーで認証をしています。ソースコードは[こちら](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/github.ts#L6)です。
 
 ![GitHub App - App ID](https://i.gyazo.com/0d6ff04488bfee48ad843fc2cf50a983.png)
 
@@ -671,10 +674,10 @@ GitHubのUIでは以下のようになっていました。
 
 ![](https://i.gyazo.com/2a58d9b42114faeae07155f411bb66b8.png)
 
-きちんとレビューコメント書いてくれましたが、指摘した行が残念な感じになってしまいました。
-Function callingの説明をもう少しチューニングした方がいいかもしれませんね。
+いい感じにレビューコメントは書いてくれましたが、見当違いの行を指摘してしまいました。
+Function callingでレビューコメント生成APIの説明をもう少しチューニングした方が良さそうですね。
 
-レビューコメントを修正したので承認します。
+レビューコメントを修正したのでレビューを承認します。
 
 ![](https://i.gyazo.com/a5827bb6affd8d2b40d787d287902776.png)
 

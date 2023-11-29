@@ -6,7 +6,7 @@ tags: [ OpenAI, GPT, GitHub, lambda, aws-cdk, AWS, slack, advent2023 ]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
 ---
 
-これは、[豆蔵デベロッパーサイトアドベントカレンダー2023](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第4日目の記事です。
+これは、[豆蔵デベロッパーサイトアドベントカレンダー2023](https://developer.mamezou-tech.com/events/advent-calendar/2023/)第4日目の記事です。
 
 前に以下の記事でOpenAIのAssistants APIの紹介と簡単なCLIベースのチャットツールを作成しました。
 

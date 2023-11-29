@@ -24,7 +24,7 @@ Assistants APIはこの状態管理をスレッドとしてやってくれます
 
 ![](https://i.gyazo.com/a7c95ee890b0d2367adbe63f7181c0e2.png)
 
-本当に効率的になるなのかどうかはさておき、レビューをするのが楽しくなりますね！
+本当にレビューが捗るのかはさておき、レビューをするのが楽しくなりますね！
 
 # 全体のシステム構成
 
@@ -46,7 +46,7 @@ Assistants APIはこの状態管理をスレッドとしてやってくれます
 まずは1つ目のLambdaです。このLambdaはSlack App(ボット)のコールバックAPIの実装です。Slack Appへのメンション(`app_mentions`イベント)に反応して呼び出されます。
 このAPI自体に重要な実装はありません。後続のアシスタントAPI実行Lambda(api-invoker)を非同期で実行し、すぐに成功レスポンスをSlackに返却します。
 
-ここでAssistant APIを直接呼ばない理由は、Slack Appは3秒以内に成功レスポンスを返す必要があるからです[^1]。ここでAssistants APIとやりとりを実装してしまうと、Slack側でコールバックが失敗したと見做されてリトライが発生してしまいます。
+ここでAssistant APIを直接呼ばない理由は、Slack Appは3秒以内に成功レスポンスを返す必要があるからです[^1]。ここでAssistants APIとやりとりしてしまうと、Slack側でコールバックが失敗したと見做されてリトライが発生する可能性が高くなります。
 
 [^1]: <https://api.slack.com/apis/connections/events-api#responding>
 
@@ -101,9 +101,9 @@ Slackのメンションイベントについての詳細は以下公式ドキュ
 
 - [Slack API Doc - Event Type - app_mention](https://api.slack.com/events/app_mention)
 
-ソースコードを見ると分かりますが、イベントコールバック以外に`url_verification`というURL検証リクエストもここで実施しています。
-Slack AppにコールバックURLを設定する際に、Slack側でそのURLを検証するリクエストを発行します。
-その際にこのURL検証リクエストのレスポンスに`challenge`を返す必要があります。
+ソースコードを見ると分かりますが、通常のイベントコールバック以外に`url_verification`タイプのリクエストもここで処理しています。
+これはSlackのURL検証リクエストに対応するものです。後述しますが、Slack AppにコールバックURLを設定する際に、Slack側でそのURLを検証するリクエストを発行します。
+この検証を成功させるには、そのレスポンスとしてリクエストに含まれる`challenge`を返す必要があります。
 詳細は以下ドキュメントを参照してください。
 
 - [Slack API Doc - Using the Slack Events API - Request URL configuration and verification ](https://api.slack.com/apis/connections/events-api#verification)
@@ -111,12 +111,9 @@ Slack AppにコールバックURLを設定する際に、Slack側でそのURLを
 # アシスタントAPI実行(api-invoker)
 
 後半部分です。ここは少し複雑です。
-このLambda関数はAssistants APIのスレッドを通してGPTとやりとりをします。その結果はSlack Web
-APIのpostMessageを通してSlackスレッドに投稿されます。
-Assistants APIとの会話の中で関数呼び出し(Function calling)要求があれば、要求された関数を通してGitHub APIを実行します。
-関数を呼ぶのかGPTと会話するのかはAssistants APIのアシスタントに委ねられます。
-
-なお、SlackとAssistants APIのスレッド状態はDynamoDBに保存され、2回目以降は再利用されます。
+このLambda関数はアシスタントとスレッドを通してGPTとやりとりをします。その結果はSlack Web APIの[postMessage](https://api.slack.com/methods/chat.postMessage)を通してSlackスレッドに投稿されます。
+この中でアシスタントから関数呼び出し(Function calling)の要求があれば、指定された関数/引数でGitHub APIを実行してその結果を連携します。
+関数を呼ぶのかGPTからレスポンスを取得するのかはアシスタントの判断(Assistants API)に委ねられます。
 
 全体のシーケンスは以下のようになります。
 
@@ -155,11 +152,11 @@ sequenceDiagram
     I ->> S: 応答メッセージ投稿
 ```
 
-ソースコードもそこそこあるので、分割して重要な部分を抜粋したいと思います。
+ソースコードもそこそこあるので、重要な部分を抜粋して掲載したいと思います。
 
 ## Lambdaイベントハンドラ
 
-ソースコードは[functions/api-invoker.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/api-invoker.ts)です。
+Lambdaのエントリーポイントとなる関数です。ソースコードは[functions/api-invoker.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/api-invoker.ts)です。
 
 ```typescript
 export const handler: Handler = async (event: LambdaEvent) => {
@@ -197,15 +194,14 @@ export const handler: Handler = async (event: LambdaEvent) => {
 };
 ```
 
-ここはシンプルです。コールバックAPIからのイベントを受け取り、別モジュールで用意したAssistants APIとやりとりする[chat.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/chat.ts)に移譲しています。
+ここはシンプルです。コールバックAPIからSlack投稿内容を受け取り、別モジュールで用意したAssistants APIとやりとりする[chat.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/chat.ts)に移譲しています。
 ここで必要なやりとりが実行されて、その結果をSlackにスレッド返信として投稿します(`thread_ts`を指定)。
 
 以降はchat.ts内部の処理です。
 
 ## アシスタントとの会話
 
-api-invokerから呼び出されるモジュールです。
-chat関数がメイン処理です。
+Assistants APIとのやりとりのメイン処理です(chat関数)。
 
 ```typescript
 export async function chat(event: LambdaEvent, slackClient: WebClient): Promise<string[]> {
@@ -348,7 +344,7 @@ export async function getParameter(name: keyof typeof parameterNames): Promise<s
 Lambda拡張の詳細は公式ドキュメントを参照してください。
 
 - [AWS SSM Doc - Using Parameter Store parameters in AWS Lambda functions](https://docs.aws.amazon.com/systems-manager/latest/userguide/ps-integration-lambda-extensions.html)
-  :::
+:::
 
 ## スレッド生成
 

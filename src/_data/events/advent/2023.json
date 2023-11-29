@@ -20,7 +20,10 @@
     {},
     {},
     {
-      "date": "1"
+      "date": "1",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "Vuetify 3のデータテーブル正式リリースの話を書きまふ"
     },
     {
       "date": "4",
@@ -29,7 +32,10 @@
       "title": "何か書きまふ"
     },
     {
-      "date": "5"
+      "date": "5",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "テストのシフトライトをネタにしてみようと思いまふ"
     },
     {
       "date": "6",
@@ -38,13 +44,19 @@
       "title": "何か書きまふ"
     },
     {
-      "date": "7"
+      "date": "7",
+      "author": "yasuhiko-nishio",
+      "githubUser": "nishio-ys",
+      "title": "いま改めて、セキュリティ・バイ・デザイン（SBD）を考える（仮）"
     },
     {
       "date": "8"
     },
     {
-      "date": "11"
+      "date": "11",
+      "author": "kazuyuki-shiratani",
+      "githubUser": "k-shiratani",
+      "title": "UMTP L3を受けたまとめ"
     },
     {
       "date": "12",
@@ -62,7 +74,10 @@
       "title": "AWS Lambda に関連したことを書きます"
     },
     {
-      "date": "15"
+      "date": "15",
+      "author": "misato-kamei",
+      "githubUser": "misato-kamei",
+      "title": "(仮)駆け出しスクラムマスター Level1"
     },
     {
       "date": "18",
@@ -86,7 +101,10 @@
       "date": "21"
     },
     {
-      "date": "22"
+      "date": "22",
+      "author": "shuji-morimoto",
+      "githubUser": "shuji-morimoto",
+      "title": "Vimネタ"
     },
     {
       "date": "25"

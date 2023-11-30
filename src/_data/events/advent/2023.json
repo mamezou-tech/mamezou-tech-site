@@ -29,7 +29,7 @@
       "date": "4",
       "author": "toshio-ogiwara",
       "githubUser": "ogiwarat",
-      "title": "何か書きまふ"
+      "title": "サンプルで解説する CDI 4.0 Lite BuildCompatibleExtension"
     },
     {
       "date": "5",
@@ -41,7 +41,7 @@
       "date": "6",
       "author": "noboru-kudo",
       "githubUser": "kudoh",
-      "title": "何か書きまふ"
+      "title": "SlackとOpenAI Assistants APIでGitHubのPRレビューを効率化する"
     },
     {
       "date": "7",
@@ -50,7 +50,10 @@
       "title": "いま改めて、セキュリティ・バイ・デザイン（SBD）を考える（仮）"
     },
     {
-      "date": "8"
+      "date": "8",
+      "author": "uno",
+      "githubUser": "mz-uno",
+      "title": "うーんネタ悩み中ですが、はい、なんか書きます。"
     },
     {
       "date": "11",
@@ -65,7 +68,10 @@
       "title": "vscodeのdevcontainer x Jupyter Notebookの導入で困ったことについて書こうと思います（仮）"
     },
     {
-      "date": "13"
+      "date": "13",
+      "author": "yuta-nagayoshi",
+      "githubUser": "mame-nagayoshi",
+      "title": "何か書きまふ"
     },
     {
       "date": "14",
@@ -98,7 +104,10 @@
       "title": "何か書きまふ"
     },
     {
-      "date": "21"
+      "date": "21",
+      "author": "kohei-tsukano",
+      "githubUser": "KoheiTsukano",
+      "title": "Vue2→Vue3移行の話(Vuetify、Vuelidateなど）で書きます"
     },
     {
       "date": "22",
@@ -107,7 +116,10 @@
       "title": "Vimネタ"
     },
     {
-      "date": "25"
+      "date": "25",
+      "author": "ryo-nakagaito",
+      "githubUser": "Nakagaito-Ryo",
+      "title": "何か書きます。"
     }
   ]
 }

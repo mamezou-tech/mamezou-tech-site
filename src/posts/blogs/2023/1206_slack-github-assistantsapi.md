@@ -12,11 +12,10 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 - [OpenAIのAssistants API(ベータ版)を試す](/blogs/2023/11/08/openai-assistants-api-intro/)
 
-今回せっかくのアドベントカレンダー記事なので、これをもう少し実用的に発展させて、Slack上でAssistants
-APIを使ってGPTとチャットできるようにしてみたいと思います。
+今回せっかくのアドベントカレンダー記事なので、これをもう少し実用的に発展させて、Slack上でAssistants APIを使ってGPTとチャットできるようにしてみたいと思います。
 
 もちろんこのタイプのアプリはChat Completion APIだけでもできますが、会話の文脈を自前で管理する実装は手間でした。
-Assistants APIはこの状態管理をスレッドとしてやってくれますでので、自然な会話がより簡単に実装できるようなりました。
+Assistants APIはこの状態管理をスレッドとしてやってくれますでので、自然な会話がより簡単に実装できるようになりました。
 
 チャットだけではつまらないので、今回はFunction callingを組み合わせてチャットボットがレビューアーに代わってプルリクエスト操作もしてくれるようにしたいと思います。
 これはAIがコードレビューに参加してくれたらレビューが捗りそうというとても安易な発想ですw
@@ -32,10 +31,10 @@ Assistants APIはこの状態管理をスレッドとしてやってくれます
 
 ![architecture](https://i.gyazo.com/9761d45aa58cb7f3c05465c1e6880ddd.png)
 
-極力シンプルに必要最低限のサービスで構成しています。主要なロジックは2つのLambdaで実装ています。
+極力シンプルに必要最低限のサービスで構成しています。主要なロジックは2つのLambdaで実装しています。
 以降でそれぞれの詳細を見ていきます。
 
-ソースコード全体は以下レポジトリで公開しています（ソースコードが粗い点はご容赦ください）。
+ソースコード全体は以下レポジトリで公開しています（コードが粗い点はご容赦ください）。
 
 - <https://github.com/mamezou-tech/slack-github-review-gptbot/>
 
@@ -46,7 +45,7 @@ Assistants APIはこの状態管理をスレッドとしてやってくれます
 まずは1つ目のLambdaです。このLambdaはSlack App(ボット)のコールバックAPIの実装です。Slack Appへのメンション(`app_mentions`イベント)に反応して呼び出されます。
 このAPI自体に重要な実装はありません。後続のアシスタントAPI実行Lambda(api-invoker)を非同期で実行し、すぐに成功レスポンスをSlackに返却します。
 
-ここでAssistant APIを直接呼ばない理由は、Slack Appは3秒以内に成功レスポンスを返す必要があるからです[^1]。ここでAssistants APIとやりとりしてしまうと、Slack側でコールバックが失敗したと見做されてリトライが発生する可能性が高くなります。
+ここでAssistants APIを直接呼ばない理由は、Slack Appは3秒以内に成功レスポンスを返す必要があるからです[^1]。ここでAssistants APIとやりとりしてしまうと、Slack側でコールバックが失敗したと見做されてリトライが発生する可能性が高くなります。
 
 [^1]: <https://api.slack.com/apis/connections/events-api#responding>
 
@@ -92,8 +91,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 };
 ```
 
-`lambdaClient.send`の部分が後続のLambda関数の実行部分です。ここで必要な情報をJSONに変換して連携しています。
-この時に`InvocationType`を`Event`にして同期型ではなく非同期で実行して[^2]、Slackにすぐに200レスポンスを返すようにしています。
+`lambdaClient.send`の部分が後続Lambdaの実行部分です。ここで必要な情報をJSONに変換して連携しています。
+この時に`InvocationType`を`Event`にして非同期で実行して[^2]、Slackにすぐに200レスポンスを返すようにしています。
 
 [^2]: 先進的なエラーハンドリングやバッチ実行等のAWSの非同期機能を最大限に使いたい場合は、SQSに置き換えると良いかと思います。
 
@@ -111,7 +110,7 @@ Slackのメンションイベントについての詳細は以下公式ドキュ
 # アシスタントAPI実行(api-invoker)
 
 後半部分です。ここは少し複雑です。
-このLambda関数はアシスタントとスレッドを通してGPTとやりとりをします。その結果はSlack Web APIの[postMessage](https://api.slack.com/methods/chat.postMessage)を通してSlackスレッドに投稿されます。
+このLambda関数はアシスタントとスレッドを通してGPTとやりとりをします。その結果はSlack Web APIの[postMessage](https://api.slack.com/methods/chat.postMessage)を通してSlackに投稿されます。
 この中でアシスタントから関数呼び出し(Function calling)の要求があれば、指定された関数/引数でGitHub APIを実行してその結果を連携します。
 関数を呼ぶのかGPTからレスポンスを取得するのかはアシスタントの判断(Assistants API)に委ねられます。
 
@@ -273,6 +272,8 @@ Assistants APIのお作法通りです。アシスタント、スレッドを作
 完了後はスレッドのメッセージを取得して返却します(結果Slackに投稿)。
 この辺りの手順は[前回の記事](/blogs/2023/11/08/openai-assistants-api-intro/)でも触れていますので、そちらをご参考いただければと思います。
 
+以降でここで呼んでいるプライベート関数の概要を説明します。
+
 ## アシスタント生成
 
 アシスタント生成・取得関数(createOrGetAssistant)です。
@@ -394,7 +395,7 @@ async function createOrGetThread(event: LambdaEvent, threadTs: string, opts: {
 ```
 
 Assistants APIで会話スレッド(メッセージ履歴)は、スレッドIDをキーに保持されます。
-このため、クライアント側でメッセージ履歴は管理する必要がありませんが、Assistants APIとSlackのスレッドとの紐付け状態を保持しておく必要があります。ここではその紐付けにDynamoDBを使っています。
+クライアント側でメッセージ履歴は管理する必要がありませんが、Assistants APIとSlackのスレッドとの紐付け状態を保持しておく必要があります。ここではその紐付けにDynamoDBを使っています。
 Slackのスレッドのタイムスタンプ(threadTs)をキーに、既存のAssistants APIのスレッドがある場合はOpenAIからスレッドを取得します。
 
 既存のスレッドがない場合は、新規のスレッドを作成し、その紐付け情報をDynamoDBに保存します。
@@ -406,13 +407,11 @@ Slackのスレッドのタイムスタンプ(threadTs)をキーに、既存のAs
 
 GitHub APIを実行する関数です(callFunctions関数)。
 
-Assistants APIのアシスタントは、Function callingが指定されている場合、会話の内容から関数実行有無を判定します。
-クライアント側で関数実行が必要な場合は、スレッド実行後のポーリング中にステータスが`requires_action`に変わり、実行する関数名とその引数が連携されます。
-ここで指定された関数を実行して、その結果を再度アシスタントに返す必要があります。
+この関数はクライアント側で関数実行が必要と判定された場合(ステータスが`requires_action`に変わった)に実行されます。
+ここでは指定されたGitHub APIを実行して、その結果をアシスタントに連携します。
 
 [前回の記事](/blogs/2023/11/08/openai-assistants-api-intro/)では、このFunction calling部分は関数を実行した体にして固定値を返していました。
-今回はここも重要な機能の一部です。GitHub APIを実行してプルリクエストの取得やレビュー等のGitHub操作をします。
-この部分は以下のような実装にしました。
+今回はここも重要な機能の一部です。以下の実装にしました。
 
 ```typescript
 async function callFunctions(chain: OpenAI.Beta.Threads.Runs.RequiredActionFunctionToolCall[], threadId: string, runId: string, openai: OpenAI) {
@@ -444,10 +443,9 @@ async function callFunctions(chain: OpenAI.Beta.Threads.Runs.RequiredActionFunct
 これでスレッドの実行ステータスは`in_progress`へと戻りポーリング処理が再開します。ここでアシスタントは再度関数を実行するのかGPTから結果を取得するのかを判断することになります。
 
 なお、Function callingで実行する関数群はGitHub APIの仕様に従って定義しています。
-ソースコードは[こちら](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/github.ts)です。ここで関数本体(`functions`)とJSONスキーマを実装しています(
-JSONスキーマはアシスタント生成時に設定しています)。
+ソースコードは[こちら](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/github.ts)です。ここで関数本体(`functions`)とJSONスキーマを実装しています(このスキーマはアシスタント生成時に設定しています)。
 関数はシステムメッセージとしてトークン課金の対象となりますので、[GitHub API](https://docs.github.com/en/rest?apiVersion=2022-11-28)から利用するAPIを取捨選択しています。
-同様に、実行結果の連携(submitToolOutputs)も、GitHub APIのレスポンス全てをそのまま連携せずに、必要な項目を取捨選択するのが望ましいと思います。
+同様に、実行結果の連携(submitToolOutputs)もGitHub APIのレスポンス全てではなく、必要な項目を取捨選択しています。
 
 :::info
 Function callingは、以下記事で紹介していますので詳細な説明は省略しています。
@@ -460,7 +458,7 @@ Function callingは、以下記事で紹介していますので詳細な説明�
 アプリのデプロイはAWS CDKを使います。プロジェクトルート直下の`cdk`ディレクトリにCDKプロジェクトを作成しました。
 
 本題ではありませんので全ソースコードの掲載は省略しますが、[cdk/lib/csk-stack.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/cdk/lib/cdk-stack.ts)より内容が確認できます。
-Lambda自体やIAMロール、DynamoDBテーブルの構成を定義しています。
+Lambda自体や適用するIAMロール、DynamoDBテーブルの構成を定義しています。
 
 Lambda関数の定義は以下です。
 

@@ -561,7 +561,16 @@ AWS側の準備ができてきましたので、関連システム側をセッ�
 
 以下必要事項のみ説明します。
 
-**OAuth & Permissions**
+### Event Subscriptions
+
+コールバックURLには、先ほど控えたコールバックAPIのFunction URLを設定します。入力するとSlackが自動でURLの検証を開始します。
+検証に失敗した場合は、`url_verification`タイプのイベント処理に失敗している可能性があります。
+
+サブスクライブするボットイベントには`app_mention`を選択します。これでSlack Appがメンションされると[イベントコールバック](#イベントコールバックcallback)APIが呼ばれるようになります。
+
+![slack apps - event subscription](https://i.gyazo.com/321bdcfb9a8c5db368965401f7f1776c.png)
+
+### OAuth & Permissions
 
 パーミッションは以下を選択します。
 
@@ -574,15 +583,6 @@ AWS側の準備ができてきましたので、関連システム側をセッ�
 また、以下ボットトークンはSlack APIアクセス時に必要なので控えておきます。
 
 ![slack apps - OAuth](https://i.gyazo.com/c4844499d76cdcb59eb39bb19b41ebd3.png)
-
-**Event Subscriptions**
-
-コールバックURLには、先ほど控えたコールバックAPIのFunction URLを設定します。入力するとSlackが自動でURLの検証を開始します。
-検証に失敗した場合は、`url_verification`タイプのイベント処理に失敗している可能性があります。
-
-サブスクライブするボットイベントには`app_mention`を選択します。これでSlack Appがメンションされると[イベントコールバック](#イベントコールバックcallback)APIが呼ばれるようになります。
-
-![slack apps - event subscription](https://i.gyazo.com/321bdcfb9a8c5db368965401f7f1776c.png)
 
 最後に作成したSlack Appを利用するワークスペースにインストールしておきます。
 

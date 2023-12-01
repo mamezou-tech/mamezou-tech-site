@@ -13,12 +13,6 @@ Vuetify は Vue ベースの UI コンポーネント集です。デザインセ
 
 [Vuetify — A Vue Component Framework](https://vuetifyjs.com/)
 
-:::info
-みんな大好き ChatGPT の UI も Vue と Vuetify (と Nuxt)で作られているそうです。
-
-[ChatGPT UI - Web Client for ChatGPT - Made with Vue.js](https://madewithvuejs.com/chatgpt-ui)
-:::
-
 Vuetify 3が正式リリースされてから1年経ちますが、VDataIterator、VDataTable などのコンポーネントはずっと labs という実験的ライブラリとして提供されていました。Vuetify 2でこれらのコンポーネントを多用しているプロジェクトは移行が難しかったのではないでしょうか。11月にこれらのコンポーネントが含まれた待望の v3.4.0 がリリースされました。
 
 [Release v3.4.0 · vuetifyjs/vuetify](https://github.com/vuetifyjs/vuetify/releases/tag/v3.4.0)

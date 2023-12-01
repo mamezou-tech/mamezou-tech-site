@@ -1,7 +1,7 @@
 ---
 title: ロボットマニピュレータ制御のアルゴリズム
 author: takahiro-ishii
-date: 2023-11-16
+date: 2023-12-01
 tags: [ロボット, マニピュレータ, アルゴリズム, 軌跡生成, ROS, 逆運動学, ヤコビ行列, 同次行列]
 ---
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">

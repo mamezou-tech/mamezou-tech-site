@@ -465,7 +465,7 @@ Lambda関数の定義は以下です。
 ```typescript
 // ①コールバックAPI(callback)
 const callback = new NodejsFunction(this, 'SlackEventCallbackFunction', {
-  role: gatewayRole,
+  role: callbackRole,
   functionName: `${this.stackName}-callback`,
   description: 'Slack event callback entry point',
   entry: '../functions/callback.ts',

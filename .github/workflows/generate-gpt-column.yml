@@ -72,4 +72,4 @@ jobs:
           source_branch: ${{ steps.create-gpt-branch.outputs.branch }}
           pr_title: "Update GPT column by github-actions"
           pr_reviewer: kudoh
-          pr_body: "Check the GPT generated column."
+          pr_body: "@mameka Check the GPT generated column."

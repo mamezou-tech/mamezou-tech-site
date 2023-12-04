@@ -6,7 +6,7 @@ tags: [msa, mp, java, "逆張りのMicroProfile", advent2023]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
 ---
 
-これは[豆蔵デベロッパーサイトアドベントカレンダー2023](/events/advent-calendar/2023/)第2日目の記事です。
+これは[豆蔵デベロッパーサイトアドベントカレンダー2023](/events/advent-calendar/2023/)第4日目の記事です。
 
 JakartaEE 10がリリースされてから1年が経ちますが、JakartaEE 10から導入されたCDI 4.0 Liteの[Build compatible extensions](https://jakarta.ee/specifications/cdi/4.0/jakarta-cdi-spec-4.0#spi_lite)に関する情報は未だにほぼ皆無といっていい状況です。[公式のSpecification](https://jakarta.ee/specifications/cdi/4.0/jakarta-cdi-spec-4.0#spi_lite)を見てもクラス名やメソッド名を言い直しただけのような簡素な説明で、実際にどのように使えばよいのか？そして以前からあった[Portable extensions](https://jakarta.ee/specifications/cdi/4.0/jakarta-cdi-spec-4.0#spi_full)となにが違うのかも理解できませんでした。
 
@@ -296,7 +296,7 @@ public void rememberProcessors(BeanInfo bean) { ...(2)
 }
 ```
 
-1. CDIコンテナへ登録されたことをを監視したいBeanクラスを`types`属性で指定します。`Enhancement`フェーズと同様に`Registration`アノテーションで指定された型に合致するする分だけコールバックが掛かります。今回のサンプルではMyProcessorクラスとAnotherProcessorクラスとの2つが該当します
+1. CDIコンテナへ登録されたことを監視したいBeanクラスを`types`属性で指定します。`Enhancement`フェーズと同様に`Registration`アノテーションで指定された型に合致するする分だけコールバックが掛かります。今回のサンプルではMyProcessorクラスとAnotherProcessorクラスとの2つが該当します
 2. コールバック対象となっているCDI Beanの情報がBeanInfoの引数に設定され呼び出されます
 3. 今回のサンプルは後続のSynthesisフェーズで`@Important`が付いているProcessorのBeanクラスを確認できるように`Processor`型のBeanクラスの情報(`ClassInfo`)をフィールドのSetに貯めています。なお`BuildCompatibleExtension`のインスタンスは実装クラスごとに1つであることがCDIコンテナにより保証されます
 
@@ -338,7 +338,7 @@ public void validateProcessors(Messages msg) {
 }
 ```
 
-1. 引数で渡されたMessageインスタンスに対してerrorメソッドを呼び出すことでデプロイ処理を失敗されることができます。サンプルでは`Processor`型のBeanクラスが１つもCDIコンテナに登録されなかった場合にデプロイ処理を失敗するようにしています。
+1. 引数で渡されたMessageインスタンスに対してerrorメソッドを呼び出すことでデプロイ処理を失敗させることができます。サンプルでは`Processor`型のBeanクラスが１つもCDIコンテナに登録されなかった場合にデプロイ処理を失敗するようにしています。
 
 ::: column: MicroProfile 6.0からはBuild compatible extensionsが標準
 MicroProfile 6.0からJakarta EEの必須サポートがJakarta EE 10のCore Profileとなりました。

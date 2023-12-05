@@ -81,11 +81,9 @@ public interface ImportantClassChecker {
 ```java
 public class ImportantClassCheckerImpl implements ImportantClassChecker {
     private final Set<String> importantClasses;
-
     public ImportantClassCheckerImpl(Set<String> importantClasses) {
         this.importantClasses = importantClasses;
     }
-
     @Override
     public boolean isImportant(Class<?> clazz) {
         return importantClasses.contains(clazz.getName());
@@ -226,7 +224,7 @@ public void discoverFrameworkClasses(ScannedClasses scan) {
 
 1. `sample.app.processer.class`キーで設定ファイル[^2]に登録されているクラス名(FQCN)を読み込む
 2. 読み込んだクラス名を`ScannedClasses#add(String)`で検出されたBeanのクラスとして追加します。後続のEnhancementフェーズではDiscoveryフェーズで検出されたBeanクラスに対するアノテーションの操作が可能となります。
-   `@ApplicationScoped`や`@RequestScoped Bean`などBean定義アノテーションが付いているクラスは自動でBeanのクラスとして検出されますが、それ以外のクラスは検出されません。したがって、Bean定義アノテーションが付いていないクラスを検出対象としたい場合はサンプルのようにDiscoveryフェーズで`ScannedClasses#add(String)`を使って検出クラスとして追加します。
+   `@ApplicationScoped`や`@RequestScoped`などBean定義アノテーションが付いているクラスは自動でBeanのクラスとして検出されますが、それ以外のクラスは検出されません。したがって、Bean定義アノテーションが付いていないクラスを検出対象としたい場合はサンプルのようにDiscoveryフェーズで`ScannedClasses#add(String)`を使って検出クラスとして追加します。
    なお、サンプルは設定ファイルからクラス名を取得していますが、これはBuild compatible extensionsの仕様とは関係ありません。`"foo.bar.Baz"`のように文字列リテラルで直接記述しても`Foo.class.getName()`のようにやっても問題ありません
 
 

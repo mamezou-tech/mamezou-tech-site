@@ -30,13 +30,15 @@
       "date": "4",
       "author": "toshio-ogiwara",
       "githubUser": "ogiwarat",
-      "title": "サンプルで解説する CDI 4.0 Lite BuildCompatibleExtension"
+      "title": "CDI 4.0 Lite - Build compatible extensionsをサンプルで理解する",
+      "url": "/blogs/2023/12/04/build-extension-sample/"
     },
     {
       "date": "5",
       "author": "shinichiro-iwaki",
       "githubUser": "shinichiro-iwaki",
-      "title": "テストのシフトライトをネタにしてみようと思いまふ"
+      "title": "全銀システム障害に片想いしてみる",
+      "url": "/blogs/2023/12/05/testing-shift-right/"
     },
     {
       "date": "6",

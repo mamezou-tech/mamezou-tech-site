@@ -128,8 +128,7 @@ sequenceDiagram
     participant D as DynamoDB
     participant G as GitHub
     participant O as OpenAI
-    I -->> S: ok
-    alt 既存アシスタントが存在する
+    alt アシスタントIDが存在する(パラメータストア)
         I ->> O: 既存アシスタント取得
     else
         I ->> O: 新規アシスタント生成(パラメータストアにID登録)

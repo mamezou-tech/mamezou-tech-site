@@ -79,7 +79,7 @@ dynamic import や `app.setPath` などは使用していないため await を�
 ## 最後に
 ESM サポートが入ったことで、Electron アプリや Electron 用パッケージの ESM 対応も進むのではないでしょうか。
 
-去年の初め頃に書いた記事「[electron-quick-start のコミット履歴で見る Electron プログラミングモデルの変遷](https://developer.mamezou-tech.com/blogs/2022/02/14/history-of-electron-quick-start/)」において、
+去年の初め頃に書いた記事「[electron-quick-start のコミット履歴で見る Electron プログラミングモデルの変遷](/blogs/2022/02/14/history-of-electron-quick-start/)」において、
 
 > 今後は、ES Modules 対応などが入ってくるのではないかと予想しています。
 

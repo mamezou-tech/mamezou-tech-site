@@ -44,6 +44,7 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 ### 2Dカメラ
 
 - [CCTagマーカーを使ってみた](/robotics/vision/cctag)
+- [OpenCVで使用できるキャリブレーション用パターンの紹介](/robotics/vision/calibration-pattern)
 
 ### 3Dカメラ
 

@@ -17,13 +17,13 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 もちろんこのタイプのアプリはChat Completion APIだけでもできますが、会話の文脈を自前で管理する実装は手間でした。
 Assistants APIはこの状態管理をスレッドとしてやってくれますでので、自然な会話がより簡単に実装できるようになりました。
 
-チャットだけではつまらないので、今回はFunction callingを組み合わせてチャットボットがレビューアーに代わってプルリクエスト操作もしてくれるようにしたいと思います。
+チャットだけではつまらないので、今回はFunction callingを組み合わせてチャットボットがレビューアーに代わってレビューコメントやマージ等のGitHub操作もしてくれるようにしたいと思います。
 これはAIがコードレビューに参加してくれたらレビューが捗りそうというとても安易な発想ですw
 最終的には、Slackを通して以下のようなレビューをアシスタントとできるようになります。
 
 ![](https://i.gyazo.com/a7c95ee890b0d2367adbe63f7181c0e2.png)
 
-本当にレビューが捗るのかはさておき、レビューをするのが楽しくなりますね！
+本当にレビューが捗るのかはさておき、レビューが楽しくなりますね！
 
 # 全体のシステム構成
 
@@ -38,12 +38,17 @@ Assistants APIはこの状態管理をスレッドとしてやってくれます
 
 - <https://github.com/mamezou-tech/slack-github-review-gptbot/>
 
-試してみる場合は、OpenAIの課金はそれなりに発生しますのでご注意ください。課金の上限設定(Usage Limit)をきちんとしておくことを強くお勧めします。
+:::alert
+試す場合はOpenAIの課金はそれなりに発生しますのでご注意ください。
+OpenAI APIのUIからコストの上限設定(Usage Limit)を許容できる範囲でしておくことをお勧めします。
+
+また、OpenAIのAssistants APIはベータ版です。GA版になったらレポジトリの方も更新するつもりですが遅くなるかもしれませんのでご容赦ください。
+:::
 
 # イベントコールバック(callback)
 
 まずは1つ目のLambdaです。このLambdaはSlack App(ボット)のコールバックAPIの実装です。Slack Appへのメンション(`app_mentions`イベント)に反応して呼び出されます。
-このAPI自体に重要な実装はありません。後続のアシスタントAPI実行Lambda(api-invoker)を非同期で実行し、すぐに成功レスポンスをSlackに返却します。
+このAPI自体に重要な実装はありません。後続Lambda(api-invoker)を非同期で実行し、すぐに成功レスポンスをSlackに返却します。
 
 ここでAssistants APIを直接呼ばない理由は、Slack Appは3秒以内に成功レスポンスを返す必要があるからです[^1]。ここでAssistants APIとやりとりしてしまうと、Slack側でコールバックが失敗したと見做されてリトライが発生する可能性が高くなります。
 
@@ -176,7 +181,7 @@ export const handler: Handler = async (event: LambdaEvent) => {
       channel: event.channel,
       thread_ts: event.threadTs ?? event.ts,
       text: replies.join('\n'),
-      reply_broadcast: event.threadBroadcast, // メンションメッセージがメインチャンネルにも返信する場合は返信も揃える
+      reply_broadcast: event.threadBroadcast, // メンションメッセージがチャンネルにも返信する場合はアシスタントの返信も揃える
       blocks
     });
     console.log(slackResp);
@@ -193,8 +198,8 @@ export const handler: Handler = async (event: LambdaEvent) => {
 };
 ```
 
-ここはシンプルです。コールバックAPIからSlack投稿内容を受け取り、別モジュールで用意したAssistants APIとやりとりする[chat.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/chat.ts)に移譲しています。
-ここで必要なやりとりが実行されて、その結果をSlackにスレッド返信として投稿します(`thread_ts`を指定)。
+ここはシンプルです。前述のコールバックAPIからSlack投稿内容を受け取り、Assistants APIとやりとりする[chat.ts](https://github.com/mamezou-tech/slack-github-review-gptbot/blob/main/functions/chat.ts)に移譲しています。
+ここで必要なやりとりが行われて、その結果をSlackにスレッド返信として投稿します(`thread_ts`を指定)。
 
 以降はchat.ts内部の処理です。
 
@@ -268,7 +273,7 @@ export async function chat(event: LambdaEvent, slackClient: WebClient): Promise<
 ```
 
 Assistants APIのお作法通りです。アシスタント、スレッドを作成または取得し、スレッドにメッセージを追加して実行しています。
-スレッド実行後はステータスが完了(`completed`)するまでポーリングします。この中でステータスがアクション要求(`requires_action`)に変わった場合はcallFunctions関数(後述)を実行しています(Function calling)。
+スレッド実行後はステータスが完了(`completed`)になるまでポーリングします。この中でステータスがアクション要求(`requires_action`)に変わった場合はcallFunctions関数(後述)を実行しています(Function calling)。
 完了後はスレッドのメッセージを取得して返却します(結果Slackに投稿)。
 この辺りの手順は[前回の記事](/blogs/2023/11/08/openai-assistants-api-intro/)でも触れていますので、そちらをご参考いただければと思います。
 
@@ -395,7 +400,7 @@ async function createOrGetThread(event: LambdaEvent, threadTs: string, opts: {
 ```
 
 Assistants APIで会話スレッド(メッセージ履歴)は、スレッドIDをキーに保持されます。
-クライアント側でメッセージ履歴は管理する必要がありませんが、Assistants APIとSlackのスレッドとの紐付け状態を保持しておく必要があります。ここではその紐付けにDynamoDBを使っています。
+クライアント側(ここではLambda関数)でメッセージ履歴を管理する必要がありませんが、Assistants APIとSlackのスレッドとの紐付け状態を保持しておく必要があります。ここではその紐付けにDynamoDBを使っています。
 Slackのスレッドのタイムスタンプ(threadTs)をキーに、既存のAssistants APIのスレッドがある場合はOpenAIからスレッドを取得します。
 
 既存のスレッドがない場合は、新規のスレッドを作成し、その紐付け情報をDynamoDBに保存します。
@@ -690,4 +695,4 @@ GitHub側でも以下のように確認できました。
 # まとめ
 
 まだまだ調整の余地はありますが、(自分より遥かに)優秀なアシスタントがレビューに参加して、プルリクエスト操作までやってれるのでレビュー作業がとても楽になったと感じます。
-とはいえ、これを発展させてレビューや指摘事項の修正まで全部任せられるようになるともはや人間としてのレビューアーは要らなくなりそう。。と思ったりしました。
+とはいえ、これを発展させてレビューや指摘事項の修正まで全部任せられるようになるともはや人間としてのレビューアーは要らなくなりそう。。と思ったりしました(そもそもGPTがコード書くとレビュー自体も...)。

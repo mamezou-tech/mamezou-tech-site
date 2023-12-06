@@ -1,7 +1,7 @@
 ---
 title: OpenCVで使用できるキャリブレーション用パターンの紹介
 author: shitnaro-matsui
-date: 2023-12-04
+date: 2023-12-06
 ---
 
 # はじめに

@@ -1,6 +1,5 @@
 {
-  "compilerOptions": {
-  },
+  "compilerOptions": {},
   "tasks": {
     "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
     "build": "deno task lume",
@@ -10,7 +9,19 @@
   },
   "importMap": "import_map.json",
   "fmt": {
-    "exclude": ["src/pages", "src/posts", "src/css", "src/events", "src/img"],
-    "include": ["lume/**/*.ts", "_config.ts", "src/**/*.ts", "src/**/*.tsx", "lint.ts"]
+    "exclude": [
+      "src/pages",
+      "src/posts",
+      "src/css",
+      "src/events",
+      "src/img"
+    ],
+    "include": [
+      "lume/**/*.ts",
+      "_config.ts",
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "lint.ts"
+    ]
   }
 }

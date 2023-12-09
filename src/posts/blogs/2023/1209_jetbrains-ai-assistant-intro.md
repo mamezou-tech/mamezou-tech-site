@@ -128,8 +128,8 @@ AIの使い方としては王道の機能でしょうかね。
 ここまではAIアシスタントの定型機能を使いましたが、カスタムプロンプトも作成できます。
 
 ここではブログ記事用のカスタムプロンプトを作成してみました。
-カスタムプロンプトは「Settings」 -> 「Tools」 -> 「AI Assistant」 -> 「User Prompts Library」 からできます。
-以下「Check Blog」という名前でブログ記事の校正とタイトルを提案するプロンプトを作成してみました。
+カスタムプロンプトは「Settings」 -> 「Tools」 -> 「AI Assistant」 -> 「User Prompts Library」 から指定できます。
+以下のように「Check Blog」という名前でブログ記事の校正とタイトルを提案するプロンプトを作成してみました。
 
 ![](https://i.gyazo.com/7e188fb1ce386e983d4b580e7b14ef0c.png)
 

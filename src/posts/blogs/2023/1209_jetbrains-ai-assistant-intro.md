@@ -1,7 +1,7 @@
 ---
 title: 開発者体験(DX)を進化させるJetBrainsのAIアシスタント機能の紹介
 author: noboru-kudo
-date: 2023-12-10
+date: 2023-12-09
 tags: [ JetBrains, OpenAI, GPT ]
 ---
 

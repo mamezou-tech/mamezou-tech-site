@@ -12,7 +12,7 @@ tags: [ JetBrains, OpenAI, GPT ]
 
 AI機能といえばGitHub Copilotが先行していますが、類似機能がIntellij IDEA等のJetBrainsのIDEでも使えるようになりました。
 今回はこれを試してみましたので、その使いどころをご紹介したいと思います。
-なお、ここでは利用するIDEは`IntelliJ IDEA 2023.3 (Ultimate Edition)`で試しています。
+なお、本記事ではIDEとして`IntelliJ IDEA 2023.3 (Ultimate Edition)`を使用しています。
 
 AIアシスタント機能の公式ドキュメントは[こちら](https://www.jetbrains.com/help/idea/ai-assistant.html)です。
 

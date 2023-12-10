@@ -47,7 +47,7 @@ JetBrainsのIDEノウハウとLLMを組み合わせて、開発ワークフロ�
 AIの使い方としては王道の機能でしょうかね。
 プロンプトで生成したいコードの説明を入力すると、AIアシスタントがコードを生成してくれます。
 
-<a href="https://gyazo.com/91d6061f531f24772ef24b2d0ba48893"><video width="1000" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/91d6061f531f24772ef24b2d0ba48893.mp4" type="video/mp4"/></video></a>
+<a href="https://gyazo.com/91d6061f531f24772ef24b2d0ba48893"><video width="100%" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/91d6061f531f24772ef24b2d0ba48893.mp4" type="video/mp4"/></video></a>
 
 差分で表示してくれるので、どう変わるのかが見やすいですね。
 気に入らなければ「Specify」で追加指示ができます。「Accept All」でAIが生成したコードを取り込みます。
@@ -56,7 +56,7 @@ AIの使い方としては王道の機能でしょうかね。
 
 指定した範囲のソースコードでリファクタリングを提案してくれます。
 
-<a href="https://gyazo.com/e35accc9e9aac604a4c0dbefc37ad72f"><video width="1000" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/e35accc9e9aac604a4c0dbefc37ad72f.mp4" type="video/mp4"/></video></a>
+<a href="https://gyazo.com/e35accc9e9aac604a4c0dbefc37ad72f"><video width="100%" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/e35accc9e9aac604a4c0dbefc37ad72f.mp4" type="video/mp4"/></video></a>
 
 先ほどと同様に、提案されたコードは差分で確認できるので取り込み有無を判断するのに便利です。
 この辺りはJetBrainsのノウハウを感じます。
@@ -65,7 +65,7 @@ AIの使い方としては王道の機能でしょうかね。
 
 指定した範囲のソースコードに問題がないかを確認します。
 
-<a href="https://gyazo.com/cad311d4e0760772d7766ccfbe228796"><video width="1000" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/cad311d4e0760772d7766ccfbe228796.mp4" type="video/mp4"/></video></a>
+<a href="https://gyazo.com/cad311d4e0760772d7766ccfbe228796"><video width="100%" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/cad311d4e0760772d7766ccfbe228796.mp4" type="video/mp4"/></video></a>
 
 問題の有無だけでなく、チャットで改善方法まで聞けるので楽ですね。
 もはやソースコードレベルのレビューはAIアシスタントにお任せできそうです。
@@ -81,7 +81,7 @@ AIの使い方としては王道の機能でしょうかね。
 もはやAIのコード生成ではお馴染みの機能になったでしょうか。
 プロダクトコードの内容を解析してそれに適したテストコードを生成してくれます。
 
-<a href="https://gyazo.com/06a2a836adbb839ac4a811a79d63f57f"><video width="938" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/06a2a836adbb839ac4a811a79d63f57f.mp4" type="video/mp4"/></video></a>
+<a href="https://gyazo.com/06a2a836adbb839ac4a811a79d63f57f"><video width="100%" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/06a2a836adbb839ac4a811a79d63f57f.mp4" type="video/mp4"/></video></a>
 
 一度作ったら終わりでなく、自分の好みに合うように追加指示で改善していけるところがいいですね。
 使用するテスティングフレームワークやライブラリの指示等も「Specify」からできます（今後はあらかじめ指定できるようになりそうな気もしますが）。
@@ -90,7 +90,7 @@ AIの使い方としては王道の機能でしょうかね。
 
 結構重宝する気がします。任意のソースコードを要約してくれます。
 
-<a href="https://gyazo.com/503fe78b7b627350a711ab079628b778"><video width="1000" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/503fe78b7b627350a711ab079628b778.mp4" type="video/mp4"/></video></a>
+<a href="https://gyazo.com/503fe78b7b627350a711ab079628b778"><video width="100%" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/503fe78b7b627350a711ab079628b778.mp4" type="video/mp4"/></video></a>
 
 心が折れそうなレガシーなコードやOSS等を読む際に一度実行したい感じですね。
 気になる部分はチャットで追加質問すればコード理解も深まります。
@@ -99,7 +99,7 @@ AIの使い方としては王道の機能でしょうかね。
 
 地味に便利だなと思ったのはこれです。AIが変更点から適切なコミットコメントを提案してくれます。
 
-<a href="https://gyazo.com/b3d0005ea570722677a73ab8d376a37a"><video width="736" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/b3d0005ea570722677a73ab8d376a37a.mp4" type="video/mp4"/></video></a>
+<a href="https://gyazo.com/b3d0005ea570722677a73ab8d376a37a"><video width="100%" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/b3d0005ea570722677a73ab8d376a37a.mp4" type="video/mp4"/></video></a>
 
 変更点を要約してくれるので、コミットする方としてもこんな変更したんだと振り返えれます[^1]。
 ちなみに、現時点では日本語でコメントを生成するようにプロンプトのカスタマイズはできませんでした。
@@ -110,7 +110,7 @@ AIの使い方としては王道の機能でしょうかね。
 
 こちらも地味に便利です。AIがコードのコンテキストを理解して適切な変数名候補を提案してくれます。
 
-<a href="https://gyazo.com/f7c7dc5f96932be049295c3f8d190590"><video width="758" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/f7c7dc5f96932be049295c3f8d190590.mp4" type="video/mp4"/></video></a>
+<a href="https://gyazo.com/f7c7dc5f96932be049295c3f8d190590"><video width="100%" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/f7c7dc5f96932be049295c3f8d190590.mp4" type="video/mp4"/></video></a>
 
 英語が苦手な私はいつもネーミングに悩むことが多いのでとても助かります。
 現時点では候補を上げてくれるのはin-place形式の名前変更のみで、ダイアログ形式の名前変更時にはなぜか提案してくれませんでした。今後のアップデートに期待します。
@@ -119,7 +119,7 @@ AIの使い方としては王道の機能でしょうかね。
 
 これもとても便利ですね。いつも書くのが面倒ですが、AIが対象のソースコードを要約してドキュメント作ってくれます。
 
-<a href="https://gyazo.com/35647f90d3d3f1a9fa5ea2183b818b53"><video width="1000" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/35647f90d3d3f1a9fa5ea2183b818b53.mp4" type="video/mp4"/></video></a>
+<a href="https://gyazo.com/35647f90d3d3f1a9fa5ea2183b818b53"><video width="100%" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/35647f90d3d3f1a9fa5ea2183b818b53.mp4" type="video/mp4"/></video></a>
 
 これに慣れちゃうとサボり癖がついちゃいそうですが。。変更した時に常に実行するようにしておけばメンテされない状態のドキュメントになるのは防げますねw
 
@@ -137,13 +137,22 @@ AIの使い方としては王道の機能でしょうかね。
 
 試しに以前書いた[記事](/blogs/2023/12/06/slack-github-assistantsapi/)でこれを実行すると以下のようになります。
 
-<a href="https://gyazo.com/ed86cca6a3bb1ef90b78b6bec1c1fd80"><video width="1000" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/ed86cca6a3bb1ef90b78b6bec1c1fd80.mp4" type="video/mp4"/></video></a>
+<a href="https://gyazo.com/ed86cca6a3bb1ef90b78b6bec1c1fd80"><video width="100%" autoplay muted loop playsinline controls><source src="https://i.gyazo.com/ed86cca6a3bb1ef90b78b6bec1c1fd80.mp4" type="video/mp4"/></video></a>
 
 通常は[textlint](https://github.com/textlint/textlint)で文章をチェックしていたりするのですが、これを使うとさらに深い観点でチェックしてくれます。
 いつも記事のタイトルに悩むのですが、少し(?)盛ったタイトルも提案してくれて新しい発見もありますね。
 
 ## まとめ
 
-まだ使いこなしているとは言えませんが、ざっとJetBrainsのAIアシスタントを使ってみました。
-私見ですがJetBrainsユーザーであればサブスクリプション料金を払っても使い続ける価値はあると感じました。
+まだ使いこなしているとは言えませんが、AIアシスタントの主要機能を使ってみました。
+開発作業のあらゆるシーンでAIアシスタントと協業している感覚ですね。
+
+ここでは紹介しませんでしたが、これ以外にも以下のよう機能もあります。
+- [インラインコード補完](https://www.jetbrains.com/help/idea/use-ai-in-editor.html#enable-inline-code-completion)
+- [他言語への変換](https://www.jetbrains.com/help/idea/convert-files-to-another-language.html)
+- [ランタイムエラー解析](https://www.jetbrains.com/help/idea/use-prompts-to-explain-and-refactor-your-code.html#ai-explain-runtime-error)
+
+今後もあらゆるシーンでAIアシスタントが使えるように拡張されてくるのだろうと思います。
+
+私見ですが、JetBrainsユーザーであればサブスクリプション料金を払っても使い続ける価値はあると感じました。
 

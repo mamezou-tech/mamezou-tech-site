@@ -10,7 +10,6 @@ tags: [ JetBrains, OpenAI, GPT ]
 - [Introducing JetBrains AI and the In-IDE AI Assistant](https://blog.jetbrains.com/blog/2023/12/06/introducing-jetbrains-ai-and-the-in-ide-ai-assistant/)
 - [JetBrains AI と IDE 内での AI Assistant のご紹介](https://blog.jetbrains.com/ja/blog/2023/12/06/introducing-jetbrains-ai-and-the-in-ide-ai-assistant/)
 
-AI機能といえばGitHub Copilotが先行していますが、類似機能がIntellij IDEA等のJetBrainsのIDEでも使えるようになりました。
 今回はこれを試してみましたので、その使いどころをご紹介したいと思います。
 なお、本記事ではIDEとして`IntelliJ IDEA 2023.3 (Ultimate Edition)`を使用しています。
 
@@ -20,6 +19,7 @@ AIアシスタント機能の公式ドキュメントは[こちら](https://www.
 
 JetBrainsのIDEノウハウとLLMを組み合わせて、開発ワークフローを効率化する[JetBrains AI](https://www.jetbrains.com/ai/)の機能です。
 リファクタリングやコード生成に加えて、ドキュメント作成やソースコード上の問題点検出までいろんなことをしてくれます。
+類似サービスとしては[GitHub Copilot](https://github.com/features/copilot)が挙げられると思います。
 
 現時点ではほとんどのAI機能はOpenAIを使用していますが、将来的にはJetBrainsカスタムモデルやGoogle等もサポートする予定とのことです。
 以下[公式ページ](https://www.jetbrains.com/ai/)からの引用です。

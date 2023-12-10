@@ -147,7 +147,7 @@ AIの使い方としては王道の機能でしょうかね。
 まだ使いこなしているとは言えませんが、AIアシスタントの主要機能を使ってみました。
 開発作業のあらゆるシーンでAIアシスタントと協業している感覚ですね。
 
-ここでは紹介しませんでしたが、これ以外にも以下のよう機能もあります。
+ここでは紹介しませんでしたが、他にも以下のような機能もあります。
 - [インラインコード補完](https://www.jetbrains.com/help/idea/use-ai-in-editor.html#enable-inline-code-completion)
 - [他言語への変換](https://www.jetbrains.com/help/idea/convert-files-to-another-language.html)
 - [ランタイムエラー解析](https://www.jetbrains.com/help/idea/use-prompts-to-explain-and-refactor-your-code.html#ai-explain-runtime-error)

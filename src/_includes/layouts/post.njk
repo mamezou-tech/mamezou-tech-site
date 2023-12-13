@@ -10,8 +10,8 @@ layout: layouts/base.njk
     <header class="post__header">
       <h1>{{ title }}</h1>
       <div class="post__details">
-        <time datetime="{{ page.date | htmlDateString }}">
-          {{ page.date | readableDate }}
+        <time datetime="{{ date | htmlDateString }}">
+          {{ date | readableDate }}
         </time>
         <span> | </span>
         <span>{{ content | readingTime }} read</span>
@@ -32,7 +32,7 @@ layout: layouts/base.njk
         <div id="preact-sns"></div>
         <script type="module">
           import { render } from '/js/preact/social_plugins.client.js';
-          render({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
+          render({url: '{{ meta.url }}', path: '{{ url }}'}, document.getElementById("preact-sns"));
         </script>
       </div>
     {%- set adYear = tags | adventCalendarTag %}
@@ -62,8 +62,7 @@ layout: layouts/base.njk
 
       <nav class="post__pagination">
         {%- if pageNavigationTag %}
-
-          {%- set previousPost = search.previousPage(page.url, pageNavigationTag) %}
+          {%- set previousPost = search.previousPage(url, pageNavigationTag) %}
           {%- if previousPost %}
 
             <a href="{{ previousPost.url | url }}">
@@ -73,7 +72,7 @@ layout: layouts/base.njk
 
           {% endif %}
 
-          {%- set nextPost = search.nextPage(page.url, pageNavigationTag) %}
+          {%- set nextPost = search.nextPage(url, pageNavigationTag) %}
           {%- if nextPost %}
 
             <a href="{{ nextPost.url | url }}">

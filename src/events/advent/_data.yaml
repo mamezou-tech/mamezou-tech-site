@@ -1,0 +1,3 @@
+layout: 'layouts/advent.njk'
+category: event
+basename: advent-calendar

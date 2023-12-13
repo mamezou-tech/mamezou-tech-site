@@ -1,17 +1,14 @@
-import { Page } from "lume/core/filesystem.ts";
-import { PageData, PageHelpers } from "lume/core.ts";
-
-interface Props extends PageData {
-  postsList: Page[];
+interface Props extends Lume.Data {
+  postsList: Lume.Data[];
 }
 export default (
   { postsList, search }: Props,
-  { validTags, readableDate, url, readingTime, excerpt }: PageHelpers,
+  { validTags, readableDate, url, readingTime, excerpt }: Lume.Helpers,
 ) => {
-  const tags = validTags!(search.tags() as string[]);
-  const makeTags = (post: Page) => {
+  const tags = validTags!(search.values("tags") as string[]);
+  const makeTags = (post: Lume.Page) => {
     const result = [];
-    for (const tag of post.data.tags || []) {
+    for (const tag of post.tags || []) {
       if (tags.includes(tag)) {
         const tagUrl = `/tags/${tag}/`;
         result.push(<a key={tag} href={url(tagUrl)}>#{tag}</a>);
@@ -24,20 +21,20 @@ export default (
     <section className="post-list__wrapper">
       <ul className="post-list">
         {postsList.map((post) => (
-          <li key={post.data.url} className="post-list__item">
+          <li key={post.url} className="post-list__item">
             <div>
               <div className="post-list__meta">
-                <time dateTime="{{ post.data.date | htmlDateString }}">
-                  {readableDate!(post.data.date)}
+                <time dateTime="{{ post.date | htmlDateString }}">
+                  {readableDate!(post.date)}
                 </time>
-                {(post.data.category && !post.data.hideCategory) && (
+                {(post.category && !post.hideCategory) && (
                   <>
                     <span>|</span>
-                    <span className="Label">{post.data.category}</span>
+                    <span className="Label">{post.category}</span>
                   </>
                 )}
                 <span>|</span>
-                <span>{readingTime!(post.data)} read</span>
+                <span>{readingTime!(post)} read</span>
               </div>
               <div className="post-list__tags">
                 {makeTags(post)}
@@ -45,10 +42,10 @@ export default (
             </div>
 
             <h3 className="post-list__title">
-              <a href={post.data.url || ""}>{post.data.title}</a>
+              <a href={post.url || ""}>{post.title}</a>
             </h3>
-            <p className="post-list__excerpt">{excerpt!(post.data.children)}</p>
-            <a className="post-list__read-more" href={post.data.url || ""}>
+            <p className="post-list__excerpt">{excerpt!(post.children)}</p>
+            <a className="post-list__read-more" href={post.url || ""}>
               記事を読む
             </a>
           </li>

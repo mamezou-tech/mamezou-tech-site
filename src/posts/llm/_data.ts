@@ -1,9 +1,8 @@
-import { Page } from 'lume/core/filesystem.ts';
 
 const data = {
   tags: ["ML", "LLM","大規模言語モデル"],
   category: 'LLM',
-  url: (page: Page) => `/ml/llm/${page.src.slug}/`
+  url: (page: Lume.Page) => `/ml/llm/${page.data.basename}/`
 };
 
 export default data;

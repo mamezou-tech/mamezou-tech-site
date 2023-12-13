@@ -1,9 +1,8 @@
-import { Page } from 'lume/core/filesystem.ts';
 
 const data = {
   tags: ["mp", "java"],
   category: 'マイクロサービス - MicroProfile',
-  url: (page: Page) => `/msa/mp/${page.src.slug}/`
+  url: (page: Lume.Page) => `/msa/mp/${page.data.basename}/`
 };
 
 export default data;

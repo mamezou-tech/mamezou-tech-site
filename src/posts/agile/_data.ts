@@ -1,9 +1,7 @@
-import { Page } from 'lume/core/filesystem.ts';
-
 const data = {
   tags: ['アジャイル開発'],
   category: 'アジャイル開発',
-  url: (page: Page) => `/agile/${page.src.slug}/`
+  url: (page: Lume.Page) => `/agile/${page.data.basename}/`
 };
 
 export default data;

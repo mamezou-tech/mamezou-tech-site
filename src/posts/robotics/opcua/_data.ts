@@ -1,8 +1,7 @@
-import { Page } from 'lume/core/filesystem.ts';
 
 const data = {
   category: 'ロボット - OPC-UA',
-  url: (page: Page) => `/robotics/opcua/${page.src.slug}/`
+  url: (page: Lume.Page) => `/robotics/opcua/${page.data.basename}/`
 };
 
 export default data;

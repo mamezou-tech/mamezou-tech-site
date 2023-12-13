@@ -11,7 +11,7 @@ layout: layouts/base.njk
       <h1>{{ title }}</h1>
       <div class="post__details">
         <time datetime="{{ page.date | htmlDateString }}">
-          {{ page.data.date | readableDate }}
+          {{ page.date | readableDate }}
         </time>
         <span> | </span>
         <span>{{ content | readingTime }} read</span>
@@ -32,7 +32,7 @@ layout: layouts/base.njk
         <div id="preact-sns"></div>
         <script type="module">
           import { render } from '/js/preact/social_plugins.client.js';
-          render({url: '{{ meta.url }}', path: '{{ page.data.url }}'}, document.getElementById("preact-sns"));
+          render({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
         </script>
       </div>
     {%- set adYear = tags | adventCalendarTag %}
@@ -63,21 +63,21 @@ layout: layouts/base.njk
       <nav class="post__pagination">
         {%- if pageNavigationTag %}
 
-          {%- set previousPost = search.previousPage(page.data.url, pageNavigationTag) %}
+          {%- set previousPost = search.previousPage(page.url, pageNavigationTag) %}
           {%- if previousPost %}
 
-            <a href="{{ previousPost.data.url | url }}">
+            <a href="{{ previousPost.url | url }}">
               <span>←</span>
-              <span>{{ previousPost.data.title }}</span>
+              <span>{{ previousPost.title }}</span>
             </a>
 
           {% endif %}
 
-          {%- set nextPost = search.nextPage(page.data.url, pageNavigationTag) %}
+          {%- set nextPost = search.nextPage(page.url, pageNavigationTag) %}
           {%- if nextPost %}
 
-            <a href="{{ nextPost.data.url | url }}">
-              <span>{{ nextPost.data.title }}</span>
+            <a href="{{ nextPost.url | url }}">
+              <span>{{ nextPost.title }}</span>
               <span>→</span>
             </a>
 
@@ -87,17 +87,17 @@ layout: layouts/base.njk
           {%- if prevPage %}
             {%- set prevPostPage = search.pages() | pageByPath(prevPage) %}
             {%- if prevPostPage %}
-              <a href="{{ prevPostPage.data.url | url }}">
+              <a href="{{ prevPostPage.url | url }}">
                 <span>←</span>
-                <span>{{ prevPostPage.data.title }}</span>
+                <span>{{ prevPostPage.title }}</span>
               </a>
             {% endif %}
           {% endif %}
           {%- if nextPage %}
             {%- set nextPostPage = search.pages() | pageByPath(nextPage) %}
             {%- if nextPostPage %}
-              <a href="{{ nextPostPage.data.url | url }}">
-                <span>{{ nextPostPage.data.title }}</span>
+              <a href="{{ nextPostPage.url | url }}">
+                <span>{{ nextPostPage.title }}</span>
                 <span>→</span>
               </a>
             {% endif %}

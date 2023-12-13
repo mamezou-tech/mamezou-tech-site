@@ -1,8 +1,7 @@
-import { Page } from 'lume/core/filesystem.ts';
 
 const data = {
   category: 'ロボット - ロボット工学',
-  url: (page: Page) => `/robotics/manip-algo/${page.src.slug}/`
+  url: (page: Lume.Page) => `/robotics/manip-algo/${page.data.basename}/`
 };
 
 export default data;

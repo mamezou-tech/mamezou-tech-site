@@ -1,4 +1,4 @@
-import lume, { PluginOptions } from "lume/mod.ts";
+import lume from "lume/mod.ts";
 import jsx from "lume/plugins/jsx.ts";
 import mdx from "lume/plugins/mdx.ts";
 import liquid from "lume/plugins/liquid.ts";
@@ -7,6 +7,7 @@ import prism from "lume/plugins/prism.ts";
 import sass from "lume/plugins/sass.ts";
 import sitemap from "lume/plugins/sitemap.ts";
 import esbuild from "lume/plugins/esbuild.ts";
+import nunjucks from "lume/plugins/nunjucks.ts";
 import { DateTime } from "luxon";
 import { githubName } from "./lume/filters/github_name.ts";
 import { readingTime } from "./lume/filters/reading_time.ts";
@@ -21,8 +22,7 @@ import container from "npm:markdown-it-container@^3.0.0";
 import katex from "npm:@traptitech/markdown-it-katex@^3.5.0";
 import containerOptions from "./lume/markdown-it/container_options.ts";
 import { filterByPost, getPostArticles } from "./lume/filters/utils.ts";
-import { Page } from "lume/core/filesystem.ts";
-import { Search } from "lume/plugins/search.ts";
+import Search from "lume/core/searcher.ts";
 import mermaidPlugin from "./lume/markdown-it/mermaid_plugin.ts";
 import externalLinkPlugin from "./lume/markdown-it/external_link_plugin.ts";
 import imageSwipePlugin from "./lume/markdown-it/image_swipe_plugin.ts";
@@ -34,8 +34,9 @@ import { head } from "./lume/filters/head.ts";
 import { makeAuthorArticles } from "./src/generators/articles_by_author.ts";
 import { makeScopeUpdate } from "./lume/scope_updates.ts";
 import meta from "./src/_data/meta.ts";
+import { Options as MarkdownOptions } from "lume/plugins/markdown.ts";
 
-const markdown: Partial<PluginOptions["markdown"]> = {
+const markdown: Partial<MarkdownOptions> = {
   options: {
     breaks: true,
   },
@@ -77,6 +78,7 @@ const site = lume({
   location: new URL(meta.url),
 }, { markdown });
 
+site.use(nunjucks());
 site.use(jsx());
 site.use(mdx());
 site.use(liquid());
@@ -132,14 +134,14 @@ site.filter("excerpt", excerpt);
 site.filter("pageTags", pageTags);
 site.filter(
   "pageByPath",
-  (pages: Page[], path: string) => {
+  (pages: Lume.Data[], path: string) => {
     const index = path.lastIndexOf(".");
     let normalized = path;
     if (index !== -1) {
       normalized = path.substring(0, index);
     }
-    return pages.find((page: Page) => {
-      return normalized === `./src${page.src.path}`;
+    return pages.find((data: Lume.Data) => {
+      return normalized === `./src${data.page.src.path}`;
     });
   },
 );
@@ -175,20 +177,20 @@ site.filter("githubName", githubName);
 
 site.filter(
   "currentMonthPosts",
-  (pages: Page[]) =>
+  (pages: Lume.Data[]) =>
     filterByPost(pages).filter((post) => {
       const now = DateTime.now();
-      const date = DateTime.fromJSDate(post.data.date);
+      const date = DateTime.fromJSDate(post.date);
       return date.month === now.month && date.year === now.year;
     }),
 );
 
 site.filter("posts", (search: Search) => getPostArticles(search));
-site.filter("newestDate", (page: Page[]) => {
-  const [first] = page.slice().sort((a, b) =>
-    (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0)
+site.filter("newestDate", (pages: Lume.Data[]) => {
+  const [first] = pages.slice().sort((a, b) =>
+    (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0)
   );
-  return first.data.date;
+  return first.date;
 });
 site.filter("isoDate", (d: Date) => DateTime.fromJSDate(d).toISO());
 site.filter(
@@ -196,7 +198,7 @@ site.filter(
   (s: string, base: string) => new URL(s, base).toString(),
 );
 
-site.filter("rssUrl", (html, base) => {
+site.filter("rssUrl", (html: string, base: string) => {
   if (!html) return "";
   return html.replaceAll(
     /\s(href|src)="([^"]+)"/g,
@@ -217,7 +219,7 @@ if (!Deno.env.has("MZ_DEBUG")) {
   site.scopedUpdates(...makeScopeUpdate("src"));
 }
 
-site.processAll([".md"], (pages) => {
+site.process([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;
   const search = new Search(site.searcher, false);
   const summary = Object.values(makeAuthorArticles(search)).map((v) => {

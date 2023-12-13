@@ -1,10 +1,8 @@
-import { PageData, PageHelpers } from "lume/core.ts";
-
 export default (
-  { search }: PageData,
-  { validTags, url }: PageHelpers,
+  { search }: Lume.Data,
+  { validTags, url }: Lume.Helpers,
 ) => {
-  const tags: string[] = validTags!(search.tags());
+  const tags: string[] = validTags!(search.values("tags"));
   const makeHeadTagLinks = () => {
     const links = tags
       .slice(0, 50)

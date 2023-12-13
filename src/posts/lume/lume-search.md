@@ -94,24 +94,22 @@ title: Lumeのページ一覧
 
 {%- for page in search.pages('Lume', 'date=desc') %}
 <div>
-  <a href="{{ page.data.url }}">{{ page.data.title }}</a>
+  <a href="{{ page.url }}">{{ page.title }}</a>
 </div>
 {%- endfor %}
 ```
 - JSX(TSX)テンプレート
 ```tsx
-import { PageData } from "lume/core.ts";
-
 export const layout = "layouts/blog.njk";
 export const url = "/tags/lume/";
 export const title = "Lumeのページ一覧";
 
-export default ({ search }: PageData) => {
+export default ({ search }: Lume.Data) => {
   return (
     <>
       {search.pages("Lume", "date=asc").map((page, index) => (
         <div key={index}>
-          <a href={page.data.url}>{page.data.title}</a>
+          <a href={page.url}>{page.title}</a>
         </div>
       ))}
     </>
@@ -150,15 +148,13 @@ Lumeタグがついているページが新しい順に一覧化できている�
 先ほどの同等のHTMLを出力するテンプレートは、以下のようになります(ここではTypeScriptを使用してます)。
 
 ```typescript
-import { PageData } from "lume/core.ts";
-
 export const layout = "layouts/blog.njk"; // 全ページ共通のフロントマター
 
-export default function* ({ search }: PageData) {
+export default function* ({ search }: Lume.Data) {
   const tags = search.tags(); // 全タグを収集
   for (const tag of tags) {
     const links = search.pages(tag as string, "date=desc").map((page) =>
-      `<div><a href="${page.data.url}">${page.data.title}</a></div>`
+      `<div><a href="${page.url}">${page.title}</a></div>`
     );
     yield {
       // ページ別のフロントマター
@@ -199,19 +195,17 @@ layout: "layouts/blog.njk"
 ---
 {%- for page in results %}
 <div>
-  <a href="{{ page.data.url }}">{{ page.data.title }}</a>
+  <a href="{{ page.url }}">{{ page.title }}</a>
 </div>
 {%- endfor %}
 ```
 
 - JavaScriptテンプレート
 ```typescript
-import { PageData } from "lume/core.ts";
-
 // 全ページ共通のフロントマター
 export const layout = "layouts/post-list.njk"; // 一覧ページ用のレイアウト
 
-export default function* ({ search }: PageData) {
+export default function* ({ search }: Lume.Data) {
   const tags = search.tags(); // 全タグを収集
   for (const tag of tags) {
     yield {
@@ -232,11 +226,11 @@ Nunjucksで作成したレイアウトファイルを、JavaScriptテンプレ�
 JSXテンプレートもJavaScriptですので、同様のことが可能です。
 以下はJSX(TSX)テンプレートを使った場合のジェネレータ関数部分の抜粋です。
 ```tsx
-export default function* ({ search }: PageData) {
+export default function* ({ search }: Lume.Data) {
   const tags = search.tags(); // 全タグを収集
   for (const tag of tags) {
     const links = search.pages(tag as string, "date=desc").map((page, index) =>
-      <div key={index}><a href={page.data.url}>{page.data.title}</a></div>
+      <div key={index}><a href={page.url}>{page.title}</a></div>
     );
     yield {
       // ページ別のフロントマター
@@ -263,10 +257,8 @@ export default function* ({ search }: PageData) {
 先ほど10ページのサンプル記事を作成しています。ここでは1ページ3件としてページネーション付きの一覧ページを作成します。
 
 ```typescript
-import { PageData } from "lume/core.ts";
-
 export const layout = "layouts/blog.njk";
-export default function* ({ search, paginate }: PageData) {
+export default function* ({ search, paginate }: Lume.Data) {
   const tags = search.tags(); // 全タグを収集
   for (const tag of tags) {
     // paginateプラグインを使ってページネーションを実行
@@ -278,7 +270,7 @@ export default function* ({ search, paginate }: PageData) {
     });
     for (const paginateResult of paginateResults) {
       const links = paginateResult.results.map((page) =>
-        `<div><a href="${page.data.url}">${page.data.title}</a></div>`
+        `<div><a href="${page.url}">${page.title}</a></div>`
       );
       yield {
         title: `${tag}のページ一覧`,

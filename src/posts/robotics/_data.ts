@@ -1,9 +1,8 @@
-import { Page } from 'lume/core/filesystem.ts';
 
 const data = {
   tags: ["ロボット"],
   category: 'ロボット',
-  url: (page: Page) => `/robotics/${page.src.slug}/`
+  url: (page: Lume.Page) => `/robotics/${page.data.basename}/`
 };
 
 export default data;

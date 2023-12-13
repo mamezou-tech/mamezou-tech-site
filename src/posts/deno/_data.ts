@@ -1,9 +1,7 @@
-import { Page } from 'lume/core/filesystem.ts';
-
 const data = {
   tags: ['Deno'],
   category: 'Getting started with Deno',
-  url: (page: Page) => `/deno/getting-started/${page.src.slug}/`
+  url: (page: Lume.Page) => `/deno/getting-started/${page.data.basename}/`
 };
 
 export default data;

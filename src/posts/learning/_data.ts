@@ -1,9 +1,8 @@
-import { Page } from 'lume/core/filesystem.ts';
 
 const data = {
   tags: ['学び'],
   category: '学び',
-  url: (page: Page) => `/learning/${page.src.slug}/`
+  url: (page: Lume.Page) => `/learning/${page.data.basename}/`
 };
 
 export default data;

@@ -10,5 +10,5 @@ title: 今月の記事
 <p>総記事数：{{ (search | posts).length }}</p>
 
 {% for post in target %}
-  [{{ post.data.title }} https://developer.mamezou-tech.com{{ post.data.url }}]<br />
+  [{{ post.title }} https://developer.mamezou-tech.com{{ post.url }}]<br />
 {% endfor %}

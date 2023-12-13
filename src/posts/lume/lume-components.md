@@ -104,7 +104,7 @@ export default ({comp}: PageData) => (
 ```tsx
 import { PageData } from 'lume/core.ts';
 
-interface Props extends PageData {
+interface Props extends Lume.Data {
   type: 'info' | 'warning' | 'error';
   message: string;
 }
@@ -206,7 +206,7 @@ export const css = `
   }
 `
 
-interface Props extends PageData{
+interface Props extends Lume.Data{
   type: 'info' | 'warning' | 'error';
   message: string;
 }

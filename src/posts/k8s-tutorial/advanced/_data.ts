@@ -1,7 +1,5 @@
-import { Page } from 'lume/core/filesystem.ts';
-
 const data = {
-  url: (page: Page) => `/containers/k8s/tutorial/advanced/${page.src.slug}/`
+  url: (page: Lume.Page) => `/containers/k8s/tutorial/advanced/${page.data.basename}/`
 };
 
 export default data;

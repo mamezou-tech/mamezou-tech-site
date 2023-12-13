@@ -1,9 +1,7 @@
-import { Page } from 'lume/core/filesystem.ts';
-
 const data = {
   tags: ['lume', 'SSG', 'Deno'],
   category: 'Lume入門',
-  url: (page: Page) => `/lume/${page.src.slug}/`
+  url: (page: Lume.Page) => `/lume/${page.data.basename}/`
 };
 
 export default data;

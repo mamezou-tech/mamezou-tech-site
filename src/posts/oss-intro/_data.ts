@@ -1,9 +1,8 @@
-import { Page } from 'lume/core/filesystem.ts';
 
 const data = {
   tags: ["oss"],
   category: 'OSS',
-  url: (page: Page) => `/oss-intro/${page.src.slug}/`
+  url: (page: Lume.Page) => `/oss-intro/${page.data.basename}/`
 };
 
 export default data;

@@ -1,11 +1,9 @@
 import { PaginateOptions } from "lume/plugins/paginate.ts";
 import { makeAuthorArticles } from "./articles_by_author.ts";
 import { encodeUrl } from "encodeurl";
-import { PageData } from "lume/core.ts";
-
 export const layout = "layouts/page.njk";
 
-export default function* ({ comp, search, paginate }: PageData) {
+export default function* ({ comp, search, paginate }: Lume.Data) {
   const authorArticles = makeAuthorArticles(search);
   for (const author of Object.keys(authorArticles)) {
     const options: PaginateOptions = {

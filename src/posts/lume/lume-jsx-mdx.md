@@ -40,7 +40,7 @@ blog.tsxとして以下のJSXを配置しました。
 ```tsx
 import { PageData } from 'lume/core.ts';
 
-interface BlogPageData extends PageData {
+interface BlogPageData extends Lume.Data {
   title: string
 }
 export default (
@@ -136,7 +136,7 @@ const styles = {
     marginBottom: '10px'
   }
 };
-interface CardPageData extends PageData {
+interface CardPageData extends Lume.Data {
   title: string;
   content: string;
 }

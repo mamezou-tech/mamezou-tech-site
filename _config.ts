@@ -221,12 +221,12 @@ if (!Deno.env.has("MZ_DEBUG")) {
 
 site.process([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;
-  const search = new Search(site.searcher, false);
+  const search = new Search({ pages, files: [], sourceData: new Map() });
   const summary = Object.values(makeAuthorArticles(search)).map((v) => {
     const result = v.articles.reduce((acc, cur) => {
-      if (!cur.data.date) return acc;
-      const ym = cur.data.date.getFullYear() + "-" +
-        (cur.data.date.getMonth() + 1);
+      if (!cur.date) return acc;
+      const ym = cur.date.getFullYear() + "-" +
+        (cur.date.getMonth() + 1);
       const found = acc.findIndex((a) => a.ym === ym);
       if (found >= 0) {
         acc[found].count++;

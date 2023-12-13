@@ -6,6 +6,13 @@ prevPage: ./src/posts/lume/lume-jsx-mdx.md
 nextPage: ./src/posts/lume/lume-components.md
 ---
 
+:::info
+2023-12-08にLumeがv2にメジャーアップデートしました。これに伴い本記事もv2で動作するよう更新しました。
+
+- [Lume Blog - Lume 2 is finally here!!](https://lume.land/blog/posts/lume-2/)
+:::
+
+
 [前回](/lume/lume-jsx-mdx/)はLumeのテンプレートエンジンとして組み込みのNunjucksでなく、JSX/MDXプラグインを使用する方法を見てきました。
 
 サイト運営が順調でページが増えてくると、目的のページを探すのが辛くなってきます。
@@ -20,6 +27,12 @@ nextPage: ./src/posts/lume/lume-components.md
 - [Lume Plugin - Paginate](https://lume.land/plugins/paginate/)
 
 両プラグインともに、Lume本体にプレインストールされているため、すぐに使い始められます。
+
+:::info
+2023-12-08にLumeがv2にメジャーアップデートしました。これに伴い本記事もv2で動作するよう更新しました。
+
+- [Lume Blog - Lume 2 is finally here!!](https://lume.land/blog/posts/lume-2/)
+:::
 
 ## ページにタグをつける
 
@@ -151,7 +164,7 @@ Lumeタグがついているページが新しい順に一覧化できている�
 export const layout = "layouts/blog.njk"; // 全ページ共通のフロントマター
 
 export default function* ({ search }: Lume.Data) {
-  const tags = search.tags(); // 全タグを収集
+  const tags = search.values("tags"); // 全タグを収集
   for (const tag of tags) {
     const links = search.pages(tag as string, "date=desc").map((page) =>
       `<div><a href="${page.url}">${page.title}</a></div>`
@@ -206,7 +219,7 @@ layout: "layouts/blog.njk"
 export const layout = "layouts/post-list.njk"; // 一覧ページ用のレイアウト
 
 export default function* ({ search }: Lume.Data) {
-  const tags = search.tags(); // 全タグを収集
+  const tags = search.values("tags"); // 全タグを収集
   for (const tag of tags) {
     yield {
       // ページ別のフロントマター
@@ -227,7 +240,7 @@ JSXテンプレートもJavaScriptですので、同様のことが可能です�
 以下はJSX(TSX)テンプレートを使った場合のジェネレータ関数部分の抜粋です。
 ```tsx
 export default function* ({ search }: Lume.Data) {
-  const tags = search.tags(); // 全タグを収集
+  const tags = search.values("tags"); // 全タグを収集
   for (const tag of tags) {
     const links = search.pages(tag as string, "date=desc").map((page, index) =>
       <div key={index}><a href={page.url}>{page.title}</a></div>
@@ -259,7 +272,7 @@ export default function* ({ search }: Lume.Data) {
 ```typescript
 export const layout = "layouts/blog.njk";
 export default function* ({ search, paginate }: Lume.Data) {
-  const tags = search.tags(); // 全タグを収集
+  const tags = search.values("tags"); // 全タグを収集
   for (const tag of tags) {
     // paginateプラグインを使ってページネーションを実行
     const paginateResults = paginate(search.pages(tag as string, "date=desc"), {

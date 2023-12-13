@@ -7,7 +7,7 @@ import { filterByPost } from "../../lume/filters/utils.ts";
 export type Author = {
   github: string;
   name: string;
-  articles: Lume.Page[];
+  articles: Lume.Data[];
 };
 
 export function makeAuthorArticles(search: Search): { [name: string]: Author } {

@@ -1,6 +1,6 @@
 [dev]
   framework = "#static"
-  command = "deno task lume --watch --quiet"
+  command = "deno task lume --watch"
   publish = "public"
 
 [build]
@@ -16,7 +16,7 @@
   ignore  = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF src lume _config.ts deno.json netlify.toml"
 
   # Default build command.
-  command = "deno task lume --quiet"
+  command = "deno task lume"
 
   [build.environment]
     NODE_VERSION="18"

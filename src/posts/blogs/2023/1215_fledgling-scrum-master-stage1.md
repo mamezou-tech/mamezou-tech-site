@@ -1,5 +1,5 @@
 ---
-title: 駆け出しSM Stage1：ファシリテーション 
+title: 駆け出しスクラムマスター Stage1：ファシリテーション 
 author: misato-kamei
 date: 2023-12-15
 tags: [アジャイル開発, advent2023]

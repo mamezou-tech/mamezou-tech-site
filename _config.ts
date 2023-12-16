@@ -2,12 +2,11 @@ import lume from "lume/mod.ts";
 import jsx from "lume/plugins/jsx.ts";
 import mdx from "lume/plugins/mdx.ts";
 import liquid from "lume/plugins/liquid.ts";
-import postcss from "lume/plugins/postcss.ts";
 import prism from "lume/plugins/prism.ts";
-import sass from "lume/plugins/sass.ts";
 import sitemap from "lume/plugins/sitemap.ts";
 import esbuild from "lume/plugins/esbuild.ts";
 import nunjucks from "lume/plugins/nunjucks.ts";
+import postcss from "lume/plugins/postcss.ts";
 import { DateTime } from "luxon";
 import { githubName } from "./lume/filters/github_name.ts";
 import { readingTime } from "./lume/filters/reading_time.ts";
@@ -35,6 +34,9 @@ import { makeAuthorArticles } from "./src/generators/articles_by_author.ts";
 import { makeScopeUpdate } from "./lume/scope_updates.ts";
 import meta from "./src/_data/meta.ts";
 import { Options as MarkdownOptions } from "lume/plugins/markdown.ts";
+import postcssEach from "npm:postcss-each@1.1.0";
+import postcssFunctions from "npm:postcss-functions@4.0.2";
+import postcssSimpleVars from "npm:postcss-simple-vars@7.0.1";
 
 const markdown: Partial<MarkdownOptions> = {
   options: {
@@ -82,9 +84,10 @@ site.use(nunjucks());
 site.use(jsx());
 site.use(mdx());
 site.use(liquid());
-site.use(postcss());
+site.use(postcss({
+  plugins: [postcssEach(), postcssFunctions(), postcssSimpleVars()]
+}));
 site.use(prism());
-site.use(sass());
 site.use(sitemap({
   query: "exclude!=true",
 }));

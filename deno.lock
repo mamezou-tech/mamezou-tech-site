@@ -24,8 +24,12 @@
       "npm:markdown-it@13.0.2": "npm:markdown-it@13.0.2",
       "npm:markdown-it@14.0.0": "npm:markdown-it@14.0.0",
       "npm:nunjucks@3.2.4": "npm:nunjucks@3.2.4",
+      "npm:postcss-conditionals-renewed@1.0.0": "npm:postcss-conditionals-renewed@1.0.0_postcss@8.4.31",
+      "npm:postcss-each@1.1.0": "npm:postcss-each@1.1.0_postcss@8.4.31",
+      "npm:postcss-functions@4.0.2": "npm:postcss-functions@4.0.2_postcss@8.4.31",
       "npm:postcss-import@15.1.0": "npm:postcss-import@15.1.0_postcss@8.4.31",
       "npm:postcss-nesting@12.0.1": "npm:postcss-nesting@12.0.1_postcss@8.4.31_postcss-selector-parser@6.0.13",
+      "npm:postcss-simple-vars@7.0.1": "npm:postcss-simple-vars@7.0.1_postcss@8.4.31",
       "npm:postcss@8.4.31": "npm:postcss@8.4.31",
       "npm:postcss@8.4.32": "npm:postcss@8.4.32",
       "npm:preact": "npm:preact@10.18.0",
@@ -308,6 +312,14 @@
         "integrity": "sha512-loKTxY1zCOuG4j9f6EPnuyyYkf58RnhhWTvRoZEokgB+WbdXehfjFviyOVYkqzEWz1Q5kRiZdBYS5SwxbQYwzw==",
         "dependencies": {}
       },
+      "color-convert@0.5.3": {
+        "integrity": "sha512-RwBeO/B/vZR3dfKL1ye/vx8MHZ40ugzpyfeVG5GsiuGnrlMWe2o8wxBbLCpw9CsxV+wHuzYlCiWnybrIA0ling==",
+        "dependencies": {}
+      },
+      "color-name@1.1.4": {
+        "integrity": "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==",
+        "dependencies": {}
+      },
       "comma-separated-tokens@2.0.3": {
         "integrity": "sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==",
         "dependencies": {}
@@ -322,6 +334,18 @@
       },
       "commander@8.3.0": {
         "integrity": "sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==",
+        "dependencies": {}
+      },
+      "css-color-converter@2.0.0": {
+        "integrity": "sha512-oLIG2soZz3wcC3aAl/7Us5RS8Hvvc6I8G8LniF/qfMmrm7fIKQ8RIDDRZeKyGL2SrWfNqYspuLShbnjBMVWm8g==",
+        "dependencies": {
+          "color-convert": "color-convert@0.5.3",
+          "color-name": "color-name@1.1.4",
+          "css-unit-converter": "css-unit-converter@1.1.2"
+        }
+      },
+      "css-unit-converter@1.1.2": {
+        "integrity": "sha512-IiJwMC8rdZE0+xiEZHeru6YoONC4rfPMqGm2W85jMIbkFvv5nFTwJVFHam2eFrN6txmoUYFAFXiv8ICVeTO0MA==",
         "dependencies": {}
       },
       "cssesc@3.0.0": {
@@ -1858,6 +1882,28 @@
         "integrity": "sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==",
         "dependencies": {}
       },
+      "postcss-conditionals-renewed@1.0.0_postcss@8.4.31": {
+        "integrity": "sha512-sK93TxuX+l+GYH/dxe/adXXqDyFW2Z4/8Hkl25aVWCW8+DFMNNRrjzki/hVzvHc3vCXD9QUKe2FKAjbQudLOqA==",
+        "dependencies": {
+          "css-color-converter": "css-color-converter@2.0.0",
+          "css-unit-converter": "css-unit-converter@1.1.2",
+          "postcss": "postcss@8.4.31"
+        }
+      },
+      "postcss-each@1.1.0_postcss@8.4.31": {
+        "integrity": "sha512-YfTPHHAPFVRgEJfLg9RM4R9WYEHVU9Rf1R8QgZfnObwV2dgNqzTLzTl0w5tF71ApFcYLiJAXiTpHAoqJFYcZVw==",
+        "dependencies": {
+          "postcss": "postcss@8.4.31",
+          "postcss-simple-vars": "postcss-simple-vars@6.0.3_postcss@8.4.31"
+        }
+      },
+      "postcss-functions@4.0.2_postcss@8.4.31": {
+        "integrity": "sha512-htDZN6t97uW4GBXquTsz/DVaNVAHtHx5tLCALquVM2u58UwHki+RwHbANKiiI0ImA8T7Iml2MnvLUM7aGtlpqA==",
+        "dependencies": {
+          "postcss": "postcss@8.4.31",
+          "postcss-value-parser": "postcss-value-parser@4.2.0"
+        }
+      },
       "postcss-import@15.1.0_postcss@8.4.31": {
         "integrity": "sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==",
         "dependencies": {
@@ -1880,6 +1926,18 @@
         "dependencies": {
           "cssesc": "cssesc@3.0.0",
           "util-deprecate": "util-deprecate@1.0.2"
+        }
+      },
+      "postcss-simple-vars@6.0.3_postcss@8.4.31": {
+        "integrity": "sha512-fkNn4Zio8vN4vIig9IFdb8lVlxWnYR769RgvxCM6YWlFKie/nQaOcaMMMFz/s4gsfHW4/5bJW+i57zD67mQU7g==",
+        "dependencies": {
+          "postcss": "postcss@8.4.31"
+        }
+      },
+      "postcss-simple-vars@7.0.1_postcss@8.4.31": {
+        "integrity": "sha512-5GLLXaS8qmzHMOjVxqkk1TZPf1jMqesiI7qLhnlyERalG0sMbHIbJqrcnrpmZdKCLglHnRHoEBB61RtGTsj++A==",
+        "dependencies": {
+          "postcss": "postcss@8.4.31"
         }
       },
       "postcss-value-parser@4.2.0": {

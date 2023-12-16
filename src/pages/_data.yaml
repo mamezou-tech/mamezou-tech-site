@@ -1,0 +1,3 @@
+tags: [pages]
+layout: layouts/page.njk
+basename: ""

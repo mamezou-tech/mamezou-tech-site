@@ -1,6 +1,4 @@
-import { PageData } from "lume/core.ts";
-
-interface Props extends PageData {
+interface Props extends Lume.Data {
   title: string;
   lpLink: string;
   image: {

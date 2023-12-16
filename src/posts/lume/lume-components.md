@@ -20,6 +20,12 @@ LumeはフレームワークではなくSSGの位置付けですが、強力な�
 
 [^1]: 実は[Lume入門(第2回)](/lume/lume-jsx-mdx/)でUI部品(JSX)を作成してMDXから使う方法は触れられています。
 
+:::info
+2023-12-08にLumeがv2にメジャーアップデートしました。これに伴い本記事もv2で動作するよう更新しました。
+
+- [Lume Blog - Lume 2 is finally here!!](https://lume.land/blog/posts/lume-2/)
+:::
+
 :::column:_includesディレクトリからUI部品を再利用する
 `_includes`ディレクトリはページ本体ではないテンプレートを格納する特殊なディレクトリです。
 Lumeのドキュメントではあまり触れられていませんが、このディレクトリはレイアウトファイルだけでなく、コンポーネントでも使えます。
@@ -37,8 +43,7 @@ Lumeのドキュメントではあまり触れられていませんが、この�
 
 ## Nunjucksでコンポーネントを作成する
 
-まずはビルトインテンプレートのNunjucksを使ってみます。
-ここではアラートボックス部品をコンポーネントとして作成します。
+まずは、Nunjucksでアラートボックス部品をコンポーネントとして作成してみます。
 以下のNunjucksテンプレート(alertbox.njk)を`_components`配下に配置します。
 
 ```html
@@ -49,7 +54,7 @@ Lumeのドキュメントではあまり触れられていませんが、この�
 
 タイプとメッセージを受け取って、divタグ内にメッセージを出力するシンプルなものです。
 
-このコンポーネントを使う場合は以下のようになります。
+このコンポーネントを使うには以下のようにします。
 
 ```html
 ---
@@ -64,7 +69,7 @@ layout: layouts/blog.njk
 `comp`変数を使っているところがポイントです。このオブジェクト内に、`_components`配下に作成したコンポーネントが格納されています。
 Nunjucksテンプレートでは、この`comp`変数に直接アクセスできます。各コンポーネントは引数として可変パラメータをオブジェクト形式で指定できるようになっています。
 
-このテンプレートでページを生成すると、以下のようなHTMLとなります（抜粋）。
+このテンプレートでページを生成すると、以下のようなHTMLが出力されます（抜粋）。
 
 ```html
 <main>
@@ -84,7 +89,7 @@ JSX/MDXテンプレートでもNunjucksで作成したコンポーネントを�
 HTMLとしてレンダリングするには`dangerouslySetInnerHTML`を使う必要があります。
 
 ```tsx
-export default ({comp}: PageData) => (
+export default ({comp}: Lume.Data) => (
   <div dangerouslySetInnerHTML={{
     __html: comp.alertbox({type: "info", message: "Nunjucksのコンポーネントです"})
   }} />
@@ -96,15 +101,13 @@ export default ({comp}: PageData) => (
 
 ## JSXでコンポーネントを作成する
 
-先ほどはビルトインテンプレートのNunjucksでコンポーネントを作成する方法を見てきました。
+先ほどはNunjucksでコンポーネントを作成する方法を見てきました。
 次はJSXで作成してみましょう。
 
 先ほどと同じアラートボックスをJSX(TSX)で書き換えてみます。
 
 ```tsx
-import { PageData } from 'lume/core.ts';
-
-interface Props extends PageData {
+interface Props extends Lume.Data {
   type: 'info' | 'warning' | 'error';
   message: string;
 }
@@ -118,7 +121,7 @@ export default ({ type, message }: Props) => (
 
 説明の必要もないシンプルなJSXコンポーネントです[^2]。
 
-[^2]: ここではPropsとしてLumeのPageDataを拡張していますが、Lume固有のデータ(serachやpaginate等)も使用していないため必須ではありません。
+[^2]: ここではPropsとしてLumeのLume.Dataを拡張していますが、Lume固有のデータ(serachやpaginate等)も使用していないため必須ではありません。
 
 注意点としては、useStateやイベントハンドラ等のリアクティブな実装は機能しません。
 Lumeはクライアントサイドの振る舞いには関知しません。あくまでのページ生成時のレンダリングで使われるだけです。
@@ -145,13 +148,11 @@ layout: layouts/blog.njk
 
 - JSX(TSX)テンプレート
 ```tsx
-import { PageData } from 'lume/core.ts';
-
 export const title = "Lumeコンポーネント入門";
 export const url = "/components/jsx/";
 export const layout = "layouts/blog.njk";
 
-export default ({ comp }: PageData) => (
+export default ({ comp }: Lume.Data) => (
   <comp.AlertBox type="info" message="JSXのコンポーネントです" />
 )
 ```
@@ -180,7 +181,6 @@ Lumeではコンポーネント自体に加えて、コンポーネント用のC
 コンポーネントは以下のようになります。
 
 ```tsx
-import { PageData } from 'lume/core.ts';
 // コンポーネント向けのCSSを出力
 export const css = `
   .alert {
@@ -206,7 +206,7 @@ export const css = `
   }
 `
 
-interface Props extends PageData{
+interface Props extends Lume.Data{
   type: 'info' | 'warning' | 'error';
   message: string;
 }

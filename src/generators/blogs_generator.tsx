@@ -1,8 +1,6 @@
 import { PaginateOptions } from "lume/plugins/paginate.ts";
 import { filterByPost } from "../../lume/filters/utils.ts";
-import { Page } from "lume/core/filesystem.ts";
 import { encodeUrl } from "encodeurl";
-import { PageData } from "lume/core.ts";
 
 export const layout = "layouts/page.njk";
 export const title = "ブログ";
@@ -12,9 +10,9 @@ export const icon =
 export const titleImage = "/img/logo/mame-kun3_50.png";
 export const hideCategory = true;
 
-export default function* ({ search, paginate, comp }: PageData) {
-  const pages = search.pages("posts exclude!=true", "date=desc");
-  const posts = filterByPost(pages as Page[]);
+export default function* ({ search, paginate, comp }: Lume.Data) {
+  const pages = search.pages<Lume.Data>("posts exclude!=true", "date=desc");
+  const posts = filterByPost(pages);
   const options: PaginateOptions = {
     url: (n: number) => `/blogs/${n > 1 ? `${n.toString()}/` : ""}`,
     size: 20,

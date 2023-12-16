@@ -15,16 +15,16 @@ exclude: true
 		<name>{{ meta.authorName }}</name>
 	</author>
 	{%- for page in search | posts | head(100) %}
-	{%- set absolutePostUrl %}{{ page.data.url | url | absoluteUrl(meta.url) }}{% endset -%}
+	{%- set absolutePostUrl %}{{ page.url | url | absoluteUrl(meta.url) }}{% endset -%}
 	{%- set pageDescription %}{% shortDesc search.pages(), page, meta.siteDescription %}{% endset -%}
 	<entry>
-		<title>{{ page.data.title  }}</title>
+		<title>{{ page.title  }}</title>
 		<link href="{{ absolutePostUrl }}"/>
-		<published>{{ page.data.date | isoDate }}</published>
-		<updated>{{ page.data.date | isoDate }}</updated>
+		<published>{{ page.date | isoDate }}</published>
+		<updated>{{ page.date | isoDate }}</updated>
 		<id>{{ absolutePostUrl }}</id>
 		<summary>{{ pageDescription }}</summary>
-		<content type="html">{{ page.data.children | rssUrl(meta.url) }}</content>
+		<content type="html">{{ page.children | rssUrl(meta.url) }}</content>
 	</entry>
 	{%- endfor %}
 </feed>

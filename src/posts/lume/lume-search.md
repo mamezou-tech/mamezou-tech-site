@@ -6,7 +6,7 @@ prevPage: ./src/posts/lume/lume-jsx-mdx.md
 nextPage: ./src/posts/lume/lume-components.md
 ---
 
-[前回](/lume/lume-jsx-mdx/)はLumeのテンプレートエンジンとして組み込みのNunjucksでなく、JSX/MDXプラグインを使用する方法を見てきました。
+[前回](/lume/lume-jsx-mdx/)はLumeのテンプレートエンジンとしてJSX/MDXプラグインを使用する方法を見てきました。
 
 サイト運営が順調でページが増えてくると、目的のページを探すのが辛くなってきます。
 こんなときは、ページにタグ(目印)を付けて検索性を高める手法がよく使われますね。
@@ -20,6 +20,12 @@ nextPage: ./src/posts/lume/lume-components.md
 - [Lume Plugin - Paginate](https://lume.land/plugins/paginate/)
 
 両プラグインともに、Lume本体にプレインストールされているため、すぐに使い始められます。
+
+:::info
+2023-12-08にLumeがv2にメジャーアップデートしました。これに伴い本記事もv2で動作するよう更新しました。
+
+- [Lume Blog - Lume 2 is finally here!!](https://lume.land/blog/posts/lume-2/)
+:::
 
 ## ページにタグをつける
 
@@ -94,24 +100,22 @@ title: Lumeのページ一覧
 
 {%- for page in search.pages('Lume', 'date=desc') %}
 <div>
-  <a href="{{ page.data.url }}">{{ page.data.title }}</a>
+  <a href="{{ page.url }}">{{ page.title }}</a>
 </div>
 {%- endfor %}
 ```
 - JSX(TSX)テンプレート
 ```tsx
-import { PageData } from "lume/core.ts";
-
 export const layout = "layouts/blog.njk";
 export const url = "/tags/lume/";
 export const title = "Lumeのページ一覧";
 
-export default ({ search }: PageData) => {
+export default ({ search }: Lume.Data) => {
   return (
     <>
       {search.pages("Lume", "date=asc").map((page, index) => (
         <div key={index}>
-          <a href={page.data.url}>{page.data.title}</a>
+          <a href={page.url}>{page.title}</a>
         </div>
       ))}
     </>
@@ -145,20 +149,18 @@ Lumeタグがついているページが新しい順に一覧化できている�
 
 - [Lume Doc - Create multiple pages](https://lume.land/docs/core/multiple-pages/)
 
-ジェネレーター関数はJavaScriptのものです。テンプレートエンジンとしてNunjucksではなくJavaScript(こちらもビルトインです)を使います。
+ジェネレーター関数はJavaScriptのものです。テンプレートエンジンとしてもJavaScript(こちらもビルトインです)を使います。
 
 先ほどの同等のHTMLを出力するテンプレートは、以下のようになります(ここではTypeScriptを使用してます)。
 
 ```typescript
-import { PageData } from "lume/core.ts";
-
 export const layout = "layouts/blog.njk"; // 全ページ共通のフロントマター
 
-export default function* ({ search }: PageData) {
-  const tags = search.tags(); // 全タグを収集
+export default function* ({ search }: Lume.Data) {
+  const tags = search.values("tags"); // 全タグを収集
   for (const tag of tags) {
     const links = search.pages(tag as string, "date=desc").map((page) =>
-      `<div><a href="${page.data.url}">${page.data.title}</a></div>`
+      `<div><a href="${page.url}">${page.title}</a></div>`
     );
     yield {
       // ページ別のフロントマター
@@ -177,7 +179,7 @@ export default function* ({ search }: PageData) {
 3. ページコンテンツ(HTML)を生成
 4. フロントマターとページコンテンツをyieldで返す
 
-なお、JavaScriptをテンプレートとする場合は、それがページ生成用のテンプレートであることをLumeに示すため、ファイル名のサフィックスとして`<file-name>.tmpl.(js|ts)`とする必要があります(デフォルト)。
+なお、JavaScriptをテンプレートとする場合は、それがページ生成用のテンプレートであることをLumeに示すため、ファイル名のサフィックスとして`<file-name>.page.(js|ts)`とする必要があります(デフォルト)。
 
 先ほど`Lume`、`SSG`、`Deno`の3つのタグをページに指定していますので、これを実行すると以下3ページの一覧が生成されます(どのページも内容はほとんど同じです)。
 
@@ -199,20 +201,18 @@ layout: "layouts/blog.njk"
 ---
 {%- for page in results %}
 <div>
-  <a href="{{ page.data.url }}">{{ page.data.title }}</a>
+  <a href="{{ page.url }}">{{ page.title }}</a>
 </div>
 {%- endfor %}
 ```
 
 - JavaScriptテンプレート
 ```typescript
-import { PageData } from "lume/core.ts";
-
 // 全ページ共通のフロントマター
 export const layout = "layouts/post-list.njk"; // 一覧ページ用のレイアウト
 
-export default function* ({ search }: PageData) {
-  const tags = search.tags(); // 全タグを収集
+export default function* ({ search }: Lume.Data) {
+  const tags = search.values("tags"); // 全タグを収集
   for (const tag of tags) {
     yield {
       // ページ別のフロントマター
@@ -232,11 +232,11 @@ Nunjucksで作成したレイアウトファイルを、JavaScriptテンプレ�
 JSXテンプレートもJavaScriptですので、同様のことが可能です。
 以下はJSX(TSX)テンプレートを使った場合のジェネレータ関数部分の抜粋です。
 ```tsx
-export default function* ({ search }: PageData) {
-  const tags = search.tags(); // 全タグを収集
+export default function* ({ search }: Lume.Data) {
+  const tags = search.values("tags"); // 全タグを収集
   for (const tag of tags) {
     const links = search.pages(tag as string, "date=desc").map((page, index) =>
-      <div key={index}><a href={page.data.url}>{page.data.title}</a></div>
+      <div key={index}><a href={page.url}>{page.title}</a></div>
     );
     yield {
       // ページ別のフロントマター
@@ -263,11 +263,9 @@ export default function* ({ search }: PageData) {
 先ほど10ページのサンプル記事を作成しています。ここでは1ページ3件としてページネーション付きの一覧ページを作成します。
 
 ```typescript
-import { PageData } from "lume/core.ts";
-
 export const layout = "layouts/blog.njk";
-export default function* ({ search, paginate }: PageData) {
-  const tags = search.tags(); // 全タグを収集
+export default function* ({ search, paginate }: Lume.Data) {
+  const tags = search.values("tags"); // 全タグを収集
   for (const tag of tags) {
     // paginateプラグインを使ってページネーションを実行
     const paginateResults = paginate(search.pages(tag as string, "date=desc"), {
@@ -278,7 +276,7 @@ export default function* ({ search, paginate }: PageData) {
     });
     for (const paginateResult of paginateResults) {
       const links = paginateResult.results.map((page) =>
-        `<div><a href="${page.data.url}">${page.data.title}</a></div>`
+        `<div><a href="${page.url}">${page.title}</a></div>`
       );
       yield {
         title: `${tag}のページ一覧`,

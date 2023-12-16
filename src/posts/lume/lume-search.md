@@ -6,14 +6,7 @@ prevPage: ./src/posts/lume/lume-jsx-mdx.md
 nextPage: ./src/posts/lume/lume-components.md
 ---
 
-:::info
-2023-12-08にLumeがv2にメジャーアップデートしました。これに伴い本記事もv2で動作するよう更新しました。
-
-- [Lume Blog - Lume 2 is finally here!!](https://lume.land/blog/posts/lume-2/)
-:::
-
-
-[前回](/lume/lume-jsx-mdx/)はLumeのテンプレートエンジンとして組み込みのNunjucksでなく、JSX/MDXプラグインを使用する方法を見てきました。
+[前回](/lume/lume-jsx-mdx/)はLumeのテンプレートエンジンとしてJSX/MDXプラグインを使用する方法を見てきました。
 
 サイト運営が順調でページが増えてくると、目的のページを探すのが辛くなってきます。
 こんなときは、ページにタグ(目印)を付けて検索性を高める手法がよく使われますね。
@@ -156,7 +149,7 @@ Lumeタグがついているページが新しい順に一覧化できている�
 
 - [Lume Doc - Create multiple pages](https://lume.land/docs/core/multiple-pages/)
 
-ジェネレーター関数はJavaScriptのものです。テンプレートエンジンとしてNunjucksではなくJavaScript(こちらもビルトインです)を使います。
+ジェネレーター関数はJavaScriptのものです。テンプレートエンジンとしてもJavaScript(こちらもビルトインです)を使います。
 
 先ほどの同等のHTMLを出力するテンプレートは、以下のようになります(ここではTypeScriptを使用してます)。
 
@@ -186,7 +179,7 @@ export default function* ({ search }: Lume.Data) {
 3. ページコンテンツ(HTML)を生成
 4. フロントマターとページコンテンツをyieldで返す
 
-なお、JavaScriptをテンプレートとする場合は、それがページ生成用のテンプレートであることをLumeに示すため、ファイル名のサフィックスとして`<file-name>.tmpl.(js|ts)`とする必要があります(デフォルト)。
+なお、JavaScriptをテンプレートとする場合は、それがページ生成用のテンプレートであることをLumeに示すため、ファイル名のサフィックスとして`<file-name>.page.(js|ts)`とする必要があります(デフォルト)。
 
 先ほど`Lume`、`SSG`、`Deno`の3つのタグをページに指定していますので、これを実行すると以下3ページの一覧が生成されます(どのページも内容はほとんど同じです)。
 

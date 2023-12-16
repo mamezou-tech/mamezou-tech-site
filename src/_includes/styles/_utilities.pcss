@@ -37,8 +37,8 @@
 $tdbc-alignments: left, center, right !default;
 
 @each $alignment in $tdbc-alignments {
-  .tdbc-text-align--#{$alignment} {
-    text-align: #{$alignment};
+  .tdbc-text-align--$alignment {
+    text-align: $alignment;
 
     @if ($alignment == "center") {
       > a {
@@ -49,18 +49,18 @@ $tdbc-alignments: left, center, right !default;
 }
 
 @each $key in $tdbc-background-colors {
-  .tdbc-background--#{$key} {
+  .tdbc-background--$key {
     background-color: tdbc-color($key);
   }
 }
 
 @each $key in $tdbc-ink-colors {
-  .tdbc-ink--#{$key},
-  a.tdbc-ink--#{$key} {
-    color: tdbc-color(#{$key});
+  .tdbc-ink--$key,
+  a.tdbc-ink--$key {
+    color: tdbc-color($key);
   }
 
-  .tdbc-ink--#{$key} > a:not(.tdbc-button) {
+  .tdbc-ink--$key > a:not(.tdbc-button) {
     color: inherit;
   }
 }
@@ -71,12 +71,12 @@ $tdbc-alignments: left, center, right !default;
 }
 
 @each $key, $unit in $tdbc-spacing {
-  .tdbc-my-#{$key} {
+  .tdbc-my-$key {
     margin-top: $unit;
     margin-bottom: $unit;
   }
 
-  .tdbc-mt-#{$key} {
+  .tdbc-mt-$key {
     margin-top: $unit;
   }
 }

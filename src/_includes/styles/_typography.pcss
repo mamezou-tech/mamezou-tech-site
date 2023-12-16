@@ -1,17 +1,14 @@
 $tdbc-typography-variants: h1, h2, h3, h4;
 
 @each $type in $tdbc-typography-variants {
-  #{$type},
-  .tdbc-#{$type} {
+  $(type),
+  .tdbc-$(type) {
     font-weight: $tdbc-strong-font-weight;
     line-height: 1.15;
     margin-bottom: 0.65em;
   }
 }
 
-// As of v0.3.0, `clamp` not well enough supported on mobile browsers for use
-// Due to build-in min/max Sass functions, requires `unquote()` to correctly
-// render as CSS min/max
 h1,
 .tdbc-h1 {
   font-size: $tdbc-h1-font-size;
@@ -124,7 +121,6 @@ blockquote {
   padding: 0;
 }
 
-// customize for post
 $text-xs: 0.75rem !default;
 $text-sm: 0.875rem !default;
 $text-base: 1rem !default;

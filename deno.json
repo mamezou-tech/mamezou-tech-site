@@ -4,7 +4,8 @@
     "jsxImportSource": "npm:react",
     "types": [
       "lume/types.ts",
-      "https://unpkg.com/@types/react@18.2.37/index.d.ts"
+      "https://unpkg.com/@types/react@18.2.37/index.d.ts",
+      "https://unpkg.com/@types/luxon@3.3.7/index.d.ts"
     ]
   },
   "tasks": {

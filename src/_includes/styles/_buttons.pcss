@@ -1,5 +1,3 @@
-@use "sass:math";
-
 .tdbc-button {
   display: inline-flex;
   align-items: center;
@@ -10,7 +8,7 @@
   padding: 0.25em 1em;
   transition: 180ms ease-in-out;
   transition-property: background, border;
-  border-radius: math.div($tdbc-border-radius, 2);
+  border-radius: calc($tdbc-border-radius / 2);
   background-color: tdbc-color("primary");
   color: #fff;
   font-size: 1.125rem;
@@ -50,7 +48,6 @@
       margin-left: 0.25em;
     }
 
-    // stylelint-disable-next-line  selector-max-type
     svg {
       width: 100%;
       height: 100%;
@@ -69,15 +66,14 @@
     }
   }
 
-  // stylelint-disable max-nesting-depth
   @each $key in $tdbc-button-variants {
     $color: tdbc-color($key);
 
-    @if ($key != "primary") {
-      &--#{$key} {
+    @if $(key) != primary {
+      &--$(key) {
         background-color: $color;
 
-        @if ($key == "light") {
+        @if $(key) == light {
           color: tdbc-color("dark");
         }
 
@@ -86,7 +82,7 @@
         }
       }
 
-      &-outlined--#{$key} {
+      &-outlined--$(key) {
         border-color: scale-color($color, $lightness: 30%, $saturation: 15%);
         color: $color;
 
@@ -94,7 +90,7 @@
           box-shadow: 0 0 0 3px scale-color($color, $lightness: -30%);
         }
 
-        @if ($key == "light") {
+        @if $(key) == light {
           &:hover,
           &:focus {
             background-color: rgba($color, 0.15);
@@ -108,7 +104,6 @@
       }
     }
   }
-  // stylelint-enable
 }
 
 .tdbc-button__icon,
@@ -123,7 +118,6 @@
   font-size: 1.5rem;
   cursor: pointer;
 
-  // stylelint-disable-next-line selector-max-type
   svg {
     flex-shrink: 0;
     width: 100%;
@@ -132,7 +126,6 @@
 }
 
 .tdbc-icon-button {
-  // stylelint-disable-next-line selector-max-type
   svg {
     fill: currentColor;
     opacity: 0.7;
@@ -142,7 +135,6 @@
   &:hover {
     outline: none;
 
-    // stylelint-disable-next-line selector-max-type
     svg {
       opacity: 1;
     }

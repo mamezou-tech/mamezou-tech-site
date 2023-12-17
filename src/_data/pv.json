@@ -9,32 +9,32 @@
       "url": "/blogs/2022/07/04/monty-hall-problem/"
     },
     {
-      "title": "CRaCによるJavaの高速化",
-      "url": "/blogs/2022/12/02/jdk-crac/"
+      "title": "開発者体験(DX)を進化させるJetBrainsのAIアシスタント機能の紹介",
+      "url": "/blogs/2023/12/09/jetbrains-ai-assistant-intro/"
     },
     {
       "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
       "url": "/nuxt/nuxt3-routing/"
     },
     {
-      "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
-      "url": "/nuxt/nuxt3-state-management/"
+      "title": "CRaCによるJavaの高速化",
+      "url": "/blogs/2022/12/02/jdk-crac/"
     },
     {
       "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
       "url": "/nuxt/nuxt3-rendering-mode/"
     },
     {
-      "title": "ペアワイズ法をGUIから使いこなすツール「PictMaster」の紹介",
-      "url": "/blogs/2022/07/23/pictmaster/"
+      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
+      "url": "/blogs/2023/03/05/using-pytest-02/"
     },
     {
-      "title": "Viteベースの高速テスティングフレームワークVitestを使ってみる",
-      "url": "/blogs/2022/12/28/vitest-intro/"
+      "title": "Google Test を使ってみる（その１：準備編）",
+      "url": "/blogs/2022/11/04/google-test-01/"
     },
     {
-      "title": "統計学で避けて通れない自由度の話",
-      "url": "/blogs/2022/06/20/degrees-of-freedom/"
+      "title": "Google Test を使ってみる（その５：GoogleMock編）",
+      "url": "/blogs/2023/10/08/google-test-05/"
     },
     {
       "title": "ORマッパーのTypeORMをTypeScriptで使う",

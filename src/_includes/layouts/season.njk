@@ -11,7 +11,7 @@ layout: layouts/base.njk
         <div id="preact-sns"></div>
         <script type="module">
           import { render } from '/js/preact/social_plugins.client.js';
-          render({url: '{{ meta.url }}', path: '{{ page.data.url }}'}, document.getElementById("preact-sns"));
+          render({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
         </script>
       </div>
     </header>

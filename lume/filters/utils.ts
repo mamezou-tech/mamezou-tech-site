@@ -1,22 +1,14 @@
-import { Data, Page } from "lume/core/filesystem.ts";
-import { Search } from "lume/plugins/search.ts";
+import Search from "lume/core/searcher.ts";
 
-export function filterByPost<T extends Page | Data>(pages: T[]): T[] {
+export function filterByPost(pages: Lume.Data[]): Lume.Data[] {
   return pages.filter((item) => {
-    if (isPage(item)) {
-      return item.data.layout?.startsWith("layouts/post");
-    }
     return item.layout?.startsWith("layouts/post");
   });
 }
 
-export function getPostArticles(search: Search): Page[] {
+export function getPostArticles(search: Search): Lume.Data[] {
   const pages = search.pages("exclude!=true", "date=desc");
-  return filterByPost(pages as Page[]);
-}
-
-function isPage(target: Page | Data): target is Page {
-  return target.data;
+  return filterByPost(pages as Lume.Data[]);
 }
 
 export function chop(content: string, count = 150) {

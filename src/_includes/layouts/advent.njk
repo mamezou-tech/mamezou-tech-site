@@ -12,14 +12,14 @@ layout: layouts/base.njk
           <div id="preact-sns"></div>
           <script type="module">
             import { render } from '/js/preact/social_plugins.client.js';
-            render({url: '{{ meta.url }}', path: '{{ page.data.url }}'}, document.getElementById("preact-sns"));
+            render({url: '{{ meta.url }}', path: '{{ url }}'}, document.getElementById("preact-sns"));
           </script>
         </div>
       </div>
     </header>
 
     <main class="event__content">
-      {{ comp.Calendar({ year: page.data.year, weekend: page.data.weekend }) | safe }}
+      {{ comp.Calendar({ year: year, weekend: weekend }) | safe }}
     </main>
 
     <div style="margin-top:0">

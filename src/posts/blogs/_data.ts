@@ -1,4 +1,3 @@
-import { Page } from 'lume/core/filesystem.ts';
 import { DateTime } from 'luxon';
 
 const dropPrefix = (fileSlug: string) =>
@@ -8,9 +7,9 @@ const data = {
   pageNavigationTag: 'posts',
   tags: ['posts'],
   category: 'ブログ',
-  url: (page: Page) => {
+  url: (page: Lume.Page) => {
     const dt = DateTime.fromJSDate(page.data.date);
-    const fileName = dropPrefix(page.src.slug);
+    const fileName = dropPrefix(page.data.basename);
     return `/blogs/${dt.toFormat('yyyy/LL/dd')}/${fileName}/`;
   }
 };

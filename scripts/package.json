@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "generate:column": "ts-node-esm bin/generate-column.ts",
-    "generate:weekly-ranking": "ts-node-esm bin/weekly-ranking.ts"
+    "generate:column": "node --loader ts-node/esm bin/generate-column.ts",
+    "generate:weekly-ranking": "node --loader ts-node/esm bin/weekly-ranking.ts"
   },
   "author": "",
   "license": "ISC",

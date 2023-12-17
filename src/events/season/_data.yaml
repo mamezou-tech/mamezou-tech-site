@@ -1,0 +1,3 @@
+layout: 'layouts/season.njk'
+category: 'event'
+basename: season

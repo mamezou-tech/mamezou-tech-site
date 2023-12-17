@@ -1,9 +1,7 @@
-import { Page } from "lume/core/filesystem.ts";
 import { PaginateResult } from "lume/plugins/paginate.ts";
-import { PageData } from "lume/core.ts";
 
-interface Props extends PageData {
-  pages: PaginateResult<Page>[];
+interface Props extends Lume.Data {
+  pages: PaginateResult<Lume.Page>[];
   hrefs: string[];
   current: string;
 }

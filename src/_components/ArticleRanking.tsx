@@ -1,8 +1,6 @@
 import { articleDate } from "../../lume/filters/article_date.ts";
-import { Page } from "lume/core/filesystem.ts";
-import { PageData } from "lume/core.ts";
 
-interface Props extends PageData {
+interface Props extends Lume.Data {
   // from _data/pv.json
   pv: {
     ranking: {
@@ -17,7 +15,7 @@ export default ({ search, pv }: Props) => (
     <legend>豆蔵デベロッパーサイト - 先週のアクセスランキング</legend>
     <ol>
       {pv.ranking.map((article) => {
-        const published = articleDate(search.pages() as Page[], article.url);
+        const published = articleDate(search.pages(), article.url);
         return (
           <li key={article.url}>
             <a href={article.url}>

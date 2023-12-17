@@ -1,4 +1,6 @@
-const Entry = ({ dayOfWeek, date, author, githubUser, title, url }) => {
+const Entry = (
+  { dayOfWeek, date, author, githubUser, title, url }: Lume.Data,
+) => {
   const authorImageURL = githubUser
     ? `https://github.com/${githubUser}.png`
     : null;
@@ -39,7 +41,7 @@ const Entry = ({ dayOfWeek, date, author, githubUser, title, url }) => {
   );
 };
 
-export default ({ year, weekend, events }) => {
+export default ({ year, weekend, events }: Lume.Data) => {
   const event = events.advent[year];
   const repeat = weekend ? 7 : 5;
   return (

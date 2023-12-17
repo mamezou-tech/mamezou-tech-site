@@ -3,6 +3,7 @@ title: 業務システムにおけるアジャイル その3：SaaSとの相性
 author: makiko-nakasato
 date: 2023-11-14
 prevPage: ./src/posts/agile/bs-agile_02.md
+nextPage: ./src/posts/agile/bs-agile_04.md
 ---
 
 ## はじめに

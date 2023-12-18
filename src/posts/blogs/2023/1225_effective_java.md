@@ -11,7 +11,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 # はじめに
 BS第二グループの中垣内と申します。今回は、先輩社員からおすすめしていただいた書籍「Effective Java 第3版」読み、自分の現場での開発経験と照らし合わせて考えたことを寄稿させていただきます。本書に書いてあることはどれもJavaで開発を行う上でためになることばかりなのですが、今回はその中でも個人的に特にためになった・学びになったと感じたことをピックアップして紹介させていただきます。
 
-# Effentive Javaについて
+# Effective Javaについて
 Javaプログラマにとって必読の定番書であり、第3版ではJava8から導入されたラムダとストリームに関する章が追加されたそうです。初心者向けの書籍と言うよりは、Javaの基本文法を習得している人がターゲットとなっており、**より良いJavaコード**を書くためのノウハウやデザインパターンが示されている本だと私は捉えています。
 
 [Effective Java 第3版 / Joshua Bloch（著）, 柴田 芳樹（訳） Amazonのリンク](https://amzn.asia/d/bH4A7T5)

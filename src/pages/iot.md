@@ -42,3 +42,4 @@ FreeRTOSの仕組みと特徴、各種実装についてご紹介します。
 IoTデバイスに接続して使用するセンサモジュールなどについてご紹介します。
 
 - [IoT を使ってみる（その１３：温湿度センサモジュールDHT11編）](/iot/internet-of-things-13/)
+- [IoT を使ってみる（その１４：有機ELディスプレイ(OLED)SSD1306編）](/iot/internet-of-things-14/)

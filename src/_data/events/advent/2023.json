@@ -99,13 +99,15 @@
       "date": "18",
       "author": "shuichi-takatsu",
       "githubUser": "shuichi-takatsu",
-      "title": "IoTネタで何か書きます(家の中がArduinoやESP32であふれかえってて…)"
+      "title": "IoT を使ってみる（その１４：有機ELディスプレイ(OLED)SSD1306編）",
+      "url": "/iot/internet-of-things-14/"
     },
     {
       "date": "19",
       "author": "makiko-nakasato",
       "githubUser": "makiko-nakasato",
-      "title": "(仮)感情、この厄介なもの"
+      "title": "スクラムマスターとは結局何をする人なのか",
+      "url": "/blogs/2023/12/19/what-scrum-master/"
     },
     {
       "date": "20",

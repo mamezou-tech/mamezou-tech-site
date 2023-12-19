@@ -6,7 +6,7 @@ tags: [Python, 仮想化, 初心者向け, advent2023]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
 ---
 
-これは[豆蔵デベロッパーサイトアドベントカレンダー2023](/events/advent-calendar/2023/)第10日目の記事です。
+これは[豆蔵デベロッパーサイトアドベントカレンダー2023](/events/advent-calendar/2023/)第12日目の記事です。
 
 ## はじめに
 初めまして、BS事業部の山下と申します。

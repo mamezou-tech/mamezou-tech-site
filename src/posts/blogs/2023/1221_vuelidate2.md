@@ -23,7 +23,7 @@ Vuelidateは基本的にテンプレート側で必要な記述はなく、す�
 ## バリデーションオブジェクトの変更
 
 SSSではTypeScript + Composition APIのsetupシンタックスを用いています。
-公式のサンプルを元にscript setupで書き換えた、基本的なVuelidateの実装はこのようになります。
+[公式のサンプル](https://vuelidate-next.netlify.app/#alternative-syntax-composition-api)を元にscript setupで書き換えた、基本的なVuelidateの実装はこのようになります。
 
 ```typescript
 // script setup
@@ -54,12 +54,18 @@ Vulidate 0.xからの変更点としてはuseVuelidate()メソッドを使用す
 引数にそれぞれバリデーションルール、検証を行うデータを取り、バリデーションオブジェクトである`v$`(Vuelidate 0.x系では`$v`でした[^1])を返します。
 バリデーションルールは検証するデータと対応しており、それぞれに必須ならrequired、メール形式ならemailといったビルトインのメソッドを用いてバリデーションルールを簡単に定義することができます。検証対象のデータにはリアクティブオブジェクトかrefのコレクションを取ることができます。
 ここで、バリデーションルールは上記例ではオブジェクトで記述していますが、これはVuelidate 0.x系との後方互換性を保つためであり、バリデーションルールをリアクティブに使いたい場合、ルールは下記のようにcomputedにする必要があるようです。
-こちらも公式ドキュメントからの引用ですが、今回stateはrefで定義してみました。refを使うかreactiveを使うか問題がありますが、本プロジェクトでは基本的にrefで統一しています。
+こちらも[公式ドキュメント(Computed function with Composition API)](https://vuelidate-next.netlify.app/api/rules.html#computed-function-with-composition-api)からの引用ですが、今回stateはrefで定義してみました[^2]。
 
 [^1]:Vuelidate2からバリデーションオブジェクトに任意の変数名を付けられるようになりました。ただし`$`で始まる変数名は使用できなくなったようです。公式では`v$`もしくは`v`を使用しています。
+[^2]:refを使うかreactiveを使うか問題がありますが、本プロジェクトでは基本的にrefで統一しています。
 
 ```typescript
 import { ref } from 'vue'
+
+const someBooolean = ref<boolean>(false)
+const someValidator = () => {
+  // 何かしらのバリデーション
+}
 
 // state
 const password = ref<string>('')
@@ -231,12 +237,12 @@ td内のv-text-fieldにバインドする値はValidateEachのバリデーショ
 Vuelidate2への変更でかなりはまったのが初期化時の挙動の変更についてです。こちら公式ドキュメントには詳しい記述は見つけられなかったのですが、`@vuelidate/core`内のreadmeに以下のような記述を見つけました。
 >Validation in Vuelidate 2 is by default on, meaning validators are called on initialisation, but an error is considered active, only after a field is dirty, so after `$touch()` is called or by using `$model`.
 
-"initialisation"が指しているのはおそらくライフサイクルフックでいうところのcreatedのタイミングです。このタイミングでバリデーションが1度実行されることとなります。
-実際、バリデーションルール内にloggerを記述するとコンポーネントのcreateのタイミングでデバッグ文がコンソールに出力され、ルール内のスクリプトが実行されることがわかりました[^2]。
+初期化時にバリデーターが呼ばれるとありますが、具体的にはOptions APIではライフサイクルフックでいうところのonBeforeMount、Composiotion APIではcreatedのタイミングのようです[^3]。このタイミングでバリデーションが1度実行されることとなります。
+実際、バリデーションルール内にloggerを記述するとコンポーネントのcreateのタイミングでデバッグ文がコンソールに出力され、ルール内のスクリプトが実行されることがわかりました。
 ただし記述にあるようにdirty状態になった後でエラーが評価されるようで、基本的な動きに影響はありません。
 困った挙動になるのが以下のようなカスタムバリデーションを実装したときです。
 
-[^2]:Composition APIで記述したパターンのみ確認済みです。[公式ドキュメント(Accessing component instance from validator)](https://vuelidate-next.netlify.app/custom_validators.html#accessing-component-instance-from-validator)にもComposition APIを使用した初期化時に関する注意書きがあることから、Options APIを使用した際には挙動が異なる可能性があります。
+[^3]:[vuelidate/packages/vuelidate/src/index.js](https://github.com/vuelidate/vuelidate/blob/next/packages/vuelidate/src/index.js#L71)を参照。Composition APIではimmediateオプションがついたwatcherで初期化がトリガーされます。Vue2版ではimmediate付きwatcherの実行タイミングはbeforeCreateとcreatedの間とする[記事](https://qiita.com/sin_tanaka/items/64b4a48bcb6dac924380)がありますが、Vue3のcomposition APIでは統合されている([参照](https://ja.vuejs.org/api/composition-api-lifecycle.html#composition-api-lifecycle-hooks))ためcreatedのタイミングとしました。
 
 ```typescript
 const id = ref<string | null>(null)
@@ -266,13 +272,22 @@ const v$ = useVuelidate(
 ```
 
 重要なのは※の記述で、ルール内でバリデーションオブジェクトを使用しています。このオブジェクト`v$`はuseVuelidateによって生成されるため、コンポーネントのcreateのタイミングで※の行が実行されると、定義されていないオブジェクトを参照するためかこの時点でルール定義のブロックから脱出してしまいます。さらに、読み込み中だったルール(今回だとisUniqueId)に関しては強制的にinvalidとなり、この行以降のルールに関しては初期化が行われませんでした。ただし、dirtyになれば再度エラーの評価は行われます。
-これを回避するためにはそもそもルール内で`v$`を参照しないか、[公式ドキュメント(Accessing Component Instance From Validator)](https://vuelidate-next.netlify.app/custom_validators.html#accessing-component-instance-from-validator)にあるように`await nextTick()`を利用するか、Vuelidate2で追加された`$lazy`プロパティを利用します。
+これを回避するためには、
+
+- そもそもルール内で`v$`を参照しない
+
+か、[公式ドキュメント(Accessing Component Instance From Validator)](https://vuelidate-next.netlify.app/custom_validators.html#accessing-component-instance-from-validator)にあるように
+
+- `await nextTick()`を利用する
+- Vuelidate2で追加された`$lazy`プロパティを利用する
+
+という選択肢があります。
 1つ目は言わずもがなですが、requiredだけはhelpersに用意されたreq()メソッドを用いて代用ができます。`helpers.req(id)`はidのrequiredがvalidかどうかを返します。つまり`!v$.value.id.required.$invalid`と同義です。
 
 ```typescript
 import { helpers } from '@vuelidate/validators'
 
-const id = ref<number>(0)
+const id = ref<string>('')
 const name = ref<string>('')
 
 const rules = {
@@ -288,7 +303,10 @@ const rules = {
 const v$ = useVuelidate(rules, { id, name }, { $lazy: true })
 ```
 
-useVuelidateに渡している`$lazy`プロパティですが、これをつけるとdirty状態になった後にバリデーションが初めて評価されるようになります。つまりcreate時のバリデーションが走らなくなるためルール内で`v$`を参照しても強制的にinvalidにされることはありません。useVuelidateの引数に渡すとルール全体に適用されますが、個別のルールに対して設定することも可能です。ちなみにルール内で設定する方が優先されるようなので、上記の例のようにすればデフォルトをtrueにも設定できます。
+useVuelidateに渡している`$lazy`プロパティですが、これをつけるとdirty状態になった後にバリデーションが初めて評価されるようになります。つまりcreate時のバリデーションが走らなくなるため、ルール内で`v$`を参照しても強制的にinvalidにされることはありません。useVuelidateの引数に渡すとルール全体に適用されますが、個別のルールに対して設定することも可能です。ちなみにルール内で設定する方が優先されるようなので、上記の例のようにすればデフォルトをtrueにも設定できます。
+注意しなければいけないのは、`$lazy`を付けたルールはdirtyになってから初めて評価されるため、コンポーネント読み込み時の`$invalid`の値はfalseとなるということです。
+つまり、上記の例でいうところのidはコンポーネントの読み込み時には空文字にも関わらず、requiredがinvalidにならない可能性があります。
+よって結論として、ルール内で`v$`を使用したいだけであれば`await nextTick()`を用いるのが安全な気がします。
 
 ## `$autoDirty`プロパティ
 

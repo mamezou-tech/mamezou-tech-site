@@ -155,6 +155,7 @@ article {
     & + h2 {
       margin-top: 4rem;
     }
+
     & + h3 {
       margin-top: 2rem;
     }
@@ -163,6 +164,25 @@ article {
 
 strong {
   font-weight: 500
+}
+
+code:not([class*=language]) {
+  display: inline-flex;
+  padding: .2em;
+  margin: .1em;
+  background-color: #fff;
+  color: #5e5d6b;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  border: 1px solid #adacb7;
+  border-radius: 2px;
+  font-size: .75em;
+  line-height: 1.1
+}
+
+pre code:not([class*=language]) {
+  width: 100%;
+  max-width: calc(100vw - 2rem);
+  overflow-x: auto
 }
 
 pre:not([class*=language]) {
@@ -177,9 +197,7 @@ pre code:not([class*=language]) {
 }
 
 blockquote {
-  margin-left: 0;
-  margin-right: 0;
-  padding-left: 1.5rem;
+  @apply mx-0 my-3 pl-6;
   border-left: 2px solid var(--color-primary);
   color: #5e5d6b;
 
@@ -333,4 +351,16 @@ button.code-copy {
   h1, h2, h3, h4 {
     display: inline;
   }
+}
+
+.tdbc-anchor {
+  display: inline-block;
+  margin-left: .25em;
+  transition: 180ms opacity ease-in-out;
+  opacity: .6;
+  vertical-align: top
+}
+
+.tdbc-anchor:hover {
+  opacity: 1
 }

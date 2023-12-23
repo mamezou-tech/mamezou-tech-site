@@ -1,14 +1,3 @@
-// stylelint-disable-next-line selector-max-type
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: tdbc-color("background");
-  color: $tdbc-color-body;
-  font-family: $tdbc-font-family;
-}
-
-// stylelint-disable selector-max-type, selector-no-qualifying-type
 main,
 main.tdbc-container {
   padding-top: 2vh;
@@ -27,8 +16,6 @@ article {
     margin-left: auto;
   }
 }
-
-// stylelint-enable
 
 .tdbc-container {
   display: flex;
@@ -55,7 +42,6 @@ article {
   grid-template-columns: repeat(auto-fit, minmax(25ch, 1fr));
 }
 
-// stylelint-disable-next-line selector-no-qualifying-type, selector-max-type
 ul.tdbc-column-container {
   padding-left: 0;
 }
@@ -63,15 +49,14 @@ ul.tdbc-column-container {
 .tdbc-section {
   width: 100%;
 
-  &--padded {
-    padding-top: 10vh;
-    padding-bottom: 10vh;
-  }
-
-  // stylelint-disable-next-line selector-max-universal
   *:last-child {
     margin-bottom: 0;
   }
+}
+
+.tdbc-section--padded {
+  padding-top: 10vh;
+  padding-bottom: 10vh;
 }
 
 .tdbc-hero {
@@ -79,7 +64,7 @@ ul.tdbc-column-container {
   min-height: 10vh;
   padding-top: 3vh;
   padding-bottom: 3vh;
-  background-color: tdbc-color("hero");
+  @apply bg-white;
   text-align: center;
   place-content: center;
 }
@@ -92,21 +77,14 @@ ul.tdbc-column-container {
     grid-auto-flow: column;
     grid-auto-columns: max-content;
   }
-
-  &--center-content {
-    justify-content: center;
-  }
-
-  &--center-alignitems {
-    align-items: center;
-  }
 }
 
-// stylelint-disable-next-line selector-max-type
-hr {
-  margin-top: 4rem;
-  margin-bottom: 4rem;
-  border: 1px solid tdbc-color("secondary");
+.tdbc-row--center-content {
+  justify-content: center;
+}
+
+.tdbc-row--center-alignitems {
+  align-items: center;
 }
 
 img.page-title-icon {
@@ -130,7 +108,6 @@ img.page-title-icon {
   a {
     padding: 1rem 0.5rem;
     float: left;
-    color: black;
     font-size: 1.25rem;
     text-decoration: none;
   }
@@ -151,15 +128,13 @@ img.page-title-icon {
   }
 }
 
-$social-min-height: 30px !default;
-
 .tdbc-social-plugins {
   ul {
     list-style-type: none;
     margin: 0;
 
     li {
-      min-height: $social-min-height;
+      min-height: 30px;
       float: left;
       vertical-align: top;
     }
@@ -189,12 +164,12 @@ $social-min-height: 30px !default;
 }
 
 .tdbc-page-title {
-  font-family: $tdbc-title-font-family;
-  font-size: unquote("min(max(3rem, 8vw), 5rem)");
+  @apply font-sans;
+  font-size: min(max(3rem, 8vw), 5rem);
 }
 
 .tdbc-top-title {
-  font-family: $tdbc-title-font-family;
+  font-family: theme(fontFamily.sans)
 }
 
 .tooltipped {
@@ -214,7 +189,7 @@ $social-min-height: 30px !default;
   margin: 15px 0;
 
   .flash-title {
-    color: scale-color(tdbc-color("text"), $lightness: -10%);
+    color: #212048;
     font-size: 1rem;
     min-height: 25px;
     display: inline-flex;
@@ -228,7 +203,6 @@ $social-min-height: 30px !default;
 
   p, li {
     font-size: 0.9rem;
-    ling-height: 1em;
   }
 
   pre code:not([class*="language"]) {
@@ -244,45 +218,5 @@ $social-min-height: 30px !default;
 .flash-column {
   background-color: transparent;
   background-image: none !important;
-  border-color: var(--color-neutral-emphasis) !important;
-}
-
-
-ul,ol {
-  padding-inline-start: 30px;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  li {
-    & > p {
-      margin-bottom: 0;
-    }
-    &:last-child {
-      margin-block-end: 1rem;
-    }
-  }
-}
-
-// nested list margin
-:is(ul, ol) :is(ul, ol) li:last-child {
-  margin-block-end: 0;
-}
-
-.tdbc-theme-toggle {
-  padding: 5px;
-  background-color: $tdbc-color-theme-toggle;
-  position: fixed;
-  bottom: 3px;
-  right: 3px;
-  z-index: 999;
-  opacity: 0.6;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-  -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-
-  a {
-    color: $tdbc-color-theme-font !important;
-    font-size: unquote("min(max(0.75rem, 5vw), #{$tdbc-text-font-size} - 0.3rem)");
-  }
+  border-color: var(--color-neutral-emphasis) !important
 }

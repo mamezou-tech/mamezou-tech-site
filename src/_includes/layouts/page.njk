@@ -5,14 +5,14 @@ layout: layouts/base.njk
 
 <header class="tdbc-hero">
   <div class="tdbc-container">
-    <h1 class="tdbc-ink--mz tdbc-mb-none tdbc-page-title">
+    <h1 class="text-mz tdbc-mb-none tdbc-page-title">
     {{ title }}
     {%- if titleImage -%}
     <img class="page-title-icon" src="{{ titleImage }}" />
     {%- endif -%}
     </h1>
     {%- if description -%}
-    <h2 class="tdbc-lead tdbc-content-maxlength tdbc-ink--gray tdbc-mt-md tdbc-mx-auto">
+    <h2 class="tdbc-lead tdbc-content-maxlength text-gray-500 tdbc-mt-md tdbc-mx-auto">
       {{ description }}
     </h2>
     {%- endif -%}

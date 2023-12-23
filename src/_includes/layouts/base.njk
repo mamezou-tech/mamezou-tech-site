@@ -11,7 +11,7 @@
       name="description"
       content="{{pageDescription}}"
     />
-    <link href="{{ '/css/style.css' | url }}" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     {% if meta.env === 'production' %}
@@ -21,12 +21,10 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      const darkCss = Array.from(document.querySelectorAll("link[rel='stylesheet']"))
-        .find(el => el.href && el.href.indexOf("style-dark") !== -1);
       gtag('config', 'G-38XP4WXMMY', {
         'user_properties': {
           branch: '{{ meta.branch }}',
-          theme: darkCss ? 'dark' : 'light',
+          theme: 'light',
           author: '{{ author }}',
           tags: '{{ tags }}',
           date: '{{ date }}'
@@ -107,7 +105,7 @@
     {{ content | safe }}
     <footer class="tdbc-background--secondary">
       <div class="tdbc-container tdbc-text-align-center">
-        <div class="tdbc-row tdbc-ink--light tdbc-mx-auto" style="line-height: 50px">
+        <div class="tdbc-row tdbc-mx-auto" style="line-height: 50px">
           <p class="tdbc-mb-none">&copy; {% year %} Mamezou Co.,Ltd.</p>
           <div style="text-align:right">
             <a href="https://www.mamezou.com/">

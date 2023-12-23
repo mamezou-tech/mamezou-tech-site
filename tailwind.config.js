@@ -1,10 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./public/**/*.html",
+    "./src/**/*.njk",
+    "./src/**/*.html",
+    "./src/**/*.md",
   ],
   theme: {
-    extend: {},
+    fontFamily: {
+      sans: ["Fonarto", "Kosugi Maru", 'sans-serif']
+    },
+    extend: {
+      colors: {
+        mz: "#815685"
+      }
+    },
   },
   plugins: [],
 }

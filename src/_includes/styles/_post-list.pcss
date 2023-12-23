@@ -1,26 +1,12 @@
-.chatgpt-jargon {
-  margin-top: 1rem;
-  font-size: $text-sm;
-  margin-bottom: 1rem;
-  & > * {
-    margin-right: 1rem;
-    margin-top: 0.5rem;
-  }
-  & > legend > img {
-    display: inline;
-  }
-  border-radius: 8px;
-}
-
 .tags {
   margin-top: 1rem;
-  font-size: $text-sm;
+  @apply text-sm;
   margin-bottom: 1rem;
   word-break: break-word;
   a {
     margin-right: 1rem;
     margin-top: 0.5rem;
-    color: tdbc-color("tag");
+    color: #424141;
     text-decoration: none;
   }
 }
@@ -30,7 +16,7 @@
 }
 
 .post-list__heading {
-  font-size: $text-3xl;
+  @apply text-3xl;
   margin-bottom: 1rem;
 }
 
@@ -50,12 +36,10 @@
 }
 
 .post-list__title {
-  font-size: $text-2xl;
+  @apply text-2xl;
   margin-top: 0.5rem;
   a {
     font-weight: normal;
-    text-decoration: none;
-    color: $tdbc-color-list-title;
   }
 
   a:hover {
@@ -65,9 +49,9 @@
 }
 
 .post-list__meta {
-  font-size: $text-sm;
+  @apply text-sm;
   margin-top: 1rem;
-  color: scale-color($tdbc-color-list-title, $lightness: -30%, $saturation: -30%);
+  color: #1d1d1d;
   & > * + * {
     margin-left: 1rem;
   }
@@ -75,15 +59,14 @@
 
 .post-list__tags {
   text-decoration: none;
-  font-size: $text-sm;
+  @apply text-sm;
   margin-top: 0.5rem;
 
   a {
-    text-decoration: none;
-    color: scale-color($tdbc-color-list-title, $lightness: -20%, $saturation: -20%);
+    color: #212121
   }
   a:hover {
-    color: $accent;
+    color: #0074d9;
   }
   > * + * {
     margin-left: 1rem;
@@ -92,7 +75,7 @@
 
 .post-list__excerpt {
   margin-top: 1rem;
-  color: scale-color($tdbc-color-list-title, $lightness: -10%);
+  color: #252525
 }
 
 .post-list__read-more {
@@ -113,12 +96,12 @@
   display: inline-block;
   margin-left: auto;
   margin-right: auto;
-  font-size: $text-lg;
+  @apply text-lg;
   text-decoration: underline;
   color: currentColor;
 }
 
 .current-page {
-  font-style: bold;
+  @apply font-bold;
   color: #545151;
 }

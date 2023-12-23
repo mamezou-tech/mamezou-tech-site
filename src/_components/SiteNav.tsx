@@ -5,7 +5,7 @@ export default ({ search, meta }: Props) => (
   <nav aria-labelledby="tdbc-siteid" className="tdbc-sitenav">
     <section className="top-nav">
       <div>
-        <a id="tdbc-siteid" href="/">
+        <a id="tdbc-siteid" className="text-mz" href="/">
           <img alt="logo" src="/img/logo/mz-tech-logo-icon.png" />
           &nbsp;|&nbsp;{meta.siteName}
         </a>

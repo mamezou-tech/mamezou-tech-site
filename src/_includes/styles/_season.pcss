@@ -1,5 +1,3 @@
-@import "typography";
-
 .season {
   display: flex;
   flex-direction: column;
@@ -66,30 +64,7 @@
   word-wrap: break-word;
   h1 {
     margin-top: 4rem;
-    font-size: $text-4xl;
-  }
-}
-
-.season__toc {
-  display: none;
-}
-
-@media (min-width: 80ch) {
-  .season__toc {
-    display: block;
-    margin: 2rem 0;
-    border-width: thin;
-    border-style: dotted;
-    border-radius: 10px;
-    border-color: tdbc-color("grey");
-    background-color: $tdbc-color-toc;
-    li {
-      list-style-type: square;
-    }
-  }
-  .toc-container-header {
-    margin: 0.5rem;
-    font-family: $tdbc-title-font-family;
+    @apply text-4xl;
   }
 }
 
@@ -99,7 +74,7 @@
 
 .season__tags {
   opacity: 0.8;
-  font-size: $text-sm;
+  @apply text-sm;
   * + * {
     margin-left: 0.5rem;
   }

@@ -28,12 +28,8 @@ layout: layouts/base.njk
         {%- endif %}
         </div>
       {% endif %}
-      <div style="float: right">
-        <div id="preact-sns"></div>
-        <script type="module">
-          import { render } from '/js/preact/social_plugins.client.js';
-          render({url: '{{ meta.url }}', path: '{{ url }}'}, document.getElementById("preact-sns"));
-        </script>
+      <div class="clear-both md:max-2xl:clear-none md:max-2xl:float-right">
+        {{ comp.SocialPlugins({url: url}) | safe }}
       </div>
     {%- set adYear = tags | adventCalendarTag %}
     {%- if adYear %}

@@ -228,11 +228,10 @@ hr {
 }
 
 a {
-  color: #171392;
-  text-decoration: none;
+  @apply text-blue-800 no-underline;
 
   &:hover {
-    text-decoration: underline
+    @apply underline;
   }
 
   .new-tab-link[target=_blank]::after {

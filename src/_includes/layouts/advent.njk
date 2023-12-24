@@ -7,14 +7,8 @@ layout: layouts/base.njk
   <article class="event tdbc-mx-auto">
     <header class="event__header">
       <h1>{{ title }}</h1>
-      <div style="float: right">
-        <div style="float: right">
-          <div id="preact-sns"></div>
-          <script type="module">
-            import { render } from '/js/preact/social_plugins.client.js';
-            render({url: '{{ meta.url }}', path: '{{ url }}'}, document.getElementById("preact-sns"));
-          </script>
-        </div>
+      <div class="float-right">
+        {{ comp.SocialPlugins({url: url}) | safe }}
       </div>
     </header>
 

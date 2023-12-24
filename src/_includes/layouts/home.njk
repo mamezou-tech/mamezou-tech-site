@@ -95,11 +95,7 @@ layout: layouts/base.njk
     </div>
 
     <div class="home-social-plugins">
-      <div id="preact-sns"></div>
-      <script type="module">
-        import { render } from '/js/preact/social_plugins.client.js';
-        render({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
-      </script>
+      {{ comp.SocialPlugins({url: url}) | safe }}
     </div>
     <div id="search"></div>
   </div>

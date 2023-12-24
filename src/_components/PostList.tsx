@@ -6,7 +6,7 @@ export default (
   { validTags, readableDate, url, readingTime, excerpt }: Lume.Helpers,
 ) => {
   const tags = validTags!(search.values("tags") as string[]);
-  const makeTags = (post: Lume.Page) => {
+  const makeTags = (post: Lume.Data) => {
     const result = [];
     for (const tag of post.tags || []) {
       if (tags.includes(tag)) {

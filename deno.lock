@@ -32,6 +32,7 @@
       "npm:preact": "npm:preact@10.18.0",
       "npm:preact-render-to-string@6.2.1": "npm:preact-render-to-string@6.2.1_preact@10.18.0",
       "npm:preact@10.18.0": "npm:preact@10.18.0",
+      "npm:preact@^10.18.1": "npm:preact@10.19.3",
       "npm:prismjs@1.29.0": "npm:prismjs@1.29.0",
       "npm:react": "npm:react@18.2.0",
       "npm:react-dom@18.2.0": "npm:react-dom@18.2.0_react@18.2.0",
@@ -2508,6 +2509,10 @@
       },
       "preact@10.18.0": {
         "integrity": "sha512-O4dGFmErPd3RNVDvXmCbOW6hetnve6vYtjx5qf51mCUmBS96s66MrNQkEII5UThDGoNF7953ptA+aNupiDxVeg==",
+        "dependencies": {}
+      },
+      "preact@10.19.3": {
+        "integrity": "sha512-nHHTeFVBTHRGxJXKkKu5hT8C/YWBkPso4/Gad6xuj5dbptt9iF9NZr9pHbPhBrnT2klheu7mHTxTZ/LjwJiEiQ==",
         "dependencies": {}
       },
       "pretty-format@3.8.0": {

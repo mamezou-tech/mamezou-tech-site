@@ -119,12 +119,10 @@
   justify-content: space-between;
   align-items: center;
   > *:only-child {
-    margin-right: auto;
-    margin-left: auto;
+    @apply mx-auto;
   }
-  a {
-    display: flex;
-    align-items: center;
+  button {
+    @apply flex items-center cursor-pointer text-blue-800;
   }
   span {
     padding-left: 0.5rem;

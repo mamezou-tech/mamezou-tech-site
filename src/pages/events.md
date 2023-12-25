@@ -5,7 +5,7 @@ icon: https://api.iconify.design/mdi/calendar-clock.svg?color=%23730099&height=2
 ---
 
 ## アドベントカレンダー
-- [アドベントカレンダー2023](/events/advent-calendar/2023/) <span style="color: red;">開催中！</span>
+- [アドベントカレンダー2023](/events/advent-calendar/2023/)
 - [アドベントカレンダー2022](/events/advent-calendar/2022/)
 
 ## その他イベント

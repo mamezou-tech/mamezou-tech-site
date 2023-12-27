@@ -44,7 +44,7 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
     temperature: 0.7,
     responseFormat: 'json_object'
   });
-  const keywords: { words: string[] } = JSON.parse(keywordsResponse.choices[0].message?.content ?? {});
+  const keywords: { words: string[] } = JSON.parse(keywordsResponse.choices[0].message?.content ?? '{}');
 
   console.log(keywords.words);
   const keyword = pickup(keywords.words, pastTitles);

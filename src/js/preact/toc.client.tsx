@@ -6,7 +6,7 @@ function slugify(target: string) {
   return target
     .trim()
     .toLowerCase()
-    .replace(/[\s+~\/]/g, "-")
+    .replace(/[\s+~/]/g, "-")
     .replace(/[().`,%·'"!?¿:@*]/g, "");
 }
 
@@ -56,13 +56,13 @@ function Toc() {
   if (!data.length) return;
 
   const makeList = (nodes: Node[]) => {
-    if (!nodes) return <></>;
+    if (!nodes) return null;
     return (
       <ul>
         {nodes.map((node) => {
           if ("children" in node) {
             return (
-              <li>
+              <li key={node.anchor}>
                 <a
                   href={node.anchor}
                   className={slugify(activeId) === slugify(node.text)
@@ -76,7 +76,7 @@ function Toc() {
             );
           } else {
             return (
-              <li>
+              <li key={node.anchor}>
                 <a
                   href={node.anchor}
                   className={slugify(activeId) === slugify(node.text)

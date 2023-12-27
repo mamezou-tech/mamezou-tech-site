@@ -5,7 +5,7 @@ export default (md: MarkdownIt) => {
   function isInternalLink(token: Token) {
     return token.attrIndex("href") === -1 ||
       token.attrGet("href").match(
-        /^([#\/].*$|https:\/\/developer\.mamezou-tech\.com.*$)/,
+        /^([#/].*|https:\/\/developer\.mamezou-tech\.com.*$)/,
       );
   }
 

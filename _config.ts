@@ -57,7 +57,7 @@ const markdown: Partial<MarkdownOptions> = {
         s
           .trim()
           .toLowerCase()
-          .replace(/[\s+~\/]/g, "-")
+          .replace(/[\s+~/]/g, "-")
           .replace(/[().`,%·'"!?¿:@*]/g, ""),
     }],
     footNote,

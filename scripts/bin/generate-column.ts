@@ -44,7 +44,7 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
     temperature: 0.7,
     responseFormat: 'json_object'
   });
-  const keywords: { words: string[] } = JSON.parse(keywordsResponse.choices[0].message?.content!);
+  const keywords: { words: string[] } = JSON.parse(keywordsResponse.choices[0].message?.content ?? {});
 
   console.log(keywords.words);
   const keyword = pickup(keywords.words, pastTitles);
@@ -68,7 +68,7 @@ My first word is "${keyword}".
   });
   const column = result.choices[0].message?.content?.trim() || '';
   if (!column) throw new Error('no content');
-  if (!safeResponse(column) || !safeResponse(column)) new Error(`un-safe content found: ${column}`);
+  if (!safeResponse(column) || !safeResponse(column)) throw new Error(`un-safe content found: ${column}`);
 
   const item = {
     title: keyword,

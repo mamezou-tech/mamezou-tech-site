@@ -16,7 +16,7 @@ function _makeScope(path: string, base: string): ScopeFilter[] {
     }
 
     const regex = new RegExp(
-      `^${path.replace(`${cwd}/${base}`, "")}/${dir.name}/.*\\\.md~?$`,
+      `^${path.replace(`${cwd}/${base}`, "")}/${dir.name}/.*\\.md~?$`,
     );
     result.push((path) => regex.test(path));
   }
@@ -32,7 +32,7 @@ function _makeBlogScope(path: string, base: string): ScopeFilter[] {
       const regex = new RegExp(
         `^${path.replace(`${cwd}/${base}`, "")}/${dir.name}/${
           i.toString().padStart(2, "0")
-        }.*\\\.md~?$`,
+        }.*\\.md~?$`,
       );
       result.push((path) => regex.test(path));
     }

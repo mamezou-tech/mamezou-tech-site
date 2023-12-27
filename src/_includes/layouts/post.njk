@@ -28,7 +28,7 @@ layout: layouts/base.njk
         {%- endif %}
         </div>
       {% endif %}
-      <div class="clear-both md:max-2xl:clear-none md:max-2xl:float-right">
+      <div class="clear-both md:clear-none md:float-right">
         {{ comp.SocialPlugins({url: url}) | safe }}
       </div>
     {%- set adYear = tags | adventCalendarTag %}

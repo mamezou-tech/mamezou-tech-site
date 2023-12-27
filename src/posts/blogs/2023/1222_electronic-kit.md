@@ -150,7 +150,7 @@ LEDは8個ありますが点滅させているため実際は4個しか点灯し
 
 それでは完成したものをご覧ください。`音が出ますのでご注意ください!!`
 
-<video src="/img/blogs/2023/1222_electronic-kit/xmas_illumination_demo.mp4" style="max-width: 800px;" poster="/img/blogs/2023/1222_electronic-kit/thumb.png" preload="none" controls></video>
+<video src="/img/blogs/2023/1222_electronic-kit/xmas_illumination_demo.mp4" width="100%" style="max-width: 800px;" poster="/img/blogs/2023/1222_electronic-kit/thumb.png" preload="none" controls></video>
 
 ツリートップの★に某カフェの景品でゲットした黒猫サンタ(ふちねこ)がぶら下がっています。センサーは3メートル程の距離でも反応するのですが、手をかざして人を感知して鳴っていることをアピールしています😀
 

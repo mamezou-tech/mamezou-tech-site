@@ -208,6 +208,14 @@ blockquote {
   :last-child {
     margin-bottom: 0;
   }
+  pre code:not([class*="language"]) {
+    max-width: calc(100vw - 4rem);
+  }
+
+  code[class*="language-"],
+  pre[class*="language-"] {
+    max-width: calc(100vw - 3.5rem);
+  }
 }
 
 .tdbc-lead {

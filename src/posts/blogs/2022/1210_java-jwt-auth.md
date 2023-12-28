@@ -24,7 +24,7 @@ JWT認証で使われる文字列は正しくはJWS(JSON Web Signature)ですが
 
 それはAPIがfluentで使いやすいこともありますが、一番の理由は開発元が認証基盤サービスの大御所、Auth0という安心感です。開発元が認証を本業にしている会社なだけに継続的なサポートや万が一があった場合の迅速な対応を期待できると思われます(フリーなのでAuth0がコミットしている訳でもなく、あくまでも筆者の期待ですが)
 
-java-jwtのMavenのarticatは次になります。
+java-jwtのMavenのartifactは次になります。
 
 ```xml
 <dependency>

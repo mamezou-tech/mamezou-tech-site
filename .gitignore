@@ -30,3 +30,4 @@ netlify/generated
 
 test.tsx
 author.tsv
+netlify/edge-functions/_generated/eleventy-edge-app.js

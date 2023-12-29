@@ -19,7 +19,7 @@ tags: [retrospective]
 - [QtWidgets vs QtQuick](https://developer.mamezou-tech.com/robotics/gui/qtwidget-vs-qtquick/)
 - [ロボットマニピュレータ制御のアルゴリズム](https://developer.mamezou-tech.com/robotics/manip-algo/manip-algo/)
 
-ロボットの記事はES事業部が執筆しており、非常に専門性の高い内容となっています。
+ロボットの記事はES事業部のメンバーが執筆しており、非常に専門性の高い内容となっています。
 
 [ロボット | 豆蔵デベロッパーサイト](https://developer.mamezou-tech.com/robotics/)
 

@@ -9,7 +9,6 @@
 @import "../_includes/styles/_event.pcss";
 @import "../_includes/styles/_summer.pcss";
 @import "../_includes/styles/_ad.pcss";
-@import "../_includes/styles/_links.pcss";
 @import "../_includes/styles/_card.pcss";
 @import "../_includes/styles/_layout.pcss";
 @import "../_includes/styles/_sitenav.pcss";
@@ -24,10 +23,6 @@
   font-weight: 500;
   src: url("../fonts/fonarto.woff") format("woff"), url("../fonts/fonarto.ttf") format("ttf");
   font-display: swap
-}
-
-:root {
-  --color-primary: #4F4350;
 }
 
 *, *::before, *::after {
@@ -163,7 +158,7 @@ article {
 }
 
 strong {
-  font-weight: 500
+  @apply font-medium;
 }
 
 code:not([class*=language]) {
@@ -198,7 +193,7 @@ pre code:not([class*=language]) {
 
 blockquote {
   @apply mx-0 my-3 pl-6;
-  border-left: 2px solid var(--color-primary);
+  border-left: 2px solid #4F4350;
   color: #5e5d6b;
 
   &, p {
@@ -219,21 +214,14 @@ blockquote {
   }
 }
 
-.tdbc-lead {
-  font-size: 1.35rem;
-  letter-spacing: .01em;
-  margin-bottom: 1em;
-  line-height: 1.3
-}
-
 hr {
   margin-top: 4rem;
   margin-bottom: 4rem;
-  border: 1px solid var(--color-primary);
+  border: 1px solid #4F4350;
 }
 
 .tdbc-background--secondary {
-  background-color: var(--color-primary);
+  background-color: #4F4350;
 }
 
 a {
@@ -251,11 +239,6 @@ a {
 
 .tdbc-content-maxlength {
   max-width: 80ch
-}
-
-.tdbc-mx-auto {
-  margin-right: auto;
-  margin-left: auto
 }
 
 .tdbc-mt-md {
@@ -341,7 +324,7 @@ button.code-copy {
   &:has(h1) {
     margin-top: 5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--color-primary);
+    border-bottom: 2px solid #4F4350;
   }
 
   &:has(h2) {
@@ -364,11 +347,11 @@ button.code-copy {
   margin-left: .25em;
   transition: 180ms opacity ease-in-out;
   opacity: .6;
-  vertical-align: top
-}
+  vertical-align: top;
 
-.tdbc-anchor:hover {
-  opacity: 1
+  &:hover {
+    opacity: 1
+  }
 }
 
 /* top page */
@@ -391,12 +374,6 @@ button.code-copy {
     }
   }
 
-  a.all-article-link {
-    font-size: 0.85rem;
-    margin-left: 1rem;
-    text-decoration: none;
-  }
-
   .tags a {
     margin: 0.5rem;
     line-height: 1.5rem;
@@ -407,4 +384,8 @@ button.code-copy {
     display: inline-flex;
     vertical-align: bottom;
   }
+}
+
+.link-separator {
+  @apply my-6 border-t border-purple-200
 }

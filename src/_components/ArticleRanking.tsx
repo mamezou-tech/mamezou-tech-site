@@ -11,13 +11,13 @@ interface Props extends Lume.Data {
 }
 
 export default ({ search, pv }: Props) => (
-  <fieldset className="page-ranking">
+  <fieldset className="border m-2 border-stone-200 rounded-xl p-2 hidden md:block max-w-full md:max-w-80ch">
     <legend>豆蔵デベロッパーサイト - 先週のアクセスランキング</legend>
-    <ol>
+    <ol className="m-0 pl-6">
       {pv.ranking.map((article) => {
         const published = articleDate(search.pages(), article.url);
         return (
-          <li key={article.url}>
+          <li className="text-base" key={article.url}>
             <a href={article.url}>
               {article.title}
               {published && `(${published})`}

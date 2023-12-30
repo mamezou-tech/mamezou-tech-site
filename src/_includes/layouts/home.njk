@@ -8,7 +8,7 @@ layout: layouts/base.njk
     </div>
     <div>
     <h1 class="text-mz tdbc-mb-none tdbc-top-title">{{ meta.siteName }}</h1>
-    <h2 class="tdbc-lead tdbc-content-maxlength text-gray-500 tdbc-mt-md tdbc-mx-auto">
+    <h2 class="text-lg leading-snug mb-4 tracking-tighter tdbc-content-maxlength text-gray-500 tdbc-mt-md mr-auto ml-auto">
       {{ meta.siteDescription }}
     </h2>
     </div>
@@ -55,9 +55,9 @@ layout: layouts/base.njk
   </div>
   <div>
     <div class="w-full md:w-7/12 2xl:w-8/12 md:float-left md:pr-5">
-      <article class="tdbc-mx-auto" style="margin-top: 3em">
+      <article class="mr-auto ml-auto" style="margin-top: 3em">
         <section class="post-list__wrapper recent-article">
-          <h2 class="post-list__heading">新着記事<img alt="new-articles" class="icon" width="36px" height="100%" src="/img/icons/new-box.svg" /><a class="all-article-link" href="/articles/">全ての記事を見る</a></h2>
+          <h2 class="post-list__heading">新着記事<img alt="new-articles" class="icon" width="36px" height="100%" src="/img/icons/new-box.svg" /><a class="text-sm ml-4 no-underline" href="/articles/">全ての記事を見る</a></h2>
           <ul class="post-list">
             {% for post in search.pages('layout^=layouts/post exclude!=true', 'date=desc') | limit(10) %}
               <li class="post-list__item">
@@ -99,7 +99,7 @@ layout: layouts/base.njk
       </article>
     </div>
     <div class="additional-area w-full md:w-5/12 2xl:w-4/12 md:float-right p-4 mt-12">
-      <article class="tdbc-mx-auto">
+      <article class="mr-auto ml-auto">
       <h2><img alt="ranking-articles" class="icon" width="24px" height="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" />先週の人気記事<img alt="new-articles" class="icon" width="24px" height="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" /></h2>
       <ol>
         {%- for article in pv.ranking -%}

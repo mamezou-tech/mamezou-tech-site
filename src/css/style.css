@@ -208,6 +208,7 @@ blockquote {
   :last-child {
     margin-bottom: 0;
   }
+
   pre code:not([class*="language"]) {
     max-width: calc(100vw - 4rem);
   }
@@ -242,11 +243,9 @@ a {
     @apply underline;
   }
 
-  .new-tab-link[target=_blank]::after {
+  &.new-tab-link[target=_blank]::after {
     content: url("/img/icons/new-tab.png");
-    display: inline-block;
-    margin: 0 .1rem;
-    height: .75em
+    @apply inline-block mr-1 h-3;
   }
 }
 
@@ -391,15 +390,18 @@ button.code-copy {
       font-size: 1.4rem
     }
   }
+
   a.all-article-link {
     font-size: 0.85rem;
     margin-left: 1rem;
     text-decoration: none;
   }
+
   .tags a {
     margin: 0.5rem;
     line-height: 1.5rem;
   }
+
   .icon {
     margin: 0 0.25rem;
     display: inline-flex;

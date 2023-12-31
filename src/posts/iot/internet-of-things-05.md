@@ -14,7 +14,7 @@ MQTTとは「Message Queue Telemetry Transport」の略で、パブリッシュ/
 MQTTはTCP/IPを使っており、非常に軽量なプロトコルとして設計されています。  
 
 MQTTはIBMが開発した「IBM MQ」がベースになっているようです。  
-IMB MQからMQTTへの変遷については[Wikipedia](https://ja.wikipedia.org/wiki/MQTT)等に詳しく記載されています。
+IBM MQからMQTTへの変遷については[Wikipedia](https://ja.wikipedia.org/wiki/MQTT)等に詳しく記載されています。
  
 ## パブリッシュ/サブスクライブ(publish/subscribe)型データ配信モデル
 

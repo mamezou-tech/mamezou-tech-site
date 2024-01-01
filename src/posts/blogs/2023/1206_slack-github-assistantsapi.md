@@ -112,6 +112,11 @@ Slackのメンションイベントについての詳細は以下公式ドキュ
 
 - [Slack API Doc - Using the Slack Events API - Request URL configuration and verification ](https://api.slack.com/apis/connections/events-api#verification)
 
+なお、本題ではないので省略していますが、実運用の際はSlackからのリクエストであることを検証する必要があります。
+詳細は公式ドキュメントを参照してください。
+
+- [Slack API Doc - Verifying requests from Slack](https://api.slack.com/authentication/verifying-requests-from-slack)
+
 # アシスタントAPI実行(api-invoker)
 
 後半部分です。ここは少し複雑です。
@@ -387,7 +392,7 @@ async function createOrGetThread(event: LambdaEvent, threadTs: string, opts: {
         Item: {
           threadTs: threadTs, // partition key(Slack側)
           threadId: thread.id, // OpenAI側のスレッド識別子
-          expiration: (Math.ceil(new Date().getTime() / 1000 + 3 * 60 * 60)).toString() // 3日で失効
+          expiration: (Math.floor(Date.now() / 1000) + 3 * 24 * 60 * 60).toString() // 3日で失効
         }
       })
     );

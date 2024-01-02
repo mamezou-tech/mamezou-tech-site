@@ -10,16 +10,29 @@ type Gpt = {
     title: string,
     text: string,
     created: string,
+    theme: string
   }[]
 };
 
-async function main(path: string) {
-  console.log('talk to AI Chat...');
-  const json: Gpt = JSON.parse(fs.readFileSync(path).toString());
-  const pastTitles = json.columns.map(column => column.title);
+const categories = [
+  "funny jargon",
+  "agile words",
+  "Developer Tips",
+  "cloud technics",
+  "programing technics",
+  "AI words",
+  "IT Security words",
+]
 
+async function main(path: string) {
+  const json: Gpt = JSON.parse(fs.readFileSync(path).toString());
+
+  const theme = categories[new Date().getDay()];
+  const pastTitles = json.columns
+    .filter(column => column.theme === theme)
+    .map(column => column.title);
   const prompt: OpenAI.ChatCompletionMessageParam = {
-    content: `Output funny jargon used by IT developers in programming.
+    content: `Output 20 \`${theme}\` used by IT developers in programming.
 JSON format:
 \`\`\`
 {
@@ -55,12 +68,12 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
     }, {
       role: 'user',
       content: `You are to act as a columnist for a beautiful Japanese girl.
-We will give you one slang word commonly used in the IT industry and you should output a short article about it.
+We will give you one word commonly used in the IT industry and you should output a short article about it.
 You need to write passionate articles that readers can relate to. However, the article should include funny jokes.
 Please do not output "yes" or "I understand", only the article.
 Articles should be written in Japanese with cheerful and energetic colloquialisms and should not use honorifics such as "です" and "ます".
 Your name is "豆香" (pronounced "まめか").
-My first word is "${keyword}".
+My first word is "${keyword}" on "${theme}".
 `
     }],
     maxTokens: 2048,
@@ -73,10 +86,11 @@ My first word is "${keyword}".
   const item = {
     title: keyword,
     text: column.replaceAll(/(\r?\n)+/g, '<br />'),
-    created: new Date().toISOString()
+    created: new Date().toISOString(),
+    theme,
   };
   json.columns.unshift(item);
-  json.columns = json.columns.slice(0, 40);
+  json.columns = json.columns.slice(0, 70);
   fs.writeFileSync(path, JSON.stringify(json, null, 2));
 
   const token = process.env.SLACK_BOT_TOKEN;

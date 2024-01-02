@@ -126,7 +126,7 @@ UART接続用のCOM14 のみCOMポート側に残っている状態になって�
 　c:/opt/ESP32_ESP-PROG/  
 に変更しました。  
 実は最初、プロジェクトのロケーションを  
-　C:\Users\＜username＞\OneDrive\ドキュメント\PlatformIO\Projects  
+　C:/Users/＜username＞/OneDrive/ドキュメント/PlatformIO/Projects  
 に置いところ、デバッガが「ドキュメント」フォルダを含むパス名を正常に認識しなかったので、仕方なく別の場所に移動しました。
 
 プロジェクト外観は以下のようになりました。  

@@ -91,7 +91,7 @@ jobs:
 
 ![Job Summary completed](https://i.gyazo.com/8221a10ce5894105ef0a81af7f1fb79d.png)
 
-ではワークフローの、最終ステップ部分を upload-artifact v4 にアップデートしてみましょう。
+ではワークフローの最終ステップ部分を upload-artifact v4 にアップデートしてみましょう。
 
 ```yaml
     - name: Upload artifacts

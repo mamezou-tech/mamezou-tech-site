@@ -32,6 +32,25 @@ usbipd bind -b 共有するデバイスのBUSID
 
 共有をやめたい場合は、`usbipd unbind -b デバイスのBUSID` を実行します。
 
+:::info:例
+
+筆者環境で実行した例です。
+
+```text
+> usbipd list
+Connected:
+BUSID  VID:PID    DEVICE                                                        STATE
+1-17   0411:01f0  USB 大容量記憶装置                                            Not shared
+
+> usbipd bind -b 1-17
+
+> usbipd list
+Connected:
+BUSID  VID:PID    DEVICE                                                        STATE
+1-17   0411:01f0  USB 大容量記憶装置                                            Shared
+```
+:::
+
 ## Ubuntu 側
 
 Windows で共有されたデバイスをアタッチ (attach) します。
@@ -63,6 +82,48 @@ usbip port
 ```shell
 usbip detach -p 確認したポート
 ```
+
+:::info:例
+
+筆者環境で実行した例です。
+
+アタッチすると、/dev/sdb が認識され、デタッチすると /dev/sdb がなくなることで USB-HDD を認識していることが確認できます。
+
+```text
+$ sudo ls /dev/sd*
+/dev/sda  /dev/sda1  /dev/sda2  /dev/sda3
+
+$ sudo usbip attach -r lachesis.local -b 1-17
+
+$ sudo ls /dev/sd*
+/dev/sda  /dev/sda1  /dev/sda2  /dev/sda3  /dev/sdb  /dev/sdb1
+
+$ sudo usbip port
+Imported USB devices
+====================
+Port 08: <Port in Use> at Super Speed(5000Mbps)
+       BUFFALO INC. (formerly MelCo., Inc.) : unknown product (0411:01f0)
+       2-1 -> usbip://lachesis.local:3240/1-17
+           -> remote bus/dev 001/017
+
+$ sudo usbip detach -p 8
+usbip: info: Port 8 is now detached!
+
+$ sudo ls /dev/sd*
+/dev/sda  /dev/sda1  /dev/sda2  /dev/sda3
+```
+
+著者は、iTunes を Windows にインストールしているため、IP アドレスの代わりに Bonjour つまり dns-sd を使って Windows ホスト (lachesis.local) を指定しています。
+
+アタッチした時、`lsusb` コマンドでも確認できます。
+
+```text
+$ sudo lsusb
+Bus 002 Device 004: ID 0411:01f0 BUFFALO INC. (formerly MelCo., Inc.) HD-LBU3
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+```
+:::
 
 ## USB/IP について
 

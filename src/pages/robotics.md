@@ -32,7 +32,6 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 - [URのシミュレータ環境をDockerで構築する](/robotics/ur/ursim-docker/)
 - [「Universal Robots」のUR+でURCap開発](/blogs/2023/04/11/urcap-dev/)
 
-
 ## 産業用ネットワーク
 
 ### OPC-UA
@@ -56,3 +55,7 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 
 - [Blocklyによるビジュアルプログラミングの紹介](/robotics/gui/visual-programing-with-blockly/)
 - [QtWidgets vs QtQuick](/robotics/gui/qtwidget-vs-qtquick/)
+
+## ROS
+
+- [ROS2のGUI開発にTauriを使用した話](/robotics/ros/ros2-tauri)

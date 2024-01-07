@@ -35,6 +35,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [WindowsでRust開発環境を作ってみる(VSCode＋BuildTools＋rustup)](/blogs/2023/02/12/using-rust-01/)
 - [VSCodeのESP-IDF拡張機能「Espressif IDF」を使ってみる](/blogs/2023/02/19/esp-idf-vsc-extension/)
 - [ESP32開発ボードをESP-PROGとPlatform IOを使ってデバッグする](/blogs/2024/01/03/esp32-debug-by-esp-prog)
+- [Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする](/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe)
 
 ### リモート環境
 

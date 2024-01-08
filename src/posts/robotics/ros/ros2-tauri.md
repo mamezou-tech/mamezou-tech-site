@@ -41,6 +41,8 @@ Tauri に関する詳細は、以前の記事[「Rust によるデスクトッ�
 
 ## Tauri プロジェクトへ ROS2 のノードを組み込む
 
+ここからは Tauri プロジェクトへ ROS2 のノードを組み込むまでのチュートリアルを示します。
+
 Tauri の Core プロセス[^1]が ROS2 で通信するために Rust の ROS2 クライアントを Tauri プロジェクトへ組み込んでゆきます。ROS2 クライアントは[r2r](https://github.com/sequenceplanner/r2r)を使用します。
 
 :::info
@@ -254,7 +256,7 @@ r2r_cargo.cmake から呼び出す cargo build コマンドのカスタムプロ
 
 colcon プロファイルを明示的に定義することで、ROS2 ビルドシステム用のビルドと通常の Rust ビルドを明確に区別できるようにしているようです。
 
-次に dependencies セクションを編集し、以下の依存関係を追加して下さい。
+次に dependencies セクションを編集し、以下のように依存関係を追加して下さい。
 
 ```shell
 [dependencies]
@@ -341,7 +343,7 @@ Summary: 1 package finished [2min 3s]
 
   ```shell
   $ ros2 node list
-  /web_u
+  /web_ui
   ```
 
 通常の Tauri プロジェクトと同様にホットリロードも有効です。アプリが起動している状態で main.rs へログ出力を追加してみましょう。
@@ -468,7 +470,7 @@ fn main() {
 }
 ```
 
-main 関数内で生成したパブリッシャーをコマンドハンドラで参照する必要があるため、共有リソースとして tauri::Builder::default().manage で登録しています。登録するリソースはスレッドセーフである必要があるため、 Arc<Mutex<T>> でインスタンスをラップしています。コマンドハンドラ関数では tauri::State でさらにラップされた状態で引数からアクセスできます。
+main 関数内で生成したパブリッシャーをコマンドハンドラで参照する必要があるため、共有リソースとして tauri::Builder::default().manage で登録しています。登録するリソースはスレッドセーフである必要があるため、 Arc<Mutex< T >> でインスタンスをラップしています。コマンドハンドラ関数では tauri::State でさらにラップされた状態で引数からアクセスできます。
 
 端末 2 で以下のコマンドを実行し、ボタン押下時にトピックがパブリッシュされることを確認しましょう。以下はテキストボックスへ hello という文字を入力してボタンを押下したときの実行結果です。
 
@@ -543,7 +545,7 @@ fn button1_pushed(
     pub_operation1.lock().unwrap().publish(&msg).unwrap();
 }
 
-// 追加ボタン押下時のコマンドハンドラ
+// 追加したボタン押下時のコマンドハンドラ
 // button1_pushedと関数のシグネチャが同じ!!!
 #[tauri::command]
 fn button2_pushed(
@@ -662,7 +664,7 @@ fn main() {
 
 std_msgs::msg::Bool 型のトピックをサブスクライブして受け取った値に応じてボタンの disabled を切り替えてみましょう。
 
-Core プロセスから WebView への呼び出しは Tauri のイベント[^4]という仕組みを使用します。ここでは Core プロセス側で定義された operation-enabled-updated という名前のイベントをトピックの受信時に通知しています。
+Core プロセスから WebView への呼び出しは Tauri のイベント[^4]という仕組みを使用します。ここでは Core プロセス側で定義された operation-enabled-updated という名前のイベントをトピックの受信時に WebView へ通知しています。
 
 [^4]: Tauri のイベントについては [Guides / Features / Events](https://tauri.app/v1/guides/features/events)のページを参照ください。
 
@@ -834,23 +836,23 @@ async fn main() {
 - 端末 2
 
   ```shell
-  $ ros2 topic pub /operation_enabled  std_msgs/msg/Bool "data: false" --once
+  $ ros2 topic pub /operation_enabled std_msgs/msg/Bool "data: false" --once
   publisher: beginning loop
   publishing #1: std_msgs.msg.Bool(data=False)
 
-  $ ros2 topic pub /operation_enabled  std_msgs/msg/Bool "data: true" --once
+  $ ros2 topic pub /operation_enabled std_msgs/msg/Bool "data: true" --once
   publisher: beginning loop
   publishing #1: std_msgs.msg.Bool(data=True)
   ```
 
 ## まとめ
 
-今回はサービスやアクションといった他の ROS2 の通信方式については紹介しませんでしたが、機会があればまた別の記事で触れてゆきたいと思います。
+この記事では、ROS2 のサービスやアクションなど、他の通信方式については触れていませんが、今後の記事で取り上げる機会があれば、詳しく紹介したいと思います。
 
-従来、弊社のロボットシステム開発では Qt を用いた UI 開発が主流でした。しかし、Tauri を使用することで、Web の幅広いライブラリを活用し、開発効率を高めることができると考えています。
+従来、弊社のロボットシステム開発では主に Qt を用いた UI 開発が行われてきました。しかし、Tauri を使用することで、Web の幅広いライブラリを活用し、開発効率の向上が期待できます。
 
 :::info
-Web ライブラリの利用のみであれば、Electron も選択肢に入りますが、Chromium エンジンや Node.js ランタイムの影響でバイナリサイズが大きくなる点が課題です。一方、Tauri はメモリ使用量が少ないため、より有利な選択肢と言えます（参照：[References / Benchmarks](https://tauri.app/v1/references/benchmarks/)）。
+Web ライブラリの利用のみであれば、Electron も選択肢に入りますが、Chromium エンジンや Node.js ランタイムの影響でバイナリサイズが大きくなる点が課題です。その点、Tauri はバイナリサイズが小さく、メモリ使用量も少ないため、より有利な選択肢と言えます（参照：[References / Benchmarks](https://tauri.app/v1/references/benchmarks/)）。
 :::
 
 :::info

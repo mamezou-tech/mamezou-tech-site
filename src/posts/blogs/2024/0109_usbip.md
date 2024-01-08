@@ -3,6 +3,7 @@ title: USB/IPを使ってWindowsのUSBデバイスをLinuxで使用する
 author: shigeki-shoji
 date: 2024-01-09
 tags: [USBIP]
+image: true
 ---
 
 こんにちは、[庄司](https://github.com/edward-mamezou)です。

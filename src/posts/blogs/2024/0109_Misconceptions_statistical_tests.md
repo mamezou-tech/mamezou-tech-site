@@ -3,6 +3,7 @@ title: "要注意！統計的検定にはびこる誤解"
 author: hiroaki-taka
 date: 2024-01-09
 tags: [Analytics]
+image: true
 ---
 
 ## はじめに

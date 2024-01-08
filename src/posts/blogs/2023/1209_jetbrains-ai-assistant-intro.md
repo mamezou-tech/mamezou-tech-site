@@ -3,6 +3,7 @@ title: 開発者体験(DX)を進化させるJetBrainsのAIアシスタント機�
 author: noboru-kudo
 date: 2023-12-09
 tags: [ JetBrains, OpenAI, GPT ]
+image: true
 ---
 
 先日JetBrains社から[AIアシスタント](https://www.jetbrains.com/ai/)機能の一般公開が発表されました。

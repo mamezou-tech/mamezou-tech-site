@@ -113,8 +113,9 @@ layout: layouts/base.njk
   </article>
   {%- initClipboardJS %}
   {%- mermaidTag %}
+  {% set aiImage %}{% if image == true %}true{% else %}false{% endif %}{% endset %}
   <script type="module">
     import { render } from '/js/preact/toc.client.js';
-    render(document.getElementById("toc"));
+    render(document.getElementById("toc"), '{{ page.src.path }}', "{{ meta.imageUrl }}", {{ aiImage }});
   </script>
 </main>

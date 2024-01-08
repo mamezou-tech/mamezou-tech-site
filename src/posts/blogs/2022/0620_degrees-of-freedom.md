@@ -3,6 +3,7 @@ title: 統計学で避けて通れない自由度の話
 author: shuichi-takatsu
 date: 2022-06-20
 tags: [Analytics]
+image: true
 ---
 
 ”自由度”…統計学を勉強したことがある人なら、誰でも一度は耳にしたことのある言葉でしょう。  

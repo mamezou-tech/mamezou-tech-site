@@ -5,6 +5,7 @@ date: 2022-10-19
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-app-configuration.md
 nextPage: ./src/posts/nuxt3/nuxt3-plugin-middleware.md
+image: true
 ---
 
 [前回](/nuxt/nuxt3-app-configuration/)はNuxt3の設定情報管理について見てきました。

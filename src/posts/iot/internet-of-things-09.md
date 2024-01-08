@@ -2,6 +2,7 @@
 title: IoT を使ってみる（その９：FreeRTOS基本編）
 author: shuichi-takatsu
 date: 2022-12-04
+image: true
 ---
 
 今回はESP32などの安価なIoTデバイスで利用できるRTOS(Real Time Operating System)の「FreeRTOS」を紹介したいと思います。

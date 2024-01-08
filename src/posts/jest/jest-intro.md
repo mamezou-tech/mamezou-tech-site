@@ -4,6 +4,7 @@ author: noboru-kudo
 date: 2022-06-25
 templateEngineOverride: md
 nextPage: ./src/posts/jest/jest-matchers.md
+image: true
 ---
 
 [Jest](https://jestjs.io/)はMeta(旧Facebook)社によって開発されたJavaScript向けのテストフレームワークです[^1]。

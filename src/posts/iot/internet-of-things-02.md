@@ -3,6 +3,7 @@ title: IoT を使ってみる（その２：AWS IoT モノの準備編）
 author: shuichi-takatsu
 date: 2022-09-18
 tags: AWS 
+image: true
 ---
 
 [前回](/iot/internet-of-things-01/)は、AWS IoTの簡単接続手順(チュートリアル)を実行してIoTデバイス(Raspberry Pi)とAWS IoTの通信を行ってみました。  

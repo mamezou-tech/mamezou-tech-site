@@ -2,6 +2,7 @@
 title: IoT を使ってみる（その６：MQTTブローカー Mosquitto編）
 author: shuichi-takatsu
 date: 2022-10-08
+image: true
 ---
 
 [前回](/iot/internet-of-things-05/)記事でMQTTを紹介しました。  

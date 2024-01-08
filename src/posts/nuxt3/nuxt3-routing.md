@@ -5,6 +5,7 @@ date: 2022-10-09
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md
 nextPage: ./src/posts/nuxt3/nuxt3-app-configuration.md
+image: true
 ---
 
 [前回](/nuxt/nuxt3-universal-fetch/)はサンプルアプリのブログサイトがAPI経由でブログ情報を取得できるようにしました。

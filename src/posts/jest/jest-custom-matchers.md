@@ -4,6 +4,7 @@ author: noboru-kudo
 date: 2022-07-10
 templateEngineOverride: md
 prevPage: ./src/posts/jest/jest-mock.md
+image: true
 ---
 
 Jest再入門シリーズの最後はカスタムマッチャーの作成にチャレンジします。

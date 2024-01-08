@@ -3,6 +3,7 @@ title: ESP32開発ボードをESP-PROGとPlatform IOを使ってデバッグす�
 author: shuichi-takatsu
 date: 2024-01-03
 tags: [esp-prog, esp32, platformio, debug]
+image: true
 ---
 
 お手軽なIoTデバイス「ESP32開発ボード（以降、ESP32と称す）」を使ってプログラミングをしていると  

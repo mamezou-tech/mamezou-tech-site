@@ -3,6 +3,7 @@ title: Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IO�
 author: shuichi-takatsu
 date: 2024-01-07
 tags: [debugprobe, raspberrypipico, platformio, debug, arduinoide]
+image: true
 ---
 
 [前回](/blogs/2024/01/03/esp32-debug-by-esp-prog)は、ESP32開発ボードをESP-PROGとPlatform IOを使ってデバッグする方法を紹介しました。  

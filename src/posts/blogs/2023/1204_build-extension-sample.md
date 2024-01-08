@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2023-12-04
 tags: [msa, mp, java, "逆張りのMicroProfile", advent2023]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
+image: true
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2023](/events/advent-calendar/2023/)第4日目の記事です。

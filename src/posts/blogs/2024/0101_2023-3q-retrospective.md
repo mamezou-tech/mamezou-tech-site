@@ -3,6 +3,7 @@ title: 豆蔵デベロッパーサイト 2023年10-12月のサマリー
 author: masahiro-kondo
 date: 2024-01-01
 tags: [retrospective]
+image: true
 ---
 
 あけましておめでとうございます。2023年度第3四半期のサマリーです。

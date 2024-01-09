@@ -4,6 +4,7 @@ author: makiko-nakasato
 date: 2023-12-19
 tags: [スクラム, advent2023]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
+image: true
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2023](/events/advent-calendar/2023/)第19日目の記事です。

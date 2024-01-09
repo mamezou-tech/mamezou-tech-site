@@ -5,6 +5,7 @@ date: 2022-10-06
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-develop-sample-app.md
 nextPage: ./src/posts/nuxt3/nuxt3-routing.md
+image: true
 ---
 
 [前回](/nuxt/nuxt3-develop-sample-app/)は簡単なブログサイトを作成し、Nuxtの基本機能や開発の流れを見てきました。

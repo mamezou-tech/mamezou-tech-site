@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-12-10
 tags: [Security, "認証/認可", java, advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
+image: true
 ---
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第10日目の記事です。
 

@@ -5,6 +5,7 @@ date: 2022-06-26
 templateEngineOverride: md
 prevPage: ./src/posts/jest/jest-intro.md
 nextPage: ./src/posts/jest/jest-snapshot-testing.md
+image: true
 ---
 
 Jestはオールインワンのテストフレームワークです。

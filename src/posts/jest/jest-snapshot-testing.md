@@ -5,6 +5,7 @@ date: 2022-06-30
 templateEngineOverride: md
 prevPage: ./src/posts/jest/jest-matchers.md
 nextPage: ./src/posts/jest/jest-mock.md
+image: true
 ---
 
 スナップショットテストはJestオリジナルの機能です。

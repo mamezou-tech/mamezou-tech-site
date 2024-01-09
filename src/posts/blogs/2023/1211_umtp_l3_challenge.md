@@ -4,6 +4,7 @@ author: kazuyuki-shiratani
 date: 2023-12-11
 tags: [UML, UMTP, モデリング, UMTP認定試験, advent2023]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
+image: true
 ---
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2023](https://developer.mamezou-tech.com/events/advent-calendar/2023/)第11日目の記事です。
 

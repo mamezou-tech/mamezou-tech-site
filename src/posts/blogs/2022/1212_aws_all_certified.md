@@ -4,6 +4,7 @@ author: kazuyuki-shiratani
 date: 2022-12-12
 tags: [AWS認定, advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
+image: true
 ---
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第12日目の記事です。
 

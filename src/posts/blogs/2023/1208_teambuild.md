@@ -4,6 +4,7 @@ author: uno
 date: 2023-12-08
 tags: [ advent2023 ]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
+image: true
 ---
 
 ご無沙汰しています。

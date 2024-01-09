@@ -17,9 +17,10 @@ type Node = {
   children?: Node[];
 };
 
-function Toc() {
+function Toc({ path, imageEnabled, imageUrl }: { path: string, imageEnabled: boolean, imageUrl: string }) {
   const [data, setData] = useState<Node[]>([]);
   const { activeId } = useHeadsObserver();
+  const key = path.split("/").pop();
 
   useEffect(() => {
     const tags = document.querySelectorAll("h1,h2");
@@ -94,6 +95,7 @@ function Toc() {
   };
   return (
     <div className="post__toc_preact">
+      {imageEnabled && <div><img src={`${imageUrl}/blogs/${key}-200.webp`} width="200" alt="article image" /></div>}
       <p className="toc-container-header">Contents</p>
       {makeList(data)}
       <div>
@@ -131,6 +133,6 @@ function Toc() {
   );
 }
 
-export function render(el: HTMLElement) {
-  return preactRender(<Toc />, el);
+export function render(el: HTMLElement, path: string, imageUrlBase: string, imageEnabled = false) {
+  return preactRender(<Toc path={path} imageUrl={imageUrlBase} imageEnabled={imageEnabled} />, el);
 }

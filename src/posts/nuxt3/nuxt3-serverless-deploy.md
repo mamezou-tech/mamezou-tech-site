@@ -4,6 +4,7 @@ author: noboru-kudo
 date: 2022-11-02
 tags: [SSR, AWS, サーバーレス, serverless-framework, lambda]
 prevPage: ./src/posts/nuxt3/nuxt3-state-management.md
+image: true
 ---
 
 [前回](/nuxt/nuxt3-state-management)はNuxt3のステート管理について見てきました。

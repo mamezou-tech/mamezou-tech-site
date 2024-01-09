@@ -5,6 +5,7 @@ date: 2022-07-03
 templateEngineOverride: md
 prevPage: ./src/posts/jest/jest-snapshot-testing.md
 nextPage: ./src/posts/jest/jest-custom-matchers.md
+image: true
 ---
 
 単体テストでは、テストを不安定化させる要因となる外部サービス、データベース等のステートフルなモジュールへの依存は極力避けるべきです。

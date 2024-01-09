@@ -2,6 +2,7 @@
 title: IoT を使ってみる（その５：MQTT編）
 author: shuichi-takatsu
 date: 2022-10-02
+image: true
 ---
 
 このIoTの連載の中で何度も「MQTT」という言葉が出てきました。  

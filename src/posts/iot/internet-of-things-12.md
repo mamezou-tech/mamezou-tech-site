@@ -2,6 +2,7 @@
 title: IoT を使ってみる（その１２：FreeRTOS排他制御編）
 author: shuichi-takatsu
 date: 2023-01-05
+image: true
 ---
 
 [前回](/iot/internet-of-things-11/)は「FreeRTOS」のタスク優先度を考察しました。  

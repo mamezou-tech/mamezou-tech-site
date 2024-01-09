@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2023-12-25
 tags: [advent2023]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
+image: true
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2023](/events/advent-calendar/2023/)第13日目の記事です（と言っても空いていたところを埋めたので公開日は12/25です）

@@ -3,6 +3,7 @@ title: GitHub Actions の Artifacts Action v4 で成果物が即時ダウンロ�
 author: masahiro-kondo
 date: 2024-01-04
 tags: [GitHub, CI/CD]
+image: true
 ---
 
 ## はじめに

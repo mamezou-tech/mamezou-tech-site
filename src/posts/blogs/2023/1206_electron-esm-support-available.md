@@ -3,6 +3,7 @@ title: Electron v28 で ESM サポートが入ったので試す
 author: masahiro-kondo
 date: 2023-12-06
 tags: [electron]
+image: true
 ---
 
 ## はじめに

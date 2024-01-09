@@ -4,6 +4,7 @@ author: noboru-kudo
 date: 2022-09-25
 tags: [SSG, SSR]
 nextPage: ./src/posts/nuxt3/nuxt3-develop-sample-app.md
+image: true
 ---
 
 Vue.jsのハイブリッドフレームワークとして人気のNuxtですが、メジャーアップデートとなるNuxt3がそろそろGAになりそうです。

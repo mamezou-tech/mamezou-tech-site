@@ -3,6 +3,7 @@ title: ROS2のUI開発にTauriを使用した話
 author: masayuki-kono
 date: 2024-01-06
 tags: [ROS2, Tauri]
+image: true
 ---
 
 ROS（Robot Operating System）や ROS2 を用いてロボットシステムのアプリケーションを構築する際、皆さんはどのような UI フレームワークを活用していますか。

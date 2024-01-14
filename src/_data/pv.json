@@ -9,14 +9,6 @@
       "url": "/blogs/2022/07/04/monty-hall-problem/"
     },
     {
-      "title": "手書き風ドローツール Excalidraw のススメ",
-      "url": "/blogs/2023/03/22/use-excalidraw/"
-    },
-    {
-      "title": "VSCodeのESP-IDF拡張機能「Espressif IDF」を使ってみる",
-      "url": "/blogs/2023/02/19/esp-idf-vsc-extension/"
-    },
-    {
       "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
       "url": "/nuxt/nuxt3-routing/"
     },
@@ -25,20 +17,28 @@
       "url": "/blogs/2023/09/09/docker_ubuntu_on_wsl2/"
     },
     {
-      "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
-      "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
+      "title": "VSCodeのESP-IDF拡張機能「Espressif IDF」を使ってみる",
+      "url": "/blogs/2023/02/19/esp-idf-vsc-extension/"
+    },
+    {
+      "title": "Google Test を使ってみる（その５：GoogleMock編）",
+      "url": "/blogs/2023/10/08/google-test-05/"
+    },
+    {
+      "title": "Nuxt3入門(第1回) - Nuxtがサポートするレンダリングモードを理解する",
+      "url": "/nuxt/nuxt3-rendering-mode/"
     },
     {
       "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
       "url": "/nuxt/nuxt3-state-management/"
     },
     {
-      "title": "AWS認定資格を12個すべて取得したので勉強したことなどをまとめます",
-      "url": "/blogs/2022/12/12/aws_all_certified/"
+      "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
+      "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
     },
     {
-      "title": "VS Code で .NET MAUI の開発環境を構築する(macOS/iOS)",
-      "url": "/blogs/2023/08/14/setup-maui-devenv/"
+      "title": "複数因子の組み合わせテストケースを簡単に効率よく導出する（ペアワイズ法）",
+      "url": "/blogs/2022/07/11/pairwise-test/"
     }
   ]
 }

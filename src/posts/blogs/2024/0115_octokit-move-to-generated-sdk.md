@@ -94,6 +94,16 @@ func main() {
 go mod tidy
 ```
 
+go.mod ファイルには以下のように依存ライブラリが指定されました。
+
+```
+require (
+	github.com/microsoft/kiota-abstractions-go v1.5.3
+	github.com/microsoft/kiota-http-go v1.1.1
+	github.com/octokit/go-sdk v0.0.4
+)
+```
+
 コードを実行します。
 
 ```shell
@@ -210,8 +220,8 @@ dotnet run Program.cs
 無事に取得できました。
 
 ## さいごに
-以上、OctoKit が生成ベースの SDK に移行するということで Go SDK と .NET SDK を使ってみました。
+以上、OctoKit が生成ベースの SDK に移行するということで Go SDK と .NET SDK を使ってみました。両者ともバージョンが 0.0.4 になっていますが、これは Kiota の生成バージョンなのかもしれません。
 
-まだバージョンが若いので正式リリースは当面先だと思いますが JavaScript 版が出たら使ってみたいと思います。
+まだ正式リリースは当面先だと思いますが JavaScript 版が出たら使ってみたいと思います。
 
 Octokit/Rest については生成ベースになりますが、GraphQL に関してはどのような扱いになるのか気になるところです。

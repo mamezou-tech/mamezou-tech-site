@@ -3,6 +3,7 @@ title: GitHub Octokit の新しい生成ベースの SDK を使ってみる
 author: masahiro-kondo
 date: 2024-01-15
 tags: [GitHub]
+image: true
 ---
 
 ## はじめに

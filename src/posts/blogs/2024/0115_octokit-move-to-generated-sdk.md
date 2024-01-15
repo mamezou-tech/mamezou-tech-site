@@ -146,7 +146,7 @@ $ dotnet --version
 dotnet new console -n HelloDotnetSdk
 ```
 
-プロジェクトに Octkit.NET.SDK をインストールします。
+プロジェクトに Octokit.NET.SDK をインストールします。
 
 ```shell
 cd HelloDotnetSDK

@@ -17,7 +17,9 @@ tags: [iot, OPC-UA]
 - Serverに登録した変数への読み書き
 - Serverに登録した関数の呼び出し
 
-
+## GitHubリンク
+本記事で実装するコードはこちらに記載しています。  
+https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp
 
 
 # 開発環境
@@ -208,7 +210,9 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 
 本記事では、この2つのノードにアクセスするクライアントを実装してみます。
 
-作成したSimpleClient.cpp内に下記のコードを記述します。
+作成したSimpleClient.cpp内に下記のコードを記述します。 
+本記事で実装するコードはこちらにも記載しています。  
+https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp
 
 ```cpp
 /*

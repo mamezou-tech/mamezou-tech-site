@@ -13,6 +13,11 @@ tags: [iot, OPC-UA]
 - Visual Studioでの開発環境構築
 - OPC-UA Serverのサンプル作成
 
+## GitHubリンク
+本記事で実装するコードはこちらに記載しています。  
+https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp
+
+
 ## OPC-UAとは
 OPC-UA（正式名称: OPC Unified Architecture）は，2008年にOPC Foundationから発表され，その後"IEC 62541"として国際標準化されたアーキテクチャ技術仕様です。
 産業用の通信規格の1つであり、機器間のデータ交換に用いられます。
@@ -356,7 +361,9 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 - 引数に指定した数だけ変数の値に加算するメソッドを持つ
 
 
-作成したSimpleServer.cpp内に下記のコードを記述します。
+作成したSimpleServer.cpp内に下記のコードを記述します。  
+本記事で実装するコードはこちらにも記載しています。  
+https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp
 
 ```cpp
 #include <open62541/plugin/log_stdout.h>

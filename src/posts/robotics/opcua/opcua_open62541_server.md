@@ -109,10 +109,10 @@ Windows/Linux/VxWorks/QNX/Androidでの動作をサポートしています。
 Visual Stdioソリューションを作成し，プロジェクトを作成するための準備をします。
 
 Visual Studioを起動し，「新しいプロジェクトを作成する」を選択します。
-![VisualStudio_CreateNewProject](/img/robotics/opcua/open62541/visualstudio_startup.PNG)
+![VisualStudio_CreateNewProject](/img/robotics/opcua/open62541_server/visualstudio_startup.PNG)
 
 プロジェクトテンプレートでは，「空のソリューション」を選択します。
-![VisualStudio_SelectTemplate](/img/robotics/opcua/open62541/visualstudio_create_void_solution.PNG)
+![VisualStudio_SelectTemplate](/img/robotics/opcua/open62541_server/visualstudio_create_void_solution.PNG)
 
 任意の場所にソリューションを生成します。
 本記事では下記のように設定しました。
@@ -122,7 +122,7 @@ Visual Studioを起動し，「新しいプロジェクトを作成する」を�
 ソリューション名: open62541_ws
 ```
 
-![](/img/robotics/opcua/open62541/visualstudio_solution_setting.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_solution_setting.png)
 
 「OK」ボタンを押下すると、`C:\Mamezou\open62541_ws\open62541_ws.sln` が生成されます。
 
@@ -195,10 +195,10 @@ $ cmake --install build_VS2022 --prefix ../..
 Visual Studioを開き，「open62541_ws」ソリューションを開きます。
 左上のタブから「ファイル」→「新規作成」→「プロジェクト」を選択します。
 
-![](/img/robotics/opcua/open62541/visualstudio_create_new_project.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_create_new_project.png)
 
 C++の「コンソールアプリ」を選択します。
-![](/img/robotics/opcua/open62541/visualstudio_select_project_template.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_select_project_template.png)
 
 プロジェクトの設定を行います。
 下記のように設定します。
@@ -210,7 +210,7 @@ C++の「コンソールアプリ」を選択します。
 ソリューション: ソリューションに追加
 ```
 
-![](/img/robotics/opcua/open62541/visualstudio_project_setting.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_project_setting.png)
 
 
 
@@ -220,12 +220,12 @@ Visual Studioでの開発を行いやすくするために，プロジェクト�
 
 この画面でプロジェクトの設定を行います。
 
-![](/img/robotics/opcua/open62541/visualstudio_project_property.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_project_property.png)
 
 
 SimpleServerプロパティページの上部にある「構成」を「すべての構成」に設定します。
 
-![](/img/robotics/opcua/open62541/visualstudio_project_property1.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_project_property1.png)
 
 
 ### インクルード設定
@@ -245,7 +245,7 @@ $(SolutionDir)include
 
 設定したら、画面右下の「適用」をクリックしましょう。
 
-![プロジェクトインクルード設定](/img/robotics/opcua/open62541/visualstudio_project_include_setting.PNG)
+![プロジェクトインクルード設定](/img/robotics/opcua/open62541_server/visualstudio_project_include_setting.PNG)
 
 
 :::info: Visual Studioで使用可能なマクロについて
@@ -271,7 +271,7 @@ $(SolutionDir)lib
 
 設定したら、「適用」をクリックしましょう。
 
-![プロジェクト ライブラリディレクトリ設定](/img/robotics/opcua/open62541/visualstudio_project_library_directory_setting.PNG)
+![プロジェクト ライブラリディレクトリ設定](/img/robotics/opcua/open62541_server/visualstudio_project_library_directory_setting.PNG)
 
 
 ### 依存ファイル設定
@@ -291,7 +291,7 @@ $(SolutionDir)lib\open62541.lib
 
 設定したら、「適用」をクリックしましょう。
 
-![プロジェクト_依存ファイル設定](/img/robotics/opcua/open62541/visualstudio_project_dependent_file_setting.PNG)
+![プロジェクト_依存ファイル設定](/img/robotics/opcua/open62541_server/visualstudio_project_dependent_file_setting.PNG)
 
 
 
@@ -305,7 +305,7 @@ $(SolutionDir)lib\open62541.lib
 右側の「出力ディレクトリ」の横に表示される
 三角形のアイコンをクリックし、「編集...」ボタンをクリックして編集画面を開きます。
 
-![プロジェクト_出力ディレクトリ設定](/img/robotics/opcua/open62541/visualstudio_project_outputdirectory_setting.PNG)
+![プロジェクト_出力ディレクトリ設定](/img/robotics/opcua/open62541_server/visualstudio_project_outputdirectory_setting.PNG)
 
 
 
@@ -339,7 +339,7 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 2行目は，robocopyコマンドがコピー成功時に発生するエラーを抑止するためのコマンドです。
 詳細は[こちら](https://nanamasuhoshi.hatenadiary.org/entry/20150902/1441181518)をご覧ください。
 
-![プロジェクト_ビルド後のイベント](/img/robotics/opcua/open62541/visualstudio_post_build_event_setting.PNG)
+![プロジェクト_ビルド後のイベント](/img/robotics/opcua/open62541_server/visualstudio_post_build_event_setting.PNG)
 
 
 設定出来たら、OKボタンをクリックしてプロパティ画面を閉じます。
@@ -671,18 +671,18 @@ int main(void) {
 プロジェクトのビルドを行い，ビルドが成功したら実際に起動してみます。
 コンソールに下図のように出力されていたら成功です。
 
-![サーバの実行結果](/img/robotics/opcua/open62541/launch_sample_server.png)
+![サーバの実行結果](/img/robotics/opcua/open62541_server/launch_sample_server.png)
 
 サーバが起動できたら，OPC-UAクライアントツールであるUaExpertを起動します。
 
 起動後，左上の「Add Server」ボタン（"＋"状のアイコン）をクリックし，サーバ選択画面を表示させます。
 
-![UaExpert_AddServerButton](/img/robotics/opcua/open62541/UaExpert_AddServerButton.png)
+![UaExpert_AddServerButton](/img/robotics/opcua/open62541_server/UaExpert_AddServerButton.png)
 
 PC上にサーバを建てているため，「Local」→「open62541-based OPC UA Application」→「None」が表示されます。
 こちらを選択状態にし，画面右下のOKを押下しましょう。
 
-![UaExpert_AddServer](/img/robotics/opcua/open62541/UaExpert_AddServer.png)
+![UaExpert_AddServer](/img/robotics/opcua/open62541_server/UaExpert_AddServer.png)
 
 :::info
 本サンプルでは，セキュリティを考慮していないため選択可能な項目が「None」のみとなっています。
@@ -692,19 +692,19 @@ PC上にサーバを建てているため，「Local」→「open62541-based OPC
 サーバを追加すると，画面の左下のProject欄内の「Servers」に先ほど選択したサーバが追加されています。
 サーバを選択状態にしたまま，画面上部の「Connect Server」ボタンを押してサーバに接続します。
 
-![UaExpert_ConnectToServer](/img/robotics/opcua/open62541/UaExpert_ConnectServer.png)
+![UaExpert_ConnectToServer](/img/robotics/opcua/open62541_server/UaExpert_ConnectServer.png)
 
 
 ### 変数へのアクセス
 サーバに接続すると，画面左側の「Address Space」欄にサーバが所有するノード一覧が表示されます。
 その中で，「Objects」フォルダ内に存在する「Sample Variable」ノードを選択し，画面中央の「Data Access View」欄にドラッグ&ドロップしましょう。
 
-![UaExpert_AddVariableToDataAccessView](/img/robotics/opcua/open62541/UaExpert_AddVariableToDataAccessView.png)
+![UaExpert_AddVariableToDataAccessView](/img/robotics/opcua/open62541_server/UaExpert_AddVariableToDataAccessView.png)
 
 D&Dすると，DataAccessViewにSampleVariableの詳細が表示されます。
 値を見てみると，上記のコードで設定した`42`という値が設定されているはずです。
 
-![UaExpert_SeeVar](/img/robotics/opcua/open62541/UaExpert_SeeVariable.png)
+![UaExpert_SeeVar](/img/robotics/opcua/open62541_server/UaExpert_SeeVariable.png)
 
 :::info
 Value欄内の数字をダブルクリックすると，値を自由に書き換えることができます。
@@ -716,11 +716,11 @@ Value欄内の数字をダブルクリックすると，値を自由に書き換
 上記コード内にて定義したメソッド「IncreaseValue」を実行してみましょう。
 「Address Space」欄にある「IncreaseVariable」を右クリックし，Callを選択します。
 
-![UaExpert_CallMethodButton](/img/robotics/opcua/open62541/UaExpert_CallMethodButton.png)
+![UaExpert_CallMethodButton](/img/robotics/opcua/open62541_server/UaExpert_CallMethodButton.png)
 
 引数の入力画面が表示されるため，引数に好きな数字を入れ，右下のCallボタンを押下します。
 
-![UaExpert_Call_Argument](/img/robotics/opcua/open62541/UaExpert_Call_Argument.png)
+![UaExpert_Call_Argument](/img/robotics/opcua/open62541_server/UaExpert_Call_Argument.png)
 
 :::info
 今回定義したメソッドには戻り値が無いため，画面下部の「Result」欄は空白となっています。
@@ -729,7 +729,7 @@ Value欄内の数字をダブルクリックすると，値を自由に書き換
 
 メソッドが実行され，SampleVariableの値が指定した分だけ加算されます。
 
-![UaExpert_AfterCallMethod](/img/robotics/opcua/open62541/UaExpert_AfterCallMethod.png)
+![UaExpert_AfterCallMethod](/img/robotics/opcua/open62541_server/UaExpert_AfterCallMethod.png)
 
 
 # おわりに

@@ -3,6 +3,7 @@ title: KRaft による ZooKeeper レス Kafka クラスター構成
 author: masahiro-kondo
 date: 2024-01-22
 tags: [Kafka]
+image: true
 ---
 
 ## はじめに
@@ -10,7 +11,7 @@ Kafka では ZooKeeper がトピック管理やブローカーのリーダー選
 
 ![ZooKeeper mode](https://i.gyazo.com/81b5b33831acdddf2d6b80c24a3b72af.png)
 
-(以前の記事「[Strimzi - Kubernetes で Kafka を運用するための Operators](/blogs/2022/05/25/strimzi-kafka-operators/)」から再掲。)
+(以前の記事「[Strimzi - Kubernetes で Kafka を運用するための Operators](/blogs/2022/05/25/strimzi-kafka-operators/)」から再掲)
 
 ZooKeeper に様々な管理をオフロードすることで、Kafka の実装はシンプルになります。しかし運用の観点からは2種類のクラスター管理など構成が複雑であり、ZooKeeper がボトルネックになるリスクなどが課題となっていました。
 
@@ -20,7 +21,7 @@ KRaft は Kafka クラスターが自律的に Raft プロトコル[^1]による
 
 [^1]: [Raft (algorithm) - Wikipedia](https://en.wikipedia.org/wiki/Raft_(algorithm))
 
-KRaft モードで動作する Kafka クラスターにおいて Kafka ノードには従来のブローカーに加えてコントローラーの役割を担います。コントローラー役のノードは ZooKeeper が行なっていたリーダー選出やメタデータ管理を引き受けます。クラスターのメタデータは、Kafka のメタデータトピックに格納されコントローラー間でイベント処理が行われます。
+KRaft モードで動作する Kafka クラスターにおいて Kafka ノードは従来のブローカーに加えコントローラーの役割も担います。コントローラー役のノードは ZooKeeper が行なっていたトピック管理やリーダー選出を引き受けます。クラスターのメタデータは、Kafka 専用のメタデータトピックに格納されコントローラー間のイベント処理で使用されます。
 
 ![KRaft mode](https://i.gyazo.com/35a804ebc419335724af27ffb28f6973.png)
 
@@ -30,11 +31,11 @@ KRaft モードで動作する Kafka クラスターにおいて Kafka ノード
 KRaft モードにおけるコントローラーは Quorum(クオラム) コントローラーと呼ばれるサービスで、Raft のコンセンサスプロトコルにより動作します。
 :::
 
-ZooKeeper との通信オーバーヘッドがなくなり、Kafka ノードのメモリー内でメタデータにアクセスできるなどパフォーマンス的にも有利になっています。このようにアーキテクチャが大幅に見直された結果、デプロイの簡素化、スケーラビリティの強化、パフォーマンスの向上などのメリットがもたらされました。
+KRaft モードでは ZooKeeper との通信オーバーヘッドがなくなり、Kafka ノードのメモリー内でメタデータにアクセスできるなどパフォーマンス的にも有利になっています。このようにアーキテクチャが大幅に見直された結果、デプロイの簡素化、スケーラビリティの強化、パフォーマンスの向上などのメリットがもたらされました。
 
 ## KRaft モードへのマイグレーション
 
-KIP-833 によると、KRaft は Kafka 3.3で Production Ready になりました。3.5からは ZooKeeper は非推奨になっており、4.0で削除される予定です。
+KIP-833 によると、KRaft は Kafka 3.3で Production Ready になりました。3.5以降 ZooKeeper は非推奨になっています。4.0以降は ZooKeeper は削除され KRaft モードのみがサポートされる予定です。
 
 [KIP-833: Mark KRaft as Production Ready - Apache Kafka - Apache Software Foundation](https://cwiki.apache.org/confluence/display/KAFKA/KIP-833%3A+Mark+KRaft+as+Production+Ready)
 
@@ -42,9 +43,9 @@ Kafka のドキュメントによると早ければ 今年2024年の4月には�
 
 [https://kafka.apache.org/documentation/#zk_depr](https://kafka.apache.org/documentation/#zk_depr)
 
-KRaft モードは、ZooKeeper モードとの互換性がないためプロダクション環境ではマイグレーション作業が必要となります。
+KRaft モードは ZooKeeper モードとの互換性がないため、プロダクション環境における既存の Kafka クラスターではマイグレーション作業が必要となります。
 
-公式ドキュメントにはマイグレーションは3.6で可能になると記述されています。2024年1月現在、すでに3.6.1がリリースされていますが、公式ドキュメントには記載されていません。
+公式ドキュメントにはマイグレーションは3.6で可能になると記述されています。2024年1月現在、すでに3.6.1がリリースされていますが、公式ドキュメントには手順が記載されていません。
 
 KIP-866 でマイグレーションの要件や仕様が管理されています。マイグレーションの最終段階まで ZooKeeper への切り戻しを可能にし、マイグレーションモードでは KRaft と ZooKeeper への二重書き込みを行うとのことです。クラスターのダウンタイムを最小限にすることを目指しています。
 

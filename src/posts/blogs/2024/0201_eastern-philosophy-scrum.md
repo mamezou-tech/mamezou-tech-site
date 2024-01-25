@@ -3,6 +3,7 @@ title: 東洋哲学とスクラム
 author: akihiro-ishida
 date: 2024-02-01
 tags: [スクラム]
+image: true
 ---
 
 ## はじめに

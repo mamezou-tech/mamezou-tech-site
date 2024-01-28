@@ -432,7 +432,7 @@ curl https://${DOMAIN_NAME}/index.html
 > <!DOCTYPE html><html lang="ja"><body><h1>v1 App</h1></body></html>
 ```
 
-これを順次v2、v3へ継続的デプロイパイプラインを使ってでアップデートしていきます。
+これを順次v2、v3へパイプラインを使ってアップデートしていきます。
 
 ## HTTPヘッダベースルーティング(v1 -> v2)
 まずは特定のHTTPヘッダの場合にステージング環境へルーティングするようにしてみます。

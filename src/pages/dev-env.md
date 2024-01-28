@@ -36,6 +36,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [VSCodeのESP-IDF拡張機能「Espressif IDF」を使ってみる](/blogs/2023/02/19/esp-idf-vsc-extension/)
 - [ESP32開発ボードをESP-PROGとPlatform IOを使ってデバッグする](/blogs/2024/01/03/esp32-debug-by-esp-prog)
 - [Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする](/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe)
+- [STM32マイコンボード（STM32F103C8T6）をST-Link V2互換品とPlatform IOを使ってデバッグする](/blogs/2024/01/29/stm32-debug-by-st-link)
 
 ### リモート環境
 

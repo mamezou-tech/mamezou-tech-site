@@ -3,6 +3,7 @@ title: CloudFrontの継続的デプロイをパイプラインから実行する
 author: noboru-kudo
 date: 2024-01-28
 tags: [cloud-front, code-pipeline, lambda, AWS, "CI/CD"]
+image: true
 ---
 
 皆さんの現場ではどのようなリリース戦略を採用しているでしょうか？

@@ -371,7 +371,7 @@ CodePipelineのパイプラインはCloudFormationのテンプレート(pipeline
 
 `Source`ステージ後の`Deploy`ステージで2つのアクションを定義しています。
 1つはGitレポジトリに配置されている継続的デプロイ用のCloudFormationテンプレート適用です(`Deploy_to_Staging`アクション)。
-このCloudFormationテンプレートの内容については後述しますが、ここでステージング環境のバージョンやルーティングポリシー等の継続的デプロイの主要な設定をすることを想定しています。
+このCloudFormationテンプレートの内容については後述しますが、ここでステージング環境のディストリビューションやルーティングポリシー等の継続的デプロイの主要な設定をすることを想定しています。
 
 もう1つはLambda関数([継続的デプロイ有効化関数](#継続的デプロイ有効化関数))実行です(`Enable_CloudFront_CD`アクション)。
 Lambda関数実行に必要な情報は`UserParameters`として自CloudFormationのパラメータや前アクションのCloudFormationの出力(`CFOutput`)から設定しています。
@@ -432,11 +432,11 @@ curl https://${DOMAIN_NAME}/index.html
 > <!DOCTYPE html><html lang="ja"><body><h1>v1 App</h1></body></html>
 ```
 
-これを順次v2、v3へ別のルーティングポリシーで継続的デプロイ環境を構築してみます。
+これを順次v2、v3へ継続的デプロイパイプラインを使ってでアップデートしていきます。
 
-## HTTPヘッダベースルーティング
+## HTTPヘッダベースルーティング(v1 -> v2)
 まずは特定のHTTPヘッダの場合にステージング環境へルーティングするようにしてみます。
-以下の継続的デプロイのCloudFormationテンプレートをGitレポジトリに配置します。
+以下の継続的デプロイのCloudFormationテンプレート(staging-cloudfront-distribution.yml)をGitレポジトリに配置します。
 
 ```yaml
 AWSTemplateFormatVersion: '2010-09-09'
@@ -497,7 +497,7 @@ Outputs:
 `ContinuousDeploymentPolicy`リソースで継続的デプロイのルーティング設定(`TrafficConfig`)をします。
 今回はヘッダベースなので`Type: SingleHeader`とし、`SingleHeaderConfig`にステージング環境へルーティングするヘッダ名と値を指定します。
 ここでは`aws-cf-cd-env`というヘッダで値に`staging`が設定されたリクエストをルーティング対象としました。
-なお、CloudFrontの継続的デプロイのキーは`aws-cf-cd-`で始まる必要があります。
+なお、CloudFrontの継続的デプロイのヘッダ名は`aws-cf-cd-`で始まる必要があります。
 
 次にパイプラインを構築します。前述のパイプラインのCloudFormationスタックを作成します。
 ここではCLIから実施しますが、マネジメントコンソールでも構いません。
@@ -579,7 +579,7 @@ curl https://${DOMAIN_NAME}/index.html
 
 オリジンパスが`1.0.0`から`2.0.0`と変わっています。ステージング環境の設定でプライマリ環境が上書きされていることが分かります。
 
-## 重みベースルーティング
+## 重みベースルーティング(v2 -> v3)
 
 一通りの流れを確認できましたので、次はもう1つのルーティングポリシーである重みベースの方も見てみます。
 

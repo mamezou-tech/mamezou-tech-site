@@ -11,7 +11,7 @@ tags: [iot, OPC-UA]
 - OPC-UAの概要について
 - Open62541のインストール方法
 - Visual Studioでの開発環境構築
-- OPC-UA Serverのサンプル作成
+- OPC-UA サーバのサンプル作成
 
 ## GitHubリンク
 本記事で実装するコードはこちらに記載しています。  
@@ -75,11 +75,11 @@ OPC-UAの特徴として下記が挙げられます。
 
 
 ## Open62541とは
-OPC-UA Server/Clientを実装するためのツール群を有するライブラリです。
+OPC-UA サーバ，クライアントを実装するためのツール群を有するライブラリです。
 Windows/Linux/VxWorks/QNX/Androidでの動作をサポートしています。
 
-ライブラリはC言語にて記述されており，Server/Clientの実装やPublish/Subscribe通信をサポートしています。
-本記事では，こちらを使用してOPC-UA Serverの実装していきます。
+ライブラリはC言語にて記述されており，サーバ・クライアントの実装やPublish/Subscribe通信をサポートしています。
+本記事では，こちらを使用してOPC-UAサーバの実装していきます。
 
 :::info
 詳細な機能についてはOpen62541の[公式ページ](https://www.open62541.org/)、[GitHubリポジトリ](https://github.com/open62541/open62541/)，もしくは[公式ドキュメント](https://www.open62541.org/doc/master/toc.html)をご覧ください。
@@ -427,7 +427,7 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
     UA_Variant_init(&newVar);
     UA_Variant_setScalar(&newVar, &newVarValue, &UA_TYPES[UA_TYPES_INT32]);
 
-    // 加算後の値をServerに書き込む
+    // 加算後の値をサーバに書き込む
     UA_StatusCode retval = UA_Server_writeValue(server, sampleVarNodeId, newVar);
 
     if (retval != UA_STATUSCODE_GOOD) {
@@ -578,7 +578,7 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
     UA_Variant_init(&newVar);
     UA_Variant_setScalar(&newVar, &newVarValue, &UA_TYPES[UA_TYPES_INT32]);
 
-    // 加算後の値をServerに書き込む
+    // 加算後の値をサーバに書き込む
     UA_StatusCode retval = UA_Server_writeValue(server, sampleVarNodeId, newVar);
 
     if (retval != UA_STATUSCODE_GOOD) {
@@ -743,6 +743,6 @@ Value欄内の数字をダブルクリックすると，値を自由に書き換
 本記事では下記の事項について説明しました。
 - Open62541のインストール方法
 - Visual Studioでの開発環境構築
-- OPC-UA Serverのサンプル作成
+- OPC-UAサーバのサンプル作成
 
-次回はOPC-UA Clientを実装し，Serverと通信してみます。
+次回はOPC-UAクライアントを実装し，本記事で作成したサーバと通信してみます。

@@ -14,12 +14,11 @@ tags: [iot, OPC-UA]
 ## 本記事の目的
 本記事では、下記の事項について説明します。
 - OPC-UA Clientのサンプル作成
-- Serverに登録した変数への読み書き
-- Serverに登録した関数の呼び出し
+- サーバに登録した変数への読み書き
+- サーバに登録した関数の呼び出し
 
 ## GitHubリンク
-本記事で実装するコードはこちらに記載しています。  
-https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp
+本記事で実装するコードはGitHubリポジトリ[^1]に記載しています。  
 
 
 # 開発環境
@@ -200,23 +199,23 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 
 
 
-# Clientの実装
-## Serverに登録したノード一覧
+# クライアントの実装
+## サーバに登録したノード一覧
 前回記事では、下記2つのノードをサーバに登録しました。
 - Int型の変数`SampleVariable`
 - `SampleVariable`に引数の値を加算する関数`IncreaseVariable`
 
-![サーバに登録したノード一覧](/img/robotics/opcua/open62541_client/PreviousSiteResult.png)
+![Serverに登録したノード一覧](/img/robotics/opcua/open62541_client/PreviousSiteResult.png)
 
 本記事では、この2つのノードにアクセスするクライアントを実装してみます。
 
 作成したSimpleClient.cpp内に下記のコードを記述します。 
-本記事で実装するコードはこちらにも記載しています。  
-https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp
+本記事で実装するコードはこちら[^1]にも記載しています。  
+
 
 ```cpp
 /*
-下記の2つのノードにアクセスするクライアント
+下記の2つのノードにアクセスするClient
     - 変数 ... SampleVariable : int
     - 関数 ... IncreaseVariable(int) : int
 */
@@ -302,6 +301,153 @@ void invokeMethod(UA_Client* client) {
 }
 
 
+/// <summary>
+/// メイン関数
+/// </summary>
+int main()
+{
+    // Clientインスタンスの生成
+    UA_Client* client = UA_Client_new();
+    UA_ClientConfig_setDefault(UA_Client_getConfig(client));
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://localhost:4840");
+    if (retval != UA_STATUSCODE_GOOD) {
+        UA_LOG_INFO(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND,
+            "The connection failed with status code %s\n",
+            UA_StatusCode_name(retval));
+        UA_Client_delete(client);
+        return 0;
+    }
+
+    // 変数の現在の値を読み出す
+    printf("Press any key to Read Sample Variable\n");
+    std::cin.get();
+    readSampleVariable(client); // 値を取得する
+
+    // 任意の値を書き込む
+    printf("Press any key to Write Sample Variable\n");
+    std::cin.get();
+    int targetValue = -1;
+    writeSampleVariable(client, targetValue);
+    readSampleVariable(client); // 書き込んだ結果を出力する
+
+    // 関数にアクセスする
+    printf("Press any key to invoke method\n");
+    std::cin.get();
+    invokeMethod(client);
+    readSampleVariable(client); // 結果を出力する
+
+
+    printf("Press any key to exit ...\n");
+    std::cin.get();
+
+    return EXIT_SUCCESS;
+}
+```
+
+
+## コードの詳細
+### 変数の値を読み出す
+```cpp
+/// <summary>
+/// 変数の値を読みだす
+/// </summary>
+/// <param name="client">クライアントインスタンスアドレス</param>
+void readSampleVariable(UA_Client* client) {
+    UA_Int32 value = 0;
+    UA_Variant* var = UA_Variant_new();
+    UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(1, (char*)"SampleVarNodeId"), var);    // NodeIdを指定する
+    
+    if (retval == UA_STATUSCODE_GOOD && UA_Variant_isScalar(var) &&
+        var->type == &UA_TYPES[UA_TYPES_INT32])
+    {
+        value = *(UA_Int32*)var->data;
+        printf("the value of SampleVariable: %d\n", value);
+    }
+    else {
+        printf("Failed to read SampleVariable\n");
+    }
+}
+```
+
+- `UA_Variant`型の変数を生成します
+- `UA_Client_readValueAttribute()`を使用してServer上の変数にアクセス可能な`UA_Variant`を生成する
+  - 第1引数にClientインスタンスのポインタを渡す
+  - 第2引数に取得したいノードIDを渡す
+  - 第3引数に設定する`UA_Variable`インスタンスを渡す
+- 設定済みの`UA_Variable`インスタンスから値を取得する
+  - `UA_Variable`インスタンスが指し示す方がスカラ型かつ`Int32`型の場合にのみ取得
+
+### 変数に値を書き込む
+```cpp
+/// <summary>
+/// 変数の値を書き込む
+/// </summary>
+/// <param name="client">クライアントインスタンスアドレス</param>
+/// <param name="data">書き換える値</param>
+UA_StatusCode writeSampleVariable(UA_Client* client, UA_Int32 newValue) {
+    UA_Variant newValueVariant;
+    UA_Variant_setScalar(&newValueVariant, &newValue, &UA_TYPES[UA_TYPES_INT32]);
+    UA_StatusCode retval = UA_Client_writeValueAttribute(client, UA_NODEID_STRING(1, (char*)"SampleVarNodeId"), &newValueVariant);
+
+    if (retval != UA_STATUSCODE_GOOD) {
+        printf("Failed to write sample variable value, returned %x\n", retval);
+    }
+    return retval;
+}
+```
+- 書き込み用の`UA_Variant`型インスタンスを生成する
+- `UA_Int32`は`int32_t`のエイリアス
+- `UA_Variant_setScalar()`を使用して値をセットする
+- `UA_Client_writeValueAttribute()`を使用して値書き込み
+
+### サーバに登録した関数を実行する
+```cpp
+/// <summary>
+/// サーバに登録している関数を実行する
+/// </summary>
+void invokeMethod(UA_Client* client) {
+    UA_Variant input;
+    UA_Int32 argValue = 32; // 追加する値（delta）
+
+    UA_Variant_init(&input);
+    UA_Variant_setScalarCopy(&input, &argValue, &UA_TYPES[UA_TYPES_INT32]);
+
+    // 戻り値用の変数
+    size_t outputSize;
+    UA_Variant* output;
+    
+    // 関数を呼び出す
+    UA_StatusCode retval = UA_Client_call(
+        client, 
+        UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER),   // オブジェクトID
+        UA_NODEID_STRING(1, (char*)"addIncreaseVarNodeId"), // メソッドのID
+        1,              // 入力個数 
+        &input,         // 入力データ配列
+        &outputSize,    // 出力データ個数
+        &output         // 出力データ配列
+    );
+
+    if (retval == UA_STATUSCODE_GOOD) {
+        printf("Method call was successful, and %lu returned values available.\n", (unsigned long)outputSize);
+        UA_Array_delete(output, outputSize, &UA_TYPES[UA_TYPES_VARIANT]);
+    }
+    else {
+        printf("Method call was unsuccessful, and %x returned values available.\n", retval);
+    }
+    UA_Variant_clear(&input);
+}
+```
+- 関数の入力（引数）と出力（戻り値）用の`UA_Variant`型インスタンスを生成する
+- `UA_Client_call()`を使用してServer上の関数を実行する
+  - 第4引数に入力データ配列個数を渡す
+  - 第5引数に入力データ配列を渡す
+  - 第6引数に出力データ配列個数が返る
+  - 第7引数に入力データ配列が返る
+- `UA_Array_delete()`でメモリ開放
+
+
+### `main`関数
+```cpp
 int main()
 {
     // クライアントインスタンスの生成
@@ -316,33 +462,77 @@ int main()
         return 0;
     }
 
-    // 変数の値を読みだす
-    printf("readSampleVariable()\n");
+    // 変数の現在の値を読み出す
+    printf("Press any key to Read Sample Variable\n");
+    std::cin.get();
     readSampleVariable(client); // 値を取得する
 
-    // 変数の値を書き込む
-    printf("=== writeSampleVariable() ===\n");
-    writeSampleVariable(client, -1);
-    readSampleVariable(client); // 結果を出力する
+    // 任意の値を書き込む
+    printf("Press any key to Write Sample Variable\n");
+    std::cin.get();
+    int targetValue = -1;
+    writeSampleVariable(client, targetValue);
+    readSampleVariable(client); // 書き込んだ結果を出力する
 
     // 関数にアクセスする
-    printf("=== invokeMethod() ===\n");
+    printf("Press any key to invoke method\n");
+    std::cin.get();
     invokeMethod(client);
     readSampleVariable(client); // 結果を出力する
 
 
-    printf("Press any key to continue ...");
-    char* str = (char*)"";
-    std::cin >> str;
+    printf("Press any key to exit ...\n");
+    std::cin.get();
 
     return EXIT_SUCCESS;
 }
 ```
 
 
-## コードの詳細
-### 変数の値を読み出す
+# 実行結果
+## 事前準備
+- 前回記事にて作成したOPC-UAサーバを起動する
+- UaExpertを起動し，OPC-UAサーバに接続する
+- SampleVariableに任意の値を格納しておく
+  - 今回は`100`に書き換えました
+![UaExpertによる値の書き換え](/img/robotics/opcua/open62541_client/UaExpert_changeValue.PNG)
 
-### 変数に値を書き込む
 
-### 関数を実行する
+## 作成したクライアントを起動する
+作成したクライアントを起動し，下図のような画面が表示されることを確認します。
+![クライアント起動直後](/img/robotics/opcua/open62541_client/Client_Step1.png)
+
+Enterキーを押し，変数の現在値を読み出してみます。
+実行の結果，先ほど書き換えた値になっていることを確認します。
+![クライアント値読み出し直後](/img/robotics/opcua/open62541_client/Client_AfterReadVariable.png)
+
+再度Enterキーを押し，変数の値を書き換えてみます。
+実行の結果，値がコードに記載した値（-1）になっていることを確認します。
+![クライアント書き込み直後](/img/robotics/opcua/open62541_client/Client_AfterWriteVariable.png)
+
+最後にもう一度Enterキーを押し，サーバ上の関数を実行してみます。
+ここで，関数の中身は引数に渡した値（今回は`32`）を加算する処理を記載していました。
+実行の結果，値が正しい値（`-1 + 32 = 31`）になっていることを確認します。
+![クライアント関数呼び出し直後](/img/robotics/opcua/open62541_client/Client_AfterInvokeMethod.png)
+
+
+# おわりに
+本記事では下記の事項について説明しました。
+
+- OPC-UA クライアントのサンプル作成
+- クライアントから変数を読み出す
+- クライアントから変数へ書き込む
+- クライアントからサーバに登録した関数を呼び出す
+
+これ以外にも，暗号化，PubSub通信が機能として提供されており，サンプルが公式GitHubリポジトリ[^2]にて公開されています。
+OPC-UAサーバ，クライアント開発にOpen62541を使用してみてはいかかでしょうか。
+
+:::info
+Open62541はフルC言語（C99）で実装されています。
+有志によってC++ラッパー[^3]が開発されており，
+C言語ではなくC++言語で開発したい方はこちらを使用すると良いかもしれません。
+:::
+
+[^1]: [サンプルクライアントのコード](https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleClient/SimpleClient.cpp)
+[^2]: [open62541pp](https://github.com/open62541pp/open62541pp)
+[^3]: [open62541サンプルプログラム集](https://github.com/open62541/open62541/tree/master/examples)

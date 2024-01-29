@@ -10,9 +10,9 @@ image: true
 
 Electron アプリ開発では [electron-quick-start](https://github.com/electron/electron-quick-start) というスタートアッププロジェクトを使って始めるというのがならわし？です。
 
-Electron は Web UI と Node.js のブリッジによるデスクトップアプリの骨格を作ってくれます。しかし、アプリのパッケージングやアプリの公開についてのサポートはありません。サードパーティのツールやライブラリを追加してビルド→パッケージング→公開のパイプラインを開発者自身が作成する必要がありました。
+Electron は Web UI と Node.js のブリッジによるデスクトップアプリの骨格を作ってくれます。しかし、アプリのパッケージングや公開についてのサポートはありませんでした。サードパーティのツールやライブラリを使用してビルド→パッケージング→公開のパイプラインを開発者自身が作成する必要がありました。
 
-筆者も electron-quick-start を使ってアプリのプロジェクトを初期構築し、パッケージャーやテストツールなどを後から追加していきました。アプリ開発のフェーズが進むにつれ、色々なライブラリを試したり設定にハマったりとかなり試行錯誤が必要でした。
+筆者も electron-quick-start を使ってプロジェクトを初期構築し、パッケージャーやテストツールなどを後から追加していきました。アプリ開発のフェーズが進むにつれ、色々なライブラリを試したり設定にハマったりとかなり試行錯誤が必要でした。
 
 :::info
 electron-quick-start については以下の記事で紹介しています。
@@ -35,11 +35,11 @@ Electron 公式ドキュメントにもアプリ配布のところで記載さ�
 
 [Distributing Apps With Electron Forge | Electron](https://www.electronjs.org/docs/latest/tutorial/forge-overview)
 
-以下の図は公式ドキュメント [Build Lifecycle](https://www.electronforge.io/core-concepts/build-lifecycle) の章から引用したものです。Forge がサポートする Elctron アプリのパッケージング(実行形式のバンドル)、インストーラー作成、公開のワークフローを示しています。
+以下の図は Forge 公式ドキュメント [Build Lifecycle](https://www.electronforge.io/core-concepts/build-lifecycle) の章から引用したものです。Forge がサポートする Elctron アプリのパッケージング(実行形式のバンドル)、インストーラー作成、公開のワークフローを示しています。
 
-![Build　life cycle](https://i.gyazo.com/bbb1c7b3b48fd1a2739683e2145d7f5e.webp)
+> ![Build　life cycle](https://i.gyazo.com/bbb1c7b3b48fd1a2739683e2145d7f5e.webp)
 
-electron-forge を導入すると、パッケージングや配布に関してのツールが揃った状態になり迷いポイントがなくなります。
+Electron Forge を導入すると、パッケージングや配布に関しての迷いポイントがなくなります。
 
 Forge を開発するモチベーションや提供される価値について、公式ドキュメントの以下の章に書かれています。
 
@@ -150,6 +150,8 @@ built in 30ms.
 
 [Vue 3 - Electron Forge](https://www.electronforge.io/guides/framework-integration/vue-3)
 
+Vue と Vite の Vue プラグインをインストールします。
+
 ```shell
 npm i vue
 npm i -D @vitejs/plugin-vue
@@ -201,7 +203,7 @@ export default defineConfig({
   plugins: [vue()]
 });
 ```
-これで Vue コンポーネントを使ったアプリを Electron で動かせるようになりました。UI は通常の Vue の SPA と同様に開発できます。
+これで Vue コンポーネントを使った UI を Electron で動かせるようになりました。通常の Vue の SPA と同様に開発できます。
 
 ![](https://i.gyazo.com/c002701db2fbae9fc6a952530ccfe2e0.png)
 
@@ -227,7 +229,7 @@ npm script `make` を実行します。
 npm run make
 ```
 
-Apple Silicon の MacBook Pro で実行すると、Forge のプロジェクトを生成したデフォルトの状態では Zip アーカイブが `out/make/zip/darwin/arm64` 配下に生成されます。`forge-example-darwin-arm64-0.1.0.zip` のような名前で生成されます。
+Apple Silicon の MacBook Pro で実行すると、Forge のプロジェクトを生成したデフォルトの状態では Zip アーカイブが `out/make/zip/darwin/arm64` 配下に生成されます。`forge-example-darwin-arm64-0.1.0.zip` のような名前になります。
 
 macOS 用 DMG 形式のインストーラーを生成するには、@electron-forge/maker-dmg パッケージをインストールする必要があります。
 

@@ -534,5 +534,5 @@ C言語ではなくC++言語で開発したい方はこちらを使用すると�
 :::
 
 [^1]: [サンプルクライアントのコード](https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleClient/SimpleClient.cpp)
-[^2]: [open62541pp](https://github.com/open62541pp/open62541pp)
-[^3]: [open62541サンプルプログラム集](https://github.com/open62541/open62541/tree/master/examples)
+[^2]: [open62541サンプルプログラム集](https://github.com/open62541/open62541/tree/master/examples)
+[^3]: [open62541pp](https://github.com/open62541pp/open62541pp)

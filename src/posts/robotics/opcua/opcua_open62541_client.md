@@ -7,7 +7,7 @@ tags: [iot, OPC-UA]
 
 # はじめに
 ## 前回の記事
-前回の記事（[こちら](https://developer.mamezou-tech.com/robotics/opcua/opcua-open62541/)）では、OPC-UAの概要やOpen62541のインストール方法について説明しました。
+前回の記事（[こちら](https://developer.mamezou-tech.com/robotics/opcua/opcua_open62541_server/)）では、OPC-UAの概要やOpen62541のインストール方法について説明しました。
 本記事を読む前にをご覧ください。
 
 
@@ -30,17 +30,19 @@ tags: [iot, OPC-UA]
 - OpenSSL
   - 本記事ではOpenSSL 3.0.7を使用しています
 - CMake
-  - CMake 3.25.0-rc2
+  - 本記事ではCMake 3.25.0-rc2を使用しています
 - Python3
   - 本記事ではPython 3.12.0を使用しています
 - UaExpert
   - OPC-UAクライアントツール
   - サーバに登録された値を確認するために使用しています
 
-# プロジェクトの作成と設定（前回記事と同様）
+# プロジェクトの作成と設定
 OPC-UAクライアント用プロジェクトの作成と設定について説明します。
-ちなみに、内容は前回記事と同じのため既にご存知の方は飛ばして頂いて構いません。
 
+:::check
+本章の内容は前回記事と同じのため、既にご存知の方は飛ばして頂いて構いません。
+:::
 
 ## プロジェクトの新規作成
 Visual Studioを開き，「open62541_ws」ソリューションを開きます。
@@ -56,7 +58,7 @@ C++の「コンソールアプリ」を選択します。
 プロジェクトはsrcフォルダ内に作成することとします。
 
 ```
-プロジェクト名: SimpleServer
+プロジェクト名: SimpleClient
 場所: <ソリューションディレクトリ>/src
 ソリューション: ソリューションに追加
 ```
@@ -67,14 +69,14 @@ C++の「コンソールアプリ」を選択します。
 
 ## プロジェクトの設定
 Visual Studioでの開発を行いやすくするために，プロジェクトの設定を行います。
-ソリューションエクスプローラー内の「SimpleServer」を右クリックし，プロパティを選択します。
+ソリューションエクスプローラー内の「SimpleClient」を右クリックし，プロパティを選択します。
 
 この画面でプロジェクトの設定を行います。
 
 ![](/img/robotics/opcua/open62541_client/visualstudio_project_property.png)
 
 
-SimpleServerプロパティページの上部にある「構成」を「すべての構成」に設定します。
+SimpleClientプロパティページの上部にある「構成」を「すべての構成」に設定します。
 
 ![](/img/robotics/opcua/open62541_client/visualstudio_project_property1.png)
 
@@ -188,7 +190,7 @@ robocopy $(SolutionDir)bin\ $(TargetDir) open62541.dll
 IF %ERRORLEVEL% LSS 8 EXIT 0
 ```
 2行目は，robocopyコマンドがコピー成功時に発生するエラーを抑止するためのコマンドです。
-詳細は[こちら](https://nanamasuhoshi.hatenadiary.org/entry/20150902/1441181518)をご覧ください。
+詳細は[こちら](https://learn.microsoft.com/ja-jp/windows-server/administration/windows-commands/robocopy)をご覧ください。
 
 ![プロジェクト_ビルド後のイベント](/img/robotics/opcua/open62541_client/visualstudio_post_build_event_setting.PNG)
 

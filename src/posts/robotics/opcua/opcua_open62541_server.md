@@ -14,8 +14,7 @@ tags: [iot, OPC-UA]
 - OPC-UA サーバのサンプル作成
 
 ## GitHubリンク
-本記事で実装するコードはこちらに記載しています。  
-https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp
+本記事で実装するコードは[こちら](https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp)に記載しています。  
 
 
 ## OPC-UAとは
@@ -342,7 +341,7 @@ robocopy $(SolutionDir)bin\ $(TargetDir) open62541.dll
 IF %ERRORLEVEL% LSS 8 EXIT 0
 ```
 2行目は，robocopyコマンドがコピー成功時に発生するエラーを抑止するためのコマンドです。
-詳細は[こちら](https://nanamasuhoshi.hatenadiary.org/entry/20150902/1441181518)をご覧ください。
+詳細は[こちら](https://learn.microsoft.com/ja-jp/windows-server/administration/windows-commands/robocopy)をご覧ください。
 
 ![プロジェクト_ビルド後のイベント](/img/robotics/opcua/open62541_server/visualstudio_post_build_event_setting.PNG)
 
@@ -362,16 +361,16 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 
 
 作成したSimpleServer.cpp内に下記のコードを記述します。  
-本記事で実装するコードはこちらにも記載しています。  
-https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp
+本記事で実装するコードは[こちら](https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp)にも記載しています。  
 
 ```cpp
 #include <open62541/plugin/log_stdout.h>
 #include <open62541/server.h>
 #include <open62541/server_config_default.h>
 
-#include <signal.h>
-#include <stdlib.h>
+#include <csignal>
+#include <cstdlib>
+
 
 /// <summary>
 /// OPC-UAサーバに変数を追加する
@@ -385,15 +384,15 @@ static void addSampleVariable(UA_Server* server) {
     // 変数に初期値を設定
     UA_Variant_setScalar(&attr.value, &sampleVarInitValue, &UA_TYPES[UA_TYPES_INT32]);
     
-    /* 属性値の設定*/
+    /* 属性値の設定 */
     // 変数の説明
     attr.description = UA_LOCALIZEDTEXT(
                         (char*)"en-US", 
-                        (char*)"Sample Variable for mamezou-tech");
+                        (char*)"Sample Variable for mamezou-tech"); 
     // 表示名
     attr.displayName = UA_LOCALIZEDTEXT(
                         (char*)"en-US", 
-                        (char*)"Sample Variable");  
+                        (char*)"Sample Variable");
     // データ型
     attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
     // アクセス属性
@@ -409,10 +408,17 @@ static void addSampleVariable(UA_Server* server) {
     // 親参照ノードID
     UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES);
 
-    // 定義したVariableNodeをServerに追加する
+    /* 定義したVariableNodeをServerに追加する */
     UA_Server_addVariableNode(server, sampleVarNodeId, parentNodeId,
         parentReferenceNodeId, sampleVarName,
         UA_NODEID_NUMERIC(0, UA_NS0ID_BASEDATAVARIABLETYPE), attr, NULL, NULL);
+
+    // メモリ解放
+    UA_VariableAttributes_delete(&attr);
+    UA_NodeId_delete(&sampleVarNodeId);
+    UA_NodeId_delete(&parentNodeId);
+    UA_NodeId_delete(&parentReferenceNodeId);
+    UA_QualifiedName_delete(&sampleVarName);
 }
 
 
@@ -442,15 +448,16 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
     UA_Variant_init(&newVar);
     UA_Variant_setScalar(&newVar, &newVarValue, &UA_TYPES[UA_TYPES_INT32]);
 
-    // 加算後の値をサーバに書き込む
+    // 加算後の値をServerに書き込む
     UA_StatusCode retval = UA_Server_writeValue(server, sampleVarNodeId, newVar);
 
-    if (retval != UA_STATUSCODE_GOOD) {
-        return retval;
-    }
+    // メモリ解放
+    UA_Variant_delete(&sampleVar);
+    UA_Variant_delete(&newVar);
 
-    return UA_STATUSCODE_GOOD;
+    return retval;
 }
+
 
 
 /// <summary>
@@ -494,8 +501,11 @@ static void addIncreaseVariableMethod(UA_Server* server) {
         incAttr, &increaseVariableCallback,
         1, &inputArg, 0, NULL,
         NULL, NULL);
+    
+    // メモリ解放
+    UA_Argument_delete(&inputArg);
+    UA_MethodAttributes_delete(&methodAttr);
 }
-
 
 
 static volatile UA_Boolean running = true;
@@ -556,15 +566,15 @@ static void addSampleVariable(UA_Server* server) {
     // 変数に初期値を設定
     UA_Variant_setScalar(&attr.value, &sampleVarInitValue, &UA_TYPES[UA_TYPES_INT32]);
     
-    /* 属性値の設定*/
+    /* 属性値の設定 */
     // 変数の説明
     attr.description = UA_LOCALIZEDTEXT(
                         (char*)"en-US", 
-                        (char*)"Sample Variable for mamezou-tech");
+                        (char*)"Sample Variable for mamezou-tech"); 
     // 表示名
     attr.displayName = UA_LOCALIZEDTEXT(
                         (char*)"en-US", 
-                        (char*)"Sample Variable");  
+                        (char*)"Sample Variable");
     // データ型
     attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
     // アクセス属性
@@ -580,10 +590,17 @@ static void addSampleVariable(UA_Server* server) {
     // 親参照ノードID
     UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES);
 
-    // 定義したVariableNodeをServerに追加する
+    /* 定義したVariableNodeをServerに追加する */
     UA_Server_addVariableNode(server, sampleVarNodeId, parentNodeId,
         parentReferenceNodeId, sampleVarName,
         UA_NODEID_NUMERIC(0, UA_NS0ID_BASEDATAVARIABLETYPE), attr, NULL, NULL);
+
+    // メモリ解放
+    UA_VariableAttributes_delete(&attr);
+    UA_NodeId_delete(&sampleVarNodeId);
+    UA_NodeId_delete(&parentNodeId);
+    UA_NodeId_delete(&parentReferenceNodeId);
+    UA_QualifiedName_delete(&sampleVarName);
 }
 ```
 
@@ -624,9 +641,9 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
     // 加算後の値をサーバに書き込む
     UA_StatusCode retval = UA_Server_writeValue(server, sampleVarNodeId, newVar);
 
-    if (retval != UA_STATUSCODE_GOOD) {
-        return retval;
-    }
+    // メモリ解放
+    UA_Variant_delete(&sampleVar);
+    UA_Variant_delete(&newVar);
 
     return UA_STATUSCODE_GOOD;
 }
@@ -682,6 +699,10 @@ static void addIncreaseVariableMethod(UA_Server* server) {
         incAttr, &increaseVariableCallback,
         1, &inputArg, 0, NULL,
         NULL, NULL);
+    
+    // メモリ解放
+    UA_Argument_delete(&inputArg);
+    UA_MethodAttributes_delete(&methodAttr);
 }
 ```
 - 引数と戻り値のデータ型として`UA_Variant`型を使用します。

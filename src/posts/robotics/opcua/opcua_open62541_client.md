@@ -233,7 +233,9 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 void readSampleVariable(UA_Client* client) {
     UA_Int32 value = 0;
     UA_Variant* var = UA_Variant_new();
-    UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(1, (char*)"SampleVarNodeId"), var);    // NodeIdを指定する
+    UA_NodeId nodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");
+    // NodeIdを指定する
+    UA_StatusCode retval = UA_Client_readValueAttribute(client, nodeId, var);    
     
     if (retval == UA_STATUSCODE_GOOD && UA_Variant_isScalar(var) &&
         var->type == &UA_TYPES[UA_TYPES_INT32])
@@ -255,7 +257,11 @@ void readSampleVariable(UA_Client* client) {
 UA_StatusCode writeSampleVariable(UA_Client* client, UA_Int32 newValue) {
     UA_Variant newValueVariant;
     UA_Variant_setScalar(&newValueVariant, &newValue, &UA_TYPES[UA_TYPES_INT32]);
-    UA_StatusCode retval = UA_Client_writeValueAttribute(client, UA_NODEID_STRING(1, (char*)"SampleVarNodeId"), &newValueVariant);
+    UA_NodeId nodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");
+    UA_StatusCode retval = UA_Client_writeValueAttribute(
+                                client,
+                                nodeId,
+                                &newValueVariant);
 
     if (retval != UA_STATUSCODE_GOOD) {
         printf("Failed to write sample variable value, returned %x\n", retval);
@@ -355,7 +361,9 @@ int main()
 void readSampleVariable(UA_Client* client) {
     UA_Int32 value = 0;
     UA_Variant* var = UA_Variant_new();
-    UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(1, (char*)"SampleVarNodeId"), var);    // NodeIdを指定する
+    UA_NodeId nodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");
+    // NodeIdを指定する
+    UA_StatusCode retval = UA_Client_readValueAttribute(client, nodeId, var);
     
     if (retval == UA_STATUSCODE_GOOD && UA_Variant_isScalar(var) &&
         var->type == &UA_TYPES[UA_TYPES_INT32])
@@ -387,7 +395,8 @@ void readSampleVariable(UA_Client* client) {
 UA_StatusCode writeSampleVariable(UA_Client* client, UA_Int32 newValue) {
     UA_Variant newValueVariant;
     UA_Variant_setScalar(&newValueVariant, &newValue, &UA_TYPES[UA_TYPES_INT32]);
-    UA_StatusCode retval = UA_Client_writeValueAttribute(client, UA_NODEID_STRING(1, (char*)"SampleVarNodeId"), &newValueVariant);
+    UA_NodeId nodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");
+    UA_StatusCode retval = UA_Client_writeValueAttribute(client, nodeId, &newValueVariant);
 
     if (retval != UA_STATUSCODE_GOOD) {
         printf("Failed to write sample variable value, returned %x\n", retval);
@@ -517,20 +526,13 @@ Enterキーを押し，変数の現在値を読み出してみます。
 
 
 # おわりに
-本記事では下記の事項について説明しました。
-
-- OPC-UA クライアントのサンプル作成
-- クライアントから変数を読み出す
-- クライアントから変数へ書き込む
-- クライアントからサーバに登録した関数を呼び出す
-
-これ以外にも，暗号化，PubSub通信が機能として提供されており，サンプルが公式GitHubリポジトリ[^2]にて公開されています。
+本記事では紹介しませんでしたが、Open62541では暗号化，PubSub通信が機能として提供されており，サンプルが公式GitHubリポジトリ[^2]にて公開されています。
 OPC-UAサーバ，クライアント開発にOpen62541を使用してみてはいかかでしょうか。
 
 :::info
 Open62541はフルC言語（C99）で実装されています。
-有志によってC++ラッパー[^3]が開発されており，
-C言語ではなくC++言語で開発したい方はこちらを使用すると良いかもしれません。
+C言語ではなくC++言語で開発したい方は有志によってC++ラッパー[^3]が開発されているので
+こちらを使用すると良いかもしれません。
 :::
 
 [^1]: [サンプルクライアントのコード](https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleClient/SimpleClient.cpp)

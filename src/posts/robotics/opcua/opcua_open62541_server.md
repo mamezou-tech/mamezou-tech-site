@@ -377,22 +377,37 @@ https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServ
 /// OPC-UAサーバに変数を追加する
 /// </summary>
 static void addSampleVariable(UA_Server* server) {
-    // SampleVariable変数ノードの属性を定義する
-    UA_VariableAttributes attr = UA_VariableAttributes_default; // 属性のデフォルト値を設定
-    UA_Int32 sampleVarInitValue = 42;    // 初期値の設定
-    UA_Variant_setScalar(&attr.value, &sampleVarInitValue, &UA_TYPES[UA_TYPES_INT32]);  // 変数に初期値を設定
+    /* SampleVariable変数ノードの属性を定義する */
+    // 属性のデフォルト値を設定
+    UA_VariableAttributes attr = UA_VariableAttributes_default;
+    // 初期値の設定
+    UA_Int32 sampleVarInitValue = 42;
+    // 変数に初期値を設定
+    UA_Variant_setScalar(&attr.value, &sampleVarInitValue, &UA_TYPES[UA_TYPES_INT32]);
     
-    // 属性値の設定
-    attr.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Sample Variable for mamezou-tech"); // 変数の説明
-    attr.displayName = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Sample Variable");  // 表示名
-    attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;    // データ型
-    attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;  // アクセス属性
+    /* 属性値の設定*/
+    // 変数の説明
+    attr.description = UA_LOCALIZEDTEXT(
+                        (char*)"en-US", 
+                        (char*)"Sample Variable for mamezou-tech");
+    // 表示名
+    attr.displayName = UA_LOCALIZEDTEXT(
+                        (char*)"en-US", 
+                        (char*)"Sample Variable");  
+    // データ型
+    attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
+    // アクセス属性
+    attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;
 
-    // Variable Nodeを情報モデルに追加する
-    UA_NodeId sampleVarNodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");  // ノードIDの定義
-    UA_QualifiedName sampleVarName = UA_QUALIFIEDNAME(1, (char*)"SampleVar");   // ブラウザ名の定義
-    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);      // 親ノードのID
-    UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES); // 親参照ノードID
+    /* Variable Nodeを情報モデルに追加する */
+    // ノードIDの定義
+    UA_NodeId sampleVarNodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");  
+    // ブラウザ名の定義
+    UA_QualifiedName sampleVarName = UA_QUALIFIEDNAME(1, (char*)"SampleVar");
+    // 親ノードのID
+    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);
+    // 親参照ノードID
+    UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES);
 
     // 定義したVariableNodeをServerに追加する
     UA_Server_addVariableNode(server, sampleVarNodeId, parentNodeId,
@@ -438,7 +453,6 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
 }
 
 
-
 /// <summary>
 /// 新規にメソッド をOPC-UAサーバに追加する
 /// </summary>
@@ -446,20 +460,34 @@ static void addIncreaseVariableMethod(UA_Server* server) {
     // 入力引数の生成
     UA_Argument inputArg;
 
-    // 引数の設定
+    /* 引数の設定 */
     UA_Argument_init(&inputArg);
-    inputArg.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"How much increase the number of the variable");
+    // 説明
+    inputArg.description = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"How much increase the number of the variable");
+    // 名前
     inputArg.name = UA_STRING((char*)"delta");
+    // データ型
     inputArg.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
+    // データ形式
     inputArg.valueRank = UA_VALUERANK_SCALAR;
 
-    // Methodノードの追加
+    /* Methodノードの追加 */
+    // メソッドAttributeインスタンス
     UA_MethodAttributes incAttr = UA_MethodAttributes_default;
-    incAttr.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Increase the value of a variable by the number of arguments");
-    incAttr.displayName = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"IncreaseVariable");
+    // 説明
+    incAttr.description = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"Increase the value of a variable by the number of arguments");
+    // 表示名
+    incAttr.displayName = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"IncreaseVariable");
     incAttr.executable = true;
     incAttr.userExecutable = true;
-    UA_Server_addMethodNode(server, UA_NODEID_STRING(1, (char*)"addIncreaseVarNodeId"),
+    UA_Server_addMethodNode(server, 
+        UA_NODEID_STRING(1, (char*)"addIncreaseVarNodeId"),
         UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER),
         UA_NODEID_NUMERIC(0, UA_NS0ID_HASCOMPONENT),
         UA_QUALIFIEDNAME(1, (char*)"IncreaseVariable"),
@@ -520,22 +548,37 @@ int main(void) {
 /// OPC-UAサーバに変数を追加する
 /// </summary>
 static void addSampleVariable(UA_Server* server) {
-    // SampleVariable変数ノードの属性を定義する
-    UA_VariableAttributes attr = UA_VariableAttributes_default; // 属性のデフォルト値を設定
-    UA_Int32 sampleVarInitValue = 42;    // 初期値の設定
-    UA_Variant_setScalar(&attr.value, &sampleVarInitValue, &UA_TYPES[UA_TYPES_INT32]);  // 変数に初期値を設定
+    /* SampleVariable変数ノードの属性を定義する */
+    // 属性のデフォルト値を設定
+    UA_VariableAttributes attr = UA_VariableAttributes_default;
+    // 初期値の設定
+    UA_Int32 sampleVarInitValue = 42;
+    // 変数に初期値を設定
+    UA_Variant_setScalar(&attr.value, &sampleVarInitValue, &UA_TYPES[UA_TYPES_INT32]);
     
-    // 属性値の設定
-    attr.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Sample Variable for mamezou-tech"); // 変数の説明
-    attr.displayName = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Sample Variable");  // 表示名
-    attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;    // データ型
-    attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;  // アクセス属性
+    /* 属性値の設定*/
+    // 変数の説明
+    attr.description = UA_LOCALIZEDTEXT(
+                        (char*)"en-US", 
+                        (char*)"Sample Variable for mamezou-tech");
+    // 表示名
+    attr.displayName = UA_LOCALIZEDTEXT(
+                        (char*)"en-US", 
+                        (char*)"Sample Variable");  
+    // データ型
+    attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
+    // アクセス属性
+    attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;
 
-    // Variable Nodeを情報モデルに追加する
-    UA_NodeId sampleVarNodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");  // ノードIDの定義
-    UA_QualifiedName sampleVarName = UA_QUALIFIEDNAME(1, (char*)"SampleVar");   // ブラウザ名の定義
-    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);      // 親ノードのID
-    UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES); // 親参照ノードID
+    /* Variable Nodeを情報モデルに追加する */
+    // ノードIDの定義
+    UA_NodeId sampleVarNodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");  
+    // ブラウザ名の定義
+    UA_QualifiedName sampleVarName = UA_QUALIFIEDNAME(1, (char*)"SampleVar");
+    // 親ノードのID
+    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);
+    // 親参照ノードID
+    UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES);
 
     // 定義したVariableNodeをServerに追加する
     UA_Server_addVariableNode(server, sampleVarNodeId, parentNodeId,
@@ -605,20 +648,34 @@ static void addIncreaseVariableMethod(UA_Server* server) {
     // 入力引数の生成
     UA_Argument inputArg;
 
-    // 引数の設定
+    /* 引数の設定 */
     UA_Argument_init(&inputArg);
-    inputArg.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"How much increase the number of the variable");
+    // 説明
+    inputArg.description = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"How much increase the number of the variable");
+    // 名前
     inputArg.name = UA_STRING((char*)"delta");
+    // データ型
     inputArg.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
+    // データ形式
     inputArg.valueRank = UA_VALUERANK_SCALAR;
 
-    // Methodノードの追加
+    /* Methodノードの追加 */
+    // メソッドAttributeインスタンス
     UA_MethodAttributes incAttr = UA_MethodAttributes_default;
-    incAttr.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Increase the value of a variable by the number of arguments");
-    incAttr.displayName = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"IncreaseVariable");
+    // 説明
+    incAttr.description = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"Increase the value of a variable by the number of arguments");
+    // 表示名
+    incAttr.displayName = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"IncreaseVariable");
     incAttr.executable = true;
     incAttr.userExecutable = true;
-    UA_Server_addMethodNode(server, UA_NODEID_STRING(1, (char*)"addIncreaseVarNodeId"),
+    UA_Server_addMethodNode(server, 
+        UA_NODEID_STRING(1, (char*)"addIncreaseVarNodeId"),
         UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER),
         UA_NODEID_NUMERIC(0, UA_NS0ID_HASCOMPONENT),
         UA_QUALIFIEDNAME(1, (char*)"IncreaseVariable"),

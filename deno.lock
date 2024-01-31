@@ -2854,12 +2854,5 @@
     "https://deno.land/x/xml@2.1.3/utils/streamable.ts": "1603a5f10c859b95d4e9502365a0fba0b19d5d068356e20d5a6813cd37fee780",
     "https://deno.land/x/xml@2.1.3/utils/stringifier.ts": "c701b506835237c0c6c0a08fd94e0a012b644def3f4c819c64788daf2e649ea3",
     "https://deno.land/x/xml@2.1.3/utils/types.ts": "ecaf7785e54a6f1da6f8e56da2bce9853407ceb7d5b3b70f0a60a0890151fe4c"
-  },
-  "workspace": {
-    "packageJson": {
-      "dependencies": [
-        "npm:@netlify/plugin-lighthouse@^5.0.0"
-      ]
-    }
   }
 }

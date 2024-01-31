@@ -11,7 +11,11 @@ tags: [iot, OPC-UA]
 - OPC-UAの概要について
 - Open62541のインストール方法
 - Visual Studioでの開発環境構築
-- OPC-UA Serverのサンプル作成
+- OPC-UA サーバのサンプル作成
+
+## GitHubリンク
+本記事で実装するコードは[こちら](https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp)に記載しています。  
+
 
 ## OPC-UAとは
 OPC-UA（正式名称: OPC Unified Architecture）は，2008年にOPC Foundationから発表され，その後"IEC 62541"として国際標準化されたアーキテクチャ技術仕様です。
@@ -70,11 +74,11 @@ OPC-UAの特徴として下記が挙げられます。
 
 
 ## Open62541とは
-OPC-UA Server/Clientを実装するためのツール群を有するライブラリです。
+OPC-UA サーバ，クライアントを実装するためのツール群を有するライブラリです。
 Windows/Linux/VxWorks/QNX/Androidでの動作をサポートしています。
 
-ライブラリはC言語にて記述されており，Server/Clientの実装やPublish/Subscribe通信をサポートしています。
-本記事では，こちらを使用してOPC-UA Serverの実装していきます。
+ライブラリはC言語にて記述されており，サーバ・クライアントの実装やPublish/Subscribe通信をサポートしています。
+本記事では，こちらを使用してOPC-UAサーバの実装していきます。
 
 :::info
 詳細な機能についてはOpen62541の[公式ページ](https://www.open62541.org/)、[GitHubリポジトリ](https://github.com/open62541/open62541/)，もしくは[公式ドキュメント](https://www.open62541.org/doc/master/toc.html)をご覧ください。
@@ -109,10 +113,10 @@ Windows/Linux/VxWorks/QNX/Androidでの動作をサポートしています。
 Visual Stdioソリューションを作成し，プロジェクトを作成するための準備をします。
 
 Visual Studioを起動し，「新しいプロジェクトを作成する」を選択します。
-![VisualStudio_CreateNewProject](/img/robotics/opcua/open62541/visualstudio_startup.PNG)
+![VisualStudio_CreateNewProject](/img/robotics/opcua/open62541_server/visualstudio_startup.PNG)
 
 プロジェクトテンプレートでは，「空のソリューション」を選択します。
-![VisualStudio_SelectTemplate](/img/robotics/opcua/open62541/visualstudio_create_void_solution.PNG)
+![VisualStudio_SelectTemplate](/img/robotics/opcua/open62541_server/visualstudio_create_void_solution.PNG)
 
 任意の場所にソリューションを生成します。
 本記事では下記のように設定しました。
@@ -122,7 +126,7 @@ Visual Studioを起動し，「新しいプロジェクトを作成する」を�
 ソリューション名: open62541_ws
 ```
 
-![](/img/robotics/opcua/open62541/visualstudio_solution_setting.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_solution_setting.png)
 
 「OK」ボタンを押下すると、`C:\Mamezou\open62541_ws\open62541_ws.sln` が生成されます。
 
@@ -195,10 +199,10 @@ $ cmake --install build_VS2022 --prefix ../..
 Visual Studioを開き，「open62541_ws」ソリューションを開きます。
 左上のタブから「ファイル」→「新規作成」→「プロジェクト」を選択します。
 
-![](/img/robotics/opcua/open62541/visualstudio_create_new_project.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_create_new_project.png)
 
 C++の「コンソールアプリ」を選択します。
-![](/img/robotics/opcua/open62541/visualstudio_select_project_template.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_select_project_template.png)
 
 プロジェクトの設定を行います。
 下記のように設定します。
@@ -210,7 +214,7 @@ C++の「コンソールアプリ」を選択します。
 ソリューション: ソリューションに追加
 ```
 
-![](/img/robotics/opcua/open62541/visualstudio_project_setting.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_project_setting.png)
 
 
 
@@ -220,12 +224,12 @@ Visual Studioでの開発を行いやすくするために，プロジェクト�
 
 この画面でプロジェクトの設定を行います。
 
-![](/img/robotics/opcua/open62541/visualstudio_project_property.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_project_property.png)
 
 
 SimpleServerプロパティページの上部にある「構成」を「すべての構成」に設定します。
 
-![](/img/robotics/opcua/open62541/visualstudio_project_property1.png)
+![](/img/robotics/opcua/open62541_server/visualstudio_project_property1.png)
 
 
 ### インクルード設定
@@ -245,7 +249,7 @@ $(SolutionDir)include
 
 設定したら、画面右下の「適用」をクリックしましょう。
 
-![プロジェクトインクルード設定](/img/robotics/opcua/open62541/visualstudio_project_include_setting.PNG)
+![プロジェクトインクルード設定](/img/robotics/opcua/open62541_server/visualstudio_project_include_setting.PNG)
 
 
 :::info: Visual Studioで使用可能なマクロについて
@@ -271,7 +275,7 @@ $(SolutionDir)lib
 
 設定したら、「適用」をクリックしましょう。
 
-![プロジェクト ライブラリディレクトリ設定](/img/robotics/opcua/open62541/visualstudio_project_library_directory_setting.PNG)
+![プロジェクト ライブラリディレクトリ設定](/img/robotics/opcua/open62541_server/visualstudio_project_library_directory_setting.PNG)
 
 
 ### 依存ファイル設定
@@ -291,7 +295,7 @@ $(SolutionDir)lib\open62541.lib
 
 設定したら、「適用」をクリックしましょう。
 
-![プロジェクト_依存ファイル設定](/img/robotics/opcua/open62541/visualstudio_project_dependent_file_setting.PNG)
+![プロジェクト_依存ファイル設定](/img/robotics/opcua/open62541_server/visualstudio_project_dependent_file_setting.PNG)
 
 
 
@@ -305,7 +309,7 @@ $(SolutionDir)lib\open62541.lib
 右側の「出力ディレクトリ」の横に表示される
 三角形のアイコンをクリックし、「編集...」ボタンをクリックして編集画面を開きます。
 
-![プロジェクト_出力ディレクトリ設定](/img/robotics/opcua/open62541/visualstudio_project_outputdirectory_setting.PNG)
+![プロジェクト_出力ディレクトリ設定](/img/robotics/opcua/open62541_server/visualstudio_project_outputdirectory_setting.PNG)
 
 
 
@@ -337,9 +341,9 @@ robocopy $(SolutionDir)bin\ $(TargetDir) open62541.dll
 IF %ERRORLEVEL% LSS 8 EXIT 0
 ```
 2行目は，robocopyコマンドがコピー成功時に発生するエラーを抑止するためのコマンドです。
-詳細は[こちら](https://nanamasuhoshi.hatenadiary.org/entry/20150902/1441181518)をご覧ください。
+詳細は[こちら](https://learn.microsoft.com/ja-jp/windows-server/administration/windows-commands/robocopy)をご覧ください。
 
-![プロジェクト_ビルド後のイベント](/img/robotics/opcua/open62541/visualstudio_post_build_event_setting.PNG)
+![プロジェクト_ビルド後のイベント](/img/robotics/opcua/open62541_server/visualstudio_post_build_event_setting.PNG)
 
 
 設定出来たら、OKボタンをクリックしてプロパティ画面を閉じます。
@@ -348,7 +352,7 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 
 
 
-## サンプルプログラムの実装
+## 実装コード
 実際にOPC-UAサーバを実装してみます。
 本サンプルでは，下記のようなサーバを実装してみます。
 
@@ -356,41 +360,65 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 - 引数に指定した数だけ変数の値に加算するメソッドを持つ
 
 
-作成したSimpleServer.cpp内に下記のコードを記述します。
+作成したSimpleServer.cpp内に下記のコードを記述します。  
+本記事で実装するコードは[こちら](https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleServer/SimpleServer.cpp)にも記載しています。  
 
 ```cpp
 #include <open62541/plugin/log_stdout.h>
 #include <open62541/server.h>
 #include <open62541/server_config_default.h>
 
-#include <signal.h>
-#include <stdlib.h>
+#include <csignal>
+#include <cstdlib>
+
 
 /// <summary>
 /// OPC-UAサーバに変数を追加する
 /// </summary>
 static void addSampleVariable(UA_Server* server) {
-    // SampleVariable変数ノードの属性を定義する
-    UA_VariableAttributes attr = UA_VariableAttributes_default; // 属性のデフォルト値を設定
-    UA_Int32 sampleVarInitValue = 42;    // 初期値の設定
-    UA_Variant_setScalar(&attr.value, &sampleVarInitValue, &UA_TYPES[UA_TYPES_INT32]);  // 変数に初期値を設定
+    /* SampleVariable変数ノードの属性を定義する */
+    // 属性のデフォルト値を設定
+    UA_VariableAttributes attr = UA_VariableAttributes_default;
+    // 初期値の設定
+    UA_Int32 sampleVarInitValue = 42;
+    // 変数に初期値を設定
+    UA_Variant_setScalar(&attr.value, &sampleVarInitValue, &UA_TYPES[UA_TYPES_INT32]);
     
-    // 属性値の設定
-    attr.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Sample Variable for mamezou-tech"); // 変数の説明
-    attr.displayName = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Sample Variable");  // 表示名
-    attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;    // データ型
-    attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;  // アクセス属性
+    /* 属性値の設定 */
+    // 変数の説明
+    attr.description = UA_LOCALIZEDTEXT(
+                        (char*)"en-US", 
+                        (char*)"Sample Variable for mamezou-tech"); 
+    // 表示名
+    attr.displayName = UA_LOCALIZEDTEXT(
+                        (char*)"en-US", 
+                        (char*)"Sample Variable");
+    // データ型
+    attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
+    // アクセス属性
+    attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;
 
-    // Variable Nodeを情報モデルに追加する
-    UA_NodeId sampleVarNodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");  // ノードIDの定義
-    UA_QualifiedName sampleVarName = UA_QUALIFIEDNAME(1, (char*)"SampleVar");   // ブラウザ名の定義
-    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);      // 親ノードのID
-    UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES); // 親参照ノードID
+    /* Variable Nodeを情報モデルに追加する */
+    // ノードIDの定義
+    UA_NodeId sampleVarNodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");  
+    // ブラウザ名の定義
+    UA_QualifiedName sampleVarName = UA_QUALIFIEDNAME(1, (char*)"SampleVar");
+    // 親ノードのID
+    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);
+    // 親参照ノードID
+    UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES);
 
-    // 定義したVariableNodeをServerに追加する
+    /* 定義したVariableNodeをServerに追加する */
     UA_Server_addVariableNode(server, sampleVarNodeId, parentNodeId,
         parentReferenceNodeId, sampleVarName,
         UA_NODEID_NUMERIC(0, UA_NS0ID_BASEDATAVARIABLETYPE), attr, NULL, NULL);
+
+    // メモリ解放
+    UA_VariableAttributes_delete(&attr);
+    UA_NodeId_delete(&sampleVarNodeId);
+    UA_NodeId_delete(&parentNodeId);
+    UA_NodeId_delete(&parentReferenceNodeId);
+    UA_QualifiedName_delete(&sampleVarName);
 }
 
 
@@ -423,11 +451,11 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
     // 加算後の値をServerに書き込む
     UA_StatusCode retval = UA_Server_writeValue(server, sampleVarNodeId, newVar);
 
-    if (retval != UA_STATUSCODE_GOOD) {
-        return retval;
-    }
+    // メモリ解放
+    UA_Variant_delete(&sampleVar);
+    UA_Variant_delete(&newVar);
 
-    return UA_STATUSCODE_GOOD;
+    return retval;
 }
 
 
@@ -439,28 +467,45 @@ static void addIncreaseVariableMethod(UA_Server* server) {
     // 入力引数の生成
     UA_Argument inputArg;
 
-    // 引数の設定
+    /* 引数の設定 */
     UA_Argument_init(&inputArg);
-    inputArg.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"How much increase the number of the variable");
+    // 説明
+    inputArg.description = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"How much increase the number of the variable");
+    // 名前
     inputArg.name = UA_STRING((char*)"delta");
+    // データ型
     inputArg.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
+    // データ形式
     inputArg.valueRank = UA_VALUERANK_SCALAR;
 
-    // Methodノードの追加
+    /* Methodノードの追加 */
+    // メソッドAttributeインスタンス
     UA_MethodAttributes incAttr = UA_MethodAttributes_default;
-    incAttr.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Increase the value of a variable by the number of arguments");
-    incAttr.displayName = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"IncreaseVariable");
+    // 説明
+    incAttr.description = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"Increase the value of a variable by the number of arguments");
+    // 表示名
+    incAttr.displayName = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"IncreaseVariable");
     incAttr.executable = true;
     incAttr.userExecutable = true;
-    UA_Server_addMethodNode(server, UA_NODEID_STRING(1, (char*)"addIncreaseVarNodeId"),
+    UA_Server_addMethodNode(server, 
+        UA_NODEID_STRING(1, (char*)"addIncreaseVarNodeId"),
         UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER),
         UA_NODEID_NUMERIC(0, UA_NS0ID_HASCOMPONENT),
         UA_QUALIFIEDNAME(1, (char*)"IncreaseVariable"),
         incAttr, &increaseVariableCallback,
         1, &inputArg, 0, NULL,
         NULL, NULL);
+    
+    // メモリ解放
+    UA_Argument_delete(&inputArg);
+    UA_MethodAttributes_delete(&methodAttr);
 }
-
 
 
 static volatile UA_Boolean running = true;
@@ -513,27 +558,49 @@ int main(void) {
 /// OPC-UAサーバに変数を追加する
 /// </summary>
 static void addSampleVariable(UA_Server* server) {
-    // SampleVariable変数ノードの属性を定義する
-    UA_VariableAttributes attr = UA_VariableAttributes_default; // 属性のデフォルト値を設定
-    UA_Int32 sampleVarInitValue = 42;    // 初期値の設定
-    UA_Variant_setScalar(&attr.value, &sampleVarInitValue, &UA_TYPES[UA_TYPES_INT32]);  // 変数に初期値を設定
+    /* SampleVariable変数ノードの属性を定義する */
+    // 属性のデフォルト値を設定
+    UA_VariableAttributes attr = UA_VariableAttributes_default;
+    // 初期値の設定
+    UA_Int32 sampleVarInitValue = 42;
+    // 変数に初期値を設定
+    UA_Variant_setScalar(&attr.value, &sampleVarInitValue, &UA_TYPES[UA_TYPES_INT32]);
     
-    // 属性値の設定
-    attr.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Sample Variable for mamezou-tech"); // 変数の説明
-    attr.displayName = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Sample Variable");  // 表示名
-    attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;    // データ型
-    attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;  // アクセス属性
+    /* 属性値の設定 */
+    // 変数の説明
+    attr.description = UA_LOCALIZEDTEXT(
+                        (char*)"en-US", 
+                        (char*)"Sample Variable for mamezou-tech"); 
+    // 表示名
+    attr.displayName = UA_LOCALIZEDTEXT(
+                        (char*)"en-US", 
+                        (char*)"Sample Variable");
+    // データ型
+    attr.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
+    // アクセス属性
+    attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;
 
-    // Variable Nodeを情報モデルに追加する
-    UA_NodeId sampleVarNodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");  // ノードIDの定義
-    UA_QualifiedName sampleVarName = UA_QUALIFIEDNAME(1, (char*)"SampleVar");   // ブラウザ名の定義
-    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);      // 親ノードのID
-    UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES); // 親参照ノードID
+    /* Variable Nodeを情報モデルに追加する */
+    // ノードIDの定義
+    UA_NodeId sampleVarNodeId = UA_NODEID_STRING(1, (char*)"SampleVarNodeId");  
+    // ブラウザ名の定義
+    UA_QualifiedName sampleVarName = UA_QUALIFIEDNAME(1, (char*)"SampleVar");
+    // 親ノードのID
+    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);
+    // 親参照ノードID
+    UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES);
 
-    // 定義したVariableNodeをServerに追加する
+    /* 定義したVariableNodeをServerに追加する */
     UA_Server_addVariableNode(server, sampleVarNodeId, parentNodeId,
         parentReferenceNodeId, sampleVarName,
         UA_NODEID_NUMERIC(0, UA_NS0ID_BASEDATAVARIABLETYPE), attr, NULL, NULL);
+
+    // メモリ解放
+    UA_VariableAttributes_delete(&attr);
+    UA_NodeId_delete(&sampleVarNodeId);
+    UA_NodeId_delete(&parentNodeId);
+    UA_NodeId_delete(&parentReferenceNodeId);
+    UA_QualifiedName_delete(&sampleVarName);
 }
 ```
 
@@ -571,12 +638,12 @@ static UA_StatusCode increaseVariableCallback(UA_Server* server,
     UA_Variant_init(&newVar);
     UA_Variant_setScalar(&newVar, &newVarValue, &UA_TYPES[UA_TYPES_INT32]);
 
-    // 加算後の値をServerに書き込む
+    // 加算後の値をサーバに書き込む
     UA_StatusCode retval = UA_Server_writeValue(server, sampleVarNodeId, newVar);
 
-    if (retval != UA_STATUSCODE_GOOD) {
-        return retval;
-    }
+    // メモリ解放
+    UA_Variant_delete(&sampleVar);
+    UA_Variant_delete(&newVar);
 
     return UA_STATUSCODE_GOOD;
 }
@@ -598,26 +665,44 @@ static void addIncreaseVariableMethod(UA_Server* server) {
     // 入力引数の生成
     UA_Argument inputArg;
 
-    // 引数の設定
+    /* 引数の設定 */
     UA_Argument_init(&inputArg);
-    inputArg.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"How much increase the number of the variable");
+    // 説明
+    inputArg.description = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"How much increase the number of the variable");
+    // 名前
     inputArg.name = UA_STRING((char*)"delta");
+    // データ型
     inputArg.dataType = UA_TYPES[UA_TYPES_INT32].typeId;
+    // データ形式
     inputArg.valueRank = UA_VALUERANK_SCALAR;
 
-    // Methodノードの追加
+    /* Methodノードの追加 */
+    // メソッドAttributeインスタンス
     UA_MethodAttributes incAttr = UA_MethodAttributes_default;
-    incAttr.description = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Increase the value of a variable by the number of arguments");
-    incAttr.displayName = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"IncreaseVariable");
+    // 説明
+    incAttr.description = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"Increase the value of a variable by the number of arguments");
+    // 表示名
+    incAttr.displayName = UA_LOCALIZEDTEXT(
+                            (char*)"en-US", 
+                            (char*)"IncreaseVariable");
     incAttr.executable = true;
     incAttr.userExecutable = true;
-    UA_Server_addMethodNode(server, UA_NODEID_STRING(1, (char*)"addIncreaseVarNodeId"),
+    UA_Server_addMethodNode(server, 
+        UA_NODEID_STRING(1, (char*)"addIncreaseVarNodeId"),
         UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER),
         UA_NODEID_NUMERIC(0, UA_NS0ID_HASCOMPONENT),
         UA_QUALIFIEDNAME(1, (char*)"IncreaseVariable"),
         incAttr, &increaseVariableCallback,
         1, &inputArg, 0, NULL,
         NULL, NULL);
+    
+    // メモリ解放
+    UA_Argument_delete(&inputArg);
+    UA_MethodAttributes_delete(&methodAttr);
 }
 ```
 - 引数と戻り値のデータ型として`UA_Variant`型を使用します。
@@ -666,23 +751,23 @@ int main(void) {
 - `UA_Server_run`関数では、第2引数であるrunningの値が`True`である間、サーバを実行します。
 
 
-## 動作確認
+# 動作確認
 ## サーバへの接続
 プロジェクトのビルドを行い，ビルドが成功したら実際に起動してみます。
 コンソールに下図のように出力されていたら成功です。
 
-![サーバの実行結果](/img/robotics/opcua/open62541/launch_sample_server.png)
+![サーバの実行結果](/img/robotics/opcua/open62541_server/launch_sample_server.png)
 
 サーバが起動できたら，OPC-UAクライアントツールであるUaExpertを起動します。
 
 起動後，左上の「Add Server」ボタン（"＋"状のアイコン）をクリックし，サーバ選択画面を表示させます。
 
-![UaExpert_AddServerButton](/img/robotics/opcua/open62541/UaExpert_AddServerButton.png)
+![UaExpert_AddServerButton](/img/robotics/opcua/open62541_server/UaExpert_AddServerButton.png)
 
 PC上にサーバを建てているため，「Local」→「open62541-based OPC UA Application」→「None」が表示されます。
 こちらを選択状態にし，画面右下のOKを押下しましょう。
 
-![UaExpert_AddServer](/img/robotics/opcua/open62541/UaExpert_AddServer.png)
+![UaExpert_AddServer](/img/robotics/opcua/open62541_server/UaExpert_AddServer.png)
 
 :::info
 本サンプルでは，セキュリティを考慮していないため選択可能な項目が「None」のみとなっています。
@@ -692,19 +777,19 @@ PC上にサーバを建てているため，「Local」→「open62541-based OPC
 サーバを追加すると，画面の左下のProject欄内の「Servers」に先ほど選択したサーバが追加されています。
 サーバを選択状態にしたまま，画面上部の「Connect Server」ボタンを押してサーバに接続します。
 
-![UaExpert_ConnectToServer](/img/robotics/opcua/open62541/UaExpert_ConnectServer.png)
+![UaExpert_ConnectToServer](/img/robotics/opcua/open62541_server/UaExpert_ConnectServer.png)
 
 
 ### 変数へのアクセス
 サーバに接続すると，画面左側の「Address Space」欄にサーバが所有するノード一覧が表示されます。
 その中で，「Objects」フォルダ内に存在する「Sample Variable」ノードを選択し，画面中央の「Data Access View」欄にドラッグ&ドロップしましょう。
 
-![UaExpert_AddVariableToDataAccessView](/img/robotics/opcua/open62541/UaExpert_AddVariableToDataAccessView.png)
+![UaExpert_AddVariableToDataAccessView](/img/robotics/opcua/open62541_server/UaExpert_AddVariableToDataAccessView.png)
 
 D&Dすると，DataAccessViewにSampleVariableの詳細が表示されます。
 値を見てみると，上記のコードで設定した`42`という値が設定されているはずです。
 
-![UaExpert_SeeVar](/img/robotics/opcua/open62541/UaExpert_SeeVariable.png)
+![UaExpert_SeeVar](/img/robotics/opcua/open62541_server/UaExpert_SeeVariable.png)
 
 :::info
 Value欄内の数字をダブルクリックすると，値を自由に書き換えることができます。
@@ -716,11 +801,11 @@ Value欄内の数字をダブルクリックすると，値を自由に書き換
 上記コード内にて定義したメソッド「IncreaseValue」を実行してみましょう。
 「Address Space」欄にある「IncreaseVariable」を右クリックし，Callを選択します。
 
-![UaExpert_CallMethodButton](/img/robotics/opcua/open62541/UaExpert_CallMethodButton.png)
+![UaExpert_CallMethodButton](/img/robotics/opcua/open62541_server/UaExpert_CallMethodButton.png)
 
 引数の入力画面が表示されるため，引数に好きな数字を入れ，右下のCallボタンを押下します。
 
-![UaExpert_Call_Argument](/img/robotics/opcua/open62541/UaExpert_Call_Argument.png)
+![UaExpert_Call_Argument](/img/robotics/opcua/open62541_server/UaExpert_Call_Argument.png)
 
 :::info
 今回定義したメソッドには戻り値が無いため，画面下部の「Result」欄は空白となっています。
@@ -729,13 +814,13 @@ Value欄内の数字をダブルクリックすると，値を自由に書き換
 
 メソッドが実行され，SampleVariableの値が指定した分だけ加算されます。
 
-![UaExpert_AfterCallMethod](/img/robotics/opcua/open62541/UaExpert_AfterCallMethod.png)
+![UaExpert_AfterCallMethod](/img/robotics/opcua/open62541_server/UaExpert_AfterCallMethod.png)
 
 
 # おわりに
 本記事では下記の事項について説明しました。
 - Open62541のインストール方法
 - Visual Studioでの開発環境構築
-- OPC-UA Serverのサンプル作成
+- OPC-UAサーバのサンプル作成
 
-次回はOPC-UA Clientを実装し，Serverと通信してみます。
+次回はOPC-UAクライアントを実装し，本記事で作成したサーバと通信してみます。

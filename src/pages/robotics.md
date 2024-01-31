@@ -36,7 +36,8 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 
 ### OPC-UA
 
-- [Open62541 を使用した OPC-UA サーバ開発](/robotics/opcua/opcua-open62541/)
+- [Open62541 を使用した OPC-UA サーバ開発](/robotics/opcua/opcua_open62541_server/)
+- [Open62541 を使用した OPC-UA クライアント開発](/robotics/opcua/opcua_open62541_client/)
 
 ## ロボットビジョン
 

@@ -1,14 +1,14 @@
 ---
 title: Open62541を使用したOPC-UAクライアント開発
-autor: hayato-ota
-date: 2024-01-28
+author: hayato-ota
+date: 2024-01-31
 tags: [iot, OPC-UA]
 ---
 
 # はじめに
 ## 前回の記事
 前回の記事（[こちら](https://developer.mamezou-tech.com/robotics/opcua/opcua_open62541_server/)）では、OPC-UAの概要やOpen62541のインストール方法について説明しました。
-本記事を読む前にをご覧ください。
+本記事を読む前にご覧ください。
 
 
 ## 本記事の目的
@@ -16,9 +16,6 @@ tags: [iot, OPC-UA]
 - OPC-UA Clientのサンプル作成
 - サーバに登録した変数への読み書き
 - サーバに登録した関数の呼び出し
-
-## GitHubリンク
-本記事で実装するコードはGitHubリポジトリ[^1]に記載しています。  
 
 
 # 開発環境
@@ -205,15 +202,17 @@ IF %ERRORLEVEL% LSS 8 EXIT 0
 ## サーバに登録したノード一覧
 前回記事では、下記2つのノードをサーバに登録しました。
 - Int型の変数`SampleVariable`
-- `SampleVariable`に引数の値を加算する関数`IncreaseVariable`
+- `SampleVariable`に引数の値を加算する関数`IncreaseVariable(int delta)`
 
 ![Serverに登録したノード一覧](/img/robotics/opcua/open62541_client/PreviousSiteResult.png)
 
 本記事では、この2つのノードにアクセスするクライアントを実装してみます。
 
+
+## 実装コード
 作成したSimpleClient.cpp内に下記のコードを記述します。 
 本記事で実装するコードはこちら[^1]にも記載しています。  
-
+[^1]: [サンプルクライアントのコード](https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleClient/SimpleClient.cpp)
 
 ```cpp
 /*
@@ -530,6 +529,7 @@ Enterキーを押し，変数の現在値を読み出してみます。
 # おわりに
 本記事では紹介しませんでしたが、Open62541では暗号化，PubSub通信が機能として提供されており，サンプルが公式GitHubリポジトリ[^2]にて公開されています。
 OPC-UAサーバ，クライアント開発にOpen62541を使用してみてはいかかでしょうか。
+[^2]: [open62541サンプルプログラム集](https://github.com/open62541/open62541/tree/master/examples)
 
 :::info
 Open62541はフルC言語（C99）で実装されています。
@@ -537,6 +537,4 @@ C言語ではなくC++言語で開発したい方は有志によってC++ラッ�
 こちらを使用すると良いかもしれません。
 :::
 
-[^1]: [サンプルクライアントのコード](https://github.com/hayat0-ota/open62541_ws/blob/main/src/SimpleClient/SimpleClient.cpp)
-[^2]: [open62541サンプルプログラム集](https://github.com/open62541/open62541/tree/master/examples)
 [^3]: [open62541pp](https://github.com/open62541pp/open62541pp)

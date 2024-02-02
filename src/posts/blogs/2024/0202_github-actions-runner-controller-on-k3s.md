@@ -14,6 +14,10 @@ image: true
 
 GitHub Actions Runner Controller については別の記事「[GitHub Actions Runner Controller (ARC) - セルフホストなランナーを Kubernetes でオンデマンド実行する](/blogs/2023/05/14/github-actions-runner-controller/)」も参照してください。
 
+:::info
+単純な Self-hosted な環境ではなく、なぜ ARC なのかということを説明しておく必要があるでしょう。IoT の世界にもコンテナ化したいというニーズは確実に存在しています。そして、IoT の世界ではコンピューティングリソースだけでなく、さまざまな外部デバイスを扱う場合が多くあります。機械学習ではカメラデバイスや GPU というようにです。これらの外部デバイスを使用するアプリケーションが Kubernetes 環境で動作するかを検証する必要があります。そのため、単純な Self-hosted Runner ではなく、実際に使用する k3s 環境の利用にこだわりました。
+:::
+
 ## ARC のデプロイ
 
 ARC のデプロイは helm を使用します。これは紹介した記事で説明されている手順とほとんど違いはありません。
@@ -85,7 +89,7 @@ helm install self-hosted \
 
 ## おわりに
 
-IoT の開発では特別な周辺機器を利用する場合もあると考えています。このような場合、GitHub Actions が標準で提供しているようなクラウド環境ではなく、よりプロダクション環境に近いところで継続的インテグレーション (CI) したいこともあるでしょう。
+IoT の開発では特別な周辺機器を利用する場合もあると考えています。このような場合、GitHub Actions が標準で提供しているようなクラウド環境ではなく、よりプロダクション環境に近いところで継続的インテグレーション (CI) したいこともあるでしょう。Kubernetes には外部デバイスを扱うための [Device Plugins](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/) があります。USB デバイスを扱えるようにすることもできます。
 
 ## 参考記事
 

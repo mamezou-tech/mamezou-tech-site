@@ -15,7 +15,7 @@ image: true
 GitHub Actions Runner Controller については別の記事「[GitHub Actions Runner Controller (ARC) - セルフホストなランナーを Kubernetes でオンデマンド実行する](/blogs/2023/05/14/github-actions-runner-controller/)」も参照してください。
 
 :::info
-Self-Hosted Runner ではなく、なぜ ARC なのかを説明しておく必要があるでしょう。IoT の世界にもコンテナ化したいというニーズは確実に存在しています。そして、IoT の世界ではコンピューティングリソースだけでなく、さまざまな外部デバイスを扱う場合が多くあります。機械学習ではカメラデバイスや GPU というようにです。これらの外部デバイスを使用するアプリケーションが Kubernetes 環境で動作するかを検証する必要があります。そのため、単純な Self-Hosted Runner ではなく、実際に使用する k3s 環境の利用にこだわりました。
+Self-Hosted Runner ではなく、なぜ ARC なのかを説明しておく必要があるでしょう。IoT の世界にもコンテナ化したいというニーズは確実に存在しています。そして、IoT の世界ではコンピューティングリソースだけでなく、さまざまな外部デバイスを扱う場合が多くあります。例えばカメラや GPU というようにです。これらの外部デバイスを使用するアプリケーションが Kubernetes 環境で動作するかを検証する必要があります。そのため、単純な Self-Hosted Runner ではなく、実際に使用する k3s 環境の利用にこだわりました。
 :::
 
 ## ARC のデプロイ

@@ -15,7 +15,7 @@ image: true
 GitHub Actions Runner Controller については別の記事「[GitHub Actions Runner Controller (ARC) - セルフホストなランナーを Kubernetes でオンデマンド実行する](/blogs/2023/05/14/github-actions-runner-controller/)」も参照してください。
 
 :::info
-単純な Self-hosted な環境ではなく、なぜ ARC なのかということを説明しておく必要があるでしょう。IoT の世界にもコンテナ化したいというニーズは確実に存在しています。そして、IoT の世界ではコンピューティングリソースだけでなく、さまざまな外部デバイスを扱う場合が多くあります。機械学習ではカメラデバイスや GPU というようにです。これらの外部デバイスを使用するアプリケーションが Kubernetes 環境で動作するかを検証する必要があります。そのため、単純な Self-hosted Runner ではなく、実際に使用する k3s 環境の利用にこだわりました。
+Self-Hosted Runner ではなく、なぜ ARC なのかということを説明しておく必要があるでしょう。IoT の世界にもコンテナ化したいというニーズは確実に存在しています。そして、IoT の世界ではコンピューティングリソースだけでなく、さまざまな外部デバイスを扱う場合が多くあります。機械学習ではカメラデバイスや GPU というようにです。これらの外部デバイスを使用するアプリケーションが Kubernetes 環境で動作するかを検証する必要があります。そのため、単純な Self-Hosted Runner ではなく、実際に使用する k3s 環境の利用にこだわりました。
 :::
 
 ## ARC のデプロイ
@@ -50,7 +50,7 @@ helm install arc-runner-set \
     oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
 ```
 
-## 標準の `actions-runner`
+## 独自の `actions-runner` イメージを使用する
 
 GitHub で提供されている `actions-runner` イメージは基本的なバイナリだけを含むものとなっています。大抵は通常の GitHub Actions のワークフローの定義のまま動作すると考えています。しかし、筆者は `sbt` コマンドの実行を含むワークフローを実行しようとしてエラーになりました。少し調べると、GitHub 管理の Ubuntu と `actions-runner` イメージの `/usr/bin` ディレクトリ内のファイル数が大きく異なっていることに気づきました。そこで、GitHub 管理の Ubuntu イメージに倣って独自の `actions-runner` イメージを作成することにしました。
 

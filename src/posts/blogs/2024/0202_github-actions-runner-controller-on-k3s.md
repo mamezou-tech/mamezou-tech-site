@@ -8,7 +8,7 @@ image: true
 
 こんにちは、[庄司](https://github.com/edward-mamezou)です。
 
-[k3s](https://docs.k3s.io/installation/requirements) は現在 x86_64、armhf、arm64/aarch64 と x390x アーキテクチャをサポートしています。また、[GitHub Actions Runner Controller](https://github.com/actions/runner/pkgs/container/actions-runner) (ARC) の runner イメージは linux/amd64 (つまり x86_64) と linux/arm64 (つまり arm64/aarch64) をサポートしています。
+[k3s](https://docs.k3s.io/installation/requirements) は現在 x86_64、armhf、arm64/aarch64 と s390x アーキテクチャをサポートしています。また、[GitHub Actions Runner Controller](https://github.com/actions/runner/pkgs/container/actions-runner) (ARC) の runner イメージは linux/amd64 (つまり x86_64) と linux/arm64 (つまり arm64/aarch64) をサポートしています。
 
 したがって x86_64 または arm64/aarch64 の k3s 環境であれば ARC の実行が可能です。
 

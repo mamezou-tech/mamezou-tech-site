@@ -89,7 +89,7 @@ helm install self-hosted \
 
 ## おわりに
 
-IoT の開発では特別な周辺機器を利用する場合もあると考えています。このような場合、GitHub Actions が標準で提供しているようなクラウド環境ではなく、よりプロダクション環境に近いところで継続的インテグレーション (CI) したいこともあるでしょう。Kubernetes には外部デバイスを扱うための [Device Plugins](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/) があります。USB デバイスを扱えるようにすることもできます。
+IoT の開発では特別な周辺機器を利用する場合もあると考えています。このような場合、GitHub Actions が標準で提供しているようなクラウド環境ではなく、よりプロダクション環境に近いところで継続的インテグレーション (CI) したいこともあるでしょう。Kubernetes には外部デバイスを扱うための [Device Plugins](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/) があります。USB デバイスを扱うこともできます。このような環境で独自の `actions-runner` を用いた ARC が役立つと考えています。
 
 ## 参考記事
 

@@ -65,10 +65,10 @@ Nuxt3では、defineNuxtPlugin内でプラグインを実装します。
 
 ```html
 <script setup lang="ts">
-const price = ref(1000);
+const price = ref('1000');
 // スクリプトで使用
-const nuxtApp = useNuxtApp();
-console.log(nuxtApp.$yen(price.value));
+const { $yen } = useNuxtApp();
+console.log($yen(price.value));
 </script>
 
 <template>

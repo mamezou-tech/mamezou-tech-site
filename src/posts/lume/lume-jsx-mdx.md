@@ -4,6 +4,7 @@ author: noboru-kudo
 date: 2023-10-13
 prevPage: ./src/posts/lume/lume-intro.md
 nextPage: ./src/posts/lume/lume-search.md
+image: true
 ---
 
 [前回](/lume/lume-intro/)はLumeの基本的な使い方を見てきました。

@@ -4,6 +4,7 @@ author: noboru-kudo
 date: 2023-10-25
 prevPage: ./src/posts/lume/lume-jsx-mdx.md
 nextPage: ./src/posts/lume/lume-components.md
+image: true
 ---
 
 [前回](/lume/lume-jsx-mdx/)はLumeのテンプレートエンジンとしてJSX/MDXプラグインを使用する方法を見てきました。

@@ -4,6 +4,7 @@ author: noboru-kudo
 date: 2023-10-09
 updated: 2023-12-13
 nextPage: ./src/posts/lume/lume-jsx-mdx.md
+image: true
 ---
 
 当サイトもそろそろ開設から2年になろうとしています。

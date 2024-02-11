@@ -39,7 +39,7 @@ image: true
 public class TaskService {
 
     private final ITaskRepository repository;
-    private final INoticecator noticecator;
+    private final INotifier notifier;
 
     @Transactional
     public Long add(final String title, final String description, final Long assigneId) {
@@ -48,7 +48,7 @@ public class TaskService {
         var savedTask = this.repository.save(task);
 
         if (task.isAssigned()) {
-            this.noticecator.notify(task.getassigneId());
+            this.notifier.notify(task.getassigneId());
         }
 
         return savedTask.getId();
@@ -76,7 +76,7 @@ public Long add(final String title, final String description, final Long assigne
     var savedTask = this.repository.save(task);
 
     if (task.isAssigned()) {
-        this.noticecator.notify(task.getassigneId());
+        this.notifier.notify(task.getassigneId());
     }
 
     return savedTask.getId();
@@ -223,7 +223,7 @@ public class TaskAddUseCase {
         var savedTask = this.repository.save(task);
 
         if (task.isAssigned()) {
-            this.noticecator.notify(task.getassigneId());
+            this.notifier.notify(task.getassigneId());
         }
 
         return savedTask.getId();
@@ -252,7 +252,7 @@ public class TaskAddUseCase {
         var savedTask = this.repository.save(task);
 
         if (task.isAssigned()) {
-            this.noticecator.notify(task.getassigneId());
+            this.notifier.notify(task.getassigneId());
         }
 
         return savedTask.getId();
@@ -283,7 +283,7 @@ public class TaskAddUseCase {
 
     // add()が依存してるクラス
     private final ITaskRepository repository;
-    private final INoticecator noticecator;
+    private final INotifier notifier;
 
      @Transactional
      public Long execute(final String title, final String description, final Long assigneId) {
@@ -292,7 +292,7 @@ public class TaskAddUseCase {
          var savedTask = this.repository.save(task);
 
          if (task.isAssigned()) {
-             this.noticecator.notify(task.getassigneId());
+             this.notifier.notify(task.getassigneId());
          }
 
          return savedTask.getId();
@@ -347,12 +347,14 @@ public class TaskAddUseCase {
 娘「ディレクトリを見ただけで」
 娘「このシステムにどんなユースケースがあるのかが把握しやすくなってるの」
 
-> usecase
-> └tasks
-> 　├TaskAddUseCase.java
-> 　├TaskDeleteUseCase.java
-> 　├TaskEditUseCase.java
-> 　└TaskGetUseCase.java
+```
+usecase
+└tasks
+　├TaskAddUseCase.java
+　├TaskDeleteUseCase.java
+　├TaskEditUseCase.java
+　└TaskGetUseCase.java
+```
 
 娘「↑ほら」
 
@@ -391,7 +393,7 @@ public class TaskAddUseCase {
 
 娘「そうなの」
 娘「それに、そのモックしないといけないクラスがどれなのかって」
-娘「コードを読みと解くのがちょっと面倒じゃない？」
+娘「コードを読み解くのがちょっと面倒じゃない？」
 
 ワイ「せやな」
 
@@ -437,7 +439,7 @@ public TaskAddResponse execute(final TaskAddRequest request) {
     var task = Task.create(
         request.getTitle(),
         request.getDescription(),
-        request.getassigneId());
+        request.getAssigneId());
 
     // ～省略～
 
@@ -453,12 +455,14 @@ public TaskAddResponse execute(final TaskAddRequest request) {
 
 娘「じゃあ、ディレクトリ構造は」
 
-> usecase
-> └tasks
-> 　└add
-> 　　├TaskAddRequest.java
-> 　　├TaskAddResponse.java
-> 　　└TaskAddUseCase.java
+```
+usecase
+└tasks
+　└add
+　　├TaskAddRequest.java
+　　├TaskAddResponse.java
+　　└TaskAddUseCase.java
+```
 
 娘「↑こんな感じだね」
 

@@ -3,6 +3,7 @@ title: Tart で macOS / Linux の仮想マシンを使う
 author: masahiro-kondo
 date: 2024-02-12
 tags: [tart]
+image: true
 ---
 
 ## はじめに

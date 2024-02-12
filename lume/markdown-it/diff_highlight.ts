@@ -25,6 +25,6 @@ export default function markdownItDiffHighlight(
     }
     tokens[idx].attrJoin('class', 'diff-highlight');
 
-    return defaultRenderer(tokens, idx, options);
+    return defaultRenderer(tokens, idx, options, env, self);
   };
 }

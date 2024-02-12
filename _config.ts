@@ -37,6 +37,7 @@ import meta from "./src/_data/meta.ts";
 import { Options as MarkdownOptions } from "lume/plugins/markdown.ts";
 import tailwindOptions from "./tailwind.config.js"
 import cssnano from "npm:cssnano@6.0.2"
+import markdownItDiffHighlight from './lume/markdown-it/diff_highlight.ts';
 
 const markdown: Partial<MarkdownOptions> = {
   options: {
@@ -67,6 +68,7 @@ const markdown: Partial<MarkdownOptions> = {
     externalLinkPlugin,
     imageSwipePlugin,
     markdownItCopyButton,
+    markdownItDiffHighlight,
   ],
 };
 

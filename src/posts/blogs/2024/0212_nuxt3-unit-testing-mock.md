@@ -306,7 +306,9 @@ import { mockComponent, mountSuspended } from '@nuxt/test-utils/runtime';
 こちらでもテストは成功します。
 :::
 
-## (補足)APIのスタブ・モック化
+## APIのスタブ・モック化(registerEndpoint)
+
+- [Nuxt Doc - registerEndpoint](https://nuxt.com/docs/getting-started/testing#registerendpoint)
 
 先ほどはComponentごとスタブにしましたが、それよりもAPIコールだけをモックにした方がより実態に近いテストができます。
 NuxtのテストユーティリティにはAPIのスタブ化用に[registerEndpoint](https://nuxt.com/docs/getting-started/testing#registerendpoint) APIを提供しています(こちらはマクロではなくAPIとしての実態があります)。

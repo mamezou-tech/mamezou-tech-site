@@ -23,7 +23,6 @@ import katex from "npm:@traptitech/markdown-it-katex@^3.5.0";
 import containerOptions from "./lume/markdown-it/container_options.ts";
 import { filterByPost, getPostArticles } from "./lume/filters/utils.ts";
 import Search from "lume/core/searcher.ts";
-import mermaidPlugin from "./lume/markdown-it/mermaid_plugin.ts";
 import externalLinkPlugin from "./lume/markdown-it/external_link_plugin.ts";
 import imageSwipePlugin from "./lume/markdown-it/image_swipe_plugin.ts";
 import codeClipboard, {
@@ -37,7 +36,7 @@ import meta from "./src/_data/meta.ts";
 import { Options as MarkdownOptions } from "lume/plugins/markdown.ts";
 import tailwindOptions from "./tailwind.config.js"
 import cssnano from "npm:cssnano@6.0.2"
-import markdownItDiffHighlight from './lume/markdown-it/diff_highlight.ts';
+import markdownItCodeBlock from './lume/markdown-it/code_block_plugin.ts';
 
 const markdown: Partial<MarkdownOptions> = {
   options: {
@@ -64,11 +63,10 @@ const markdown: Partial<MarkdownOptions> = {
     footNote,
     [container, "flash", containerOptions],
     [katex, { "throwOnError": false, "errorColor": " #cc0000" }],
-    mermaidPlugin,
     externalLinkPlugin,
     imageSwipePlugin,
     markdownItCopyButton,
-    markdownItDiffHighlight,
+    markdownItCodeBlock, // must place after copyButton plugin
   ],
 };
 

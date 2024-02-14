@@ -158,7 +158,7 @@ article {
 }
 
 strong {
-  @apply font-medium;
+  @apply font-bold;
 }
 
 code:not([class*=language]) {
@@ -316,6 +316,14 @@ button.code-copy {
   padding-inline: 6px;
   border-style: outset;
   @apply border-2 rounded-sm;
+}
+
+span.code-filename {
+  @apply top-2 left-2 rounded-sm bg-blue-950 outline-none text-white absolute pt-1 pb-1 pr-2 pl-2;
+}
+
+span.code-filename + pre {
+  @apply pt-12
 }
 
 .section-header {

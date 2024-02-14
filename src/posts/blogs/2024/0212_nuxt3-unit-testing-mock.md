@@ -73,7 +73,7 @@ test('using mockNuxtImport', async () => {
 第2引数はモックのFactory関数です。モックにするuseRouteは関数なのでここで記述するファクトリ関数も関数を返す必要があります。
 
 コラムの方に詳細は記述していますが、mockNuxtImportはAPIとしての実態はなくマクロ(Viteプラグイン)として動作し、ソースコードは[vi.mock](https://vitest.dev/api/vi.html#vi-mock)に書き換えられます。
-このため、vi.mock同様にファイル最上部に巻き上げ(hoisting)られます。テスト(test関数)ごとに複数のmockNuxtImportを配置しても最後の1つで上書きされます。
+このため、vi.mock同様に**ファイル最上部に巻き上げ(hoisting)られます**。テスト(test関数)ごとに複数のmockNuxtImportを配置しても最後の1つで上書きされます。
 以下vi.mockの[ドキュメント](https://vitest.dev/api/vi.html#vi-mock)からの引用です。
 
 > vi.mock is hoisted (in other words, moved) to top of the file. It means that whenever you write it (be it inside beforeEach or test), it will actually be called before that.

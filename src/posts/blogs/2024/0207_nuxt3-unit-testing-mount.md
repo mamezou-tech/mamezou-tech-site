@@ -33,7 +33,7 @@ npm install -D @nuxt/test-utils vitest @vue/test-utils happy-dom
 
 NuxtのユーティリティライブラリはNuxtモジュールを提供していますので`nuxt.config.ts`に登録します。
 
-```typescript
+```typescript:nuxt.config.ts
 export default defineNuxtConfig({
   modules: [
     '@nuxt/test-utils/module' // Nuxtモジュールの登録
@@ -54,7 +54,7 @@ export default defineNuxtConfig({
 
 次に、プロジェクトルート直下にVitestの設定ファイル`vitest.config.ts`を作成します。
 
-```typescript
+```typescript:vitest.config.ts
 import { defineVitestConfig } from '@nuxt/test-utils/config'
 
 export default defineVitestConfig({
@@ -80,16 +80,16 @@ export default defineVitestConfig({
 :::column:DOMエミューレータにjsdom使う
 ここではデフォルトのhappy-domを使っていますが、jsdomを使う場合は`vitest.config.ts`を以下のようにします。
 
-```typescript
+```diff-typescript:vitest.config.ts
 export default defineVitestConfig({
   test: {
     environment: 'nuxt',
     globals: true,
-    environmentOptions: {
-      nuxt: {
-        domEnvironment: "jsdom"
-      }
-    }
++    environmentOptions: {
++      nuxt: {
++        domEnvironment: "jsdom"
++      }
++    }
   }
 })
 ```

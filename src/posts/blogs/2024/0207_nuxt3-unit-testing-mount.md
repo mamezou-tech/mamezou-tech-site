@@ -108,8 +108,8 @@ export default defineVitestConfig({
 
 <template>
   <button @click="counter++">Count Up!!</button>
-  <div test-id="counter">{{ counter }}</div>
-  <div test-id="nuxt-version">{{ nuxtApp.versions.nuxt }}</div>
+  <div data-testid="counter">{{ counter }}</div>
+  <div data-testid="nuxt-version">{{ nuxtApp.versions.nuxt }}</div>
 </template>
 ```
 ボタンクリックでカウンタを増やしていくだけのシンプルなコンポーネントです。
@@ -127,13 +127,13 @@ describe('Sample Component', () => {
   test('1回クリックするごとに値が増えていくこと', async () => {
     const wrapper = mount(Sample);
     await wrapper.get('button').trigger('click');
-    expect(wrapper.get('[test-id="counter"]').text()).toBe('1');
+    expect(wrapper.get('[data-testid="counter"]').text()).toBe('1');
     await wrapper.get('button').trigger('click');
-    expect(wrapper.get('[test-id="counter"]').text()).toBe('2');
+    expect(wrapper.get('[data-testid="counter"]').text()).toBe('2');
   });
   test('Nuxtバージョンが正く表示されていること', async () => {
     const wrapper = mount(Sample);
-    expect(wrapper.get('[test-id="nuxt-version"]').text()).toBe('3.10.0');
+    expect(wrapper.get('[data-testid="nuxt-version"]').text()).toBe('3.10.0');
   });
 });
 ```
@@ -182,9 +182,9 @@ test('1回クリックするごとに値が増えていくこと', async () => {
   const wrapper = mount(TestComponent);
   await flushPromises();
   await wrapper.get('button').trigger('click');
-  expect(wrapper.get('[test-id="counter"]').text()).toBe('1');
+  expect(wrapper.get('[data-testid="counter"]').text()).toBe('1');
   await wrapper.get('button').trigger('click');
-  expect(wrapper.get('[test-id="counter"]').text()).toBe('2');
+  expect(wrapper.get('[data-testid="counter"]').text()).toBe('2');
 });
 ```
 
@@ -198,9 +198,9 @@ test('1回クリックするごとに値が増えていくこと', async () => {
   const wrapper = await mountSuspended(Sample);
   
   await wrapper.get('button').trigger('click');
-  expect(wrapper.get('[test-id="counter"]').text()).toBe("1")
+  expect(wrapper.get('[data-testid="counter"]').text()).toBe("1")
   await wrapper.get('button').trigger('click');
-  expect(wrapper.get('[test-id="counter"]').text()).toBe("2")
+  expect(wrapper.get('[data-testid="counter"]').text()).toBe("2")
 })
 ```
 

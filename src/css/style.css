@@ -319,7 +319,7 @@ button.code-copy {
 }
 
 span.code-filename {
-  @apply top-2 left-2 rounded-sm bg-blue-950 outline-none text-white absolute pt-1 pb-1 pr-2 pl-2;
+  @apply top-2 left-2 rounded-sm bg-gray-700 outline-none text-white absolute pt-1 pb-1 pr-2 pl-2;
 }
 
 span.code-filename + pre {

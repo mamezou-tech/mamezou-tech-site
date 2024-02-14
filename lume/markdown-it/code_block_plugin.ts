@@ -34,7 +34,7 @@ export default function markdownItDiffHighlight(
       token.info = lang; // remove name for prism
       const rendered = defaultRenderer(tokens, idx, options, env, self);
       return rendered.replace(/<div style="position: relative">/,
-        (match: string) => `${match}<span class="code-filename" style="display: block; background-color: #4f4f4f">${name}</span>`);
+        (match: string) => `${match}<span class="code-filename">${name}</span>`);
     }
 
     return defaultRenderer(tokens, idx, options, env, self);

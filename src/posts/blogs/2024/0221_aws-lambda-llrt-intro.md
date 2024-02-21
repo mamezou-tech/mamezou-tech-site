@@ -28,7 +28,7 @@ AWSがLLRT(Low Latency Runtime)という新しいJavaScriptランタイムを実
 >
 > JavaScriptエンジンとしてQuickJSを利用し、効率的なメモリ使用と迅速な起動を保証するRustで構築されています。
 
-今までLambdaでJavaScriptといえばNode.jsが定番でしたが、サーバーレスプラットフォームでの利用に特化したJavaScriptランタイムが新たな選択肢として加わる日が近いもしれません。
+今までLambdaでJavaScriptといえばNode.jsが定番でしたが、サーバーレスプラットフォームでの利用に特化したLLRTが新たな選択肢として加わる日が近いもしれません。
 これは...と思いましたので、早速試してみました。
 
 ## Lambda関数を用意する
@@ -98,14 +98,14 @@ esbuildでJavaScriptへのトランスパイルとバンドル、ミニファイ
 
 ## LLRTランタイムでLambdaをデプロイする
 
-ここでは、AWS CDKを使ってデプロイします。まずCDKのappプロジェクトを作成します。
+ここではAWS CDKを使ってデプロイします。まずCDKのappプロジェクトを作成します。
 
 ```shell
 mkdir cdk && cd cdk
 cdk init app -l typescript
 ```
 
-デプロイのスクリプトは以下の通りです。
+デプロイスクリプトは以下の通りです。
 
 ```typescript:cdk/libs/cdk-stack.ts
 import * as cdk from 'aws-cdk-lib';
@@ -233,7 +233,7 @@ curl -H 'Content-Type: application/json' $LLRT_URL -d '{"name": "mamezou"}'
 Node.jsランタイムと比較してどれくらい早くなったのかも見てみます。
 同じLambda関数を、Node.js(v20)ランタイムでもデプロイして比較しました。
 
-以下それぞれ5回コールドスタートで実行した結果のREPORTログの抜粋です。
+以下は、それぞれのランタイムで5回コールドスタートした場合のREPORTログの抜粋です。
 
 - Node.js(v20)
 ```

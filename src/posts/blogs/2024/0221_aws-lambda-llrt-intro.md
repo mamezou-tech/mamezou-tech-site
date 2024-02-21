@@ -28,7 +28,7 @@ AWSがLLRT(Low Latency Runtime)という新しいJavaScriptランタイムを実
 >
 > JavaScriptエンジンとしてQuickJSを利用し、効率的なメモリ使用と迅速な起動を保証するRustで構築されています。
 
-今までLambdaでJavaScriptといえばNode.jsが定番でしたが、サーバーレスプラットフォームでの利用に特化したLLRTが新たな選択肢として加わる日が近いもしれません。
+今までLambdaでJavaScriptといえばNode.jsが定番でしたが、サーバーレスプラットフォームでの利用に特化したLLRTが新たな選択肢として加わる日が近いかもしれません。
 これは...と思いましたので、早速試してみました。
 
 ## Lambda関数を用意する

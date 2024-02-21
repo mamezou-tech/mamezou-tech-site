@@ -196,11 +196,11 @@ LLRTはこのカスタムランタイム向けのエントリーポイント(boo
 - [GitHub awslabs/llrt - Releases](https://github.com/awslabs/llrt/releases)
 
 ここでは、ARM64向けのllrt-lambda-arm64.zip(現時点で最新の`v0.1.7-beta`)をダウンロードして、CDKプロジェクト直下に配置しました[^2]。
+そしてこのZIPファイル(エントリーポイント)をLambdaレイヤー(llrtLayer)として構成しています。
 
 [^2]: 試しにZIPファイルを解凍するとカスタムランタイムに必要なbootstrapバイナリファイルが確認できます。
 
-このZIPファイルに含まれるエントリーポイントはLambdaレイヤー(llrtLayer)として配置しています。
-デプロイ対象のLambda関数では、ランタイム(runtime)はいつものNode.jsでなくAmazon Linux 2023(`provided.al2023`)、Lambdaレイヤー(layers)には先ほどのレイヤー(llrtLayer)を指定しています。
+デプロイ対象のLambda関数では、ランタイム(runtime)はいつものNode.jsでなくAmazon Linux 2023(`provided.al2023`)、Lambdaレイヤー(layers)には先ほどのレイヤー(llrtLayer)を指定します。
 
 あとはデプロイするだけです。
 

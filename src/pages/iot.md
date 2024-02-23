@@ -43,3 +43,9 @@ IoTデバイスに接続して使用するセンサモジュールなどにつ�
 
 - [IoT を使ってみる（その１３：温湿度センサモジュールDHT11編）](/iot/internet-of-things-13/)
 - [IoT を使ってみる（その１４：有機ELディスプレイ(OLED)SSD1306編）](/iot/internet-of-things-14/)
+
+## 省電力編
+
+IoTデバイスを省電力で駆動させるときのTipsについて紹介します。
+
+- [IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）](/iot/internet-of-things-15/)

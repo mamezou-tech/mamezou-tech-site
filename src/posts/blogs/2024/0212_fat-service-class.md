@@ -33,7 +33,7 @@ image: true
 
 ワイ「↑こんなユースケースを実装し終わったところや」
 
-```java
+```java:TaskService.java
 @RequiredArgsConstructor
 @Service
 public class TaskService {
@@ -48,7 +48,7 @@ public class TaskService {
         var savedTask = this.repository.save(task);
 
         if (task.isAssigned()) {
-            this.notifier.notify(task.getassigneId());
+            this.notifier.notify(task.getAssigneId());
         }
 
         return savedTask.getId();
@@ -68,7 +68,7 @@ public class TaskService {
 ワイ「↑コードはこんな感じや」
 
 娘「えっと――」
-```java
+```java:TaskService.java
 @Transactional
 public Long add(final String title, final String description, final Long assigneId) {
 
@@ -76,7 +76,7 @@ public Long add(final String title, final String description, final Long assigne
     var savedTask = this.repository.save(task);
 
     if (task.isAssigned()) {
-        this.notifier.notify(task.getassigneId());
+        this.notifier.notify(task.getAssigneId());
     }
 
     return savedTask.getId();
@@ -85,7 +85,7 @@ public Long add(final String title, final String description, final Long assigne
 娘「↑これが、タスクを追加できる」
 娘「っていうユースケースを実装したメソッドで」
 
-```java
+```java:TaskService.java
 public Task get(final Long taskId) {
 
     var maybeTask = this.repository.findById(taskId);
@@ -168,9 +168,9 @@ public Task get(final Long taskId) {
 ワイ「ってことは、`TaskService`っていう名前を」
 ワイ「もっと具体的なアレな感じにすればええわけやから――」
 
-```java
-// public class TaskService {
-public class TaskAddAndGetService {
+```diff-java
+- public class TaskService {
++ public class TaskAddAndGetService {
 }
 ```
 ワイ「↑こうやな！」
@@ -199,7 +199,7 @@ public class TaskAddAndGetService {
 
 娘「じゃあ、まず」
 娘「このユースケースに対応するクラスを定義すると」
-```java
+```java:TaskAddUseCase.java
 @Service
 public class TaskAddUseCase {
 }
@@ -213,46 +213,46 @@ public class TaskAddUseCase {
 娘「そう」
 娘「で、この`TaskAddUseCase`に」
 娘「`TaskService`の`add()`を移動してあげて――」
-```java
+```diff-java:TaskAddUseCase.java
 @Service
 public class TaskAddUseCase {
-    @Transactional
-    public Long add(final String title, final String description, final Long assigneId) {
-
-        var task = Task.create(title, description, assigneId);
-        var savedTask = this.repository.save(task);
-
-        if (task.isAssigned()) {
-            this.notifier.notify(task.getassigneId());
-        }
-
-        return savedTask.getId();
-    }
++   @Transactional
++   public Long add(final String title, final String description, final Long assigneId) {
++
++       var task = Task.create(title, description, assigneId);
++       var savedTask = this.repository.save(task);
++
++       if (task.isAssigned()) {
++           this.notifier.notify(task.getAssigneId());
++       }
++
++       return savedTask.getId();
++   }
 }
 ```
 娘「↑こうだね」
 
 娘「でもこのままだと」
 娘「コントローラークラスからこのメソッドを呼び出したときに――」
-```java
+```java:TaskController.java
 taskAddUseCase.add(title, description, assigneId);
 ```
 娘「↑こう、なんだかユースケースに何かを追加する」
 娘「みたいな文脈になっちゃうから」
 
 娘「メソッド名は――」
-```java
+```diff-java:TaskAddUseCase.java
 @Service
 public class TaskAddUseCase {
     @Transactional
-//   public Long add(final String title, final String description, final Long assigneId) {
-    public Long execute(final String title, final String description, final Long assigneId) {
+-   public Long add(final String title, final String description, final Long assigneId) {
++   public Long execute(final String title, final String description, final Long assigneId) {
 
         var task = Task.create(title, description, assigneId);
         var savedTask = this.repository.save(task);
 
         if (task.isAssigned()) {
-            this.notifier.notify(task.getassigneId());
+            this.notifier.notify(task.getAssigneId());
         }
 
         return savedTask.getId();
@@ -263,7 +263,7 @@ public class TaskAddUseCase {
 
 ワイ「なるほどね」
 ワイ「たしかにこっちのが――」
-```java
+```java:TaskController.java
 taskAddUseCase.execute(title, description, assigneId);
 ```
 ワイ「↑ユースケースを実行する」
@@ -276,27 +276,26 @@ taskAddUseCase.execute(title, description, assigneId);
 
 娘「それで最後に`add()`が依存してるクラスを」
 娘「`TaskService`から持ってきて――」
-```java
+```diff-java:TaskAddUseCase.java
 @RequiredArgsConstructor
 @Service
 public class TaskAddUseCase {
 
-    // add()が依存してるクラス
-    private final ITaskRepository repository;
-    private final INotifier notifier;
++   private final ITaskRepository repository;
++   private final INotifier notifier;
 
-     @Transactional
-     public Long execute(final String title, final String description, final Long assigneId) {
+    @Transactional
+    public Long execute(final String title, final String description, final Long assigneId) {
 
-         var task = Task.create(title, description, assigneId);
-         var savedTask = this.repository.save(task);
+        var task = Task.create(title, description, assigneId);
+        var savedTask = this.repository.save(task);
 
-         if (task.isAssigned()) {
-             this.notifier.notify(task.getassigneId());
-         }
+        if (task.isAssigned()) {
+            this.notifier.notify(task.getAssigneId());
+        }
 
-         return savedTask.getId();
-     }
+        return savedTask.getId();
+    }
 }
 ```
 娘「↑完成だよ！」
@@ -433,7 +432,7 @@ usecase
 
 ワイ「`TaskAddUseCase`の`execute()`の引数と戻り値は」
 
-```java
+```java:TaskAddUseCase.java
 public TaskAddResponse execute(final TaskAddRequest request) {
 
     var task = Task.create(

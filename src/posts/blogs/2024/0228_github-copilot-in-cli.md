@@ -3,6 +3,7 @@ title: GitHub Copilot in the CLI にコマンド入力を手伝ってもらう
 author: masahiro-kondo
 date: 2024-02-28
 tags: [Copilot, GitHub]
+image: true
 ---
 
 ## はじめに
@@ -23,7 +24,7 @@ gh-copilot のドキュメントは以下にあります。
 
 :::info
 gh-copilot は記事執筆時点ではパブリックベータです。利用するには、GitHub Copilot Individual サブスクリプションが必要です。筆者は Individual サブスクリプションを利用しています。
-所属しているオーガニゼーションが GitHub Copilot Business サブスクリプションを持ち、かつ gh-copilot 有効化している場合も利用可能です。
+所属しているオーガニゼーションが GitHub Copilot Business サブスクリプションを持ち、かつ gh-copilot を有効化している場合も利用可能です。
 :::
 
 ## インストール
@@ -31,7 +32,7 @@ gh-copilot は記事執筆時点ではパブリックベータです。利用す
 
 [GitHub - cli/cli: GitHub’s official command line tool](https://github.com/cli/cli)
 
-GitHub CLI で GitHub にログインしている必要があります。ログインしているかを確認するには `gh auth status` を実行します。ログインしている場合、アカウントの状態、PAT と PAT のスコープなどが表示されます。ログインしていない場合は、`gh auth login` でログインします。
+GitHub CLI で GitHub にログインしている必要があります。ログインしているかを確認するには `gh auth status` を実行します。ログインしている場合、アカウントの状態、PAT と PAT のスコープなどが表示されます。
 
 ```shell
 $ gh auth status
@@ -43,6 +44,7 @@ github.com
   - Token scopes: 'gist', 'read:org', 'repo', 'workflow'
 ```
 
+ログインしていない場合は、`gh auth login` でログインします。
 gh-copilot をインストールします。
 
 ```shell
@@ -209,7 +211,7 @@ GitHub Copilot のドキュメントには以下のような制限事項が記�
 ## さいごに
 以上、GitHub Copilot in the CLI の紹介でした。現状では、2021年までのデータで学習しているため、コマンドの最新バージョンや、2022年以降公開されたコマンドには対応していないようです。その他 LLM につきもののバイアスや不正確さについても利用者の責任で確認が必要です。
 
-CLI については、古くは man コマンドで調べたり、近年ではググったりしていましたが、頻繁に使わないコマンドの場合は結構時間がかかってました。今は ChatGPT に聞いてコピペすればよくなっていますが、実際に利用しているターミナルで専用の UX が提供されているのはやはり使いやすいですね。
+CLI については古くは man コマンドで調べたり近年ではググったりしていましたが、頻繁に使わないコマンドの場合は結構時間がかかってました。今は ChatGPT に聞いてコピペすればよくなっていますが、実際に利用しているターミナルで専用の UX が提供されているのはやはり使いやすいですね。
 
 VS Code における Copilot のようにサジェストを未確定状態で出してくれるような機能はターミナルの仕様上難しいと思いますが、peco などで実装されている選択的インターフェースなどをうまく利用できればよいかもしれません。
 

@@ -2,7 +2,7 @@
 title: Dapr on Jetson Nano with k3s 
 author: shigeki-shoji
 date: 2022-01-03
-tags: [container, k8s, ZTA, iot, "認証/認可", AWS]
+tags: [container, k8s, ZTA, iot, "認証/認可", AWS, k3s]
 ---
 
 [庄司](https://github.com/edward-mamezou)です。

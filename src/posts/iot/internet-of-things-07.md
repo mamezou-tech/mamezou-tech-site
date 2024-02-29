@@ -2,6 +2,7 @@
 title: IoT を使ってみる（その７：MQTTクライアント paho編）
 author: shuichi-takatsu
 date: 2022-10-15
+image: true
 ---
 
 [前回](/iot/internet-of-things-06/)記事でMQTTブローカー「Mosquitto」を紹介しました。  

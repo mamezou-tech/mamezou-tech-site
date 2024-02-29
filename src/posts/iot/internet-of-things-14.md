@@ -4,6 +4,7 @@ author: shuichi-takatsu
 date: 2023-12-18
 tags: [esp32, arduino, ssd1306, dht11, oled, platformio, advent2023]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
+image: true
 ---
 この記事は[豆蔵デベロッパーサイトアドベントカレンダー2023](/events/advent-calendar/2023/)第18日目の記事です。 
 

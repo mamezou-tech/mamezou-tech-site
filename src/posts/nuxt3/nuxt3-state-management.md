@@ -5,6 +5,7 @@ date: 2022-10-28
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-plugin-middleware.md
 nextPage: ./src/posts/nuxt3/nuxt3-serverless-deploy.md
+image: true
 ---
 
 [前回](/nuxt/nuxt3-plugin-middleware/)はNuxt3でプラグイン、ミドルウェアの導入について見てきました。

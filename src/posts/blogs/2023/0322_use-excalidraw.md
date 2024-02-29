@@ -3,6 +3,7 @@ title: 手書き風ドローツール Excalidraw のススメ
 author: naotsugu-kobayashi
 date: 2023-03-22
 tags: [excalidraw, tools, notion, obsidian, Tauri]
+image: true
 ---
 
 

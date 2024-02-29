@@ -5,6 +5,7 @@ date: 2022-10-23
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-error-handling.md
 nextPage: ./src/posts/nuxt3/nuxt3-state-management.md
+image: true
 ---
 
 [前回](/nuxt/nuxt3-error-handling/)はNuxt3のエラーハンドリングについて見てきました。
@@ -64,10 +65,10 @@ Nuxt3では、defineNuxtPlugin内でプラグインを実装します。
 
 ```html
 <script setup lang="ts">
-const price = ref(1000);
+const price = ref('1000');
 // スクリプトで使用
-const nuxtApp = useNuxtApp();
-console.log(nuxtApp.$yen(price.value));
+const { $yen } = useNuxtApp();
+console.log($yen(price.value));
 </script>
 
 <template>

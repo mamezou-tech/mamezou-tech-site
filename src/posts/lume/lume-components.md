@@ -3,6 +3,7 @@ title: Lume入門(第4回) - ページ部品をコンポーネント化して再
 author: noboru-kudo
 date: 2023-11-01
 prevPage: ./src/posts/lume/lume-search.md
+image: true
 ---
 
 [前回](/lume/lume-search/)は、Lumeのタグ管理を使ってページの検索性を高める方法をご紹介しました。 

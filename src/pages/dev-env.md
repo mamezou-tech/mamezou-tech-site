@@ -32,6 +32,11 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [WSL2上にUbuntu-22.04LTSを導入し、Dockerをインストールしようとしたら、いろいろとハマった件](/blogs/2023/09/09/docker_ubuntu_on_wsl2/)
 - [OrbStack - macOS 専用の高速軽量なコンテナ & Linux VM 環境](/blogs/2023/06/21/orbstack/)
 - [OrbStack 1.0 付属の Kubernetes を試す](/blogs/2023/09/25/orbstack-with-k8s/)
+- [WindowsでRust開発環境を作ってみる(VSCode＋BuildTools＋rustup)](/blogs/2023/02/12/using-rust-01/)
+- [VSCodeのESP-IDF拡張機能「Espressif IDF」を使ってみる](/blogs/2023/02/19/esp-idf-vsc-extension/)
+- [ESP32開発ボードをESP-PROGとPlatform IOを使ってデバッグする](/blogs/2024/01/03/esp32-debug-by-esp-prog)
+- [Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする](/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe)
+- [STM32マイコンボード（STM32F103C8T6）をST-Link V2互換品とPlatform IOを使ってデバッグする](/blogs/2024/01/29/stm32-debug-by-st-link)
 
 ### リモート環境
 

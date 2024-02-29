@@ -3,8 +3,8 @@ import jsx from "lume/plugins/jsx.ts";
 import mdx from "lume/plugins/mdx.ts";
 import liquid from "lume/plugins/liquid.ts";
 import postcss from "lume/plugins/postcss.ts";
+import tailwindcss from "lume/plugins/tailwindcss.ts";
 import prism from "lume/plugins/prism.ts";
-import sass from "lume/plugins/sass.ts";
 import sitemap from "lume/plugins/sitemap.ts";
 import esbuild from "lume/plugins/esbuild.ts";
 import nunjucks from "lume/plugins/nunjucks.ts";
@@ -23,7 +23,6 @@ import katex from "npm:@traptitech/markdown-it-katex@^3.5.0";
 import containerOptions from "./lume/markdown-it/container_options.ts";
 import { filterByPost, getPostArticles } from "./lume/filters/utils.ts";
 import Search from "lume/core/searcher.ts";
-import mermaidPlugin from "./lume/markdown-it/mermaid_plugin.ts";
 import externalLinkPlugin from "./lume/markdown-it/external_link_plugin.ts";
 import imageSwipePlugin from "./lume/markdown-it/image_swipe_plugin.ts";
 import codeClipboard, {
@@ -35,6 +34,9 @@ import { makeAuthorArticles } from "./src/generators/articles_by_author.ts";
 import { makeScopeUpdate } from "./lume/scope_updates.ts";
 import meta from "./src/_data/meta.ts";
 import { Options as MarkdownOptions } from "lume/plugins/markdown.ts";
+import tailwindOptions from "./tailwind.config.js"
+import cssnano from "npm:cssnano@6.0.2"
+import markdownItCodeBlock from './lume/markdown-it/code_block_plugin.ts';
 
 const markdown: Partial<MarkdownOptions> = {
   options: {
@@ -55,16 +57,16 @@ const markdown: Partial<MarkdownOptions> = {
         s
           .trim()
           .toLowerCase()
-          .replace(/[\s+~\/]/g, "-")
+          .replace(/[\s+~/]/g, "-")
           .replace(/[().`,%·'"!?¿:@*]/g, ""),
     }],
     footNote,
     [container, "flash", containerOptions],
     [katex, { "throwOnError": false, "errorColor": " #cc0000" }],
-    mermaidPlugin,
     externalLinkPlugin,
     imageSwipePlugin,
     markdownItCopyButton,
+    markdownItCodeBlock, // must place after copyButton plugin
   ],
 };
 
@@ -82,9 +84,13 @@ site.use(nunjucks());
 site.use(jsx());
 site.use(mdx());
 site.use(liquid());
-site.use(postcss());
+site.use(tailwindcss({
+  options: tailwindOptions
+}));
+site.use(postcss({
+  plugins: [cssnano()]
+}));
 site.use(prism());
-site.use(sass());
 site.use(sitemap({
   query: "exclude!=true",
 }));

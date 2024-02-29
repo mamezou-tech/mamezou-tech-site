@@ -27,7 +27,9 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 - [Nuxt3で導入されたハイブリッドレンダリングとNuxt版ISG/ISRを試してみる](/blogs/2022/12/18/nuxt3-hybrid-rendering/)
 - [Nuxt版のServer Componentsでサーバー環境限定でレンダリングする](/blogs/2023/07/05/nuxt3-server-components-intro/)
 - [Piniaを使ってNuxtアプリの状態を共有をする](/blogs/2023/11/05/pinia-with-nuxt3/)
-- [AWS AmplifyにNuxt3のSSRアプリをゼロコンフィグでデプロイする](blogs/2023/11/22/nuxt3-on-amplify-hosting/)
+- [AWS AmplifyにNuxt3のSSRアプリをゼロコンフィグでデプロイする](/blogs/2023/11/22/nuxt3-on-amplify-hosting/)
+- [Nuxt3 - 単体テスト前編 - セットアップ・コンポーネントをマウントする](/blogs/2024/02/07/nuxt3-unit-testing-mount/)
+- [Nuxt3 - 単体テスト後編 - モック・スタブ用のユーティリティを使う](/blogs/2024/02/12/nuxt3-unit-testing-mock/)
 
 ## プリレンダリング
 クライアントでの応答性が重要な Web アプリでは SPA(Single Page Application) が発展してきました。一方、コンテンツが重要なサイトでは事前ビルドした静的コンテンツによる MPA(Multi Page Application) が注目されています。ここではプリレンダリングフレームワークに関する記事を紹介します。

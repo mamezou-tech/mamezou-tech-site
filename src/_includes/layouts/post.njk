@@ -6,7 +6,7 @@ layout: layouts/base.njk
 
 <main class="tdbc-container">
   <div id='toc'></div>
-  <article class="post tdbc-mx-auto">
+  <article class="post mr-auto ml-auto">
     <header class="post__header">
       <h1>{{ title }}</h1>
       <div class="post__details">
@@ -28,12 +28,8 @@ layout: layouts/base.njk
         {%- endif %}
         </div>
       {% endif %}
-      <div style="float: right">
-        <div id="preact-sns"></div>
-        <script type="module">
-          import { render } from '/js/preact/social_plugins.client.js';
-          render({url: '{{ meta.url }}', path: '{{ url }}'}, document.getElementById("preact-sns"));
-        </script>
+      <div class="clear-both md:clear-none md:float-right">
+        {{ comp.SocialPlugins({url: url}) | safe }}
       </div>
     {%- set adYear = tags | adventCalendarTag %}
     {%- if adYear %}
@@ -117,8 +113,9 @@ layout: layouts/base.njk
   </article>
   {%- initClipboardJS %}
   {%- mermaidTag %}
+  {% set aiImage %}{% if image == true %}true{% else %}false{% endif %}{% endset %}
   <script type="module">
     import { render } from '/js/preact/toc.client.js';
-    render(document.getElementById("toc"));
+    render(document.getElementById("toc"), '{{ page.src.path }}', "{{ meta.imageUrl }}", {{ aiImage }});
   </script>
 </main>

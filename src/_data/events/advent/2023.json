@@ -77,9 +77,10 @@
     },
     {
       "date": "13",
-      "author": "yuta-nagayoshi",
-      "githubUser": "mame-nagayoshi",
-      "title": "何か書きまふ"
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "ホントにあった怖い話 – あるエンジニアが見たものやったもの",
+      "url": "/blogs/2023/12/25/real-horror/"
     },
     {
       "date": "14",
@@ -113,25 +114,29 @@
       "date": "20",
       "author": "kazuki-ogawa",
       "githubUser": "kazuki-ogawa",
-      "title": "何か書きまふ"
+      "title": "豆蔵社員のリモートワーク環境ご紹介 その13 椅子が大事",
+      "url": "/blogs/2023/12/20/remote_env013/"
     },
     {
       "date": "21",
       "author": "kohei-tsukano",
       "githubUser": "KoheiTsukano",
-      "title": "Vue2→Vue3移行の話(Vuetify、Vuelidateなど）で書きます"
+      "title": "Vue3に対応したVuelidate2の変更点とはまった点",
+      "url": "/blogs/2023/12/21/vuelidate2/"
     },
     {
       "date": "22",
       "author": "shuji-morimoto",
       "githubUser": "shuji-morimoto",
-      "title": "電子工作にチャレンジします"
+      "title": "電子工作でクリスマスイルミネーションにチャレンジ",
+      "url": "/blogs/2023/12/22/electronic-kit/"
     },
     {
       "date": "25",
       "author": "ryo-nakagaito",
       "githubUser": "Nakagaito-Ryo",
-      "title": "何か書きます。"
+      "title": "Effective Java 第3版を読んで",
+      "url": "/blogs/2023/12/25/effective_java/"
     }
   ]
 }

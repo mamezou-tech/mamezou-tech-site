@@ -2,6 +2,7 @@
 title: IoT を使ってみる（その１３：温湿度センサモジュールDHT11編）
 author: shuichi-takatsu
 date: 2023-01-07
+image: true
 ---
 
 [前回](/iot/internet-of-things-12/)は FreeRTOS の「セマフォ」を紹介しました。  

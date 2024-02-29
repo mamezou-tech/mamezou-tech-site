@@ -3,6 +3,7 @@ title: 直感が理性に大反抗！「モンティ・ホール問題」
 author: shuichi-takatsu
 date: 2022-07-04
 tags: [Analytics]
+image: true
 ---
 
 人生は選択の連続です。  

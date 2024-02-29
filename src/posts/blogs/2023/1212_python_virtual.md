@@ -4,6 +4,7 @@ author: shohei-yamashita
 date: 2023-12-12
 tags: [Python, 仮想化, 初心者向け, advent2023]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
+image: true
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2023](/events/advent-calendar/2023/)第12日目の記事です。

@@ -1,110 +1,25 @@
 ---
 layout: layouts/base.njk
 ---
-
-<style>
-  .logo {
-    margin: 0 auto 1rem;
-  }
-  .tdbc-hero {
-    padding-top: 5vh;
-    padding-bottom: 0;
-  }
-  .article-area {
-    width: 100%;
-  }
-  .additional-area {
-    border: #bebaba solid 1px;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-top: 3rem;
-    box-shadow: 5px 5px 2px #4f4f4f;
-    background-image: url('/img/logo/mameka_280.png');
-    background-size: auto;
-    background-repeat: no-repeat;
-    background-position: right 1rem top 4rem;
-    background-blend-mode: overlay;
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-  .additional-area h2 {
-    border-bottom: #4f4f4f solid 1px;
-    padding-bottom: 0.7rem;
-    font-size: 1.4rem
-  }
-  @media (min-width: 80ch) and (max-width: 768px) {
-    .article-area {
-      width: 50%;
-      float: left;
-    }
-    .additional-area {
-      width: 50%;
-      float: right;
-    }
-  }
-  @media (min-width: 769px) {
-    .article-area {
-      width: 60%;
-      float: left;
-    }
-    .additional-area {
-      width: 40%;
-      float: right;
-    }
-  }
-  .post-list {
-    padding-inline-start: 0;
-  }
-  .article-area {
-    padding: 0 2rem;
-  }
-  a.all-article-link {
-    font-size: 0.85rem;
-    margin-left: 1rem;
-    text-decoration: none;
-  }
-  .home-social-plugins {
-    margin: auto;
-  }
-  .tags {
-    border: solid 1px;
-    margin: 1.5rem 0.5rem 0 0.5rem;
-    padding: 0.5rem;
-    border-radius: 8px;
-    border-color: #624176;
-  }
-  .tags a {
-    margin: 0.5rem;
-    line-height: 1.5rem;
-  }
-  .icon {
-    margin: 0 0.25rem;
-    display: inline-flex;
-    vertical-align: bottom;
-  }
-</style>
 <header class="tdbc-hero">
   <div class="tdbc-container">
-    <div class="logo">
+    <div class="mt-0 mr-auto ml-auto mb-4">
       <img src="/img/logo/mz-tech-logo-small.png" alt="mz-logo" width="100%" height="100%" />
     </div>
     <div>
-    <h1 class="tdbc-ink--mz tdbc-mb-none tdbc-top-title">{{ meta.siteName }}</h1>
-    <h2 class="tdbc-lead tdbc-content-maxlength tdbc-ink--gray tdbc-mt-md tdbc-mx-auto">
+    <h1 class="text-mz tdbc-mb-none tdbc-top-title">{{ meta.siteName }}</h1>
+    <h2 class="text-lg leading-snug mb-4 tracking-tighter tdbc-content-maxlength text-gray-500 tdbc-mt-md mr-auto ml-auto">
       {{ meta.siteDescription }}
     </h2>
     </div>
 
-    <div class="home-social-plugins">
-      <div id="preact-sns"></div>
-      <script type="module">
-        import { render } from '/js/preact/social_plugins.client.js';
-        render({url: '{{ meta.url }}', path: '{{ page.url }}'}, document.getElementById("preact-sns"));
-      </script>
+    <div class="m-auto">
+      {{ comp.SocialPlugins({url: url}) | safe }}
     </div>
     <div id="search"></div>
   </div>
 </header>
-<main class="tdbc-container">
+<main class="tdbc-container home">
   <div class="tdbc-section">
     <ul class="tdbc-column-container">
       {%- for page in search.pages('pages exclude!=true') -%}
@@ -121,28 +36,28 @@ layout: layouts/base.njk
 
 {{ content | safe }}
   <div>
-    <fieldset class="tags">
+    <fieldset class="tags mt-4 mr-2 ml-2 p-2 bg-white rounded-lg border border-stone-500 space-x-2">
       <legend>記事のタグから検索</legend>
       {{ comp.TagsLink() | safe }}
     </fieldset>
   </div>
-  <p style="font-size:1rem;margin:1rem;">本サイトは本家の豆蔵ホームページではありません。会社概要、製品紹介等は<a class="new-tab-link" target="_blank" rel="noreferrer noopener" style="text-decoration:underline" href="https://www.mamezou.com/">こちら</a>、
+  <p class="m-2 text-base">本サイトは本家の豆蔵ホームページではありません。会社概要、製品紹介等は<a class="new-tab-link" target="_blank" rel="noreferrer noopener" style="text-decoration:underline" href="https://www.mamezou.com/">こちら</a>、
   募集中の求人情報は<a class="new-tab-link" target="_blank" rel="noreferrer noopener" style="text-decoration:underline" href="https://hrmos.co/pages/mamezou-recruit/jobs">こちら</a>をご覧ください。</p>
 
   <div>
     <fieldset class="chatgpt-jargon">
-      <legend><img alt="mameka" width="30px" height="100%" src="/img/logo/mameka6_30.png" />豆香の豆知識(Powered by GPT-4 turbo)</legend>
+      <legend><img alt="mameka" width="30px" height="100%" src="/img/logo/mameka6_30.png" />豆香の豆知識(Powered by GPT-4 Turbo)</legend>
       <div>今日の言葉: {{ gpt.columns[0].title }}</div>
       <div>{{ gpt.columns[0].text | safe }}</div>
-      <div><b>※本コラムはOpenAIのChat Completion APIで生成したものです。存在しない言葉(AIの幻覚/作話)だったり、内容に誤りがある可能性があります。</b></div>
+      <div><b>※本コラムはOpenAI APIで生成したものです。存在しない言葉(幻覚/作話)だったり、内容に誤りがある可能性があります。</b></div>
       <div>過去のコラムは<a href="/gpt/mameka/" style="text-decoration:underline">こちら</a>から見れます!</div>
     </fieldset>
   </div>
   <div>
-    <div class="article-area">
-      <article class="tdbc-mx-auto" style="margin-top: 3em">
+    <div class="w-full md:w-7/12 2xl:w-8/12 md:float-left md:pr-5">
+      <article class="mr-auto ml-auto" style="margin-top: 3em">
         <section class="post-list__wrapper recent-article">
-          <h2 class="post-list__heading">新着記事<img alt="new-articles" class="icon" width="36px" height="100%" src="/img/icons/new-box.svg" /><a class="all-article-link" href="/articles/">全ての記事を見る</a></h2>
+          <h2 class="post-list__heading">新着記事<img alt="new-articles" class="icon" width="36px" height="100%" src="/img/icons/new-box.svg" /><a class="text-sm ml-4 no-underline" href="/articles/">全ての記事を見る</a></h2>
           <ul class="post-list">
             {% for post in search.pages('layout^=layouts/post exclude!=true', 'date=desc') | limit(10) %}
               <li class="post-list__item">
@@ -183,8 +98,8 @@ layout: layouts/base.njk
         </section>
       </article>
     </div>
-    <div class="additional-area">
-      <article class="tdbc-mx-auto">
+    <div class="additional-area w-full md:w-5/12 2xl:w-4/12 md:float-right p-4 mt-12">
+      <article class="mr-auto ml-auto">
       <h2><img alt="ranking-articles" class="icon" width="24px" height="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" />先週の人気記事<img alt="new-articles" class="icon" width="24px" height="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" /></h2>
       <ol>
         {%- for article in pv.ranking -%}

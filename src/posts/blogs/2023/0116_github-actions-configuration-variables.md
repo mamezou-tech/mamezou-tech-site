@@ -3,6 +3,7 @@ title: GitHub Actions - 構成変数(環境変数)が外部設定できるよう
 author: masahiro-kondo
 date: 2023-01-16
 tags: [GitHub, CI/CD]
+image: true
 ---
 
 GitHub Actions ワークフローで Configuration variables (構成変数) がサポートされました。

@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2023-12-04
 tags: [msa, mp, java, "逆張りのMicroProfile", advent2023]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
+image: true
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2023](/events/advent-calendar/2023/)第4日目の記事です。
@@ -394,27 +395,27 @@ Portable extensionsはリフレクションを使って必要なオブジェク�
 4. プロキシバイトコードの生成
 5. Beanの生成（インスタンス化）
 
-の1.から5.ですが、そのうちの1.から4.は毎回結果同じになります。これに加えて1.から4.の処理には時間が掛かるため、CDIコンテナの起動に時間が掛かる要因となっていました。
+の1.から5.ですが、そのうちの1.から4.は毎回同じ結果になります。これに加えて1.から4.の処理には時間が掛かるため、CDIコンテナの起動に時間が掛かる要因となっていました。
 
-この1.から4.の初期化処理を起動時ではなく、アプリケーションのビルド時（コンパイル時）に行えるようにできないかと考えられたのがBuild compatible extensionsとなります。従来のPortable extensionsはリフレクションを使っていたため、先に説明したとおり起動時にしか行う必要がうことができませんでした。この起動時の課題をクリアするためにリフレクションを使わずにCDI拡張をできるようにしたものがBuild compatible extensionsとなります[^6]。
+この1.から4.の初期化処理を起動時ではなく、アプリケーションのビルド時（コンパイル時）に行えるようにできないかと考えられたのがBuild compatible extensionsです。従来のPortable extensionsはリフレクションを使っていたため、先に説明したとおり起動時にしか行うことができませんでした。この課題をクリアするためリフレクションを使わずにCDI拡張をできるようにしたものがBuild compatible extensionsとなります[^6]。
 
 [^6]: これはCDI的な見方で実際はQuarkusがもとから持っていたQuarkus独自のExtensionの仕組みを標準化したものともいえます。
 
-従来のPortable extensionsによるCDIの初期化処理のタイミングとBuild compatible extensionsのタイミングを並べて比較すると次のとおりになります。
+従来のPortable extensionsによるCDIの初期化処理タイミングとBuild compatible extensionsのタイミングを並べて比較すると次のとおりになります。
 
 ![pic04](/img/blogs/2023/1204_04_bootstrap.drawio.svg)
 
-CDIの初期化処理が左に移動しているのが分かると思います。これがCDIの初期化処理のシフトレフトで、毎回同じことは起動時ではなくビルド時に行うようにし、結果としてアプリケーションの起動を高速化します。
+CDIの初期化処理が左に移動しているのが分かると思います。これがCDIの初期化処理のシフトレフトで、同じことは起動時ではなくビルド時に行い、結果としてアプリケーションの起動を高速化します。
 
 :::check: ほんとにシフトレフトするかは実装次第
 Build compatible extensionsのパッケージ化とデプロイについて [CDI 4.0の仕様](https://jakarta.ee/specifications/cdi/4.0/jakarta-cdi-spec-4.0#packaging_deployment)は次のように説明しています。（Google翻訳したものを記載）
 > デプロイメント時に、コンテナは Bean の検出を実行し、Build compatible extensionsを実行し、定義エラーとデプロイメントの問題を検出する必要があります。 CDI Lite におけるデプロイメント時という用語は、アプリケーションのコンパイル中、遅くともアプリケーションの起動中など、アプリケーションが開始される前を意味します。
 
-若干難解なことをいっていますが、要は「Build compatible extensionsに対する処理はコンパイル時からアプリケーションが開始されるまでに行えばよい」としています。ここまでの説明はBuild compatible extensionsはあたかもコンパイル時に行われるように言っていましたが、実は仕様としてはアプリケーションが開始するまでに行えばよいとなっており、Build compatible extensionsの処理をどこで行うかはCDIの実装次第にしています。
+若干難解なことをいっていますが、要は「Build compatible extensionsの処理はコンパイル時からアプリケーションが開始されるまでに行えばよい」としています。これまでの説明はBuild compatible extensionsはあたかもコンパイル時に行われるように言っていましたが、実は仕様としてはアプリケーションが開始するまでに行えばよいとなっており、Build compatible extensionsの処理をどこで行うかはCDIの実装次第になっています。
 
-事実、WeldではBuild compatible extensionsの処理はコンパイル時ではなくコンテナ起動時に行われます。Weld はCDI 4.0 Fullをサポートしているため、Build compatible extensionsとPortable extensionsの両方をサポートしています。しかし、その実装はBuild compatible extensionsのAPI呼び出しをPortable extensionsのAPI呼び出しに変換しで実行するだけで、実行されるタイミングはPortable extensionsと変わりません[^7]。
+事実、WeldではBuild compatible extensionsの処理はコンパイル時ではなくコンテナ起動時に行われます。Weld はCDI 4.0 Fullをサポートしているため、Build compatible extensionsとPortable extensionsの両方をサポートしています。しかし、その実装はBuild compatible extensionsのAPI呼び出しをPortable extensionsのAPI呼び出しに変換して実行するだけで、実行されるタイミングはPortable extensionsと変わりません[^7]。
 
-現時点でほんとにシフトレフトするBuild compatible extensionsの実装はRed HatのQuarkusだけです。Quarkusは独自CDIコンテナのArCと独自のMavenプラグインを組み合わせ、ビルド時にBuild compatible extensionsに対する処理を行い、その結果をバイトコードに直接記録し、その記録したバイトコードを起動時にロードする仕組みを採っています[^8]。
+そして現時点でほんとにシフトレフトするBuild compatible extensionsの実装はRed HatのQuarkusだけです。Quarkusは独自CDIコンテナのArCと独自のMavenプラグインを組み合わせ、ビルド時にBuild compatible extensionsの処理を行い、その結果をバイトコードに直接記録し、その記録したバイトコードを起動時にロードする仕組みを採っています[^8]。
 [^7]: [Weld 5.1.2.Final - CDI Reference Implementation / 17. Build Compatible extensions](https://docs.jboss.org/weld/reference/latest-5.1/en-US/html_single/#extend_lite)
 [^8]: [初めてのエクステンションの作成 – Quarkus / Quarkus アプリケーションブートストラップ](https://ja.quarkus.io/guides/building-my-first-extension#quarkus-application-bootstrap)
 :::

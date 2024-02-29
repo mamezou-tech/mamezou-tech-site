@@ -5,7 +5,7 @@ export default (md: MarkdownIt) => {
   function isInternalLink(token: Token) {
     return token.attrIndex("href") === -1 ||
       token.attrGet("href").match(
-        /^([#\/].*$|https:\/\/developer\.mamezou-tech\.com.*$)/,
+        /^([#/].*|https:\/\/developer\.mamezou-tech\.com.*$)/,
       );
   }
 
@@ -18,11 +18,11 @@ export default (md: MarkdownIt) => {
   ) {
     if (isInternalLink(tokens[idx])) {
       // skip internal link
-      return self.renderToken(tokens, idx, options);
+      return self.renderToken(tokens, idx, options, env, self);
     }
     tokens[idx].attrPush(["target", "_blank"]);
     tokens[idx].attrPush(["rel", "noopener noreferrer"]);
     tokens[idx].attrJoin("class", "new-tab-link");
-    return self.renderToken(tokens, idx, options);
+    return self.renderToken(tokens, idx, options, env, self);
   };
 };

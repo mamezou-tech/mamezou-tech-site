@@ -10,10 +10,10 @@ templateEngine: [njk, md]
 <img style="display:block;margin:0.5rem auto" src="/img/logo/mameka-column_500.png" alt="mameka">
 
 トップページに掲載されているサイト公式キャラクター豆香のコラム集です。
-知っておくとちょっと役立つ(?)IT業界のスラング(プログラミングジャーゴン)をジョーク交えて解説します。
+知っておくと役立つ言葉をジョークを交えて解説します。
 
 :::alert
-コラムはOpenAIが提供するChat Completion API(GPT-4)を使って生成しているもので、内容の正確性を保証するものではありません。
+コラムはOpenAI API(GPT-4 Turbo)を使って生成しているもので、内容の正確性を保証するものではありません。
 :::
 
 {% for column in gpt.columns %}

@@ -56,3 +56,19 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 - [業務システムにおけるアジャイル その2：業務フローを元に考える](/agile/bs-agile_02/)
 - [業務システムにおけるアジャイル その3：SaaSとの相性](/agile/bs-agile_03/)
 - [業務システムにおけるアジャイル その4：「知」のオープン化](/agile/bs-agile_04/)
+
+## アドベントカレンダー
+### 2022
+- [大規模アジャイル手法を鳥の目で眺める](https://developer.mamezou-tech.com/blogs/2022/12/14/scaling-agile-birdview/)
+- [アジャイルちょっとした疑問解消会](https://developer.mamezou-tech.com/blogs/2022/12/15/agile_solution/)
+### 2023
+- [駆け出しSM Stage1：ファシリテーション](https://developer.mamezou-tech.com/blogs/2023/12/15/fledgling-scrum-master-stage1/)
+- [スクラムマスターとは結局何をする人なのか](https://developer.mamezou-tech.com/blogs/2023/12/19/what-scrum-master/)
+
+## 夏のリレー連載
+### 2023
+- [駆け出しスクラムマスターのあれこれ相談室](https://developer.mamezou-tech.com/blogs/2023/07/27/consultation-for-fledgling-scrum-masters/)
+- [アジャイル実践者に捧ぐちょっぴり(?)ダークなステークホルダーマネジメント](https://developer.mamezou-tech.com/blogs/2023/07/28/stakeholder/)
+
+## その他ブログ記事
+- [東洋哲学とスクラム](https://developer.mamezou-tech.com/blogs/2024/02/01/eastern-philosophy-scrum/)

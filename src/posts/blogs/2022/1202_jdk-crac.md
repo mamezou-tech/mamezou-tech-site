@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-12-02
 tags: [advent2022, java]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
+image: true
 ---
  
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第2日目の記事です。

@@ -2,6 +2,7 @@
 title: IoT を使ってみる（その１０：FreeRTOSタスク編）
 author: shuichi-takatsu
 date: 2022-12-12
+image: true
 ---
 
 [前回](/iot/internet-of-things-09/)はESP32などの安価なIoTデバイスで利用できる「FreeRTOS」を紹介しました。  

@@ -41,7 +41,7 @@ function renderCode(origRule: RenderRule, rendererOptions: RendererOptions) {
     if (tokens[idx].tag !== "code") {
       return origRendered;
     }
-    if (!tokens[idx].info || tokens[idx].info === "mermaid") {
+    if (!tokens[idx].info || tokens[idx].info.startsWith("mermaid")) {
       return origRendered;
     }
     if (tokens[idx].content.length === 0) {

@@ -4,6 +4,7 @@ author: noboru-kudo
 date: 2023-12-06
 tags: [ OpenAI, GPT, GitHub, lambda, aws-cdk, AWS, slack, advent2023 ]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
+image: true
 ---
 
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2023](https://developer.mamezou-tech.com/events/advent-calendar/2023/)第6日目の記事です。
@@ -111,6 +112,11 @@ Slackのメンションイベントについての詳細は以下公式ドキュ
 詳細は以下ドキュメントを参照してください。
 
 - [Slack API Doc - Using the Slack Events API - Request URL configuration and verification ](https://api.slack.com/apis/connections/events-api#verification)
+
+なお、本題ではないので省略していますが、実運用の際はSlackからのリクエストであることを検証する必要があります。
+詳細は公式ドキュメントを参照してください。
+
+- [Slack API Doc - Verifying requests from Slack](https://api.slack.com/authentication/verifying-requests-from-slack)
 
 # アシスタントAPI実行(api-invoker)
 
@@ -387,7 +393,7 @@ async function createOrGetThread(event: LambdaEvent, threadTs: string, opts: {
         Item: {
           threadTs: threadTs, // partition key(Slack側)
           threadId: thread.id, // OpenAI側のスレッド識別子
-          expiration: (Math.ceil(new Date().getTime() / 1000 + 3 * 60 * 60)).toString() // 3日で失効
+          expiration: (Math.floor(Date.now() / 1000) + 3 * 24 * 60 * 60).toString() // 3日で失効
         }
       })
     );

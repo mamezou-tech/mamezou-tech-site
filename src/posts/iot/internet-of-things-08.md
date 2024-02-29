@@ -2,7 +2,8 @@
 title: IoT を使ってみる（その８：AWS IoT Device Client編）
 author: shuichi-takatsu
 date: 2022-10-23
-tags: AWS 
+tags: AWS
+image: true
 ---
 
 最近はAWS関連の話題から少し遠ざかっていたので、今回は AWS IoT Device Client を紹介します。

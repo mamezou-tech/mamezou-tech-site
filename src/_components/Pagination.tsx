@@ -7,7 +7,7 @@ interface Props extends Lume.Data {
 }
 
 export default ({ pages, hrefs, current }: Props) => {
-  if (!pages.length) return <></>;
+  if (!pages.length) return null;
   return (
     <nav className="tdbc-pagination" aria-labelledby="tdbc-pagination">
       {pages.map((page, index) => {

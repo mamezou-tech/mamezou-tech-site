@@ -125,7 +125,7 @@ Suggestion:
   kubectl cluster-info -o yaml
 ```
 
-詳しい使い方は、`gh suggest --help` で usage を表示させるか、`gh copilot suggest` で聞いてみましょう。
+詳しい使い方は、`gh copilot suggest --help` で usage を表示させるか、`gh copilot suggest` で直接聞いてみましょう。
 
 ## Suggestion に対して explain を使う
 
@@ -152,7 +152,7 @@ Explanation:
 英語ではなく日本語で質問してみましょう。
 
 ```shell
-$ gh copilot suggest "docer のイメージを削除する" -t shell
+$ gh copilot suggest "docker のイメージを削除する" -t shell
 
 Suggestion:
 

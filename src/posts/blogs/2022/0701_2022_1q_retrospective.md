@@ -25,10 +25,10 @@ tags: [retrospective]
 
 この3ヶ月で新たなランディングページが4つ追加されました。
 
-- [開発環境](/dev-env)
-- [統計解析](/analytics)
-- [CI/CD](/cicd)
-- [テスト](/testing)
+- [開発環境](/dev-env/)
+- [統計解析](/analytics/)
+- [CI/CD](/cicd/)
+- [テスト](/testing/)
 
 当初は3つだけだったので、トップページが随分と賑やかになりました。
 
@@ -48,7 +48,7 @@ tags: [retrospective]
 [Jest再入門シリーズ](/testing/#jest)
 
 ## サイト改善
-サイト改善も [noboru-kudo](/authors/noboru-kudo) により精力的に実施されました。
+サイト改善も [noboru-kudo](/authors/noboru-kudo/) により精力的に実施されました。
 
 ### パフォーマンス改善
 ホスティングしている [Netlify](https://www.netlify.com/) の Lighthouse プラグインを活用して、毎回のビルドごとにサイトのパフォーマンスを計測し、地道にチューニングしています。ソーシャルボタンが重いのですが、かなり速度もアップしました。

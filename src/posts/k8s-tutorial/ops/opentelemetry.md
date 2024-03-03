@@ -61,7 +61,7 @@ ADOTに組み込まれているコンポーネントは、GitHubリポジトリ�
 ## 事前準備
 前回の続きになります。必要な環境(EKS/アプリ等)については以下を参照してください。
 
-- [メトリクス収集・可視化 - Prometheus / Grafana](/containers/k8s/tutorial/ops/prometheus)
+- [メトリクス収集・可視化 - Prometheus / Grafana](/containers/k8s/tutorial/ops/prometheus/)
 
 今回はバックエンドサービスとしてPrometheusは利用しませんので、以下のコマンドでPrometheusとGrafanaはアンインストールしておきましょう。
 

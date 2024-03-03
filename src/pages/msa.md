@@ -52,7 +52,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - （番外編）
   - [Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)
   - [Helidon Tips - Helidon MP Testing with JUnit5を使ってみる](/msa/mp/ext02-helidon-testing/)
-  - [Helidon Tips - Helidon MicroProfile RestClientを使ったRESTリソースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)
+  - [Helidon Tips - Helidon MicroProfile RestClientを使ったRESTリソースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing/)
 
 ## Spring Boot
 Javaでマイクロサービスを構築するならやはり[Spring Boot](https://spring.io/projects/spring-boot/)は外せません。ここではSpring Bootを使った実装をご紹介します。

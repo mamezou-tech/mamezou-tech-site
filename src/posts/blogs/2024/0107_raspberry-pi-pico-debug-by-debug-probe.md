@@ -6,7 +6,7 @@ tags: [debugprobe, raspberrypipico, platformio, debug, arduinoide]
 image: true
 ---
 
-[前回](/blogs/2024/01/03/esp32-debug-by-esp-prog)は、ESP32開発ボードをESP-PROGとPlatform IOを使ってデバッグする方法を紹介しました。  
+[前回](/blogs/2024/01/03/esp32-debug-by-esp-prog/)は、ESP32開発ボードをESP-PROGとPlatform IOを使ってデバッグする方法を紹介しました。  
 今回は、Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする方法を紹介したいと思います。
 
 ## Raspberry Pi Picoとは

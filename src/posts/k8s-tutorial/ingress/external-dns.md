@@ -54,7 +54,7 @@ external-dnsが、Route53に対してレコード操作ができるようにIAM 
 ここでは、上記をJSONファイル(`external-dns-policy.json`)として保存して利用します。
 
 ### eksctl
-環境構築にeksctlを利用している場合は[Ingress Controllerセットアップ](/containers/k8s/tutorial/ingress/ingress-aws#eksctl)同様にeksctlのサブコマンドを利用します。
+環境構築にeksctlを利用している場合は[Ingress Controllerセットアップ](/containers/k8s/tutorial/ingress/ingress-aws/#eksctl)同様にeksctlのサブコマンドを利用します。
 今回もIRSAを利用しますので、EKSのOIDCは有効化しておいてください(`eksctl utils associate-iam-oidc-provider`)。
 
 まずはexternal-dnsで使用するカスタムポリシーを作成します。
@@ -456,7 +456,7 @@ service/app2         NodePort    172.20.122.30   <none>        80:31670/TCP   10
 ## Ingressリソース作成
 
 それではこれに対応するIngressリソースを作成しましょう。
-基本的には[AWS Load Balancer Controllerの環境構築時](/containers/k8s/tutorial/ingress/ingress-aws#Ingressリソース作成)と同じです。
+基本的には[AWS Load Balancer Controllerの環境構築時](/containers/k8s/tutorial/ingress/ingress-aws/#Ingressリソース作成)と同じです。
 
 以下のようになります。
 ```yaml
@@ -621,8 +621,8 @@ helm uninstall -n kube-system aws-load-balancer-controller
 マネジメントコンソールから不要になったレコード(A/Txt)は手動で削除しておきましょう(**誤って利用中のものを削除しないよう注意してください**)。
 
 最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl#クリーンアップ)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform#クリーンアップ)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/#クリーンアップ)
 
 [^4]: helmインストール時に`policy`を`sync`とすれば削除可能です。
 

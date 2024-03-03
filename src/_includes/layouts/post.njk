@@ -21,7 +21,7 @@ layout: layouts/base.njk
         <span> Author: </span>
         {%- set github = author | githubName %}
         {%- if github %}
-          <a href="/authors/{{ author }}" title="{{ author }} の記事一覧">{{ author | safe }}
+          <a href="/authors/{{ author }}/" title="{{ author }} の記事一覧">{{ author | safe }}
           <img width="40" height="40" style="margin-left: 0.2rem" alt="{{ author }}の画像" src="https://github.com/{{ github }}.png?size=40" /></a>
         {%- else %}
           <span>{{ author | safe }}</span>
@@ -51,7 +51,7 @@ layout: layouts/base.njk
     <aside class="post__aside">
       <div class="post__tags">
         {% for tag in tags | pageTags %}
-          {% set tagUrl %}/tags/{{ tag }}/{% endset %}
+          {% set tagUrl %}/tags/{{ tag | lower }}/{% endset %}
           <a href="{{ tagUrl | url }}">#{{ tag }}</a>
         {% endfor %}
       </div>

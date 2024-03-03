@@ -10,14 +10,14 @@ icon: https://api.iconify.design/ic/outline-analytics.svg?color=%23730099&height
 ここでは、そんな統計解析に焦点を当てた記事を紹介していきます。
 
 ## 統計解析全般・ツール紹介
-- [統計解析ツールjamoviの紹介](/blogs/2022/05/16/Introduction-of-statistical-analysis-tool-jamovi/)
+- [統計解析ツールjamoviの紹介](/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)
 - [ベイズ統計をお手軽に、統計解析ツールJASPの紹介](/blogs/2022/06/23/statistical-analysis-tool-jasp/)
 - [Rを4.2系にバージョンアップしたらRstanの導入でつまずいた話](/blogs/2022/06/30/install-rstan-on-r421/)
 
 ## 古典的統計学(推計統計・記述統計)
 ### 基本編
 - [仮説検定はなぜ遠回りするのか](/blogs/2022/06/01/hypothesis-test/)
-- [箱ひげ図で外れ値を確認する](/blogs/2022/05/18/Check-outliers-with-a-boxplot/)
+- [箱ひげ図で外れ値を確認する](/blogs/2022/05/18/check-outliers-with-a-boxplot/)
 - [統計学で避けて通れない自由度の話](/blogs/2022/06/20/degrees-of-freedom/)
 - [箱ひげ図と散布図を同時に描画して概要を把握する(描画編)](/blogs/2022/08/05/boxplot-and-scatterplot/)
 - [箱ひげ図と散布図を同時に描画して概要を把握する(層別・分析編)](/blogs/2022/08/15/boxplot-and-scatterplot-2/)

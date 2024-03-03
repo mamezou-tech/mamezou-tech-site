@@ -34,7 +34,7 @@ CI/CDパイプラインは、現代のソフトウェア開発に必要不可欠
 - [GitHub Actions 再利用可能ワークフローでネスト呼び出しと Matrix strategy が解禁](/blogs/2022/08/25/github-actions-reusable-workflow-renewal/)
 - [カスタムワークフローで GitHub Pages デプロイが可能に](/blogs/2022/09/08/github-pages-new-deploy-method/)
 - [Slack の GitHub インテグレーションで GitHub Actions ワークフローのイベントを通知可能に](/blogs/2022/12/12/notify-github-actions-workflow-to-slack/)
-- [GitHub Actions - private リポジトリの Action と再利用可能ワークフローが呼び出しが可能に](/blogs//2022/12/24/sharing-private-actions-and-reusable-workflows/)
+- [GitHub Actions - private リポジトリの Action と再利用可能ワークフローが呼び出しが可能に](/blogs/2022/12/24/sharing-private-actions-and-reusable-workflows/)
 - [GitHub Actions - オーガニゼーションレベルの required workflows (public beta) を試す](/blogs/2023/01/13/github-actions-required-workflows/)
 - [GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する](/blogs/2023/01/16/github-actions-configuration-variables/)
 - [GitHub Actions を AWS CodeBuild で実行する](/blogs/2023/07/12/githubactions-with-codebuild/)

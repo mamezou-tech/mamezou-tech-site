@@ -3,6 +3,7 @@ title: GitLabのレビューコメントの収集方法
 author: masato-ubata
 date: 2024-03-05
 tags: [GitLab]
+image: true
 ---
 
 ## 概要

@@ -99,14 +99,13 @@ GitLabプロジェクトの、マージリクエストに登録されている�
 1. マージリクエストに紐づくコメントを取得する
 
    いよいよレビューコメントの収集に取り掛かります。
+   ノートAPIでマージリクエストに紐づくコメントが取得できるようなので、早速、これを使用してみました。
 
    ![レビュー指摘の例](/img/blogs/2024/0305_collect-gitlab-review-comment/gitlab_mr.png)
 
    * ①、②
      * システムが出力するメッセージ
      * レビュー依頼やレビュアの変更などのGitLabの操作、commit履歴などがこれに該当します。
-
-   ノートAPIというのがあり、これを使用するとマージリクエストに紐づくコメントが取得できるようなので、これを使用してみました。
 
    ```sh
     GET {GitLabを公開しているサイト}/api/v4/projects/project-id/merge_requests/1/notes?private_token={access-token}

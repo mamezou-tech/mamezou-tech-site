@@ -391,8 +391,8 @@ terraform destroy -var env=prod -var oidc_provider_url=${OIDC_PROVIDER_URL}
 ```
 
 最後にクラスタ環境を削除します。以下のクリーンアップ手順を参照してください。
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl#クリーンアップ)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform#クリーンアップ)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/#クリーンアップ)
 
 
 ## まとめ

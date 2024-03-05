@@ -12,6 +12,7 @@
       content="{{pageDescription}}"
     />
     <link href="/css/style.css" rel="stylesheet" />
+    <link rel="canonical" href="{{ meta.url }}{{ url }}" >
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     {% if meta.env === 'production' %}
@@ -69,7 +70,7 @@
     />
     <meta
       name="og:url"
-      content="{{ meta.url }}{{ page.url }}"
+      content="{{ meta.url }}{{ url }}"
     />
     {% if title %}
     <meta property="og:image" content="{{pageSocialImg}}" />

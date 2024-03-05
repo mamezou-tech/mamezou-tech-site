@@ -43,8 +43,8 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 
 ### 2D カメラ
 
-- [CCTag マーカーを使ってみた](/robotics/vision/cctag)
-- [OpenCV で使用できるキャリブレーション用パターンの紹介](/robotics/vision/calibration-pattern)
+- [CCTag マーカーを使ってみた](/robotics/vision/cctag/)
+- [OpenCV で使用できるキャリブレーション用パターンの紹介](/robotics/vision/calibration-pattern/)
 
 ### 3D カメラ
 
@@ -59,4 +59,4 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 
 ## ROS
 
-- [ROS2 の UI 開発に Tauri を使用した話](/robotics/ros/ros2-tauri)
+- [ROS2 の UI 開発に Tauri を使用した話](/robotics/ros/ros2-tauri/)

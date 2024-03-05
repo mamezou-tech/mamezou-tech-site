@@ -89,6 +89,6 @@ Google Test 連載に GoogleMock編が追加されています。
 
 以上、2023年度第3四半期のまとめでした。
 
-よかったら[フィード](/feed)の購読、[X アカウント](https://twitter.com/MamezouDev)のフォローもお願いします。
+よかったら[フィード](/feed/)の購読、[X アカウント](https://twitter.com/MamezouDev)のフォローもお願いします。
 
 本年も豆蔵デベロッパーサイトをよろしくお願いします。

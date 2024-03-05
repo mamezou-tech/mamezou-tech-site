@@ -7,7 +7,7 @@ export default function* ({ search, paginate, comp }: PageData) {
   const tagArticles = articlesByTag(search);
   for (const tag of Object.keys(tagArticles)) {
     const options: PaginateOptions = {
-      url: (n: number) => `/tags/${tag}/${n > 1 ? `${n.toString()}/` : ""}`,
+      url: (n: number) => `/tags/${tag.toLowerCase()}/${n > 1 ? `${n.toString()}/` : ""}`,
       size: 10,
     };
     const result = paginate(tagArticles[tag].articles, options);

@@ -10,7 +10,7 @@ export default (
     const result = [];
     for (const tag of post.tags || []) {
       if (tags.includes(tag)) {
-        const tagUrl = `/tags/${tag}/`;
+        const tagUrl = `/tags/${tag.toLowerCase()}/`;
         result.push(<a key={tag} href={url(tagUrl)}>#{tag}</a>);
       }
     }

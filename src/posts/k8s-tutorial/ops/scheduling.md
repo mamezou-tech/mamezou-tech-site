@@ -688,7 +688,7 @@ kubectl delete deploy --all
 ```
 
 クラスタ環境は、以下のクリーンアップ手順を参照してください。
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl#クリーンアップ)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/#クリーンアップ)
 
 ## まとめ
 

@@ -8,7 +8,7 @@ date: 2022-03-24
 updated: 2022-04-07
 ---
 
-[前回](/containers/k8s/tutorial/ops/prometheus)はPrometheusとGrafanaを利用して、Kubernetesおよびアプリケーションに関するメトリクスの収集・可視化を行いました。
+[前回](/containers/k8s/tutorial/ops/prometheus/)はPrometheusとGrafanaを利用して、Kubernetesおよびアプリケーションに関するメトリクスの収集・可視化を行いました。
 今回は[OpenTelemetry](https://opentelemetry.io/)と[CloudWatch](https://aws.amazon.com/jp/cloudwatch/)を使って同じことをしてみましょう。
 
 
@@ -61,7 +61,7 @@ ADOTに組み込まれているコンポーネントは、GitHubリポジトリ�
 ## 事前準備
 前回の続きになります。必要な環境(EKS/アプリ等)については以下を参照してください。
 
-- [メトリクス収集・可視化 - Prometheus / Grafana](/containers/k8s/tutorial/ops/prometheus)
+- [メトリクス収集・可視化 - Prometheus / Grafana](/containers/k8s/tutorial/ops/prometheus/)
 
 今回はバックエンドサービスとしてPrometheusは利用しませんので、以下のコマンドでPrometheusとGrafanaはアンインストールしておきましょう。
 
@@ -239,7 +239,7 @@ module "task_service" {
 ## ADOT サイドカーコンテナのセットアップ
 これで準備が整いました。ADOTのサイドカーコンテナをアプリケーションに組み込んでいきましょう。
 
-[前回](/containers/k8s/tutorial/ops/prometheus)は、アプリケーションに対してPrometheusクライアントライブラリ(prometheus-api-metrics/prom-client)を導入しました。
+[前回](/containers/k8s/tutorial/ops/prometheus/)は、アプリケーションに対してPrometheusクライアントライブラリ(prometheus-api-metrics/prom-client)を導入しました。
 これにより、アプリケーション内でメトリクス自動収集と`/metrics`エンドポイント公開が行われ、ここからPrometheusがメトリクスを取得(PULL)していました。
 
 ![prometheus-architecture](https://i.gyazo.com/064fbe7f6fdf65b0831b7ced8d5d10fe.png)

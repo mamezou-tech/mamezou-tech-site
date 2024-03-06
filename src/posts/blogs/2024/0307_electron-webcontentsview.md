@@ -102,7 +102,7 @@ WebContentsView は遡ること2年前から準備が始まっていました。
 
 [メンテナサミット 2022 まとめ | Electron](https://www.electronjs.org/ja/blog/maintainer-summit-2022-recap)
 
-Chrome ネイティブの WebContentsView を Electron から利用できるようにするためのリファクタリングだったようです。元々 BrowserWindow は Figma の開発者が貢献して WebView[^1] に対する代替として独自に実装されたものでした。ただ、この独自実装によりコードが複雑化していたようです。
+Chrome ネイティブの WebContentsView を Electron から利用できるようにするためのリファクタリングだったようです。元々 BrowserView は Figma の開発者が貢献して WebView[^1] に対する代替として独自に実装されたものでした。ただ、この独自実装によりコードが複雑化していたようです。
 
 [^1]: WebView もまた Chrome の内部モジュールの公開であり、Chrome では拡張のために使用されているようです。
 

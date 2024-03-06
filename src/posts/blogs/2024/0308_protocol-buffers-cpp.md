@@ -2,7 +2,7 @@
 title: C++でProtocol Buffersを使ってみる
 author: shuji-morimoto
 date: 2024-03-08
-tags: [C++]
+tags: [ロボット, C++]
 image: true
 ---
 

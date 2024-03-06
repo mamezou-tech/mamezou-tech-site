@@ -64,13 +64,13 @@ const { app, BaseWindow, WebContentsView } = require('electron');
 app.whenReady().then(() => {
   const win = new BaseWindow({ width: 800, height: 600 }); // 1
 
-  const leftView = new WebContentsView(); // 2
+  const leftView = new WebContentsView();  // 2
   leftView.webContents.loadURL('https://electronjs.org');
-  win.contentView.addChildView(leftView) // 3
+  win.contentView.addChildView(leftView);  // 3
 
   const rightView = new WebContentsView(); // 4
   rightView.webContents.loadURL('https://github.com/electron/electron');
-  win.contentView.addChildView(rightView) // 5
+  win.contentView.addChildView(rightView); // 5
 
   leftView.setBounds({ x: 0, y: 0, width: 400, height: 600 }); // 6
   rightView.setBounds({ x: 400, y: 0, width: 400, height: 600 });
@@ -124,7 +124,7 @@ WebContentsView は新設された View クラスを継承しています。
 
 [electron/docs/api/view.md at main · electron/electron](https://github.com/electron/electron/blob/main/docs/api/view.md)
 
-BaseWindow は BrwoserWindow のように直接的な API は提供せず、contentsView プロパティ(実体は View クラス)経由で WebContentsView を管理します。View では管理用の API として以下が提供されています。
+BaseWindow は BrowserWindow のように直接的な API は提供せず、contentView プロパティ(実体は View クラス)経由で WebContentsView を管理します。View では管理用の API として以下が提供されています。
 
 - addChildView
 - removeChildView

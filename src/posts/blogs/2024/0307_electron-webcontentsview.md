@@ -1,5 +1,5 @@
 ---
-title: Electron に BrowserView を置き換える WebContentsView が入ったので見てみる
+title: Electron に BrowserView を置き換える WebContentsView が実装されたので見てみる
 author: masahiro-kondo
 date: 2024-03-06
 tags: [electron]

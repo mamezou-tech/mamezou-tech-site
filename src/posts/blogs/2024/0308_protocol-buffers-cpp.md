@@ -64,7 +64,7 @@ messageの各フィールドはフィールド番号で識別します。
     - 0は指定無しを表す
 - **enum型が異なっていても同じ値を定義できない**
     - 以下はUNSPECIFIEDやAが重複エラーとなる
-    ```
+    ```protobuf
     enum Foo {
       UNSPECIFIED = 0;
       A = 1;
@@ -79,7 +79,7 @@ messageの各フィールドはフィールド番号で識別します。
     ```
 
     - 修正版その1:値は常にプレフィックスを付け重複しないようにする
-    ```
+    ```protobuf
     enum Foo {
       FOO_UNSPECIFIED = 0;
       FOO_A = 1;
@@ -94,7 +94,7 @@ messageの各フィールドはフィールド番号で識別します。
     ```
 
     - 修正版その2:enum型毎にmessage内で定義する
-    ```
+    ```protobuf
     message Foo {
       enum Enum {
         UNSPECIFIED = 0;
@@ -128,7 +128,7 @@ messageの各フィールドはフィールド番号で識別します。
 
 ### データ型のimport
 package や message単位で \*.proto ファイルを分割し、他の \*.proto ファイルの定義された message を利用したい場合は import を使います。定義済みの message も利用できます。以下の import "google/..." は、include フォルダにあるprotoファイルを指します。
-```
+```protobuf
 syntax = "proto3";
 // 様々なデータ型を構造化したデータ型を利用したい場合(JSONライクな型)
 import "google/protobuf/struct.proto";
@@ -150,7 +150,7 @@ option は、特定のコンテキストで解釈されます。
 [option一覧](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto)
 
 最適化に関するoptionは `optimize_for` で指定します。
-```
+```protobuf
 // 軽量のランタイムを利用したい場合
 option optimize_for = LITE_RUNTIME;
 ```
@@ -163,7 +163,7 @@ protobufのメモリーアロケーションバッファを利用する場合は
 - messageはArena上で構築し、deleteしない
 - Arena領域のライフサイクルとmessageオブジェクトのライフサイクルが同期する
 
-```
+```protobuf
 option cc_enable_arenas = true;
 ```
 
@@ -201,7 +201,7 @@ C++で気を付けることはメモリー管理と暗黙(意図しない)コピ
 
 .protoファイルに以下を定義したとします。
 
-```proto:example.proto
+```protobuf:example.proto
 syntax = "proto3";
 
 message Product {

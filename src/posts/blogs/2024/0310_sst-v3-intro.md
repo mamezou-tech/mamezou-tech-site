@@ -2,7 +2,7 @@
 title: PulumiベースのSST(v3)でサーバーレスアプリケーションをデプロイする
 author: noboru-kudo
 date: 2024-03-10
-tags: [lambda, AWS, サーバーレス]
+tags: [lambda, IaC, サーバーレス, AWS]
 image: true
 ---
 
@@ -193,7 +193,7 @@ export default $config({
 });
 ```
 
-コードは自明で特に説明は不要かと思います。
+コードは自明で特に説明は不要かと思います。AWS CDKベースでなくなりましたが、記述スタイルはAWS CDKとよく似ていますね。
 最初にAPI Gatewayのインスタンスを作成し、それに対してルートを定義して、先ほどのLambda関数を割り当てています。
 これだけでビルド(esbuild)、Lambda関数デプロイ、API Gatewayで公開と全てやってくれます。
 各Lambdaのカスタマイズも一通り柔軟に対応できます。

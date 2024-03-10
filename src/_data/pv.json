@@ -9,6 +9,10 @@
       "url": "/blogs/2022/07/04/monty-hall-problem/"
     },
     {
+      "title": "WSL2上にUbuntu-22.04LTSを導入し、Dockerをインストールしようとしたら、いろいろとハマった件",
+      "url": "/blogs/2023/09/09/docker_ubuntu_on_wsl2/"
+    },
+    {
       "title": "Google Test を使ってみる（その５：GoogleMock編）",
       "url": "/blogs/2023/10/08/google-test-05/"
     },
@@ -17,28 +21,24 @@
       "url": "/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/"
     },
     {
-      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
-      "url": "/blogs/2023/03/05/using-pytest-02/"
-    },
-    {
-      "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
-      "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
-    },
-    {
-      "title": "VSCodeのESP-IDF拡張機能「Espressif IDF」を使ってみる",
-      "url": "/blogs/2023/02/19/esp-idf-vsc-extension/"
-    },
-    {
       "title": "Google Test を使ってみる（その１：準備編）",
       "url": "/blogs/2022/11/04/google-test-01/"
     },
     {
-      "title": "Jest再入門 - 関数・モジュールモック編",
-      "url": "/testing/jest/jest-mock/"
+      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
+      "url": "/blogs/2023/03/05/using-pytest-02/"
     },
     {
-      "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
-      "url": "/nuxt/nuxt3-state-management/"
+      "title": "ORマッパーのTypeORMをTypeScriptで使う",
+      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
+    },
+    {
+      "title": "Java用モック・フレームワーク「Mockito」を使ってみる（その２：void型メソッドのモック編）",
+      "url": "/blogs/2023/08/16/using-mockito-void-method/"
+    },
+    {
+      "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
+      "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
     }
   ]
 }

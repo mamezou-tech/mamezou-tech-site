@@ -2,7 +2,7 @@
 title: PulumiベースのSST(v3)でサーバーレスアプリケーションをデプロイする
 author: noboru-kudo
 date: 2024-03-10
-tags: [lambda, AWS, サーバーレス]
+tags: [lambda, IaC, サーバーレス, AWS]
 image: true
 ---
 

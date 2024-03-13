@@ -1,8 +1,8 @@
 ---
 title: ロボットマニピュレータ制御のアルゴリズム2
 author: takahiro-ishii
-date: 2023-12-01
-tags: [ロボット, マニピュレータ, アルゴリズム, 軌跡生成, ROS, 逆運動学, ヤコビ行列, 同次行列]
+date: 2024-03-13
+tags: [ロボット, マニピュレータ, アルゴリズム, 軌跡生成, 逆運動学, ヤコビ行列, 同次行列, ４元数, Quaternion,  SLERP, 球面線形補間, 平滑, 滑らか軌跡, 姿勢変化, 速度重ね, 速度プロファイル, 速度ベクトル]
 ---
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>

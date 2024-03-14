@@ -7,21 +7,19 @@ date: 2022-06-13
 
 Java17にBump upしてみたの後編の今回は[前編](/blogs/2022/06/06/bumpup-java17-part1/)で紹介できなかった3つの機能を紹介していきます。
 
-
 |機能|正式リリース|分類||
 |---|-----|---|---|
 |switch式|Java14|言語仕様の拡張|[前編で紹介](/blogs/2022/06/06/bumpup-java17-part1/#switch式の導入)|
 |テキストブロック|Java15|言語仕様の拡張|[前編で紹介](/blogs/2022/06/06/bumpup-java17-part1/#テキストブロックの導入)|
 |instanceofのパターン・マッチング|Java16|言語仕様の拡張|[前編で紹介](/blogs/2022/06/06/bumpup-java17-part1/#instanceofのパターン・マッチングの導入)|
-|Recordクラス|Java16|言語仕様の拡張|後編(今回)で紹介|
-|Sealedクラス|Java17|言語仕様の拡張|後編(今回)で紹介|
-|Stream#toList() の追加|Java16|標準APIの追加|後編(今回)で紹介|
+|Recordクラス|Java16|言語仕様の拡張|[後編(今回)](#recordクラスの導入)で紹介|
+|Sealedクラス|Java17|言語仕様の拡張|[後編(今回)](#sealedクラスの導入)で紹介|
+|Stream#toList() の追加|Java16|標準APIの追加|[後編(今回)](#stream#tolistの導入)で紹介|
 
 :::info
 (前編の再掲)Java17にしてみたアプリの概要は次のとおりになります。
 -	MicroProfileをつかったRESTアプリケーションでコンソールUIを持っている(GitHubの[こちら](https://github.com/extact-io/rms))
 -	Java17にする前はJava11をベースに作られている(よって対象はJava12から17で取り入れられたモノ)
--	規模はプロダクトコードが8.7kstepでクラス数は244クラス(Sonar Cloudの[Measuresのより](https://sonarcloud.io/component_measures?metric=ncloc&id=extact-io_rms))
 :::
 
 
@@ -79,7 +77,7 @@ public void usage() {
 
 Recordクラスはコストラクタで定義した引数がそのクラスのフィールドとして保持され、引数と同じ名称のメソッドからフィールド値を取得することができますが、これらの定義はコンパイラにより自動でバイトコードに埋め込まれるため、コード上には存在しません[^3]。イメージとしては引数を持たないデフォルトコンストラクタがコンパイラにより自動で定義されるのと同じとなります。
 
-また、Recordクラスには値を設定するメソッドは生成されません。設定メソッドを自分でRecordクラスに実装しようにもフィールドがコード上に存在しないため、設定メソッドを自分で実装することもできません。よって、RecordクラスはコンパイラレベルでImmutableであることが保証されます。
+また、Recordクラスには値を設定するメソッドは生成されません。設定メソッドを自分でRecordクラスに実装しようにもフィールドはfinal宣言付きで生成されるため、設定メソッドを自分で実装することもできません。よって、RecordクラスはコンパイラレベルでImmutableであることが保証されます。
 
 [^3]: equals、hashCodeおよびtoStringメソッドも自動で埋め込まれます。
 

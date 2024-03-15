@@ -727,8 +727,8 @@ helm uninstall -n cert-manager cert-manager
 ```
 
 最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl#クリーンアップ)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform#クリーンアップ)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/#クリーンアップ)
 
 ---
 参考資料

@@ -5,6 +5,7 @@ date: 2022-10-16
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-routing.md
 nextPage: ./src/posts/nuxt3/nuxt3-error-handling.md
+image: true
 ---
 
 [前回](/nuxt/nuxt3-routing/)はNuxt3のルーティング機能について見てきました。

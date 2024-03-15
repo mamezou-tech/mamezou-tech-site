@@ -28,3 +28,7 @@ import "prismjs/components/prism-lisp.js";
 import "prismjs/components/prism-rego.js";
 import "prismjs/components/prism-scss.js";
 import "prismjs/components/prism-cpp.js";
+import "prismjs/components/prism-go.js";
+import "prismjs/components/prism-protobuf.js";
+import "prismjs/plugins/autoloader/prism-autoloader.js";
+import "prismjs/plugins/diff-highlight/prism-diff-highlight.js";

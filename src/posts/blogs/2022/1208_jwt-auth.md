@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-12-08
 tags: [Security, "認証/認可", advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
+image: true
 ---
  
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第8日目の記事です。
@@ -16,6 +17,13 @@ JSON Web Token(JWT)の単語を目にすることがよくあると思います�
 - OpenIDConnectとOAuth2.0について
 
 記事は上記のような内容を理解したいけど、その前にその前提となるJWTやJWSの仕組みや用途を理解したい方を対象としています。また説明は正確性よりも分かりやすさを優先しています。正確な定義や情報を知りたい方は他の文献等を参考にしていただければと思います。
+
+:::info: Javaを使ったJWT実装の紹介
+この記事の続編としてJavaを使ったJWTの実装を以下の記事で紹介しています。興味がある方は併せてこちらも是非どうぞ。
+- [Auth0 java-jwtを使った素のJWT認証](/blogs/2022/12/10/java-jwt-auth/) 
+- [続・Auth0 java-jwtを使った素のJWT認証 - 公開鍵方式でやってみた](/blogs/2022/12/25/rsa-java-jwt/)
+:::
+
 
 
 # JWTとは
@@ -243,4 +251,4 @@ JWTからみた仕組みを説明してきましたが、最後にアプリの�
 
 今回はJWTの盗聴を防止するJWEは説明しませんでしたが、JWEはJWT全体を暗号化して中身を見られなくする技術です。JWEを理解するにはその元データとなるJWTや関連するJWSへの理解が必要です。また、OpenIDConnectやOAuth2.0は主にアプリがIDプロバイダーからJWTのIDトークンを取得するまでの一連の流れを規定しているものとなります。よって、今回のベーシックなJWT認証の仕組みに対する理解なくしてOpenIDConnectやOAuth2.0の理解はおぼつきません。この記事がこれらの理解のきっかけとなったら幸いです。
 
-なお、今回はJWT認証の実装は説明しませんでしたが、Auth0のjava-jwtを使ったJWT認証の実装を[こちらの記事](/blogs/2022/12/10/java-jwt-auth/)で紹介しています。実装にも興味がある方は是非こちらもどうぞ。
+なお、今回はJWT認証の実装は説明しませんでしたが、冒頭でも紹介したとおりAuth0のjava-jwtを使ったJWT認証の実装を[こちら(共有鍵方式)](/blogs/2022/12/10/java-jwt-auth/)と[こちら(公開鍵方式)](/blogs/2022/12/25/rsa-java-jwt/)で紹介しています。実装にも興味がある方は是非こちらもどうぞ。

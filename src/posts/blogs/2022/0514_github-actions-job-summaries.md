@@ -11,7 +11,7 @@ GitHub Actions のジョブサマリー機能がリリースされました。
 
 ワークフロー内で、`GITHUB_STEP_SUMMARY` 環境変数を用いてワークフロー実行中の情報を出力できます。出力内容はワークフロー実行のサマリーページに表示されます。[GitHub Flavored Markdown](https://github.github.com/gfm/) が使えますので、表現力は十分でしょう。
 
-さっそく [GitHub Actions のジョブ制御の記事](/blogs/2022/02/20/job-control-in-github-actions)で作成したワークフローに組み込んでみます。
+さっそく [GitHub Actions のジョブ制御の記事](/blogs/2022/02/20/job-control-in-github-actions/)で作成したワークフローに組み込んでみます。
 
 各ジョブの最後で Slackに通知する情報を出力しているので、同じ場所でジョブサマリーにも出力します。
 

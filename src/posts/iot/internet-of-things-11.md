@@ -2,6 +2,7 @@
 title: IoT を使ってみる（その１１：FreeRTOSタスク優先度編）
 author: shuichi-takatsu
 date: 2022-12-19
+image: true
 ---
 
 [前回](/iot/internet-of-things-10/)は「FreeRTOS」のタスクを紹介しました。  

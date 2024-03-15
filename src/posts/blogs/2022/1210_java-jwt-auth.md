@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-12-10
 tags: [Security, "認証/認可", java, advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
+image: true
 ---
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第10日目の記事です。
 
@@ -24,7 +25,7 @@ JWT認証で使われる文字列は正しくはJWS(JSON Web Signature)ですが
 
 それはAPIがfluentで使いやすいこともありますが、一番の理由は開発元が認証基盤サービスの大御所、Auth0という安心感です。開発元が認証を本業にしている会社なだけに継続的なサポートや万が一があった場合の迅速な対応を期待できると思われます(フリーなのでAuth0がコミットしている訳でもなく、あくまでも筆者の期待ですが)
 
-java-jwtのMavenのarticatは次になります。
+java-jwtのMavenのartifactは次になります。
 
 ```xml
 <dependency>

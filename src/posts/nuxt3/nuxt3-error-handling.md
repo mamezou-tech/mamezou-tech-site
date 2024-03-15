@@ -5,6 +5,7 @@ date: 2022-10-19
 tags: [SSG, SSR]
 prevPage: ./src/posts/nuxt3/nuxt3-app-configuration.md
 nextPage: ./src/posts/nuxt3/nuxt3-plugin-middleware.md
+image: true
 ---
 
 [前回](/nuxt/nuxt3-app-configuration/)はNuxt3の設定情報管理について見てきました。
@@ -232,7 +233,7 @@ propsとしてエラー発生内容が格納されている`error`を受け取�
 ```typescript
 // プログラムでエラーページ表示
 const moveError = () => {
-  showError(createError('FlakyComponentでエラーが発生しました！'))
+  showError('FlakyComponentでエラーが発生しました！')
 }
 // エラー生成時にfatal:trueを指定
 onMounted(() => {

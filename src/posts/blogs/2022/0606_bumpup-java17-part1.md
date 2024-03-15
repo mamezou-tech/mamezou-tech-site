@@ -13,7 +13,6 @@ LTSのJava17が2021年9月に正式リリースされ9ヶ月経ちました。�
 Java17にしてみたアプリの概要は次のとおりになります。
 -	MicroProfileをつかったRESTアプリケーションでコンソールUIを持っている(GitHubの[こちら](https://github.com/extact-io/rms))
 -	Java17にする前はJava11をベースに作られている(よって対象はJava12から17で取り入れられたモノ)
--	規模はプロダクトコードが8.7kstepでクラス数は244クラス(Sonar Cloudの[Measuresのより](https://sonarcloud.io/component_measures?metric=ncloc&id=extact-io_rms))
 :::
 
 [^1]: 利用したのは[Eclipse Temurin jdk-17.0.3+7](https://adoptium.net/temurin/archive)になります
@@ -25,12 +24,13 @@ Java11からJava17で取り込まれた機能や変更は大小様々ありま�
 
 |機能|正式リリース|分類||
 |---|-----|---|---|
-|switch式|Java14|言語仕様の拡張|前編(今回)で紹介|
-|テキストブロック|Java15|言語仕様の拡張|前編(今回)で紹介|
-|instanceofのパターン・マッチング|Java16|言語仕様の拡張|前編(今回)で紹介|
-|Recordクラス|Java16|言語仕様の拡張|[後編](/blogs/2022/06/13/bumpup-java17-part2/)で紹介|
-|Sealedクラス|Java17|言語仕様の拡張|[後編](/blogs/2022/06/13/bumpup-java17-part2/)で紹介|
-|Stream#toList() の追加|Java16|標準APIの追加|[後編](/blogs/2022/06/13/bumpup-java17-part2/)で紹介|
+|switch式|Java14|言語仕様の拡張|[前編(今回)](#switch式の導入)で紹介|
+|テキストブロック|Java15|言語仕様の拡張|[前編(今回)](#テキストブロックの導入)で紹介|
+|instanceofのパターン・マッチング|Java16|言語仕様の拡張|[前編(今回)](#instanceofのパターン・マッチングの導入)で紹介|
+|Recordクラス|Java16|言語仕様の拡張|[後編](/blogs/2022/06/13/bumpup-java17-part2/#recordクラスの導入)で紹介|
+|Sealedクラス|Java17|言語仕様の拡張|[後編](/blogs/2022/06/13/bumpup-java17-part2/#sealedクラスの導入)で紹介|
+|Stream#toList() の追加|Java16|標準APIの追加|[後編](/blogs/2022/06/13/bumpup-java17-part2/#stream#tolistの導入)で紹介|
+
 
 :::column: Java8からのBump up Java11
 今回Java17化しようとしているアプリはもともとJava8だったため、今回と同じようにLTSのJava11がリリースされてからまとめてJava11にキャッチアップしました。Java8からJava11でも言語仕様の拡張から標準APIの追加まで大小様々な追加変更が行われましたが、その中でもコレは便利だなと積極的に取り込んだ機能として次の２つがあります。

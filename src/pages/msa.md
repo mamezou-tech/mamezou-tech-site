@@ -42,14 +42,17 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
   - [MicroProfile Fault Tolerance(1) - 例で理解する基本機能編](/msa/mp/cntrn12-mp-faulttolerance1/)
   - [MicroProfile Fault Tolerance(2) - 例で理解する非同期編](/msa/mp/cntrn13-mp-faulttolerance2/)
   - [MicroProfile Fault Tolerance(3) - 例で理解する設定編](/msa/mp/cntrn14-mp-faulttolerance3/)
-  - [MicroProfileのサンプルリニューアル – 今度はほんとにMSA](/msa/mp/cntrn19-mp-sample-renewal/)<span style="color: red;">★NEW★</span>
+  - [MicroProfileのサンプルリニューアル – 今度はほんとにMSA](/msa/mp/cntrn19-mp-sample-renewal/)
 - Standalone仕様編
   - 今後、順次追加予定！
+
+- Jakarta EE CoreProfile仕様編
+  - [CDI 4.0 Lite - Build compatible extensionsをサンプルで理解する](/blogs/2023/12/04/build-extension-sample/)<span style="color: red;">★NEW★</span>
 
 - （番外編）
   - [Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)
   - [Helidon Tips - Helidon MP Testing with JUnit5を使ってみる](/msa/mp/ext02-helidon-testing/)
-  - [Helidon Tips - Helidon MicroProfile RestClientを使ったRESTリソースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing)
+  - [Helidon Tips - Helidon MicroProfile RestClientを使ったRESTリソースのJUnitテスト](/msa/mp/ext03-helidon-rest-testing/)
 
 ## Spring Boot
 Javaでマイクロサービスを構築するならやはり[Spring Boot](https://spring.io/projects/spring-boot/)は外せません。ここではSpring Bootを使った実装をご紹介します。

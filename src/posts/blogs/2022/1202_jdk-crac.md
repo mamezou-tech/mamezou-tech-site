@@ -4,6 +4,7 @@ author: toshio-ogiwara
 date: 2022-12-02
 tags: [advent2022, java]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
+image: true
 ---
  
 これは、[豆蔵デベロッパーサイトアドベントカレンダー2022](https://developer.mamezou-tech.com/events/advent-calendar/2022/)第2日目の記事です。
@@ -63,6 +64,12 @@ OpenJDKのCRaCは開発中のため商用環境で利用することはまだで
 AWSはLambdaで使われているJavaランタイム(Corretto11)に対し、AWSが独自にCRaCの成果をアドオンしてLambda SnapStartを実現しているものと思われます。ですので、このLambda SnapStartはCRaCをプロダクトレベルで使った初めての例になると思います。
 
 細かい仕組みはさておき、AWSのブログの中ではコールドスタートの所要時間を6秒以上から200ミリ秒未満へ短縮したとの説明があるため、JavaによるAWS Lambdaの銀の弾丸になる感じがします。
+
+:::info
+Serverless Frameworkを使って実際にLambda SnapStartを試した記事を本サイトの以下で紹介しています。興味のある方は是非ご参照ください。
+
+- [Lambda SnapStartをServerless Frameworkでデプロイする](/blogs/2022/12/21/lambda-snapstart-serverless-framework/)
+:::
 
 ## Open Liberty InstantOnの例
 [Open Liberty](https://openliberty.io/)はIBMがオープンソースで開発を行っているJakartaEEのアプリケーションサーバーです。アプリケーションサーバーの起動には時間が掛かるため、これをそのままクラウドネイティブな環境で使うには問題がありました。そこでIBMが考えたのがチェックポイントを使った起動の高速化です。

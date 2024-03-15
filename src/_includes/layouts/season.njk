@@ -4,15 +4,11 @@ layout: layouts/base.njk
 {{ comp.SiteNav() | safe }}
 
 <main class="tdbc-container">
-  <article class="season tdbc-mx-auto">
+  <article class="season mr-auto ml-auto">
     <header class="season__header">
       <h1>{{ title }}</h1>
-      <div style="float: right">
-        <div id="preact-sns"></div>
-        <script type="module">
-          import { render } from '/components/preact/social_plugins.js';
-          render({url: '{{ meta.url }}', path: '{{ page.data.url }}'}, document.getElementById("preact-sns"));
-        </script>
+      <div class="float-right">
+        {{ comp.SocialPlugins({url: url}) | safe }}
       </div>
     </header>
 
@@ -20,10 +16,10 @@ layout: layouts/base.njk
       {{ content | safe }}
     </main>
 
-    <div style="margin-top:0">
+    <div class="mt-0">
       <div id='recommendation-app'></div>
       <script type="module">
-        import { render } from '/components/preact/recommendation.js';
+        import { render } from '/js/preact/recommendation.client.js';
         render({tags : '{{ tags | pageTags }}'}, document.getElementById("recommendation-app"));
       </script>
     </div>

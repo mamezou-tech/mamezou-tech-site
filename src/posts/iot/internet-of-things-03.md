@@ -3,6 +3,7 @@ title: IoT を使ってみる（その３：AWS IoT プログラム編）
 author: shuichi-takatsu
 date: 2022-09-18
 tags: AWS 
+image: true
 ---
 
 [前回](/iot/internet-of-things-02/)は、AWS IoTとIoTデバイスの接続準備として「モノの作成」、「証明書・キーの取得」と「ポリシーの作成・設定」を個別に実施しました。  

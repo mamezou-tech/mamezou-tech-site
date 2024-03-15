@@ -1,12 +1,13 @@
-import lume, { PluginOptions } from "lume/mod.ts";
+import lume from "lume/mod.ts";
 import jsx from "lume/plugins/jsx.ts";
 import mdx from "lume/plugins/mdx.ts";
 import liquid from "lume/plugins/liquid.ts";
 import postcss from "lume/plugins/postcss.ts";
+import tailwindcss from "lume/plugins/tailwindcss.ts";
 import prism from "lume/plugins/prism.ts";
-import sass from "lume/plugins/sass.ts";
 import sitemap from "lume/plugins/sitemap.ts";
 import esbuild from "lume/plugins/esbuild.ts";
+import nunjucks from "lume/plugins/nunjucks.ts";
 import { DateTime } from "luxon";
 import { githubName } from "./lume/filters/github_name.ts";
 import { readingTime } from "./lume/filters/reading_time.ts";
@@ -21,9 +22,7 @@ import container from "npm:markdown-it-container@^3.0.0";
 import katex from "npm:@traptitech/markdown-it-katex@^3.5.0";
 import containerOptions from "./lume/markdown-it/container_options.ts";
 import { filterByPost, getPostArticles } from "./lume/filters/utils.ts";
-import { Page } from "lume/core/filesystem.ts";
-import { Search } from "lume/plugins/search.ts";
-import mermaidPlugin from "./lume/markdown-it/mermaid_plugin.ts";
+import Search from "lume/core/searcher.ts";
 import externalLinkPlugin from "./lume/markdown-it/external_link_plugin.ts";
 import imageSwipePlugin from "./lume/markdown-it/image_swipe_plugin.ts";
 import codeClipboard, {
@@ -34,8 +33,12 @@ import { head } from "./lume/filters/head.ts";
 import { makeAuthorArticles } from "./src/generators/articles_by_author.ts";
 import { makeScopeUpdate } from "./lume/scope_updates.ts";
 import meta from "./src/_data/meta.ts";
+import { Options as MarkdownOptions } from "lume/plugins/markdown.ts";
+import tailwindOptions from "./tailwind.config.js"
+import cssnano from "npm:cssnano@6.0.2"
+import markdownItCodeBlock from './lume/markdown-it/code_block_plugin.ts';
 
-const markdown: Partial<PluginOptions["markdown"]> = {
+const markdown: Partial<MarkdownOptions> = {
   options: {
     breaks: true,
   },
@@ -54,16 +57,16 @@ const markdown: Partial<PluginOptions["markdown"]> = {
         s
           .trim()
           .toLowerCase()
-          .replace(/[\s+~\/]/g, "-")
+          .replace(/[\s+~/]/g, "-")
           .replace(/[().`,%·'"!?¿:@*]/g, ""),
     }],
     footNote,
     [container, "flash", containerOptions],
     [katex, { "throwOnError": false, "errorColor": " #cc0000" }],
-    mermaidPlugin,
     externalLinkPlugin,
     imageSwipePlugin,
     markdownItCopyButton,
+    markdownItCodeBlock, // must place after copyButton plugin
   ],
 };
 
@@ -77,22 +80,33 @@ const site = lume({
   location: new URL(meta.url),
 }, { markdown });
 
+site.use(nunjucks());
 site.use(jsx());
-site.use(mdx())
+site.use(mdx());
 site.use(liquid());
-site.use(postcss());
+site.use(tailwindcss({
+  options: tailwindOptions
+}));
+site.use(postcss({
+  plugins: [cssnano()]
+}));
 site.use(prism());
-site.use(sass());
 site.use(sitemap({
   query: "exclude!=true",
 }));
 site.use(codeClipboard());
 site.use(esbuild({
-  extensions: [".js", ".ts"],
+  extensions: [".js", ".ts", ".client.tsx"],
   options: {
     sourcemap: true,
     keepNames: true,
     minify: true,
+    tsconfigRaw: {
+      compilerOptions: {
+        jsx: "react-jsx",
+        jsxImportSource: "npm:preact",
+      },
+    },
   },
 }));
 
@@ -126,14 +140,14 @@ site.filter("excerpt", excerpt);
 site.filter("pageTags", pageTags);
 site.filter(
   "pageByPath",
-  (pages: Page[], path: string) => {
+  (pages: Lume.Data[], path: string) => {
     const index = path.lastIndexOf(".");
     let normalized = path;
     if (index !== -1) {
       normalized = path.substring(0, index);
     }
-    return pages.find((page: Page) => {
-      return normalized === `./src${page.src.path}`;
+    return pages.find((data: Lume.Data) => {
+      return normalized === `./src${data.page.src.path}`;
     });
   },
 );
@@ -169,20 +183,20 @@ site.filter("githubName", githubName);
 
 site.filter(
   "currentMonthPosts",
-  (pages: Page[]) =>
+  (pages: Lume.Data[]) =>
     filterByPost(pages).filter((post) => {
       const now = DateTime.now();
-      const date = DateTime.fromJSDate(post.data.date);
+      const date = DateTime.fromJSDate(post.date);
       return date.month === now.month && date.year === now.year;
     }),
 );
 
 site.filter("posts", (search: Search) => getPostArticles(search));
-site.filter("newestDate", (page: Page[]) => {
-  const [first] = page.slice().sort((a, b) =>
-    (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0)
+site.filter("newestDate", (pages: Lume.Data[]) => {
+  const [first] = pages.slice().sort((a, b) =>
+    (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0)
   );
-  return first.data.date;
+  return first.date;
 });
 site.filter("isoDate", (d: Date) => DateTime.fromJSDate(d).toISO());
 site.filter(
@@ -190,7 +204,7 @@ site.filter(
   (s: string, base: string) => new URL(s, base).toString(),
 );
 
-site.filter("rssUrl", (html, base) => {
+site.filter("rssUrl", (html: string, base: string) => {
   if (!html) return "";
   return html.replaceAll(
     /\s(href|src)="([^"]+)"/g,
@@ -211,14 +225,14 @@ if (!Deno.env.has("MZ_DEBUG")) {
   site.scopedUpdates(...makeScopeUpdate("src"));
 }
 
-site.processAll([".md"], (pages) => {
+site.process([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;
-  const search = new Search(site.searcher, false);
+  const search = new Search({ pages, files: [], sourceData: new Map() });
   const summary = Object.values(makeAuthorArticles(search)).map((v) => {
     const result = v.articles.reduce((acc, cur) => {
-      if (!cur.data.date) return acc;
-      const ym = cur.data.date.getFullYear() + "-" +
-        (cur.data.date.getMonth() + 1);
+      if (!cur.date) return acc;
+      const ym = cur.date.getFullYear() + "-" +
+        (cur.date.getMonth() + 1);
       const found = acc.findIndex((a) => a.ym === ym);
       if (found >= 0) {
         acc[found].count++;

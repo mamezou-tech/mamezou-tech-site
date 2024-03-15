@@ -4,6 +4,7 @@ author: noboru-kudo
 date: 2023-10-13
 prevPage: ./src/posts/lume/lume-intro.md
 nextPage: ./src/posts/lume/lume-search.md
+image: true
 ---
 
 [前回](/lume/lume-intro/)はLumeの基本的な使い方を見てきました。
@@ -14,6 +15,12 @@ nextPage: ./src/posts/lume/lume-search.md
 
 Lumeは複数テンプレートエンジンをサポートしています。もちろんJSX/MDXもプラグインでサポートしています。プラグインといってもサードパーティ製ではなくLume本体で管理されています(そのうちビルトインプラグインになるかもしれませんが)。
 今回は前回のブログサイトをJSX/MDXを使って書き直してみたいと思います。
+
+:::info
+2023-12-08にLumeがv2にメジャーアップデートしました。これに伴い本記事もv2で動作するよう更新しました。
+
+- [Lume Blog - Lume 2 is finally here!!](https://lume.land/blog/posts/lume-2/)
+:::
 
 ## JSXプラグインを有効にする
 
@@ -30,7 +37,21 @@ const site = lume();
 site.use(jsx());
 ```
 
-必要に応じて`deno.json`のTypeScriptコンパイラ設定(`compilerOptions`)すれば完了です(今回は特に設定していません)。
+次に`deno.json`のTypeScriptの`compilerOptions`でReactを追加すれば完了です。
+
+```json
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "npm:react",
+    "types": [
+      "lume/types.ts",
+      "https://unpkg.com/@types/react@18.2.37/index.d.ts"
+    ]
+  }
+  // (省略)
+}
+```
 
 ## レイアウトファイルをJSXで書き換える
 
@@ -38,9 +59,7 @@ site.use(jsx());
 blog.tsxとして以下のJSXを配置しました。
 
 ```tsx
-import { PageData } from 'lume/core.ts';
-
-interface BlogPageData extends PageData {
+interface BlogPageData extends Lume.Data {
   title: string
 }
 export default (
@@ -119,7 +138,6 @@ site.use(mdx()); // MDXプラグイン
 `_components`ディレクトリを作成し、以下のCardコンポーネント(Card.tsx)を配置します。
 
 ```tsx
-import { PageData } from 'lume/core.ts';
 const styles = {
   card: {
     border: '1px solid #ddd',
@@ -136,7 +154,7 @@ const styles = {
     marginBottom: '10px'
   }
 };
-interface CardPageData extends PageData {
+interface CardPageData extends Lume.Data {
   title: string;
   content: string;
 }

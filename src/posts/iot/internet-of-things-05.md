@@ -2,6 +2,7 @@
 title: IoT を使ってみる（その５：MQTT編）
 author: shuichi-takatsu
 date: 2022-10-02
+image: true
 ---
 
 このIoTの連載の中で何度も「MQTT」という言葉が出てきました。  
@@ -14,7 +15,7 @@ MQTTとは「Message Queue Telemetry Transport」の略で、パブリッシュ/
 MQTTはTCP/IPを使っており、非常に軽量なプロトコルとして設計されています。  
 
 MQTTはIBMが開発した「IBM MQ」がベースになっているようです。  
-IMB MQからMQTTへの変遷については[Wikipedia](https://ja.wikipedia.org/wiki/MQTT)等に詳しく記載されています。
+IBM MQからMQTTへの変遷については[Wikipedia](https://ja.wikipedia.org/wiki/MQTT)等に詳しく記載されています。
  
 ## パブリッシュ/サブスクライブ(publish/subscribe)型データ配信モデル
 

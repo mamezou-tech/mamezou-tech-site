@@ -1,14 +1,13 @@
 import contributorsJson from "../_data/contributors.json" assert {
   type: "json",
 };
-import { Page } from "lume/core/filesystem.ts";
-import { Search } from "lume/plugins/search.ts";
+import Search from "lume/core/searcher.ts";
 import { filterByPost } from "../../lume/filters/utils.ts";
 
 export type Author = {
   github: string;
   name: string;
-  articles: Page[];
+  articles: Lume.Data[];
 };
 
 export function makeAuthorArticles(search: Search): { [name: string]: Author } {
@@ -21,13 +20,13 @@ export function makeAuthorArticles(search: Search): { [name: string]: Author } {
     };
   });
   // assign
-  const pages = search.pages("exclude!=true", "date=desc");
-  filterByPost(pages as Page[]).forEach((article: Page) => {
+  const pages = search.pages<Lume.Data>("exclude!=true", "date=desc");
+  filterByPost(pages).forEach((article) => {
     const author = contributorsJson.contributors.find((contributor) =>
-      contributor.name === article.data.author
+      contributor.name === article.author
     );
     if (author) {
-      authorArticles[article.data.author]?.articles.push(article);
+      authorArticles[article.author]?.articles.push(article);
     }
   });
   return authorArticles;

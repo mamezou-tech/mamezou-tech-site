@@ -2,6 +2,7 @@
 title: Nuxt版のServer Componentsでサーバー環境限定でレンダリングする
 author: noboru-kudo
 date: 2023-07-05
+updated: 2023-12-27
 tags: [nuxt, vue]
 ---
 
@@ -253,6 +254,35 @@ const page = ref('1');
 ```
 
 このように変更することで、期待通りクリックイベントが動作するようなります。
+
+:::alert:Nuxt3.9アップデートでnuxt-clientディレクティブ導入
+2023-12-25にリリースされたNuxt3.9で`nuxt-client`ディレクティブが導入され、サーバーコンポーネント内に通常のコンポーネントを配置できるようになりました。
+これによりスロットを使う必要はなくなっています。
+
+`nuxt-client`ディレクティブを使う場合は、`nuxt.config.ts`を以下のようにします。
+```typescript
+export default defineNuxtConfig({
+  experimental: {
+    componentIslands: {
+      selectiveClient: true
+    }
+  },
+});
+```
+
+この設定を入れることで、サーバーコンポーネントのソースコードは以下のように記述できます。
+
+```html
+<template>
+  <div>
+    <div v-html="html" />
+    <Button nuxt-client />
+  </div>
+</template>
+```
+
+`Button`コンポーネントに`nuxt-client`ディレクティブを設定します。
+:::
 
 ## 最後に
 

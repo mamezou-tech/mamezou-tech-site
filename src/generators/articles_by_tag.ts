@@ -1,16 +1,15 @@
-import { Search } from "lume/plugins/search.ts";
+import Search from "lume/core/searcher.ts";
 import { validTags } from "../../lume/filters/valid_tags.ts";
 import { getPostArticles } from "../../lume/filters/utils.ts";
-import { Page } from "lume/core/filesystem.ts";
 
 export type TagArticles = {
   tag: string;
-  articles: Page[];
+  articles: Lume.Data[];
 };
 
 export function articlesByTag(search: Search): { [tag: string]: TagArticles } {
   const tagArticles: { [tag: string]: TagArticles } = {};
-  const tags = validTags(search.tags() as string[]);
+  const tags = validTags(search.values("tags") as string[]);
   new Set(tags).forEach((tag) => {
     tagArticles[tag] = {
       tag,
@@ -19,7 +18,7 @@ export function articlesByTag(search: Search): { [tag: string]: TagArticles } {
   });
   // assign
   getPostArticles(search).forEach((article) => {
-    const target = (article.data.tags || []).map((t) => t.toLowerCase());
+    const target = (article.tags || []).map((t) => t.toLowerCase());
     tags.filter((tag) => target.includes(tag.toLowerCase())).forEach((tag) => {
       tagArticles[tag].articles.push(article);
     });

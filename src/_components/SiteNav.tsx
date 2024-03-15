@@ -1,13 +1,11 @@
-import { PageData } from "lume/core.ts";
-
-interface Props extends PageData {
+interface Props extends Lume.Data {
   meta: Record<string, any>;
 }
 export default ({ search, meta }: Props) => (
   <nav aria-labelledby="tdbc-siteid" className="tdbc-sitenav">
     <section className="top-nav">
       <div>
-        <a id="tdbc-siteid" href="/">
+        <a id="tdbc-siteid" className="text-mz" href="/">
           <img alt="logo" src="/img/logo/mz-tech-logo-icon.png" />
           &nbsp;|&nbsp;{meta.siteName}
         </a>
@@ -21,11 +19,11 @@ export default ({ search, meta }: Props) => (
           </label>
           <ul className="menu">
             {search.pages("pages exclude!=true").map((page) => (
-              <li key={page?.data.url}>
+              <li key={page?.url}>
                 <a
-                  href={page?.data.url}
+                  href={page?.url}
                 >
-                  {page?.data.title}
+                  {page?.title}
                 </a>
               </li>
             ))}

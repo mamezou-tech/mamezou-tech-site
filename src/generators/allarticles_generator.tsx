@@ -1,11 +1,9 @@
 import { PaginateOptions } from "lume/plugins/paginate.ts";
 import { getPostArticles } from "../../lume/filters/utils.ts";
 import { encodeUrl } from "encodeurl";
-import { PageData } from "lume/core.ts";
-
 export const layout = "layouts/page.njk";
 export const title = "全ての記事";
-export default function* ({ search, paginate, comp }: PageData) {
+export default function* ({ search, paginate, comp }: Lume.Data) {
   const posts = getPostArticles(search);
   const options: PaginateOptions = {
     url: (n: number) => `/articles/${n > 1 ? `${n.toString()}/` : ""}`,

@@ -1,0 +1,142 @@
+{
+  "entries": [
+    {
+      "dayOfWeek": "Mon."
+    },
+    {
+      "dayOfWeek": "Tue."
+    },
+    {
+      "dayOfWeek": "Wed."
+    },
+    {
+      "dayOfWeek": "Thu."
+    },
+    {
+      "dayOfWeek": "Fri."
+    },
+    {},
+    {},
+    {},
+    {},
+    {
+      "date": "1",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "Vue 2 EOL 直前！ Vuetify 3のデータテーブルコンポーネントが正式リリース",
+      "url": "/blogs/2023/12/01/vuetify3-datatable/"
+    },
+    {
+      "date": "4",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "CDI 4.0 Lite - Build compatible extensionsをサンプルで理解する",
+      "url": "/blogs/2023/12/04/build-extension-sample/"
+    },
+    {
+      "date": "5",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "全銀システム障害に片想いしてみる",
+      "url": "/blogs/2023/12/05/testing-shift-right/"
+    },
+    {
+      "date": "6",
+      "author": "noboru-kudo",
+      "githubUser": "kudoh",
+      "title": "SlackとOpenAI Assistants APIでGitHubのPRレビューを効率化する",
+      "url": "/blogs/2023/12/06/slack-github-assistantsapi/"
+    },
+    {
+      "date": "7",
+      "author": "yasuhiko-nishio",
+      "githubUser": "nishio-ys",
+      "title": "いま改めて、セキュリティ・バイ・デザイン（SBD）を考える",
+      "url": "/blogs/2023/12/07/security-by-design-01/"
+    },
+    {
+      "date": "8",
+      "author": "uno",
+      "githubUser": "mz-uno",
+      "title": "強い開発チームを作るのに心がけていること",
+      "url": "/blogs/2023/12/08/teambuild/"
+    },
+    {
+      "date": "11",
+      "author": "kazuyuki-shiratani",
+      "githubUser": "k-shiratani",
+      "title": "UMTP認定 L1～L3まで受験したのでまとめます",
+      "url": "/blogs/2023/12/11/umtp_l3_challenge/"
+    },
+    {
+      "date": "12",
+      "author": "shohei-yamashita",
+      "githubUser": "shohei-yamashit",
+      "title": "Pythonのライブラリ管理をきっかけに、仮想化のレベルについて調べてみました",
+      "url": "/blogs/2023/12/12/python_virtual/"
+    },
+    {
+      "date": "13",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "ホントにあった怖い話 – あるエンジニアが見たものやったもの",
+      "url": "/blogs/2023/12/25/real-horror/"
+    },
+    {
+      "date": "14",
+      "author": "shigeki-shoji",
+      "githubUser": "edward-mamezou",
+      "title": "サーバーレスをあらためて考えてみる",
+      "url": "/blogs/2023/12/14/serverless/"
+    },
+    {
+      "date": "15",
+      "author": "misato-kamei",
+      "githubUser": "misato-kamei",
+      "title": "駆け出しSM Stage1：ファシリテーション",
+      "url": "/blogs/2023/12/15/fledgling-scrum-master-stage1/"
+    },
+    {
+      "date": "18",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "IoT を使ってみる（その１４：有機ELディスプレイ(OLED)SSD1306編）",
+      "url": "/iot/internet-of-things-14/"
+    },
+    {
+      "date": "19",
+      "author": "makiko-nakasato",
+      "githubUser": "makiko-nakasato",
+      "title": "スクラムマスターとは結局何をする人なのか",
+      "url": "/blogs/2023/12/19/what-scrum-master/"
+    },
+    {
+      "date": "20",
+      "author": "kazuki-ogawa",
+      "githubUser": "kazuki-ogawa",
+      "title": "豆蔵社員のリモートワーク環境ご紹介 その13 椅子が大事",
+      "url": "/blogs/2023/12/20/remote_env013/"
+    },
+    {
+      "date": "21",
+      "author": "kohei-tsukano",
+      "githubUser": "KoheiTsukano",
+      "title": "Vue3に対応したVuelidate2の変更点とはまった点",
+      "url": "/blogs/2023/12/21/vuelidate2/"
+    },
+    {
+      "date": "22",
+      "author": "shuji-morimoto",
+      "githubUser": "shuji-morimoto",
+      "title": "電子工作でクリスマスイルミネーションにチャレンジ",
+      "url": "/blogs/2023/12/22/electronic-kit/"
+    },
+    {
+      "date": "25",
+      "author": "ryo-nakagaito",
+      "githubUser": "Nakagaito-Ryo",
+      "title": "Effective Java 第3版を読んで",
+      "url": "/blogs/2023/12/25/effective_java/"
+    }
+  ]
+}

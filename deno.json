@@ -1,16 +1,35 @@
 {
   "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "npm:react",
+    "types": [
+      "lume/types.ts",
+      "https://unpkg.com/@types/react@18.2.37/index.d.ts",
+      "https://unpkg.com/@types/luxon@3.3.7/index.d.ts"
+    ]
   },
   "tasks": {
-    "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
-    "build": "deno task lume",
-    "serve": "deno task lume --serve --quiet",
+    "lume": "echo \"import 'lume/cli.ts'\" | deno run --v8-flags=--max-old-space-size=2048 --unstable-fs -A -",
+    "build": "LUME_LOGS=warning deno task lume",
+    "serve": "LUME_LOGS=info deno task lume --serve",
     "serve:debug": "MZ_DEBUG=1 deno task serve",
-    "lint": "deno run -A --lock deno-lint.lock lint.ts"
+    "lint": "deno run --unstable-fs --allow-all --lock deno-lint.lock lint.ts"
   },
   "importMap": "import_map.json",
   "fmt": {
-    "exclude": ["src/pages", "src/posts", "src/css", "src/events", "src/img"],
-    "include": ["lume/**/*.ts", "_config.ts", "src/**/*.ts", "src/**/*.tsx", "lint.ts"]
+    "exclude": [
+      "src/pages",
+      "src/posts",
+      "src/css",
+      "src/events",
+      "src/img"
+    ],
+    "include": [
+      "lume/**/*.ts",
+      "_config.ts",
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "lint.ts"
+    ]
   }
 }

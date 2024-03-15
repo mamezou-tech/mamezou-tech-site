@@ -3,6 +3,7 @@ title: 直感が理性に大反抗！「モンティ・ホール問題」
 author: shuichi-takatsu
 date: 2022-07-04
 tags: [Analytics]
+image: true
 ---
 
 人生は選択の連続です。  
@@ -117,7 +118,7 @@ tags: [Analytics]
 
 ## ベイズの定理で解く
 
-これまでも何度か登場した[ベイズの定理](/blogs/2022/06/07/bayes-theorem)で問題を解いてみましょう。    
+これまでも何度か登場した[ベイズの定理](/blogs/2022/06/07/bayes-theorem/)で問題を解いてみましょう。    
 ベイズの定理の式は
 
 $P(X|Y)$ = $P(Y|X)P(X) \over P(Y)$

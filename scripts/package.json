@@ -5,14 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "generate:column": "ts-node-esm bin/generate-column.ts",
-    "generate:weekly-ranking": "ts-node-esm bin/weekly-ranking.ts"
+    "generate:column": "node --loader ts-node/esm bin/generate-column.ts",
+    "generate:weekly-ranking": "node --loader ts-node/esm bin/weekly-ranking.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@google-analytics/data": "^4.0.1",
-    "@slack/web-api": "^6.8.1",
+    "@slack/web-api": "^6.11.0",
     "luxon": "^3.4.3",
     "openai": "^4.17.4"
   },

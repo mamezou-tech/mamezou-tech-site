@@ -1,0 +1,202 @@
+{
+  "entries": [
+    {
+      "dayOfWeek": "Mon."
+    },
+    {
+      "dayOfWeek": "Tue."
+    },
+    {
+      "dayOfWeek": "Wed."
+    },
+    {
+      "dayOfWeek": "Thu."
+    },
+    {
+      "dayOfWeek": "Fri."
+    },
+    {
+      "dayOfWeek": "Sat."
+    },
+    {
+      "dayOfWeek": "Sun."
+    },
+    {},
+    {},
+    {},
+    {
+      "date": "1",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "個人開発2022",
+      "url": "/blogs/2022/12/01/personal-development-2022/"
+    },
+    {
+      "date": "2",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "CRaCによるJavaの高速化",
+      "url": "/blogs/2022/12/02/jdk-crac/"
+    },
+    {
+      "date": "3",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "Contract TestツールPactの紹介",
+      "url": "/blogs/2022/12/03/contract-test-with-pact/"
+    },
+    {
+      "date": "4",
+      "author": "shigeki-shoji",
+      "githubUser": "edward-mamezou",
+      "title": "JJUG CCC 2022 Fall",
+      "url": "/blogs/2022/12/04/jjug-ccc-2022-fall/"
+    },
+    {
+      "date": "5",
+      "author": "noboru-kudo",
+      "githubUser": "kudoh",
+      "title": "AWSが公開したFinchでコンテナ実行/イメージビルドをする",
+      "url": "/blogs/2022/12/05/finch-intro/"
+    },
+    {
+      "date": "6",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "VS Codeの CodeQL拡張とStarter workspaceでコード分析する",
+      "url": "/blogs/2022/12/06/using-codeql-on-vscode/"
+    },
+    {
+      "date": "7",
+      "author": "noboru-kudo",
+      "githubUser": "kudoh",
+      "title": "Tellerでキーストアからシークレット情報取得＆ソースコード埋め込みを検知する",
+      "url": "/blogs/2022/12/07/teller-intro/"
+    },
+    {
+      "date": "8",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "基本から理解するJWTとJWT認証の仕組み",
+      "url": "/blogs/2022/12/08/jwt-auth/"
+    },
+    {
+      "date": "9",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "Contract Testの使いどころを考える",
+      "url": "/blogs/2022/12/09/contract-test-usecase/"
+    },
+    {
+      "date": "10",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "Auth0 java-jwtを使った素のJWT認証",
+      "url": "/blogs/2022/12/10/java-jwt-auth/"
+    },
+    {
+      "date": "11",
+      "author": "yumeto-yamagishi",
+      "githubUser": "yumeto-yamagishi",
+      "title": "AWS Lambda 向け軽量Node.jsミドルウエアエンジン Middy の紹介",
+      "url": "/blogs/2022/12/11/middyjs/"
+    },
+    {
+      "date": "12",
+      "author": "kazuyuki-shiratani",
+      "githubUser": "k-shiratani",
+      "title": "AWS認定資格を12個すべて取得したので勉強したことなどをまとめます",
+      "url": "/blogs/2022/12/12/aws_all_certified/"
+    },
+    {
+      "date": "13",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "Wasmer 3.0 の WASM からの各プラットフォーム用バイナリ生成機能を試す",
+      "url": "/blogs/2022/12/13/wasmer-v3/"
+    },
+    {
+      "date": "14",
+      "author": "makiko-nakasato",
+      "githubUser": "makiko-nakasato",
+      "title": "大規模アジャイル手法を鳥の目で眺める",
+      "url": "/blogs/2022/12/14/scaling-agile-birdview/"
+    },
+    {
+      "date": "15",
+      "author": "chiori-toya",
+      "githubUser": "toyatoya123",
+      "title": "アジャイルちょっとした疑問解消会",
+      "url": "/blogs/2022/12/15/agile_solution/"
+    },
+    {
+      "date": "16",
+      "author": "masafumi-kondo",
+      "githubUser": "masafumi-kondo",
+      "title": "AWS Glueを社内システムに導入した話"
+    },
+    {
+      "date": "17",
+      "author": "hiroaki-taka",
+      "githubUser": "hiroaki-taka",
+      "title": "新米スクラムマスターの思考メモ（その３ Sprint Planning編）",
+      "url": "/blogs/2022/12/17/newcomer-scrum-master-03/"
+    },
+    {
+      "date": "18",
+      "author": "noboru-kudo",
+      "githubUser": "kudoh",
+      "title": "Nuxt3で導入されたハイブリッドレンダリングとNuxt版ISG/ISRを試してみる",
+      "url": "/blogs/2022/12/18/nuxt3-hybrid-rendering/"
+    },
+    {
+      "date": "19",
+      "author": "ryosuke-kono",
+      "githubUser": "ryosko15",
+      "title": "AWS上に継続的デリバリ環境を構築してみた 第１回：VPC作成～Apacheインストール",
+      "url": "/blogs/2022/12/19/pipeline-gitlab-to-apache-server-01/"
+    },
+    {
+      "date": "20",
+      "author": "yuta-masuda",
+      "githubUser": "ymasuda64",
+      "title": "できるだけ簡単にAWS上に静的サイトを構築する",
+      "url": "/blogs/2022/12/20/launch_static_site_using_aws/"
+    },
+    {
+      "date": "21",
+      "author": "toshio-yamaoka",
+      "githubUser": "ToshioYAMAOKA",
+      "title": "オンライン研修の設計勘所（その２：学びを促進するストーリー展開",
+      "url": "/blogs/2022/12/21/instructional_d-003/"
+    },
+    {
+      "date": "22",
+      "author": "masato-ubata",
+      "githubUser": "ubata-mamezou",
+      "title": "API をシナリオベースでテストできる StepCI を試してみた",
+      "url": "/blogs/2022/12/22/stepci/"
+    },
+    {
+      "date": "23",
+      "author": "ryo-nakagaito",
+      "githubUser": "Nakagaito-Ryo",
+      "title": "S3で疑似的にフォルダを管理する方式の検討と実装",
+      "url": "/blogs/2022/12/23/s3-manage-folder/"
+    },
+    {
+      "date": "24",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "GitHub Actions - private リポジトリの Action と再利用可能ワークフローが呼び出しが可能に",
+      "url": "/blogs/2022/12/24/sharing-private-actions-and-reusable-workflows/"
+    },
+    {
+      "date": "25",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "続・Auth0 java-jwtを使った素のJWT認証 - 公開鍵方式でやってみた",
+      "url": "/blogs/2022/12/25/rsa-java-jwt/"
+    }
+  ]
+}

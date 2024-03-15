@@ -11,7 +11,8 @@
       name="description"
       content="{{pageDescription}}"
     />
-    <link href="{{ '/css/style.css' | url }}" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
+    <link rel="canonical" href="{{ meta.url }}{{ url }}" >
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     {% if meta.env === 'production' %}
@@ -21,12 +22,10 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      const darkCss = Array.from(document.querySelectorAll("link[rel='stylesheet']"))
-        .find(el => el.href && el.href.indexOf("style-dark") !== -1);
       gtag('config', 'G-38XP4WXMMY', {
         'user_properties': {
           branch: '{{ meta.branch }}',
-          theme: darkCss ? 'dark' : 'light',
+          theme: 'light',
           author: '{{ author }}',
           tags: '{{ tags }}',
           date: '{{ date }}'
@@ -71,9 +70,9 @@
     />
     <meta
       name="og:url"
-      content="{{ meta.url }}{{ page.url }}"
+      content="{{ meta.url }}{{ url }}"
     />
-    {% if page.data.title %}
+    {% if title %}
     <meta property="og:image" content="{{pageSocialImg}}" />
     <meta name="twitter:image" content="{{pageSocialImg}}" />
     {% else %}
@@ -102,11 +101,12 @@
   });
 </script>
   <body>
-    <div id="fb-root"></div>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v18.0&appId=625393465273959" nonce="Ytcn0KH2"></script>
     {{ content | safe }}
     <footer class="tdbc-background--secondary">
       <div class="tdbc-container tdbc-text-align-center">
-        <div class="tdbc-row tdbc-ink--light tdbc-mx-auto" style="line-height: 50px">
+        <div class="tdbc-row text-white mr-auto ml-auto" style="line-height: 50px">
           <p class="tdbc-mb-none">&copy; {% year %} Mamezou Co.,Ltd.</p>
           <div style="text-align:right">
             <a href="https://www.mamezou.com/">
@@ -116,6 +116,6 @@
         </div>
       </div>
     </footer>
-    <script type="module" src="/components/site.js" async></script>
+    <script type="module" src="/js/site.js" async></script>
   </body>
 </html>

@@ -2,7 +2,8 @@
 title: IoT を使ってみる（その４：AWS IoT MQTT PUB/SUB編）
 author: shuichi-takatsu
 date: 2022-09-19
-tags: AWS 
+tags: AWS
+image: true
 ---
 
 [前々回(AWS IoT モノの準備編)](/iot/internet-of-things-02/)、[前回(AWS IoT プログラム編)](/iot/internet-of-things-03/)で、AWS IoTとIoTデバイスを接続するための準備ができました。  

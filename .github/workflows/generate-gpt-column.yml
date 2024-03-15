@@ -70,6 +70,6 @@ jobs:
           destination_branch: "main"
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_branch: ${{ steps.create-gpt-branch.outputs.branch }}
-          pr_title: "Update GPT column by github-actions"
+          pr_title: "[auto-review] Update GPT column by github-actions"
           pr_reviewer: kudoh
           pr_body: "Check the GPT generated column."

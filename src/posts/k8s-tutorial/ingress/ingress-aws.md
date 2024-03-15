@@ -124,7 +124,7 @@ Ingress Controllerはこのアカウントを利用することで指定した�
 
 Terraformの場合はクラスタ環境構築後（もちろん構築前でも構いませんが）に以下の点について変更してください。
 
-まず、[VPCモジュールの設定](/containers/k8s/tutorial/infra/aws-eks-terraform#VPCリソース)に以下を追加してください。
+まず、[VPCモジュールの設定](/containers/k8s/tutorial/infra/aws-eks-terraform/#VPCリソース)に以下を追加してください。
 
 ```hcl
 module "vpc" {
@@ -572,8 +572,8 @@ helm uninstall -n kube-system aws-load-balancer-controller
 また、アクセスログ保管に使用したS3バケットは別途マネジメントコンソールから削除してください。
 
 最後にクラスタ環境を削除します。こちらは環境構築編のクリーンアップ手順を参照してください。
-- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl#クリーンアップ)
-- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform#クリーンアップ)
+- [AWS EKS(eksctl)](/containers/k8s/tutorial/infra/aws-eks-eksctl/#クリーンアップ)
+- [AWS EKS(Terraform)](/containers/k8s/tutorial/infra/aws-eks-terraform/#クリーンアップ)
 
 ---
 参照資料

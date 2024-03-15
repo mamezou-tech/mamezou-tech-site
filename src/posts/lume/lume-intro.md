@@ -2,7 +2,9 @@
 title: Lume入門(第1回) - Denoベースの静的サイトジェネレーターLumeで静的サイトを手早く作る
 author: noboru-kudo
 date: 2023-10-09
+updated: 2023-12-13
 nextPage: ./src/posts/lume/lume-jsx-mdx.md
+image: true
 ---
 
 当サイトもそろそろ開設から2年になろうとしています。
@@ -18,6 +20,12 @@ Eleventyでも大きな不満はないのですが[^1]、Denoが基盤のLumeに
 
 一通りLumeの機能を使ってみましたので、Lumeに関する入門記事やTipsを記事にしていきたいと思います。
 初回はLumeのセットアップと基本的な使い方から見ていきます。
+
+:::info
+2023-12-08にLumeがv2にメジャーアップデートしました。これに伴い本記事もv2で動作するよう更新しました。
+
+- [Lume Blog - Lume 2 is finally here!!](https://lume.land/blog/posts/lume-2/)
+:::
 
 :::info
 Deno自体については本サイトで連載記事がありますので、そちらをご参考ください。
@@ -285,7 +293,23 @@ footer {
 次に、これをマークダウンファイルから生成するHTMLに読み込ませます。これにはレイアウトファイルを使います。
 レイアウトファイルはページの枠組みを定義するもので、各ページで共通の部分として作成します。
 
-レイアウトファイルには多くのテンプレート言語がサポートされていますが、ここではビルトインで使えるMozillaの[Nunjucks](https://mozilla.github.io/nunjucks/)を使います。
+レイアウトファイルには多くのテンプレート言語がサポートされていますが、ここではMozillaの[Nunjucks](https://mozilla.github.io/nunjucks/)を使います。
+
+:::column:v2アップデートで組み込みテンプレートエンジンの変更
+Lume v1まではNunjucksはビルトインのテンプレートエンジンでしたが、v2からはこれに代わり[Vento](https://vento.js.org/)がビルトインで組み込まれるようになりました。
+
+Nunjucksを使う場合は、`_config.ts`に以下を追加します。
+
+```typescript
+import nunjucks from "lume/plugins/nunjucks.ts";
+
+const site = lume();
+site.use(nunjucks()); // Nunjucksプラグインを使用
+```
+
+これでNunjucksでレイアウトが作成可能となります。
+:::
+
 `_includes/layouts`ディレクトリを作成し、以下の`blog.njk`を配置します。
 
 ```html
@@ -409,8 +433,9 @@ markdown-itのカスタマイズやプラグインをLumeで使う場合は`_con
 
 ```typescript
 import footNote from "npm:markdown-it-footnote@^3.0.3"; // npmレポジトリから取得
+import { Options as MarkdownOptions } from "lume/plugins/markdown.ts";
 
-const markdown: Partial<PluginOptions["markdown"]> = {
+const markdown: Partial<MarkdownOptions> = {
   options: {
     breaks: true // マークダウンの改行を<br>タグに変換
   },

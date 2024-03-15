@@ -18,6 +18,7 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 主に工場や店舗で使われるロボットマニピュレータ制御の基礎技術をまとめてます。
 
 - [ロボットマニピュレータ制御のアルゴリズム](/robotics/manip-algo/manip-algo/)
+- [ロボットマニピュレータ制御のアルゴリズム2](/robotics/manip-algo2/manip-algo2/)
 
 ## ユニバーサルロボット
 

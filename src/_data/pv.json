@@ -17,16 +17,16 @@
       "url": "/blogs/2023/10/08/google-test-05/"
     },
     {
+      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
+      "url": "/blogs/2023/03/05/using-pytest-02/"
+    },
+    {
       "title": "Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする",
       "url": "/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/"
     },
     {
-      "title": "Google Test を使ってみる（その１：準備編）",
-      "url": "/blogs/2022/11/04/google-test-01/"
-    },
-    {
-      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
-      "url": "/blogs/2023/03/05/using-pytest-02/"
+      "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
+      "url": "/nuxt/nuxt3-routing/"
     },
     {
       "title": "ORマッパーのTypeORMをTypeScriptで使う",
@@ -37,8 +37,8 @@
       "url": "/blogs/2023/08/16/using-mockito-void-method/"
     },
     {
-      "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
-      "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
+      "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
+      "url": "/nuxt/nuxt3-state-management/"
     }
   ]
 }

@@ -265,7 +265,7 @@ void Quaternion::GetR3x3(Matrix& _matrix) const
 
 	double &m11=_matrix.At(0, 0), &m12=_matrix.At(0, 1), &m13=_matrix.At(0, 2);
 	double &m21=_matrix.At(1, 0), &m22=_matrix.At(1, 1), &m23=_matrix.At(1, 2);
-	double &m31=_matrix.At(2, 0),	&m32=_matrix.At(2, 1), &m33=_matrix.At(2, 2);
+	double &m31=_matrix.At(2, 0), &m32=_matrix.At(2, 1), &m33=_matrix.At(2, 2);
 
 	m11 = 1.0 - qyy - qzz;
 	m21 = qxy + qwz;

@@ -3,6 +3,8 @@ title: ロボットマニピュレータ制御のアルゴリズム2
 author: takahiro-ishii
 date: 2024-03-15
 tags: [ロボット, マニピュレータ, アルゴリズム, 軌跡生成, 逆運動学, ヤコビ行列, 同次行列, ４元数, Quaternion,  SLERP, 球面線形補間, 平滑, 滑らか軌跡, 姿勢変化, 速度重ね, 速度プロファイル, 速度ベクトル]
+image: true
+prevPage: ./src/posts/robotics/manip-algo/manip-algo.md
 ---
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
@@ -21,7 +23,10 @@ tags: [ロボット, マニピュレータ, アルゴリズム, 軌跡生成, �
 ## 1. はじめに
 （株）豆蔵では様々なロボット技術を開発している。他社製ロボットを用いてクライアントの要望に応える応用技術を開発することが多いが、自社でも6軸や7軸のアームを持つ産業用ロボット、いわゆるロボットアーム＝マニピュレータを一から開発している。この開発を通じて様々な応用技術や提案を生み出している。今回ここで得た知見を読者の方と共有したいと思う。本解説では6軸の産業用垂直多関節型マニピュレータを例にしてこれを制御するさまざまなしくみを説明したい。
 
-今回は、前回説明した基礎的な軌跡生成処理アルゴリズムの詳細の一例を紹介する。具体的にはユーザが指定した特徴的な位置と姿勢からどう補間して軌跡（位置と姿勢のセット）のサンプルを算出するか、について言及する。
+今回は、[前回説明した基礎的な軌跡生成処理アルゴリズム][1]の詳細の一例を紹介する。具体的にはユーザが指定した特徴的な位置と姿勢からどう補間して軌跡（位置と姿勢のセット）のサンプルを算出するか、について言及する。
+
+[1]:https://developer.mamezou-tech.com/robotics/manip-algo/manip-algo/
+
 
 ## 2. 軌跡生成
 ## 区間設定
@@ -73,7 +78,7 @@ $$ m=floor(s)$$
 が直線補間の式となる。これをサンプリング、すなわち$s$を適当に分割して$\vec{F}(s)$を計算すれば位置の軌跡が求まる。なお、KP$_{m}$にて（s=mのとき）位置は一致するのでこの軌跡はKPを通る。
 
 ### スプライン曲線
-3の点以上KP、いいかえれば連続で2区間以上が指定されるとき区分3次スプライン補間による滑らかな位置の3次元軌跡を得ることができる。
+3点以上のKP、いいかえれば連続で2区間以上が指定されるとき区分3次スプライン補間による滑らかな位置の3次元軌跡を得ることができる。
 
 ![](/img/robotics/manip-algo2/spline.png)
 
@@ -190,7 +195,7 @@ void Quaternion::SetR3x3(const Matrix& _matrix)
 	}
 	if( q[imax] < 0.0 ){
 		assert(0);
-		m_quat1=1.0;m_quat2=0.0;m_quat3=0.0;m_quat4=0.0;
+		m_quat1 = 1.0; m_quat2 = 0.0; m_quat3 = 0.0; m_quat4 = 0.0;
 		return;
 	}
 	// 最大要素の値を算出
@@ -238,10 +243,10 @@ void Quaternion::GetR3x3(Matrix& _matrix) const
 	assert(_matrix.GetRow() >= 3);
 	assert(_matrix.GetCol() >= 3);
 
-	const REAL qw =m_quat1;
-	const REAL qx =m_quat2;
-	const REAL qy =m_quat3;
-	const REAL qz =m_quat4;
+	const REAL qw = m_quat1;
+	const REAL qx = m_quat2;
+	const REAL qy = m_quat3;
+	const REAL qz = m_quat4;
 
 	double qxy = 2.0*qx*qy;
 	double qyz = 2.0*qy*qz;
@@ -255,9 +260,9 @@ void Quaternion::GetR3x3(Matrix& _matrix) const
 	double qyy = 2.0*qy*qy;
 	double qzz = 2.0*qz*qz;
 
-	REAL& m11=_matrix.At(0, 0), &m12=_matrix.At(0, 1), &m13=_matrix.At(0, 2);
-	REAL& m21=_matrix.At(1, 0), &m22=_matrix.At(1, 1), &m23=_matrix.At(1, 2);
-	REAL& m31=_matrix.At(2, 0), &m32=_matrix.At(2, 1), &m33=_matrix.At(2, 2);
+	REAL &m11=_matrix.At(0, 0), &m12=_matrix.At(0, 1), &m13=_matrix.At(0, 2);
+	REAL &m21=_matrix.At(1, 0), &m22=_matrix.At(1, 1), &m23=_matrix.At(1, 2);
+	REAL &m31=_matrix.At(2, 0),	&m32=_matrix.At(2, 1), &m33=_matrix.At(2, 2);
 
 	m11 = 1.0 - qyy - qzz;
 	m21 = qxy + qwz;
@@ -381,7 +386,7 @@ $$
 & \bold q = Slerp(t, \bold q_1, \bold q_2 )　\\
 \end{align*}
 $$
-このときパラメータtを0から1まで変化させながら、$\bold q$を漸次サンプルすれば、滑らかなQuaternion列が求まる。これを区間m-1の大円円弧のうち$\bold q_{[m-1]}～\bold q_{[m-1]1}$部分と区間mの大円円弧のうち$\bold q_{[m]2}～\bold q_{[m+1]}$部分とを合わせて滑らかな姿勢の軌跡とする。
+このときパラメータtを0から1まで変化させながら、$\bold q$を漸次サンプルすれば、滑らかなQuaternion列が求まる。これを区間m-1の大円円弧のうち$\bold q_{[m-1]}～\bold q_{[m]1}$部分と区間mの大円円弧のうち$\bold q_{[m]2}～\bold q_{[m+1]}$部分とを合わせて滑らかな姿勢の軌跡とする。
 
 ### 速度重ね方式
 

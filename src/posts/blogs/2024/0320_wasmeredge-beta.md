@@ -256,7 +256,7 @@ Hello, Axum ❤️ WASMER!
 この HTTP Server 以外にも、React の 静的サイト、JS Service Worker、Python Flask Server などのチュートリアルが提供されています。
 
 ## Wasmer Edge のアーキテクチャ
-以下のドキュメントで Wasmer Edge のアーキテクチャがアーキテクチャが解説されています。
+以下のドキュメントで Wasmer Edge のアーキテクチャが解説されています。
 
 [Architecture of Wasmer Edge](https://docs.wasmer.io/edge/architecture)
 

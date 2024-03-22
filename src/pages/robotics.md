@@ -17,7 +17,7 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 
 弊社オリジナルの協働ロボットBeanusシリーズの紹介をします。
 
-- [豆蔵オリジナルロボットBeanusの紹介](/robotics/beanus/beanus_introduction/)
+- [豆蔵オリジナルロボットBeanus](/robotics/beanus/beanus_introduction/)
 
 ## ロボット工学
 

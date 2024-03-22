@@ -1,8 +1,9 @@
 ---
 title: 豆蔵オリジナルロボットBeanusの紹介
 author: takehiro-toyoshima
-date: 2023-03-22
 tags: [ロボット, Beanus]
+date: 2023-03-22
+image: true
 ---
 
 豆蔵は2013年よりロボットシステム開発の支援およびコンサルティングを行っています。
@@ -33,8 +34,6 @@ Beanusは、この設計手法を適用し、デモ用の試作機として短�
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/J130rFdeh48?si=A6Po3xPAGjgzkSbD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-<br>
-
 # Beanus2
 
 Beanus2は三井化学、ニデックドライブテクノロジー（旧　日本電産シンポ）、豆蔵の3社で共同研究開発したロボットです。Beanusシリーズの特徴である「7軸協働ロボット」、「自社開発した高性能コントローラ」や「市販タブレットを利用した直感的なペンダント」のコンセプトはそのままに、新たに以下の特徴を備えました。
@@ -55,8 +54,6 @@ Beanus2は三井化学、ニデックドライブテクノロジー（旧　日�
 
 センサレスでの力制御が難しいのは、ロボットで多く使われる波動歯車減速機は摩擦の影響が主な理由です。摩擦のモデル化が難しく、トルクを高精度に推定することが困難です。そのため、摩擦のモデル化が難しいところは、不感帯処理など摩擦の影響を無視する方策を採ることが多いです。この不感帯が大きいと小さなトルクを検出できず、力制御の性能が落ちてしまいます。一方で、高バックドライバビリティ減速機を使うことで摩擦の影響を受けにくくなるため、不感帯の範囲を小さくでき、センサレスでも小さなトルクを検出することが可能となります。動画のように軽い力でロボットを動かすことができるのです。
 
-<br>
-
 また、Fogale Robotics社の外装センサと組み合わせて、ロボットが人に近づいたときに非接触で衝突を回避するデモも行っています。外装センサは静電容量式のセンサで導電物体との距離を計測することができます。距離情報から衝突を回避する制御を豆蔵で実現しています。
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/z-rUd-ylx58?si=Cv33SeoRFQEre0Un" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -64,8 +61,6 @@ Beanus2は三井化学、ニデックドライブテクノロジー（旧　日�
 協働ロボットにおいて，人の安全を確保するために接触時に停止させることが一般的ですが、高速運転下では接触を検出した瞬間の衝撃力が大きく、安全性が担保できません。そのため、人との協働時には動作速度を制限して運用することが一般的です。一方で、外装センサを使う場合には接触する前に反応して停止や回避動作ができるので、接触を検出する場合と比べて速度制限の緩和が可能で、安全性と高速動作の両立が期待できます。
 
 ---
-
-<br>
 
 本記事では豆蔵のオリジナルロボットであるBeanusとBeanus2について紹介しました。
 Beanusで実現してきた「7軸ロボット制御」や「センサレス力制御」、「非接触衝突回避」などの要素技術について触れましたが、詳細は紹介できませんでした。別の記事で、これらの技術について詳しく紹介していきたいと思います。

@@ -1,7 +1,7 @@
 ---
 title: ロボットマニピュレータ制御のアルゴリズム2
 author: takahiro-ishii
-date: 2024-03-15
+date: 2024-03-25
 tags: [ロボット, マニピュレータ, アルゴリズム, 軌跡生成, 逆運動学, ヤコビ行列, 同次行列, 四元数, Quaternion, Slerp, 球面線形補間, 平滑, 滑らか軌跡, 姿勢変化, 速度重ね, 速度プロファイル, 速度ベクトル]
 image: true
 prevPage: ./src/posts/robotics/manip-algo/manip-algo.md

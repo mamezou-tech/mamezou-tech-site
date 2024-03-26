@@ -1,7 +1,7 @@
 ---
 title: ロボットマニピュレータ制御のアルゴリズム2
 author: takahiro-ishii
-date: 2024-03-25
+date: 2024-03-26
 tags: [ロボット, マニピュレータ, アルゴリズム, 軌跡生成, 逆運動学, ヤコビ行列, 同次行列, 四元数, Quaternion, Slerp, 球面線形補間, 平滑, 滑らか軌跡, 姿勢変化, 速度重ね, 速度プロファイル, 速度ベクトル]
 image: true
 prevPage: ./src/posts/robotics/manip-algo/manip-algo.md
@@ -280,7 +280,7 @@ void Quaternion::GetR3x3(Matrix& _matrix) const
 	m33 = 1.0 - qxx - qyy;
 }
 ```
-### 球面線形補間（\rm{Slerp}）
+### 球面線形補間（$\rm{Slerp}$）
 ある姿勢$\bold{q}_{[m]}$から$\bold{q}_{[m+1]}$まで最短で回転移動しながら補間するのが球面線形補間(Spherical linear interpolation)である。イメージとしては、4次元単位球の表面上においた2つの$\bold{q}$点の間を大円を描くように球表面をなぞる曲線に沿ってゆくような感じである。このとき移動角度で前後の$\bold{q}$を案分するので、変化させるパラメータsと実際の回転量が比例する。
 
 ![](/img/robotics/manip-algo2/\rm{Slerp}.png)

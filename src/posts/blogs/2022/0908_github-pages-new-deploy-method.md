@@ -11,6 +11,12 @@ GitHub Pages は専用のブランチか `docs` などのターゲットディ�
 
 これにより、ビルド成果物をリポジトリ管理せずに、リポジトリの更新をトリガーに GitHub Pages を更新できるようになります。
 
+:::info:2024.03.27 追記
+カスタムワークフローによる GitHub Pages が GA になりました。
+
+[GitHub Pages with Custom GitHub Actions Workflows are now generally available](https://github.blog/changelog/2024-03-25-github-pages-with-custom-github-actions-workflows-are-now-generally-available/)
+:::
+
 リポジトリの GitHub Pages の設定で Build and deployment セクションの `Source` を見ると、GitHub Actions (beta) が選択できるようになっています。
 
 ![GitHub Pages Build and deployment](https://i.gyazo.com/869904e7802923600aa670afd461fb4f.png)

@@ -1444,7 +1444,7 @@ fn main() {
                 event: WindowEvent::KeyboardInput {event, .. },
                 ..
             } if event.state.is_pressed() => {
-                // <2> キー入力により geme 操作
+                // <2> キー入力により game 操作
                 match event.logical_key {
                     Named(NamedKey::ArrowRight) => game.key_pressed(Key::RIGHT),
                     Named(NamedKey::ArrowLeft)  => game.key_pressed(Key::LEFT),
@@ -1675,7 +1675,7 @@ fn draw_square(pixmap: &mut Pixmap, x: i32, y: i32, kind: Tetromino) {
 
 最後に、イベントループ上でのキー入力イベントと `AboutToWait` イベントについて再度見ておきましょう。
 
-キー入力イベントは、そのキー内容に応じて、`geme` インスタンスの `key_pressed()` メソッドを呼び出しています。
+キー入力イベントは、そのキー内容に応じて、`game` インスタンスの `key_pressed()` メソッドを呼び出しています。
 
 ```rust
     let _ = event_loop.run(move |event, elwt| {

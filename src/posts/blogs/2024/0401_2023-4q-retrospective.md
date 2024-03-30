@@ -9,10 +9,9 @@ image: true
 新年度に入りました。2023年度第4四半期のサマリーです。
 
 ## 記事数・執筆者数
-この3ヶ月で35本の記事が投稿され、記事数は556になりました。少し投稿ペースが落ちましたが、3名の執筆者が新規参入し累計が50名を超えました。
+この3ヶ月で36本の記事が投稿され、記事数は557になりました。少し投稿ペースが落ちましたが、3名の執筆者が新規参入し累計が50名を超えました。
 
 ## 各カテゴリーの動向
-
 ### ロボット
 [ロボット](/robotics)の記事は着実に増えています。
 
@@ -36,13 +35,11 @@ image: true
 - [IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）](/iot/internet-of-things-15/)
 
 ## その他注目記事
-
 ### Nuxt3
 Nuxt3 におけるテスティングについて整理する連載が公開されました。
 
 - [Nuxt3 - 単体テスト前編 - セットアップ・コンポーネントをマウントする](/blogs/2024/02/07/nuxt3-unit-testing-mount/)
 - [Nuxt3 - 単体テスト後編 - モック・スタブ用のユーティリティを使う](/blogs/2024/02/12/nuxt3-unit-testing-mock/)
-
 
 ### ソフトウェア設計
 これも新規執筆者のデビュー記事。クラス分割について論じています。「ワイ記法」という会話的な文体も特徴です。
@@ -50,12 +47,11 @@ Nuxt3 におけるテスティングについて整理する連載が公開さ�
 - [7歳娘「パパのサービスクラス、肥大化しそうだよ？」](/blogs/2024/02/12/fat-service-class/)
 
 ### 電子工作系
-
-IoT とは別で電子工作系の記事も増えてきました。
+IoT とは別に電子工作系の記事も増えてきました。
 
 - [Raspberry Pi PicoとAndroidスマートフォンでオシロスコープを構築する](https://developer.mamezou-tech.com/blogs/2024/03/18/raspberry-pi-pico-to-oscilloscope/)
 - [ジュールシーフ回路を使って乾電池1本で白色LEDを点灯させてみる](/blogs/2024/03/21/light-up-led-by-joule-thief-circuit/)
-
+- [ソーラーLEDドライバー「YX8018」を使ってみる](/blogs/2024/03/31/solar-garden-light-by-joule-thief-circuit/)
 
 ### ホビー系
 人工生命モデルであるボイドモデルによるシミュレーションを PyGame を使って行う記事や、テトリスライクなゲームを Rust で実装する記事が公開されています。プログラミングの楽しさを思い出させてくれる内容です。
@@ -64,7 +60,6 @@ IoT とは別で電子工作系の記事も増えてきました。
 - [Get back to where the joy of programming](/blogs/2024/03/29/get-back-to-where-the-joy-of-programming/)
 
 ### AWS 認定資格
-
 以前[12冠達成の記事](/blogs/2022/12/12/aws_all_certified/)を書いた社員による Certified Data Engineer 受験記事です。彼は13冠達成です。
 
 - [「AWS Certified Data Engineer - Associate」が正式リリースされたので、さっそく受験してきた](/aws-certified-data-engineer-associate/)

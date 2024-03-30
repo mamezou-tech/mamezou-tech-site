@@ -1,5 +1,5 @@
 ---
-title: ソーラーLEDドライバー「YX8018」を使って見る
+title: ソーラーLEDドライバー「YX8018」を使ってみる
 author: shuichi-takatsu
 date: 2024-03-31
 tags: [joulethief, circuit, led, solar, garden]

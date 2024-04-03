@@ -32,7 +32,7 @@ However, the title should be translated.
 Articles to be translated are as follows.
 
 ${text}
-  `;
+`;
 };
 
 const makeNote = (path: string) => `
@@ -57,10 +57,17 @@ function updateMd(result: string, originalUrlPath: string) {
     throw new Error('Front matter not found in the file');
   }
   const frontMatterText = result.slice(0, frontMatterEnd);
-  const payload = result.slice(frontMatterEnd);
+  const payload = result.slice(frontMatterEnd + 4);
   const updatedFrontMatter = updateFrontMatter(frontMatterText);
 
-  return updatedFrontMatter + makeNote(originalUrlPath) + payload;
+  return `---
+${updatedFrontMatter}
+---
+${makeNote(originalUrlPath)}
+
+${payload}
+`
+  return updatedFrontMatter + makeNote(originalUrlPath) + "---\n" + payload;
 }
 
 async function translate({ filePath, originalUrlPath }: { filePath: string, originalUrlPath: string },

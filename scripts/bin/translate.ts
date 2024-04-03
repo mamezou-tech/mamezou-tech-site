@@ -40,7 +40,7 @@ const makeNote = (path: string) => `
 This article has been automatically translated.
 The original article is [here](${path}).
 :::
-`
+`;
 
 const baseDir = path.dirname(process.cwd());
 
@@ -66,8 +66,7 @@ ${updatedFrontMatter}
 ${makeNote(originalUrlPath)}
 
 ${payload}
-`
-  return updatedFrontMatter + makeNote(originalUrlPath) + "---\n" + payload;
+`;
 }
 
 async function translate({ filePath, originalUrlPath }: { filePath: string, originalUrlPath: string },
@@ -91,10 +90,14 @@ async function translate({ filePath, originalUrlPath }: { filePath: string, orig
   await fsPromises.mkdir(path.dirname(newFilePath), { recursive: true });
   await fsPromises.writeFile(newFilePath, updatedMd);
 }
-
-await translate({
-  filePath: `${baseDir}/src/posts/nuxt3/nuxt3-rendering-mode.md`,
-  originalUrlPath: '/nuxt/nuxt3-rendering-mode/'
-}, English);
-
+const [lang, filePath, originalUrlPath] = process.argv.slice(2);
+if (!filePath || !originalUrlPath) {
+  console.warn('this feature not implemented!!');
+  // TODO: read from feed
+} else {
+  await translate({
+    filePath,
+    originalUrlPath: originalUrlPath
+  }, English);
+}
 console.info('DONE!');

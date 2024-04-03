@@ -62,7 +62,7 @@ const markdown: Partial<MarkdownOptions> = {
     }],
     footNote,
     [container, "flash", containerOptions],
-    [katex, { "throwOnError": false, "errorColor": " #cc0000" }],
+    [katex, { throwOnError: false, errorColor: "#cc0000", strict: false }],
     externalLinkPlugin,
     imageSwipePlugin,
     markdownItCopyButton,
@@ -187,7 +187,7 @@ site.filter(
     filterByPost(pages).filter((post) => {
       const now = DateTime.now();
       const date = DateTime.fromJSDate(post.date);
-      return date.month === now.month && date.year === now.year;
+      return date.month === now.month -1 && date.year === now.year;
     }),
 );
 

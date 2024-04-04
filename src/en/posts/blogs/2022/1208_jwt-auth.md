@@ -2,14 +2,10 @@
 title: Understanding JWT and JWT Authentication from the Basics
 author: toshio-ogiwara
 date: 2022-12-08T00:00:00.000Z
-tags:
-  - Security
-  - Authentication/Authorization
-  - advent2022
+tags: [Security, "認証/認可", advent2022]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2022/
 image: true
 translate: true
-
 ---
 
 :::alert

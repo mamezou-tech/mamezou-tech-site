@@ -14,6 +14,7 @@
   "dependencies": {
     "@google-analytics/data": "^4.4.0",
     "@slack/web-api": "^6.12.0",
+    "cheerio": "^1.0.0-rc.12",
     "js-yaml": "^4.1.0",
     "luxon": "^3.4.3",
     "openai": "^4.32.1"

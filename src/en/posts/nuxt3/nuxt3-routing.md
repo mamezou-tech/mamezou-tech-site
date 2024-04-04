@@ -19,13 +19,13 @@ The original article is [here](/nuxt/nuxt3-routing).
 
 
 
-In the previous article, we made it possible for the sample blog site application to retrieve blog information via an API.
+In the previous session, we made it possible for the sample blog site application to fetch blog information via an API.
 
-This time, we will look at routing, which is used for page transitions in Nuxt applications. As with Nuxt2, in Nuxt development, it is not necessary to create routing definitions individually. Nuxt adopts file system-based routing, where the route mapping is determined by the structure under the `pages` directory.
+This time, we will look into routing used for page transitions in Nuxt applications. Similar to Nuxt2, in Nuxt development, there is no need to create routing definitions individually. Nuxt adopts file system-based routing, where the route mapping is determined by the structure under the `pages` directory.
 
 ## Basics of Routing
 
-As mentioned before, Nuxt automatically generates route mappings based on the file structure by default. The `pages` directory of the demo blog site we created had the following structure:
+As mentioned earlier, by default, Nuxt automatically generates route mappings based on the file structure. The `pages` directory of the demo blog site we created had the following structure:
 
 ```
 pages
@@ -33,12 +33,12 @@ pages
 └── details.vue
 ```
 
-With this arrangement, Nuxt creates the following mappings (path -> page component) as the underlying Vue Router definitions:
+With this arrangement, Nuxt creates the following mappings (path -> page component) as Vue Router definitions in the background:
 
 - / -> pages/index.vue
 - /details -> pages/details.vue
 
-Of course, you can also have a nested directory structure.
+Of course, nested directory structures are also possible.
 
 ```
 pages
@@ -46,11 +46,11 @@ pages
     └── bar.vue
 ```
 
-In this structure, /foo/bar is mapped to pages/foo/bar.vue. This is something familiar to those who have worked with Nuxt2.
+With this structure, /foo/bar maps to pages/foo/bar.vue. This is something familiar to those who have worked with Nuxt2.
 
 ## Page Switching Programmatically
 
-Up to this point, we have been using [NuxtLink](https://nuxt.com/docs/api/components/nuxt-link) for page transitions. This is a Vue component built into Nuxt. Of course, you can also switch pages programmatically without using NuxtLink. In this case, you use the navigateTo function built into Nuxt.
+So far, we have been using [NuxtLink] for page transitions. This is a Vue component built into Nuxt. Of course, it is also possible to switch pages programmatically without using NuxtLink. In this case, use the navigateTo function built into Nuxt.
 
 ```html
 <script setup lang="ts">
@@ -66,20 +66,18 @@ const navigate = () => {
 
 <template>
   <div>
-    <button @click="navigate">Switch pages programmatically</button>
+    <button @click="navigate">Page Transition Programmatically</button>
   </div>
 </template>
 ```
 
-Like other Nuxt core APIs, navigateTo is also subject to Auto Import, so you can write it without needing to import. Note that when using navigateTo, you must either await it or return its result from functions. Here is a quote from the [official documentation](https://nuxt.com/docs/guide/directory-structure/pages#programmatic-navigation):
-
-> Ensure to always await on navigateTo or chain its result by returning from functions
+Like other Nuxt core APIs, navigateTo is subject to Auto Import, so it can be described without import. Note that when using navigateTo, you must use await or return the result of navigateTo as the return value of the function.
 
 ## Catch-All Route
 
 This is a route for when there is no matching mapping (Catch-all Route). In Nuxt3, you create a page component with the file name `[...slug].vue`. The part of slug can be any string.
 
-The page component you create is a normal Vue component like this:
+The page component to be created is a normal Vue component like below.
 
 ```html
 <template>
@@ -87,18 +85,18 @@ The page component you create is a normal Vue component like this:
 </template>
 ```
 
-It's a simple component with only a template. The part `route.params.slug` contains an array of paths (separated by `/`) as you can infer from the spread operator in the file name. This catch-all page component can be placed in any directory to limit its scope to that path.
+It's a simple component with only a template. The part of `route.params.slug` contains an array of paths (separated by `/`) as can be inferred from the file name's spread operator. This catch-all page component can be placed in any directory to limit its scope to that path.
 
-Note that you cannot specify the scope of application, but if you create a `pages/404.vue` page component, it can be specified as a catch-all route for the entire site.
+Moreover, although you cannot specify the scope, creating a `pages/404.vue` page component allows you to specify it as a catch-all route for the entire site.
 
 ## Dynamic Routing
 
-For simple apps, this might be sufficient, but for practical applications, there are quite a few cases where you want to dynamically map routes using path parameters. The demo app's blog detail page (details.vue) was switching the content of the blog to be displayed using query parameters, but here we will change it to use path parameters.
+For simple apps, this may be sufficient, but for practical applications, there are quite a few cases where you want to dynamically map routes using path parameters. The demo app's blog detail page (details.vue) was switching the content of the blog to be displayed using query parameters, but here we change it to path parameters.
 
 - Before change: /details?id=1
 - After change: /details/1
 
-To create dynamic routing in Nuxt3, you would structure it like this:
+To create dynamic routing in Nuxt3, configure it like this:
 
 ```
 pages
@@ -107,16 +105,16 @@ pages
     └── [id].vue
 ```
 
-In Nuxt2, you used to prefix with an underscore as in `pages/details/_id.vue`, but in Nuxt3, you enclose the path parameter with `[]` as in `pages/details/[id].vue`. This style applies not only to file names but also to directory names.
+While Nuxt2 used an underscore as in `pages/details/_id.vue`, Nuxt3 has changed to enclose path parameters with `[]` as in `pages/details/[id].vue`. This style applies not only to file names but also to directory names.
 
-With this structure, Nuxt creates the following mappings:
+With this configuration, Nuxt creates the following mappings:
 
-- / -> pages/index.vue (no change)
+- / -> pages/index.vue (unchanged)
 - /details/:id -> pages/details/[id].vue
 
-The second definition becomes a dynamic route in Vue Router with the `id` parameter.
+The second definition becomes Vue Router's dynamic routing (`id` parameter).
 
-We will modify index.vue to use this path parameter.
+We modify index.vue to use this path parameter.
 
 ```html
 <script setup lang="ts">
@@ -135,7 +133,7 @@ const { data: articles, refresh } = await useFetch('/api/blogs');
         -->
       </li>
     </ul>
-    <button @click="refresh()">Fetch Latest Info</button>
+    <button @click="refresh()">Fetch Latest Information</button>
     <Advertisement />
   </div>
 </template>
@@ -146,7 +144,7 @@ The `to` property of `NuxtLink` has been changed to a path parameter. The `detai
 ```html
 <script setup lang="ts">
 const route = useRoute();
-// Get id from path parameter
+// Retrieve id from path parameter
 const { id } = route.params;
 const { data: article } = await useFetch(`/api/blogs/${id}`);
 </script>
@@ -164,17 +162,17 @@ const { data: article } = await useFetch(`/api/blogs/${id}`);
 </template>
 ```
 
-It's basically the same as details.vue, but the part that was being obtained as a query parameter (route.query) has been changed to a path parameter (`route.params`). With this, when you build the Nuxt application, you will be able to navigate pages using path parameters.
+It's basically the same as details.vue, but the part that was obtained as query parameters (route.query) has been changed to path parameters (`route.params`). With this, building the Nuxt application will enable page transitions using path parameters.
 
 ## Custom Mapping Rules
 
 So far, we have looked at Nuxt's file system-based routing, but it is also possible to create custom mapping rules.
 
-- [Nuxt Documentation - Router Options](https://nuxt.com/docs/guide/directory-structure/pages#router-options)
+- [Nuxt Documentation - Router Options]
 
-Here, we will make the file system-based /foo/bar (`pages/foo/bar.vue`) created by Nuxt also accessible via /foo/baz.
+Here, we make it possible to access /foo/bar (`pages/foo/bar.vue`) based on Nuxt's file system-based routing also with /foo/baz.
 
-To do this, place a `router.options.ts` file in the `app` directory at the project root.
+To do this, place a `router.options.ts` in the `app` directory at the project root.
 
 ```typescript
 import type { RouterOptions } from '@nuxt/schema'
@@ -190,23 +188,22 @@ export default <RouterOptions> {
 }
 ```
 
-The argument to the routes function is the file system-based route mapping created by Nuxt. Here, in addition to this, we added the route for /foo/baz. The way to describe custom routes is the same as in Vue Router. For details, see the [Vue Router official documentation](https://router.vuejs.org/api/interfaces/routeroptions.html).
+The argument to the routes function is the file system-based route mapping created by Nuxt. Here, in addition, we added the route for /foo/baz. The way to describe custom routes is based on Vue Router. For details, see [Vue Router's official documentation].
 
-By doing this, /foo/baz is mapped to pages/foo/bar.vue, and you can navigate to custom paths using NuxtLink or navigateTo.
+This allows /foo/baz to map to pages/foo/bar.vue, and page transitions with custom paths are possible via NuxtLink or navigateTo.
 
 - /foo/bar -> pages/foo/bar.vue (Nuxt default)
 - /foo/baz -> pages/foo/bar.vue (Added custom route)
 
-Of course, you can also modify the above logic to exclude the route created by Nuxt by default.
+Of course, you can also modify the above logic to exclude the default route provided by Nuxt.
 
 :::info
-In addition to directly extending Vue Router, there is also a method using the Nuxt Hook (`pages:extend`). For more details, please refer to the official documentation.
+In addition to directly extending Vue Router, there is also a method using Nuxt Hook (`pages:extend`). For details, see the official documentation below.
 
-- [Nuxt Doc - Custom Routing - Pages Hook](https://nuxt.com/docs/guide/going-further/custom-routing#pages-hook)
-:::
+- [Nuxt Doc - Custom Routing - Pages Hook]
 
 ## Summary
 
-In this article, we looked at an overview of routing provided by Nuxt. With Nuxt's default file system-based routing, it is possible to support various use cases without the need for mapping descriptions.
+This time, we looked at an overview of routing provided by Nuxt. With Nuxt's default file system-based routing, mapping descriptions are unnecessary, and it can accommodate various use cases.
 
-Next time, we plan to focus on the configuration information used in Nuxt applications.
+Next time, we plan to focus on configuration information used in Nuxt applications.

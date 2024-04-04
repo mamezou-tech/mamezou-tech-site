@@ -11,11 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create Branch for GA report
-        id: create-ga-branch
+      - name: Create Branch for translation
+        id: create-feature-branch
         run: |
-          BRANCH=feature/$(date +"%Y-%m-%d")-ga
-          git checkout -b $BRANCH
+          BRANCH=feature/$(date +"%Y-%m-%d")-translate
+          git switch -c $BRANCH
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Set up Node.js environment
@@ -37,20 +37,16 @@ jobs:
           cd ${GITHUB_WORKSPACE}/scripts
           npm ci
 
-      - name: Generate GA PageView report
-        id: generate-ga-pv-report
+      - name: Translate latest articles
+        id: translate-latest-articles
         env:
-          GOOGLE_APPLICATION_CREDENTIALS_FILE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_FILE }}
-          GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
         run: |
           set -eu
           cd ${GITHUB_WORKSPACE}/scripts
-          echo ${GOOGLE_APPLICATION_CREDENTIALS_FILE} | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
-          export GOOGLE_APPLICATION_CREDENTIALS=${GITHUB_WORKSPACE}/google_auth.json
-          npm run generate:weekly-ranking
-          git add ${GITHUB_WORKSPACE}/src/_data
+          npm run translate:en
+          git add ${GITHUB_WORKSPACE}/src/en
           if ! git diff-index --quiet HEAD --; then
             echo "require commit & push"
             git status -sb
@@ -58,13 +54,13 @@ jobs:
           fi
 
       - name: Commit report
-        if: steps.generate-ga-pv-report.outputs.changed == 'true'
+        if: steps.translate-latest-articles.outputs.changed == 'true'
         run: |
           set -eu
           git config --local user.email "github-actions@mamezou.com"
           git config --local user.name "github-actions"
-          git commit -m "feat: Add PV ranking report"
-          git push -u origin ${{ steps.create-ga-branch.outputs.branch }}
+          git commit -m "feat: Add English-translated articles"
+          git push -u origin ${{ steps.create-feature-branch.outputs.branch }}
 
       # https://github.com/marketplace/actions/github-pull-request-action
       - name: Create Pull Request
@@ -72,11 +68,8 @@ jobs:
         with:
           destination_branch: "main"
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ steps.create-ga-branch.outputs.branch }}
-          pr_title: "[auto-review] Update GA Report by github-actions"
+          source_branch: ${{ steps.create-feature-branch.outputs.branch }}
+          pr_title: "[no-image] Add English-translated articles"
           pr_reviewer: kudoh
-          pr_body: "Check weekly access ranking report."
+          pr_body: "Check auto English-translated articles."
 
-      - name: Delete google auth file
-        run: rm -f ${GITHUB_WORKSPACE}/google_auth.json
-        if: always()

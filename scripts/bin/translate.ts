@@ -3,6 +3,7 @@ import { ask } from '../util/chat-gpt.js';
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
+import { retrieveTarget } from './retrieve-translate-target.js';
 
 const openai = new OpenAI();
 
@@ -22,11 +23,11 @@ The following are not subject to translation.
 
 - Source code (but translate comments)
 - Names of books included in the article
-- Author name(in front matter section)
+- Tags in Front Matter section
 
 Also, do not output anything other than the translated text.
 
-Header part (known as Front Matter) included in markdown should be output as is.
+Header part (known as Front Matter) included in markdown should be output.
 However, the title should be translated.
  
 Articles to be translated are as follows.
@@ -57,6 +58,7 @@ function updateMd(result: string, originalUrlPath: string) {
     throw new Error('Front matter not found in the file');
   }
   const frontMatterText = result.slice(0, frontMatterEnd);
+  console.info(frontMatterText);
   const payload = result.slice(frontMatterEnd + 4);
   const updatedFrontMatter = updateFrontMatter(frontMatterText);
 
@@ -69,8 +71,9 @@ ${payload}
 `;
 }
 
-async function translate({ filePath, originalUrlPath }: { filePath: string, originalUrlPath: string },
+async function translate({ filePath, originalLink }: { filePath: string, originalLink: string },
                          option: { language: string, dir: string }) {
+  console.info('processing...', filePath, originalLink);
   const text = await fsPromises.readFile(filePath);
   const response = await ask({
     messages: [{
@@ -85,19 +88,30 @@ async function translate({ filePath, originalUrlPath }: { filePath: string, orig
   const match = filePath.match(/.*\/src\/(?<dir>.*)/);
   if (!match?.groups?.dir) throw new Error('no dir for ' + filePath);
 
-  const updatedMd = updateMd(result, originalUrlPath);
+  const updatedMd = updateMd(result, originalLink);
   const newFilePath = `${baseDir}/src/${option.dir}/${match.groups.dir}`;
   await fsPromises.mkdir(path.dirname(newFilePath), { recursive: true });
   await fsPromises.writeFile(newFilePath, updatedMd);
 }
+
 const [lang, filePath, originalUrlPath] = process.argv.slice(2);
 if (!filePath || !originalUrlPath) {
-  console.warn('this feature not implemented!!');
-  // TODO: read from feed
+  const targets = await retrieveTarget();
+  for (const target of targets) {
+    try {
+      await translate({
+        filePath: `${baseDir}/src${target.path}`,
+        originalLink: target.link
+      }, English);
+    } catch (e) {
+      console.error('failed...', target, { e });
+    }
+  }
+
 } else {
   await translate({
     filePath,
-    originalUrlPath: originalUrlPath
+    originalLink: originalUrlPath
   }, English);
 }
 console.info('DONE!');

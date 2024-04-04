@@ -5,7 +5,7 @@ exclude: true
 title: 今月の記事
 ---
 
-{%- set target = search.pages('exclude!=true') | currentMonthPosts %}
+{%- set target = search.pages('exclude!=true translate!=true') | currentMonthPosts %}
 <p>投稿数：{{ target.length }}</p>
 <p>総記事数：{{ (search | posts).length }}</p>
 

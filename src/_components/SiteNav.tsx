@@ -18,7 +18,7 @@ export default ({ search, meta }: Props) => (
             <div className="menu-button"></div>
           </label>
           <ul className="menu">
-            {search.pages("pages exclude!=true").map((page) => (
+            {search.pages("pages exclude!=true translate!=true").map((page) => (
               <li key={page?.url}>
                 <a
                   href={page?.url}

@@ -20,7 +20,7 @@ export function makeAuthorArticles(search: Search): { [name: string]: Author } {
     };
   });
   // assign
-  const pages = search.pages<Lume.Data>("exclude!=true", "date=desc");
+  const pages = search.pages<Lume.Data>("exclude!=true translate!=true", "date=desc");
   filterByPost(pages).forEach((article) => {
     const author = contributorsJson.contributors.find((contributor) =>
       contributor.name === article.author

@@ -7,7 +7,7 @@ export function filterByPost(pages: Lume.Data[]): Lume.Data[] {
 }
 
 export function getPostArticles(search: Search): Lume.Data[] {
-  const pages = search.pages("exclude!=true", "date=desc");
+  const pages = search.pages("exclude!=true translate!=true", "date=desc");
   return filterByPost(pages as Lume.Data[]);
 }
 

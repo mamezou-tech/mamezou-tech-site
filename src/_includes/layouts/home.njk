@@ -59,7 +59,7 @@ layout: layouts/base.njk
         <section class="post-list__wrapper recent-article">
           <h2 class="post-list__heading">新着記事<img alt="new-articles" class="icon" width="36px" height="100%" src="/img/icons/new-box.svg" /><a class="text-sm ml-4 no-underline" href="/articles/">全ての記事を見る</a></h2>
           <ul class="post-list">
-            {% for post in search.pages('layout^=layouts/post exclude!=true', 'date=desc') | limit(10) %}
+            {% for post in search.pages('layout^=layouts/post exclude!=true translate!=true', 'date=desc') | limit(10) %}
               <li class="post-list__item">
                 <div>
                   <div class="post-list__meta">
@@ -103,7 +103,7 @@ layout: layouts/base.njk
       <h2><img alt="ranking-articles" class="icon" width="24px" height="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" />先週の人気記事<img alt="new-articles" class="icon" width="24px" height="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" /></h2>
       <ol>
         {%- for article in pv.ranking -%}
-        {%- set published = search.pages('exclude!=true') | articleDate(article.url) -%}
+        {%- set published = search.pages('exclude!=true translate!=true') | articleDate(article.url) -%}
         <li><a href="{{ article.url }}">{{ article.title }}</a></li>
         {%- endfor -%}
       </ol>

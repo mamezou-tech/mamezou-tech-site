@@ -53,10 +53,11 @@ jobs:
             git status -sb
             echo "changed=true" >> $GITHUB_OUTPUT
             cat translated.json
-          
-            echo 'translated<<EOF' >> $GITHUB_OUTPUT
-            cat translated.json >> $GITHUB_OUTPUT
-            echo 'EOF' >> $GITHUB_OUTPUT
+            {
+              echo 'translated<<EOF'
+              cat translated.json
+              echo EOF
+            } >> $GITHUB_OUTPUT
           fi
 
       - name: Commit report

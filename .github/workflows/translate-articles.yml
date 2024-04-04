@@ -52,6 +52,7 @@ jobs:
             echo "require commit & push"
             git status -sb
             echo "changed=true" >> $GITHUB_OUTPUT
+            echo "translated='$(cat translated.json)'" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit report
@@ -72,5 +73,9 @@ jobs:
           source_branch: ${{ steps.create-feature-branch.outputs.branch }}
           pr_title: "[no-image] Add English-translated articles"
           pr_reviewer: kudoh
-          pr_body: "Check auto English-translated articles."
+          pr_body: > 
+            Check auto English-translated articles.
+            
+            The following articles have been translated.
+            ${{ steps.translate-latest-articles.translated }}
 

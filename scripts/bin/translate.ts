@@ -97,17 +97,21 @@ async function translate({ filePath, originalLink }: { filePath: string, origina
 const [lang, filePath, originalUrlPath] = process.argv.slice(2);
 if (!filePath || !originalUrlPath) {
   const targets = await retrieveTarget();
+  const failed = [];
+  const succeeded = [];
   for (const target of targets) {
     try {
       await translate({
         filePath: `${baseDir}/src${target.path}`,
         originalLink: target.link
       }, English);
+      succeeded.push(target);
     } catch (e) {
       console.error('failed...', target, { e });
+      failed.push(target);
     }
   }
-
+  await fsPromises.writeFile('translated.json', JSON.stringify({ succeeded, failed }));
 } else {
   await translate({
     filePath,

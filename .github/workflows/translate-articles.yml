@@ -1,4 +1,4 @@
-name: generate-weekly-ranking
+name: translate-articles
 
 on:
   schedule:

@@ -52,7 +52,8 @@ jobs:
             echo "require commit & push"
             git status -sb
             echo "changed=true" >> $GITHUB_OUTPUT
-            echo "translated='$(cat translated.json)'" >> $GITHUB_OUTPUT
+            cat translated.json
+            echo "translated=$(cat translated.json)" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit report

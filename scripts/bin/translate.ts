@@ -111,7 +111,7 @@ if (!filePath || !originalUrlPath) {
       failed.push(target);
     }
   }
-  await fsPromises.writeFile('translated.json', JSON.stringify({ succeeded, failed }));
+  await fsPromises.writeFile('translated.json', JSON.stringify({ succeeded, failed }, null, 2));
 } else {
   await translate({
     filePath,

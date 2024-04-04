@@ -78,5 +78,8 @@ jobs:
             Check auto English-translated articles.
             
             The following articles have been translated.
+            
+            ```json
             ${{ steps.translate-latest-articles.outputs.translated }}
+            ```
 

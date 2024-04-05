@@ -30,6 +30,7 @@ Header part (known as Front Matter) included in markdown should be output.
 However, the title should be translated.
 
 - \`豆蔵\` is translated to Mamezou.
+- \`title\` in Front Matter section must not be included \`:\`
  
 Articles to be translated are as follows.
 

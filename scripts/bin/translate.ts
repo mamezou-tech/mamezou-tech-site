@@ -1,11 +1,9 @@
 import OpenAI from 'openai';
 import { ask } from '../util/chat-gpt.js';
-import { promises as fsPromises } from 'fs';
+import fs, { promises as fsPromises } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 import { retrieveTarget } from './retrieve-translate-target.js';
-
-const openai = new OpenAI();
 
 const English = {
   language: 'English',
@@ -19,16 +17,19 @@ const Chinese = {
 
 const makeMessage = (text: string, language: string) => {
   return `Translate Japanese articles into ${language}.
-The following are not subject to translation.
+The following should not be translated.
 
 - Source code (but translate comments)
 - Names of books included in the article
-- Tags in Front Matter section
+- \`tags\` in Front Matter section
+- HTML tags (like video,script). These tags should output as is.
 
 Also, do not output anything other than the translated text.
 
 Header part (known as Front Matter) included in markdown should be output.
 However, the title should be translated.
+
+- \`豆蔵\` is translated to Mamezou.
  
 Articles to be translated are as follows.
 
@@ -95,16 +96,21 @@ async function translate({ filePath, originalLink }: { filePath: string, origina
 }
 
 const [lang, filePath, originalUrlPath] = process.argv.slice(2);
+const targetLang = English;
 if (!filePath || !originalUrlPath) {
   const targets = await retrieveTarget();
   const failed = [];
   const succeeded = [];
-  for (const target of targets) {
+  for (const target of targets.slice(3)) {
     try {
+      if (fs.existsSync(`${baseDir}/src/${targetLang.dir}${target.path}`)) {
+        console.info(`${target.path} has already translated(skip)`)
+        continue;
+      }
       await translate({
         filePath: `${baseDir}/src${target.path}`,
         originalLink: target.link
-      }, English);
+      }, targetLang);
       succeeded.push(target);
     } catch (e) {
       console.error('failed...', target, { e });
@@ -116,6 +122,6 @@ if (!filePath || !originalUrlPath) {
   await translate({
     filePath,
     originalLink: originalUrlPath
-  }, English);
+  }, targetLang);
 }
 console.info('DONE!');

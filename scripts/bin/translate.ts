@@ -17,17 +17,19 @@ const Chinese = {
 
 const makeMessage = (text: string, language: string) => {
   return `Translate Japanese articles into ${language}.
-The following are not subject to translation.
+The following should not be translated.
 
 - Source code (but translate comments)
 - Names of books included in the article
 - \`tags\` in Front Matter section
-- HTML tags (like video,script)
+- HTML tags (like video,script). These tags should output as is.
 
 Also, do not output anything other than the translated text.
 
 Header part (known as Front Matter) included in markdown should be output.
 However, the title should be translated.
+
+- \`豆蔵\` is translated to Mamezou.
  
 Articles to be translated are as follows.
 

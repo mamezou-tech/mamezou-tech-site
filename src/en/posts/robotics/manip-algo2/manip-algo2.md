@@ -2,23 +2,7 @@
 title: Algorithms for Controlling Robot Manipulators 2
 author: takahiro-ishii
 date: 2024-03-26T00:00:00.000Z
-tags:
-  - Robot
-  - Manipulator
-  - Algorithm
-  - Trajectory Generation
-  - Inverse Kinematics
-  - Jacobian Matrix
-  - Homogeneous Matrix
-  - Quaternion
-  - Slerp
-  - Spherical Linear Interpolation
-  - Smooth
-  - Smooth Trajectory
-  - Attitude Change
-  - Velocity Overlay
-  - Velocity Profile
-  - Velocity Vector
+tags: [ロボット, マニピュレータ, アルゴリズム, 軌跡生成, 逆運動学, ヤコビ行列, 同次行列, 四元数, Quaternion, Slerp, 球面線形補間, 平滑, 滑らか軌跡, 姿勢変化, 速度重ね, 速度プロファイル, 速度ベクトル]
 image: true
 prevPage: ./src/posts/robotics/manip-algo/manip-algo.md
 translate: true

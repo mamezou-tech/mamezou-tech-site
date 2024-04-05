@@ -2,13 +2,9 @@
 title: Nuxt3 - Unit Testing Part 1 - Setup & Mounting Components
 author: noboru-kudo
 date: 2024-02-07T00:00:00.000Z
-tags:
-  - nuxt
-  - vue
-  - test
+tags: [nuxt, vue, テスト]
 image: true
 translate: true
-
 ---
 
 :::alert

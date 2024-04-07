@@ -4,8 +4,8 @@ author: noboru-kudo
 date: 2022-10-02
 updated: 2023-05-10
 tags: [SSG, SSR]
-prevPage: ./src/posts/nuxt3/nuxt3-rendering-mode.md
-nextPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md
+prevPage: ./src/en/posts/nuxt3/nuxt3-rendering-mode.md
+nextPage: ./src/en/posts/nuxt3/nuxt3-universal-fetch.md
 image: true
 ---
 

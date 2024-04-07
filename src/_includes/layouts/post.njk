@@ -58,7 +58,7 @@ layout: layouts/base.njk
 
       <nav class="post__pagination">
         {%- if pageNavigationTag %}
-          {%- set previousPost = search.previousPage(url, pageNavigationTag) %}
+          {%- set previousPost = search.previousPage(url, pageNavigationTag + " translate!=true") %}
           {%- if previousPost %}
 
             <a href="{{ previousPost.url | url }}">
@@ -68,7 +68,7 @@ layout: layouts/base.njk
 
           {% endif %}
 
-          {%- set nextPost = search.nextPage(url, pageNavigationTag) %}
+          {%- set nextPost = search.nextPage(url, pageNavigationTag + " translate!=true") %}
           {%- if nextPost %}
 
             <a href="{{ nextPost.url | url }}">

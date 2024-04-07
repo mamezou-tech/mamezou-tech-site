@@ -3,8 +3,8 @@ title: Nuxt3入門(第5回) - アプリケーションの設定情報を管理�
 author: noboru-kudo
 date: 2022-10-16
 tags: [SSG, SSR]
-prevPage: ./src/posts/nuxt3/nuxt3-routing.md
-nextPage: ./src/posts/nuxt3/nuxt3-error-handling.md
+prevPage: ./src/en/posts/nuxt3/nuxt3-routing.md
+nextPage: ./src/en/posts/nuxt3/nuxt3-error-handling.md
 image: true
 ---
 

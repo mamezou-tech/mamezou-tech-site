@@ -3,8 +3,8 @@ title: Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状�
 author: noboru-kudo
 date: 2022-10-28
 tags: [SSG, SSR]
-prevPage: ./src/posts/nuxt3/nuxt3-plugin-middleware.md
-nextPage: ./src/posts/nuxt3/nuxt3-serverless-deploy.md
+prevPage: ./src/en/posts/nuxt3/nuxt3-plugin-middleware.md
+nextPage: ./src/en/posts/nuxt3/nuxt3-serverless-deploy.md
 image: true
 ---
 

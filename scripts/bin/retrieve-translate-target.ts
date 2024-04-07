@@ -28,7 +28,7 @@ export async function retrieveTarget(): Promise<LatestArticle[]> {
     return { link, published };
   }).filter(entry => {
     const entryDate = DateTime.fromISO(entry.published);
-    const weekAgo = DateTime.fromISO('2024-02-01')
+    const weekAgo = DateTime.now().minus(Duration.fromObject({ weeks: 1 }));
     return entryDate >= weekAgo;
   });
 

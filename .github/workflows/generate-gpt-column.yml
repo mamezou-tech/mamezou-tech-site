@@ -5,11 +5,24 @@ on:
     - cron: '0 3 * * *'
   workflow_dispatch:
 
+env:
+  AWS_REGION : "ap-northeast-1"
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.MZ_SITE_ROLE_ARN }}
+          role-session-name: image-push-session
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Create Branch for GPT generated page
         id: create-gpt-branch
@@ -63,6 +76,7 @@ jobs:
           git commit -m "chore: Add GPT generated column"
           git push -u origin ${{ steps.create-gpt-branch.outputs.branch }}
 
+      # TODO deprecated. use gh pr create
       # https://github.com/marketplace/actions/github-pull-request-action
       - name: Create Pull Request
         uses: repo-sync/pull-request@v2

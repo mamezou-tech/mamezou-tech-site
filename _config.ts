@@ -114,6 +114,13 @@ site.copy("fonts");
 site.copy("img");
 
 site.helper("year", () => `${new Date().getFullYear()}`, { type: "tag" });
+site.helper("currentDate", () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}, { type: "tag" });
 site.helper("shortDesc", shortDesc, { type: "tag" });
 
 site.filter(

@@ -397,3 +397,14 @@ span.code-filename + pre {
 .link-separator {
   @apply my-6 border-t border-purple-200
 }
+
+.mameka-column {
+  img {
+    @apply float-left mr-6
+  }
+  @media (max-width: 600px) {
+    img {
+      @apply hidden
+    }
+  }
+}

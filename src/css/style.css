@@ -400,7 +400,7 @@ span.code-filename + pre {
 
 .mameka-column {
   img {
-    @apply float-left mr-6
+    @apply float-right ml-6
   }
   @media (max-width: 600px) {
     img {

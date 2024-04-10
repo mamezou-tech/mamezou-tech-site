@@ -3,6 +3,7 @@ title: OpenAI Assistants APIのストリームレスポンスでUXを改善す�
 author: noboru-kudo
 date: 2024-04-10
 tags: [OpenAI, GPT]
+image: true
 ---
 
 OpenAIの[Assistants API](https://platform.openai.com/docs/assistants/overview)はスレッドによる会話コンテキストの維持やFunction calling、Retrieval等のツールが使えて便利ですね。

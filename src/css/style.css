@@ -399,11 +399,11 @@ span.code-filename + pre {
 }
 
 .mameka-column {
-  img {
+  img.column-image {
     @apply float-right ml-6
   }
   @media (max-width: 600px) {
-    img {
+    img.column-image {
       @apply hidden
     }
   }

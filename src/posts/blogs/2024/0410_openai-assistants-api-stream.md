@@ -80,6 +80,10 @@ try {
 
 [^1]: アシスタントは残り続けるので消し忘れたらOpenAI APIの管理コンソールから削除しておきましょう。
 
+なお、アシスタントやスレッド等の用語は、[前述の記事](/blogs/2023/11/08/openai-assistants-api-intro/)や以下公式ドキュメントを参照してください。
+
+- [OpenAI Doc - How Assistants work - Objects](https://platform.openai.com/docs/assistants/how-it-works/objects)
+
 ## ストリームレスポンスを使う
 
 先ほど記述しなかったスレッド実行のコードを記述します。
@@ -153,7 +157,7 @@ await stream.finalRun();
 こちらの方が可読性が高いので、基本的にはこちらを使用した方が良いと思います。
 :::
 
-以下は動画です。
+以下はこのスクリプトを実行した動画です。
 
 <div class="mb-5">
 <a href="https://gyazo.com/a1a13b587a8f0cf0117328a1503fc98c">

@@ -19,13 +19,13 @@ type Gpt = {
 };
 
 const categories = [
-  'funny jargon',
-  'agile words',
-  'Developer Tips',
-  'cloud technics',
-  'programing technics',
-  'AI words',
-  'IT Security words'
+  'Robotics',
+  'UX/UI Design Insights',
+  'Coding Challenges',
+  'Emerging Technologies',
+  'Tech Giants\' Innovations',
+  'Fintech Innovations',
+  'IoT Ideas'
 ];
 
 async function main(path: string) {
@@ -46,7 +46,6 @@ JSON format:
 
 Please follow the restrictions below.
 - No need to reply message
-- Only known jargon to be output
 - Do not include obscene or vulgar words
 - Speak in English
 

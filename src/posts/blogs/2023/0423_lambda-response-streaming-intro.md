@@ -2,7 +2,7 @@
 title: AWS Lambdaのレスポンスストリーミングを使ってChatGPTっぽいUIにする
 author: noboru-kudo
 date: 2023-04-23
-tags: [サーバーレス, lambda, AWS, chatgpt]
+tags: [サーバーレス, lambda, OpenAI, AWS, chatgpt]
 ---
 
 2023-04-07にAWS Lambdaのレスポンスストリーミングのサポートが発表されました。

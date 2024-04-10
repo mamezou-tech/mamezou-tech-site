@@ -1,9 +1,9 @@
-import OpenAI from 'openai';
 import { ask } from '../util/chat-gpt.js';
 import fs, { promises as fsPromises } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 import { retrieveTarget } from './retrieve-translate-target.js';
+import OpenAI from 'openai';
 
 const English = {
   language: 'English',
@@ -22,6 +22,7 @@ The following should not be translated.
 - Source code (but translate comments)
 - Names of books included in the article
 - HTML tags (like video,script). These tags should output as is.
+- Image link or url
 
 Also, do not output anything other than the translated text.
 
@@ -77,24 +78,51 @@ ${payload}
 `;
 }
 
-async function translate({ filePath, originalLink }: { filePath: string, originalLink: string },
-                         option: { language: string, dir: string }) {
-  console.info('processing...', filePath, originalLink);
-  const text = (await fsPromises.readFile(filePath)).toString('utf-8');
-  const { frontMatter: originalFrontMatter } = separateMd(text);
-  const response = await ask({
+async function chat(text: string, option: { language: string; dir: string }) {
+  const replies = [];
+  const request = {
     messages: [{
       role: 'user',
       content: makeMessage(text, option.language)
     }],
     temperature: 0.4,
     maxTokens: 4096
-  });
+  } satisfies Parameters<typeof ask>[number];
+
+  const response = await ask(request);
   console.log('finish_reason', response.choices[0].finish_reason);
+  replies.push(response.choices[0].message.content);
   if (response.choices[0].finish_reason === 'length') {
-    throw new Error('content too long... exceeded max output size');
+    async function retry(prevMessage: OpenAI.ChatCompletionMessageParam, times = 0) {
+      console.info('retrying...', times);
+      const retryResp = await ask({
+        ...request,
+        messages: [
+          ...(request.messages),
+          prevMessage,
+          {
+            role: 'user',
+            content: 'continue'
+          }
+        ]
+      });
+      replies.push(retryResp.choices[0].message.content);
+      if (retryResp.choices[0].finish_reason === 'length') {
+        return await retry(retryResp.choices[0].message, times + 1);
+      }
+      return
+    }
+    await retry(response.choices[0].message, 1)
   }
-  const result = response.choices[0].message.content;
+  return replies.join();
+}
+
+async function translate({ filePath, originalLink }: { filePath: string, originalLink: string },
+                         option: { language: string, dir: string }) {
+  console.info('processing...', filePath, originalLink);
+  const text = (await fsPromises.readFile(filePath)).toString('utf-8');
+  const { frontMatter: originalFrontMatter } = separateMd(text);
+  const result = await chat(text, option);
   if (!result) throw new Error('no response');
   const match = filePath.match(/.*\/src\/(?<dir>.*)/);
   if (!match?.groups?.dir) throw new Error('no dir for ' + filePath);

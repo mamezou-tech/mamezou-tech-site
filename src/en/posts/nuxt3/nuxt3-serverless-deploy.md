@@ -1,6 +1,6 @@
 ---
 title: >-
-  Nuxt3 Introduction (Part 9) - Deploying a Nuxt3 Application to a Serverless
+  Introduction to Nuxt3 (Part 9) - Deploying a Nuxt3 Application to a Serverless
   Environment
 author: noboru-kudo
 date: 2022-11-02T00:00:00.000Z

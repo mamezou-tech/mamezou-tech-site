@@ -61,25 +61,15 @@ jobs:
             } >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit report
-        if: steps.translate-latest-articles.outputs.changed == 'true'
-        run: |
-          set -eu
-          git config --local user.email "github-actions@mamezou.com"
-          git config --local user.name "github-actions"
-          git commit -m "feat: Add English-translated articles"
-          git push -u origin ${{ steps.create-feature-branch.outputs.branch }}
-
-      # https://github.com/marketplace/actions/github-pull-request-action
-      - name: Create Pull Request
-        uses: repo-sync/pull-request@v2
+      - name: Commit and Create Pull request
+        uses: peter-evans/create-pull-request@v6
         with:
-          destination_branch: "main"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ steps.create-feature-branch.outputs.branch }}
-          pr_title: "[no-image] Add English-translated articles"
-          pr_reviewer: kudoh
-          pr_body: > 
+          commit-message: "feat: Add English-translated articles"
+          author: "mameka <mameka-bot@mamezou.com>"
+          branch: auto-translation
+          delete-branch: true
+          title: "[no-image] Add English-translated articles"
+          body: >
             Check auto English-translated articles.
             
             The following articles have been translated.
@@ -89,4 +79,5 @@ jobs:
             ${{ steps.translate-latest-articles.outputs.translated }}
 
             ```
-
+          reviewers: kudoh
+          labels: bot

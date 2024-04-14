@@ -9,6 +9,17 @@ layout: layouts/base.njk
   <article class="post mr-auto ml-auto">
     <header class="post__header">
       <h1>{{ title }}</h1>
+      {%- if en %}
+      <div class="relative lg:max-2xl:fixed lg:max-2xl:bottom-5 lg:max-2xl:right-5 lg:max-2xl:bg-blue-900 lg:max-2xl:bg-opacity-50 lg:max-2xl:p-2 lg:max-2xl:rounded-md lg:max-2xl:shadow-lg cursor-pointer">
+        <a class="lg:max-2xl:text-white lg:max-2xl:text-center lg:max-2xl:block text-sm"
+           href="{{ en }}">Switch to English</a>
+      </div>
+      {% elseif ja %}
+      <div class="relative lg:max-2xl:fixed lg:max-2xl:bottom-5 lg:max-2xl:right-5 lg:max-2xl:bg-blue-900 lg:max-2xl:bg-opacity-50 lg:max-2xl:p-2 lg:max-2xl:rounded-md lg:max-2xl:shadow-lg cursor-pointer">
+        <a class="lg:max-2xl:text-white lg:max-2xl:text-center lg:max-2xl:block text-sm"
+           href="{{ ja }}">日本語に切り替え</a>
+      </div>
+      {%- endif %}
       <div class="post__details">
         <time datetime="{{ date | htmlDateString }}">
           {{ date | readableDate }}

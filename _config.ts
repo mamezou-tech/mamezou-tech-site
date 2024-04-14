@@ -34,9 +34,9 @@ import { makeAuthorArticles } from "./src/generators/articles_by_author.ts";
 import { makeScopeUpdate } from "./lume/scope_updates.ts";
 import meta from "./src/_data/meta.ts";
 import { Options as MarkdownOptions } from "lume/plugins/markdown.ts";
-import tailwindOptions from "./tailwind.config.js"
-import cssnano from "npm:cssnano@6.0.2"
-import markdownItCodeBlock from './lume/markdown-it/code_block_plugin.ts';
+import tailwindOptions from "./tailwind.config.js";
+import cssnano from "npm:cssnano@6.0.2";
+import markdownItCodeBlock from "./lume/markdown-it/code_block_plugin.ts";
 
 const markdown: Partial<MarkdownOptions> = {
   options: {
@@ -85,10 +85,10 @@ site.use(jsx());
 site.use(mdx());
 site.use(liquid());
 site.use(tailwindcss({
-  options: tailwindOptions
+  options: tailwindOptions,
 }));
 site.use(postcss({
-  plugins: [cssnano()]
+  plugins: [cssnano()],
 }));
 site.use(prism());
 site.use(sitemap({
@@ -117,8 +117,8 @@ site.helper("year", () => `${new Date().getFullYear()}`, { type: "tag" });
 site.helper("currentDate", () => {
   const now = new Date();
   const year = now.getFullYear();
-  const month = (now.getMonth() + 1).toString().padStart(2, '0');
-  const day = now.getDate().toString().padStart(2, '0');
+  const month = (now.getMonth() + 1).toString().padStart(2, "0");
+  const day = now.getDate().toString().padStart(2, "0");
   return `${year}-${month}-${day}`;
 }, { type: "tag" });
 site.helper("shortDesc", shortDesc, { type: "tag" });
@@ -194,7 +194,7 @@ site.filter(
     filterByPost(pages).filter((post) => {
       const now = DateTime.now();
       const date = DateTime.fromJSDate(post.date);
-      return date.month === now.month -1 && date.year === now.year;
+      return date.month === now.month && date.year === now.year;
     }),
 );
 
@@ -231,6 +231,21 @@ site.helper(
 if (!Deno.env.has("MZ_DEBUG")) {
   site.scopedUpdates(...makeScopeUpdate("src"));
 }
+
+site.preprocess([".md"], (pages) => {
+  const search = new Search({ pages, files: [], sourceData: new Map() });
+  const articles = getPostArticles(search);
+  const translated = search.pages("translate=true");
+  for (const article of articles) {
+    const found = translated.find((en) =>
+      en.page.src.path === `/en${article.page.src.path}`
+    );
+    if (found) {
+      article.en = found.url;
+      found.ja = article.url;
+    }
+  }
+});
 
 site.process([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;

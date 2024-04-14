@@ -28,8 +28,9 @@ export async function retrieveTarget(): Promise<LatestArticle[]> {
     return { link, published };
   }).filter(entry => {
     const entryDate = DateTime.fromISO(entry.published);
-    const weekAgo = DateTime.now().minus(Duration.fromObject({ weeks: 1 }));
-    return entryDate >= weekAgo;
+    const from = DateTime.now().minus(Duration.fromObject({ months: 1 }));
+    // const weekAgo = DateTime.fromISO('2023-12-01')
+    return entryDate >= from;
   });
 
   for await (let entry of target) {

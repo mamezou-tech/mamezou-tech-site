@@ -2,7 +2,7 @@ name: translate-articles
 
 on:
   schedule:
-    - cron: '0 15 * * 1'
+    - cron: '0 14 * * 0'
   workflow_dispatch:
 
 jobs:
@@ -47,19 +47,13 @@ jobs:
           set -eu
           cd ${GITHUB_WORKSPACE}/scripts
           npm run translate:en
-          git add ${GITHUB_WORKSPACE}/src/en
-          if ! git diff-index --quiet HEAD --; then
-            echo "require commit & push"
-            git status -sb
-            echo "changed=true" >> $GITHUB_OUTPUT
+          cat translated.json
+          {
+            echo 'translated<<EOF'
             cat translated.json
-            {
-              echo 'translated<<EOF'
-              cat translated.json
-              echo ''
-              echo EOF
-            } >> $GITHUB_OUTPUT
-          fi
+            echo ''
+            echo EOF
+          } >> $GITHUB_OUTPUT
 
       - name: Commit and Create Pull request
         uses: peter-evans/create-pull-request@v6

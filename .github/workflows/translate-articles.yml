@@ -11,13 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create Branch for translation
-        id: create-feature-branch
-        run: |
-          BRANCH=feature/$(date +"%Y-%m-%d")-translate
-          git switch -c $BRANCH
-          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-
       - name: Set up Node.js environment
         uses: actions/setup-node@v4
         with:

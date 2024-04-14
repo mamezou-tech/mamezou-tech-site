@@ -11,7 +11,10 @@ export const titleImage = "/img/logo/mame-kun3_50.png";
 export const hideCategory = true;
 
 export default function* ({ search, paginate, comp }: Lume.Data) {
-  const pages = search.pages<Lume.Data>("posts exclude!=true translate!=true", "date=desc");
+  const pages = search.pages<Lume.Data>(
+    "posts exclude!=true translate!=true",
+    "date=desc",
+  );
   const posts = filterByPost(pages);
   const options: PaginateOptions = {
     url: (n: number) => `/blogs/${n > 1 ? `${n.toString()}/` : ""}`,

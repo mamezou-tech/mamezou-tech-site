@@ -76,13 +76,13 @@ function Recommendation({ tags }: { tags: string }) {
       </ul>
       <nav className="post__pagination">
         {currentPage > 0 && (
-          <button onClick={prevPage} style={{marginRight: "8px"}}>
+          <button onClick={prevPage} style={{ marginRight: "8px" }}>
             <span>←</span>前へ
           </button>
         )}
         {(currentPage + 1) * 10 < articles.length
           ? (
-            <button onClick={nextPage} style={{marginRight: "8px"}}>
+            <button onClick={nextPage} style={{ marginRight: "8px" }}>
               次へ<span>→</span>
             </button>
           )

@@ -9,5 +9,5 @@ export default {
   env: Deno.env.get("CONTEXT"),
   branch: Deno.env.get("BRANCH") || "main",
   netlifyContext: Deno.env.get("CONTEXT") || "unknown",
-  imageUrl: "https://image.mamezou-tech.com"
+  imageUrl: "https://image.mamezou-tech.com",
 };

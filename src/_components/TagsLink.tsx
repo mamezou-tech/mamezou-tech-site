@@ -8,7 +8,9 @@ export default (
       .slice(0, 50)
       .map((t) => (
         <span key={t}>
-          <a href={url(`/tags/${t.toLowerCase()}/`)} className="post-tag">#{t}</a>
+          <a href={url(`/tags/${t.toLowerCase()}/`)} className="post-tag">
+            #{t}
+          </a>
           {"\n"}
         </span>
       ));

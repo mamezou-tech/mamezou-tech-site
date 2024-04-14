@@ -1,16 +1,18 @@
 import { chop } from "./utils.ts";
 
 function isPage(target: Lume.Data | Lume.Page): target is Lume.Page {
-  return "src" in target
+  return "src" in target;
 }
 export const shortDesc = (
   pages: Lume.Data[],
   pageData: Lume.Data | Lume.Page,
   defaultValue: string,
 ) => {
-  const [path, url] = isPage(pageData) ? [pageData.src.path, pageData.data.url] : [pageData.page.src.path, pageData.url];
+  const [path, url] = isPage(pageData)
+    ? [pageData.src.path, pageData.data.url]
+    : [pageData.page.src.path, pageData.url];
   if (!path) {
-    return defaultValue
+    return defaultValue;
   }
 
   const isPost = path.includes("/posts/");

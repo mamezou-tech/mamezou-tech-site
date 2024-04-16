@@ -30,20 +30,21 @@ jobs:
           cd ${GITHUB_WORKSPACE}/scripts
           npm ci
 
+      - name: configure google credentials
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
       - name: Generate GA PageView report
         id: generate-ga-pv-report
         env:
-          GOOGLE_APPLICATION_CREDENTIALS_FILE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_FILE }}
           GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
         run: |
-          set -eu
           cd ${GITHUB_WORKSPACE}/scripts
-          echo ${GOOGLE_APPLICATION_CREDENTIALS_FILE} | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
-          export GOOGLE_APPLICATION_CREDENTIALS=${GITHUB_WORKSPACE}/google_auth.json
           npm run generate:weekly-ranking
-          git add ${GITHUB_WORKSPACE}/src/_data
 
       - name: Commit and Create Pull request
         uses: peter-evans/create-pull-request@v6
@@ -56,7 +57,3 @@ jobs:
           body: "Check weekly access ranking report."
           reviewers: kudoh
           labels: bot
-
-      - name: Delete google auth file
-        run: rm -f ${GITHUB_WORKSPACE}/google_auth.json
-        if: always()

@@ -6,11 +6,11 @@ tags: [OpenAI, GPT]
 image: true
 ---
 
-昨日OpenAIからバッチAPIの発表がありました。
+2024-04-16にOpenAIから複数APIを一括実行するバッチAPIが発表されました。
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Introducing the Batch API: save costs and get higher rate limits on async tasks (such as summarization, translation, and image classification).<br><br>Just upload a file of bulk requests, receive results within 24 hours, and get 50% off API prices: <a href="https://t.co/ls8DjR6qA9">https://t.co/ls8DjR6qA9</a> <a href="https://t.co/3W1GHijV3S">pic.twitter.com/3W1GHijV3S</a></p>&mdash; OpenAI Developers (@OpenAIDevs) <a href="https://twitter.com/OpenAIDevs/status/1779922566091522492?ref_src=twsrc%5Etfw">April 15, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-なんと24時間以内で終わる場合は、バッチAPIのコストが通常のAPIの半分で済むようです。
+なんと24時間以内で終わる場合は、バッチAPIのコストは半分で済むようです。
 以下はOpenAIの[Pricingページ](https://openai.com/pricing)からの抜粋です。
 
 > Language models are also available in the Batch API that returns completions within 24 hours for a 50% discount.

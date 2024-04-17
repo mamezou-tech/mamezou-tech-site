@@ -46,7 +46,7 @@ image: false
 
 [Amazon Transcribe](https://aws.amazon.com/jp/transcribe/) による文字起こしを使って、翻訳を実現する Step Functions は 2021年10月5日の AWS の公式ブログに「[AWS Step Functions が、ワークフローの自動化を容易にする 200 の AWS サービスのサポートを開始](https://aws.amazon.com/jp/blogs/news/now-aws-step-functions-supports-200-aws-services-to-enable-easier-workflow-automation/)」という記事があり、幾らかはまりポイントはありましたがこれを参考にして構築できました。
 
-3日目のデイリーレトロスペクティブでは、Fun が少ないなと個人的にはさびしく感じましたが Done と Learn が多いという結果になりました。
+3日目のデイリーレトロスペクティブでは、Fun が少ないなと個人的にはさびしく感じながら Done と Learn が多いという結果になりました。
 
 ## 最終日 (4日目)
 

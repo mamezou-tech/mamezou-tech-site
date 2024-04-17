@@ -2,7 +2,7 @@
 title: スクラム入門の勉強会を開催しました
 author: shigeki-shoji
 date: 2024-04-18
-tags: ["アジャイル開発", "新人向け"]
+tags: ["アジャイル開発", AWS, "新人向け"]
 image: false
 ---
 

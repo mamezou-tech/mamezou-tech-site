@@ -205,7 +205,21 @@ site.filter("newestDate", (pages: Lume.Data[]) => {
   );
   return first.date;
 });
-site.filter("isoDate", (d: Date) => DateTime.fromJSDate(d).toISO());
+
+site.filter("isoDateTime", (d: Date | string) => {
+  if (d instanceof Date) {
+    return DateTime.fromJSDate(d).toISO();
+  } else {
+    return DateTime.fromISO(d).toISO();
+  }
+});
+site.filter("isoDate", (d: Date | string) => {
+  if (d instanceof Date) {
+    return DateTime.fromJSDate(d).toISODate();
+  } else {
+    return DateTime.fromISO(d).toISODate();
+  }
+});
 site.filter(
   "absoluteUrl",
   (s: string, base: string) => new URL(s, base).toString(),

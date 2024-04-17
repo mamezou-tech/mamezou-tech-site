@@ -99,16 +99,19 @@ layout: layouts/base.njk
         </section>
       </article>
     </div>
-    <div class="additional-area w-full md:w-5/12 2xl:w-4/12 md:float-right p-4 mt-12">
-      <article class="mr-auto ml-auto">
-      <h2><img alt="ranking-articles" class="icon" width="24px" height="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" />先週の人気記事<img alt="new-articles" class="icon" width="24px" height="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" /></h2>
-      <ol>
-        {%- for article in pv.ranking -%}
-        {%- set published = search.pages('exclude!=true translate!=true') | articleDate(article.url) -%}
-        <li><a href="{{ article.url }}">{{ article.title }}</a></li>
-        {%- endfor -%}
-      </ol>
+    <div class="w-full md:w-5/12 2xl:w-4/12 md:float-right mt-12">
+      <article class="additional-area mr-auto ml-auto p-4">
+        <h2><img alt="ranking-articles" class="icon" width="24px" height="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" />先週の人気記事<img alt="new-articles" class="icon" width="24px" height="24px" src="https://api.iconify.design/fluent/star-emphasis-20-filled.svg?color=red" /></h2>
+        <ol>
+          {%- for article in pv.ranking -%}
+          {%- set published = search.pages('exclude!=true translate!=true') | articleDate(article.url) -%}
+          <li><a href="{{ article.url }}">{{ article.title }}</a></li>
+          {%- endfor -%}
+        </ol>
       </article>
+      <div class="mt-8">
+        <a class="twitter-timeline" data-height="2000" data-theme="light" href="https://twitter.com/MamezouDev?ref_src=twsrc%5Etfw">Tweets by MamezouDev</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
     </div>
   </div>
   <div style="margin: 1rem 0 0 0; padding: 0;">

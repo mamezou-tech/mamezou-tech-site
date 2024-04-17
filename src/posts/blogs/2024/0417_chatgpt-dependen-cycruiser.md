@@ -2,13 +2,15 @@
 title: 生成AIを活用してdependency-cruiserのカスタムルールを効率的に作成する方法
 author: takayuki-oguro
 date: 2024-04-17
-tags: [大規模言語モデル, javascript, typescript, OpenAI, chatgpt]
+tags: [chatgpt, dependency-cruiser, javascript, typescript, OpenAI, 大規模言語モデル]
 image: true
 ---
 
 # はじめに
 
 JavaScriptプロジェクトでは、複雑化する依存関係の管理が非常に重要です。dependency-cruiserはこれを可視化し、分析する強力なツールですが、設定の複雑さがネックとなることもあります。特に、プロジェクト固有のルールの作成は多大な時間と労力を消費します。
+
+[dependency-cruiser(GitHubリポジトリ)](https://github.com/sverweij/dependency-cruiser)
 
 生成AIを活用することで、dependency-cruiserのカスタムルール作成を効率化できます。この記事では、 **ChatGPT4** を使ってdependency-cruiserの設定を半自動化し、迅速かつ正確に依存関係ルールを作成する方法を解説します。これにより、開発者は創造的な作業に集中でき、コードの整理と保守が容易になります。
 
@@ -103,7 +105,7 @@ strict digraph "dependency-cruiser output"{
 3. **ChatGPTによるカスタムルール生成**:
    エラーにしたいルールを特定したら、その内容をChatGPTに提供し、**.dependency-cruiser.js** に追記する設定コードを生成させます。以下のように依頼します：
 
-- 実際にChatGPT4に渡したプロンプト
+- 実際にChatGPT4に渡したプロンプト（コード部分は、dependency-graph.dot 内の全コード）
 
 ```plaintext
 dependency-cruiserの.dependency-cruiser.jsに追加するカスタムルールを作成してください。

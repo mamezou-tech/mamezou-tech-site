@@ -53,7 +53,7 @@ const request = [
       custom_id: 'request-1', // リクエストを識別する任意のID
       method: 'POST',         // 現時点ではPOSTのみ
       url: '/v1/chat/completions', // 現時点ではこれのみ
-      // 任意のリクエスト
+      // urlに対応したリクエストボディ(現時点ではChat Completion APIのみ)
       body: {
         model: 'gpt-3.5-turbo',
         messages: [system, { role: 'user', content: 'OpenAIからバッチAPIがリリースされました。コストが半額になるよ！' }]
@@ -134,7 +134,7 @@ console.log(JSON.stringify(batch)); // Batchオブジェクト
 
 先ほどバッチAPIを実行しましたがまだ終わっていません。
 バッチAPIから返ってくるBatchオブジェクトのステータスは`validating`です。
-その後`in_prograss`(実行中)へと変わり、実行が終わると`completed`になり、その結果がファイルとしてアップロードされます。
+その後`in_progress`(実行中)へと変わり、実行が終わると`completed`になり、その結果がファイルとしてアップロードされます。
 
 ここではバッチ処理が終わるまで10秒間隔でポーリングして、完了後にバッチ処理結果をコンソールに出力してみます。
 
@@ -142,7 +142,7 @@ console.log(JSON.stringify(batch)); // Batchオブジェクト
 while (true) {
   await new Promise(resolve => setTimeout(resolve, 10000)); // 10秒待つ
   const current = await openai.batches.retrieve(batch.id); // 現在の状態(Batch)を取得
-  if (current.status === 'failed' || current.status === 'cancelled') {
+  if (current.status === 'failed' || current.status === 'cancelled' || current.status === 'expired') {
     throw new Error(current.status);
   }
   if (current.status === 'completed') { // バッチ処理完了

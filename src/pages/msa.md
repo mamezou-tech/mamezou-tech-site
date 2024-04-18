@@ -34,7 +34,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
 - Umbrella仕様編
   - [MicroProfile Config 3.0へのキャッチアップ](/msa/mp/cntrn08-mp-config3/)
   - [MicroProfile OpenAPI 3.0の新機能と既存機能の比較](/msa/mp/cntrn09-mp-openapi3/)
-  - [MicroProfile RestClient 3.0の確認と小技機能の紹介](/msa/mp/cntrn11-mp-restclient3/) 
+  - [MicroProfile RestClient 3.0の確認と小技機能の紹介](/msa/mp/cntrn11-mp-restclient3/)
   - [MicroProfile JWT Authがやってくれること・できること](/msa/mp/cntrn17-mp-jwt/)
   - [MicroProfile Healthの機能と利用](/msa/mp/cntrn10-mp-health/)
   - [MicroProfile Metricsの機能と利用](/msa/mp/cntrn15-mp-metrics/)
@@ -47,7 +47,7 @@ Javaによるエンタープライズ開発のフレームワークと言えばS
   - 今後、順次追加予定！
 
 - Jakarta EE CoreProfile仕様編
-  - [CDI 4.0 Lite - Build compatible extensionsをサンプルで理解する](/blogs/2023/12/04/build-extension-sample/)<span style="color: red;">★NEW★</span>
+  - [CDI 4.0 Lite - Build compatible extensionsをサンプルで理解する](/blogs/2023/12/04/build-extension-sample/)
 
 - （番外編）
   - [Helidon Tips - SLF4J＋LogbackへのLogger切り替え](/msa/mp/ext01-helidon-logback/)
@@ -75,7 +75,7 @@ Javaでマイクロサービスを構築するならやはり[Spring Boot](https
 - [Spring Boot と Apache Camel の統合](/blogs/2022/06/12/spring-boot-with-apache-camel-integration/)
   - Spring Boot でエンタープライズインテグレーションパターン (EIPs) を活用するため Apache Camel との統合について説明します。
 - [OpenID Connect でパスワードレス認証を使う](/blogs/2022/06/23/webauthn-3/)
-  - Keycloak [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) によるパスワードレス認証を利用する構成を説明します。 
+  - Keycloak [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) によるパスワードレス認証を利用する構成を説明します。
 
 ## 非同期メッセージング
 マイクロサービスアーキテクチャで使われるプロセス間通信には REST や gRPC のような一対一の同期的通信だけでなく、一対多の非同期なメッセージングによる通信もあります。ここでは、非同期メッセージングのテクノロジーについてご紹介します。

@@ -65,7 +65,7 @@ const request = [
       url: '/v1/chat/completions',
       body: {
         model: 'gpt-3.5-turbo',
-        messages: [system, { role: 'user', content: 'OpenAI has released the Batch API. The cost is halved!' }]
+        messages: [system, { role: 'user', content: 'OpenAIからバッチAPIがリリースされました。コストが半額になるよ！' }]
       }
     },
     {
@@ -74,7 +74,7 @@ const request = [
       url: '/v1/chat/completions',
       body: {
         model: 'gpt-3.5-turbo',
-        messages: [system, { role: 'user', content: 'The concept of projects has been introduced in OpenAI's Dashboard!' }]
+        messages: [system, { role: 'user', content: 'OpenAIのダッシュボードからプロジェクトの概念が導入されたよ！' }]
       }
     },
     {
@@ -83,7 +83,7 @@ const request = [
       url: '/v1/chat/completions',
       body: {
         model: 'gpt-3.5-turbo',
-        messages: [system, { role: 'user', content: 'Stream response is now available in the Assistant API!' }]
+        messages: [system, { role: 'user', content: 'アシスタントAPIでストリームレスポンスが使えるようなったよ！' }]
       }
     }
   ];
@@ -117,22 +117,53 @@ Here, we poll every 10 seconds until the batch processing is completed, and outp
 
 ```typescript
 while (true) {
-  await new Promise(resolve => setTimeout(resolve, 10...
+  await new Promise(resolve => setTimeout(resolve, 10000));
+  const current = await openai.batches.retrieve(batch.id);
+  if (current.status === 'failed' || current.status === 'cancelled' || current.status === 'expired') {
+    throw new Error(current.status);
+  }
+  if (current.status === 'completed') {
+    const content = await openai.files.content(current.output_file_id!);
+    const body = await content.text();
+    const outputs = body.split('\n')
+      .filter(line => !!line.trim())
+      .map(line => JSON.parse(line));
+    outputs.forEach(output => {
+      const input = request.find(req => req.custom_id === output.custom_id);
+      console.log(`${output.custom_id}:
+${input?.body.messages.at(-1)?.content ?? ''}
+->
+${output.response.body.choices[0].message.content}`);
+    });
+    break;
+  }
+}
 ```
+
+Checking the current Batch status (`current`) via the [Batch Retrieval API](https://platform.openai.com/docs/api-reference/batch/retrieve) during polling.
+When that status (`status`) becomes `completed`, the output file is being downloaded from the [File Retrieval API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+The output files of the Batch API are also in JSONL format. The above is parsing it and outputting it to the console.
+The output file is not in the same order as the input file. You will need to link them using the `custom_id` specified in the input file.
+
+Please refer to the OpenAI API official reference for the format of the output file.
+
+- [OpenAI API Reference - Batch - The request output object](https://platform.openai.com/docs/api-reference/batch/requestOutput)
 
 Batch processing results:
 
 ```
 request-3:
-Stream response is now available in the Assistant API!
+アシスタントAPIでストリームレスポンスが使えるようなったよ！
 ->
 The stream response is now available in the Assistant API!
+
 request-2:
-The concept of projects has been introduced in OpenAI's Dashboard!
+OpenAIのダッシュボードからプロジェクトの概念が導入されたよ！
 ->
 Project concepts have been introduced in OpenAI's Dashboard!
+
 request-1:
-OpenAI has released the Batch API. The cost is halved!
+OpenAIからバッチAPIがリリースされました。コストが半額になるよ！
 ->
 Batch API has been released by OpenAI. The cost will be half!
 ```

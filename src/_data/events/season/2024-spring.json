@@ -1,0 +1,25 @@
+{
+  "entries": [
+    {
+      "date": "4月12日(金)",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "知ってちょっと得する？Javaの死語の世界",
+      "url": "/blogs/2024/04/12/death-lang-java/"
+    },
+    {
+      "date": "4月18日(木)",
+      "author": "shigeki-shoji",
+      "githubUser": "edward-mamezou",
+      "title": "スクラム入門の勉強会を開催しました",
+      "url": "/blogs/2024/04/18/introduction-to-scrum/"
+    },
+    {
+      "date": "4月19日(金)",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "新人さんに捧げる、やさしく楽しく解説するソフトウェア開発のプロジェクト用語(前編)",
+      "url": "/blogs/2024/04/19/playful_project_terms/"
+    }
+  ]
+}

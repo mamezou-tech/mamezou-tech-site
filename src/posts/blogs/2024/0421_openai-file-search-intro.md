@@ -6,7 +6,7 @@ tags: [RAG, OpenAI, GPT]
 image: true
 ---
 
-最近はOpenAI APIのアップデートが活発ですね(そろそろGPT-5が発表される気がしてなりません)。
+最近はOpenAI APIのアップデートが活発ですね(そろそろGPT-5が発表されるのでしょうか...)。
 少し前にもAssistants APIの大きなアップデートがありました。
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Introducing a series of updates to the Assistants API 🧵<br><br>With the new file search tool, you can quickly integrate knowledge retrieval, now allowing up to 10,000 files per assistant. It works with our new vector store objects for automated file parsing, chunking, and embedding. <a href="https://t.co/SL0gYknlyA">pic.twitter.com/SL0gYknlyA</a></p>&mdash; OpenAI Developers (@OpenAIDevs) <a href="https://twitter.com/OpenAIDevs/status/1780640119890047475?ref_src=twsrc%5Etfw">April 17, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>

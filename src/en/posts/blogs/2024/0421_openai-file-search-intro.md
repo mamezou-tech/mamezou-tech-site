@@ -10,15 +10,12 @@ tags:
   - GPT
 image: true
 translate: true
-
 ---
 
 :::alert
 This article has been automatically translated.
 The original article is [here](https://developer.mamezou-tech.com/blogs/2024/04/21/openai-file-search-intro/).
 :::
-
-
 
 Recently, there have been active updates to the OpenAI API (perhaps GPT-5 will be announced soon...). There was a major update to the Assistants API a little while ago.
 
@@ -187,7 +184,7 @@ This part has not changed from before. Let's chat with the assistant about the c
 Currently, I will ask about OpenAI's batch API, which is not available in GPT-4 Turbo.
 The following article file is expected to be searched:
 
-- [Trying Out the Newly Introduced OpenAI Batch API](/blogs/2024/04/17/openai-batch-api-intro/)
+- [Trying Out the Newly Introduced OpenAI Batch API](/en/blogs/2024/04/17/openai-batch-api-intro/)
 
 The source code is as follows.
 

@@ -54,6 +54,7 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: "feat: Add PV ranking report"
+          add-paths: "src/_data"
           author: "mameka <mameka-bot@mamezou.com>"
           branch: weekly-ranking-report
           delete-branch: true

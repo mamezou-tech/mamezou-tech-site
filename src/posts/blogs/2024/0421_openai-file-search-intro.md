@@ -77,7 +77,7 @@ console.log('vectorStoreId', vectorStore.id); // アタッチするVector Store�
 >
 > You first GB is free and beyond that, usage is billed at $0.10/GB/day of vector storage. There are no other costs associated with vector store operations.
 
-このようにVector Storeはサイズで課金されるため、検証目的等で作成した場合等で削除を忘れてしまうと予想外のコストが発生します。
+このようにVector Storeはサイズで課金されるため、検証目的等で作成した場合等で削除を忘れてしまうと予想外のコストが発生します(無料枠を超えるサイズの場合)。
 公式ドキュメントでも言及されていますが、`expires_after`を設定するとVector Storeが未使用状態で指定期間経過すれば有効期限切れとなります。
 
 ```typescript
@@ -141,7 +141,7 @@ const assistant = await openai.beta.assistants.create({
 ![Assistant attached Vector Store](https://i.gyazo.com/187e4f0d521c96683db588dc7b273523.png)
 
 :::column:アシスタント作成時にVector Storeも作成する
-ここでは事前にVector Storeを作成しましたが、SDKにはアシスタント作成と同時にVector Storeを作成する機能も用意されています。
+ここでは事前にVector Storeを作成しましたが、アシスタント作成と同時にVector Storeを作成する機能も用意されています。
 
 以下のソースコードは、この機能を利用してアシスタント作成時にVector Storeも一緒に作成しています。
 
@@ -157,6 +157,7 @@ const assistant = await openai.beta.assistants.create({
   tools: [{ type: 'file_search' }],
   tool_resources: {
     file_search: {
+      // ファイルIDを直接指定
       vector_stores: [{
         file_ids: [newFile.id]
       }]
@@ -272,6 +273,6 @@ const thread = await openai.beta.threads.create({
 ## まとめ
 
 今回はOpenAIのAssistants APIのv2で大きくアップデートがあったFile Search機能にフォーカスしてみました。
-登録ファイルの大幅増加が注目されますが、個人的な感覚ではv1のRetrievalよりも回答の精度がかなり上がったと思います。
+登録可能なファイル数の大幅増加が注目されますが、個人的な感覚ではv1のRetrievalよりも回答の精度がかなり上がったと思います。
 
-使用サイズのみの課金で1GBの無料枠があるなどコストも魅力的ですので、積極的に活用してみようかなと思いました。
+Vector Storeのサイズ課金のみで1GBの無料枠があるなどコストも魅力的ですので、積極的に活用してみようかなと思いました。

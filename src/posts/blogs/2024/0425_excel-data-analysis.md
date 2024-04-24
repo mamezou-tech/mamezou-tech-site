@@ -2,7 +2,7 @@
 title: Excelを使って簡単にオープンデータを分析する
 author: shinichiro-iwaki
 date: 2024-04-25
-tags: [2024年, 新人向け, 小技]
+tags: [ 新人向け, 小技]
 image: true
 ---
 

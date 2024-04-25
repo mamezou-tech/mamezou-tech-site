@@ -58,6 +58,13 @@ msixbundle は Windows 10 の比較的新しめのリリースから利用可能
 
 それでは Git Bash を Windows Terminal で使えるよう設定していきましょう。
 
+:::alert:2024.04.26追記
+Git fow Windows のセットアップに `Add a Git Bash Profile to Windows Terminal` が追加されました。
+新規インストールする場合はこのオプションにチェックを入れるだけで本記事にあるセットアップをしてくれます。
+
+![Git 2.44.0 setup](https://i.gyazo.com/780b27af943654e3dd32f1d259c41809.png)
+:::
+
 タブの右側のプルダウンメニューから `設定` を開きます。
 
 ![start setting](https://i.gyazo.com/5fdcaf48035ea94aea32e3ac104d83bd.png)

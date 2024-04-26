@@ -27,6 +27,13 @@
       "githubUser": "shinichiro-iwaki",
       "title": "Excelを使って簡単にオープンデータを分析する",
       "url": "/blogs/2024/04/25/excel-data-analysis/"
+    },
+    {
+      "date": "4月26日(金)",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "VS Code のキーマップを拡張を使わずカスタマイズしてみよう",
+      "url": "/blogs/2024/04/26/remap-vscode-keys/"
     }
   ]
 }

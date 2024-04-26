@@ -37,6 +37,12 @@ BrowserView は Web コンテンツの埋め込み方式として推奨されて
 
 base-window.md には「単一のウィンドウで複数の Web ビューを構成する柔軟な方法を提供」するとあります。BaseWindow と WebContentsView を組み合わせて複数 Web ビューのアプリを構築することを想定しているようです。
 
+:::column:2024.04.26追記
+Electron v30.0.0 がリリースされました。BrowserView の実装は削除され WebContentsView を使った Shim に置き換えられました。
+
+[Electron 30.0.0 | Electron](https://www.electronjs.org/blog/electron-30-0)
+:::
+
 ## 早速使ってみる
 
 WebContentsView を試すには、Electron v30 の alpha リリースを使用する必要があります。

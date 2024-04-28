@@ -3,6 +3,7 @@ title: メーカーでのアジャイル、ウォーターフォール、そし�
 author: takayuki-oguro
 date: 2024-04-30
 tags: [アジャイル開発, スクラム, 組込み]
+image: true
 ---
 
 # はじめに

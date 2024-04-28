@@ -9,24 +9,24 @@
       "url": "/blogs/2022/07/04/monty-hall-problem/"
     },
     {
-      "title": "Google Test を使ってみる（その５：GoogleMock編）",
-      "url": "/blogs/2023/10/08/google-test-05/"
+      "title": "Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする",
+      "url": "/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/"
     },
     {
-      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
-      "url": "/blogs/2023/03/05/using-pytest-02/"
+      "title": "OpenAI Assistants API(v2)で新しくなったFile Search(Vector Stores)を使う",
+      "url": "/blogs/2024/04/21/openai-file-search-intro/"
+    },
+    {
+      "title": "Google Test を使ってみる（その５：GoogleMock編）",
+      "url": "/blogs/2023/10/08/google-test-05/"
     },
     {
       "title": "ORマッパーのTypeORMをTypeScriptで使う",
       "url": "/blogs/2022/07/27/typeorm-with-typescript/"
     },
     {
-      "title": "Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする",
-      "url": "/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/"
-    },
-    {
-      "title": "WSL2上にUbuntu-22.04LTSを導入し、Dockerをインストールしようとしたら、いろいろとハマった件",
-      "url": "/blogs/2023/09/09/docker_ubuntu_on_wsl2/"
+      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
+      "url": "/blogs/2023/03/05/using-pytest-02/"
     },
     {
       "title": "Java用モック・フレームワーク「Mockito」を使ってみる（その２：void型メソッドのモック編）",
@@ -37,8 +37,8 @@
       "url": "/blogs/2023/09/08/windows-terminal-with-git-bash/"
     },
     {
-      "title": "Auth0 java-jwtを使った素のJWT認証",
-      "url": "/blogs/2022/12/10/java-jwt-auth/"
+      "title": "「AWS Certified Data Engineer - Associate」が正式リリースされたので、さっそく受験してきた",
+      "url": "/blogs/2024/03/23/aws-certified-data-engineer-associate/"
     }
   ]
 }

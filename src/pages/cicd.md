@@ -38,6 +38,7 @@ CI/CDパイプラインは、現代のソフトウェア開発に必要不可欠
 - [GitHub Actions - オーガニゼーションレベルの required workflows (public beta) を試す](/blogs/2023/01/13/github-actions-required-workflows/)
 - [GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する](/blogs/2023/01/16/github-actions-configuration-variables/)
 - [GitHub Actions を AWS CodeBuild で実行する](/blogs/2023/07/12/githubactions-with-codebuild/)
+- [GitHub ActionsのセルフホステッドランナーとしてAWS CodeBuildを使う](/blogs/2024/04/29/githubactions-codebuild-runner/)
 
 豆蔵有志でも、特定ユースケースに対応したActionをOSSとして公開しています。
 

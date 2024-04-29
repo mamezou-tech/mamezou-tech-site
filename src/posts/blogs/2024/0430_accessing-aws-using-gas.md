@@ -114,7 +114,7 @@ function doGet() {
 </html>
 ```
 
-HTML 中の script タグで GAS の　getUrl 関数の呼び出しがあります。[google.script.run](https://developers.google.com/apps-script/guides/html/reference/run)[^1] によりブラウザからサーバーにある getUrl 関数が呼び出せるようになっています。
+HTML 中の script タグで GAS の getUrl 関数の呼び出しがあります。[google.script.run](https://developers.google.com/apps-script/guides/html/reference/run)[^1] によりブラウザからサーバーにある getUrl 関数が呼び出せるようになっています。
 
 ## appsscript.json
 

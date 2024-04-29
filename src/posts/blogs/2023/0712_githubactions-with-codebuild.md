@@ -20,7 +20,7 @@ AWSにもCodeBuildやCodePipeline、CodeDeployといったCI/CDのマネージ�
 
 [^1]: GitHub Actionsのエコシステムにタダ乗りな感じですが、GitHub側の承諾は取っているんでしょうかね。。。
 
-- [AWS CodeBuild Doc - GitHub Action runner in AWS CodeBuild](https://docs.aws.amazon.com/codebuild/latest/userguide/action-runner.html)
+- [AWS CodeBuild Doc - GitHub Action runner in AWS CodeBuild](https://docs.aws.amazon.com/codebuild/latest/userguide/action-runner-buildspec.html)
 
 これは。。と思いましたので早速試してみました。
 
@@ -34,7 +34,7 @@ GitHub以外のVCSで動かすのになぜ必要なのかと思いましたが�
 
 ActionsをGitHubからダウンロードする際のRateリミットを回避するために、GitHubとの接続設定が必要なようです。
 
-この方法として、[公式ドキュメント](https://docs.aws.amazon.com/codebuild/latest/userguide/action-runner.html#action-runner-how-to)では管理コンソール経由(OAuth)またはCLIでアクセストークンをCodeBuildに設定する方式が説明されています。
+この方法として、[公式ドキュメント](https://docs.aws.amazon.com/codebuild/latest/userguide/access-tokens.html#access-tokens-github-console)では管理コンソール経由(OAuth)またはCLIでアクセストークンをCodeBuildに設定する方式が説明されています。
 今回はCLIの方で実施しました。
 
 事前にGitHubからパーソナルアクセストークンを発行し、以下AWS CLIで登録します。

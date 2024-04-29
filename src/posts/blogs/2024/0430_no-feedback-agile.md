@@ -2,7 +2,7 @@
 title: メーカーでのアジャイル、ウォーターフォール、そしてV字モデル：誤解を解き明かす
 author: takayuki-oguro
 date: 2024-04-30
-tags: [アジャイル開発, スクラム, 組込み]
+tags: [アジャイル開発, 組込み]
 image: true
 ---
 

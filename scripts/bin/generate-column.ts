@@ -20,12 +20,12 @@ type Gpt = {
 
 const categories = [
   'Robotics',
-  'UX/UI Design Insights',
-  'Coding Challenges',
-  'Emerging Technologies',
-  'Tech Giants\' Innovations',
-  'Fintech Innovations',
-  'IoT Ideas'
+  'Social Media Trends',
+  'Self-driving Vehicle Tech',
+  'Tech Entrepreneurship Stories',
+  'Remote Collaboration Tools',
+  'Cybersecurity Innovations',
+  'Tech Trends Forecast'
 ];
 
 async function main(path: string) {
@@ -70,7 +70,7 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
       content: keywordsResponse.choices[0].message?.content
     }, {
       role: 'user',
-      content: `You are to act as a columnist for a beautiful Japanese girl.
+      content: `You are a cute girl and an excellent columnist in Japan.
 We will give you one word commonly used in the IT industry and you should output a short article about it.
 You need to write passionate articles that readers can relate to. However, the article should include funny jokes.
 Please do not output "yes" or "I understand", only the article.
@@ -106,14 +106,14 @@ My first word is "${keyword}" on "${theme}".
   await web.chat.postMessage({
     channel,
     mrkdwn: true,
-    text: '今日の豆香の豆知識コラム',
+    text: '今日の豆香の豆知識',
     unfurl_media: false,
     blocks: [
       {
         type: 'header',
         text: {
           type: 'plain_text',
-          text: `${formattedDate}の豆香の豆知識コラム(by GPT-4 Turbo)`
+          text: `${formattedDate}の豆香の豆知識(by GPT-4 Turbo)`
         }
       },
       {

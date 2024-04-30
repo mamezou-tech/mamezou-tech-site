@@ -2,7 +2,7 @@
 title: Google Apps Scriptを使ってAWS管理コンソールにアクセスする
 author: shigeki-shoji
 date: 2024-04-30
-tags: ["Google Apps Script", AWS]
+tags: ["Google Apps Script", AWS, "認証/認可", Security]
 ---
 
 こんにちは、[庄司](https://github.com/edward-mamezou)です。

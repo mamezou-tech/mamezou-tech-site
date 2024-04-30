@@ -2,7 +2,7 @@
 title: "Google Apps ScriptのOIDCトークンを使ったAWSアクセス"
 author: shigeki-shoji
 date: 2023-09-04
-tags: [AWS, "aws-sts", "Google Apps Script"]
+tags: [AWS, "aws-sts", "Google Apps Script", "認証/認可", Security]
 ---
 
 [庄司](https://github.com/edward-mamezou)です。

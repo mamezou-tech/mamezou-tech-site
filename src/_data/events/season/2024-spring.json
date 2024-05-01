@@ -34,6 +34,13 @@
       "githubUser": "kondoumh",
       "title": "VS Code のキーマップを拡張を使わずカスタマイズしてみよう",
       "url": "/blogs/2024/04/26/remap-vscode-keys/"
+    },
+    {
+      "date": "5月1日(水)",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "新人さんに捧げる、やさしく楽しく解説するソフトウェア開発のプロジェクト用語(後編)",
+      "url": "/blogs/2024/05/01/playful_project_terms2/"
     }
   ]
 }

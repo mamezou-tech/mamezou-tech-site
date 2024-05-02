@@ -2,7 +2,7 @@
 title: 脳のメモリから「慣れ」を考察する ~新人エンジニアが最速で慣れるためにやったこと~
 author: shohei-yamashita
 date: 2024-05-08
-tags: [新人向け, 勉強法]
+tags: [新人向け, 学び]
 image: true
 ---
 
@@ -10,8 +10,7 @@ image: true
 
 株式会社豆蔵の山下です。業界未経験の状態でしたが、昨年の8月に縁あって株式会社豆蔵に入社しました。
 
-この度は、春という季節にふさわしいタイミングで、
-当時の自分を振り返りながら記事を書かせていただきました。
+この度は、春という季節にふさわしいタイミングで、当時の自分を振り返りながら記事を書かせていただきました。
 
 記事の対象とする人としては以下のとおりです。
 - プログラミング言語を習得し始めている人
@@ -47,8 +46,8 @@ image: true
 - そもそも、慣れるとは何なのだろうか
 - 慣れるためには何をするべきなのだろうか
 
-といった具合に色々な疑問点を念頭におきつつ、昨年度まで模索し続けた中で、
-今の自分が振り返って有用だと思ったものを、いくつかピックアップさせていただきました。
+といった具合に色々な疑問点を念頭におきつつ、昨年度まで模索し続けていました。
+その中で、今の自分が振り返って、有用だと思ったものをいくつかピックアップしました。
 その前に、参考にさせていただいた書籍を３冊紹介させていただきます。
 この記事の内容を抜きにしても、読んでよかったと思えるものを紹介します。
 
@@ -68,20 +67,17 @@ image: true
 2番目に紹介していますが、The Programmer's Brainよりも先に読んでいます。
 
 :::info
-この本は、2024年5月現在マイクロソフトで働く著者が、
-最前線で活躍するエンジニアたちを分析・観察して、戦略として応用できそうなものをピックアップしてまとめた一冊です。
-この記事は勉強法チックなものに偏っていますが、
-チームとして働くとは何なのか、効率よく仕事をこなすためにはどうするべきなのか、など幅広い視点から役立つトピックが書かれています。
+この本は、2024年5月現在マイクロソフトで働く著者が、最前線で活躍するエンジニアたちを分析・観察して、戦略として応用できそうなものをピックアップしてまとめた一冊です。
+本記事は勉強法に重きをおいていますが、同著ではチームとして働くとは何なのか、効率よく仕事をこなすためにはどうするべきなのか、など幅広い視点から役立つトピックが書かれています。
 :::
 
 ### 勝負論 ウメハラの流儀（[書籍リンク](https://www.amazon.co.jp/dp/4098251817)）
 最後に、有名なプロゲーマーである梅原大吾氏の著書「勝負論 ウメハラの流儀」を3つ目としてご紹介します。
-技術者が執筆した本ですが、個人的には通じる部分がいくつかありましたので、紹介いたします。
+技術者ではなくプロゲーマーが執筆した本ですが、技術者にも通じる部分がいくつかありましたため紹介いたします。
 
 :::info
 この本では、プロゲーマーの視点から「勝ち」という概念について語られています。
-読み始める前は技術者とプロゲーマーの世界はあまり接点がないものと認識していましたが。
-実際に読んでみると所々通じるものがあると感じました。
+読み始める前は技術者とプロゲーマーの世界はあまり接点がないものと認識していましたが、実際に読んでみると所々通じるものがあると感じました。
 :::
 
 ## 脳に関わる3つのメモリ
@@ -103,13 +99,13 @@ image: true
 
 ```mermaid
 flowchart LR
-  classDef class1 fill:#FFFF66,fill-opacity:0.5
-  main["　メモリ（記憶）　<br/><img src='/img/blogs/2024/0507_getting-used-to-it/computer_jinkou_chinou.png'/>"]
-  short["短期記憶<br/><img src='/img/blogs/2024/0507_getting-used-to-it/denkyuu_on.png'/>"]:::class1
-  long["長期記憶<br/><img src='/img/blogs/2024/0507_getting-used-to-it/computer_harddisk.png'/>"]:::class1
-  long_impl["潜在記憶<br/><img src='/img/blogs/2024/0507_getting-used-to-it/skate_board.png'/>"]:::class1
-  long_expl["顕在記憶<br/><img src='/img/blogs/2024/0507_getting-used-to-it/document_rule_book.png'/>"]:::class1
-  working["ワーキング<br>メモリ<br/><img src='/img/blogs/2024/0507_getting-used-to-it/dentaku_syoumen_small.png'/>"]:::class1
+  classDef class1 fill:#FFFF66,fill-opacity:0.5,stroke:#000
+  main["　メモリ（記憶）　<br/><img src='/img/blogs/2024/0508_getting-used-to-it/computer_jinkou_chinou.png'/>"]
+  short["短期記憶<br/><img src='/img/blogs/2024/0508_getting-used-to-it/denkyuu_on.png'/>"]:::class1
+  long["長期記憶<br/><img src='/img/blogs/2024/0508_getting-used-to-it/computer_harddisk.png'/>"]:::class1
+  long_impl["潜在記憶<br/><img src='/img/blogs/2024/0508_getting-used-to-it/skate_board.png'/>"]:::class1
+  long_expl["顕在記憶<br/><img src='/img/blogs/2024/0508_getting-used-to-it/document_rule_book.png'/>"]:::class1
+  working["ワーキング<br>メモリ<br/><img src='/img/blogs/2024/0508_getting-used-to-it/dentaku_syoumen_small.png'/>"]:::class1
   main --- short
   main ---|情報処理に使用| working
   main --- long
@@ -118,12 +114,12 @@ flowchart LR
   working --->|参照| long
 ```
 <!--MerMaidの要素内に画像を埋め込む際、別途同じ画像のimgタグが無いと機能しませんでした-->
-<img src='/img/blogs/2024/0507_getting-used-to-it/denkyuu_on.png' style='display: none;'/>
-<img src='/img/blogs/2024/0507_getting-used-to-it/computer_jinkou_chinou.png' style='display: none;'/>
-<img src='/img/blogs/2024/0507_getting-used-to-it/computer_harddisk.png' style='display: none'; />
-<img src='/img/blogs/2024/0507_getting-used-to-it/dentaku_syoumen_small.png' style='display: none'; />
-<img src='/img/blogs/2024/0507_getting-used-to-it/skate_board.png' style='display: none'; />
-<img src='/img/blogs/2024/0507_getting-used-to-it/document_rule_book.png' style='display: none'; />
+<img src='/img/blogs/2024/0508_getting-used-to-it/denkyuu_on.png' style='display: none;'/>
+<img src='/img/blogs/2024/0508_getting-used-to-it/computer_jinkou_chinou.png' style='display: none;'/>
+<img src='/img/blogs/2024/0508_getting-used-to-it/computer_harddisk.png' style='display: none'; />
+<img src='/img/blogs/2024/0508_getting-used-to-it/dentaku_syoumen_small.png' style='display: none'; />
+<img src='/img/blogs/2024/0508_getting-used-to-it/skate_board.png' style='display: none'; />
+<img src='/img/blogs/2024/0508_getting-used-to-it/document_rule_book.png' style='display: none'; />
 
 ### 簡単な例
 ここで、短期記憶と長期記憶がワーキングメモリにどう影響を及ぼすのかを見てみましょう。
@@ -132,17 +128,17 @@ flowchart LR
 технический_блог
 ```
 
-何も見ない状態で、先ほど示した文字列を再現してみましょうといわれると、
-おそらく多くの方が難しいと感じるかと思います。
+何も見ない状態で、先ほど示した文字列を再現してみましょうといわれると、おそらく多くの方が難しいと感じるかと思います。
 次に、以下の文字列で同じようなことをやってみてください。
 ```
 いかに久しきものとかは知る
 ```
 同じような語数にも関わらず遥かに簡単に思えた方が、ほとんどだと思われます。
 先ほどの例においては、16文字を1つずつ覚えなければなりませんでした。
+
 しかしながら、今の例では、1文字ずつ律儀に考えた人はあまりいないはずです。
 たいていの人は数文字の固まり[^2]に分割して覚えたのではないでしょうか。
-ただし、分割した固まりの個数については、個人の経験に依存するはずです。
+ただし、分割した固まりの個数は、個人の経験に依存するはずです。
 ##### 日本語の単語をとらえて分割した場合
 ```いかに／久しき／ものとかは／知る```
 →固まりは4つ
@@ -155,7 +151,7 @@ flowchart LR
 ```いかに久しきものとかは知る```
 →固まりは1つ
 
-先ほどの話に関連させると、「どれだけの固まりに分割して認識したか」が、情報処理の効率に直結します。
+先ほどの話に関連させると、「どれだけの固まりに分割して認識したか」が情報処理の効率に直結します。
 [^2]: 同著ではチャンクという言葉で表現されています。今回は文字の集まりとして表現しましたが、同著ではより広い意味で使われています。
 
 ### 慣れ=メモリの最適化
@@ -166,41 +162,46 @@ flowchart LR
 - 「サクサク」進んでいる状況 => ワーキングメモリが最適に働いている
 
 そこで、短期記憶と長期記憶を強化することにより、ワーキングメモリの効率を上げることを目標にしました。
-いくつか試したうえで、良かったと感じた３つが冒頭に紹介したものとなります。
+いくつか試したうえで、良かったと感じたものが冒頭に紹介したものとなります。
 
 ## 自分の行動
+以降で詳細を説明する前に、改めて列挙いたします。
+
+```
+1. インプットの習熟
+2. 基本的な表現の暗記
+3. 設計ドリブンで考える
+```
+
 ### 十分なインプット
-そこで、第1に行ったのが、十分なインプット作業です。
+そこで第1に行っているのが、十分なインプットを怠らないことです。
 
 長期記憶の中の顕在記憶(具体的には知識)の強化が目的です。
 
-インプットが大事であるということは皆さんご存じだと思われますので、詳しくは語りません。
-（先に紹介した３冊すべてでも言及されているくらいには大事な話です）
+インプットが大事であるということは皆さんご存じだと思われますので、詳しくは語りません（先に紹介した３冊すべてでも言及されているくらいには大事な話です）。
 
 私個人としては、以下のようなものをインプット源をとらえてキャッチアップにいそしんでいました。
 
 - 一般的な書籍
 - ライブラリのリファレンス
-- ライブイベント等
+- 技術カンファレンス等の登壇内容
 - 参画しているプロジェクトのコード
 
-この手の話になると、どこまでやるのかという話になりそうですが、
-他の方々の意見を反映しつつ、以下のような目安を設定していました。
+この手の話になると、どこまでやるのかという話になりそうですが、他の方々の意見を反映しつつ、以下のような目安を設定していました。
 ```
 - マスト　：疑問点が確実に消えるまで
 - 努力目標：全部
 ```
-もちろん、時間は有限なので、あの手この手[^3]を使いつつ読み進めています。
+もちろん時間は有限なので、あの手この手[^3]を使いつつ読み進めています。
 [^3]: 個人的に参考になった講演の[スライド](https://speakerdeck.com/yonetty/tech-to-read-tech-books)だけ共有させていただきます。
 
 :::info
-余談ですが、一生懸命読んでいたけど実は相性が悪かったみたいなこともあるので、
+余談ですが、一生懸命読んでいたけど実は相性が悪かったみたいなことも往々にしてあります。
 インプットすべきリファレンスについては、身近な人に聞いてみるのが一番かもしれません。
 半分自慢のようなものですが、弊社では半自動的に先輩方から情報が入ってくるので非常に助かっています。
 :::
 ### 基礎の反復学習
-
-次に行っているのが、基本的な表現の反復学習です
+次に行っているのが、基本的な表現の反復学習です。
 
 こちらは長期記憶のうち、潜在記憶の強化が目的です。
 
@@ -214,12 +215,11 @@ flowchart LR
 
 :::stop
 分量にもよりますが、闇雲に暗記することだけは推奨できません。
-自分なりに、「これはXXをしている」ということが説明できるようになってから、
-反復練習に臨んだほうが健全だと思います。
+「これはXXをしている」ということが、自分なりに説明できるようになってから、反復練習に臨んだほうが健全だと思います。
 :::
 
-:::info
-ツールにはAnkiというアプリを使っています。
+:::check
+私自身はツールとして[Anki](https://apps.ankiweb.net/)というアプリを使っています。
 - 学習管理機能があること(数日たった後にリマインドしてくれる)
 - エクスポートandインポート機能があること（形式としてcsvが選択可能）
 - [オープンソース](https://github.com/ankitects/anki)であること
@@ -228,64 +228,78 @@ flowchart LR
 
 など、色々と魅力的な点があるため使っています。
 
-見せられる範囲でお見せすると、こんな感じで使っています。
+見せられる範囲ではありますが、こんな感じで使っています。
 
-![](https://i.gyazo.com/7532b5eed319411b4e7ff87dcd6b580b.png)
-![](https://i.gyazo.com/9d63354e830a622caf770b7e8d936db5.png)
+![ankiSample1](https://i.gyazo.com/7532b5eed319411b4e7ff87dcd6b580b.png)
+![ankiSample2](https://i.gyazo.com/9d63354e830a622caf770b7e8d936db5.png)
 :::
 
 
 ### 設計ドリブンの習慣
-最後に、設計ドリブンの習慣化を意識していました。
-設計と聞くと仰々しいですが、（コーディングに限らず）何かを始める前に
-ブループリント（設計図）を作成して進める程度に捉えてください。
+最後に、設計ドリブンの習慣化を意識することが挙げられます。
+設計と聞くと仰々しいですが、（コーディングに限らず）何かを始める前にブループリント（設計図）を作成して進める程度に捉えてください。
 
 先の２つとは違い、短期記憶のサポートが主な目的です。
 
-何かしらブループリントを事前に作っておくと、
-何かしら行動を進めるときに、頭だけで考えるよりも、
-より少ない負担で物事を考えることができるという経験はされているでしょう。
+ブループリントを事前に作っておくと、何かしら行動を進めるときに、頭だけで考えるよりも、より少ない負担で物事を考えることができるという経験はされているでしょう。
 
 また、事前に道筋を立てておくことで、ある程度の見通しがつきます。
 その時点で間違っていたとしても、事前の設計図を基に早急に軌道修正することが可能となります。
 
-紹介した牛尾さんの書籍や本人のライブイベントでも、「試行錯誤は悪」と強調されており、
-「試行錯誤は（略）」というフレーズを耳にされている方は多いと思います。
+紹介した牛尾さんの書籍や本人が登壇されたカンファレンスでも、「試行錯誤は悪」と強調されており、「試行錯誤は（略）」というフレーズを耳にされている方は多いと思います。
 
 ちなみに、私自身は以下のようなサイクルを回すように心がけています。
+時間に余裕がないときでも、最悪メモ書きのようなものは準備しています。
 
 ```mermaid
-flowchart LR
-    classDef classGraph fill:#7BCCAC,fill-opacity:0.5
-    classDef classEdge fill:#FFFFAC,fill-opacity:0.5
-    A[Start]:::classEdge --> B[考えを整理]
-    B --> C{細部まで考える};
-    C -->|No| D1[マインドマップ]:::classGraph
-    C -->|Yes| E{動的か静的か}
-    E -->|動的| D2[アクティビティ図]:::classGraph
-    E -->|静的| D3[オブジェクト図]:::classGraph
-    Ac[アクション] --> H{見直し}
-    
-    D1 & D2 & D3 --> Ac
-    H --->|やり直しが必要| B
-    H --->|OK| G[end]:::classEdge
-```
+flowchart TD
+    classDef classGraph fill:#7BCCAC,fill-opacity:0.5,stroke:#000, height:100
+    classDef classStardEnd fill:#FFFFAC,fill-opacity:0.5,stroke:#000
+    classDef classCondition fill:#AAFF50,fill-opacity:0.5,stroke:#000
+    classDef classAction stroke:#000
 
-なので、時間に余裕がないときでも、最悪メモ書きのようなものは準備しています。
+    Start([開始]):::classStardEnd --> think[考えを整理]:::classAction
+    think --> ConditionFineOrCoarse{ざっくり <br>or 細部まで整理}:::classCondition
+
+    Diagram1["マインドマップ<br/><img src='/img/blogs/2024/0508_getting-used-to-it/mindmap_sample.svg' width='200' height='20'/>"]:::classGraph
+    Diagram2["アクティビティ図<br/><img src='/img/blogs/2024/0508_getting-used-to-it/activity_sample.svg'/>"]:::classGraph
+    Diagram3["　クラス図　<br/><img src='/img/blogs/2024/0508_getting-used-to-it/class_sample.svg'/>"]:::classGraph
+
+    ConditionFineOrCoarse -->|ざっくりと整理| Diagram1
+    ConditionFineOrCoarse -->|細部まで整理| ConditionDinamicOrStatic{動的 or 静的}:::classCondition
+    
+    ConditionDinamicOrStatic -->|動的な情報を整理| Diagram2
+    ConditionDinamicOrStatic -->|静的な情報を整理| Diagram3
+    
+    Ac[アクション]:::classAction --> ConditionRefine{見直し}:::classCondition
+    
+    Diagram1 & Diagram2 & Diagram3 --> Ac
+    ConditionRefine --->|やり直しが必要| think
+    ConditionRefine --->|OK| End([終了]):::classStardEnd
+```
+<!--MerMaidの要素内に画像を埋め込む際、別途同じ画像のimgタグが無いと機能しませんでした-->
+<img src='/img/blogs/2024/0508_getting-used-to-it/mindmap_sample.svg' style='display: none;'/>
+<img src='/img/blogs/2024/0508_getting-used-to-it/activity_sample.svg' style='display: none;'/>
+<img src='/img/blogs/2024/0508_getting-used-to-it/class_sample.svg' style='display: none'; />
 
 :::info
-慣れるという内容からは若干外れますが、
-現場に入ると、どうしてこういう風に考えたのかを聞かれる場面は、少なからずあります。
-そのような状況に直面した際、事前に整理したものを用意しておくと、
-話が比較的スムーズに進むことができるという副次的なメリットもあります。
-いずれにせよ、設計図を用意する習慣をつけてよかったなと今でも思います。
+マインドマップやアクティティ図、クラス図はUMLと呼ばれるものの1つです。
+UMLは統一モデリング言語(Unified Modeling Language)の略語であり、システム設計における可視化手法の１つです。
+細かい文法などがありますが、自分の思考整理用に書く場合には多少崩してもいいと思います。
+UMLの細かい話については、紹介する[リンク](https://astah.change-vision.com/ja/feature/uml.html)以外にも色々と情報があります。興味があれば調べてみてください。
 :::
 
 :::info
+慣れるという内容からは若干外れますが、現場に入ると自分の行動の根拠を問われる場面は、少なからずあります。
+自分の行動を説明しなければならない場面に直面した際、事前に整理したものを用意してあれば、話が比較的スムーズに進むことができるという副次的なメリットもあります。
+いずれにせよ、設計図を用意する習慣をつけてよかったなと今でも思います。
+:::
+
+:::check
 初めて機能の作成を任された時には、こんな感じの図を用意しました。
 機能開発を進めていくと（色々と粗はありましたが）、非常に助かったのを覚えています。
 
-![](https://i.gyazo.com/920b3e8cc7346925f03782ab2aecbef1.png)
+![myActivityGraphSample](https://i.gyazo.com/920b3e8cc7346925f03782ab2aecbef1.png)
 :::
 ## まとめ
 以下が本記事のまとめとなります。

@@ -14,7 +14,7 @@ layout: layouts/base.njk
 
     <main class="event__content">
       {%- if imageUrl %}
-        <p><img src={{ imageUrl }} /></P>
+        <p><img src={{ imageUrl }} alt="cover" width="500" style="display:block; margin: auto;" /></P>
       {%- endif %}
       <p>{{ leadingText }}</p>
       <p><a href={{ linkUrl }}>{{ linkText }}</a></p>

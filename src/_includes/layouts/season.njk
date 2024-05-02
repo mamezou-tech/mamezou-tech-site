@@ -13,6 +13,9 @@ layout: layouts/base.njk
     </header>
 
     <main class="event__content">
+      {%- if imageUrl %}
+        <p><img src={{ imageUrl }} /></P>
+      {%- endif %}
       <p>{{ leadingText }}</p>
       <p><a href={{ linkUrl }}>{{ linkText }}</a></p>
       {{ comp.EventSchedule({ period: period }) | safe }}

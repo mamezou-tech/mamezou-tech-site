@@ -11,10 +11,12 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     permissions:
       id-token: write
       contents: write
       pull-requests: write
+
     steps:
       - uses: actions/checkout@v4
 
@@ -29,20 +31,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.OS }}-node-${{ hashFiles('scripts/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
+          cache: npm
+          cache-dependency-path: scripts/package-lock.json
 
       - name: Install
-        run: |
-          cd ${GITHUB_WORKSPACE}/scripts
-          npm ci
+        run: cd ${GITHUB_WORKSPACE}/scripts && npm ci
 
       - name: Update page for GPT generated column
         id: update-for-gpt-column

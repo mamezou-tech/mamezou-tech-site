@@ -2,7 +2,7 @@
 title: Moodle 4.4をAmazon EC2にインストールする
 author: shigeki-shoji
 date: 2024-05-07
-tags: [AWS, "新人向け", moodle, LMS]
+tags: [AWS, "学び", moodle, LMS]
 image: false
 ---
 
@@ -17,6 +17,10 @@ Moodle は Linux、Apache、MySQL、PHP の組み合わせを意味する LAMP �
 ## この記事の目的
 
 この記事では Moodle のマシンイメージ (AMI) の作成方法を説明します。マシンイメージを作ることで複数のバーチャルマシン上でインストール手順書を繰り返し実行するといったトイルを軽減でき、またオートスケールによる柔軟なスケーリングやアカウントIDを超えて展開可能なポータブルなイメージ提供[^1]への道がひらけます。
+
+:::info:
+AWS Marketplace やコミュニティから提供されているイメージは、Moodle がどういうものかを手軽に起動したい場合やユースケースに合致するものの場合検討するといいでしょう。この記事を書くモチベーションは、データベースの選定やプラグイン導入を自由に試せる環境が欲しかったため独自にインストールすることにしました。
+:::
 
 AMI とは EC2 や [Snowball Edge](https://docs.aws.amazon.com/snowball/latest/developer-guide/using-ami.html) でバーチャルマシンのインスタンスを起動するときに必要な Amazon マシンイメージです。作成された AMI を他のユーザに公開したり、[AWS Marketplace](https://aws.amazon.com/jp/mp/marketplace-service/overview/) に出品されることもあります。
 
@@ -593,53 +597,92 @@ DocumentRoot /var/www/html/moodle
 - Route 53 へのホストゾーン登録
 - ロードバランサに設定する証明書の取得
 
-### ターゲットグループの作成
+### ロードバランサの作成
 
-ここからの記述は CloudFormation などを使えるようにすべきところですが、まずはブラウザから操作したいため、手動で操作します。
+ロードバランサのリソースを構築する CloudFormation テンプレートは次のとおりです。
 
-AWS 管理コンソールで EC2 サービスの画面を開き、「ロードバランシング」の「ターゲットグループ」で「ターゲットグループの作成」をクリックします。
+```yaml
+AWSTemplateFormatVersion: "2010-09-09"
 
-#### 基本的な設定
+Parameters:
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
 
-「ターゲットタイプの選択」で「インスタンス」を選択し、任意の「ターゲットグループ名」を入力します。「プロトコル：ポート」は「HTTPS」を選択します。「VPC」は準備で作成したVPCを選択します。
+  CertificateArn:
+    Description: A certificate arn
+    Type: String
 
-#### ヘルスチェック
+  HostedZoneId:
+    Description: A hosted zone id
+    Type: String
 
-「ヘルスチェックパス」に「/phpinfo.php」を設定して「次へ」ボタンをクリックします。
+  DomainName:
+    Description: A domain name
+    Type: String
+
+Resources:
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      IpAddressType: ipv4
+      Name: !Sub ${EnvironmentName}-lb
+      Scheme: internet-facing
+      SecurityGroups:
+        - Fn::ImportValue: !Sub ${EnvironmentName}-LBSecurityGroup
+      Subnets:
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PublicSubnet1
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PublicSubnet2
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckPath: /phpinfo.php
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      Matcher:
+        HttpCode: 200
+      Name: !Sub ${EnvironmentName}-tg
+      Port: 80
+      Protocol: HTTP
+      ProtocolVersion: HTTP1
+      TargetType: instance
+      VpcId:
+        Fn::ImportValue: !Sub ${EnvironmentName}-VPC
+
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref CertificateArn
+      DefaultActions:
+        - TargetGroupArn: !Ref TargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 443
+      Protocol: HTTPS
+
+  LBRecordSet:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      AliasTarget:
+        DNSName:
+          Fn::GetAtt:
+            - LoadBalancer
+            - DNSName
+        EvaluateTargetHealth: no
+        HostedZoneId:
+          Fn::GetAtt:
+            - LoadBalancer
+            - CanonicalHostedZoneID 
+      Name: !Ref DomainName
+      HostedZoneId: !Ref HostedZoneId
+      Type: A
+```
 
 #### ターゲットを登録
 
-「使用可能なインスタンス」に表示されるインスタンスをチェックして、「保留中として以下を含める」ボタンをクリックして「ターゲットグループの作成」ボタンをクリックします。
-
-### ロードバランサーの作成
-
-「ロードバランシング」の「ロードバランサー」で「ロードバランサーの作成」をクリックします。
-
-「ロードバランサータイプ」は「Application Load Balancer」の「作成」ボタンをクリックします。
-
-#### 基本的な設定
-
-「ロードバランサー名」に任意の名称を入力します。
-
-#### ネットワークマッピング
-
-「VPC」は準備で作成したVPCを選択します。マッピングに2つのアベイラビリティゾーンが表示されます。両方チェックします。
-
-#### セキュリティグループ
-
-「LB-SecurityGroup」を選択します。
-
-#### リスナーとルーティング
-
-「リスナー」は、「HTTPS : 443」、「デフォルトアクション」に上記で作成した「ターゲットグループ」を選択します。
-
-#### セキュアリスナーの設定
-
-「デフォルト SSL/TLS サーバー証明書」の取得先は「ACM から」を選択し、「証明書 (ACM から)」に準備した証明書を選択し「ロードバランサーの作成」ボタンをクリックします。
-
-### Route 53 の設定
-
-AWS 管理コンソールの Route 53 サービスの画面を開き、「ホストゾーン」からロードバランサーを登録するホストゾーン名をクリックします。「レコードを作成」ボタンをクリックし、レコード名を入力します。「レコードタイプ」は「A - IPV4 アドレスと...」を選択し、「エイリアス」を有効にします。「トラフィックのルーティング先」のエンドポイントを選択で「Application Load Balancer と Classic Load Balancer へのエイリアス」を選択、「リージョン」と「ロードバランサーを選択」をそれぞれ選択して、「レコードを作成」ボタンをクリックします。
+AWS 管理コンソールの EC2 サービスのロードバランシング、ターゲットグループから、上で作成したターゲットグループを選択し「使用可能なインスタンス」に表示されるインスタンスをチェックして、「保留中として以下を含める」ボタンをクリックして「ターゲットグループの作成」ボタンをクリックします。
 
 ### ブラウザからアクセス
 
@@ -649,7 +692,7 @@ Route 53 に登録したドメイン名 (`https://<YOUR DOMAIN NAME>`) をブラ
 
 ## おわりに
 
-作成した AMI の高可用性の実現やポータビリティには課題が残っています。ログインセッション等を ElastiCache (redis、memchached) で保持したり、複数のサーバーで共有すべきデータに NFS や S3 を使用する必要があるでしょう。しかし、今回作成した AMI をベースに設定を見直し進化させることで効率よくゴールを目指すことができます。この記事で書ききれなかった課題については続編以降で紹介できればと考えています。
+作成した AMI の高可用性の実現やポータビリティには課題が残っています。ログインセッション等を ElastiCache (redis、memchached) で保持したり、複数のサーバーで共有すべきデータに NFS や S3 を使用する必要があるでしょう。しかし、今回作成した AMI をベースに設定を見直し進化させることで効率よくゴールを目指すことができます。この記事で書ききれなかった課題については続編以降で紹介したいと考えています。
 
 ## 参考
 

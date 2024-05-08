@@ -48,6 +48,13 @@
       "githubUser": "kudoh",
       "title": "効率的なクラウドインフラ管理のためにIaCアプローチを活用する",
       "url": "/blogs/2024/05/05/iac-tools-intro/"
+    },
+    {
+      "date": "5月8日(水)",
+      "author": "shohei-yamashita",
+      "githubUser": "shohei-yamashit",
+      "title": "脳のメモリから「慣れ」を考察する ~新人エンジニアが最速で慣れるためにやったこと~",
+      "url": "/blogs/2024/05/08/getting-used-to-it/"
     }
   ]
 }

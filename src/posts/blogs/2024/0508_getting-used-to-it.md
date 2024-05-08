@@ -283,7 +283,7 @@ flowchart TD
 <img src='/img/blogs/2024/0508_getting-used-to-it/class_sample.svg' style='display: none'; />
 
 :::info
-マインドマップやアクティティ図、クラス図はUMLと呼ばれるものの1つです。
+アクティティ図、クラス図はUMLと呼ばれるものの1つです。
 UMLは統一モデリング言語(Unified Modeling Language)の略語であり、システム設計における可視化手法の１つです。
 細かい文法などがありますが、自分の思考整理用に書く場合には多少崩してもいいと思います。
 UMLの細かい話については、紹介する[リンク](https://astah.change-vision.com/ja/feature/uml.html)以外にも色々と情報があります。興味があれば調べてみてください。

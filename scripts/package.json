@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "generate:column": "node --loader ts-node/esm bin/generate-column.ts",
-    "generate:weekly-ranking": "node --loader ts-node/esm bin/weekly-ranking.ts",
-    "translate:en": "node --loader ts-node/esm bin/translate.ts en"
+    "generate:column": "tsx bin/generate-column.ts",
+    "generate:weekly-ranking": "tsx bin/weekly-ranking.ts",
+    "translate:en": "tsx bin/translate.ts en"
   },
   "author": "",
   "license": "ISC",
@@ -18,13 +18,13 @@
     "cheerio": "^1.0.0-rc.12",
     "js-yaml": "^4.1.0",
     "luxon": "^3.4.3",
-    "openai": "^4.39.0",
+    "openai": "^4.44.0",
     "sharp": "^0.33.3"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
     "@types/luxon": "^3.4.2",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.4.3"
+    "tsx": "^4.9.4",
+    "typescript": "^5.4.5"
   }
 }

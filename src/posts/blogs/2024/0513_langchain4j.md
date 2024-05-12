@@ -414,6 +414,6 @@ LangChain4jでは分解された工程ごとにインターフェースが用意
 
 使ってみた感想としましては、Function CallingやRAGの実装が簡単にできてとても助かるなと思いました。
 
-今回は質問にはOpenAIの公開API利用しましたが、他のAzure OpenAIやAmazon Bedrock等のサービスを使ってみたいなと思いました。
+今回は質問にはOpenAIの公開APIを利用しましたが、他のAzure OpenAIやAmazon Bedrock等のサービスも試してみたいなと思いました。
 
 LangChain4jのGithubのコミットを見た感じ開発がまだまだ盛んに行われているようなので今後の発展も追っていきたいなと思いました。

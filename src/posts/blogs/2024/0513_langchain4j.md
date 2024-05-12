@@ -1,5 +1,5 @@
 ---
-title: LangChain4jを使ってみる
+title: LangChainのJava用ライブラリLangChain4jを使ってみる
 author: kotaro-miura
 date: 2024-05-13
 tags: [RAG, OpenAI, GPT, LangChain]
@@ -368,7 +368,7 @@ String answer = assistant.chat("質問文");
 System.out.println(answer);
 ```
 
-`DocumentParser`はファイルのテキスト情報を抽出するためのインターフェースです。テキストファイルだけでなく、pdfやパワポ等にも対応しています。
+`DocumentParser`はファイルのテキスト情報を抽出するためのインターフェースです。テキストファイルだけでなく、pdfやPowerPoint等にも対応しています。
 
 `DocumentLoader`はファイル読み込むを行うインターフェースです。他にもAWS S3やAzure blobからの読込みにも対応しています。
 

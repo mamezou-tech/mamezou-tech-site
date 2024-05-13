@@ -113,7 +113,7 @@ My first word is "${keyword}" on "${theme}".
         type: 'header',
         text: {
           type: 'plain_text',
-          text: `${formattedDate}の豆香の豆知識(by GPT-4 Turbo)`
+          text: `${formattedDate}の豆香の豆知識(by GPT-4o)`
         }
       },
       {

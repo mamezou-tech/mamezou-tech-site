@@ -2367,6 +2367,7 @@
     }
   },
   "remote": {
-    "https://deno.land/x/lume@v2.0.3/types.ts": "80cd59bcb94955ea5cfcb8f23a88db5a3f6e241d5e12d2f8b970af660eca3c15"
+    "https://deno.land/x/lume@v2.0.3/types.ts": "80cd59bcb94955ea5cfcb8f23a88db5a3f6e241d5e12d2f8b970af660eca3c15",
+    "https://deno.land/x/lume@v2.1.4/types.ts": "80cd59bcb94955ea5cfcb8f23a88db5a3f6e241d5e12d2f8b970af660eca3c15"
   }
 }

@@ -44,20 +44,20 @@
     microphone=(),
     camera=()'''
 
-[[plugins]]
-  package = "@netlify/plugin-lighthouse"
-
-  [[plugins.inputs.thresholds]]
-    performance = 0.6
-    accessibility = 0.9
-    best-practices = 0.8
-    seo = 0.9
-
-  [[plugins.inputs.audits]]
-    path = "/"
-    output_path = "lighthouse/top.html"
-  [[plugins.inputs.audits]]
-    path = "/blogs/"
+#[[plugins]]
+#  package = "@netlify/plugin-lighthouse"
+#
+#  [[plugins.inputs.thresholds]]
+#    performance = 0.6
+#    accessibility = 0.9
+#    best-practices = 0.8
+#    seo = 0.9
+#
+#  [[plugins.inputs.audits]]
+#    path = "/"
+#    output_path = "lighthouse/top.html"
+#  [[plugins.inputs.audits]]
+#    path = "/blogs/"
 
 [[edge_functions]]
   function = "og"

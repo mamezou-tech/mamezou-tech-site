@@ -422,6 +422,12 @@ sudo apt install -y php8.1
 sudo apt install -y php8.1-mysql php8.1-iconv php8.1-mbstring php8.1-curl php8.1-tokenizer php8.1-xmlrpc php8.1-soap php8.1-ctype php8.1-zip php8.1-gd php8.1-simplexml php8.1-xml php8.1-intl
 ```
 
+composer をインストールします[^3]。
+
+```text
+sudo apt install -y composer
+```
+
 次に、git と MySQL Client をインストールします。
 
 ```text
@@ -702,3 +708,4 @@ Route 53 に登録したドメイン名 (`https://<YOUR DOMAIN NAME>`) をブラ
 
 [^1]: AWS の AMI カタログを「Moodle」で検索すると、AWS Marketplace とコミュニティから多くの AMI が提供されています。
 [^2]: 可用性を高める共有ファイルの保存で S3 を利用する予定があり含めています。
+[^3]: S3 を利用するプラグインを導入する場合等に必要です。5月14日追記しました。

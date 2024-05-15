@@ -26,6 +26,10 @@ export const shortDesc = (
   }
   const content = post.children?.toString()
     .replace(/(<([^>]+)>)/gi, "")
-    .replace(/[\r\n]/gi, "");
-  return chop(content || "");
+    .replace(/[\r\n]/gi, "") ?? "";
+  if (path.includes("/en/posts")) {
+    return chop(content.replace(/^.*article has been automatically translated\.The original article is here\./, ""), 400, true);
+  } else {
+    return chop(content, 200, false);
+  }
 };

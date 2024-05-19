@@ -13,32 +13,32 @@
       "url": "/blogs/2023/10/08/google-test-05/"
     },
     {
-      "title": "Raspberry Pi PicoとAndroidスマートフォンでオシロスコープを構築する",
-      "url": "/blogs/2024/03/18/raspberry-pi-pico-to-oscilloscope/"
-    },
-    {
-      "title": "OpenAI Assistants API(v2)で新しくなったFile Search(Vector Stores)を使う",
-      "url": "/blogs/2024/04/21/openai-file-search-intro/"
-    },
-    {
-      "title": "Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする",
-      "url": "/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/"
-    },
-    {
-      "title": "Java用モック・フレームワーク「Mockito」を使ってみる（その２：void型メソッドのモック編）",
-      "url": "/blogs/2023/08/16/using-mockito-void-method/"
-    },
-    {
-      "title": "Google Test を使ってみる（その１：準備編）",
-      "url": "/blogs/2022/11/04/google-test-01/"
+      "title": "ORマッパーのTypeORMをTypeScriptで使う",
+      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
     },
     {
       "title": "Windows Terminal で Git Bash を快適に使う",
       "url": "/blogs/2023/09/08/windows-terminal-with-git-bash/"
     },
     {
-      "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
-      "url": "/nuxt/nuxt3-routing/"
+      "title": "Java用モック・フレームワーク「Mockito」を使ってみる（その２：void型メソッドのモック編）",
+      "url": "/blogs/2023/08/16/using-mockito-void-method/"
+    },
+    {
+      "title": "OpenAI Assistants API(v2)で新しくなったFile Search(Vector Stores)を使う",
+      "url": "/blogs/2024/04/21/openai-file-search-intro/"
+    },
+    {
+      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
+      "url": "/blogs/2023/03/05/using-pytest-02/"
+    },
+    {
+      "title": "Raspberry Pi PicoとAndroidスマートフォンでオシロスコープを構築する",
+      "url": "/blogs/2024/03/18/raspberry-pi-pico-to-oscilloscope/"
+    },
+    {
+      "title": "Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする",
+      "url": "/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/"
     }
   ]
 }

@@ -8,7 +8,7 @@ image: true
 
 ## はじめに
 
-去年の9月 Bun が 1.0 に到達した時、開発環境に導入してみる記事を書きました。
+去年の9月 Bun が 1.0 に到達した時に、開発環境に導入してみた記事を書きました。
 
 [開発環境の Node.js を Bun に置き換えてみる](/blogs/2023/11/21/replace-nodejs-with-bun-in-devenv/)
 
@@ -47,7 +47,7 @@ image: true
 - 対象の環境ごとにビルド環境を用意する必要がない
 - 1つの CI パイプラインで全ターゲットの実行可能バイナリをビルドできる
 
-このため、もともとオールインワンを売りとする Bun にクロスコンパイルの機能が実装されたことで、開発からクロスプラットフォームへの実行可能バイナリ配布まで bun CLI 一つで賄えることになり開発体験はかなり向上したと言えるでしょう。
+このため、もともとオールインワンを売りとする Bun にクロスコンパイルの機能が実装されたことで、開発からクロスプラットフォームへの実行可能バイナリ配布まで bun CLI 一つで賄えることになり、開発体験はかなり向上したと言えるでしょう。
 
 ## Bun のクロスコンパイルを試す
 では、Bun の実行可能バイナリの生成とクロスコンパイルを試してみましょう。筆者は macOS Sonoma / Bun 1.1.8 の環境で実施しています。
@@ -70,7 +70,7 @@ Bun.serve({
 });
 ```
 
-このコードは以下で実行可能です。
+このコードは次のコマンドで実行可能です。
 
 ```shell
 bun index.ts
@@ -84,7 +84,7 @@ $ bun build --compile ./index.ts --outfile simpleServer
  [104ms] compile  simpleServer
 ```
 
-この0.1秒程度でビルドが完了し、macOS のマシンをターゲットとする51MBの実行可能バイナリが生成されました。
+役0.1秒でビルドが完了し、macOS のマシンをターゲットとする51MBの実行可能バイナリが生成されました。
 
 ```shell
 $ ls -lh simpleServer
@@ -105,7 +105,7 @@ $ bun build --compile ./index.ts --target=bun-windows-x64 --outfile simpleServer
 [4.302s] compile  simpleServer.exe bun-windows-x64-v1.1.8
 ```
 
-必要なライブラリのダウンロードを含めて4.3秒ほどでビルドが完了しました。ファイルサイズは100MBぐらいですね。
+必要なライブラリのダウンロードを含めて4.3秒ほどでビルドが完了しました。ファイルサイズは100MBぐらいです。
 
 ```shell
 $ ls -lh simpleServer.exe
@@ -130,7 +130,7 @@ bun build --compile --minify --sourcemap ./path/to/my/app.ts --outfile myapp
 
 `--minify` オプションを指定することでトランスパイルされたコードのサイズを小さくできます。`--sourcemap` オプションを指定することでオリジナルのソースコードの位置でエラー情報を出力させることが可能です。
 
-このほか、アセットの埋め込みや SQLite データベースの埋め込みもサポートされています。詳細はドキュメントを参照してください。
+その他、アセットの埋め込みや SQLite データベースの埋め込みもサポートされています。詳細はドキュメントを参照してください。
 
 [Single-file executable – Runtime | Bun Docs](https://bun.sh/docs/bundler/executables#cross-compile-to-other-platforms)
 

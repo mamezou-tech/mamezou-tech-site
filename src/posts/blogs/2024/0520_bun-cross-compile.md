@@ -1,5 +1,5 @@
 ---
-title: Bun で実行可能バイナリをクロスコンパイルする
+title: Bun で実行可能バイナリをクロスコンパイルできるようになりました
 author: masahiro-kondo
 date: 2024-05-20
 tags: [Bun, javascript]

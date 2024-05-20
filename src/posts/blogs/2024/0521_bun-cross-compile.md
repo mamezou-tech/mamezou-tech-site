@@ -1,7 +1,7 @@
 ---
 title: Bun で実行可能バイナリをクロスコンパイルする
 author: masahiro-kondo
-date: 2024-05-21
+date: 2024-05-20
 tags: [Bun, javascript]
 image: true
 ---

@@ -8,7 +8,7 @@ image: true
 
 ## はじめに
 
-去年の9月 Bun が 1.0 に到達した時に、開発環境に導入してみた記事を書きました。
+去年の9月 Bun が 1.0 に到達したとき、開発環境に導入してみた記事を書きました。
 
 [開発環境の Node.js を Bun に置き換えてみる](/blogs/2023/11/21/replace-nodejs-with-bun-in-devenv/)
 
@@ -84,7 +84,7 @@ $ bun build --compile ./index.ts --outfile simpleServer
  [104ms] compile  simpleServer
 ```
 
-役0.1秒でビルドが完了し、macOS のマシンをターゲットとする51MBの実行可能バイナリが生成されました。
+約0.1秒でビルドが完了し、macOS のマシンをターゲットとする51MBの実行可能バイナリが生成されました。
 
 ```shell
 $ ls -lh simpleServer

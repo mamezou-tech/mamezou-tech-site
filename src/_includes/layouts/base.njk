@@ -11,6 +11,9 @@
       name="description"
       content="{{pageDescription}}"
     />
+    {%- if author %}
+    <meta name="author" content="{{ author }}" />
+    {%- endif %}
     <link href="/css/style.css" rel="stylesheet" />
     <link rel="canonical" href="{{ meta.url }}{{ url }}" >
 

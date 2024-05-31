@@ -475,7 +475,7 @@ sudo chmod -R 0755 /var/www/html/moodle
 
 ```php
 <?php
-phpinfo();
+echo 'Hello world!';
 ```
 
 ### ここまでの AMI を保存

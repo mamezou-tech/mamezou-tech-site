@@ -162,7 +162,7 @@ jobs:
 - `contents: write` パーミッションを追加: 成果物リリースのために write にしています
 - 出所証明書の生成: 各プラットフォーム向けに複数のアーカイブファイルをワイルドカードで指定しています
 
-タグを作成してビルドを実行すると、各アーカイブファイルに Attenstation が生成されました。
+タグを作成してビルドを実行すると、各アーカイブファイルに Attestation が生成されました。
 
 ![Build summary](https://i.gyazo.com/dacd7eaf083a217d25ebe2de84d03895.png)
 

@@ -91,9 +91,13 @@ REPO              PREDICATE_TYPE                  WORKFLOW
 kondoumh/iac-dev  https://slsa.dev/provenance/v1  .github/workflows/artifact-attestations-trial.yml@refs/heads/master
 ```
 
-検証は成功しています。
+ダウンロードしたアーカイブファイルから取得したダイジェストで指定のアカウントから attestation を取得することで検証を行なっています。リポジトリ名、ソフトウェアの出所を表す SLSA の predicateType[^1]、成果物がビルドされたワークフローファイルなどの情報が出力されて、検証は成功しました。
 
-実際のリポジトリと異なるオーガニゼーションを指定するとエラーになります。
+[^1]: [https://slsa.dev/spec/v1.0/provenance](https://slsa.dev/spec/v1.0/provenance)
+
+実際のリポジトリと異なるオーガニゼーションを指定するとエラーになります[^2]。
+
+[^2]: ダイジェストに一致する attestation が存在しないということで HTTP ステータスが 404 になっています。
 
 ```shell
 gh attestation verify hello.tar.gz -o mamezou-tech
@@ -102,6 +106,8 @@ Loaded digest sha256:4e91db5c9c0333bdfd8e2c0a047b886509f52043ce0046e91e51e30d758
 
 Error: failed to fetch attestations from mamezou-tech: HTTP 404: Not Found (https://api.github.com/orgs/mamezou-tech/attestations/sha256:4e91db5c9c0333bdfd8e2c0a047b886509f52043ce0046e91e51e30d758bdb20?per_page=30)
 ```
+
+Attestation を確認することで、当該成果物が特定のオーガニゼーションでビルドされたことを検証できることが分かります。
 
 ## 実際のプロジェクトで使用する
 
@@ -153,10 +159,8 @@ jobs:
 ```
 既存のワークフローに `#1` のパーミッションと `#4` の出所証明の生成ステップを追加しました。
 
-- contents write パーミッションを追加
-  - 成果物リリースのために write にしています
-- 出所証明書の生成
-  - 各プラットフォーム向けに複数のアーカイブファイルをワイルドカードで指定しています
+- `contents: write` パーミッションを追加: 成果物リリースのために write にしています
+- 出所証明書の生成: 各プラットフォーム向けに複数のアーカイブファイルをワイルドカードで指定しています
 
 タグを作成してビルドを実行すると、各アーカイブファイルに Attenstation が生成されました。
 
@@ -178,6 +182,6 @@ mamezou-tech/sbgraph  https://slsa.dev/provenance/v1  .github/workflows/go.yml@r
 無事検証が成功しました。
 
 ## さいごに
-ワークフローにわずかなステップを追加するだけで成果物の署名が可能になる Artifact Attestations、ソフトウェアサプライチェーンセキュリティを強化するため利用が必須となっていくでしょう。
+ワークフローにわずかなステップを追加するだけで成果物への署名が可能な Artifact Attestations、ソフトウェアサプライチェーンセキュリティのため必須の技術となっていくのではないでしょうか。
 
 リポジトリに成果物の SBOM が存在する場合、冒頭で紹介した GitHub のブログに attest-sbom action でビルド成果物を署名付き SBOM に関連づける方法が記載されています。

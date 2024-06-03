@@ -15,21 +15,21 @@ image: true
 # Pilz Industrial Motion Plannerの概要
 ## motion plannerの役割
 
-Pilz Industrial Motion Plannerはモーションプランナーの一種です。moveitを使用したロボットの動作生成において、motion plannerは目標位置となるTCP位置を受け取り、各時間の関節の目標位置の情報を返す役割を持ちます。
+Pilz Industrial Motion Plannerはモーションプランナーの一種です。MoveItを使用したロボットの動作生成において、motion plannerは目標位置となるTCP位置を受け取り、各時間の関節の目標位置の情報を返す役割を持ちます。
 
 [Motion Planner一覧](https://moveit.ros.org/documentation/planners/)
 
 
 ## ライブラリの特徴
 
-このライブラリはもともとROS-Industorialのプロジェクトの1つとして開発されたライブラリです。従来の産業用ロボットと同等のインターフェースをROSの世界に持ち込むことをコンセプトに開発され、2020年にmoveitのリポジトリに取り込まれました。
+このライブラリはもともとROS-Industrialのプロジェクトの1つとして開発されたライブラリです。従来の産業用ロボットと同等のインターフェースをROSの世界に持ち込むことをコンセプトに開発され、2020年にMoveItのリポジトリに取り込まれました。
 
-pilzの特徴は、複数の動作命令をなめらかにつないだ動作（シーケンス動作）が実現できることです。
+Pilzの特徴は、複数の動作命令をなめらかにつないだ動作（シーケンス動作）が実現できることです。
 複数の動作命令を1つのリクエストとして受け取り、動作間で停止することなく滑らかな軌跡を生成し、ロボットに送信することが可能です。
 
 従来のプランナーは、1つの動作命令ごとにリクエストが完結するため、教示点に到達するたびにロボットの動作は停止していました。
 
-また、動作間を曲線で補完することもでき、半径を指定することでなめらか具合いを指定することが可能です。そのためマニュアルでロボットの軌跡をチューニングする作業が行いやすいことも特徴です。
+また、動作間を曲線で補間することもでき、半径を指定することでなめらか具合いを指定することが可能です。そのためマニュアルでロボットの軌跡をチューニングする作業が行いやすいことも特徴です。
 
 # 使用できる命令
 
@@ -51,8 +51,8 @@ PTPとLINの軌跡の違いは動画で見ると分かりやすいです。
 
 ### CIRC
 
-CIRC命令では軌跡が弧を描くような動作を命令できます。
-3次元空間上の弧を特定するには開始点を開始点と目標位置の２点では足りないため、円弧の中心点を指定するか、弧の経由点を指定する方法のいずれかを選択して座標の情報を与える必要があります。
+CIRC命令では軌跡が円弧を描くような動作を命令できます。
+3次元空間上の円弧を特定するには開始点を開始点と目標位置の２点では足りないため、円弧の中心点を指定するか、円弧の経由点を指定する方法のいずれかを選択して座標の情報を与える必要があります。
 いずれの方法でも、指定された情報で円弧が定義されない場合は命令がエラーで終了します。
 
 
@@ -76,8 +76,8 @@ CIRC命令では軌跡が弧を描くような動作を命令できます。
 実行環境はUbuntu 20.04、ディストリビューションはROS1のnoeticを使用しています。
 
 ## moveit configの用意
-Pilz Industrial Motion Plannerの使用にかかわらず、moveitを使用する際はロボットに合わせた設定ファイル群を用意する必要があります。
-有名なロボットであれば、{ロボットの名前}_moveit_configという名前でファイルがgithubで公開されていますし、URDFファイルから設定ファイルを生成するsetup assistantを使用することもできます。
+Pilz Industrial Motion Plannerの使用にかかわらず、MoveItを使用する際はロボットに合わせた設定ファイル群を用意する必要があります。
+有名なロボットであれば、{ロボットの名前}_moveit_configという名前でファイルがGithubで公開されていますし、URDFファイルから設定ファイルを生成するsetup assistantを使用することもできます。
 
 公開されているファイルを使用する場合、Pilz用のパラメータが含まれていないことがあるので注意が必要です。
 launchフォルダ内に"pilz_industrial_motion_planner_planning_pipeline.launch.xml"が含まれていれば使用可能です。
@@ -108,7 +108,7 @@ roslaunch prbt_moveit_config moveit_planning_execution pipeline:=pilz_industrial
 ## 動作命令をリクエストする
 
 立ち上げたmove_groupノードに対してリクエストを送信します。
-送信するメッセージの型は[moveitのドキュメント](https://moveit.github.io/moveit_tutorials/doc/pilz_industrial_motion_planner/pilz_industrial_motion_planner.html#the-ptp-motion-command)に記載があります。
+送信するメッセージの型は[MoveItのドキュメント](https://moveit.github.io/moveit_tutorials/doc/pilz_industrial_motion_planner/pilz_industrial_motion_planner.html#the-ptp-motion-command)に記載があります。
 当然、自身でpublisherを書いても良いのですが、Pilzのモーションプランナー用のpythonインターフェースである[pilz_robot_programming](https://wiki.ros.org/pilz_robot_programming)が公開されているので今回はこちらを使用します。
 
 下記はシーケンス命令の実行例です。

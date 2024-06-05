@@ -127,7 +127,7 @@ on:
 
 jobs:
 
-  buid:
+  build:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -147,7 +147,7 @@ jobs:
         sbgraph project -p help-jp
     - name: Fetch data
       run: sbgraph fetch
-    - name: Aggragate
+    - name: Aggregate
       run: sbgraph aggregate -s=true
     - name: Generate Graph data
       run: sbgraph graph -i=true -j=true
@@ -166,7 +166,7 @@ jobs:
 | Install    | 35.5 | 19.5 |
 | Fetch data | 3.0 | 4.5 |
 | Aggregate  | 0 | 0 |
-| Gen graph  | 0 | 0 |
+| Generate graph  | 0 | 0 |
 | Upload     | 1.5 | 1.0 |
 
 

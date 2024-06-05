@@ -24,7 +24,7 @@ GitHub のブログでは、Arm テクノロジーがデータセンターの電
 [Per-minute rates | About billing for GitHub Actions - GitHub Docs](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates)
 
 ## Arm ベースの Runner をオーガニゼーションに登録する
-Arm ベースの Runner は有料プラン(Team 以上の)のオーガニゼーションで利用できます。
+Arm ベースの Runner は有料プラン(Team 以上)のオーガニゼーションで利用できます。
 
 オーガニゼーションの Settings -> Actions -> Runners を選択し、Runners のページで `New runner` ボタンをクリックします。
 
@@ -38,7 +38,7 @@ Runner 作成の UI が表示されます。`Linux ARM64` と `Windows ARM64` �
 
 ![Create new runner](https://i.gyazo.com/a87926697ae2a32b1e2ada1692b54a38.jpg)
 
-ひとまず最小スペックの Linux ARM 64、Ubuntu 22.04、2-core 8GB rAM のマシンに設定し `linux-arm64` という名前にして `Create runner` をクリックしました。
+ひとまず最小スペックの Linux ARM 64、Ubuntu 22.04、2-core 8GB RAM のマシンに設定し `linux-arm64` という名前にして `Create runner` をクリックしました。
 
 
 ![Create Linux Arm64 Runner](https://i.gyazo.com/b77ad12ecd825f8cf702b8a8a2f9d1d5.jpg)
@@ -48,7 +48,7 @@ Runner 作成の UI が表示されます。`Linux ARM64` と `Windows ARM64` �
 ![Linux Arm64 Runner created](https://i.gyazo.com/c76d2b9dba9399af5384592951ecfeee.png)
 
 ## 速度比較
-上記の Arm Runner に合わせて最小構成の X64 Runner を比較用として `linux-x64` という名前で作成しました。
+上記の Arm Runner に合わせて最小構成の x64 Runner を比較用として `linux-x64` という名前で作成しました。
 
 ![Linux-x64 runner](https://i.gyazo.com/bdedd9789d23dbbb285861606d492cd8.png)
 
@@ -56,7 +56,7 @@ Runner 作成の UI が表示されます。`Linux ARM64` と `Windows ARM64` �
 今回の比較は private リポジトリで行いました。最初 x64 Runner については `ubuntu-latest` を指定しようかと思ったのですが、GitHub の日本語ドキュメントには private リポジトリ用 Runner のスペックが記載されているのに対し、英語版では見つけられませんでした。そこで比較用に同等スペックで作成することにしました。
 :::
 
-以前の記事「[GitHub Actions でハイスペックな Larger runners を試す](/blogs/2023/06/09/github-actions-larger-runners/)」で使ったのと同様のワークフローをベンチマーク用に用意しました。
+以前の記事「[GitHub Actions でハイスペックな Larger runners を試す](/blogs/2023/06/09/github-actions-larger-runners/)」で使ったのと同様のワークフローをベンチマーク用に準備しました。
 
 ### Electron アプリのビルド
 

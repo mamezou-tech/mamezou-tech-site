@@ -1,7 +1,7 @@
 ---
 title: 【新人さん向け】A5:SQL Mk-2のおすすめ設定と使い方
 author: kenta-ishihara
-date: 2024-06-12
+date: 2024-06-08
 tags: ["新人向け"]
 image: true　
 ---

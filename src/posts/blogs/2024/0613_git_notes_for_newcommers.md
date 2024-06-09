@@ -79,7 +79,7 @@ $ git stash pop stash@{1}
 まずコンフリクトが発生した際に何が起こるかを説明します。
 例として開発ブランチであるdevelopブランチからmainブランチへマージを行った際に、conflict.htmlの内容でコンフリクトが発生する場合をあげます。
 
-mainブランチとdevelopブランチにおいてconflict.htmlを図１のような内容で別々に編集し、mainブランチにdevelopブランチをマージさせたｔころ、conflict.htmlでコンフリクトが発生しました(図1)。
+mainブランチとdevelopブランチにおいてconflict.htmlを図１のような内容で別々に編集し、mainブランチにdevelopブランチをマージさせたところ、conflict.htmlでコンフリクトが発生しました(図1)。
 
 ![図1 conflict.htmlでコンフリクトが発生](https://i.gyazo.com/7bd35596c2b62c8ff13e5edf72b1ff02.png)
 

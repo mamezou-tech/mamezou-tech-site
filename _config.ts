@@ -225,6 +225,8 @@ site.filter(
   (s: string, base: string) => new URL(s, base).toString(),
 );
 
+site.filter("percentEncode", (s: string) => encodeURIComponent(s));
+
 site.filter("rssUrl", (html: string, base: string) => {
   if (!html) return "";
   return html.replaceAll(

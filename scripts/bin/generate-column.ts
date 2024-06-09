@@ -113,7 +113,7 @@ My first word is "${keyword}" on "${theme}".
         type: 'header',
         text: {
           type: 'plain_text',
-          text: `${formattedDate}の豆香の豆知識(by GPT-4 Turbo)`
+          text: `${formattedDate}の豆香の豆知識(by GPT-4o)`
         }
       },
       {
@@ -175,7 +175,7 @@ async function generateImage(column: string, date: string) {
 }
 
 async function uploadToS3(key: string, body: Buffer) {
-  const bucketName = 'mz-slack-bot-developer-site-image-bucket';
+  const bucketName = 'mz-developer-site-image-bucket';
   const s3client = new S3Client({
     region: 'ap-northeast-1'
   });

@@ -11,12 +11,12 @@ export function getPostArticles(search: Search): Lume.Data[] {
   return filterByPost(pages as Lume.Data[]);
 }
 
-export function chop(content: string, count = 150) {
-  const firstDotPos = content.lastIndexOf("。", count);
+export function chop(content: string, count = 150, en = false) {
+  const firstDotPos = content.lastIndexOf(en ? "." : "。", count);
   if (firstDotPos !== -1) {
     return content.substring(0, firstDotPos) + "...";
   } else {
-    return content.substring(0, content.lastIndexOf("、", count)) + "...";
+    return content.substring(0, content.lastIndexOf(en ? "," : "、", count)) + "...";
   }
 }
 

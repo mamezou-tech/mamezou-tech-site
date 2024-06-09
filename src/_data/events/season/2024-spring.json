@@ -55,6 +55,20 @@
       "githubUser": "shohei-yamashit",
       "title": "脳のメモリから「慣れ」を考察する ~新人エンジニアが最速で慣れるためにやったこと~",
       "url": "/blogs/2024/05/08/getting-used-to-it/"
+    },
+    {
+      "date": "5月20日(月)",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "Excelを使って簡単にオープンデータを分析する(発展編)",
+      "url": "/blogs/2024/05/20/powerquery-introduction/"
+    },
+    {
+      "date": "6月8日(土)",
+      "author": "kenta-ishihara",
+      "githubUser": "kenta-ishihara",
+      "title": "【新人さん向け】A5:SQL Mk-2のおすすめ設定と使い方",
+      "url": "/blogs/2024/06/08/a5m2_settings/"
     }
   ]
 }

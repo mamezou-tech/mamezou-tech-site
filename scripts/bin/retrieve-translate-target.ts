@@ -29,7 +29,7 @@ export async function retrieveTarget(): Promise<LatestArticle[]> {
   }).filter(entry => {
     const entryDate = DateTime.fromISO(entry.published);
     const from = DateTime.now().minus(Duration.fromObject({ months: 1 }));
-    // const weekAgo = DateTime.fromISO('2023-12-01')
+    // const from = DateTime.fromISO('2023-10-01')
     return entryDate >= from;
   });
 

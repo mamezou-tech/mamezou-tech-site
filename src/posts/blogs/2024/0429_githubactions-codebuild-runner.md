@@ -20,7 +20,7 @@ image: true
 ここではGitHub Actionsのジョブ実行環境(ephemeral self-hosted runners)としてCodeBuildが使われます。
 
 これによりGitHub Actionsのワークフローで、CodeBuildがサポートするARMアーキテクチャやGPUワークロード、Lambda実行環境等が使えるようになりました。
-また、ジョブ自体はCodBuild上で動作していますので、IAMやVPCリソース等AWSの各種サービスの利用も簡単です(OIDCプロバイダ設定やアクセスキー不要)。
+また、ジョブ自体はCodeBuild上で動作していますので、IAMやVPCリソース等AWSの各種サービスの利用も簡単です(OIDCプロバイダ設定やアクセスキー不要)。
 
 もちろんセルフホステッドランナーとしての[制限](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#usage-limits)はありますが、セルフホステッドランナー自体はGitHub Actionsが提供しているものなので、基本的にはGitHub Actionsの機能を全て使えます。
 

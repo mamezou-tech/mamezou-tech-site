@@ -9,8 +9,8 @@
     ]
   },
   "tasks": {
-    "lume": "echo \"import 'lume/cli.ts'\" | deno run --v8-flags=--max-old-space-size=2048 --unstable-fs -A -",
-    "build": "LUME_LOGS=warning deno task lume",
+    "lume": "echo \"import 'lume/cli.ts'\" | deno run --v8-flags=--max-old-space-size=4096 --unstable-fs -A -",
+    "build": "deno task lume",
     "serve": "LUME_LOGS=info deno task lume --serve",
     "serve:debug": "MZ_DEBUG=1 deno task serve",
     "lint": "deno run --unstable-fs --allow-all --lock deno-lint.lock lint.ts"

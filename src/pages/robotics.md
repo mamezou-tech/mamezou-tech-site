@@ -69,3 +69,4 @@ icon: https://api.iconify.design/uil/robot.svg?color=%23730099&height=28
 ## ROS
 
 - [ROS2 の UI 開発に Tauri を使用した話](/robotics/ros/ros2-tauri/)
+- [【ROS】Pilz Industrial Motion Plannerを使ってみた](/robotics/pilz/pilz)

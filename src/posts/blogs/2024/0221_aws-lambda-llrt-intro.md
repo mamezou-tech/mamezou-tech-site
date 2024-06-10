@@ -226,7 +226,7 @@ curl -H 'Content-Type: application/json' $LLRT_URL -d '{"name": "mamezou"}'
 
 初期化時間(Init)は58ms、全体でも106ms程と非常に高速です[^3]。
 
-[^3]: 初めて知ったのですが、カスタムランタイムの場合はDurationにInitの時間は含まれないようです。Billed Durationは合計時間になっているようですが。
+[^3]: 初めて知ったのですが、カスタムランタイムの場合はBilled DurationにInit Durationが含まれるようです。
 
 ## Node.jsランタイムと実行時間を比較する
 

@@ -222,7 +222,7 @@ It seems to be working fine. Let's check the logs in CloudWatch.
 
 The initialization time (Init) is 58ms, and the total time is about 106ms, which is very fast[^3].
 
-[^3]: I learned for the first time that in the case of custom runtimes, the Init time is not included in the Duration. The Billed Duration seems to be the total time though.
+[^3]: I learned for the first time that in the case of custom runtimes, the Init time is included in The Billed Duration.
 
 ## Comparing Execution Time with Node.js Runtime
 

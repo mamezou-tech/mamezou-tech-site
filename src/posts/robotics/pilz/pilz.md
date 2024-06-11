@@ -1,21 +1,21 @@
 ---
 title: 【ROS】Pilz Industrial Motion Plannerを使ってみた
 author: takashi-hasegawa
-date: 2024-05-30
+date: 2024-06-11
 tags: [ROS, Moveit]
 image: true
 ---
 
 こんにちは。エンジニアリングソリューション事業部の長谷川です。
 
-この記事ではMoveItのモーションプランナーライブラリの1つであるPilz Industrial Motion Plannerを紹介します。MoveItはROSを使用してロボットのマニピュレーションを行う際に非常に便利なツールです。ですが、デフォルトのモーションプランナーを使用する場合、教示点に到達するたびに動作が一時停止するという課題がありました。
+この記事ではMoveItのモーションプランナーライブラリの1つであるPilz Industrial Motion Plannerを紹介します。MoveItはROSを使用してロボットのマニピュレーションを行う際に非常に便利なツールです。ですが、デフォルトのモーションプランナーを使用する場合、教示点へと到達するたびに動作が一時停止するという課題がありました。
 この課題を解決するため、複数の教示点を滑らかに繋いだ軌道に沿って動作させる手段を調べていたところ、Pilz Industrial Motion Plannerに出会いました。
 今回はこのプランナーの機能と利点について紹介します。
 
 # Pilz Industrial Motion Plannerの概要
 ## モーションプランナーの役割
 
-Pilz Industrial Motion Plannerはモーションプランナーの一種です。MoveItを使用したロボットの動作生成において、モーションプランナーは手先の目標位置を受け取り、そこに到達する軌道を計算します。
+Pilz Industrial Motion Plannerはモーションプランナーの一種です。MoveItを使用したロボットの動作生成において、モーションプランナーは手先の目標位置を受け取り、各関節の角度を計算して目標位置に到達するまでの軌道を生成します。
 MoveItで利用できるプランナーのそれぞれの特徴については下記リンクを参照してください。
 
 
@@ -63,12 +63,12 @@ CIRC命令では軌道が円弧を描くような動作を命令できます。
 ## シーケンス命令
 
 シーケンス命令では、上記の基本コマンドを連続して実行します。
-また、下の図のようにブレンド半径が指定できます。ロボットの手先が教示点のブレンド半径内に入ると、教示点に到達する前に次の教示点に向かって移動を開始します。
+また、下の図のようにブレンド半径が指定できます。ロボットの手先が教示点のブレンド半径内に入ると、教示点へ到達する前に次の教示点へ向かって移動を開始します。
 
 
 ![キャプション](../../../img/robotics/pilz/sequence.png)
 
-[Pilz Industrial Motion Planner](https://moveit.github.io/moveit_tutorials/doc/pilz_industrial_motion_planner/pilz_industrial_motion_planner.html#user-interface-sequence-capability)のドキュメントから引用
+[Pilz Industrial Motion Planner](https://moveit.github.io/moveit_tutorials/doc/pilz_industrial_motion_planner/pilz_industrial_motion_planner.html#user-interface-sequence-capability)のドキュメントから引用。
 
 
 # 使用方法
@@ -79,7 +79,7 @@ CIRC命令では軌道が円弧を描くような動作を命令できます。
 
 ## moveit configの用意
 Pilz Industrial Motion Plannerの使用にかかわらず、MoveItを使用する際はロボットに合わせた設定ファイル群を用意する必要があります。
-有名なロボットであれば、{ロボットの名前}_moveit_configという名前でファイルがGithubで公開されていますし、URDFファイルが入手できれば、設定ファイルを生成するsetup assistantを使用するという選択肢もあります。
+有名なロボットであれば、{ロボットの名前}_moveit_configという名前でファイルがGithubで公開されていますし、URDFファイルが入手できれば、設定ファイルを生成するsetup assistantを使用する選択肢もあります。
 
 公開されているファイルを使用する場合、Pilz用のパラメータが含まれていないことがあるので注意が必要です。
 launchフォルダ内に"pilz_industrial_motion_planner_planning_pipeline.launch.xml"が含まれていれば使用可能です。

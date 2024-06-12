@@ -62,7 +62,7 @@ Drizzleの普及具合でいうと、PrismaやTypeORM等のメジャーなORマ�
 
 ここではNode.js + PostgreSQLを使います。
 
-- [Drizzle Doc - Get Started - PostgreSQL - node-podstgres](https://orm.drizzle.team/docs/get-started-postgresql#node-postgres)
+- [Drizzle Doc - Get Started - PostgreSQL - node-postgres](https://orm.drizzle.team/docs/get-started-postgresql#node-postgres)
 
 ```shell
 npm install drizzle-orm pg

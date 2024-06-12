@@ -23,7 +23,7 @@ Drizzleは2022年リリースの比較的新しいORマッパーです。
 
 > It’s the only ORM with both relational and SQL-like query APIs, providing you best of both worlds when it comes to accessing your relational data. Drizzle is lightweight, performant, typesafe, non lactose, gluten-free, sober, flexible and serverless-ready by design. Drizzle is not just a library, it’s an experience 🤩
 
-何だかとても良さそうな感じですねw
+何だかとても良さそうな感じですね。
 
 ここで述べられているように、Drizzleは2つの機能を使ってRDBにアクセスします。
 いずれもTypeScriptの型システム活かしたものになっていますので、IDEのコード補完機能でリズムよく記述できます。
@@ -39,7 +39,7 @@ Drizzleは2022年リリースの比較的新しいORマッパーです。
 
 **Relational Query**
 2つ目はRelational Queryです。これは複雑なテーブル構成のクエリを簡潔に記述できるAPIで、Select APIの拡張となっています。
-Relational Queryはテーブルスキーマとは別に関連(relation)を定義しておくことで、それに合った最適なSQL作成や結果セットのマッピングをDrizzleが担ってくれる抽象度の高いAPIになっています。
+Relational Queryはテーブルスキーマとは別に関連(relation)を定義しておくことで、それに合った最適なSQL生成や結果セットのマッピングをDrizzleが担ってくれる抽象度の高いAPIになっています。
 findManyとfindOneの2つのAPIを提供しています。
 
 - [Drizzle Doc - Relational Query](https://orm.drizzle.team/docs/rqb)
@@ -53,7 +53,7 @@ findManyとfindOneの2つのAPIを提供しています。
 とはいえ、各DBのサポート内容の詳細を見ると各種マネージドサービスやDeno/Bun等、幅広い製品での利用を想定していることが分かります。
 ORマッパーは重量級のライブラリになりがちですが、Drizzleは様々なサーバーレス・エッジ環境での動作を想定して軽量に設計されていますので、気軽に使いやすいOSSになっています。
 
-普及具合でいうと、PrismaやTypeORM等のメジャーなORマッパーほどではないですが、2023年のRelational Queryの登場で人気に火がついたようです[^1]。
+Drizzleの普及具合でいうと、PrismaやTypeORM等のメジャーなORマッパーほどではないですが、2023年のRelational Queryの登場で人気に火がついたようです[^1]。
 現時点でGitHub Starは21,000を超え、かなり勢いのある製品となっています。
 
 [^1]: [Medium - Drizzle Stories - Best TypeScript ORM just got better](https://medium.com/drizzle-stories/best-typescript-orm-just-got-better-5a33688b8d2e)
@@ -72,7 +72,7 @@ npm install -D drizzle-kit @types/pg
 ここでは現時点で最新の`0.31.2`のDrizzleをセットアップしました。
 なお、今回試していませんがDrizzleはNode.jsのみではなくDenoやBunでも使えます。
 
-次にアクセスするRDBですが、ローカル環境で試したいのでDockerでPostgreSQLを起動しました。
+次に、利用するRDBはローカル環境で試せるようにDockerでPostgreSQLコンテナを起動しました。
 
 ```shell
 docker run --name drizzle-postgres -e POSTGRES_PASSWORD=drizzlepass -p 5432:5432 -d postgres
@@ -141,14 +141,14 @@ export const author = sample.table('author', {
 `pgSchema`でテーブルスキーマを作成して、その中に各テーブルを配置しました。
 カラムの型や制約はDrizzleが提供しているものを使います。
 
-DDLを記述した経験があれば、簡単に記述できると思います。
-
 - [Drizzle Doc - SQL schema declaration](https://orm.drizzle.team/docs/sql-schema-declaration)
 
-## スキーママイグレーションツールを使う
+DDLを記述した経験があれば、簡単に記述できると思います。
 
-前述の通り、スキーマはDrizzle Kitが提供するスキーママイグレーションツールで使えます。
+## Drizzle Kitのスキーママイグレーションを使う
+
 スキーママイグレーションツールは、TypeScriptのテーブルスキーマからDDLを作成するコマンドを提供し、スキーマのバージョン管理と実際のDBへの適用を担います[^2]。
+利用自体は任意ですが、テーブルスキーマとソースコードのバージョン管理を同期するためにはぜひ活用したいものです。
 
 [^2]: 現時点ではロールバックには対応していないようなので、そこは手動で対応する必要がありそうです。
 
@@ -175,7 +175,7 @@ export default defineConfig({
 });
 ```
 
-では、スキーママイグレーションツールでDDLを生成します。
+では、Drizzle Kitのスキーママイグレーションを使ってDDLを生成します。
 Drizzle Kitのgenerateコマンドを実行します。
 
 ```shell
@@ -293,7 +293,7 @@ ALTER TABLE "sample"."author" ADD COLUMN "nick_name" varchar(20);
 
 Drizzle Kitのスキーママイグレーションツールがスキーマ変更点を抽出し、カラム追加のみのDDLを作成しているのが分かります。
 変更適用も初回と同じで`npx drizzle-kit migrate`です。
-Drizzle Kitが未適用のマイグレーションファイルを抽出して、未適用分を順次既存スキーマに対して更新してくれます。
+Drizzle Kitが未適用のマイグレーションファイルを抽出して、未適用分を順次既存スキーマに対して適用してくれます。
 
 :::column:Drizzle Kitのマイグレーション履歴管理
 Drizzleのスキーママイグレーションツールはデフォルトでは`drizzle`スキーマの`__drizzle_migrations`というテーブル名でマイグレーションの履歴を管理しています。
@@ -444,7 +444,7 @@ ORマッパーでは関連はデータベースの外部キーを使って表現
 - [Drizzle Doc - Query - Foreign Keys](https://orm.drizzle.team/docs/rqb#foreign-keys)
 :::
 
-Relational Queryでデータを取得すると以下のような記述になります。
+以下でRelational Queryを使ってクエリを発行してみます。
 
 ```typescript
 import * as schema from './db/schema';

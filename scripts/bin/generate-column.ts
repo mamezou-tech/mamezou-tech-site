@@ -20,12 +20,12 @@ type Gpt = {
 
 const categories = [
   'Robotics',
-  'Social Media Trends',
-  'Self-driving Vehicle Tech',
-  'Tech Entrepreneurship Stories',
-  'Remote Collaboration Tools',
-  'Cybersecurity Innovations',
-  'Tech Trends Forecast'
+  'EdTech Innovations',
+  'AWS Services',
+  'Tech Startups',
+  'Edge Computing',
+  'Biometric Security',
+  'Latest AI products or services'
 ];
 
 async function main(path: string) {

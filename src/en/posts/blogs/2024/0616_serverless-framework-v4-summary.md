@@ -36,11 +36,6 @@ According to the [official documentation](https://www.serverless.com/framework/d
 > 
 > These changes only apply to Serverless Framework V.4 and beyond and not to earlier versions. Serverless Framework V.3 will continue to be maintained via critical security and bug fixes through 2024.
 
-(DeepL translation)
-> As we announced at the end of 2023, Serverless Framework CLI will continue to be free for individual developers and small businesses, but will no longer be free for Organizations that have greater than $2M in annual revenue. These Organizations will require a commercial Subscription.
->
-> These changes only apply to Serverless Framework V.4 and beyond and not to earlier versions. Serverless Framework V.3 will continue to be maintained via critical security and bug fixes through 2024.
-
 Even if you are only using the CLI, organizations with annual revenue exceeding $2M will need to purchase a paid subscription (and v3 support will also end by the end of 2024).
 
 Looking at the [Pricing page](https://www.serverless.com/pricing) on the official site, it seems that you purchase in units called "credits."
@@ -52,9 +47,6 @@ Note that credits are only usable for the relevant month and cannot be carried o
 Regarding this "credit" billing unit, if you are only using the CLI (without using the Serverless Dashboard), 1 credit is consumed per service instance.
 This "service instance" is defined as follows:
 
-> A Service Instance in the Serverless Framework is defined by a specific combination of "service", "stage", and "region" parameters in your serverless.yml file, essentially representing a unique deployment in a particular stage and region. Think of it as a distinct AWS CloudFormation stack managed by the Serverless Framework.
-
-(DeepL translation)
 > A Service Instance in the Serverless Framework is defined by a specific combination of "service", "stage", and "region" parameters in your serverless.yml file, essentially representing a unique deployment in a particular stage and region. Think of it as a distinct AWS CloudFormation stack managed by the Serverless Framework.
 
 For example, if you are operating in three environments: development, staging, and production, with a multi-region configuration in Tokyo and Osaka, you will need to purchase 1 (service) * 3 (stage) * 2 (region) = 6 credits every month.

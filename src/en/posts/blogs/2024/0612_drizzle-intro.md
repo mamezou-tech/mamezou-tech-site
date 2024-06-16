@@ -423,7 +423,7 @@ Relations are defined using the `relations` API provided by Drizzle. Here, we ar
 Not only one-to-many (One-to-Many), but also one-to-one (One-to-One) and many-to-many (Many-to-Many) relationships are available.
 
 - [Drizzle Doc - Query - One-to-Many](https://orm.drizzle.team/docs/rqb#one-to-many)
-- [Drizzle,- [Drizzle Doc - Query - One-to-One](https://orm.drizzle.team/docs/rqb#one-to-one)
+- [Drizzle Doc - Query - One-to-One](https://orm.drizzle.team/docs/rqb#one-to-one)
 - [Drizzle Doc - Query - Many-to-Many](https://orm.drizzle.team/docs/rqb#many-to-many)
 :::
 

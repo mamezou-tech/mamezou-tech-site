@@ -58,7 +58,7 @@ If there is an unattainable posture between the starting point and the endpoint,
 
 The difference between PTP and LIN trajectories is easy to understand when viewed in a video.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/WOL-jQg79Ss?si=nmRluy5_7G89ESVa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/WOL-jQg79Ss?si=nmRluy5_7G89ESVa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### CIRC
 
@@ -71,7 +71,7 @@ In either method, if the specified information cannot define the arc, the comman
 In sequence commands, the above basic commands are executed consecutively.
 Additionally, as shown in the figure below, a blend radius can be specified. When the end effector of the robot enters the blend radius of the teaching point, it starts moving towards the next teaching point before reaching the teaching point.
 
-![Caption](../../../img/robotics/pilz/sequence.png)
+![Caption](/img/robotics/pilz/sequence.png)
 
 Quoted from the documentation of [Pilz Industrial Motion Planner](https://moveit.github.io/moveit_tutorials/doc/pilz_industrial_motion_planner/pilz_industrial_motion_planner.html#user-interface-sequence-capability).
 
@@ -155,7 +155,7 @@ When executed, it operates as shown in the following video.
 In this example, four LIN commands are executed together in a sequence command.
 I prepared three patterns of `blend_radius` argument values: 0.04, 0.08, and 0.12, and you can see that the larger the value, the smoother the connection of the trajectory becomes.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/NyyHtrfrbfQ?si=MRQjsobOin-s3r2F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/NyyHtrfrbfQ?si=MRQjsobOin-s3r2F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 As a side note, in this video, the 4th and 6th axes move rapidly around the 7-second mark.
 This is because it passes near an unattainable posture called a singularity in LIN or CIRC movements.

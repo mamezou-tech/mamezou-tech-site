@@ -50,7 +50,7 @@ LIN命令では、動作の開始点から到達点までを結んだ直線に�
 
 PTPとLINの軌道の違いは動画で見ると分かりやすいです。
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/WOL-jQg79Ss?si=nmRluy5_7G89ESVa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/WOL-jQg79Ss?si=nmRluy5_7G89ESVa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 ### CIRC
@@ -66,7 +66,7 @@ CIRC命令では軌道が円弧を描くような動作を命令できます。
 また、下の図のようにブレンド半径が指定できます。ロボットの手先が教示点のブレンド半径内に入ると、教示点へ到達する前に次の教示点へ向かって移動を開始します。
 
 
-![キャプション](../../../img/robotics/pilz/sequence.png)
+![キャプション](/img/robotics/pilz/sequence.png)
 
 [Pilz Industrial Motion Planner](https://moveit.github.io/moveit_tutorials/doc/pilz_industrial_motion_planner/pilz_industrial_motion_planner.html#user-interface-sequence-capability)のドキュメントから引用。
 
@@ -156,7 +156,7 @@ if __name__ == "__main__":
 
 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/NyyHtrfrbfQ?si=MRQjsobOin-s3r2F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/NyyHtrfrbfQ?si=MRQjsobOin-s3r2F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 余談ですが、こちらの動画では7秒付近で第4軸、第6軸が急動作しています。

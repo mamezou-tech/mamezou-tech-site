@@ -7,7 +7,7 @@ tags: [java,  新人向け]
 
 ## はじめに
 
-日頃、Javaの初心者からベテランまで様々なスキルレベルの方から質問を頂く立場で仕事しておりますが、Java言語を使用するうえで基本事項でありながらも、あまり理解されていない事柄があると感じています。これらの事柄については改めて誰かに質問できず、「そういうもの」として無理やり納得しやり過ごしている方がいるのではないでしょうか。ここではそのような事柄について改めて解説し、その理由を知ることで「だらからこうするべき」、「だからこれはダメ」ということを理解する手助けになればと考えます。
+日頃、Javaの初心者からベテランまで様々なスキルレベルの方から質問を頂く立場で仕事しておりますが、Java言語を使用するうえで基本事項でありながらも、あまり理解されていない事柄があると感じています。これらの事柄については改めて誰かに質問できず、「そういうもの」として無理やり納得しやり過ごしている方がいるのではないでしょうか。ここではそのような事柄について改めて解説し、その理由を知ることで「だからこうするべき」、「だからこれはダメ」ということを理解する手助けになればと考えます。
 
 今回は「新人向け」というテーマをもらったので、プログラマーなら避けて通れない「文字コード」、特に「シフトJIS」についてこれだけは知っておいて欲しいポイントを解説します。
 
@@ -32,12 +32,12 @@ tags: [java,  新人向け]
      * @param filePath 出力ファイルパス
      * @throws IOException ファイル出力エラー
      */
-    public static void witeToFile(List<Customer> customers, String filePath) throws IOException {
-        try (PrintWriter wtiter = new PrintWriter(new BufferedWriter(
+    public static void writeToFile(List<Customer> customers, String filePath) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(filePath), Charset.forName("Shift_JIS"))))) {
 
             for (Customer customer : customers) {
-                wtiter.println(toCsvData(customer));
+                writer.println(toCsvData(customer));
             }
         }
     }

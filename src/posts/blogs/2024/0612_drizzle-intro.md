@@ -3,6 +3,7 @@ title: TypeScript 向けの軽量ORマッパー Drizzle を使う
 author: noboru-kudo
 date: 2024-06-12
 tags: [ORマッパー, typescript, drizzle]
+image: true
 ---
 
 少し前ですが、TypeScript向けのORマッパーとして [TypeORM](https://typeorm.io/) を紹介しました。

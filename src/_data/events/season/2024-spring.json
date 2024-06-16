@@ -76,6 +76,13 @@
       "githubUser": "KoheiTsukano",
       "title": "新人だって怖くない！Gitで焦らないためのコマンド操作解説：スタッシュ・コンフリクト解消・マージの取り消し",
       "url": "/blogs/2024/06/13/git_notes_for_newcommers/"
+    },
+    {
+      "date": "6月16日(日)",
+      "author": "yoshifumi-moriya",
+      "githubUser": "morya-530",
+      "title": "文字コード これだけは覚えておこう ～シフトJIS編～",
+      "url": "/blogs/2024/06/16/moji-code1/"
     }
   ]
 }

@@ -2,7 +2,8 @@
 title: Serverless Framework v4 の変更点を整理する
 author: noboru-kudo
 date: 2024-06-16
-tags: [AWS, サーバーレス, serverless-framework, lambda, IaC]
+tags: [serverless-framework, lambda, サーバーレス, AWS, IaC]
+image: true
 ---
 
 先日(2024-06-14)Serverless Framework v4のGAリリースが発表されました。

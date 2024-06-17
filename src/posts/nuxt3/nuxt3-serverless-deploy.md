@@ -3,7 +3,7 @@ title: Nuxt3入門(第9回) - Nuxt3アプリケーションをサーバーレス
 author: noboru-kudo
 date: 2022-11-02
 tags: [SSR, AWS, サーバーレス, serverless-framework, lambda]
-prevPage: ./src/en/posts/nuxt3/nuxt3-state-management.md
+prevPage: ./src/posts/nuxt3/nuxt3-state-management.md
 image: true
 ---
 

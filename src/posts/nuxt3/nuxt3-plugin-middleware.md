@@ -3,8 +3,8 @@ title: Nuxt3入門(第7回) - Nuxt3のプラグイン・ミドルウェアを使
 author: noboru-kudo
 date: 2022-10-23
 tags: [SSG, SSR]
-prevPage: ./src/en/posts/nuxt3/nuxt3-error-handling.md
-nextPage: ./src/en/posts/nuxt3/nuxt3-state-management.md
+prevPage: ./src/posts/nuxt3/nuxt3-error-handling.md
+nextPage: ./src/posts/nuxt3/nuxt3-state-management.md
 image: true
 ---
 

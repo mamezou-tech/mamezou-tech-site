@@ -3,8 +3,8 @@ title: Nuxt3入門(第6回) - アプリケーションで発生するエラー�
 author: noboru-kudo
 date: 2022-10-19
 tags: [SSG, SSR]
-prevPage: ./src/en/posts/nuxt3/nuxt3-app-configuration.md
-nextPage: ./src/en/posts/nuxt3/nuxt3-plugin-middleware.md
+prevPage: ./src/posts/nuxt3/nuxt3-app-configuration.md
+nextPage: ./src/posts/nuxt3/nuxt3-plugin-middleware.md
 image: true
 ---
 

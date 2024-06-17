@@ -3,8 +3,8 @@ title: Nuxt3入門(第4回) - Nuxtのルーティングを理解する
 author: noboru-kudo
 date: 2022-10-09
 tags: [SSG, SSR]
-prevPage: ./src/en/posts/nuxt3/nuxt3-universal-fetch.md
-nextPage: ./src/en/posts/nuxt3/nuxt3-app-configuration.md
+prevPage: ./src/posts/nuxt3/nuxt3-universal-fetch.md
+nextPage: ./src/posts/nuxt3/nuxt3-app-configuration.md
 image: true
 ---
 

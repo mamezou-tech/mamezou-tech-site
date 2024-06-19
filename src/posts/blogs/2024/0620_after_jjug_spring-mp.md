@@ -6,9 +6,9 @@ tags: [java, mp, spring, spring-boot]
 image: true
 ---
 
-先週日曜日(6/16)に開催された[JJUG CCC 2024 Spring](https://ccc2024spring.java-users.jp/)に『[Spring Boot vs MicroProfile - クラウドネイティブにおけるフレームワークの比較と選択](https://www.mamezou.com/news/event/20240616)』nのタイトルで登壇させていただきました。JJUG CCCの登壇はこれで2回目ですが、前回はオンラインとオフラインのハイブリット開催のため、会場の入りはまばらでしたが、今回は「こんなに人が入ってるワケないので会場を間違えた！？」と自分で思うほど、大勢の方に足を運んでいただけました。
+先週日曜日(6/16)に開催された[JJUG CCC 2024 Spring](https://ccc2024spring.java-users.jp/)に『[Spring Boot vs MicroProfile - クラウドネイティブにおけるフレームワークの比較と選択](https://www.mamezou.com/news/event/20240616)』のタイトルで登壇させていただきました。JJUG CCCの登壇はこれで2回目ですが、前回はオンラインとオフラインのハイブリッド開催のため、会場の入りはまばらでしたが、今回は「こんなに人が入ってるワケないので会場を間違えた！？」と自分で思うほど、大勢の方に足を運んでいただけました。
 
-肝心の発表内容は？というと、スライドが多めなのに余計なことをついついしゃべってしまい時間が足りなくなるという前回と全く同じ失敗をしましたが、本人としては伝えたいことは伝えられたのではないとかと満足していたりします。
+肝心の発表内容は？というと、スライドが多めなのに余計なことをついついしゃべってしまい時間が足りなくなるという前回と全く同じ失敗をしましたが、本人としては伝えたいことは伝えられたのではないかと満足していたりします。
 
 セッション終了後には会場外やX(twitter)でいくつかご質問をいただきました。今回はその中から「確かにそれは？と思いますよね。」と感じた質問とそれに対する回答を3つほど登壇後記として書かせていただきます。なお、当日のセッション資料は[こちら](https://speakerdeck.com/ogiwarat/spring-boot-vs-microprofile-kuraudoneiteibuniokeruhuremuwakunobi-jiao-toxuan-ze)になります。
 
@@ -22,7 +22,7 @@ image: true
 
 CDIの仕様になります。
 
-CDIのSpecification(JSR)にズバリな記述はないですが、[CDI Lite](https://jakarta.ee/specifications/cdi/4.0/jakarta-cdi-spec-4.0.html#initialization), [CDI Full](https://jakarta.ee/specifications/cdi/4.0/jakarta-cdi-spec-4.0.html#initialization_full)それぞれで規定されているアプリケーションの初期化ライフサイクルでは、どちらも初期化時（起動時）に行われるのはBeanの検出までとなっています。このとこから分かるようにCDI Beanの実体となるBeanインスタンス(セッションの例では`BookController`のインスタンス)は起動時に作られません。
+CDIのSpecification(JSR)にズバリな記述はないですが、[CDI Lite](https://jakarta.ee/specifications/cdi/4.0/jakarta-cdi-spec-4.0.html#initialization), [CDI Full](https://jakarta.ee/specifications/cdi/4.0/jakarta-cdi-spec-4.0.html#initialization_full)それぞれで規定されているアプリケーションの初期化ライフサイクルでは、どちらも初期化時（起動時）に行われるのはBeanの検出までとなっています。このことから分かるようにCDI Beanの実体となるBeanインスタンス(セッションの例では`BookController`のインスタンス)は起動時に作られません。
 
 実際、CDIでは`@Dependent`や自作スコープを除く通常スコープのBeanに対してはすべてClientProxyが作成され、InjectionPointには実体のBeanインスタンスではなくClientProxyがインジェクションされます。この仕組みにより、Beanインスタンスの生成は実際にそのBeanが必要になるまで遅延するようになっています。
 
@@ -45,9 +45,9 @@ CDIのSpecification(JSR)にズバリな記述はないですが、[CDI Lite](htt
 
 
 ### <回答>
-セッションで使ったBookRepositoryの例であればProducerでもダメではありません。しかしProducerにはいくつか欠点があるため、Build compatible extensionsの方が常にベターと考えています。
+セッションで使ったBookRepositoryの例であればProducerでもダメではありません。しかしProducerにはいくつか欠点があるため、Build compatible extensionsの方が常にベターだと考えています。
 
-BookRepositoryのBeanの切り替えをProducerを使って行う場合の模範的な実装は次のようになるかと思いいます。
+BookRepositoryのBeanの切り替えをProducerを使って行う場合の模範的な実装は次のようになるかと思います。
 
 ```java
 @ApplicationScoped
@@ -84,7 +84,7 @@ public class BookRepositoryProducer {
 }
 ```
 
-Producerを使った場合の実装は他の場合でも凡そ上記のようになると思いますが、これには次の欠点がありあす。
+Producerを使った場合の実装は他の場合でも凡そ上記のようになると思いますが、これには次の欠点があります。
 
 1. コンパイル時にBeanの切り替え候補となるものが分かっている必要がある
 2. 起動時に不要と判断できるBeanインスタンスもインスタンス化されコンテナに登録される
@@ -100,5 +100,5 @@ Producerを使った場合の実装は他の場合でも凡そ上記のように
 ご指摘のとおり、[MicroProfile JWT 2.1](https://download.eclipse.org/microprofile/microprofile-jwt-auth-2.1/microprofile-jwt-auth-spec-2.1.html#_mp_jwt_verify_audiences)からAudience(aud)クレームも検証可能となっていました。ご指摘ありがとうございます。スライド資料を修正させていただきました。
 
 
-セッションに対する質問と回答の紹介は以上となります。質問をしていただいた皆さん、ありがとうございました。理解を深めることができました。
+セッションに対する質問と回答の紹介は以上となります。質問をしていただいた皆さん、ありがとうございました。理解を深めることができました！
 

@@ -16,7 +16,8 @@ export function chop(content: string, count = 150, en = false) {
   if (firstDotPos !== -1) {
     return content.substring(0, firstDotPos) + "...";
   } else {
-    return content.substring(0, content.lastIndexOf(en ? "," : "、", count)) + "...";
+    return content.substring(0, content.lastIndexOf(en ? "," : "、", count)) +
+      "...";
   }
 }
 

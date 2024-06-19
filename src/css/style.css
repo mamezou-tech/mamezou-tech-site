@@ -7,7 +7,7 @@
 @import "../_includes/styles/_prism.pcss";
 @import "../_includes/styles/_season.pcss";
 @import "../_includes/styles/_event.pcss";
-@import "../_includes/styles/_summer.pcss";
+@import "../_includes/styles/_event-marker.pcss";
 @import "../_includes/styles/_ad.pcss";
 @import "../_includes/styles/_card.pcss";
 @import "../_includes/styles/_layout.pcss";
@@ -43,12 +43,23 @@ html {
 
 body {
   min-height: 100vh;
-  font-size: 100%;
   line-height: 1.5;
   text-rendering: optimizeSpeed;
-  @apply flex flex-col bg-white;
+  @apply flex flex-col bg-white ;
   color: #252450;
-  font-family: "Helvetica Neue", "Arial", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif
+  font-family: "Helvetica Neue", "Arial", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-seri, serif;
+
+  @media screen(md) {
+    &.bg-summer {
+      @apply bg-gradient-to-br from-white via-sky-50 to-sky-100;
+    }
+    &.bg-spring {
+      @apply bg-gradient-to-br from-white via-pink-50 to-pink-100;
+    }
+    &.bg-advent {
+      @apply bg-gradient-to-br from-white via-red-50 to-red-100;
+    }
+  }
 }
 
 input, button, textarea, select {
@@ -69,6 +80,7 @@ input, button, textarea, select {
 }
 
 article {
+  @apply bg-white md:p-5 md:rounded-lg;
   ul {
     @apply list-disc;
     padding-inline-start: 20px;
@@ -288,25 +300,6 @@ div#search {
 @media (max-width: 480px) {
   section.top-nav div#search {
     display: none
-  }
-}
-
-.advent {
-  clear: both;
-  font-weight: bold;
-  float: left;
-  border-radius: 5px;
-  background-color: #bc0704;
-  color: #fff;
-  display: inline-block;
-  padding: .5rem;
-
-  a {
-    color: #fff !important
-  }
-
-  img {
-    display: inline
   }
 }
 

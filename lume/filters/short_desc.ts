@@ -28,7 +28,14 @@ export const shortDesc = (
     .replace(/(<([^>]+)>)/gi, "")
     .replace(/[\r\n]/gi, "") ?? "";
   if (path.includes("/en/posts")) {
-    return chop(content.replace(/^.*article has been automatically translated\.The original article is here\./, ""), 400, true);
+    return chop(
+      content.replace(
+        /^.*article has been automatically translated\.The original article is here\./,
+        "",
+      ),
+      400,
+      true,
+    );
   } else {
     return chop(content, 200, false);
   }

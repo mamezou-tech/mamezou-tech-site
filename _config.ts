@@ -174,17 +174,31 @@ site.filter(
 );
 site.filter("articleDate", articleDate);
 
-const eventTagFilter = (tagPrefix: string) => (rawTags: string[]) => {
-  if (!rawTags) return;
+function findEventTag(rawTags: string[] | string, target: RegExp) {
   const tags = typeof rawTags === "string" ? [rawTags] : rawTags;
-  const eventTag = tags.find((tag) => tag.startsWith(tagPrefix));
+  return tags.find((tag) => tag.match(target));
+}
+
+const eventTagFilter = (prefix: string) => (rawTags: string[] | string) => {
+  if (!rawTags?.length) return;
+  const eventTag = findEventTag(rawTags, new RegExp(`^${prefix}.*`));
   if (eventTag) {
-    const result = eventTag.match(new RegExp(`${tagPrefix}(?<year>\\d{4})`));
+    const result = eventTag.match(new RegExp(`${prefix}(?<year>\\d{4})`));
     return result?.groups ? result.groups.year : undefined;
   }
 };
 site.filter("adventCalendarTag", eventTagFilter("advent"));
 site.filter("summerRelayTag", eventTagFilter("summer"));
+site.filter(
+  "eventType",
+  (tags: string[] | string): "spring" | "summer" | "advent" | undefined => {
+    const tag = findEventTag(tags, /^(advent|summer|新人向け).*/);
+    if (!tag) return;
+    else if (tag.startsWith("advent")) return "advent";
+    else if (tag.startsWith("summer")) return "summer";
+    else if (tag.startsWith("新人向け")) return "spring";
+  },
+);
 site.filter("validTags", validTags);
 site.filter("githubName", githubName);
 
@@ -287,7 +301,7 @@ site.process([".md"], (pages) => {
   const end = DateTime.now().startOf("month");
   const input = summary.map((s) => {
     let current = start;
-    let numbers: number[] = [];
+    const numbers: number[] = [];
     while (!current.equals(end)) {
       const found = s.result.find((r) =>
         r.ym === `${current.year}-${current.month}`

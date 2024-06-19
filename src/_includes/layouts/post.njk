@@ -45,17 +45,23 @@ layout: layouts/base.njk
       </div>
     {%- set adYear = tags | adventCalendarTag %}
     {%- if adYear %}
-    <div class="advent">
+    <div class="event-marker advent">
       <a target="_blank" rel="noopener noreferrer" href="{{ adventCalendarUrl }}"><img width="20px" src="/img/icons/christmas-tree.svg" alt="christmas-tree"/>アドベントカレンダー{{adYear}}</a>
     </div>
     {%- endif %}
     {%- set summerYear = tags | summerRelayTag %}
     {%- if summerYear %}
-    <div class="summer">
+    <div class="event-marker summer">
       <a target="_blank" rel="noopener noreferrer" href="{{ summerRelayUrl }}"><img width="20px" src="/img/icons/summer-sun.png" alt="summer-sun"/>夏のリレー連載{{summerYear}}</a>
     </div>
     {%- endif %}
     </header>
+    <div class="post__tags">
+      {% for tag in tags | pageTags %}
+      {% set tagUrl %}/tags/{{ tag | lower }}/{% endset %}
+      <a href="{{ tagUrl | url }}">#{{ tag }}</a>
+      {% endfor %}
+    </div>
     <main class="post__content">
       {{ content | safe }}
     </main>

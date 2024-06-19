@@ -1,5 +1,5 @@
 import { ReactNode } from "https://esm.sh/v128/@types/react@18.2.21/index.d.ts";
-import EventBanner from './EventBanner.tsx';
+import EventBanner from "./EventBanner.tsx";
 
 export default () => {
   const content = (
@@ -8,7 +8,9 @@ export default () => {
         href="/events/season/2024-spring/"
         target="_blank"
         rel="noreferrer noopener"
-      >新連載</a>スタート！
+      >
+        新連載
+      </a>スタート！
     </>
   ) as ReactNode;
   return (

@@ -106,7 +106,15 @@
     selector: 'div#search',
   });
 </script>
-  <body>
+{%- set type = tags | eventType %}
+{%- set bgColor -%}
+{%- if type == "summer" -%}bg-summer
+{%- elseif type == "spring" -%}bg-spring
+{%- elseif type == "advent" -%}bg-advent
+{%- else -%}bg-white
+{%- endif -%}
+{%- endset -%}
+  <body class="{{ bgColor }}">
   <div id="fb-root"></div>
   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v18.0&appId=625393465273959" nonce="Ytcn0KH2"></script>
     {{ content | safe }}

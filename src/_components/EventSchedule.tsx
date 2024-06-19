@@ -17,7 +17,7 @@ const Entry = (
     >
       <div
         style={{
-          flex: "0.3"
+          flex: "0.3",
         }}
       >
         <div>{date}</div>
@@ -43,7 +43,7 @@ const Entry = (
       <div
         style={{
           flex: "1",
-          fontSize: "16px"
+          fontSize: "16px",
         }}
       >
         {url ? <a href={url}>{title}</a> : title}

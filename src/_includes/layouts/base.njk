@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
-{%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ meta.siteName }}{% endset -%}
+{%- set siteName %}{% if translate == true %}{{ meta.siteEnName }}{% else %}{{ meta.siteName }}{% endif %}{% endset -%}
+{%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ siteName }}{% endset -%}
 {%- set pageDescription %}{% shortDesc search.pages(), page, meta.siteDescription %}{% endset -%}
 {%- set pageSocialImg %}{{ meta.url }}/og/?title={% if title %}{{ title | percentEncode }}{% else %}home{% endif %}{% if category %}&category={{ category | percentEncode }}{% endif %}{% endset -%}
   <head>
@@ -17,7 +18,6 @@
     <link href="/css/style.css" rel="stylesheet" />
     <link rel="canonical" href="{{ meta.url }}{{ url }}" >
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
     {% if meta.env === 'production' %}
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-38XP4WXMMY"></script>
     <script>

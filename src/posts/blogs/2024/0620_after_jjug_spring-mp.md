@@ -21,7 +21,7 @@ image: true
 ### <回答>
 
 CDIの仕様になります。
-(仕様と思い込んでいましたが言われてみたら実装依存の可能性もある？と思ったので調べてみました)
+(仕様と思い込んでいましたが言われてみたら実装依存の可能性もある？と思ったので調べてみましたがやはり仕様でした)
 
 CDIのSpecification(JSR)にズバリな記述はないですが、[CDI Lite](https://jakarta.ee/specifications/cdi/4.0/jakarta-cdi-spec-4.0.html#initialization), [CDI Full](https://jakarta.ee/specifications/cdi/4.0/jakarta-cdi-spec-4.0.html#initialization_full)それぞれで規定されているアプリケーションの初期化ライフサイクルでは、どちらも初期化時（起動時）に行われるのはBeanの検出までとなっています。このことから分かるようにCDI Beanの実体となるBeanインスタンス(セッションの例では`BookController`のインスタンス)は起動時に作られません。
 

@@ -93,7 +93,7 @@ Producerを使った場合の実装は他の場合でも凡そ上記のように
 一方のBuild compatible extensions(もしくはPortable extensions)はこれらに対して制約なく使うことができます。ですので、常に何に対しても問題なく使うことができるBuild compatible extensionsが個人的にはベストプラクティスと考えています。
 
 ## MicroProfile JWTでもaudクレームは検証可能では？
-## <質問>
+### <質問>
 [26スライド](https://speakerdeck.com/ogiwarat/spring-boot-vs-microprofile-kuraudoneiteibuniokeruhuremuwakunobi-jiao-toxuan-ze?slide=26)でMicroProfile JWTで可能なJWTの検証内容は公開鍵、有効期限、Issuerクレームのみといっていましたが、Audience(aud)クレームも検証可能ではないでしょうか？
 
 ### <回答>

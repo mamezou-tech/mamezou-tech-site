@@ -46,7 +46,7 @@ CDIのSpecification(JSR)にズバリな記述はないですが、[CDI Lite](htt
 
 
 ### <回答>
-セッションで使ったBookRepositoryの例であればProducerでもダメではありません。しかしProducerにはいくつか欠点があるため、Build compatible extensionsの方が常にベターだと考えています。
+セッションで使ったBookRepositoryの例であればProducerでもダメではありません。しかしProducerにはいくつか欠点があるため、Build compatible extensionsの方がベターだと考えています。
 
 BookRepositoryのBeanの切り替えをProducerを使って行う場合の模範的な実装は次のようになるかと思います。
 
@@ -91,7 +91,7 @@ Producerを使った場合の実装は他の場合でも凡そ上記のように
 2. 起動時に不要と判断できるBeanインスタンスもインスタンス化されコンテナに登録される
 3. InterceptorもCDI BeanだがInterceptorには使うことができない
 
-一方のBuild compatible extensions(もしくはPortable extensions)はこれらに対して制約なく使うことができます。ですので、常に何に対しても問題なく使うことができるBuild compatible extensionsが個人的にはベストプラクティスと考えています。
+一方のBuild compatible extensions(もしくはPortable extensions)はこれらに対して制約なく使うことができます。ですので、何に対しても問題なく使うことができるBuild compatible extensionsが個人的にはベストプラクティスと考えています。
 
 ## MicroProfile JWTでもaudクレームは検証可能では？
 ### <質問>

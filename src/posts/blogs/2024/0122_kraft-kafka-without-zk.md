@@ -39,13 +39,19 @@ KIP-833 によると、KRaft は Kafka 3.3で Production Ready になりまし�
 
 [KIP-833: Mark KRaft as Production Ready - Apache Kafka - Apache Software Foundation](https://cwiki.apache.org/confluence/display/KAFKA/KIP-833%3A+Mark+KRaft+as+Production+Ready)
 
-Kafka のドキュメントによると早ければ 今年2024年の4月には削除されるようです。
+Kafka のドキュメントによると早ければ 4.0 のリリースは2024年の4月以降のようです。
 
 [https://kafka.apache.org/documentation/#zk_depr](https://kafka.apache.org/documentation/#zk_depr)
 
 KRaft モードは ZooKeeper モードとの互換性がないため、プロダクション環境における既存の Kafka クラスターではマイグレーション作業が必要となります。
 
 公式ドキュメントにはマイグレーションは3.6で可能になると記述されています。2024年1月現在、すでに3.6.1がリリースされていますが、公式ドキュメントには手順が記載されていません。
+
+:::info:2024.06.24追記
+2024年6月現在、すでに追記されています。
+
+[https://kafka.apache.org/documentation/#kraft_zk_migration](https://kafka.apache.org/documentation/#kraft_zk_migration)
+:::
 
 KIP-866 でマイグレーションの要件や仕様が管理されています。マイグレーションの最終段階まで ZooKeeper への切り戻しを可能にし、マイグレーションモードでは KRaft と ZooKeeper への二重書き込みを行うとのことです。クラスターのダウンタイムを最小限にすることを目指しています。
 

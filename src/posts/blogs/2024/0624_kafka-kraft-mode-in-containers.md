@@ -33,7 +33,7 @@ services:
   kafka:
     image: 'bitnami/kafka:latest'
     environment:
-      - KFAKA_CFG_NODE_ID=0
+      - KAFKA_CFG_NODE_ID=0
       - KAFKA_CFG_CONTROLLER_BROKER_ID=0 #1
       - KAFKA_CFG_PROCESS_ROLES=controller, broker #2
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092, CONTROLLER://:9093 #3
@@ -43,7 +43,7 @@ services:
 ```
 environment に KRaft の設定が必要になっています。
 
-1. コントローラーになるブローカーのID を指定します。(シングルノードなので `KFAKA_CFG_NODE_ID` と同じ `0` を指定)
+1. コントローラーになるブローカーのID を指定します。(シングルノードなので `KAFKA_CFG_NODE_ID` と同じ `0` を指定)
 2. ノードにコントローラーとブローカー両方のロールを付与します。
 3. ブローカーとコントローラーのリスナーを定義しています。それぞれ 9092、9093 ポートを割り当てています。
 4. リスナー用のセキュリティプロトコルマップの指定。PLAINTEXT にしています。
@@ -247,7 +247,7 @@ listeners:
     protocol: PLAINTEXT
 ```
 
-ランダムなポートを利用できるよう、`autoDiscovery.enabled` を true にしています。このオプションでは Kubernetes API を使用してポートの割り当てを行うため、`rback.create` を `true` にして`controller.automountServiceAccountToken`、`broker.automountServiceAccountToken` も `true` にする必要があります。
+ランダムなポートを利用できるよう、`autoDiscovery.enabled` を true にしています。このオプションでは Kubernetes API を使用してポートの割り当てを行うため、`rbac.create` を `true` にして`controller.automountServiceAccountToken`、`broker.automountServiceAccountToken` も `true` にする必要があります。
 
 `listeners.client` と `listeners.external` のプロトコルは簡便のため PLAINTEXT にしました。
 

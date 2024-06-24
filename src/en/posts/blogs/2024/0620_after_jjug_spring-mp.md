@@ -11,15 +11,12 @@ tags:
   - spring-boot
 image: true
 translate: true
-
 ---
 
 :::alert
 This article has been automatically translated.
 The original article is [here](https://developer.mamezou-tech.com/blogs/2024/06/20/after_jjug_spring-mp/).
 :::
-
-
 
 Last Sunday (6/16), I had the opportunity to present at [JJUG CCC 2024 Spring](https://ccc2024spring.java-users.jp/) with the title '[Spring Boot vs MicroProfile - Comparison and Selection of Frameworks in Cloud Native](https://www.mamezou.com/news/event/20240616)'. This was my second time presenting at JJUG CCC, but unlike the previous hybrid online and offline event where attendance was sparse, this time, so many people attended that I wondered if I had mistakenly entered the wrong venue.
 
@@ -28,10 +25,10 @@ As for the content of the presentation, I made the same mistake as last time by 
 After the session, I received several questions outside the venue and on X (twitter). From those, I will write about three questions and their answers that I thought were indeed worth considering as post-presentation notes. The session materials from that day can be found [here](https://speakerdeck.com/ogiwarat/spring-boot-vs-microprofile-kuraudoneiteibuniokeruhuremuwakunobi-jiao-toxuan-ze).
 
 ## Is the initialization timing of the `@PostConstruct` method specified?
-### <Question>
+### Question
 In [Slide 13](https://speakerdeck.com/ogiwarat/spring-boot-vs-microprofile-kuraudoneiteibuniokeruhuremuwakunobi-jiao-toxuan-ze?slide=13), it was explained that for the `@PostConstruct` initialization method, Spring calls back when the DI container starts, whereas in CDI (MicroProfile), the call to `@PostConstruct` is delayed until a method on the Bean is called. Isn't this delayed behavior in CDI dependent on the CDI container implementation rather than the CDI specification?
 
-### <Answer>
+### Answer
 
 It is specified by the CDI specification.
 (I initially thought it was specification, but upon being asked, I wondered if it could be implementation-dependent. However, upon investigation, it indeed is specified.)
@@ -54,10 +51,10 @@ So why is CDI lazy initialized? As clearly stated in the CDI specification, duri
 :::
 
 ## Is it not possible to switch CDI Beans with Producers?
-### <Question>
+### Question
 In [Slide 15](https://speakerdeck.com/ogiwarat/spring-boot-vs-microprofile-kuraudoneiteibuniokeruhuremuwakunobi-jiao-toxuan-ze?slide=15), it was mentioned that there is no standard way to switch Beans in CDI (MicroProfile), and an example using Build compatible extensions was introduced. Is it not possible to use the CDI Producer feature?
 
-### <Answer>
+### Answer
 For the BookRepository example used in the session, Producers would work. However, Producers have several drawbacks, so I consider Build compatible extensions to be better.
 
 An exemplary implementation to switch the BookRepository Bean using Producers might look like this:
@@ -106,10 +103,10 @@ Implementations using Producers will generally look like the above, but they hav
 On the other hand, Build compatible extensions (or Portable extensions) can be used without these constraints. Therefore, I personally consider Build compatible extensions, which can be used without issues for anything, to be the best practice.
 
 ## Is it possible to verify the aud claim with MicroProfile JWT?
-### <Question>
+### Question
 In [Slide 26](https://speakerdeck.com/ogiwarat/spring-boot-vs-microprofile-kuraudoneiteibuniokeruhuremuwakunobi-jiao-toxuan-ze?slide=26), it was mentioned that the verification contents of JWT possible with MicroProfile JWT are only the public key, expiration date, and Issuer claim. Isn't it also possible to verify the Audience (aud) claim?
 
-### <Answer>
+### Answer
 As you pointed out, from [MicroProfile JWT 2.1](https://download.eclipse.org/microprofile/microprofile-jwt-auth-2.1/microprofile-jwt-auth-spec-2.1.html#_mp_jwt_verify_audiences), it has become possible to verify the Audience (aud) claim as well. Thank you for pointing this out. I have corrected the slide materials.
 
 This concludes the introduction of questions and answers related to the session. Thank you to everyone who asked questions. It helped deepen my understanding!

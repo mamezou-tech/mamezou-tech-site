@@ -21,6 +21,12 @@ Sigstore を使ってコンテナイメージや Go Modules などの成果物�
 [ソフトウェアサプライチェーンセキュリティのための GitHub Actions ワークフロー](/blogs/2022/08/17/github-actions-workflows-for-software-supply-chain-security/)
 :::
 
+:::column:2024.06.26追記
+Artifact Attestations が GA になりました。
+
+[Artifact Attestations is generally available](https://github.blog/changelog/2024-06-25-artifact-attestations-is-generally-available/)
+:::
+
 ## ワークフローで成果物の署名済みビルド出所証明を生成する
 
 ワークフローでビルド出所証明を生成するために attest-build-provenance action を使用します。

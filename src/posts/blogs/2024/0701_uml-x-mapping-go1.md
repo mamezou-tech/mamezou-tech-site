@@ -612,6 +612,52 @@ func main() {
 }
 ```
 
+# 実現関係のマッピング
+
+![実現関係](/img/blogs/2024/uml-x-mapping/04_realize.png)
+
+interface_a.go
+```go
+package main
+
+// InterfaceA はmethod1を持つインターフェイスです。
+type InterfaceA interface {
+    Method1() int
+}
+
+```
+
+b.go
+```go
+package main
+
+// B は InterfaceA インターフェイスを実装します。
+type B struct{}
+
+// Method1 は InterfaceA の要件を満たすため、B に実装されています。
+func (b B) Method1() int {
+    // ここで何らかの計算や操作を行い、整数を返します。
+    return 42 // 例として 42 を返す固定値です。
+}
+
+```
+
+main.go
+```go
+package main
+
+import "fmt"
+
+func main() {
+    var a InterfaceA // InterfaceA インターフェイスの変数を宣言します。
+    a = B{}          // Bのインスタンスを InterfaceA 型の変数に代入します。
+
+    // Bが実装する Method1 を呼び出し、結果を出力します。
+    fmt.Println(a.Method1()) // 出力: 42
+}
+
+```
+
 # パッケージ図の依存のマッピング
 
 ![パッケージ図](/img/blogs/2024/uml-x-mapping/05_package_dependency.png)

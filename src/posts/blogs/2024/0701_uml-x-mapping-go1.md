@@ -3,7 +3,7 @@ title: UMLをプログラミング言語で実装するには？ Go言語編
 author: takayuki-oguro
 date: 2024-07-01
 tags: [UML, go]
-image: false
+image: true
 ---
 
 # はじめに

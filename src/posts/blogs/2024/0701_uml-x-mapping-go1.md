@@ -8,16 +8,24 @@ image: true
 
 # はじめに
 
-メーカー向けにUML表記法やUMLモデリングのセミナー講師をしていると、自分の言語ではどのように実装すればよいのか？ というご質問を受けることがあります。また、講師側としても、受講生が使っているプログラミング言語でUMLを説明すると、すんなりと分かって頂ける経験が幾度となくあります。多くのプログラマがUMLモデリングに興味を持って頂けているようですが、UMLのモデルをどのようにソースコードにするかについては意外と知られておらず、UMLモデリングが広まらない原因の一つではないかと考えています。
+UML表記法やUMLモデリングのセミナー講師をしていると、「自分の言語ではどのように実装すればよいのか」というご質問を受けることがあります。また、講師側としても、受講生が使っているプログラミング言語でUMLを説明すると、すんなりと分かって頂ける経験が幾度となくあります。多くのプログラマがUMLモデリングに興味を持って頂けているようですが、UMLのモデルをどのようにソースコードにするかについては意外と知られていません。これが、UMLモデリングが広まらない原因の1つではないかと考えています。
 
 UMLからソースコードへの変換を「マッピング」といい、プログラミング言語名を付けて、「UML/C++マッピング」のように呼びます。このシリーズは、さまざまなプログラミング言語への「UML/Xマッピング」を紹介して、馴染みのあるプログラミング言語からUMLを逆に理解して貰えるように企画したものです。ただし、マッピングは様々なマッピング方法を考える事が可能です。ご紹介するものは、その具体例の1つだとお考え下さい。
 
 # この記事を理解するために必要な基本的な知識
-## UMLの知識
+
 この記事は、最小限のUML表記法が分かることを前提としています。例えば、クラス図では属性/操作や関連端名/多重度および可視性の読み方、汎化関係/実現関係の意味、シーケンス図のメッセージとクラスの操作の対応関係、を理解していることが前提です。
-## プログラミング言語の知識
+
+# この記事のマッピングの方針
+
+Go言語は、UMLのクラス概念や一部の可視性（private/protected）をサポートしていません。そのため、structと関数の組み合わせでクラスを表現します。また、可視性はGo言語がサポートしている範囲のみを対象とします。提示するUMLのダイアグラムはプログラミング言語のサポートに関わらず提示し、サンプルコード内にサポート外である旨を記載します。
+
+ :::column:豆知識!
+ 
 Go言語で複数のソースファイルを含むプログラムを実行する場合、go run コマンドを使用して、必要なすべてのファイルを指定する必要があります。
 例：go run main.go A.go B.go
+
+ :::
 
 # クラスの基本要素(クラス,属性,操作)のマッピング
 
@@ -29,32 +37,37 @@ package main
 
 // A structは、さまざまなアクセスレベルのメンバーを持つクラスの例です。
 type A struct {
-    member1 int    // private変数。外部からアクセス不可能。go言語では、privateは頭文字を小文字にします。
-    Member2 string // protected変数。go言語にはprotectedがありません。public変数を定義し、プログラマが意図的に派生クラス内でのみ使用します。
-    Member3 int    // public変数。どこからでもアクセス可能。go言語では、publicは頭文字を大文字にします。
+    // member1 int ：Go言語はprivate(-)はサポート外
+    // member2 string ： Go言語はprotected(#)はサポート外
+    Member3 int    // public(+）は先頭が大文字
+    member4 string // package(~)は、先頭が小文字
 }
 
-// privateメソッド。structの外からはアクセス不可能。go言語では、privateは頭文字を小文字にします。
-func (a *A) method1() {}
+// privateメソッド ： Go言語はprivate(-)はサポート外
+// func (a *A) method1() {}
 
-// protectedメソッド。go言語にはprotectedがありません。publicメソッドを定義し、プログラマが意図的に派生クラス内でのみ使用します。
-func (a *A) Method2() string { return "" }
+// protectedメソッド ： Go言語はprotected(#)はサポート外
+// func (a *A) method2() string { return "" }
 
-// publicメソッド。どこからでもアクセス可能。go言語では、publicは頭文字を大文字にします。
+// public(+）は先頭が大文字
 func (a *A) Method3() {}
+
+// package(~)は、先頭が小文字
+func (a *A) method4() string { return "" }
+
 ```
 
 B.go
 ```go
 package main
 
-// B structは、一般的なメソッドを提供するシンプルなクラスの例です。
+// B structは、クラスの例です。
 type B struct {}
 
 // publicメソッド。どこからでもアクセス可能。
 func (b *B) Method1() string { return "" }
 
-// 別のpublicメソッド。
+// publicメソッド。
 func (b *B) HookMethod() string { return "" }
 ```
 
@@ -62,13 +75,13 @@ C.go
 ```go
 package main
 
-// C structは、private変数を持つ別のクラスの例です。
+// C structは、別のクラスの例です。
 type C struct {
-    member1 int // private変数。外部からはアクセス不可能。go言語はstaticが存在しないため、非staticで実装します。
+   // member1 int // go言語はstatic変数はサポート外です
 }
 
-// publicメソッド。どこからでもアクセス可能。go言語はstaticが存在しないため、非staticで実装します。
-func (c *C) Method1() int { return 0 }
+// publicメソッド。go言語はstaticメソッドはサポート外です
+// func (c *C) Method1() int { return 0 }
 ```
 
 main.go
@@ -79,14 +92,14 @@ import "fmt"
 
 func main() {
     // A, B, Cの各インスタンスを作成し、それぞれのメソッドや変数を利用する例。
-    a := A{member1: 10, Member2: "Hello", Member3: 20}
+    a := A{Member3: 20, member4: "World"}
     b := B{}
-    c := C{member1: 30}
+    c := C{}
 
-    // Aのpublic変数、BとCのメソッドの結果を出力。
+    // Aのpublic変数、Bのメソッドの結果を出力。
     fmt.Println(a.Member3)
+    fmt.Println(a.member4)
     fmt.Println(b.Method1())
-    fmt.Println(c.Method1())
 }
 ```
 
@@ -521,7 +534,7 @@ func main() {
 
 ![汎化関係_継承で実装](/img/blogs/2024/uml-x-mapping/03_01_general_inheri.png)
 
-Go言語は、言語的に継承の仕組みがないため、基底クラスを埋め込んだ実装を紹介します
+Go言語は、言語的に継承の仕組みがないため、基底クラスを埋め込んだ実装を紹介します。
 
 A.go
 ```go
@@ -709,3 +722,5 @@ func main() {
 # おわりに
 
 本記事は、今後も更新していく可能性があります。ご利用の際は、最新の情報をご覧ください。
+
+ 

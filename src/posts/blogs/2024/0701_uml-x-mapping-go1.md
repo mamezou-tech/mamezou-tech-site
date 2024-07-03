@@ -255,14 +255,20 @@ A.go
 ```go
 package main
 
+import "errors"
+
 // A structはB structへの参照を持つ
 type A struct {
     roleB *B  // Bへの参照。Bが存在することが前提
 }
 
 // NewAはAの新しいインスタンスを作成するコンストラクタ関数
-func NewA(b *B) *A {
-    return &A{roleB: b}
+// Bのインスタンスがnilでないことを保証
+func NewA(b *B) (*A, error) {
+    if b == nil {
+        return nil, errors.New("Bのインスタンスは必須です")
+    }
+    return &A{roleB: b}, nil
 }
 
 // GetBはAが持つBの参照を返す
@@ -271,8 +277,13 @@ func (a *A) GetB() *B {
 }
 
 // SetBはAのBへの参照を設定または変更する
-func (a *A) SetB(b *B) {
+// Bのインスタンスがnilでないことを保証
+func (a *A) SetB(b *B) error {
+    if b == nil {
+        return errors.New("Bのインスタンスは必須です")
+    }
     a.roleB = b
+    return nil
 }
 ```
 
@@ -294,16 +305,23 @@ import "fmt"
 
 func main() {
     b := &B{}   // Bのインスタンスを作成
-    a := NewA(b)  // Aのインスタンスを作成し、Bを参照させる
+    a, err := NewA(b)  // Aのインスタンスを作成し、Bを参照させる
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
 
     fmt.Printf("B from A: %p\n", a.GetB())  // Aが持つBの参照を表示
 
     newB := &B{}  // 別のBのインスタンスを作成
-    a.SetB(newB)  // Aが新しいBを参照するように変更
+    err = a.SetB(newB)  // Aが新しいBを参照するように変更
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
 
     fmt.Printf("New B from A: %p\n", a.GetB())  // Aが持つ新しいBの参照を表示
 }
-// このコードでは、Aのインスタンス生成時にBのインスタンスを必須としているため、NewAコンストラクタ関数は必ずBのインスタンスを受け取ります。
 ```
 
 

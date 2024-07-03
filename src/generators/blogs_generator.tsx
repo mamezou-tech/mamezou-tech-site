@@ -4,6 +4,7 @@ import { encodeUrl } from "encodeurl";
 
 export const layout = "layouts/page.njk";
 export const title = "ブログ";
+export const enTitle = "Blogs";
 export const description = "豆蔵エンジニアの技術ブログ";
 export const icon =
   "https://api.iconify.design/material-symbols/article-outline.svg?color=%23730099&height=28";

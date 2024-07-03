@@ -2,6 +2,7 @@
 title: "イベント"
 description: リレー連載・アドベントカレンダーなどイベント系のリンク集
 icon: https://api.iconify.design/mdi/calendar-clock.svg?color=%23730099&height=28
+enTitle: Events
 ---
 
 ## アドベントカレンダー

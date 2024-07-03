@@ -9,6 +9,7 @@ icon: https://api.iconify.design/mdi/calendar-clock.svg?color=%23730099&height=2
 - [アドベントカレンダー2022](/events/advent-calendar/2022/)
 
 ## その他イベント
+- [夏のリレー連載2024](/events/season/2024-summer/) **Coming soon!!**
 - [春の新人向け連載2024](/events/season/2024-spring/)
 - [夏のリレー連載2023](/events/season/2023-summer/)
 

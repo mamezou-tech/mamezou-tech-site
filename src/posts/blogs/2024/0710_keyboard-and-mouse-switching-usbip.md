@@ -3,7 +3,7 @@ title: USB/IPを活用したキーボードとマウスの切替器
 author: shigeki-shoji
 date: 2024-07-10
 tags: [USBIP]
-image: false
+image: true
 ---
 
 こんにちは、[庄司](https://github.com/edward-mamezou)です。

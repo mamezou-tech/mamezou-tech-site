@@ -1,7 +1,7 @@
 ---
 title: USB/IPを活用したキーボードとマウスの切替器
 author: shigeki-shoji
-date: 2024-07-08
+date: 2024-07-10
 tags: [USBIP]
 image: false
 ---

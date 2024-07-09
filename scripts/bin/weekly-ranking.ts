@@ -77,7 +77,7 @@ async function runReport(reportFile: string) {
       const [title, url] = row.dimensionValues!.map((v) => v.value);
       const pv = +(row.metricValues![0].value || 0);
       return {
-        title: title!.replace(" | 豆蔵デベロッパーサイト", ""),
+        title: title!.replace(" | 豆蔵デベロッパーサイト", "").replace(' | Mamezou Developer Portal', ''),
         path: url!.replace("developer.mamezou-tech.com", ""),
         url: url || '',
         pv,

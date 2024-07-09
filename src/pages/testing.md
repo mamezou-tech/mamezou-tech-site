@@ -2,6 +2,7 @@
 title: テスト
 description: ソフトウェアテストに関する技法やテクニック
 icon: https://api.iconify.design/fluent-mdl2/test-plan.svg?color=%23730099&height=28
+enTitle: Testing
 ---
 
 どんな業界でもプロダクト品質を確認・証明する上で、テストはなくてはならない存在です。

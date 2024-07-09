@@ -20,7 +20,6 @@ layout: layouts/base.njk
   </div>
 </header>
 <main class="tdbc-container home">
-  {{ comp.SpringBanner2024() | safe }}
   <div class="tdbc-section">
     <ul class="tdbc-column-container">
       {%- for page in search.pages('pages exclude!=true') -%}
@@ -110,9 +109,6 @@ layout: layouts/base.njk
           {%- endfor -%}
         </ol>
       </article>
-      <div class="mt-8">
-        <a class="twitter-timeline" data-height="2000" data-theme="light" href="https://twitter.com/MamezouDev?ref_src=twsrc%5Etfw">Tweets by MamezouDev</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div>
     </div>
   </div>
   <div style="margin: 1rem 0 0 0; padding: 0;">

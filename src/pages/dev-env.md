@@ -3,6 +3,7 @@ title: 開発環境
 description: 快適な開発環境を実現するTips
 date: git Last Modified
 icon: https://api.iconify.design/material-symbols/laptop-mac-outline.svg?color=%23730099&height=28
+enTitle: Development Environment
 ---
 
 快適な開発環境はプロジェクトの成功に欠かせない要素です。

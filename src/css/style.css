@@ -47,7 +47,7 @@ body {
   text-rendering: optimizeSpeed;
   @apply flex flex-col bg-white ;
   color: #252450;
-  font-family: "Helvetica Neue", "Arial", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-seri, serif;
+  font-family: "Helvetica Neue", "Arial", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif, serif;
 
   @media screen(md) {
     &.bg-summer {

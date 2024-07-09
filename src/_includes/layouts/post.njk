@@ -2,13 +2,12 @@
 layout: layouts/base.njk
 ---
 
-{{ comp.SiteNav() | safe }}
+{{ comp.SiteNav({en: translate == true}) | safe }}
 
 <main class="tdbc-container">
   <div id='toc'></div>
   <article class="post mr-auto ml-auto">
     <header class="post__header">
-      {{ comp.SpringBanner2024() | safe }}
       <h1>{{ title }}</h1>
       {%- if en %}
       <div class="relative lg:fixed lg:bottom-5 lg:right-5 lg:bg-blue-900 lg:bg-opacity-50 lg:p-2 lg:rounded-md lg:shadow-lg cursor-pointer">

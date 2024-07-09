@@ -1,0 +1,76 @@
+{
+  "entries": [
+    {
+      "date": "7月29日(月)",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "仮）DDDってなんでオニオンとかといっしょに出てくるの？を社内で聞いてみた"
+    },
+    {
+      "date": "7月30日(火)",
+      "author": "shuji-morimoto",
+      "githubUser": "shuji-morimoto",
+      "title": "奥さんが「ガスコンロつけっぱなしで危ない思いをしたので警告音出るものがほしいなぁ」というのでメディアプレイヤーを作ってみた"
+    },
+    {
+      "date": "7月31日(水)",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "何か怖い話を書いてみようと思います"
+    },
+    {
+      "date": "8月1日(木)",
+      "author": "misato-kamei",
+      "githubUser": "misato-kamei",
+      "title": "T.B.D."
+    },
+    {
+      "date": "8月2日(金)",
+      "author": "kazuya-nakamura",
+      "githubUser": "nakk-mame",
+      "title": "T.B.D."
+    },
+    {
+      "date": "8月5日(月)",
+      "author": "shigeki-shoji",
+      "githubUser": "edward-mamezou",
+      "title": "T.B.D."
+    },
+    {
+      "date": "8月6日(火)",
+      "author": "tomohiro-fujii",
+      "githubUser": "tomohiro-fujii33",
+      "title": "「まだ他の”手法”がいるのか？」と言われてもAmplioを紹介する"
+    },
+    {
+      "date": "8月7日(水)",
+      "author": "shohei-yamashita",
+      "githubUser": "shohei-yamashit",
+      "title": "TiDBについて書きたいです（変更あるかもしれませんが）。"
+    },
+    {
+      "date": "8月8日(木)",
+      "author": "yasunori-shiota",
+      "githubUser": "shiota",
+      "title": "仮）分散システムあるある（うまくまとまらなかったら変えさせてください）"
+    },
+    {
+      "date": "8月9日(金)",
+      "author": "minoru-matsumoto",
+      "githubUser": "minosys3",
+      "title": "仮）RPi5 で個体認識（もどき）"
+    },
+    {
+      "date": "8月12日(月)",
+      "author": "kenta-ishihara",
+      "githubUser": "kenta-ishihara",
+      "title": "仮)Java Apache Commons Langについて"
+    },
+    {
+      "date": "8月13日(火)",
+      "author": "kohei-tsukano",
+      "githubUser": "KoheiTsukano",
+      "title": "仮)React入門"      
+    }
+  ]
+}

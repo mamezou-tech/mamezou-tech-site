@@ -111,29 +111,27 @@ Patchcoreでは異常の可能性が高い部分ほど暖色で示されるヒ�
 MVTecのデータそのまま使用しています。学習データ20枚と少な目ですが異常部位を捉えているようです。
 閾値を0.49に設定すると再現率=1になります。
 このとき適合率：0.83、AUC：0.92となり、すごく良いモデルといえるのではないでしょうか。
-![resized_patchcore_origin_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/resized_patchcore_origin_result.png)
-
-
+![resized_patchcore_origin_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_patchcore_origin_result.png)
 
 2. 位置ずれアリ・明るさ一定・背景一定
 ランダムクロップ処理を行い中心部からずらしたあと、元サイズにリサイズしています。
 閾値を0.40に設定すると再現率=1になります。
 このとき適合率：0.83、AUC:0.88となりました。
 
-![resized_patchcore_align_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/resized_patchcore_align_result.png)
+![resized_patchcore_align_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_patchcore_align_result.png)
 
 3. 位置ずれナシ・明るさ変更・背景一定
 明るさとコントラストをランダムに変更しています。
 閾値を0.49に設定すると再現率=1になります。
 このとき適合率：1.0、AUC:1.0となり、明るさを変更したデータではむしろ元の加工していないデータを使うときよりも良い結果になりました。
 
-![resized_patchcore_bright_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/resized_patchcore_bright_result.png)
+![resized_patchcore_bright_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_patchcore_bright_result.png)
 
 4. 位置ずれナシ・明るさ一定・背景変更
 背景にバラエティを持たせるため、ランダムにカラフルな四角を描画したものです。
 閾値を0.41にすると再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となり、こちらも元の加工していないデータよりも良い結果が出ています。
-![resized_patchcore_random_square_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/resized_patchcore_random_square_result.png)
+![resized_patchcore_random_square_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_patchcore_random_square_result.png)
 
 ### 物体検出モデル（RTMdet）の学習と評価
 テストデータは異常検知モデルの場合と同様に上段5枚が正常、下段5枚が異常データです。
@@ -144,22 +142,22 @@ Patchcoreと比較するために異常部位の正確さは求めず、1画像�
 閾値0.5で再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となりました。異常部位をしっかり捉えているようです。
 
-![resized_rtmdet_normal_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/resized_rtmdet_normal_result.png)
+![resized_rtmdet_normal_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_rtmdet_normal_result.png)
 
 2. 位置ずれアリ・明るさ一定・背景一定
 閾値0.5で再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となりました。位置ずれはほとんど影響なしと言えます。
 
-![resized_rtmdet_align_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/resized_rtmdet_align_result.png)
+![resized_rtmdet_align_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_rtmdet_align_result.png)
    
 3. 位置ずれナシ・明るさ変更・背景一定
 閾値0.5で再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となりました。明るさの変更に対してもロバストなようです。
-![resized_rtmdet_bright_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/resized_rtmdet_bright_result.png)
+![resized_rtmdet_bright_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_rtmdet_bright_result.png)
 4. 位置ずれナシ・明るさ一定・背景変更
 閾値0.5で再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となりました。背景の変化もほとんど影響しないようでした。
-![resized_rtmdet_square_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/resized_rtmdet_square_result.png)
+![resized_rtmdet_square_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_rtmdet_square_result.png)
 
 ### 実際にやってみたまとめ
 - 異常検知モデルは明るさや背景の変化に弱いと予想していましたがPatchcoreでは推論結果が悪くなることはありませんでした。
@@ -178,19 +176,19 @@ Lookout for visionではトレーニングが終わると精度とリコール�
 これら3つの指標を4つのデータセットそれぞれの学習結果で比較してみます。
 1. 位置ずれナシ・明るさ一定・背景一定
 まずはMVTecの元データです。閾値を手動で設定できないためF1スコアで比べるのが良いでしょうか。F1スコアは80%となりました。
-![aws_origin_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/aws_origin_result.png)
+![aws_origin_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/aws_origin_result.png)
 
 2. 位置ずれアリ・明るさ一定・背景一定
 位置ずれデータではF1スコア88.9%となり、元データよりも良い結果です。
-![aws_align_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/aws_align_result.png)
+![aws_align_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/aws_align_result.png)
 
 3. 位置ずれナシ・明るさ変更・背景一定
 明るさを変更したデータではF1スコアは81.8%となり、元データとあまり変わらない結果が出ました。
-![aws_bright_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/aws_bright_result.png)
+![aws_bright_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/aws_bright_result.png)
 
 4. 位置ずれナシ・明るさ一定・背景変更
 背景にランダムに四角を描画したデータではF1スコアは85.7%でした。
-![aws_randomsquare_result.png](http://github/mamezou-tech-site/src/img/blogs/2024/0710_anomalydetection/aws_randomsquare_result.png)
+![aws_randomsquare_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/aws_randomsquare_result.png)
 
 ### Lookout for visionの結果まとめ
 Lookout for visionの[FAQ](https://aws.amazon.com/jp/lookout-for-vision/faqs/)では

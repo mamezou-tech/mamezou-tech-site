@@ -1,5 +1,5 @@
 ---
-title: Raspberry Pi5 による個体識別（もどき）
+title: Raspberry Pi5 で挑戦！YOLOv8を使った生物の個体識別
 author: minoru-matsumoto
 date: 2024-08-09
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
@@ -13,7 +13,7 @@ image: true
 
  # Raspberry Pi 5 とは
 
- RaspberyPi.com が2023/10/23 に発売した SBC (Single Board Computer) です（日本の技適通過は2024/1/11）。
+ RaspberryPi.com が2023/10/23 に発売した SBC (Single Board Computer) です（日本の技適通過は2024/1/11）。
  ラップトップPCと比べると非力ですが、価格が安く、たばこの箱以下の小さい筐体に全部入りなので、世界中で大人気となっています。
 
  OS は独自の Raspberry Pi OS の他、Ubuntu など、Linux の他のディストリビューションも搭載できるようになっています。
@@ -25,7 +25,7 @@ image: true
 
  物体認識は例えばトラックであれば、どんな形状でもトラックと思われる物体を「トラック」として認識させることを目的としています。
  一方、個体識別はトラックと認識した上で、「トラックＡ」なのか、「トラックB」なのかを認識させます。
- トラックのような工業製品は個体差が分かりづらいですが、魚や鳥といった生物は個体固有の形状・色彩をしていることがあり、これを画像から識別できれば個体や群体の移動が計測しやすくなるのではないかと考えました。
+トラックのような工業製品は個体差が分かりづらいですが、鳥などの生物は個体固有の形状・色彩をしていることがあり、これを画像から識別できれば個体や群体の移動が計測しやすくなるのではないかと考えました。
 
  顔認識等では特徴量を抽出して計測するようですが、この稿ではマガモの個体画像をニューラルネットに追加学習することで個体識別が出来ないか模索します[^1]。
  [^1]:マガモを使ったのは後述するYOLOv8にbird分類が存在するのと、無料ロイヤリティフリー画像が豊富だったからです。
@@ -60,7 +60,7 @@ image: true
 
  ### 自動アノテーション
 
- ネットを漂っていたころ、Meta 社の [SAM (Segment Anything Model)](https://segment-anything.com/) というものに目が留まりした。
+ ネットを漂っていたところ、Meta 社の [SAM (Segment Anything Model)](https://segment-anything.com/) というものが目に留まりした。
  動画を基本としていて、最初のフレームで対象を指定すると、ビデオが進んだ時、自動的にセグメンテーションも移動してくれるというものです。
  最終的には SAM は利用しませんでしたが、ビデオから教師データを作成するという貴重なヒントが得られました。
 
@@ -105,7 +105,7 @@ image: true
 
  検証画像では二羽の鳥が映っていますが、一羽と誤検出しています。
 
- PyTorch ベースではINT8の検証が出来ませんが、yolo コマンドはTensorFlow Lite(TFLite) のフロントエンドとして利用できます。
+ PyTorch ベースではINT8の検証ができませんが、yolo コマンドはTensorFlow Lite(TFLite) のフロントエンドとして利用できます。
  ニューラルネットパラメータをTFLite にエクスポートするAPI が用意されているので、TFLite でも計測してみました。
  ![raspi-tflite](/img/blogs/2024/0809_rpi5-indivisual-recognition/raspi-tflite.png)
  結果は識別処理が30 msec ほど速くなりました。

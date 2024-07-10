@@ -1,7 +1,7 @@
 ---
 title: 画像AIで異常検知：事例に合わせたモデル選定と実践
 author: hitomi-takeda
-date: 2024-07-10
+date: 2024-07-12
 tags: [異常検知, 深層学習, ディープラーニング]
 image: true
 ---
@@ -14,34 +14,38 @@ image: true
 
 ### 異常検知モデル（Anomaly Detection Models）
 特徴:主に正常データのみを使用して学習を行います。正常なパターンを学習し、それから逸脱するデータを異常として検出します。  
-メリット:  
+**メリット:**  
 - 正常のパターンからの逸脱を検出するため、正常データだけで学習が可能。
 - アノテーション不要ですぐに学習することができる。
-- 時系列データ、画像データ、ネットワークトラフィックなど多様なデータに適用可能。
-デメリット:  
+- 時系列データ、画像データ、ネットワークトラフィックなど多様なデータに適用可能。  
+
+**デメリット:**  
 - 一般的に位置ずれや複雑な背景に場合に精度が下がりやすいと言われる。
 ### 物体検出モデル（Object Detection Models）
 特徴:画像内の特定の領域をバウンディングボックスで囲み、その領域の特徴を捉えます。学習するデータはバウンディングボックスでアノテーション（ラベル付け）する必要があります。  
-メリット:  
+**メリット:**  
 - 異常の領域をバウンディングボックスで囲んで特定できる。
-- リアルタイム検出モデルが豊富。
-デメリット:  
+- リアルタイム検出モデルが豊富。  
+
+**デメリット:**  
 - 異常部位のアノテーション（ラベル付け）が必要。アノテーションは基本的に手動で行うため手間と時間がかかる。
 
 ### セグメンテーションモデル（Segmentation Models）
 特徴:ピクセル単位でデータを分類し、異常箇所を特定します。画像データにおいて異常箇所を詳細に特定することが可能です。学習するデータは検出する物体の輪郭に沿ってアノテーションする必要があります。  
-メリット:  
-- 異常箇所をピクセルレベルで特定できるため、画像データなどで精密な異常検出が可能。
-デメリット:  
+**メリット:**  
+- 異常箇所をピクセルレベルで特定できるため、画像データなどで精密な異常検出が可能。  
+
+**デメリット:**  
 - ピクセル単位でのデータ分類を行うため、計算コストが高くリソースが多く必要。
 - アノテーションコストが高く、学習データを用意するには手間と時間がかかる。
 
 ### 分類モデル（Classification Models）
 特徴:教師あり学習で正常データと異常データの両方を使用して学習します。異常を特定のクラスとして分類し、検出します。  
-メリット:  
+**メリット:**  
 - 正常データと異常データがある場合、分類モデルは高精度で異常を検出可能。
-- 異常の種類が複数ある場合でも、それぞれの異常を特定することが可能。
-デメリット:  
+- 異常の種類が複数ある場合でも、それぞれの異常を特定することが可能。  
+
+**デメリット:**  
 - 学習時に正常データと同程度の異常データが必要。
 - 学習していない異常のパターンは検出しにくいため、異常データを網羅的に収集しなければならない。
 
@@ -111,27 +115,27 @@ Patchcoreでは異常の可能性が高い部分ほど暖色で示されるヒ�
 MVTecのデータそのまま使用しています。学習データ20枚と少な目ですが異常部位を捉えているようです。
 閾値を0.49に設定すると再現率=1になります。
 このとき適合率：0.83、AUC：0.92となり、すごく良いモデルといえるのではないでしょうか。
-![resized_patchcore_origin_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_patchcore_origin_result.png)
+![resized_patchcore_origin_result.png](/img/0710_anomalydetection/resized_patchcore_origin_result.png)
 
 2. 位置ずれアリ・明るさ一定・背景一定
 ランダムクロップ処理を行い中心部からずらしたあと、元サイズにリサイズしています。
 閾値を0.40に設定すると再現率=1になります。
 このとき適合率：0.83、AUC:0.88となりました。
 
-![resized_patchcore_align_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_patchcore_align_result.png)
+![resized_patchcore_align_result.png](/img/0710_anomalydetection/resized_patchcore_align_result.png)
 
 3. 位置ずれナシ・明るさ変更・背景一定
 明るさとコントラストをランダムに変更しています。
 閾値を0.49に設定すると再現率=1になります。
 このとき適合率：1.0、AUC:1.0となり、明るさを変更したデータではむしろ元の加工していないデータを使うときよりも良い結果になりました。
 
-![resized_patchcore_bright_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_patchcore_bright_result.png)
+![resized_patchcore_bright_result.png](/img/0710_anomalydetection/resized_patchcore_bright_result.png)
 
 4. 位置ずれナシ・明るさ一定・背景変更
 背景にバラエティを持たせるため、ランダムにカラフルな四角を描画したものです。
 閾値を0.41にすると再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となり、こちらも元の加工していないデータよりも良い結果が出ています。
-![resized_patchcore_random_square_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_patchcore_random_square_result.png)
+![resized_patchcore_random_square_result.png](/img/0710_anomalydetection/resized_patchcore_random_square_result.png)
 
 ### 物体検出モデル（RTMdet）の学習と評価
 テストデータは異常検知モデルの場合と同様に上段5枚が正常、下段5枚が異常データです。
@@ -142,22 +146,22 @@ Patchcoreと比較するために異常部位の正確さは求めず、1画像�
 閾値0.5で再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となりました。異常部位をしっかり捉えているようです。
 
-![resized_rtmdet_normal_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_rtmdet_normal_result.png)
+![resized_rtmdet_normal_result.png](/img/0710_anomalydetection/resized_rtmdet_normal_result.png)
 
 2. 位置ずれアリ・明るさ一定・背景一定
 閾値0.5で再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となりました。位置ずれはほとんど影響なしと言えます。
 
-![resized_rtmdet_align_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_rtmdet_align_result.png)
+![resized_rtmdet_align_result.png](/img/0710_anomalydetection/resized_rtmdet_align_result.png)
    
 3. 位置ずれナシ・明るさ変更・背景一定
 閾値0.5で再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となりました。明るさの変更に対してもロバストなようです。
-![resized_rtmdet_bright_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_rtmdet_bright_result.png)
+![resized_rtmdet_bright_result.png](/img/0710_anomalydetection/resized_rtmdet_bright_result.png)
 4. 位置ずれナシ・明るさ一定・背景変更
 閾値0.5で再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となりました。背景の変化もほとんど影響しないようでした。
-![resized_rtmdet_square_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/resized_rtmdet_square_result.png)
+![resized_rtmdet_square_result.png](/img/0710_anomalydetection/resized_rtmdet_square_result.png)
 
 ### 実際にやってみたまとめ
 - 異常検知モデルは明るさや背景の変化に弱いと予想していましたがPatchcoreでは推論結果が悪くなることはありませんでした。
@@ -176,19 +180,19 @@ Lookout for visionではトレーニングが終わると精度とリコール�
 これら3つの指標を4つのデータセットそれぞれの学習結果で比較してみます。
 1. 位置ずれナシ・明るさ一定・背景一定
 まずはMVTecの元データです。閾値を手動で設定できないためF1スコアで比べるのが良いでしょうか。F1スコアは80%となりました。
-![aws_origin_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/aws_origin_result.png)
+![aws_origin_result.png](/img/0710_anomalydetection/aws_origin_result.png)
 
 2. 位置ずれアリ・明るさ一定・背景一定
 位置ずれデータではF1スコア88.9%となり、元データよりも良い結果です。
-![aws_align_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/aws_align_result.png)
+![aws_align_result.png](/img/0710_anomalydetection/aws_align_result.png)
 
 3. 位置ずれナシ・明るさ変更・背景一定
 明るさを変更したデータではF1スコアは81.8%となり、元データとあまり変わらない結果が出ました。
-![aws_bright_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/aws_bright_result.png)
+![aws_bright_result.png](/img/0710_anomalydetection/aws_bright_result.png)
 
 4. 位置ずれナシ・明るさ一定・背景変更
 背景にランダムに四角を描画したデータではF1スコアは85.7%でした。
-![aws_randomsquare_result.png](https://github.com/mamezou-tech/mamezou-tech-site/tree/main/src/img/0710_anomalydetection/aws_randomsquare_result.png)
+![aws_randomsquare_result.png](/img/0710_anomalydetection/aws_randomsquare_result.png)
 
 ### Lookout for visionの結果まとめ
 Lookout for visionの[FAQ](https://aws.amazon.com/jp/lookout-for-vision/faqs/)では
@@ -199,10 +203,11 @@ Lookout for visionの[FAQ](https://aws.amazon.com/jp/lookout-for-vision/faqs/)�
 
 ### Lookout for visionのメリット・デメリット
 Lookout for visionを使ってみて感じたメリット・デメリットをまとめます。
-メリット
+**メリット：**
 - ノーコードで簡単に異常検知ができる。
-- デプロイが簡単。
-デメリット：
+- デプロイが簡単。  
+
+**デメリット：**
 - 閾値がデフォルトで設定されている（再現率=1になるような閾値に簡単に変えられない？）
 これに関してはAWSの[FAQ](https://aws.amazon.com/jp/lookout-for-vision/faqs/)に以下のような記載があります。
 ```Amazon Lookout for Vision では Amazon Augmented AI (Amazon A2I) を使用できるため、Amazon Lookout for Vision から人間のレビュー担当者 (プロセスエンジニア、品質マネージャー、またはオペレーター) に信頼性の低い予測をルーティングできます。Amazon A2I が予測をレビュー担当者にルーティングする条件を、信頼スコアのしきい値またはランダムサンプリングのパーセンテージのいずれかで指定できます。これらのしきい値を調整して、精度と費用対効果の適切なバランスを実現できます。```

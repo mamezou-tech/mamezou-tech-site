@@ -119,6 +119,7 @@ Patchcoreでは異常の可能性が高い部分ほど暖色で示されるヒ�
 MVTecのデータそのまま使用しています。学習データ20枚と少な目ですが異常部位を捉えているようです。
 閾値を0.49に設定すると再現率=1になります。
 このとき適合率：0.83、AUC：0.92となり、すごく良いモデルといえるのではないでしょうか。
+
 ![resized_patchcore_origin_result.png](/img/blogs/2024/0710_anomalydetection/resized_patchcore_origin_result.png)
 
 2. 位置ずれアリ・明るさ一定・背景一定
@@ -139,6 +140,7 @@ MVTecのデータそのまま使用しています。学習データ20枚と少�
 背景にバラエティを持たせるため、ランダムにカラフルな四角を描画したものです。
 閾値を0.41にすると再現率=1になります。  
 このとき適合率：1.0、AUC:1.0となり、こちらも元の加工していないデータよりも良い結果が出ています。
+
 ![resized_patchcore_random_square_result.png](/img/blogs/2024/0710_anomalydetection/resized_patchcore_random_square_result.png)
 
 ### 物体検出モデル（RTMdet）の学習と評価
@@ -184,18 +186,22 @@ Lookout for visionではトレーニングが終わると精度とリコール�
 これら3つの指標を4つのデータセットそれぞれの学習結果で比較してみます。
 1. 位置ずれナシ・明るさ一定・背景一定
 まずはMVTecの元データです。閾値を手動で設定できないためF1スコアで比べるのが良いでしょうか。F1スコアは80%となりました。
+
 ![aws_origin_result.png](/img/blogs/2024/0710_anomalydetection/aws_origin_result.png)
 
 2. 位置ずれアリ・明るさ一定・背景一定
 位置ずれデータではF1スコア88.9%となり、元データよりも良い結果です。
+
 ![aws_align_result.png](/img/blogs/2024/0710_anomalydetection/aws_align_result.png)
 
 3. 位置ずれナシ・明るさ変更・背景一定
 明るさを変更したデータではF1スコアは81.8%となり、元データとあまり変わらない結果が出ました。
+
 ![aws_bright_result.png](/img/blogs/2024/0710_anomalydetection/aws_bright_result.png)
 
 4. 位置ずれナシ・明るさ一定・背景変更
 背景にランダムに四角を描画したデータではF1スコアは85.7%でした。
+
 ![aws_randomsquare_result.png](/img/blogs/2024/0710_anomalydetection/aws_randomsquare_result.png)
 
 ### Lookout for visionの結果まとめ

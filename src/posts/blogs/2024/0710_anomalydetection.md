@@ -1,7 +1,7 @@
 ---
 title: 画像AIで異常検知：事例に合わせたモデル選定と実践
 author: hitomi-takeda
-date: 2024-07-12
+date: 2024-07-10
 tags: [異常検知, 深層学習, ディープラーニング]
 image: true
 ---

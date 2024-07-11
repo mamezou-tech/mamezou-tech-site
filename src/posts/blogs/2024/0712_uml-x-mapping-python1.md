@@ -3,7 +3,7 @@ title: UMLをプログラミング言語で実装するには？ Python編
 author: takayuki-oguro
 date: 2024-07-12
 tags: [UML, Python]
-image: false
+image: true
 ---
 
 # はじめに

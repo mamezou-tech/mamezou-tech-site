@@ -139,7 +139,7 @@ B.go
 package main
 
 type B struct {
-	// Bの属性やメソッドをここに定義
+	// Bの属性をここに定義
 }
 ```
 
@@ -255,20 +255,35 @@ A.go
 ```go
 package main
 
-// A struct は B struct への参照を必ず持つ
+import "errors"
+
+// A structはB structへの参照を持つ
 type A struct {
-	roleB B  // Bのインスタンス。多重度が1なので、オプションではなく必須
+    roleB *B  // Bへの参照。Bが存在することが前提
 }
 
-// NewA は Aの新しいインスタンスを作成する。
-// 必須の B インスタンスを引数として受け取り、Aに組み込む。
-func NewA(b B) *A {
-	return &A{roleB: b}
+// NewAはAの新しいインスタンスを作成するコンストラクタ関数
+// Bのインスタンスがnilでないことを保証
+func NewA(b *B) (*A, error) {
+    if b == nil {
+        return nil, errors.New("Bのインスタンスは必須です")
+    }
+    return &A{roleB: b}, nil
 }
 
-// GetB は Aが持つ B のインスタンスを返す
-func (a *A) GetB() B {
-	return a.roleB
+// GetBはAが持つBの参照を返す
+func (a *A) GetB() *B {
+    return a.roleB
+}
+
+// SetBはAのBへの参照を設定または変更する
+// Bのインスタンスがnilでないことを保証
+func (a *A) SetB(b *B) error {
+    if b == nil {
+        return errors.New("Bのインスタンスは必須です")
+    }
+    a.roleB = b
+    return nil
 }
 ```
 
@@ -276,9 +291,9 @@ B.go
 ```go
 package main
 
-// B struct は独自の属性やメソッドを持つことができる
+// B structは独自の属性を持つ
 type B struct {
-	// Bの属性やメソッドを定義
+    // ここにBの属性を定義
 }
 ```
 
@@ -289,12 +304,26 @@ package main
 import "fmt"
 
 func main() {
-	b := B{}  // Bのインスタンスを作成
-	a := NewA(b)  // Aのインスタンスを作成し、Bを組み込む
+    b := &B{}   // Bのインスタンスを作成
+    a, err := NewA(b)  // Aのインスタンスを作成し、Bを参照させる
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
 
-	fmt.Println(a.GetB())  // Aが持つBのインスタンスを出力
+    fmt.Printf("B from A: %p\n", a.GetB())  // Aが持つBの参照を表示
+
+    newB := &B{}  // 別のBのインスタンスを作成
+    err = a.SetB(newB)  // Aが新しいBを参照するように変更
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
+
+    fmt.Printf("New B from A: %p\n", a.GetB())  // Aが持つ新しいBの参照を表示
 }
 ```
+
 
 # 関連（片方向関連 多重度0..*）のマッピング
 
@@ -329,9 +358,9 @@ B.go
 ```go
 package main
 
-// B struct は独自の属性やメソッドを持つことができる
+// B struct は独自の属性を持つことができる
 type B struct {
-	// Bの属性やメソッドを定義
+	// Bの属性を定義
 }
 ```
 
@@ -386,9 +415,9 @@ B.go
 ```go
 package main
 
-// B struct は独自の属性やメソッドを持つことができる
+// B struct は独自の属性を持つことができる
 type B struct {
-    // Bの属性やメソッドを定義
+    // Bの属性を定義
 }
 ```
 
@@ -447,7 +476,7 @@ package main
 
 // B struct は Aによって完全に所有される
 type B struct {
-    // Bの属性やメソッドをここに定義
+    // Bの属性をここに定義
 }
 ```
 
@@ -503,9 +532,9 @@ B.go
 ```go
 package main
 
-// B struct は独自の属性やメソッドを持つことができる
+// B struct は独自の属性を持つことができる
 type B struct {
-    // Bの属性やメソッドをここに定義
+    // Bの属性をここに定義
 }
 ```
 

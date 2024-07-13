@@ -1,5 +1,5 @@
 ---
-title: Mamezou Developer Site 2024 Q2 Summary
+title: Mamezou Developer Portal 2024 Q2 Summary
 author: masahiro-kondo
 date: 2024-07-01T00:00:00.000Z
 tags:
@@ -95,4 +95,4 @@ That was the summary for the first quarter of 2024.
 
 If you liked it, please subscribe to our [feed](/feed/), and follow us on [X](https://x.com/MamezouDev) and [Bluesky](https://bsky.app/profile/mamezoudev.bsky.social). We also introduce notable articles from this site and events related to Mamezou on [Facebook](https://www.facebook.com/mamezou.jp). We are also on [note](https://note.com/mamezou_info).
 
-Thank you for your continued support of the Mamezou Developer Site.
+Thank you for your continued support of the Mamezou Developer Portal.

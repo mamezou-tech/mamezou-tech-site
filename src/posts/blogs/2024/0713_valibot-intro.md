@@ -1,8 +1,9 @@
 ---
-title: "Valibot: 軽量で型安全なスキーマバリデーションライブラリ"
+title: "Valibot: 超軽量＆型安全なスキーマバリデーションライブラリ"
 author: noboru-kudo
 date: 2024-07-13
 tags: [valibot, typescript, zod]
+image: true
 ---
 
 JavaScript、とりわけTypeScriptプロジェクトでデータのバリデーションを行う際、[Zod](https://zod.dev/)や[Yup](https://github.com/jquense/yup)等のライブラリがよく使われています。

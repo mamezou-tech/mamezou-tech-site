@@ -8,15 +8,12 @@ tags:
   - zod
 image: true
 translate: true
-
 ---
 
 :::alert
 This article has been automatically translated.
 The original article is [here](https://developer.mamezou-tech.com/blogs/2024/07/13/valibot-intro/).
 :::
-
-
 
 When performing data validation in JavaScript, especially in TypeScript projects, libraries like [Zod](https://zod.dev/) and [Yup](https://github.com/jquense/yup) are often used. This time, I will introduce a library called [Valibot](https://valibot.dev/), which has recently been gaining attention as an alternative to these.
 
@@ -33,16 +30,6 @@ The [official documentation](https://valibot.dev/guides/introduction/) describes
 > - Many transformation and validation actions included
 > - Well structured source code without dependencies
 > - Minimal, readable and well thought out API
-
-(DeepL translation)
-
-> - Complete type safety with static type inference
-> - Small bundle size of less than 600 bytes
-> - Capable of validating everything from strings to complex objects
-> - Open source and fully tested with 100% coverage
-> - Includes many transformation and validation actions
-> - Well-structured source code without dependencies
-> - Minimal, readable, and well-thought-out API
 
 At first glance, its functionality appears almost identical to the current de facto (in my opinion) library Zod, but Valibot focuses on modular design, achieving significant reductions in bundle size.
 

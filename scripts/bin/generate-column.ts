@@ -24,7 +24,7 @@ const categories = [
   'AWS Services',
   'Tech Startups',
   'Edge Computing',
-  'Biometric Security',
+  'Frontend Technology',
   'Latest AI products or services'
 ];
 
@@ -36,18 +36,15 @@ async function main(path: string) {
     .filter(column => column.theme === theme)
     .map(column => column.title);
   const prompt: OpenAI.ChatCompletionMessageParam = {
-    content: `Output 20 \`${theme}\` used by IT developers in programming.
-JSON format:
+    content: `Think column's theme of \`${theme}\` used by IT developers.
+Output about 20 themes. The themes must be professional and new. Please output concrete service or technology names as much as possible, rather than abstract ones such as \`API\` or \`Cloud\`.
+
+Output json format:
 \`\`\`
 {
   words: [<array of word>]
 }
 \`\`\`
-
-Please follow the restrictions below.
-- No need to reply message
-- Do not include obscene or vulgar words
-- Speak in English
 
 Do not output the following words.
 ${pastTitles.map(title => `- ${title}`).join('\n')}
@@ -84,7 +81,7 @@ My first word is "${keyword}" on "${theme}".
   });
   const column = result.choices[0].message?.content?.trim() || '';
 
-  const formattedDate = today()
+  const formattedDate = today();
   await generateImage(column, formattedDate);
 
   if (!column) throw new Error('no content');

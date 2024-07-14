@@ -56,7 +56,7 @@ layout: layouts/base.njk
     {%- endif %}
     </header>
     <div class="post__tags">
-      {% for tag in tags | pageTags %}
+      {% for tag in (tags | pageTags) %}
       {% set tagUrl %}/tags/{{ tag | lower }}/{% endset %}
       <a href="{{ tagUrl | url }}">#{{ tag }}</a>
       {% endfor %}

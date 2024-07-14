@@ -243,7 +243,7 @@ const User = v.object({
 });
 
 try {
-  const email = v.parse(User, { name: '豆蔵', email: 'mame' });
+  const email = v.parse(User, { email: 'mame' });
 } catch (e) {
   if (v.isValiError(e)) {
     console.log(e.issues);
@@ -330,10 +330,10 @@ ValiErrorの`issues`プロパティにエラーの内容が設定されます。
 
 ```typescript
 // 失敗時にバリデーションを止める -> name:stringエラーのみ
-const email = v.parse(User, { name: null, email: 'mame' }, { abortEarly: true });
+const email = v.parse(User, { email: 'mame' }, { abortEarly: true });
 
 // パイプラインのみ失敗時に止める -> name:string+emailエラーの2件
-const email = v.parse(User, { name: null, email: 'mame' }, { abortPipeEarly: true });
+const email = v.parse(User, { email: 'mame' }, { abortPipeEarly: true });
 ```
 
 ここまでは、parseを使ってTry-Catch節でバリデーションエラーを捕捉しましたが、 例外をスローしない[safeParse](https://valibot.dev/api/safeParse/)(非同期バージョンは[safeParseAsync](https://valibot.dev/api/safeParseAsync/))もあります。

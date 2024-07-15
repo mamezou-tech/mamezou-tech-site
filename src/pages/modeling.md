@@ -26,6 +26,12 @@ UMLモデルを説明に使用している記事を集めていきます。
 - [自動打鍵テスト - 画面操作・検証だけでなくテストコード自体も自動生成してしまう真の自動化](/blogs/2022/08/27/automatic_operation_test/)
 - [コードが仕様の源泉MicroProfile OpenAPI](/msa/mp/cntrn05-mp-openapi/)
 
+### UML をプログラミング言語で実装する
+UML を様々なプログラミング言語で実装していくシリーズです。利用している言語が純粋な OOP 言語でなくても、UML モデルを実装してみることで UML への理解が深まり、その言語の特徴も浮き彫りになります。
+
+- [UMLをプログラミング言語で実装するには？ Go言語編](/blogs/2024/07/01/uml-x-mapping-go1/)
+- [UMLをプログラミング言語で実装するには？ Python編](/blogs/2024/07/12/uml-x-mapping-python1/)
+
 ## モデリングツール
 ### Enterprise Architect
 老舗のモデリングツール Enterprise Architect に関するノウハウをご紹介します。

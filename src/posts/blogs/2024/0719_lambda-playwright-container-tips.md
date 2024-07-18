@@ -107,7 +107,7 @@ export class PlaywrightLambdaStack extends cdk.Stack {
 ```
 
 公開LambdaレイヤーのARNは[こちら](https://github.com/shelfio/chrome-aws-lambda-layer?tab=readme-ov-file#available-regions)に掲載されているものを設定します。
-メモリサイズやタイムアウト時間は長めに設定しないとタイムアウトエラーが発生しますので注意が必要です。
+また、メモリサイズやタイムアウト時間は大きめの値を設定しないとタイムアウトエラーが発生しますので注意が必要です。
 
 デプロイ(`cdk deploy`)時に出力されるLambda関数のURLで動作確認します。
 

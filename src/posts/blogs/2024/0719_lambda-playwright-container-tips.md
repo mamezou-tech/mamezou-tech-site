@@ -2,12 +2,12 @@
 title: LambdaでPlaywrightを動かす(Lambdaレイヤー / コンテナ)
 author: noboru-kudo
 date: 2024-07-19
-tags: [lambda, AWS, playwright, container, tips, testing]
+tags: [lambda, AWS, playwright, container, tips, テスト]
 image: true
 ---
 
-今クロスブラウザテストでよく使われるの自動化ツールといえば[Playwright](https://playwright.dev/)ですね。
-テストでなくともブラウザ上での操作を自動化するツールとして使っている現場も多いかと思います。
+今クロスブラウザテストでよく使われるツールといえば[Playwright](https://playwright.dev/)ですね。
+テストでなくとも単純にブラウザ自動化ツールやスクレイビングツールとして使っている現場も多いかと思います。
 
 とある事情で、Lambda上でPlaywrightを動かしてみましたが、予想以上に苦戦したので備忘録も兼ねて手順をまとめます。
 

@@ -16,7 +16,7 @@ Java デベロッパーの皆さんは IntelliJ IDEA や Eclipse を使ってる
 
 Extension Pack はその名の通り複数の拡張の集合体で、現状は6つの拡張がインストールされます。少しこの中身を見ていきましょう。
 
-1つ目は Java 言語サポート拡張です。この拡張だけ RedHat 提供です。コードハイライト、コード補完、コンパイルエラー表示、メソッドなどでの JavaDoc ホバー表示など Launguage Server Protocol を利用して Java IDE としてのコア機能を提供しています。
+1つ目は Java 言語サポート拡張です。この拡張だけ RedHat 提供です。コードハイライト、コード補完、コンパイルエラー表示、メソッドなどでの JavaDoc ホバー表示など Language Server Protocol を利用して Java IDE としてのコア機能を提供しています。
 
 [Language Support for Java(TM) by Red Hat - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=redhat.java)
 
@@ -172,7 +172,7 @@ Spring 公式では、Spring Tools 4 for Visual Studio Code として紹介さ�
 - Bean や Endpoint の一覧表示
 - Bean の依存関係可視化
 
-IntelliJ IDEA Ultimate のような機能性でいたれりつくせりといった感じです。まあ、個人的には、Spring Boot アプリをそこまでガシガシ書かないのでなくても大丈夫という印象でした。お好みでといったところでしょうか。
+IntelliJ IDEA Ultimate のような機能性で至れり尽くせりといった感じです。まあ、個人的には、Spring Boot アプリをそこまでガシガシ書かないのでなくても大丈夫という印象でした。お好みでといったところでしょうか。
 
 ## さいごに
 ここにあげたもの以外ではやはり GitHub Copilot ですね。お客さんの環境では使用できないですが、個人環境ではとても重宝しています。Java のコードもサクサクと生成してくれます。

@@ -1,5 +1,5 @@
 ---
-title:2024年版！VS Code で Java 開発環境を構築する
+title: 2024年版！VS Code で Java 開発環境を構築する
 author: masahiro-kondo
 date: 2024-07-18
 tags: [vscode, java]

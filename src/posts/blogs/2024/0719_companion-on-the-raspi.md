@@ -78,4 +78,4 @@ You can start it with "sudo systemctl start companion" or "sudo companion-update
 
 ## おわりに
 
-USB を利用するガジェットが増え、Stream Deck をどうつなごうかと悩んでいたので、Raspberry Pi を使った LAN 経由で ATEM Mini 等を制御する Component が非常に気に入っています。まだ導入したばかりで、より便利にする方法を探求していきたいと思います。
+USB を利用するガジェットが増え、Stream Deck をどうつなごうかと悩んでいたので、Raspberry Pi を使った LAN 経由で ATEM Mini 等を制御する Companion が非常に気に入っています。まだ導入したばかりで、より便利にする方法を探求していきたいと思います。

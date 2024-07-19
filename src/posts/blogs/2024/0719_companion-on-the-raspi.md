@@ -12,7 +12,7 @@ image: false
 
 さらに調べると、[Companion Pi](https://bitfocus.io/companion-pi) が提供されていて [Raspberry Pi](https://www.raspberrypi.com/) で Stream Deck が使えそうと考えました。
 
-この記事は、手元にある Raspberry Pi 4 (8GB) にインストールした手順をこれから説明します。
+この記事は、手元にある Raspberry Pi 4 (8GB) にインストールした手順を説明します。
 
 ## インストール手順
 

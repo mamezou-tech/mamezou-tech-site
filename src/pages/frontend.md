@@ -56,10 +56,13 @@ Vue は React と人気を二分する UI フレームワークで、Nuxt は Vu
 - [Lume入門(第3回) - ページをタグ管理して検索性を高める](/lume/lume-search/)
 - [Lume入門(第4回) - ページ部品をコンポーネント化して再利用する](/lume/lume-components/)
 
-## Deno
-Deno は高速でセキュアな JavaScript ランタイムです。Node.js に比べ開発体験も向上しています。ここでは、Deno の導入や活用についてご紹介します。
+## JavaScript ランタイム
+Deno や Bun といったポスト Node.js を狙う JavaScript ランタイムが複数登場し競争する時代になりました。ネイティブ TypeScript サポート、CLI 1つで開発からテスト・デプロイまでカバーするオールインワンなど開発体験も向上しています。
 
-### Denoを始める
+### Deno
+Deno は高速でセキュアな JavaScript ランタイムです。ここでは、Deno の導入や活用についてご紹介します。
+
+#### Denoを始める
 - [Deno を始める - 第1回 (開発環境とランタイム)](/deno/getting-started/01-introduction/)
 - [Deno を始める - 第2回 (外部ライブラリの利用)](/deno/getting-started/02-use-external-packages/)
 - [Deno を始める - 第3回 (SSR)](/deno/getting-started/03-server-side-rendering/)
@@ -68,9 +71,19 @@ Deno は高速でセキュアな JavaScript ランタイムです。Node.js に�
 - [Deno を始める - 第6回 (Deno Deploy で静的ファイルを配信)](/deno/getting-started/06-serving-files-on-deno-deploy/)
 - [Deno を始める - 第7回 (All in one な deno のサブコマンド)](/deno/getting-started/07-all-in-one-deno-sub-commands/)
 
-### ブログ
+#### ブログ
 - [Deno による Slack プラットフォーム(オープンベータ)](/blogs/2022/09/27/slack-new-plotform-powered-by-deno/)
 - [Deno 1.31で安定化されたプロセス起動 API Deno.Command を使ってみる](/blogs/2023/03/06/deno-new-command-api/)
+- [Deno 1.37 でリリースされた Jupyter Notebook の Deno カーネルを使う](/blogs/2023/09/22/deno-jupyter-kernel/)
+- [Deno Fest(ディノフェス)参加メモ](/blogs/2023/10/23/deno-fest-2023/)
+- [Deno Tui でユニバーサルな TUI アプリを作る](/blogs/2023/11/03/deno-tui/)
+
+### Bun
+Bun は高速性と Node.js 互換が特徴の JavaScript ランタイムです。
+
+#### ブログ
+- [開発環境の Node.js を Bun に置き換えてみる](/blogs/2023/11/21/replace-nodejs-with-bun-in-devenv/)
+- [Bun で実行可能バイナリをクロスコンパイルできるようになりました](/blogs/2024/05/20/bun-cross-compile/)
 
 ## エッジ環境
 コンテンツの配信先を CDN にしてホスト管理プロセスを無くす Jamstack なアーキテクチャが普及してきています。さらに静的コンテンツのみならず、データベース機能も各サービスから提供され始めました。ここでは Netlify[^1] をはじめとするエッジ環境の活用についてご紹介します。

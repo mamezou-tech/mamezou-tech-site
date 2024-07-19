@@ -72,7 +72,7 @@ Companion is installed!
 You can start it with "sudo systemctl start companion" or "sudo companion-update"
 ```
 
-応答メッセージあるとおり `systemctl start companion` で起動できます。Stream Deck を Raspberry Pi の USB ポートに接続し、ブラウザから `http://raspberrypi.local:8000` (Raspberry Pi のホスト名が raspberrypi の場合です。ホスト名はご使用の環境に合わせて置換してください) にアクセスすると Companion にアクセスする画面が開きます。設定すると Stream Deck で ATEM Mini を操作できるようになります。
+応答メッセージにあるとおり `systemctl start companion` で起動できます。Stream Deck を Raspberry Pi の USB ポートに接続し、ブラウザから `http://raspberrypi.local:8000` (Raspberry Pi のホスト名が raspberrypi の場合です。ホスト名はご使用の環境に合わせて置換してください) にアクセスすると Companion にアクセスする画面が開きます。設定すると Stream Deck で ATEM Mini を操作できるようになります。
 
 ![companion](/img/blogs/2024/0719_companion.jpg)
 

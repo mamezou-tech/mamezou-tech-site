@@ -16,7 +16,7 @@ image: false
 
 ## インストール手順
 
-Companion で ATEM Mini の操作には有線 LAN を使用します。そして Compaion Pi の実行には Node.js が必要です。Node.js のパッケージマネージャ npm は IPv6 を利用したダウンロードが失敗するバージョンがあるため、インストールの前に nmcli コマンドを使って IPv6 を無効化します。
+Companion で ATEM Mini を操作する場合、有線 LAN が使用されます。また Compaion Pi の実行には Node.js が必要です。Node.js のパッケージマネージャ npm は IPv6 を利用したダウンロードが失敗するバージョンがあるため、インストールの前に nmcli コマンドを使って IPv6 を無効化します。
 
 次のコマンドで NAME を確認します。
 

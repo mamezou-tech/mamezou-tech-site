@@ -7,15 +7,12 @@ tags:
   - java
 image: true
 translate: true
-
 ---
 
 :::alert
 This article has been automatically translated.
 The original article is [here](https://developer.mamezou-tech.com/blogs/2024/07/18/write-java-with-vscode-2024/).
 :::
-
-
 
 ## Introduction
 Many Java developers likely use IntelliJ IDEA or Eclipse. I use VS Code. I had been away from Java for a long time in my work, but I have been writing quite a bit in recent years. I used to pay for IntelliJ IDEA, but with my return to Java, I set up an environment in VS Code. In this article, I would like to introduce some standard extensions and how to use workspaces.

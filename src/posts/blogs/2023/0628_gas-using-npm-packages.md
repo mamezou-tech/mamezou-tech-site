@@ -2,7 +2,7 @@
 title: "Google Apps ScriptからAWSにアクセスするための署名の実装"
 author: shigeki-shoji
 date: 2023-06-28
-tags: ['Google Apps Script', AWS]
+tags: ['Google Apps Script', AWS, "認証/認可", Security]
 ---
 
 こんにちは、[庄司](https://github.com/edward-mamezou)です。

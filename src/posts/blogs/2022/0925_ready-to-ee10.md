@@ -9,7 +9,7 @@ tags: [java, mp]
 
 対応プロダクトが揃ってきた頃にはバージョンアップを検討されると思いますがJakarta EE 10の一つ前のJakarta EE 9/9.1[^2]にはパッケージ名がjavax.*からjakarta.*へ変更される、いわゆる"破壊的な変更"が含まれています。このため、現時点で大多数が利用していると思われるJava EE 8（もしくはそれ未満）からのバージョンアップにはコード修正が必要なJakarta EE 9の壁があります。
 
-そこで今回はJakarta EE 10に備えるためにアプリを実際にJava EE 8からJakara EE 9へバージョンアップした体験をとおしてバージョンアップに必要な作業やハマりどころなどをレポートしてみたいと思います。
+そこで今回はJakarta EE 10に備えるためにアプリを実際にJava EE 8からJakarta EE 9へバージョンアップした体験をとおしてバージョンアップに必要な作業やハマりどころなどをレポートしてみたいと思います。
 
 [^1]: 各プロダクトのJakarta EE 10の対応状況は[JAKARTA EE COMPATIBLE PRODUCTS](https://jakarta.ee/compatibility/certification/10/)を参照。
 [^2]: Jakarta EE 9.1はJakarta EE 9に対してJavaSE 11のサポートが加わっただけで内容的に違いはないため、記事では両者を区別せず表記しています。

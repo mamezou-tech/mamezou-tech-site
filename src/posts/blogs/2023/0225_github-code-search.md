@@ -13,6 +13,12 @@ GitHub Code Search は GitHub にホストされているリポジトリのコ�
 
 [No more waitlist - code search and code view are available to all in public beta | GitHub Changelog](https://github.blog/changelog/2023-02-23-no-more-waitlist-code-search-and-code-view-are-available-to-all-in-public-beta/)
 
+:::info:2024.03.29追記
+Code Search は2023年5月に GA になっています。
+
+[GitHub code search is generally available](https://github.blog/2023-05-08-github-code-search-is-generally-available/)
+:::
+
 ## ポータル
 Code Search のポータルページです。
 
@@ -21,6 +27,10 @@ Code Search のポータルページです。
 [GitHub Code Search (Preview)](https://cs.github.com/)
 
 開発者向けの検索サイトだけあって検索ボックスの下に検索用スニペットが書かれています。リポジトリやパスを指定した検索、BOOL 演算や正規表現を使用する検索などのスニペットがあり、開発者がぱっと見てすぐ使い始められるポータルになっています。
+
+:::info:2024.03.29追記
+現在 Code Search は GitHub.com に完全に組み込まれているためポータルを経由する必要はありません。
+:::
 
 ## 特定パターンのファイルを探す
 検索スコープのデフォルトは `All repos` ですが、自分のプライベートリポジトリを含め絞り込みが可能です。

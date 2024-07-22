@@ -12,8 +12,13 @@ layout: layouts/base.njk
       </div>
     </header>
 
-    <main class="season__content">
-      {{ content | safe }}
+    <main class="event__content">
+      {%- if imageUrl %}
+        <p><img src={{ imageUrl }} alt="cover" width="500" style="display:block; margin: auto;" /></P>
+      {%- endif %}
+      <p>{{ leadingText }}</p>
+      <p><a href={{ linkUrl }}>{{ linkText }}</a></p>
+      {{ comp.EventSchedule({ period: period }) | safe }}
     </main>
 
     <div class="mt-0">

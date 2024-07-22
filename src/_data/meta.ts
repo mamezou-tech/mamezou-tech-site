@@ -1,6 +1,7 @@
 export default {
   url: Deno.env.get("URL") || "http://localhost:8080",
   siteName: "豆蔵デベロッパーサイト",
+  siteEnName: "Mamezou Developer Portal",
   siteDescription:
     "開発に役立つチュートリアルやテクニック・ノウハウを豆蔵メンバーがご紹介します！",
   authorName: "mamezou-tech",
@@ -9,5 +10,5 @@ export default {
   env: Deno.env.get("CONTEXT"),
   branch: Deno.env.get("BRANCH") || "main",
   netlifyContext: Deno.env.get("CONTEXT") || "unknown",
-  imageUrl: "https://image.mamezou-tech.com"
+  imageUrl: "https://image.mamezou-tech.com",
 };

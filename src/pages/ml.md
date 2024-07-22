@@ -3,6 +3,7 @@ title: 機械学習
 description: 機械学習に関する解説・実践テクニック
 date: git Last Modified
 icon: https://api.iconify.design/eos-icons/machine-learning.svg?color=%23730099&height=28
+enTitle: Machine Learning
 ---
 
 機械学習(Machine Learning)はアカデミック分野にとどまらず、産業界全体を巻き込んで我々の生活を大きく変革しています。システム開発においても、機械学習モデルの活用を前提とするケースが増えています。

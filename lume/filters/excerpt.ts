@@ -12,13 +12,13 @@ function normalizeContent(original: string) {
       normalized = normalized.replace(m[0], m.groups.title);
     }
   }
-  return normalized.replace(/(<([^>]+)>)/gi, '');
+  return normalized.replace(/(<([^>]+)>)/gi, "");
 }
 
 export const excerpt = (content: string | React.ReactElement) => {
   if (!content) {
-    console.log('Page contents not found!! something wrong...');
-    return '';
+    console.log("Page contents not found!! something wrong...");
+    return "";
   }
   const target = isReactComponent(content) ? content.props.children : content;
   return chop(normalizeContent(target));

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
-{%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ meta.siteName }}{% endset -%}
+{%- set lang %}{% if translate == true %}en{% else %}ja{% endif %}{% endset -%}
+<html lang="{{ lang }}">
+{%- set siteName %}{% if translate == true %}{{ meta.siteEnName }}{% else %}{{ meta.siteName }}{% endif %}{% endset -%}
+{%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ siteName }}{% endset -%}
 {%- set pageDescription %}{% shortDesc search.pages(), page, meta.siteDescription %}{% endset -%}
-{%- set pageSocialImg %}{{ meta.url }}/og/?title={% if title %}{{ title }}{% else %}home{% endif %}{% if category %}&category={{ category }}{% endif %}{% endset -%}
+{%- set pageSocialImg %}{{ meta.url }}/og/?title={% if title %}{{ title | percentEncode }}{% else %}home{% endif %}{% if category %}&category={{ category | percentEncode }}{% endif %}{% endset -%}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,10 +13,12 @@
       name="description"
       content="{{pageDescription}}"
     />
+    {%- if author %}
+    <meta name="author" content="{{ author }}" />
+    {%- endif %}
     <link href="/css/style.css" rel="stylesheet" />
     <link rel="canonical" href="{{ meta.url }}{{ url }}" >
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
     {% if meta.env === 'production' %}
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-38XP4WXMMY"></script>
     <script>
@@ -27,6 +31,7 @@
           branch: '{{ meta.branch }}',
           theme: 'light',
           author: '{{ author }}',
+          translate: '{{ translate }}',
           tags: '{{ tags }}',
           date: '{{ date }}'
         }
@@ -61,15 +66,15 @@
     <meta property="fb:app_id" content="625393465273959" />
     <meta property="og:type" content="website" />
     <meta
-      name="og:title"
+      property="og:title"
       content="{{pageTitle}}"
     />
     <meta
-      name="og:description"
+      property="og:description"
       content="{{pageDescription}}"
     />
     <meta
-      name="og:url"
+      property="og:url"
       content="{{ meta.url }}{{ url }}"
     />
     {% if title %}
@@ -79,6 +84,7 @@
     <meta property="og:image" content="{{meta.url}}/img/ogp/mamezou-tech-ogp-main.png" />
     <meta name="twitter:image" content="{{meta.url}}/img/ogp/mamezou-tech-ogp-main.png" />
     {% endif %}
+    <meta name="github" content="{{ page.src.path }}" />
 
     <link
       rel="alternate"
@@ -100,7 +106,15 @@
     selector: 'div#search',
   });
 </script>
-  <body>
+{%- set type = tags | eventType %}
+{%- set bgColor -%}
+{%- if type == "summer" -%}bg-summer
+{%- elseif type == "spring" -%}bg-spring
+{%- elseif type == "advent" -%}bg-advent
+{%- else -%}bg-white
+{%- endif -%}
+{%- endset -%}
+  <body class="{{ bgColor }}">
   <div id="fb-root"></div>
   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v18.0&appId=625393465273959" nonce="Ytcn0KH2"></script>
     {{ content | safe }}

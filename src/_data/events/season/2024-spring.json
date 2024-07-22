@@ -1,0 +1,88 @@
+{
+  "entries": [
+    {
+      "date": "4月12日(金)",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "知ってちょっと得する？Javaの死語の世界",
+      "url": "/blogs/2024/04/12/death-lang-java/"
+    },
+    {
+      "date": "4月18日(木)",
+      "author": "shigeki-shoji",
+      "githubUser": "edward-mamezou",
+      "title": "スクラム入門の勉強会を開催しました",
+      "url": "/blogs/2024/04/18/introduction-to-scrum/"
+    },
+    {
+      "date": "4月19日(金)",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "新人さんに捧げる、やさしく楽しく解説するソフトウェア開発のプロジェクト用語(前編)",
+      "url": "/blogs/2024/04/19/playful_project_terms/"
+    },
+    {
+      "date": "4月25日(木)",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "Excelを使って簡単にオープンデータを分析する",
+      "url": "/blogs/2024/04/25/excel-data-analysis/"
+    },
+    {
+      "date": "4月26日(金)",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "VS Code のキーマップを拡張を使わずカスタマイズしてみよう",
+      "url": "/blogs/2024/04/26/remap-vscode-keys/"
+    },
+    {
+      "date": "5月1日(水)",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "新人さんに捧げる、やさしく楽しく解説するソフトウェア開発のプロジェクト用語(後編)",
+      "url": "/blogs/2024/05/01/playful_project_terms2/"
+    },
+    {
+      "date": "5月5日(日)",
+      "author": "noboru-kudo",
+      "githubUser": "kudoh",
+      "title": "効率的なクラウドインフラ管理のためにIaCアプローチを活用する",
+      "url": "/blogs/2024/05/05/iac-tools-intro/"
+    },
+    {
+      "date": "5月8日(水)",
+      "author": "shohei-yamashita",
+      "githubUser": "shohei-yamashit",
+      "title": "脳のメモリから「慣れ」を考察する ~新人エンジニアが最速で慣れるためにやったこと~",
+      "url": "/blogs/2024/05/08/getting-used-to-it/"
+    },
+    {
+      "date": "5月20日(月)",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "Excelを使って簡単にオープンデータを分析する(発展編)",
+      "url": "/blogs/2024/05/20/powerquery-introduction/"
+    },
+    {
+      "date": "6月8日(土)",
+      "author": "kenta-ishihara",
+      "githubUser": "kenta-ishihara",
+      "title": "【新人さん向け】A5:SQL Mk-2のおすすめ設定と使い方",
+      "url": "/blogs/2024/06/08/a5m2_settings/"
+    },
+    {
+      "date": "6月13日(木)",
+      "author": "kohei-tsukano",
+      "githubUser": "KoheiTsukano",
+      "title": "新人だって怖くない！Gitで焦らないためのコマンド操作解説：スタッシュ・コンフリクト解消・マージの取り消し",
+      "url": "/blogs/2024/06/13/git_notes_for_newcommers/"
+    },
+    {
+      "date": "6月16日(日)",
+      "author": "yoshifumi-moriya",
+      "githubUser": "morya-530",
+      "title": "文字コード これだけは覚えておこう ～シフトJIS編～",
+      "url": "/blogs/2024/06/16/moji-code1/"
+    }
+  ]
+}

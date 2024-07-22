@@ -2,6 +2,7 @@
 title: JetBrains Gateway の Gitpod 統合を使って IntelliJ IDEA でリモート開発する
 author: masahiro-kondo
 date: 2022-05-09
+tags: [JetBrains]
 ---
 
 JetBrains の IntelliJ IDEA は根強い人気を誇る IDE です。先月末に JetBrains Gateway と Gitpod を使ってリモート開発が可能になったというアナウンスがありました。

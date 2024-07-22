@@ -2,8 +2,12 @@ import { ask } from '../util/chat-gpt.js';
 import fs from 'fs';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { WebClient } from '@slack/web-api';
 import OpenAI from 'openai';
+import openai from '../util/openai-client.js';
+import console from 'console';
+import sharp from 'sharp';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { WebClient } from '@slack/web-api';
 
 type Gpt = {
   columns: {
@@ -15,14 +19,14 @@ type Gpt = {
 };
 
 const categories = [
-  "funny jargon",
-  "agile words",
-  "Developer Tips",
-  "cloud technics",
-  "programing technics",
-  "AI words",
-  "IT Security words",
-]
+  'Robotics',
+  'EdTech Innovations',
+  'AWS Services',
+  'Tech Startups',
+  'Edge Computing',
+  'Frontend Technology',
+  'Latest AI products or services'
+];
 
 async function main(path: string) {
   const json: Gpt = JSON.parse(fs.readFileSync(path).toString());
@@ -32,19 +36,15 @@ async function main(path: string) {
     .filter(column => column.theme === theme)
     .map(column => column.title);
   const prompt: OpenAI.ChatCompletionMessageParam = {
-    content: `Output 20 \`${theme}\` used by IT developers in programming.
-JSON format:
+    content: `Think column's theme of \`${theme}\` used by IT developers.
+Output about 20 themes. The themes must be professional and new. Please output concrete service or technology names as much as possible, rather than abstract ones such as \`API\` or \`Cloud\`.
+
+Output json format:
 \`\`\`
 {
   words: [<array of word>]
 }
 \`\`\`
-
-Please follow the restrictions below.
-- No need to reply message
-- Only known jargon to be output
-- Do not include obscene or vulgar words
-- Speak in English
 
 Do not output the following words.
 ${pastTitles.map(title => `- ${title}`).join('\n')}
@@ -62,12 +62,13 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
   console.log(keywords.words);
   const keyword = pickup(keywords.words, pastTitles);
   const result = await ask({
+    model: 'gpt-4o',
     messages: [prompt, {
       role: 'assistant',
       content: keywordsResponse.choices[0].message?.content
     }, {
       role: 'user',
-      content: `You are to act as a columnist for a beautiful Japanese girl.
+      content: `You are a cute girl and an excellent columnist in Japan.
 We will give you one word commonly used in the IT industry and you should output a short article about it.
 You need to write passionate articles that readers can relate to. However, the article should include funny jokes.
 Please do not output "yes" or "I understand", only the article.
@@ -80,6 +81,10 @@ My first word is "${keyword}" on "${theme}".
     temperature: 0.7
   });
   const column = result.choices[0].message?.content?.trim() || '';
+
+  const formattedDate = today();
+  await generateImage(column, formattedDate);
+
   if (!column) throw new Error('no content');
   if (!safeResponse(column) || !safeResponse(column)) throw new Error(`un-safe content found: ${column}`);
 
@@ -87,28 +92,26 @@ My first word is "${keyword}" on "${theme}".
     title: keyword,
     text: column.replaceAll(/(\r?\n)+/g, '<br />'),
     created: new Date().toISOString(),
-    theme,
+    theme
   };
   json.columns.unshift(item);
   json.columns = json.columns.slice(0, 70);
   fs.writeFileSync(path, JSON.stringify(json, null, 2));
-
   const token = process.env.SLACK_BOT_TOKEN;
   const web = new WebClient(token);
 
-  const today = new Date();
   const channel = process.env.SLACK_CHANNEL_ID || 'D041BPULN4S';
   await web.chat.postMessage({
     channel,
     mrkdwn: true,
-    text: '今日の豆香の豆知識コラム(予告)',
+    text: '今日の豆香の豆知識',
     unfurl_media: false,
     blocks: [
       {
         type: 'header',
         text: {
           type: 'plain_text',
-          text: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}の豆香の豆知識コラム(by GPT-4 Turbo)`
+          text: `${formattedDate}の豆香の豆知識(by GPT-4o)`
         }
       },
       {
@@ -124,9 +127,65 @@ My first word is "${keyword}" on "${theme}".
           type: 'mrkdwn',
           text: column
         }
+      },
+      {
+        type: 'image',
+        alt_text: '豆香コラム画像',
+        image_url: `https://image.mamezou-tech.com/mameka/${formattedDate}-daily-column-300.webp`,
       }
     ]
   });
+}
+
+function today() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+async function generateImage(column: string, date: string) {
+  const response = await openai.images.generate({
+    prompt: `generate images suitable for the following column written by 豆香(japanese cute girl) .
+- The image should be cartoon-like.
+- Include characters as well as objects whenever possible.
+
+"${column}"`,
+    model: 'dall-e-3',
+    size: '1024x1024',
+    response_format: 'b64_json',
+    quality: 'standard'
+  });
+
+  const image = response.data[0];
+  const base64Image = image.b64_json?.split(';base64,').pop();
+  if (!base64Image) {
+    throw new Error('illegal image format');
+  }
+  const width = 300;
+  const optimizedImage = await sharp(Buffer.from(base64Image, 'base64') )
+    .resize(width)
+    .toFormat('webp', { quality: 80 })
+    .toBuffer();
+
+  await uploadToS3(`mameka/${date}-daily-column-${width}.webp`, optimizedImage);
+  console.log('Image optimized and saved');
+}
+
+async function uploadToS3(key: string, body: Buffer) {
+  const bucketName = 'mz-developer-site-image-bucket';
+  const s3client = new S3Client({
+    region: 'ap-northeast-1'
+  });
+  const uploadParams = {
+    Bucket: bucketName,
+    Key: key,
+    Body: body,
+    ContentType: 'image/webp'
+  };
+  const command = new PutObjectCommand(uploadParams);
+  await s3client.send(command);
+  console.log(`Image uploaded to S3: ${bucketName}/${key}`);
 }
 
 function pickup(arr: string[], excludes: string[]): string {

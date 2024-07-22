@@ -17,7 +17,13 @@ type Node = {
   children?: Node[];
 };
 
-function Toc({ path, imageEnabled, imageUrl }: { path: string, imageEnabled: boolean, imageUrl: string }) {
+function Toc(
+  { path, imageEnabled, imageUrl }: {
+    path: string;
+    imageEnabled: boolean;
+    imageUrl: string;
+  },
+) {
   const [data, setData] = useState<Node[]>([]);
   const { activeId } = useHeadsObserver();
   const key = path.split("/").pop();
@@ -95,7 +101,15 @@ function Toc({ path, imageEnabled, imageUrl }: { path: string, imageEnabled: boo
   };
   return (
     <div className="post__toc_preact">
-      {imageEnabled && <div><img src={`${imageUrl}/blogs/${key}-200.webp`} width="200" alt="article image" /></div>}
+      {imageEnabled && (
+        <div>
+          <img
+            src={`${imageUrl}/blogs/${key}-200.webp`}
+            width="200"
+            alt="article image"
+          />
+        </div>
+      )}
       <p className="toc-container-header">Contents</p>
       {makeList(data)}
       <div>
@@ -133,6 +147,14 @@ function Toc({ path, imageEnabled, imageUrl }: { path: string, imageEnabled: boo
   );
 }
 
-export function render(el: HTMLElement, path: string, imageUrlBase: string, imageEnabled = false) {
-  return preactRender(<Toc path={path} imageUrl={imageUrlBase} imageEnabled={imageEnabled} />, el);
+export function render(
+  el: HTMLElement,
+  path: string,
+  imageUrlBase: string,
+  imageEnabled = false,
+) {
+  return preactRender(
+    <Toc path={path} imageUrl={imageUrlBase} imageEnabled={imageEnabled} />,
+    el,
+  );
 }

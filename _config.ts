@@ -34,9 +34,9 @@ import { makeAuthorArticles } from "./src/generators/articles_by_author.ts";
 import { makeScopeUpdate } from "./lume/scope_updates.ts";
 import meta from "./src/_data/meta.ts";
 import { Options as MarkdownOptions } from "lume/plugins/markdown.ts";
-import tailwindOptions from "./tailwind.config.js"
-import cssnano from "npm:cssnano@6.0.2"
-import markdownItCodeBlock from './lume/markdown-it/code_block_plugin.ts';
+import tailwindOptions from "./tailwind.config.js";
+import cssnano from "npm:cssnano@6.0.2";
+import markdownItCodeBlock from "./lume/markdown-it/code_block_plugin.ts";
 
 const markdown: Partial<MarkdownOptions> = {
   options: {
@@ -62,7 +62,7 @@ const markdown: Partial<MarkdownOptions> = {
     }],
     footNote,
     [container, "flash", containerOptions],
-    [katex, { "throwOnError": false, "errorColor": " #cc0000" }],
+    [katex, { throwOnError: false, errorColor: "#cc0000", strict: false }],
     externalLinkPlugin,
     imageSwipePlugin,
     markdownItCopyButton,
@@ -85,10 +85,10 @@ site.use(jsx());
 site.use(mdx());
 site.use(liquid());
 site.use(tailwindcss({
-  options: tailwindOptions
+  options: tailwindOptions,
 }));
 site.use(postcss({
-  plugins: [cssnano()]
+  plugins: [cssnano()],
 }));
 site.use(prism());
 site.use(sitemap({
@@ -114,6 +114,13 @@ site.copy("fonts");
 site.copy("img");
 
 site.helper("year", () => `${new Date().getFullYear()}`, { type: "tag" });
+site.helper("currentDate", () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, "0");
+  const day = now.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}, { type: "tag" });
 site.helper("shortDesc", shortDesc, { type: "tag" });
 
 site.filter(
@@ -167,17 +174,31 @@ site.filter(
 );
 site.filter("articleDate", articleDate);
 
-const eventTagFilter = (tagPrefix: string) => (rawTags: string[]) => {
-  if (!rawTags) return;
+function findEventTag(rawTags: string[] | string, target: RegExp) {
   const tags = typeof rawTags === "string" ? [rawTags] : rawTags;
-  const eventTag = tags.find((tag) => tag.startsWith(tagPrefix));
+  return tags.find((tag) => tag.match(target));
+}
+
+const eventTagFilter = (prefix: string) => (rawTags: string[] | string) => {
+  if (!rawTags?.length) return;
+  const eventTag = findEventTag(rawTags, new RegExp(`^${prefix}.*`));
   if (eventTag) {
-    const result = eventTag.match(new RegExp(`${tagPrefix}(?<year>\\d{4})`));
+    const result = eventTag.match(new RegExp(`${prefix}(?<year>\\d{4})`));
     return result?.groups ? result.groups.year : undefined;
   }
 };
 site.filter("adventCalendarTag", eventTagFilter("advent"));
 site.filter("summerRelayTag", eventTagFilter("summer"));
+site.filter(
+  "eventType",
+  (tags: string[] | string): "spring" | "summer" | "advent" | undefined => {
+    const tag = findEventTag(tags, /^(advent|summer|新人向け).*/);
+    if (!tag) return;
+    else if (tag.startsWith("advent")) return "advent";
+    else if (tag.startsWith("summer")) return "summer";
+    else if (tag.startsWith("新人向け")) return "spring";
+  },
+);
 site.filter("validTags", validTags);
 site.filter("githubName", githubName);
 
@@ -198,11 +219,27 @@ site.filter("newestDate", (pages: Lume.Data[]) => {
   );
   return first.date;
 });
-site.filter("isoDate", (d: Date) => DateTime.fromJSDate(d).toISO());
+
+site.filter("isoDateTime", (d: Date | string) => {
+  if (d instanceof Date) {
+    return DateTime.fromJSDate(d).toISO();
+  } else {
+    return DateTime.fromISO(d).toISO();
+  }
+});
+site.filter("isoDate", (d: Date | string) => {
+  if (d instanceof Date) {
+    return DateTime.fromJSDate(d).toISODate();
+  } else {
+    return DateTime.fromISO(d).toISODate();
+  }
+});
 site.filter(
   "absoluteUrl",
   (s: string, base: string) => new URL(s, base).toString(),
 );
+
+site.filter("percentEncode", (s: string) => encodeURIComponent(s));
 
 site.filter("rssUrl", (html: string, base: string) => {
   if (!html) return "";
@@ -224,6 +261,21 @@ site.helper(
 if (!Deno.env.has("MZ_DEBUG")) {
   site.scopedUpdates(...makeScopeUpdate("src"));
 }
+
+site.preprocess([".md"], (pages) => {
+  const search = new Search({ pages, files: [], sourceData: new Map() });
+  const articles = getPostArticles(search);
+  const translated = search.pages("translate=true");
+  for (const article of articles) {
+    const found = translated.find((en) =>
+      en.page.src.path === `/en${article.page.src.path}`
+    );
+    if (found) {
+      article.en = found.url;
+      found.ja = article.url;
+    }
+  }
+});
 
 site.process([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;
@@ -249,7 +301,7 @@ site.process([".md"], (pages) => {
   const end = DateTime.now().startOf("month");
   const input = summary.map((s) => {
     let current = start;
-    let numbers: number[] = [];
+    const numbers: number[] = [];
     while (!current.equals(end)) {
       const found = s.result.find((r) =>
         r.ym === `${current.year}-${current.month}`

@@ -2,13 +2,24 @@
 layout: layouts/base.njk
 ---
 
-{{ comp.SiteNav() | safe }}
+{{ comp.SiteNav({en: translate == true}) | safe }}
 
 <main class="tdbc-container">
   <div id='toc'></div>
   <article class="post mr-auto ml-auto">
     <header class="post__header">
       <h1>{{ title }}</h1>
+      {%- if en %}
+      <div class="relative lg:fixed lg:bottom-5 lg:right-5 lg:bg-blue-900 lg:bg-opacity-50 lg:p-2 lg:rounded-md lg:shadow-lg cursor-pointer">
+        <a class="lg:text-white lg:text-center lg:block text-sm"
+           href="{{ en }}">Switch to English</a>
+      </div>
+      {% elseif ja %}
+      <div class="relative lg:fixed lg:bottom-5 lg:right-5 lg:bg-blue-900 lg:bg-opacity-50 lg:p-2 lg:rounded-md lg:shadow-lg cursor-pointer">
+        <a class="lg:text-white lg:text-center lg:block text-sm"
+           href="{{ ja }}">日本語に切り替え</a>
+      </div>
+      {%- endif %}
       <div class="post__details">
         <time datetime="{{ date | htmlDateString }}">
           {{ date | readableDate }}
@@ -33,17 +44,23 @@ layout: layouts/base.njk
       </div>
     {%- set adYear = tags | adventCalendarTag %}
     {%- if adYear %}
-    <div class="advent">
+    <div class="event-marker advent">
       <a target="_blank" rel="noopener noreferrer" href="{{ adventCalendarUrl }}"><img width="20px" src="/img/icons/christmas-tree.svg" alt="christmas-tree"/>アドベントカレンダー{{adYear}}</a>
     </div>
     {%- endif %}
     {%- set summerYear = tags | summerRelayTag %}
     {%- if summerYear %}
-    <div class="summer">
+    <div class="event-marker summer">
       <a target="_blank" rel="noopener noreferrer" href="{{ summerRelayUrl }}"><img width="20px" src="/img/icons/summer-sun.png" alt="summer-sun"/>夏のリレー連載{{summerYear}}</a>
     </div>
     {%- endif %}
     </header>
+    <div class="post__tags">
+      {% for tag in (tags | pageTags) %}
+      {% set tagUrl %}/tags/{{ tag | lower }}/{% endset %}
+      <a href="{{ tagUrl | url }}">#{{ tag }}</a>
+      {% endfor %}
+    </div>
     <main class="post__content">
       {{ content | safe }}
     </main>
@@ -58,7 +75,7 @@ layout: layouts/base.njk
 
       <nav class="post__pagination">
         {%- if pageNavigationTag %}
-          {%- set previousPost = search.previousPage(url, pageNavigationTag) %}
+          {%- set previousPost = search.previousPage(url, pageNavigationTag + " translate!=true") %}
           {%- if previousPost %}
 
             <a href="{{ previousPost.url | url }}">
@@ -68,7 +85,7 @@ layout: layouts/base.njk
 
           {% endif %}
 
-          {%- set nextPost = search.nextPage(url, pageNavigationTag) %}
+          {%- set nextPost = search.nextPage(url, pageNavigationTag + " translate!=true") %}
           {%- if nextPost %}
 
             <a href="{{ nextPost.url | url }}">

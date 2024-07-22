@@ -21,9 +21,7 @@ Server Componentsは文字通りサーバー環境のみでレンダリングさ
 今回はこのNuxtのServer Componentsを試してみたいと思います。
 
 :::alert
-NuxtのServer Componentsは実験的段階でドキュメントも充実してるとは言えません。現時点ではクリティカルな環境での利用は控えた方が良いと思います。
-
-検証/利用する場合は、最新の状況を確認してください。
+NuxtのServer Componentsは実験的段階です。検証/利用する場合は最新の状況を確認してください。
 NuxtでのServer Componentsのロードマップやその進捗状況は、以下GitHub Issueで管理されています。
 
 - [GitHub Nuxt - server component roadmap](https://github.com/nuxt/nuxt/issues/19772)
@@ -290,4 +288,4 @@ export default defineNuxtConfig({
 まだ実験的段階であるものの、うまく使いことなすとパフォーマンス観点のメリットが大きいと思います。
 
 語弊があるかもしれませんが、大きな潮流としてフロントエンドはSPA全盛の時代が終わり、サーバーサイドに(グレードアップして)回帰しているのを感じます。
-Next.jsのApp RouterがStableになって、Server Componentsの普及が進んでいくのは確実ですが、Nuxtの方の動きも注目していきたいと思いました。
+Next.jsのApp RouterがStableになって、Server Componentsの普及が進んでいくのかなと思いますが、Nuxtの方の動きも注目していきたいと思いました。

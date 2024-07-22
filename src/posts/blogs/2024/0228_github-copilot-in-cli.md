@@ -25,6 +25,10 @@ gh-copilot のドキュメントは以下にあります。
 :::info
 gh-copilot は記事執筆時点ではパブリックベータです。利用するには、GitHub Copilot Individual サブスクリプションが必要です。筆者は Individual サブスクリプションを利用しています。
 所属しているオーガニゼーションが GitHub Copilot Business サブスクリプションを持ち、かつ gh-copilot を有効化している場合も利用可能です。
+
+(2024.03.22 追記)
+gh-copilot が GA になり、全ての Individual、Business、Enterprise の Copilot プランで利用可能になりました。
+[GitHub Copilot General Availability in the CLI](https://github.blog/changelog/2024-03-21-github-copilot-general-availability-in-the-cli/)
 :::
 
 ## インストール

@@ -10,7 +10,7 @@ renderOrder: 999
 	{% set absoluteUrl %}{{ '/feed/' | url | absoluteUrl(meta.url) }}{% endset %}
 	<link href="{{ absoluteUrl }}" rel="self"/>
 	<link href="{{ meta.url }}"/>
-	<updated>{{ search | posts | newestDate | isoDate }}</updated>
+	<updated>{{ search | posts | newestDate | isoDateTime }}</updated>
 	<id>{{ meta.url }}/</id>
 	<author>
 		<name>{{ meta.authorName }}</name>
@@ -21,8 +21,8 @@ renderOrder: 999
 	<entry>
 		<title>{{ page.title  }}</title>
 		<link href="{{ absolutePostUrl }}"/>
-		<published>{{ page.date | isoDate }}</published>
-		<updated>{{ page.date | isoDate }}</updated>
+		<published>{{ page.date | isoDateTime }}</published>
+		<updated>{{ page.date | isoDateTime }}</updated>
 		<id>{{ absolutePostUrl }}</id>
 		<summary>{{ pageDescription }}</summary>
 		<content type="html">{{ page.children | rssUrl(meta.url) }}</content>

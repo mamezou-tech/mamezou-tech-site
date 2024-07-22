@@ -31,7 +31,7 @@ Java EEは1999年12月にエンタープライズ向けのエディションと�
 
 [^1]: ここではサラッと書いていますが、実際にはJavaの発展を願うコミュニティとOracleの間では激しいやり取りや議論がありました。この説明をすると本が1冊書けるくらいになるため、これ以上詳細は触れませんが、興味がある方はまずは[Jakarta EE設立趣意書](https://jakartaee-ambassadors.io/)辺りを見ていただくと当時の状況が分かるのではないかと思います。
 [^2]: Jakarta EEへの変更はJava EE 9のリリース前に行われたため、Java EE 8とJakarta EE 8は実質的に同じものを指します。
-[^3]: Jakarta EE 8は既にJava EE 8としてリリース済みであっため、`javax.*`がそのまま使われましたが、Jakarta EE 9以降は`jakarta.*`パッケージへの移行が段階的に進められ、次期バージョンのJakarata EE 10ではServlet APIなど既存APIも含めすべてのAPIが`jakarta.*`パッケージとなります。
+[^3]: Jakarta EE 8は既にJava EE 8としてリリース済みであっため、`javax.*`がそのまま使われましたが、Jakarta EE 9以降は`jakarta.*`パッケージへの移行が段階的に進められ、次期バージョンのJakarta EE 10ではServlet APIなど既存APIも含めすべてのAPIが`jakarta.*`パッケージとなります。
 
 
 ## MicroProfileの背景

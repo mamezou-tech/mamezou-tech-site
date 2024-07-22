@@ -1,0 +1,102 @@
+{
+  "entries": [
+    {
+      "date": "7月24日(月)",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "RefactorFirstで倒すべき神クラスを探せ！",
+      "url": "/blogs/2023/07/24/refactorfirst/"
+    },
+    {
+      "date": "7月25日(火)",
+      "author": "toshio-horie",
+      "githubUser": "toshio-horie",
+      "title": "社内Hackathonやってます！",
+      "url": "/blogs/2023/07/25/hackathon/"
+    },
+    {
+      "date": "7月26日(水)",
+      "author": "shuji-morimoto",
+      "githubUser": "shuji-morimoto",
+      "title": "豆蔵社員のリモートワーク環境ご紹介 その12 シンプル イズ ベスト",
+      "url": "/blogs/2023/07/26/remote-env012/"
+    },
+    {
+      "date": "7月27日(木)",
+      "author": "misato-kamei",
+      "githubUser": "misato-kamei",
+      "title": "駆け出しスクラムマスターのあれこれ相談室",
+      "url": "/blogs/2023/07/27/consultation-for-fledgling-scrum-masters/"
+    },
+    {
+      "date": "7月28日(金)",
+      "author": "makiko-nakasato",
+      "githubUser": "makiko-nakasato",
+      "title": "アジャイル実践者に捧ぐちょっぴり(?)ダークなステークホルダーマネジメント",
+      "url": "/blogs/2023/07/28/stakeholder/"
+    },
+    {
+      "date": "7月31日(月)",
+      "author": "yuta-nagayoshi",
+      "githubUser": "mame-nagayoshi",
+      "title": "営業職員、AWS資格の取得を目指します",
+      "url": "/blogs/2023/07/31/sales-staff-aws/"
+    },
+    {
+      "date": "8月1日(火)",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "コードカバレッジの血の海から抜けて網羅度のBlueOceanを探そう",
+      "url": "/blogs/2023/08/01/coverage-pattern/"
+    },
+    {
+      "date": "8月2日(水)",
+      "author": "yasunori-shiota",
+      "githubUser": "shiota",
+      "title": "ソフトウェアも密を避けるべき",
+      "url": "/blogs/2023/08/02/software-coupling/"
+    },
+    {
+      "date": "8月3日(木)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "品質保証者の憂鬱「そこのあなた、無闇にメトリクスを増やしていませんか？」",
+      "url": "/blogs/2023/08/03/melancholy-of-qaer-07/"
+    },
+    {
+      "date": "8月4日(金)",
+      "author": "minoru-matsumoto",
+      "githubUser": "minosys3",
+      "title": "Rust でML に挑戦してみた",
+      "url": "/blogs/2023/08/04/ml-challenge-by-rust/"
+    },
+    {
+      "date": "8月7日(月)",
+      "author": "takafumi-okubo",
+      "githubUser": "TakOkubo",
+      "title": "日本語GPTで雑談対話モデルを作ろう",
+      "url": "/blogs/2023/08/07/llm_chat_model/"
+    },
+    {
+      "date": "8月8日(火)",
+      "author": "noriyuki-yagi",
+      "githubUser": "NoriyukiYagi",
+      "title": "ScrapboxでMermaid記法を可視化するUserScriptを作った話",
+      "url": "/blogs/2023/08/08/mermaid-in-scrapbox/"
+    },
+    {
+      "date": "8月9日(水)",
+      "author": "kohei-tsukano",
+      "githubUser": "KoheiTsukano",
+      "title": "プログラミング未経験者がJava Gold取得してきました",
+      "url": "/blogs/2023/08/09/java-gold/"
+    },
+    {
+      "date": "8月10日(木)",
+      "author": "yoshifumi-moriya",
+      "githubUser": "morya-530",
+      "title": "ミュータブル・イミュータブルって何のこと？",
+      "url": "/blogs/2023/08/10/mutable-immutable/"
+    }
+  ]
+}

@@ -7,76 +7,49 @@ on:
 
 jobs:
   build:
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Create Branch for GA report
-        id: create-ga-branch
-        run: |
-          BRANCH=feature/$(date +"%Y-%m-%d")-ga
-          git checkout -b $BRANCH
-          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+      - uses: actions/checkout@v4
 
       - name: Set up Node.js environment
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.OS }}-node-${{ hashFiles('scripts/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: scripts/package-lock.json
 
       - name: Install
-        run: |
-          cd ${GITHUB_WORKSPACE}/scripts
-          npm ci
+        run: cd ${GITHUB_WORKSPACE}/scripts && npm ci
+
+      - name: configure google credentials
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
 
       - name: Generate GA PageView report
         id: generate-ga-pv-report
         env:
-          GOOGLE_APPLICATION_CREDENTIALS_FILE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_FILE }}
           GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
         run: |
-          set -eu
           cd ${GITHUB_WORKSPACE}/scripts
-          echo ${GOOGLE_APPLICATION_CREDENTIALS_FILE} | base64 --decode > ${GITHUB_WORKSPACE}/google_auth.json
-          export GOOGLE_APPLICATION_CREDENTIALS=${GITHUB_WORKSPACE}/google_auth.json
           npm run generate:weekly-ranking
-          git add ${GITHUB_WORKSPACE}/src/_data
-          if ! git diff-index --quiet HEAD --; then
-            echo "require commit & push"
-            git status -sb
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
 
-      - name: Commit report
-        if: steps.generate-ga-pv-report.outputs.changed == 'true'
-        run: |
-          set -eu
-          git config --local user.email "github-actions@mamezou.com"
-          git config --local user.name "github-actions"
-          git commit -m "Add PV ranking report"
-          git push -u origin ${{ steps.create-ga-branch.outputs.branch }}
-
-      # https://github.com/marketplace/actions/github-pull-request-action
-      - name: Create Pull Request
-        uses: repo-sync/pull-request@v2
+      - name: Commit and Create Pull request
+        uses: peter-evans/create-pull-request@v6
         with:
-          destination_branch: "main"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ steps.create-ga-branch.outputs.branch }}
-          pr_title: "Update GA Report by github-actions"
-          pr_reviewer: kudoh
-          pr_body: "Check weekly access ranking report."
-
-      - name: Delete google auth file
-        run: rm -f ${GITHUB_WORKSPACE}/google_auth.json
-        if: always()
+          commit-message: "feat: Add PV ranking report"
+          add-paths: "src/_data"
+          author: "mameka <mameka-bot@mamezou.com>"
+          branch: weekly-ranking-report
+          delete-branch: true
+          title: "[auto-review] Update GA Report by github-actions"
+          body: "Check weekly access ranking report."
+          reviewers: kudoh
+          labels: bot

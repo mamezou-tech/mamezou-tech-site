@@ -16,7 +16,7 @@
   ignore  = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF src lume _config.ts deno.json netlify.toml"
 
   # Default build command.
-  command = "LUME_LOGS=warning deno task lume"
+  command = "deno task lume"
 
   [build.environment]
     NODE_VERSION="18"
@@ -44,20 +44,20 @@
     microphone=(),
     camera=()'''
 
-[[plugins]]
-  package = "@netlify/plugin-lighthouse"
-
-  [[plugins.inputs.thresholds]]
-    performance = 0.6
-    accessibility = 0.9
-    best-practices = 0.8
-    seo = 0.9
-
-  [[plugins.inputs.audits]]
-    path = "/"
-    output_path = "lighthouse/top.html"
-  [[plugins.inputs.audits]]
-    path = "/blogs/"
+#[[plugins]]
+#  package = "@netlify/plugin-lighthouse"
+#
+#  [[plugins.inputs.thresholds]]
+#    performance = 0.6
+#    accessibility = 0.9
+#    best-practices = 0.8
+#    seo = 0.9
+#
+#  [[plugins.inputs.audits]]
+#    path = "/"
+#    output_path = "lighthouse/top.html"
+#  [[plugins.inputs.audits]]
+#    path = "/blogs/"
 
 [[edge_functions]]
   function = "og"

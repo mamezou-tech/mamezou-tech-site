@@ -3,6 +3,7 @@ title: 開発環境
 description: 快適な開発環境を実現するTips
 date: git Last Modified
 icon: https://api.iconify.design/material-symbols/laptop-mac-outline.svg?color=%23730099&height=28
+enTitle: Development Environment
 ---
 
 快適な開発環境はプロジェクトの成功に欠かせない要素です。
@@ -37,6 +38,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [ESP32開発ボードをESP-PROGとPlatform IOを使ってデバッグする](/blogs/2024/01/03/esp32-debug-by-esp-prog/)
 - [Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする](/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/)
 - [STM32マイコンボード（STM32F103C8T6）をST-Link V2互換品とPlatform IOを使ってデバッグする](/blogs/2024/01/29/stm32-debug-by-st-link/)
+- [2024年版！VS Code で Java 開発環境を構築する](/blogs/2024/07/18/write-java-with-vscode-2024/)
 
 ### リモート環境
 

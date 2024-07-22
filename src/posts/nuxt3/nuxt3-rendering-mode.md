@@ -53,10 +53,9 @@ Nuxt3では以下のように静的リソースを生成します。
 npx nuxi generate
 ```
 
-Nuxt2の`nuxt`ではなく、Nuxt3では`nuxi`コマンドを使用する点に注意が必要です。
-`dist`ディレクトリにビルドされたリソースが出力されます。これをNginx等のWebサーバーやS3、Netlify/Vercel等にホスティングすることでサービスを提供できます。
+`.output/public`ディレクトリにビルドされたリソースが出力されます。これをNginx等のWebサーバーやS3、Netlify/Vercel等にホスティングすることでサービスを提供できます。
 
-生成された`dist/index.html`を見ると以下のようになっています。
+生成された`.output/public/index.html`を見ると以下のようになっています。
 
 ```html
 <!DOCTYPE html>
@@ -240,7 +239,7 @@ NitroではNode.js Serverだけでなく、任意のサーバーレス環境に�
 npx nuxi generate
 ```
 
-これを実行すると`dist`配下にHTMLが出力されます。掲載は省略しますが`index.html`を見ると先程curlでNitroサーバーから取得したものと同様のHTMLが出力されます。
+これを実行すると`.output/pubic`配下にHTMLが出力されます。掲載は省略しますが`index.html`を見ると先程curlでNitroサーバーから取得したものと同様のHTMLが出力されます。
 このディレクトリ配下を任意のホスティング環境に配置すれば、すぐにWebサイトを運用できます。
 
 プリレンダリングでは、以下のようなイメージで動作しているようです[^2]。

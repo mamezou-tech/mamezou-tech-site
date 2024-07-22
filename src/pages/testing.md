@@ -2,6 +2,7 @@
 title: テスト
 description: ソフトウェアテストに関する技法やテクニック
 icon: https://api.iconify.design/fluent-mdl2/test-plan.svg?color=%23730099&height=28
+enTitle: Testing
 ---
 
 どんな業界でもプロダクト品質を確認・証明する上で、テストはなくてはならない存在です。
@@ -66,6 +67,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 ### Playwright
 
 - [Electron アプリの E2E テストを Playwright で書く](/blogs/2022/06/05/test-electron-app-with-playwright/)
+- [LambdaでPlaywrightを動かす(Lambdaレイヤー / コンテナ)](/blogs/2024/07/19/lambda-playwright-container-tips/)
 
 ### Cypress
 

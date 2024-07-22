@@ -7,17 +7,18 @@ export function filterByPost(pages: Lume.Data[]): Lume.Data[] {
 }
 
 export function getPostArticles(search: Search): Lume.Data[] {
-  const pages = search.pages("exclude!=true", "date=desc");
+  const pages = search.pages("exclude!=true translate!=true", "date=desc");
   return filterByPost(pages as Lume.Data[]);
 }
 
-export function chop(content: string, count = 150) {
-  const firstDotPos = content.lastIndexOf("。", count);
+export function chop(content: string, count = 150, en = false) {
+  const firstDotPos = content.lastIndexOf(en ? "." : "。", count);
   if (firstDotPos !== -1) {
     return content.substring(0, firstDotPos) + "...";
   } else {
-    return content.substring(0, content.lastIndexOf("、", count)) + "...";
+    return content.substring(0, content.lastIndexOf(en ? "," : "、", count)) +
+      "...";
   }
 }
 
-export const generalTags = ["all", "nav", "pages", "no-page", "posts"];
+export const generalTags = ["all", "nav", "pages", "no-page", "posts", "2022年", "2023年", "2024年", "2025年"];

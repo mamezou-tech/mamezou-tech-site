@@ -13,15 +13,17 @@ export default ({ search, meta, en }: Props) => {
             &nbsp;|&nbsp;{siteName}
           </a>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <div id="search" style={{ marginRight: '1rem' }} />
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div id="search" style={{ marginRight: "1rem" }} />
           <div>
             <input id="menu-toggle" type="checkbox" />
             <label className="menu-button-container" htmlFor="menu-toggle">
               <div className="menu-button"></div>
             </label>
             <ul className="menu">
-              {search.pages('pages exclude!=true translate!=true').map((page) => (
+              {search.pages("pages exclude!=true translate!=true").map((
+                page,
+              ) => (
                 <li key={page?.url}>
                   <a
                     href={page?.url}

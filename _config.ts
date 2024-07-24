@@ -75,7 +75,6 @@ const site = lume({
   dest: "./public",
   server: {
     open: false,
-    port: 8080,
   },
   location: new URL(meta.url),
 }, { markdown });
@@ -83,7 +82,6 @@ const site = lume({
 site.use(nunjucks());
 site.use(jsx());
 site.use(mdx());
-site.use(liquid());
 site.use(tailwindcss({
   options: tailwindOptions,
 }));
@@ -331,7 +329,7 @@ site.addEventListener("afterUpdate", (event) => {
   console.log("Site updated");
   // console.log(event.files); // The files that have changed
   console.log(event.pages.map((p) => p.data.url)); // The pages that have been rebuilt
-  console.log(event.staticFiles.map((f) => f.entry.path)); // The static files that have been copied again
+  console.log(event.staticFiles.map((f) => f.outputPath)); // The static files that have been copied again
 });
 
 export default site;

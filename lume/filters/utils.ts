@@ -21,4 +21,14 @@ export function chop(content: string, count = 150, en = false) {
   }
 }
 
-export const generalTags = ["all", "nav", "pages", "no-page", "posts", "2022年", "2023年", "2024年", "2025年"];
+export const generalTags = [
+  "all",
+  "nav",
+  "pages",
+  "no-page",
+  "posts",
+  "2022年",
+  "2023年",
+  "2024年",
+  "2025年",
+];

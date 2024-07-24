@@ -11,11 +11,18 @@
   "tasks": {
     "lume": "echo \"import 'lume/cli.ts'\" | deno run --v8-flags=--max-old-space-size=4096 --unstable-fs -A -",
     "build": "deno task lume",
-    "serve": "LUME_LOGS=info deno task lume --serve",
+    "serve": "LUME_LOGS=info deno task lume --serve --port=8080",
     "serve:debug": "MZ_DEBUG=1 deno task serve",
     "lint": "deno run --unstable-fs --allow-all --lock deno-lint.lock lint.ts"
   },
-  "importMap": "import_map.json",
+  "imports": {
+    "lume/": "https://deno.land/x/lume@v2.2.4/",
+    "encodeurl": "https://deno.land/x/encodeurl@1.0.0/mod.ts",
+    "luxon": "npm:luxon@3.4.3",
+    "prismjs/": "npm:/prismjs@1.29.0/",
+    "markdown-it": "npm:markdown-it@13.0.1",
+    "markdown-it/": "npm:/markdown-it@13.0.1/"
+  },
   "fmt": {
     "exclude": [
       "src/pages",

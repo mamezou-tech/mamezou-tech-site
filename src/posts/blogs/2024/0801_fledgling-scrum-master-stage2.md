@@ -4,6 +4,7 @@ author: misato-kamei
 date: 2024-08-01
 tags: [アジャイル開発, summer2024]
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
+image: true
 ---
 
 

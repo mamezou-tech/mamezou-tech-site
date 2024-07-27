@@ -217,7 +217,6 @@ RUN --mount=type=bind,source=package.json,target=/app/package.json \
     --mount=type=cache,target=/root/.npm,sharing=locked \
     npm ci
 
-RUN npm ci
 RUN npx esbuild --bundle --format=cjs --platform=node --outdir=dist container-func.ts
 
 FROM node:20

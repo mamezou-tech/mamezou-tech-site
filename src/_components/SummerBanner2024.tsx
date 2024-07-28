@@ -13,7 +13,7 @@ export default () => {
   );
   return (
     <EventBanner
-      title="7/29より夏のリレー連載企画を開催予定！"
+      title="夏のリレー連載企画を開催中！"
       lpLink="/events/season/2024-summer/"
       image={{
         src: "/img/event/2024-summer-150.webp",

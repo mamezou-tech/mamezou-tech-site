@@ -4,7 +4,8 @@
       "date": "7月29日(月)",
       "author": "toshio-ogiwara",
       "githubUser": "ogiwarat",
-      "title": "仮）DDDってなんでオニオンとかといっしょに出てくるの？を社内で聞いてみた"
+      "title": "DDDってなんでオニオンとかといっしょに出てくるの？を社内で聞いてみた",
+      "url": "/blogs/2024/07/29/why-ddd-onion/"
     },
     {
       "date": "7月30日(火)",
@@ -70,7 +71,7 @@
       "date": "8月13日(火)",
       "author": "kohei-tsukano",
       "githubUser": "KoheiTsukano",
-      "title": "仮)React入門"      
+      "title": "仮)React入門"
     }
   ]
 }

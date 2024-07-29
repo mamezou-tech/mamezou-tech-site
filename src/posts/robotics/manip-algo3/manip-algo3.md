@@ -4,7 +4,7 @@ author: takahiro-ishii
 date: 2024-07-09
 tags: [ロボット, マニピュレータ, アルゴリズム, 軌跡生成, 逆運動学, ヤコビ行列, 同次行列, 特異点, 特異点回避]
 image: true
-prevPage: ./src/posts/robotics/manip-algo/manip-algo.md
+prevPage: ./src/posts/robotics/manip-algo2/manip-algo2.md
 ---
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>

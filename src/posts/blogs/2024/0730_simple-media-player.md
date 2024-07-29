@@ -6,6 +6,7 @@ tags: [電子工作, メディアプレイヤー, summer2024]
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
 image: true
 ---
+この記事は[夏のリレー連載2024](/events/season/2024-summer/) 2日目の記事です。
 
 ![](/img/blogs/2024/0730_simple-media-player/image_top.jpg)
 

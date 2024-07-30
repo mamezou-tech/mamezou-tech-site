@@ -229,7 +229,7 @@ ON/OFFスイッチは基板にあたるかどうかのギリギリでした。
 
 それでは完成したものをご覧ください。`音が出ますのでご注意ください!!`
 
-<video src="/img/blogs/2024/0730_simple-media-player/demo.mp4" style="max-width: 800px;" poster="/img/blogs/2024/0730_simple-media-player/thumb.png" preload="none" controls></video>
+<video src="/img/blogs/2024/0730_simple-media-player/demo.mp4" style="max-width: 100%;" poster="/img/blogs/2024/0730_simple-media-player/thumb.png" preload="none" controls></video>
 
 ボリューム調整は左手でということでしたので反時計回りで音量が大きくなるようにしています。
 

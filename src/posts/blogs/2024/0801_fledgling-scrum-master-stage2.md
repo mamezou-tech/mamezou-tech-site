@@ -1,12 +1,12 @@
 ---
-title: 駆け出しスクラムマスター Stage2_オンライン開発チームの雰囲気づくり
+title: 駆け出しスクラムマスター Stage2 オンライン開発チームの雰囲気づくり
 author: misato-kamei
 date: 2024-08-01
 tags: [アジャイル開発, summer2024]
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
 image: true
 ---
-この記事は夏のリレー連載2024 4日目の記事です。
+この記事は[夏のリレー連載2024](/events/season/2024-summer/) 4日目の記事です。
 
 ## はじめに
 ご無沙汰しております。スクラムマスターの亀井です。

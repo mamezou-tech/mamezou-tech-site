@@ -9,9 +9,9 @@ image: true
 
 この記事は[夏のリレー連載2024](/events/season/2024-summer/) 6日目の記事です。
 
-こんにちは、[庄司](https://github.com/edward-mamezou)です。
-
 ## はじめに
+
+こんにちは、[庄司](https://github.com/edward-mamezou)です。
 
 この記事では Four Keys にあるデプロイの頻度を中心にアジャイル開発がどうすればうまく進められるかを検討します。
 

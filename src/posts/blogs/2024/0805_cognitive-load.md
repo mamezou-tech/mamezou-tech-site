@@ -4,7 +4,7 @@ author: shigeki-shoji
 date: 2024-08-05
 tags: [アジャイル開発, summer2024]
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
-image: false
+image: true
 ---
 
 この記事は[夏のリレー連載2024](/events/season/2024-summer/) 6日目の記事です。

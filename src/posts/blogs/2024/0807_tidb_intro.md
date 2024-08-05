@@ -1,5 +1,5 @@
 ---
-title: 高可用性なNewSQL分散データベースシステムであるTiDBを紹介してみる
+title: 初心者でもわかる！高可用性NewSQL分散データベースTiDBの魅力とハンズオン
 author: shohei-yamashita
 date: 2024-08-07
 tags: [mysql, tidb, summer2024, Python]
@@ -54,7 +54,7 @@ TiDBはMySQLプロトコルと互換性があり、MySQLクライアントで通
 TiDBの構成は非常にシンプルな構成で、以下の通りになります。
 1. TiDB Cluster (MySQLクライアントと直接やり取りするクラスタ)
 2. Storage Cluster (ストレージクラスタ)
-3. Pracement Driver Cluster (管理クラスタ)
+3. Placement Driver Cluster (管理クラスタ)
 
 最低限上記のことが頭に入っていればハンズオンは問題なく実行できます。
 なるべく早く試したいという方は[ハンズオン](./#tidbを体験してみよう)まで飛ばしてしまっても構いません。
@@ -120,11 +120,11 @@ TiFlashはTiKVを同期させているRaftと独立して動いているわけ�
 - [Learnerについてより詳しく説明されているページ](https://etcd.io/docs/v3.6/learning/design-learner/)
 :::
 
-## 3. Pracement Driver Cluster
-Pracement DriverはKVノード群を管理するクラスタのことです。
+## 3. Placement Driver Cluster
+Placement DriverはKVノード群を管理するクラスタのことです。
 
 ### 3.1. PD Server
-Pracement Driver (PD)ノードは、分散システムにおけるクラスタ管理の中枢を担うノードであり、TiDBにおいて重要な役割を果たします。
+Placement Driver (PD)ノードは、分散システムにおけるクラスタ管理の中枢を担うノードであり、TiDBにおいて重要な役割を果たします。
 
 PDノードは主に以下の２つの処理により、TiKVクラスターを管理します。
 1. クラスタから情報を収集

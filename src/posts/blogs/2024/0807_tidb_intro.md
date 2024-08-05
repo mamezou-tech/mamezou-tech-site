@@ -126,7 +126,7 @@ PDノードは主に以下の２つの処理により、TiKVクラスターを�
 2. TiKVノードのコントロール(再配置を含む)
 
 :::column:Raftの障害耐性とその対応
-Raftアルゴリズムは[前述のQiita記事](https://qiita.com/torao@github/items/5e2c0b7b0ea59b475cce#障害モデル)で示しているように、Crash-Recovery耐性は持っていても、Byzantine(ビザンチン耐性)を持ちません。
+Raftアルゴリズムは[前述のQiita記事](https://qiita.com/torao@github/items/5e2c0b7b0ea59b475cce#障害モデル)で示しているように、Crash-Recovery耐性は持っていても、Byzantine(ビザンチン)耐性を持ちません。
 すなわち、ノードがスケジュールから外れるような勝手なふるまいを始めた場合には対応できなくなります。そのため、KVノードの動きを厳密に管理する機構が必要となるようです。
 参考として以下のリンクを掲載します。
 - [TiDBのスケジューリングについて](https://www.pingcap.com/blog/tidb-internal-scheduling/)
@@ -301,7 +301,9 @@ python-dotenv==1.0.1
 
 次に環境変数を記述したファイル(ファイル名は```.env```)およびPythonスクリプト[^5]を用意します(おなじ階層に保存してください)。
 また、```.env```についてはTIDB_PORTとTIDB_PORT2をクラスタ立ち上げ時の出力で表示されているものに書き換える必要があります。
+
 [^5]: コードを見るとわかりますが、普通のMySQLデータベースエンジンにアクセスするものと同じです。
+
 .envファイルは以下の通りです。
 ```py
 #.envという名前で保存する

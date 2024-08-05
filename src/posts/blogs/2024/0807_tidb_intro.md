@@ -68,18 +68,16 @@ TiDBノードが窓口となってクライアントからのSQLリクエスト�
 
 TiDBのストレージ層の実体は、あくまで巨大なキーバリューマップです。TiDBノードはクライアントからのSQLを受け付けて、キーバリューマップに対するクエリに変換する役割を果たしています。
 
-:::column
-SQL Parserについて：
+:::column:SQL Parserについて
 TiDBで使われているSQL文のParserもオープンソースとなっています。TiDBはMySQL互換を謳っていますが、具体的にどの関数が対応しているのかを知りたい場合には以下のリポジトを覗いてみてください(Parserそのものはparser.yです)。
 - [https://github.com/pingcap/tidb/tree/master/pkg/parser](https://github.com/pingcap/tidb/tree/master/pkg/parser)
 :::
 
-:::column
-クエリの最適化：
+:::column:クエリの最適化
 TiDBでは、他のDBMS同様に、SQL文をパースした後に統計情報なども参考にして物理的な実行計画に変換します。2024年8月現在、System Rモデルと呼ばれるものを参考にして実行計画が決定されています。
 詳細については以下のリンクを確認してみてください。
 - [Plannerのページ(TiDB開発者ガイド)](https://pingcap.github.io/tidb-dev-guide/understand-tidb/planner.html)
-- [上記のページがわかりやすくまとめられているもの(Zenn)](https://pingcap.github.io/tidb-dev-guide/understand-tidb/planner.html)
+- [上のページがわかりやすくまとめられているもの(Zenn)](https://zenn.dev/bohnen/articles/8eb4bf2a50d7a3)
 - [System Rモデルに関するスライド(docswell)](https://www.docswell.com/s/kumagi/KENNPE-selinger-optimizer)
 :::
 
@@ -90,8 +88,7 @@ Storage Clusterに属するノードとして、TiKVとTiFlashが存在します
 TiKVの実体は、巨大なMapストレージとして機能する分散型キーバリューストアです。
 TiKVノードはRaftアルゴリズムと呼ばれる分散合意アルゴリズムによってデータを同期しています。
 
-:::column
-Raftアルゴリズム：
+:::column:Raftアルゴリズム
 RaftアルゴリズムにはLeaderとFollowerという概念があり、FollowerがLeaderの値を追従するという形式を取ります。
 分散合意アルゴリズムの一種であり、LeaderとFollowerが状況によって動的に入れ替わりながら、各ノードのもつ情報が同期されるという形式を取ります。
 参考ページとして以下のものを掲載させていただきます。
@@ -100,8 +97,7 @@ RaftアルゴリズムにはLeaderとFollowerという概念があり、Follower
 - [[論文紹介] TiDB:a Raft-based HTAP database(Zenn)](https://zenn.dev/tzkoba/articles/4e20ad7a514022)
 :::
 
-:::column
-RocksDB：
+:::column:RocksDB
 TiKVはストレージにKey Valueデータを保存しているわけではありません。RocksDBと呼ばれるLSMツリーストレージエンジンでデータ管理を行なっています。
 データそのものだけではなくRaftによる制御に関わる情報もRocksDBに保管されています。前述のRaftアルゴリズムと併せて、読み書き両方のスケールアウトに対応できるような同期処理を可能としています。
 - [TiDBにおけるRocksDBの使われ方](https://docs.pingcap.com/ja/tidb/stable/rocksdb-overview)
@@ -110,14 +106,13 @@ TiKVはストレージにKey Valueデータを保存しているわけではあ�
 
 ### 2.2. TiFlash
 TiKVがいわゆる行指向のストレージ形式を持つノードでした。一方、TiFlash Serverは、列指向のストレージ形式を持つノードです。
-トランザクション処理と分析処理を同時に行えることはPingCAP社公式からも強みであり、TiFlashあってこそ実現します。
+トランザクション処理と分析処理を同時にできることはPingCAP社公式においてもTiDBの強みとされており、この分析処理はTiFlashにより実現されています。
 
-:::column
-Raft(データの同期アルゴリズム)におけるTiFlashの立ち位置について：
-TiFlashはTiKVを同期させているRaftと独立して動いているわけではなく、Raftアルゴリズムの生態系にきちんと組みこまれています。
+:::column:RaftにおけるTiFlashの立ち位置について
+TiFlashはTiKVを同期させているRaftと独立して動いているわけではなく、Raftアルゴリズムのエコシステムにきちんと組みこまれています。
 具体的にはRaft learnerと称されています。
 - [TiFlashの概要ページ](https://docs.pingcap.com/ja/tidb/stable/tiflash-overview)
-- [Learnerについてより詳しく説明されているページ](https://etcd.io/docs/v3.6/learning/design-learner/)
+- [Learnerについてより詳しく説明されているetcdのページ](https://etcd.io/docs/v3.6/learning/design-learner/)
 :::
 
 ## 3. Placement Driver Cluster
@@ -130,8 +125,7 @@ PDノードは主に以下の２つの処理により、TiKVクラスターを�
 1. クラスタから情報を収集
 2. TiKVノードのコントロール(再配置を含む)
 
-:::column
-障害モデルと対応：
+:::column:Raftの障害耐性とその対応
 Raftアルゴリズムは[前述のQiita記事](https://qiita.com/torao@github/items/5e2c0b7b0ea59b475cce#障害モデル)で示しているように、Crash-Recovery耐性は持っていても、Byzantine(ビザンチン耐性)を持ちません。
 すなわち、ノードがスケジュールから外れるような勝手なふるまいを始めた場合には対応できなくなります。そのため、KVノードの動きを厳密に管理する機構が必要となるようです。
 参考として以下のリンクを掲載します。
@@ -566,14 +560,13 @@ Pid    Role     Uptime
 また、kvノードのプロセスをkillした後、新しくDBクラスタのスケールアウトもできなくなっています。
 killしたプロセスに対応するTiKVノードのポートと通信できない旨のエラーが表示されました。
 ただ、デモツールであるplayground上での動作であるため、詳細な原因究明は行っておりません。
+
+後述で紹介するTiDBの実行環境においては、こういったパワープレイでスケールインすることはないはずなのでご安心ください。
+また、TiKVノードが落ちた場合には、きちんとバックアップからの適切な復元が必要となります。
 :::
 
 [^6]:[サポートページ](https://docs.pingcap.com/tidb/stable/tidb-troubleshooting-map#1-service-unavailable)にある通りTiKVノードで問題が起こっている旨のエラーです。
 
-::: info
-後述で紹介するTiDBの実行環境においては、こういったパワープレイ()でスケールインすることはないはずなのでご安心ください。
-また、KVノードが落ちた場合には、きちんとバックアップから適切に復元することが必要となります。
-:::
 
 ## 9. tiup playgroundの終了
 用事が済んだら、以下のお片付けコマンドを実行してください。
@@ -635,7 +628,7 @@ tiup playgroundではなく、tiup clusterというツールを使ってクラ�
 
 TiDBはKubernetesでクラスタを構築できます。リンク先ではテスト用のkubernetesクラスタを構築できるkindを利用した場合の手順が紹介されています。
 
-## 各種クラウドサービス上のk8s実行環境で使う
+## 各種クラウドサービス上のKubernetes実行環境で使う
 → [Deploy TiDB on AWS EKS](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-on-aws-eks)
 → [Deploy TiDB on Google Cloud GKE](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-on-gcp-gke)
 → [Deploy TiDB on Azure AKS](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-on-azure-aks)

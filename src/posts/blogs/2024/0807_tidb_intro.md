@@ -1,5 +1,5 @@
 ---
-title: 初心者でもわかる！高可用性NewSQL分散データベースTiDBの魅力とハンズオン
+title: NewSQL分散データベースTiDBをハンズオンつきで紹介してみる
 author: shohei-yamashita
 date: 2024-08-07
 tags: [mysql, tidb, summer2024, Python]

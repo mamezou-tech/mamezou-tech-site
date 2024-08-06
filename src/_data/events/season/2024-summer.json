@@ -53,7 +53,8 @@
       "date": "8月7日(水)",
       "author": "shohei-yamashita",
       "githubUser": "shohei-yamashit",
-      "title": "TiDBについて書きたいです（変更あるかもしれませんが）。"
+      "title": "NewSQL分散データベースTiDBをハンズオンつきで紹介してみる",
+      "url": "/blogs/2024/08/07/tidb_intro/"
     },
     {
       "date": "8月8日(木)",

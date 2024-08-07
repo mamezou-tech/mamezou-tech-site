@@ -62,7 +62,7 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
   console.log(keywords.words);
   const keyword = pickup(keywords.words, pastTitles);
   const result = await ask({
-    model: 'gpt-4o',
+    model: 'gpt-4o-2024-08-06',
     messages: [prompt, {
       role: 'assistant',
       content: keywordsResponse.choices[0].message?.content

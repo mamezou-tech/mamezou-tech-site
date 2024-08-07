@@ -7,7 +7,8 @@ tags: [raspberry-pi5, recognition, summer2024]
 image: true
 ---
 
- この小稿は、[Raspberry Pi5](https://www.raspberrypi.com/products/raspberry-pi-5/) で生物の個体識別にチャレンジした記録です。
+ この記事は夏のリレー連載2024 10日目の記事です。
+ [Raspberry Pi5](https://www.raspberrypi.com/products/raspberry-pi-5/) で生物の個体識別にチャレンジしてみましたので、簡単に報告します。
  Raspberry Pi5 や個体識別について簡単におさらいした後、YOLOv8 を使った自動アノテーションを紹介します。
  YOLOv8 をCUDA が動く PC で追加学習し、そのパラメータをRaspberry Pi5 にダウンロードして識別可能か試します。
 

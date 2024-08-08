@@ -26,6 +26,7 @@ enTitle: Robotics
 
 - [ロボットマニピュレータ制御のアルゴリズム1](/robotics/manip-algo/manip-algo/)
 - [ロボットマニピュレータ制御のアルゴリズム2](/robotics/manip-algo2/manip-algo2/)
+- [ロボットマニピュレータ制御のアルゴリズム3](/robotics/manip-algo3/manip-algo3/)
 
 ## ユニバーサルロボット
 

@@ -283,7 +283,7 @@ void Quaternion::GetR3x3(Matrix& _matrix) const
 ### 球面線形補間（$\rm{Slerp}$）
 ある姿勢$\bold{q}_{[m]}$から$\bold{q}_{[m+1]}$まで最短で回転移動しながら補間するのが球面線形補間(Spherical linear interpolation)である。イメージとしては、4次元単位球の表面上においた2つの$\bold{q}$点の間を大円を描くように球表面をなぞる曲線に沿ってゆくような感じである。このとき移動角度で前後の$\bold{q}$を案分するので、変化させるパラメータsと実際の回転量が比例する。
 
-![](/img/robotics/manip-algo2/\rm{Slerp}.png)
+![](/img/robotics/manip-algo2/slerp.png)
 
 具体的には下記の手続きで区間mでのQuaternion $\bold{q}_{[m]}(s)$を得る。
 

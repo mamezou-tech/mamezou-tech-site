@@ -13,7 +13,7 @@ image: true
 Structured Outputsは、その名前の通り構造化された出力を強制する機能です。
 とはいえ、今までもAIからのレスポンスをJSON形式で返却するパラメータはありました(`response_format`に`json_object`を指定)。
 ただ、こちらはプロンプトで具体的なJSON構造を指定する必要があり、期待通りのJSONレスポンスにならないこともあるので、バリデーションやリトライ等の追加実装が必要になったりしました。
-今回リリースされたStructured Outputsは、[JSONスキーマ](https://json-schema.org/)を使って構造を指定し、AIがスキーマに従ったレスポンスを生成することを強制します。
+今回リリースされたStructured Outputsは、プロンプトではなく専用パラメータに[JSONスキーマ](https://json-schema.org/)を指定することで、AIにスキーマに従ったレスポンスを生成することを強制します。
 
 - [OpenAI Doc - Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs/introduction)
 
@@ -33,7 +33,7 @@ npm install openai zod @inquirer/prompts typescript tsx
 npx tsc --init
 ```
 
-OpenAIのライブラリの他に、スキーマ生成用に[Zod](https://zod.dev/)、クイズのプロンプト入力用に[@inquirer/prompts](https://www.npmjs.com/package/@inquirer/prompts)を入れています。
+OpenAIのライブラリの他に、スキーマ生成用に[Zod](https://zod.dev/)、クイズのプロンプト入力用に[@inquirer/prompts](https://www.npmjs.com/package/@inquirer/prompts)をインストールしています。
 ここでは現時点で最新の`4.55.1`の[OpenAIのNodeライブラリ](https://github.com/openai/openai-node)を入れています。Structured Outputsは`4.55.0`以降から反映されています。
 
 なお、本題ではないのでTypeScript関連の設定方法は省略します[^1]。
@@ -41,7 +41,7 @@ OpenAIのライブラリの他に、スキーマ生成用に[Zod](https://zod.de
 [^1]: ここではTop-level awaitが使いたかったのでESMに変更しました(package.jsonのtypeを`module`にし、tsconfig.jsonのtargetを`ESNext`、moduleを`NodeNext`にしました)。
 
 ## JSONスキーマで構造を定義する
-この方法はお勧めの方法ではありませんが、Structured Outputsを理解するために基本となる方法で使ってみます。
+この方法はお勧めの方法ではありませんが、Structured Outputsを理解するための基本です。
 
 以下のようなソースコードになります。
 
@@ -167,10 +167,11 @@ Structured Outputsで指定できるスキーマはJSONスキーマのサブセ�
 - `additionalProperties`はfalseを指定
 - `minLength`、`maxLength`等の制約は指定不可
 
-これらの制約に違反している場合は、API実行時にエラーが発生します。制約の詳細は以下公式ドキュメントに記載されています(回避策があるものもあります)。
+これらの制約に違反している場合は、API実行時にエラーが発生します。詳細は以下公式ドキュメントに記載されています(回避策があるものもあります)。
 
 - [OpenAI Doc - Structured Outputs - Supported schemas](https://platform.openai.com/docs/guides/structured-outputs/supported-schemas)
 :::
+
 :::column:OpenAIポリシーに違反した場合
 検証できていませんが、リクエストがOpenAIのポリシーに違反した場合は、Structured Outputsでもスキーマに従ったレスポンスが返ってきません。
 公式ドキュメントによると、この場合はレスポンスの`refusal`プロパティに値が設定されるとのことです。

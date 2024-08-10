@@ -3,7 +3,7 @@ title: OpenAIのChat APIに追加されたFunction callingを使ってみる
 author: noboru-kudo
 date: 2023-06-14
 updated: 2023-11-15
-tags: [chatgpt, OpenAI]
+tags: [OpenAI, GPT, typescript]
 ---
 
 2023-06-13にOpenAIからGPT-3.5-turboとGPT-4のアップデートに加えて、Function callingという機能をAPIに追加したと発表しました。

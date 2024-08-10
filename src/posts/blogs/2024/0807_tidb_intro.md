@@ -6,6 +6,7 @@ tags: [mysql, tidb, summer2024, Python]
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
 image: true
 ---
+
 この記事は[夏のリレー連載2024](/events/season/2024-summer/) 8日目の記事です。
 
 # はじめに

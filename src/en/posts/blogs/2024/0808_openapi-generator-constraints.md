@@ -10,15 +10,12 @@ tags:
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
 image: true
 translate: true
-
 ---
 
 :::alert
 This article has been automatically translated.
 The original article is [here](https://developer.mamezou-tech.com/blogs/2024/08/08/openapi-generator-constraints/).
 :::
-
-
 
 This article is the 9th day of the [Summer Relay Series 2024](/events/season/2024-summer/).
 
@@ -324,12 +321,12 @@ When specifying a postal code with a hyphen, the HTTP status code `400 Bad Reque
 
 This confirms that custom validation was applied to the automatically generated source code from the REST API definition file, and the input check was performed correctly.
 
-## Finally
+## Conclusion
 
 The article became a bit long due to the many example codes.
 
 For something like postal code format checking, the significance might have faded. However, in cases where it involves checking permissible characters according to character types or items with special numbering systems, I believe that applying custom validation through the extension of the OpenAPI Generator is an effective means.
 
-Setting aside the question of whether it might be better to implement the REST API with plain Spring MVC, it is convenient to be able to perform such extensions by simply editing the OpenAPI Generator template files a little.
+Setting aside whether it might be better to implement the REST API with plain Spring MVC, it is convenient to be able to perform such extensions by simply editing the OpenAPI Generator template files a little.
 
 Thank you for reading to the end.

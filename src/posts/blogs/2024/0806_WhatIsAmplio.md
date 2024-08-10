@@ -6,6 +6,7 @@ summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
 tags:  [アジャイル開発, summer2024]
 image: true
 ---
+
 この記事は[夏のリレー連載2024](/events/season/2024-summer/) ７日目の記事です。
 
 まぁ、タイトルでいきなり”Amplio（アンプリオ）”なんて言われても、「何のことやら」と思う人がほとんどでしょう。Amplioは、今まさに進化の真っ最中を歩んでいるアプローチです。筆者は元々DA(ディシプリンド・アジャイル)に深く関わってきたのですが、Amplioの根底にある問題意識には共感するところが多く、多くの人の参考になるのではないかと考えています。

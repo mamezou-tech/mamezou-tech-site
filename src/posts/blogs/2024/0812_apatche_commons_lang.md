@@ -1,9 +1,8 @@
 ---
-title: Javaで開発していたら絶対に使いたい「Apache Commons Lang」のおすすめの使い方
+title: Javaのプログラミングをサポート！Apache Commons Lang入門
 author: kenta-ishihara
 date: 2024-08-12
 tags: [新人向け, tips]
-image: true　
 ---
 
 ## はじめに

@@ -2,10 +2,12 @@
 title: Javaのプログラミングをサポート！Apache Commons Lang入門
 author: kenta-ishihara
 date: 2024-08-12
-tags: [新人向け, tips]
+tags: [新人向け, tips, summer2024]
+summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
 ---
 
 ## はじめに
+この記事は[夏のリレー連載2024](/events/season/2024-summer/) 11日目の記事です。
 最近流行りの風邪にかかって寝込んでいたのですが、病明けに飲んだ[アサヒスーパードライ](https://www.asahibeer.co.jp/superdry/)の味が最高に美味しく感じられた石原です。
 Javaで開発していたら絶対に使いたいJavaライブラリ「[Apache Commons Lang](https://commons.apache.org/proper/commons-lang/)」について記載しました。
 

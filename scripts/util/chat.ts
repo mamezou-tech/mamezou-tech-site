@@ -6,7 +6,7 @@ type Request = {
   messages: OpenAI.ChatCompletionMessageParam[];
   temperature?: number;
   maxTokens?: number;
-  responseFormat?: OpenAI.ChatCompletionCreateParams.ResponseFormat['type']
+  responseFormat?: 'text' | 'json_object'
   model?: string;
 }
 

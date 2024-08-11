@@ -49,10 +49,11 @@ layout: layouts/base.njk
     <fieldset class="chatgpt-jargon mameka-column">
       <legend><img alt="mameka" width="30px" height="100%" src="/img/logo/mameka6_30.png" />豆香の豆知識(Powered by GPT-4o)</legend>
       <img class="column-image" src="{{ meta.imageUrl }}/mameka/{{ gpt.columns[0].created | isoDate }}-daily-column-300.webp" width="300px" style="margin-right: 20px;" alt="image for mameka column" />
-      <div>今日の言葉: {{ gpt.columns[0].title }}</div>
+      <div class="mb-2 text-lg">{{ gpt.columns[0].title }}</div>
       <div>{{ gpt.columns[0].text | safe }}</div>
-      <div><b>※本コラムはOpenAI APIで生成したものです。存在しない言葉(幻覚/作話)だったり、内容に誤りがある可能性があります。</b></div>
-      <div>過去のコラムは<a href="/gpt/mameka/" style="text-decoration:underline">こちら</a>から見れます!</div>
+      <div class="mt-2">{{ gpt.columns[0].conclusion | safe }}</div>
+      <div><b>※本コラムはAIで生成したものです。内容の正確性を保証するものではありません。</b></div>
+      <div>過去のコラムは<a href="/gpt/mameka/" style="text-decoration:underline">こちら</a>から!</div>
     </fieldset>
   </div>
   <div>

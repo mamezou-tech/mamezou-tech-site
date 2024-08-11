@@ -1,4 +1,4 @@
-import { ask } from '../util/chat-gpt.js';
+import { ask } from '../util/chat.js';
 import fs, { promises as fsPromises } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';

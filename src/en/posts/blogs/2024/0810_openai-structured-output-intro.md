@@ -252,12 +252,11 @@ const completion = await client.beta.chat.completions.parse({
 });
 
 // Get the parsed response with Zod schema (can use z.infer<typeof schema>)
-type Quiz = z.infer<typeof schema>;
-const quiz = completion.choices[0].message.parsed as Quiz;
+const quiz = completion.choices[0].message.parsed as z.infer<typeof schema>;
 
 // Start quiz
 const message = `${quiz.question}
-${quiz.choices.map((choice: Quiz["choices"][number]) => `${choice.num}:${choice.answer}`).join('\n')}
+${quiz.choices.map(choice => `${choice.num}:${choice.answer}`).join('\n')}
 `;
 const answer = await input({ message });
 

@@ -2,7 +2,8 @@
 title: React入門したらuseEffectとライフサイクルで詰まったのでまとめてみた
 author: kohei-tsukano
 date: 2024-08-13
-tags: ["React", "typescript", "初心者向け"]
+summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
+tags: ["React", "typescript", "初心者向け", "summer2024"]
 image: true
 ---
 

@@ -67,8 +67,8 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
   console.log(keywords.words);
   const keyword = pickup(keywords.words, pastTitles);
   const result = await openai.beta.chat.completions.parse({
-    // model: 'gpt-4o-2024-08-06',
-    model: 'gpt-4o-mini',
+    model: 'gpt-4o-2024-08-06',
+    // model: 'gpt-4o-mini', // for testing
     messages: [
       {
         role: 'user',
@@ -86,15 +86,16 @@ My first word is "${keyword}" on "${theme}".
     temperature: 0.7,
     response_format: zodResponseFormat(GeneratedColumn, 'column')
   });
+  if (result.choices[0].message.refusal) throw new Error(result.choices[0].message.refusal);
+
   const column = result.choices[0].message?.parsed as z.infer<typeof GeneratedColumn>;
-  console.log(JSON.stringify(column, null, 2))
+  console.log(JSON.stringify(column, null, 2));
 
   const formattedDate = today();
   if (!process.env.DISABLE_IMAGE_GENERATION) {
     await generateImage(column.text + column.conclusion, formattedDate);
   }
 
-  if (!column) throw new Error('no content');
   if (!safeResponse(column.text) || !safeResponse(column.conclusion)) throw new Error(`unsafe content found: ${column}`);
 
   const item = {

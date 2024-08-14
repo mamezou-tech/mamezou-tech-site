@@ -1,7 +1,6 @@
 import lume from "lume/mod.ts";
 import jsx from "lume/plugins/jsx.ts";
 import mdx from "lume/plugins/mdx.ts";
-import liquid from "lume/plugins/liquid.ts";
 import postcss from "lume/plugins/postcss.ts";
 import tailwindcss from "lume/plugins/tailwindcss.ts";
 import prism from "lume/plugins/prism.ts";
@@ -37,6 +36,7 @@ import { Options as MarkdownOptions } from "lume/plugins/markdown.ts";
 import tailwindOptions from "./tailwind.config.js";
 import cssnano from "npm:cssnano@6.0.2";
 import markdownItCodeBlock from "./lume/markdown-it/code_block_plugin.ts";
+import nesting from "npm:postcss-nesting";
 
 const markdown: Partial<MarkdownOptions> = {
   options: {
@@ -86,7 +86,7 @@ site.use(tailwindcss({
   options: tailwindOptions,
 }));
 site.use(postcss({
-  plugins: [cssnano()],
+  plugins: [cssnano(), nesting()],
 }));
 site.use(prism());
 site.use(sitemap({

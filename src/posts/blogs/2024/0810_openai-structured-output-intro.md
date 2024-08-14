@@ -159,6 +159,21 @@ npx tsx jsonschema.ts
 正解！！8点ゲットしたよ！！
 ```
 
+:::alert
+現時点では、Structured Outputsを使ったリクエストではFile Search(RAG)やCode Interpreterを使うことはできないようです。
+API実行時に以下のようなエラーが返ってきました。
+```
+ error: {
+    message: 'Invalid tools: all tools must be of type `function` when `response_format` is of type `json_schema`.',
+    type: 'invalid_request_error',
+    param: 'response_format',
+    code: null
+  },
+```
+
+Function calling以外のツールは利用できないとのことです。
+:::
+
 :::column:Structured Outputsで使うスキーマはJSONスキーマのサブセット
 Structured Outputsで指定できるスキーマはJSONスキーマのサブセットで、全ての仕様が使える訳ではありません。
 例えば、思わず間違えそうなものとして以下のような制約があります。

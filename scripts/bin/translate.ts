@@ -27,8 +27,8 @@ The following should not be translated.
 Also, do not output anything other than the translated text.
 
 Header part (known as Front Matter) included in markdown should be output.
-Header part stats with \`---\`, also ends with \`---\`.
-Also, translated title wrapped with \`"\`(double quote).
+Header part stats with \`---\`, also ends with \`---\`. Do not convert this part to \`\`\`markdown(end with \`\`\`).
+Also, translated title in Header Part wrapped with \`"\`(double quote).
 
 Here are the rules for translating.
 - \`豆蔵\` is translated to Mamezou.

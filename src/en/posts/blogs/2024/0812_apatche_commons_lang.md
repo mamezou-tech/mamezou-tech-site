@@ -8,15 +8,12 @@ tags:
   - summer2024
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
 translate: true
-
 ---
 
 :::alert
 This article has been automatically translated.
 The original article is [here](https://developer.mamezou-tech.com/blogs/2024/08/12/apatche_commons_lang/).
 :::
-
-
 
 ## Introduction
 This article is the 11th day of the [Summer Relay Series 2024](/events/season/2024-summer/).

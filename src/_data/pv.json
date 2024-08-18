@@ -1,44 +1,44 @@
 {
   "ranking": [
     {
-      "title": "基本から理解するJWTとJWT認証の仕組み",
-      "url": "/blogs/2022/12/08/jwt-auth/"
-    },
-    {
-      "title": "【新人さん向け】A5:SQL Mk-2のおすすめ設定と使い方",
-      "url": "/blogs/2024/06/08/a5m2_settings/"
-    },
-    {
       "title": "Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする",
       "url": "/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/"
+    },
+    {
+      "title": "基本から理解するJWTとJWT認証の仕組み",
+      "url": "/blogs/2022/12/08/jwt-auth/"
     },
     {
       "title": "直感が理性に大反抗！「モンティ・ホール問題」",
       "url": "/blogs/2022/07/04/monty-hall-problem/"
     },
     {
-      "title": "Google Test を使ってみる（その５：GoogleMock編）",
-      "url": "/blogs/2023/10/08/google-test-05/"
+      "title": "「ドメイン駆動設計をはじめよう」を読んだので紹介します",
+      "url": "/blogs/2024/08/15/book-learning-domain-driven-design/"
+    },
+    {
+      "title": "【新人さん向け】A5:SQL Mk-2のおすすめ設定と使い方",
+      "url": "/blogs/2024/06/08/a5m2_settings/"
+    },
+    {
+      "title": "React入門したらuseEffectとライフサイクルで詰まったのでまとめてみた",
+      "url": "/blogs/2024/08/13/react_useeffect/"
     },
     {
       "title": "2024年版！VS Code で Java 開発環境を構築する",
       "url": "/blogs/2024/07/18/write-java-with-vscode-2024/"
     },
     {
-      "title": "Java用モック・フレームワーク「Mockito」を使ってみる（その２：void型メソッドのモック編）",
-      "url": "/blogs/2023/08/16/using-mockito-void-method/"
+      "title": "手書き風ドローツール Excalidraw のススメ",
+      "url": "/blogs/2023/03/22/use-excalidraw/"
+    },
+    {
+      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
+      "url": "/blogs/2023/03/05/using-pytest-02/"
     },
     {
       "title": "Nuxt3入門(第8回) - Nuxt3のuseStateでコンポーネント間で状態を共有する",
       "url": "/nuxt/nuxt3-state-management/"
-    },
-    {
-      "title": "Windows Terminal で Git Bash を快適に使う",
-      "url": "/blogs/2023/09/08/windows-terminal-with-git-bash/"
-    },
-    {
-      "title": "ORマッパーのTypeORMをTypeScriptで使う",
-      "url": "/blogs/2022/07/27/typeorm-with-typescript/"
     }
   ]
 }

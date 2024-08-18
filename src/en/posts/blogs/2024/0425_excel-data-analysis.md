@@ -9,9 +9,9 @@ image: true
 translate: true
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](/blogs/2024/04/25/excel-data-analysis/).
+:::info
+To reach a broader audience, this article has been translated from Japanese.
+You can find the original version [here](/blogs/2024/04/25/excel-data-analysis/).
 :::
 
 Until recently, I couldn't let go of my cold-weather clothes, but it has become quite warm. When you go outside, you see people with shiny new backpacks and crisp suits, looking dazzling as they seem excited about their new lives. Although I now often engage in behavior that might make you wonder about my manners, I fondly remember my days as a new employee years ago, scrambling through training that included business manners and document preparation.

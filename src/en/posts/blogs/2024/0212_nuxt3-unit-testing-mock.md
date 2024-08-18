@@ -7,9 +7,9 @@ image: true
 translate: true
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2024/02/12/nuxt3-unit-testing-mock/).
+:::info
+To reach a broader audience, this article has been translated from Japanese.
+You can find the original version [here](https://developer.mamezou-tech.com/blogs/2024/02/12/nuxt3-unit-testing-mock/).
 :::
 
 

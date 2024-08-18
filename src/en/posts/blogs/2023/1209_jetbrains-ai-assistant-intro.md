@@ -13,9 +13,9 @@ translate: true
 
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2023/12/09/jetbrains-ai-assistant-intro/).
+:::info
+To reach a broader audience, this article has been translated from Japanese.
+You can find the original version [here](https://developer.mamezou-tech.com/blogs/2023/12/09/jetbrains-ai-assistant-intro/).
 :::
 
 

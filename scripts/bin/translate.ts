@@ -40,11 +40,10 @@ ${text}
 };
 
 const makeNote = (path: string) => `
-:::alert
-This article has been automatically translated.
-The original article is [here](${path}).
-:::
-`;
+:::info
+To reach a broader audience, this article has been translated from Japanese.
+You can find the original version [here](${path}).
+:::`;
 
 const baseDir = path.dirname(process.cwd());
 

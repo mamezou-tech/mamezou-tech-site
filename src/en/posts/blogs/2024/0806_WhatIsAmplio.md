@@ -10,9 +10,9 @@ image: true
 translate: true
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](/blogs/2024/08/06/WhatIsAmplio/).
+:::info
+To reach a broader audience, this article has been translated from Japanese.
+You can find the original version [here](/blogs/2024/08/06/WhatIsAmplio/).
 :::
 
 This article is the seventh entry in the [Summer Relay Series 2024](/events/season/2024-summer/).

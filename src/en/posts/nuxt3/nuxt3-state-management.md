@@ -14,9 +14,9 @@ translate: true
 
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](/nuxt/nuxt3-state-management).
+:::info
+To reach a broader audience, this article has been translated from Japanese.
+You can find the original version [here](/nuxt/nuxt3-state-management).
 :::
 
 

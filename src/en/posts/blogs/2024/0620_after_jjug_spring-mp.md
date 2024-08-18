@@ -13,9 +13,9 @@ image: true
 translate: true
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2024/06/20/after_jjug_spring-mp/).
+:::info
+To reach a broader audience, this article has been translated from Japanese.
+You can find the original version [here](https://developer.mamezou-tech.com/blogs/2024/06/20/after_jjug_spring-mp/).
 :::
 
 Last Sunday (6/16), I had the opportunity to present at [JJUG CCC 2024 Spring](https://ccc2024spring.java-users.jp/) with the title '[Spring Boot vs MicroProfile - Comparison and Selection of Frameworks in Cloud Native](https://www.mamezou.com/news/event/20240616)'. This was my second time presenting at JJUG CCC, but unlike the previous hybrid online and offline event where attendance was sparse, this time, so many people attended that I wondered if I had mistakenly entered the wrong venue.

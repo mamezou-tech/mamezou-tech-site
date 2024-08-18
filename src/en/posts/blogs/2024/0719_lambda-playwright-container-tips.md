@@ -13,9 +13,9 @@ image: true
 translate: true
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2024/07/19/lambda-playwright-container-tips/).
+:::info
+To reach a broader audience, this article has been translated from Japanese.
+You can find the original version [here](https://developer.mamezou-tech.com/blogs/2024/07/19/lambda-playwright-container-tips/).
 :::
 
 Currently, a commonly used tool for cross-browser testing is [Playwright](https://playwright.dev/). Even outside of testing, many teams use it simply as a browser automation tool or for scraping purposes.

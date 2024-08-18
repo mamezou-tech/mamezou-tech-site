@@ -87,6 +87,10 @@ DDDでオニオンアーキテクチャやClean Architectureがセットで語�
 
 [^1]:豆蔵では社員教育の一環として、洋書や（一部）和書が読み放題の[オライリーのe-leaning](https://www.oreilly.co.jp/online-learning/)のアカウントか、膨大な数の講座を受講可能な[udemy bussiness](https://business.udemy.com/ja/)のアカウントのどちらかを希望でもらえます
 
+:::check:Learning Domain-Driven Designの翻訳本が出版されました
+記事を書いている時点では未発売でしたが、[Learning Domain-Driven Design](https://www.amazon.co.jp/dp/B09J2CMJZY/)の翻訳本が [ドメイン駆動設計をはじめよう ―ソフトウェアの実装と事業戦略を結びつける実践技法](https://www.oreilly.co.jp/books/9784814400737/) として出版され、日本語で読めるようになりました！興味がある方は [「ドメイン駆動設計をはじめよう」を読んだので紹介します](/blogs/2024/08/15/book-learning-domain-driven-design/) の書評をどうぞ
+:::
+
 **INさん**：オライリー内をさっと検索しただけですが、[Patterns, Principles, and Practices of Domain-Driven Design](https://www.oreilly.com/library/view/patterns-principles-and/9781118714706/c08.xhtml)とかどうですか。
 "Patterns, Principles, and Practices of Domain-Driven Design"の"8 Application Architecture"の最後で、
 "DDD does not require a specific architecture—only one that can separate the technical concerns from the business concerns."といってますね。

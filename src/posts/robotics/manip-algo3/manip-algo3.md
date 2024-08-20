@@ -1,7 +1,7 @@
 ---
 title: ロボットマニピュレータ制御のアルゴリズム3
 author: takahiro-ishii
-date: 2024-08-19
+date: 2024-08-20
 tags: [ロボット, マニピュレータ, アルゴリズム, 軌跡生成, 逆運動学, ヤコビ行列, 同次行列, 特異点, 特異点回避]
 image: true
 prevPage: ./src/posts/robotics/manip-algo2/manip-algo2.md

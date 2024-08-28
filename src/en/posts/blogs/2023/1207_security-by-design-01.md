@@ -11,10 +11,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2023/12/07/security-by-design-01/).
-:::
 
 
 This is the article for Day 7 of the [Mamezou Developer Site Advent Calendar 2023](https://developer.mamezou-tech.com/events/advent-calendar/2023/).

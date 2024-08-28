@@ -14,10 +14,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2024/07/29/why-ddd-onion/).
-:::
 
 
 This article is the first piece of the [Summer Relay Series 2024](/events/season/2024-summer/).

@@ -12,10 +12,6 @@ image: true
 translate: true
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2024/04/21/openai-file-search-intro/).
-:::
 
 Recently, there have been active updates to the OpenAI API (perhaps GPT-5 will be announced soon...). There was a major update to the Assistants API a little while ago.
 

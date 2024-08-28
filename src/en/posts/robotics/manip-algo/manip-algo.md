@@ -17,10 +17,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/robotics/manip-algo/manip-algo/).
-:::
 
 
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">

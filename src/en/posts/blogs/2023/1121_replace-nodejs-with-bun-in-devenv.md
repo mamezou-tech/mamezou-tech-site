@@ -8,10 +8,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2023/11/21/replace-nodejs-with-bun-in-devenv/).
-:::
 
 
 

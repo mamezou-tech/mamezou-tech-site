@@ -14,10 +14,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2023/12/21/vuelidate2/).
-:::
 
 
 This is an article for the 21st day of the Mamezou Developer Site Advent Calendar 2023.

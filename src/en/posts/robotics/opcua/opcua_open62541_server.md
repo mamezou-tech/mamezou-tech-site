@@ -9,10 +9,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/robotics/opcua/opcua_open62541_server/).
-:::
 
 
 

@@ -271,6 +271,11 @@ site.preprocess([".md"], (pages) => {
     if (found) {
       article.en = found.url;
       found.ja = article.url;
+      found.page.data.content = `:::info
+To reach a broader audience, this article has been translated from Japanese.
+You can find the original version [here](${article.url}).
+:::
+` + found.page.data.content
     }
   }
 });

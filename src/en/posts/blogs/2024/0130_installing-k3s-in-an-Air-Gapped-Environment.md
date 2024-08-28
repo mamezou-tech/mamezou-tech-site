@@ -10,10 +10,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2024/01/30/installing-k3s-in-an-Air-Gapped-Environment/).
-:::
 
 
 

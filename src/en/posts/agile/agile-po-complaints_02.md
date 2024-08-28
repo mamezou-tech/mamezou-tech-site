@@ -10,14 +10,7 @@ tags:
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
 image: true
 translate: true
-
 ---
-
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/agile/agile-po-complaints_02/).
-:::
-
 
 This article is the fifth installment of the [Summer Relay Series 2024](/events/season/2024-summer/).
 

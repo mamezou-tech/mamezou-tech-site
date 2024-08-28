@@ -39,12 +39,6 @@ ${text}
 `;
 };
 
-const makeNote = (path: string) => `
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](${path}).
-:::`;
-
 const baseDir = path.dirname(process.cwd());
 
 function separateMd(result: string) {
@@ -59,7 +53,7 @@ function separateMd(result: string) {
   return { frontMatter, payload };
 }
 
-function updateMd(translated: string, originalUrlPath: string, originalFrontMatter: string) {
+function updateMd(translated: string, originalFrontMatter: string) {
   const { frontMatter: translatedFrontMatter, payload } = separateMd(translated);
   const frontMatterYaml: any = yaml.load(originalFrontMatter);
   frontMatterYaml.translate = true;
@@ -71,8 +65,6 @@ function updateMd(translated: string, originalUrlPath: string, originalFrontMatt
   return `---
 ${finalFrontMatter}
 ---
-${makeNote(originalUrlPath)}
-
 ${payload}
 `;
 }
@@ -127,7 +119,7 @@ async function translate({ filePath, originalLink }: { filePath: string, origina
   const match = filePath.match(/.*\/src\/(?<dir>.*)/);
   if (!match?.groups?.dir) throw new Error('no dir for ' + filePath);
 
-  const updatedMd = updateMd(result, originalLink, originalFrontMatter);
+  const updatedMd = updateMd(result, originalFrontMatter);
   const newFilePath = `${baseDir}/src/${option.dir}/${match.groups.dir}`;
   await fsPromises.mkdir(path.dirname(newFilePath), { recursive: true });
   await fsPromises.writeFile(newFilePath, updatedMd);

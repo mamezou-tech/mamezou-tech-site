@@ -13,10 +13,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2024/08/01/fledgling-scrum-master-stage2/).
-:::
 
 
 This article is the fourth day of the [Summer Relay Series 2024](/events/season/2024-summer/).

@@ -9,10 +9,6 @@ image: true
 translate: true
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](/blogs/2024/03/29/get-back-to-where-the-joy-of-programming/).
-:::
 
 ![Titris](/img/blogs/2024/0329_get-back-to-where-the-joy-of-programming/titris-h.png)
 

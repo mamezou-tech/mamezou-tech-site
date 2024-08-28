@@ -14,10 +14,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2023/12/11/umtp_l3_challenge/).
-:::
 
 
 This is the article for the 11th day of the Mamezou Developer Site Advent Calendar 2023.

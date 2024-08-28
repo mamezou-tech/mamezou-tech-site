@@ -10,10 +10,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](/blogs/2024/07/01/uml-x-mapping-go1/).
-:::
 
 
 

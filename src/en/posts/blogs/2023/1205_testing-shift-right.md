@@ -11,10 +11,6 @@ translate: true
 
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2023/12/05/testing-shift-right/).
-:::
 
 
 This article is the 5th day article of the Mamezou Developer Site Advent Calendar 2023.

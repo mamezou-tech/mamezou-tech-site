@@ -9,10 +9,6 @@ summerRelayUrl: https://developer.mamezou-tech.com/events/season/2024-summer/
 translate: true
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2024/07/31/recent-scary-stories/).
-:::
 
 This article is the third installment of the [Summer Relay Series 2024](/events/season/2024-summer/).
 

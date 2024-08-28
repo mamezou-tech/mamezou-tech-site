@@ -10,10 +10,6 @@ image: true
 translate: true
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2024/02/12/fat-service-class/).
-:::
 
 # A Certain Holiday at Our Home
 

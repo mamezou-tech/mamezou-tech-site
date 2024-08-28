@@ -8,10 +8,6 @@ image: false
 translate: true
 ---
 
-:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](https://developer.mamezou-tech.com/blogs/2024/07/19/companion-on-the-raspi/).
-:::
 
 Hello, this is [Shoji](https://github.com/edward-mamezou).
 

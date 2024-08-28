@@ -1,4 +1,4 @@
-import contributorsJson from "../_data/contributors.json" assert {
+import contributorsJson from "../_data/contributors.json" with {
   type: "json",
 };
 import Search from "lume/core/searcher.ts";

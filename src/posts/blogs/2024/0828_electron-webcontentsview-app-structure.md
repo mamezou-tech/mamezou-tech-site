@@ -34,7 +34,7 @@ BrowserView を使うとメインの BrowserWindow に複数のビューを保�
 
 ![](/img/blogs/2024/0828_electron-webcontentsview-app-structure/browserview-app-structure.drawio.png)
 
-BrowserWindow も BrwoserView も webContents で Web ページを描画できるため、メインの BrowserWindow でも何かを描画する場合は、BrowserWindow と BrowserView でそれぞれ renderer スクリプト、preload スクリプトを用意していました。
+BrowserWindow も BrowserView も webContents で Web ページを描画できるため、メインの BrowserWindow でも何かを描画する場合は、BrowserWindow と BrowserView でそれぞれ renderer スクリプト、preload スクリプトを用意していました。
 
 - [BrowserView | Electron](https://www.electronjs.org/ja/docs/latest/api/browser-view)
 
@@ -45,7 +45,7 @@ BrowserWindow が BrowserView を直接保持する形で、`addBrowserView`、`
 :::
 
 ## マルチビューに特化した BaseWindow + WebContentsView によるアプリ構造
-WebContensView は BrowserWindow ではなく BaseWindow をメインのウィンドウとして使用することが前提になっています。ドキュメントには次のような注釈があります。
+WebContentsView は BrowserWindow ではなく BaseWindow をメインのウィンドウとして使用することが前提になっています。ドキュメントには次のような注釈があります。
 
 > BaseWindow は1つのウィンドウに複数の Web ビューを柔軟に作成する方法を提供します。
 
@@ -53,7 +53,7 @@ WebContentsView は BaseWindow の contentView プロパティに各ビューを
 
 [^1]: contentView は WebContentsView 導入に伴い新設された View クラスで、WebContentsView はこのクラスを継承しています。
 
-![](/img/blogs/2024/0828_electron-webcontentsview-app-structure/webcontensview-app-structure.drawio.png)
+![](/img/blogs/2024/0828_electron-webcontentsview-app-structure/webcontentsview-app-structure.drawio.png)
 
 BaseWindow の contentView プロパティは 各 WebContentsView を ChildView として保持します。BaseWindow は renderer プロセスを持たないので、renderer スクリプトや preload スクリプトは、各 WebContentsView 用に用意することになります。
 

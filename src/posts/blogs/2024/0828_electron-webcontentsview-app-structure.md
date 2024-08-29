@@ -11,7 +11,7 @@ image: true
 
 [Electron に BrowserView を置き換える WebContentsView が実装されたので見てみる](/blogs/2024/03/06/electron-webcontentsview/)
 
-元々 BrowserView や WebContentsView は、マルチビューなアプリのためのコンポーネントです。BrowserView を使う場合と WebContentsView とではアプリの構造がやや異なっていると感じたので可視化してみることにしました。
+元々 BrowserView や WebContentsView は、マルチビューなアプリのためのコンポーネントです。BrowserView を使う場合と WebContentsView を使う場合とではアプリの構造がやや異なっていると感じたので可視化してみることにしました。
 
 ## BrowserWindow によるシングルビューアプリの構造
 最初にシングルビューのアプリから始めます。Electron ではシングルビューのアプリ構造はおよそ以下のようになっています。1つのウィンドウに1つの Renderer プロセスが使用されます。
@@ -55,7 +55,7 @@ WebContentsView は BaseWindow の contentView プロパティに各ビューを
 
 ![](/img/blogs/2024/0828_electron-webcontentsview-app-structure/webcontentsview-app-structure.drawio.png)
 
-BaseWindow の contentView プロパティは 各 WebContentsView を ChildView として保持します。BaseWindow は renderer プロセスを持たないので、renderer スクリプトや preload スクリプトは、各 WebContentsView 用に用意することになります。
+BaseWindow の contentView プロパティは 各 WebContentsView を ChildView として保持します。BaseWindow は Renderer プロセスを持たないので、renderer スクリプトや preload スクリプトは、各 WebContentsView 用に用意することになります。
 
 - [BaseWindow | Electron](https://www.electronjs.org/ja/docs/latest/api/base-window)
 - [WebContentsView | Electron](https://www.electronjs.org/ja/docs/latest/api/web-contents-view)
@@ -87,7 +87,7 @@ GitHub の mamezou-tech オーガニゼーションで BrowserView のサンプ�
 [Electron - WebView から BrowserView に移行する](/blogs/2022/01/07/electron-browserview/)
 :::
 
-今回のこのリポジトリのサンプルを WebContentsView に移行しました。作成した PR は以下です。
+今回このリポジトリのサンプルを WebContentsView に移行しました。作成した PR は以下です。
 
 [feat: Replace BrowserView to WebContentsView by kondoumh · Pull Request #5 · mamezou-tech/electron-example-browserview](https://github.com/mamezou-tech/electron-example-browserview/pull/5)
 

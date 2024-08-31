@@ -8,7 +8,10 @@ image: true
 
 # はじめに
 
-最近Pythonを使ってPowerPointのスライドショーのイベント処理をするプログラムを実装する機会がありましたので、その際に勉強したこと等含めてまとめさせていただきたいと思います。
+最近、私が所属するデジタル戦略支援事業部で[AI博覧会](https://aismiley.co.jp/ai_hakurankai/2024_summer_visitor/)というイベントに出展しておりました。
+私は弊社の出展ブースでディスプレイに流すPowerPointの準備をしていたのですが、スライドショーのページが切り替わるたびロボットにスライド内容を話してもらうことになりました。
+（来場していただいた方には「あーあれか」と分かってもらえると思います）
+その中でPythonでPowerPointのイベント処理をするプログラムを実装したので、勉強したこと等含めてまとめさせていただきたいと思います。
 
 
 # サンプルコード
@@ -98,7 +101,7 @@ Win32 APIやCOMについて何も知らない状態から勉強したので、�
 ## インポートモジュールについて
 
 - `pythoncom` : OLE(Object Linking and Embedding)オートメーションAPIを利用するためのモジュールです[^pythoncom]。今回のプログラムでは発生したイベントの処理実行するために使います。
-- `win32com.client` : COMクライエントを作成・利用するためのモジュールです[^win32comclient]。今回のプログラムではPowerPointのイベントハンドリングするCOMオブジェクトを作成するために使います。
+- `win32com.client` : COMクライエントを作成・利用するためのモジュールです[^win32comclient]。COMはOLEの基盤技術であり、COMクライアントからOLEのイベントをハンドリングできます。今回のプログラムではPowerPointのイベントハンドリングするCOMオブジェクトを作成するために使います。
 
 [^pythoncom]:pythoncomモジュールドキュメント：[Module pythoncom](https://mhammond.github.io/pywin32/pythoncom.html)
 [^win32comclient]:win32comモジュールドキュメン[github-pywin32/com/win32com/readme.html](https://github.com/mhammond/pywin32/blob/main/com/win32com/readme.html)

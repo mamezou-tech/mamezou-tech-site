@@ -136,17 +136,13 @@ var let4 = new int[] { 1, 2, 3 };
 //*2
 var let4_a = new int[let4.length + 1];
 System.arraycopy(let4, 0, let4_a, 0, let4.length);
-let4_a[let4_a.length - 1] = 4;
-System.out.println("配列に値を追加%s".formatted(to(let4_a)));
-let4_a[1] = 10;
-System.out.println("配列[1]を変更してみる%s".formatted(to(let4_a)));
+let4_a[let4_a.length - 1] = 4; //[1,2,3,4]
+let4_a[1] = 10; //[1,10,3,4]
 //*3 Listによる同等の操作
 var let4_l = new ArrayList<Integer>();
 Collections.addAll(let4_l, 1, 2, 3);
-let4_l.add(4);
-System.out.println("Listに値を追加%s".formatted(to(let4_l)));
-let4_l.set(1, 10);
-System.out.println("List[1]を変更してみる%s".formatted(to(let4_l)));
+let4_l.add(4); //[1,2,3,4]
+let4_l.set(1, 10); //[1,10,3,4]
 ```
 * 1: エラー：ブロックスコープの概念があるので参照不可
 * 3: 配列はそのまま拡張できないので、新たな配列を用意してコピーなどの処理が必要
@@ -228,18 +224,14 @@ final var const4 = new int[] { 1, 2, 3 };
 //*3
 final var const4_a = new int[const4.length + 1];
 System.arraycopy(const4, 0, const4_a, 0, const4.length);
-const4_a[const4_a.length - 1] = 4;
-System.out.println("配列に値を追加%s".formatted(to(const4_a)));
-const4_a[1] = 10;
-System.out.println("配列[1]を変更してみる%s".formatted(to(const4_a)));
+const4_a[const4_a.length - 1] = 4; // [1,2,3,4]
+const4_a[1] = 10; // [1,10,3,4]
 
 //*4 Listによる同等の操作
 final var const4_l = new ArrayList<Integer>();
 Collections.addAll(const4_l, 1, 2, 3);
-const4_l.add(4);
-System.out.println("Listに値を追加%s".formatted(to(const4_l)));
-const4_l.set(1, 10);
-System.out.println("List[1]を変更してみる%s".formatted(to(const4_l)));
+const4_l.add(4); //[1,2,3,4]
+const4_l.set(1, 10); //[1,10,3,4]
 ```
 * 1: エラー：再代入不可
 * 2: エラー：ブロックスコープの概念があるので参照不可

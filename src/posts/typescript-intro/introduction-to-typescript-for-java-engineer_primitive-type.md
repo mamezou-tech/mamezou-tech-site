@@ -1,12 +1,11 @@
 ---
-title: Javaエンジニアが始めるTypeScript入門！Javaとの比較で基礎をマスター（プリミティブ型）
+title: Javaエンジニアが始めるTypeScript入門（第3回：プリミティブ型）
 author: masato-ubata
 date: 2024-09-06
 tags: [typescript, java]
+prevPage: ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_variable.md
 image: true
 ---
-
-[記事のトップへ](/blogs/2024/09/06/introduction-to-typescript-for-java-engineer_index)
 
 ## はじめに
 

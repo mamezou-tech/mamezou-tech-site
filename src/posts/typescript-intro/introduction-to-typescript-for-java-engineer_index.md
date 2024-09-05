@@ -1,8 +1,9 @@
 ---
-title: Javaエンジニアが始めるTypeScript入門！Javaとの比較で基礎をマスター
+title: Javaエンジニアが始めるTypeScript入門（第1回：イントロダクション）
 author: masato-ubata
 date: 2024-09-06
 tags: [typescript, java]
+nextPage: ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_variable.md
 image: true
 ---
 
@@ -20,9 +21,9 @@ Javaの知識を活かしてTypeScriptを習得して頂けるように、Java�
 
 ## コンテンツ
 
-* [変数](/blogs/2024/09/06/introduction-to-typescript-for-java-engineer_variable)［let、const、var、型注釈、型推論］
+* [変数](/typescript-intro/introduction-to-typescript-for-java-engineer_variable)［let、const、var、型注釈、型推論］
 * 型
-  * [プリミティブ型](/blogs/2024/09/06/introduction-to-typescript-for-java-engineer_primitive-type)［number、bigint、string、boolean、symbol、null、undefined］
+  * [プリミティブ型](/typescript-intro/introduction-to-typescript-for-java-engineer_primitive-type)［number、bigint、string、boolean、symbol、null、undefined］
   * その他の基本型［any、unknown、void、never、enum］※作成中
   * 集合を扱う型［array、tuple、Set、Map］※作成中
   * 特殊な型［union、intersection、literal、index signature］※作成中

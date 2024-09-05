@@ -1,12 +1,12 @@
 ---
-title: Javaエンジニアが始めるTypeScript入門！Javaとの比較で基礎をマスター（変数）
+title: Javaエンジニアが始めるTypeScript入門（第2回：変数）
 author: masato-ubata
 date: 2024-09-06
 tags: [typescript, java]
+prevPage: ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_index.md
+nextPage: ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_primitive-type.md
 image: true
 ---
-
-[記事のトップへ](/blogs/2024/09/06/introduction-to-typescript-for-java-engineer_index)
 
 ## はじめに
 

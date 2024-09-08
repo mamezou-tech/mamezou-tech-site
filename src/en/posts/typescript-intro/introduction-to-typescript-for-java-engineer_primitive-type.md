@@ -6,47 +6,46 @@ tags:
   - typescript
   - java
 prevPage: >-
-  ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_variable.md
+  ./src/en/posts/typescript-intro/introduction-to-typescript-for-java-engineer_variable.md
 translate: true
-
 ---
 
 ## Introduction
 
 This time, we will explain primitive types.
 
-|Name, Overview|JavaScript|TypeScript|Java|Notes|
+|Name, Overview|JavaScript|TypeScript|Java|Remarks|
 |---|---|---|---|---|
 |Numbers (integers, decimals)|number|number|int, long, float, double||
 |Numbers (large integers)|bigint|bigint|≒BigInteger||
 |Strings|string|string|String||
-|Booleans|boolean|boolean|boolean||
+|Boolean values|boolean|boolean|boolean||
 |Symbol type|symbol|symbol|-||
-|Null value|any|null|≒null (not defined as a type)||
+|Null value|any|null|≒null (no definition as a type)||
 |Undefined value|undefined|undefined|≒null (no strict concept of undefined)||
 
-※The table maps TypeScript types to **similar types**.
+* The table maps TypeScript types to **similar types**.
 
 ## number (Numeric Type)
 
-A type that handles 64-bit floating-point numbers, capable of representing integers and floating-point numbers.
+A type that handles 64-bit floating-point numbers, capable of representing both integers and floating points.
 
 ### Characteristics of the Type
 
-Let's check the characteristics of the type in a code-based manner.
+Let's confirm the characteristics of the type through code.
 
 ```ts: TypeScript
 let num1: number = 1000;
 let num2: number = 1000.5;
 let num3: number = .5; //0.5
 let num4: number = -1000;
-let num5_p: number = Number.POSITIVE_INFINITY; //Infinity Positive infinity
-let num5_n: number = Number.NEGATIVE_INFINITY; //-Infinity Negative infinity
+let num5_p: number = Number.POSITIVE_INFINITY; //Infinity positive infinity
+let num5_n: number = Number.NEGATIVE_INFINITY; //-Infinity negative infinity
 let num6: number = parseInt("hoge"); //*1
 let numInf = 1000; //*2
 ```
-* 1: No exception occurs, NaN is set
-* 2: Inferred as number type by type inference
+* 1: NaN is set without throwing an exception
+* 2: Determined to be of type number by type inference
 
 ```java: How it works in Java
 int num1 = 1000;
@@ -58,26 +57,25 @@ double num5_n = Double.NEGATIVE_INFINITY;
 //int num6 = Long.parseLong("hoge"); //*1
 var numInf = 1000;
 ```
-* 1: Doing something similar throws a NumberFormatException
-* 2: Inferred as int type by type inference
+* 1: Doing similar results in a NumberFormatException being thrown
+* 2: Determined to be of type int by type inference
 
 ## bigint (BigInt Type)
 
-A type that can represent **integers** larger than number.  
-The assigned value is expressed with an 'n' at the end.  
-When using it, you need to set the compiler option target to es2020 or higher. (It will cause a compile error if earlier)
-
-```json: tsconfig.json
-{
-  "compilerOptions": {
-    "target": "ES2023",
+A type that can represent **integers** larger than those handled by number.  
+The assigned value is expressed by appending n to the end.  
+When using it, the compiler option target must be set to es2020 or higher. (Otherwise, it will result in a compilation error)
+  ```json: tsconfig.json
+  {
+    "compilerOptions": {
+      "target": "ES2023",
+    }
   }
-}
-```
+  ```
 
 ### Characteristics of the Type
 
-Let's check the characteristics of the type in a code-based manner.
+Let's confirm the characteristics of the type through code.
 
 ```ts: TypeScript
 let bi1: bigint = 1000n; //1000
@@ -87,7 +85,7 @@ let bi4: bigint = -1000n; //-1000
 // let bi5: bigint = -1.1n; //Error because it's a decimal
 let biInf = 1003n; //*1
 ```
-* 1: Inferred as number type by type inference
+* 1: Determined to be of type number by type inference
 
 ```java: How it works in Java
 // BigInteger bi1 = 1000;
@@ -97,7 +95,7 @@ BigInteger bi4 = BigInteger.valueOf(-1000);
 // let bi5: bigint = -1.1n; //Error because it's a decimal
 var biInf = BigInteger.valueOf(1003);
 ```
-* 1: Inferred as BigInteger type by type inference
+* 1: Determined to be of type BigInteger by type inference
 
 ## string (String Type)
 
@@ -105,19 +103,19 @@ A type that handles strings.
 
 ### Characteristics of the Type
 
-Let's check the characteristics of the type in a code-based manner.
+Let's confirm the characteristics of the type through code.
 
 ```ts: TypeScript
 let str1: string = "hoge";
 let strInf = "fuga"; //*1
 ```
-* 1: Inferred as string type by type inference
+* 1: Determined to be of type string by type inference
 
 ```java: How it works in Java
 String str1 = "hoge";
 var strInf = "fuga"; //*1
 ```
-* 1: Inferred as String type by type inference
+* 1: Determined to be of type String by type inference
 
 ## boolean (Boolean Type)
 
@@ -125,19 +123,19 @@ A type that handles true and false.
 
 ### Characteristics of the Type
 
-Let's check the characteristics of the type in a code-based manner.
+Let's confirm the characteristics of the type through code.
 
 ```ts: TypeScript
 let bool1: boolean = true;
 let boolInf = false;//*1
 ```
-* 1: Inferred as boolean type by type inference
+* 1: Determined to be of type boolean by type inference
 
 ```java: How it works in Java
 boolean bool1 = true;
 var boolInf = false; //*1
 ```
-* 1: Inferred as boolean type by type inference
+* 1: Determined to be of type boolean by type inference
 
 ## symbol (Symbol Type)
 
@@ -145,7 +143,7 @@ A type that generates unique values.
 
 ### Characteristics of the Type
 
-Let's check the characteristics of the type in a code-based manner.
+Let's confirm the characteristics of the type through code.
 
 ```ts: TypeScript
 let symbol1: symbol = Symbol(); //description=undefined
@@ -154,11 +152,11 @@ let symbol3: symbol = Symbol(); //symbol1==symbol3:false, symbol1===symbol3:fals
 let obj1 = { [symbol1]: "value1", symbol2: "value2" }; //obj1[symbol1]=value1, obj1.symbol2=value2
 let symbolInf = Symbol(); //*2
 ```
-* 1: They do not match as they are uniquely individual
-* 2: Inferred as symbol type by type inference
+* 1: They do not match because each is unique
+* 2: Determined to be of type symbol by type inference
 
 ```java: How it works in Java
-// There is no corresponding type.  
+// There is no corresponding type.
 ```
 To express something similar, you need to create your own mechanism.
 
@@ -168,13 +166,13 @@ A type that indicates the absence of a value.
 
 ### Characteristics of the Type
 
-Let's check the characteristics of the type in a code-based manner.
+Let's confirm the characteristics of the type through code.
 
 ```ts: TypeScript
 let null1: null = null;
 let nullInf = null; //*1
 ```
-* 1: Inferred as null type by type inference.
+* 1: Determined to be of type null by type inference.
 
 ```java: How it works in Java
 // Null values exist, but there is no null type.
@@ -186,7 +184,7 @@ static class CustomTypeNullObject implements BaseCustomType {}
 Optional<String> null1 = Optional.empty();
 var nullInf = new CustomTypeNullObject();
 ```
-Using Optional or NullObject patterns can express something similar.
+Using Optional or the Null Object pattern can express something similar.
 
 ## undefined
 
@@ -194,17 +192,17 @@ A type that indicates an undefined state.
 
 ### Characteristics of the Type
 
-Let's check the characteristics of the type in a code-based manner.
+Let's confirm the characteristics of the type through code.
 
 ```ts: TypeScript
 let undef1; //undefined *1
 let undef2: undefined; //undefined
 let undef3 = undefined; //undefined *1
 ```
-* 1: Inferred as undefined type by type inference
+* 1: Determined to be of type undefined by type inference
 
 ```java: How it works in Java
-// There is no strict concept of undefined.  
+// There is no strict concept of undefined.
 ```
-Using NullObject patterns can express something similar.  
-The implementation example is the same as Null, so it is omitted.
+Using the Null Object pattern can express something similar.  
+The implementation example is the same as for Null, so it is omitted.

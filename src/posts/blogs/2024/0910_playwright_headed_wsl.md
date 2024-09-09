@@ -2,7 +2,7 @@
 title: WSL上のPlaywrightの実行ブラウザを画面表示するときにハマったこと
 author: kotaro-miura
 date: 2024-09-10
-tags:  [playwright,wsl,linux,e2e,テスト,トラブルシューティング,X_Window_System,VcXsrv]
+tags:  [playwright,wsl,linux,テスト,トラブルシューティング,X_Window_System,VcXsrv]
 image: true
 ---
 

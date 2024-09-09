@@ -2,7 +2,7 @@
 title: WSL上のPlaywrightの実行ブラウザを画面表示するときにハマったこと
 author: kotaro-miura
 date: 2024-09-10
-tags:  [playwright,wsl,linux,テスト,トラブルシューティング,X_Window_System,VcXsrv]
+tags:  [playwright,wsl,linux,テスト,トラブルシューティング,'X Window System',VcXsrv]
 image: true
 ---
 
@@ -107,10 +107,14 @@ export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}
 
 以上の設定をすることでエラーが解消されて、WLS上のPlaywrightの実行ブラウザを画面に表示できるようになりました。
 
+[Playwrightのテストサンプル](https://playwright.dev/docs/writing-tests#first-test)を実行したときに表示されるウィンドウのスクショを添付します。
+実行ブラウザにはchromiumを指定しています。
+![browser](/img/blogs/2024/0910_playwright_headed_wsl/playwright_browser.png)
+
 :::column:DISPLAY変数に設定するアドレス
 - 余談ですがWindowsのホストIPアドレスの取得は
   `ip route show | grep -i default | awk '{ print $3}'`というコマンドでも行えます。[^getIp]
-- `:0`という部分の番号は、ディスプレイ番号を表しています[^address]。 VcXsrvの起動時の設定項目の「Display number」で指定できます。今回は-1と入力しおり、この時は自動で0が割り当てられています。
+- `:0`という部分の番号は、ディスプレイ番号を表しています[^address]。 VcXsrv起動時の設定項目の「Display number」で指定できます。今回はVcXsrv起動時に-1と入力しており、この時は自動で0が割り当てられています。
   VcXsrvは多重起動ができるのですが、続けて起動するたびに「Display number=-1」と指定していればディスプレイ番号も順番に0,1,2,...と割り当てられていきます。
 :::
 

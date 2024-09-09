@@ -10,7 +10,7 @@ image: true
 
 ## はじめに
 
-当ページでは、変数、引数、戻り値などに使用するその他の基本型について説明します。  
+今回は、変数、引数、戻り値などに使用するその他の基本型について説明します。  
 
 |名称、概要|JavaScript|TypeScript|Java|備考|
 |---|---|---|---|---|
@@ -430,7 +430,6 @@ TypeScriptのenumはJavaScriptのオブジェクトとしてコンパイルさ�
 
 型の特性をコードベースで確認します。
 
-
 ```ts: TypeScript
 enum Enum1 {
   ONE,
@@ -452,13 +451,15 @@ type Enum3 = {
     viewString: string;
   };
 };
-const Enum3: Enum3 = {
+//Enum3={ONE: {value: number;viewString: string;}; TWO: {value: number;viewString: string;}; THREE: : {value: number;viewString: string;};}
+const enum3: Enum3 = {
   ONE: { value: 1, viewString: "いち" },
   TWO: { value: 2, viewString: "に" },
   THREE: { value: 3, viewString: "さん" },
 };
+//enum3.ONE.value=1, enum3.ONE.viewString="いち"
 ```
-* 1: 複数の値を持つEnumは定義できないため、例ではタイプエイリアス＋constで同等の内容を表現できます。
+* 1: 複数の値を持つEnumは定義できないため、例ではタイプエイリアス＋constをマッピングして同等の内容を表現しています。
 
 ```java: Javaではどうなるか
 enum Enum1 {
@@ -486,17 +487,26 @@ enum Enum3 {
 ```
 
 :::info
-* Javaとは異なり、TypeScriptのEnumは振る舞いや複数の値を持つEnumは定義できません。必要なら他の手段を採る必要があります。  
+* Javaとは異なり、TypeScriptのEnumは振る舞いや複数の値を持つEnumは定義できません。必要なら他の手段を採る必要があります。複数の値を持つEnum的に使える実装の例は上記のコードに示しています。  
 * TypeScript5+ではEnumのタイプセーフに関する問題が改善されたものの、厳密なタイプセーフを求める場合は別の手段も検討してください。
-  * 代替例1: リテラル型で許容する値を限定
+  * ユニオン型による代替例: キーを定義して、キー（リテラル）を限定する型を定義する方法です
     ```ts
-    type EnumAlt_1 = "ONE" | "TWO" | "THREE";
-    let enumAlt_1: EnumAlt_1 = "ONE";
+    type EnumAlt1 = "ONE" | "TWO" | "THREE";
+    let enumAlt1: EnumAlt1 = "ONE"; //enumAlt1="ONE"
     ```
-
-  * 代替例2: constアサーションで、変数の型を特定の値に固定
+  * リテラル型による代替例: キーと値の定数から、キー（リテラル）を限定する型を定義する方法です
     ```ts
-    const EnumAlt_2 = {ONE: "ONE", TWO: "TWO", THREE: "THREE"} as const;
-    let enumAlt_2: typeof EnumAlt_2[keyof typeof EnumAlt_2] = "ONE";
+    const enumAlt2_1 = {ONE: 1, TWO: 2, THREE: 3};
+    type EnumAlt2_2 = keyof typeof enumAlt2_1;
+    let enumAlt2_3: EnumAlt2_2 = "ONE"; //enumAlt2_1="ONE", enumAlt2_1[enumAlt2_2]=1
     ```
+  * constアサーション＋タイプエイリアスによる代替例: キーと値の定数から、値を限定する型を定義する方法です
+    ```ts
+    const enumAlt3_1 = {ONE: 1, TWO: 2, THREE: 3} as const;
+    type EnumAlt3Type = typeof enumAlt3_1[keyof typeof enumAlt3_1];
+    let enumAlt3_2: EnumAlt3Type = enumAlt3_1.ONE; //enumAlt3_2=1
+    console.log(`${enumAlt1} ${enumAlt2_3} ${enumAlt2_1[enumAlt2_3]} ${enumAlt3_2}`);
+    ```
+  * constアサーション＋タイプエイリアスをマッピングする代替例: キーになる定数から、キーと値を対で管理する型を定義する方法です
+    * 「型の特性」で掲載した例がこれに該当するので、そちらを参照してください。
 :::

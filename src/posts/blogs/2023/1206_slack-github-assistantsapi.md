@@ -273,7 +273,7 @@ export async function chat(event: LambdaEvent, slackClient: WebClient): Promise<
       }
     }
   }
-  return result;
+  return result.reverse();
 }
 ```
 

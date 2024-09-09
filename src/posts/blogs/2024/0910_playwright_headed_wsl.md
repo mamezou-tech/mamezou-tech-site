@@ -70,7 +70,7 @@ WSLgはWindowsとWSLとグラフィックスドライバが最新であれば、
 X Window Systemとは、UNIX系OSがディスプレイにGUIを表示するために標準的に利用されているウィンドウシステムです。
 クライアント・サーバモデルを採用しており、実際に表示したいディスプレイが繋がっているマシンでXサーバを起動し、GUIアプリを起動している別マシンからXサーバに対してグラフィックスの描画命令をネットワーク経由で送ることができます[^aboutX]。
 
-[^aboutX]:[X Windows Systemとは](https://www.astec-x.com/FAQ/aboutx.html)
+[^aboutX]:[X Window Systemとは](https://www.astec-x.com/FAQ/aboutx.html)
 
 今回は同一マシン上ですが、Windows側でXサーバを起動し、WSL側がXクライアントとしてXサーバにPlaywrightのブラウザの描画命令を出します。
 

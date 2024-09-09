@@ -306,19 +306,17 @@ while (true) { // 会話ループ
 
   // レスポンス取得
   const messages = await openai.beta.threads.messages.list(thread.id);
-  const result = [];
   for (const message of messages.data) {
     if (message.role === 'user') break;
     const [content] = message.content;
     switch (content.type) {
       case 'text':
-        result.push(content.text.value);
+        console.log(content.text.value);
         break;
       case 'image_file':
         console.log('image_file', content.image_file.file_id);
     }
   }
-  console.log(result.reverse().join('\n'));
 }
 
 // クリーンアップ処理

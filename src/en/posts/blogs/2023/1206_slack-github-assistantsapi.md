@@ -273,7 +273,7 @@ export async function chat(event: LambdaEvent, slackClient: WebClient): Promise<
       }
     }
   }
-  return result.reverse();
+  return result;
 }
 ```
 
@@ -378,7 +378,7 @@ async function createOrGetThread(event: LambdaEvent, threadTs: string, opts: {
 
   console.log('not found dynamodb record. creating new thread...');
   const initialMessages = await makeInitialMessages(event, slackClient);
-  const thread = await openai.beta.threads.create({
+  the thread = await openai.beta.threads.create({
     messages:
       initialMessages as OpenAI.Beta.Threads.ThreadCreateParams.Message[]
   });
@@ -418,7 +418,7 @@ async function callFunctions(chain: OpenAI.Beta.Threads.Runs.RequiredActionFunct
     try {
       // Execute the function (GitHub API) specified by the assistant
       const resp = await functions[func.function.name].call(this, JSON.parse(func.function.arguments));
-      const output = JSON.stringify(resp);
+      const output = JSON.stringify,(resp);
       return {
         tool_call_id: func.id,
         output

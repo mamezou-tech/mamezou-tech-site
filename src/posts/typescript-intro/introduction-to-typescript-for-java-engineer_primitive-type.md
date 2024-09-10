@@ -4,6 +4,7 @@ author: masato-ubata
 date: 2024-09-06
 tags: [typescript, java]
 prevPage: ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_variable.md
+nextPage: ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_other-basic-type.md
 ---
 
 ## はじめに

@@ -42,7 +42,7 @@ TypeScriptで書かれたコードはJavaScriptにトランスパイルされ、
 * [変数](/typescript-intro/introduction-to-typescript-for-java-engineer_variable)［let、const、var、型注釈、型推論］
 * 型
   * [プリミティブ型](/typescript-intro/introduction-to-typescript-for-java-engineer_primitive-type)［number、bigint、string、boolean、symbol、null、undefined］
-  * その他の基本型［any、unknown、void、never、enum］※作成中
+  * [その他の基本型](/typescript-intro/introduction-to-typescript-for-java-engineer_other-basic-type)［any、object、unknown、void、never、enum、型アサーション、型ガード］
   * 集合を扱う型［array、tuple、Set、Map］※作成中
   * 特殊な型［union、intersection、literal、index signature］※作成中
 * 関数　※作成中

@@ -95,6 +95,7 @@ Java エンジニア向けの TypeScript 入門。連載開始しました。**N
 - [Javaエンジニアが始めるTypeScript入門（第2回：変数）](/typescript-intro/introduction-to-typescript-for-java-engineer_variable/)
 - [Javaエンジニアが始めるTypeScript入門（第3回：プリミティブ型）](/typescript-intro/introduction-to-typescript-for-java-engineer_primitive-type/)
 - [Javaエンジニアが始めるTypeScript入門（第4回：その他の基本型）](/typescript-intro/introduction-to-typescript-for-java-engineer_other-basic-type)
+- [Javaエンジニアが始めるTypeScript入門（第5回：集合を扱う型）](/typescript-intro/introduction-to-typescript-for-java-engineer_collection-type)
 
 ### ブログ
 - [Valibot: 超軽量＆型安全なスキーマバリデーションライブラリ](/blogs/2024/07/13/valibot-intro/)

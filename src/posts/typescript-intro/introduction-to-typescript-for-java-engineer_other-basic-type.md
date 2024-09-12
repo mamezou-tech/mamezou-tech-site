@@ -299,6 +299,34 @@ objSp13.put("name", "takahashi"); //objSp1_3={address=tokyo, name=sato}, objSp13
 objSp1_3.put("name", "yamaguchi"); //objSp1_3={address=tokyo, name=yamaguchi}, objSp13={name=takahashi, id=1, address=tokyo}
 ```
 
+### 分割代入
+
+分割代入による変数への代入を確認します。
+
+:::info
+**分割代入とは**
+配列やオブジェクトから値を取り出して、複数の変数に1文で代入する構文です。
+
+:::
+
+```ts: TypeScript
+// 分割代入
+const objDivide = {id: 1, name: "suzuki", address: "tokyo"};
+const {id, address} = objDivide; //id=1, address=tokyo
+
+// 分割代入＋スプレッド演算子
+const objDivide2 = {first: 1, second: 2, third: 3, forth: 4, fifth: 5};
+const {first, second, ...rest} = objDivide2; //first=1, second=2, rest={"third":3,"forth":4,"fifth":5}
+
+// 異なる変数名を定義
+const {first: iti, second: ni} = objDivide2; //iti=1, ni=2
+```
+
+```java: Javaではどうなるか
+// 分割代入に対応する機能はありません。
+```
+まとめて代入はできないので、個別に代入して代替します。
+
 ## unknown
 
 型が不明な値（≒確定してない値）を扱う型で、TypeScript3で導入されました。  

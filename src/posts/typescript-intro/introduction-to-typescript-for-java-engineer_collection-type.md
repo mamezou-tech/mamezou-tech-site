@@ -165,7 +165,7 @@ var ids3 = ifr.getIds3();
 
 スプレッド演算子を使って結合した際の動きを確認します。
 
-```ts: TypeSCript
+```ts: TypeScript
 //スプレッド演算子による合成
 const arySp1 = ["A", "B", "C"];
 const arySp2 = [1, "D"];

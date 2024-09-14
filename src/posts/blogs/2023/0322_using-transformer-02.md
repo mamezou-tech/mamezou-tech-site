@@ -2,7 +2,7 @@
 title: ChatGPTに自然言語処理モデル「GPT2-Japanese」の使用方法を聞きながら実装したら想像以上に優秀だった件
 author: shuichi-takatsu
 date: 2023-03-22
-tags: [ディープラーニング, 深層学習, 機械学習, chatgpt, transformer]
+tags: [ディープラーニング, 深層学習, 機械学習, chatgpt, transformer, 生成AI]
 ---
 
 [前回](/blogs/2023/03/20/using-transformer-01/)は ChatGPT と Hugging Face を簡単に触ってみました。  

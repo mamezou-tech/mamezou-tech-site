@@ -1,5 +1,5 @@
 ---
-title: Javaエンジニアが始めるTypeScript入門（第4回：その他の基本型）
+title: Javaエンジニアが始めるTypeScript入門（第4回その他の基本型）
 author: masato-ubata
 date: 2024-09-11
 tags: [typescript, java]

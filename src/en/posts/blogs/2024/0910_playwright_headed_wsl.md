@@ -1,7 +1,5 @@
 ---
-title: >-
-  Things I Struggled with When Displaying the Execution Browser of Playwright on
-  WSL
+title: Challenges I Faced When Displaying Playwright's Browser on WSL
 author: kotaro-miura
 date: 2024-09-10T00:00:00.000Z
 tags:

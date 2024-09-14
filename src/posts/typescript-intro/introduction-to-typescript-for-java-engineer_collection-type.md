@@ -1,5 +1,5 @@
 ---
-title: Javaエンジニアが始めるTypeScript入門（第5回：集合を扱う型）
+title: Javaエンジニアが始めるTypeScript入門（第5回集合を扱う型）
 author: masato-ubata
 date: 2024-09-13
 tags: [typescript, java]

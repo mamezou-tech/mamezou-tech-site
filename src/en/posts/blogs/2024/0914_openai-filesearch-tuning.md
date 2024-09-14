@@ -1,5 +1,5 @@
 ---
-title: Analyzing and Tuning the Results of OpenAI's File Search
+title: Analyzing and Optimizing OpenAI's File Search Results
 author: noboru-kudo
 date: 2024-09-14T00:00:00.000Z
 tags:
@@ -215,7 +215,7 @@ content: (omitted)
 <<<<<<<<<<<<<<<<<<<<
 ```
 
-The results (chunks) of File Search input to the model are displayed in order of high scores (values between 0-1), with 20 items shown. Since I input a prompt that doesn't completely match any of them, there are subtle scores around 0.5. These results were input into the AI model.
+The results of File Search input to the model are displayed in order of high scores (values between 0-1), with 20 items shown. Since I input a prompt that doesn't completely match any of them, there are subtle scores around 0.5. These results were input into the AI model.
 
 From what I tried a few times, it seems that those with higher scores are preferentially used in the model[^2].
 

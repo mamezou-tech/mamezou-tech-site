@@ -277,9 +277,7 @@ FileCitationAnnotation(end_index=419, file_citation=FileCitation(file_id='file-u
 ```
 
 先ほどよりもシンプルなレスポンスになりました。
-注釈(FileCitationAnnotation)も3件と`max_num_results`の設定が効いていそうです。
-
-実際に File Search の分析結果を確認してみます。
+次に、File Search の実行結果がどう変わったのか確認してみます。
 
 ```
 >>>>>>>>>>>>>>>>>>>>

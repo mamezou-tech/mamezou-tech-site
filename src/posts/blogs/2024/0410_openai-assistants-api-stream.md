@@ -2,7 +2,7 @@
 title: OpenAI Assistants APIのストリームレスポンスでUXを改善する
 author: noboru-kudo
 date: 2024-04-10
-tags: [OpenAI, GPT]
+tags: [OpenAI, GPT, 生成AI]
 image: true
 ---
 

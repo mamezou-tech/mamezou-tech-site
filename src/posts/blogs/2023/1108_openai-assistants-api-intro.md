@@ -2,7 +2,7 @@
 title: OpenAIのAssistants API(ベータ版)を試す
 author: noboru-kudo
 date: 2023-11-08
-tags: [OpenAI, GPT]
+tags: [OpenAI, GPT, 生成AI]
 ---
 
 

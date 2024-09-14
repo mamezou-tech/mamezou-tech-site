@@ -2,7 +2,7 @@
 title: 新しく導入されたOpenAIのバッチAPIを使ってみる
 author: noboru-kudo
 date: 2024-04-17
-tags: [OpenAI, GPT]
+tags: [OpenAI, GPT, 生成AI]
 image: true
 ---
 

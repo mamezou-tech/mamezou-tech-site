@@ -2,7 +2,7 @@
 title: OpenAIの File Search の結果を分析してチューニングする
 author: noboru-kudo
 date: 2024-09-14
-tags: [RAG, OpenAI, "生成AI", GPT]
+tags: [RAG, OpenAI, 生成AI]
 image: true
 ---
 

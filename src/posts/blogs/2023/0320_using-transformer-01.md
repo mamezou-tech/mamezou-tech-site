@@ -2,7 +2,7 @@
 title: ChatGPTのベースになった自然言語処理モデル「Transformer」を調べていたら「Hugging Face」に行き着いた
 author: shuichi-takatsu
 date: 2023-03-20
-tags: [ディープラーニング, 深層学習, 機械学習, chatgpt, transformer, huggingface]
+tags: [ディープラーニング, 深層学習, 機械学習, chatgpt, transformer, huggingface, 生成AI]
 ---
 
 ## ChatGPT を使ってみる

@@ -2,7 +2,7 @@
 title: 生成AIを活用してdependency-cruiserのカスタムルールを効率的に作成する方法
 author: takayuki-oguro
 date: 2024-04-17
-tags: [chatgpt, dependency-cruiser, javascript, typescript, OpenAI, 大規模言語モデル]
+tags: [chatgpt, dependency-cruiser, javascript, typescript, OpenAI, 大規模言語モデル, 生成AI]
 image: true
 ---
 

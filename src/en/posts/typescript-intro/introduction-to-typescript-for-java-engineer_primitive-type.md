@@ -5,8 +5,8 @@ date: 2024-09-06T00:00:00.000Z
 tags:
   - typescript
   - java
-prevPage: >-
-  ./src/en/posts/typescript-intro/introduction-to-typescript-for-java-engineer_variable.md
+prevPage: ./src/en/posts/typescript-intro/introduction-to-typescript-for-java-engineer_variable.md
+nextPage: ./src/en/posts/typescript-intro/introduction-to-typescript-for-java-engineer_other-basic-type.md
 translate: true
 ---
 

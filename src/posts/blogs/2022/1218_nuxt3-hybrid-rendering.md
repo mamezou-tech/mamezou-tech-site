@@ -194,7 +194,7 @@ Netlifyの管理コンソール上でも以下のように確認できます。
 次に、Netlifyの設定ファイルも準備しておきます。
 プロジェクトルート配下に、以下の`netlify.toml`を用意します。
 
-```toml
+```init
 [build]
 publish = "dist"
 command = "npm run build"
@@ -217,7 +217,7 @@ sequenceDiagram
     autonumber
     actor client as ブラウザ
     participant edge as Netlify CDN<br />(エッジサーバー)
-    participant app as Nuxt App(Nitro)<br/ >(Netlify On-Demand Builder)
+    participant app as Nuxt App(Nitro)<br />(Netlify On-Demand Builder)
     client->>edge: 初回ページリクエスト
     edge->>app: オリジンリクエスト<br />(キャッシュなし)
     app->>app: レンダリング
@@ -407,7 +407,7 @@ sequenceDiagram
     autonumber
     actor client as ブラウザ
     participant edge as Netlify CDN<br />(エッジサーバー)
-    participant app as Nuxt App(Nitro)<br/ >(Netlify On-Demand Builder)
+    participant app as Nuxt App(Nitro)<br />(Netlify On-Demand Builder)
     client->>edge: 初回ページリクエスト
     edge->>app: オリジンリクエスト<br />(キャッシュなし)
     app->>app: レンダリング

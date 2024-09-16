@@ -36,6 +36,7 @@ classDiagram
         +findByName(name) List~Person~
     }
     class PersonResourceImpl {
+        
     }
     class Person {
         -Long id

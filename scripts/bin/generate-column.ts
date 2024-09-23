@@ -29,12 +29,12 @@ const GeneratedColumn = z.object({
 
 const categories = [
   'Robotics',
-  'EdTech Innovations',
-  'AWS Services',
-  'Tech Startups',
-  'Edge Computing',
-  'Frontend Technology',
-  'Latest AI products or services'
+  'Serverless Architecture and Trends',
+  'Next-Generation Databases',
+  'Zero Trust Security Architecture',
+  'Frontend Technology Trends',
+  'Latest AI products or services',
+  'AWS Services'
 ];
 
 async function main(path: string) {

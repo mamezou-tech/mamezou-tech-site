@@ -1,5 +1,5 @@
 ---
-title: 「AWS Certified AI Practitioner Beta」を受験して14冠になった
+title: 「AWS Certified AI Practitioner Beta」を受験して14冠になってきた
 author: kazuyuki-shiratani
 date: 2024-09-26
 tags: [AWS認定]
@@ -8,7 +8,7 @@ image: true
 
 ## はじめに
 
-「AWS Certified AI Practitioner Beta」を受験してきました。準備したことや感想などをまとめます。
+先日、「AWS Certified AI Practitioner Beta」を受験しましたので、準備したことや感想などをまとめました。
 
 :::info
 [秘密保持契約（NDA）](https://aws.amazon.com/jp/certification/certification-agreement/)があるため、詳細な試験内容については触れることができませんので、ご了承ください。
@@ -32,7 +32,7 @@ image: true
 
 8月13日から受験の申込みが開始されるとアナウンスされていたこともあり、当日は申込サイトを覗いていました。
 
-受験可能なのは翌日からだと勝手に思い込んでお盆中に受験しようと思っていましたが、受験申し込みを進めてみると受験可能日は8月27日からでした。
+受験可能なのは翌日からだと勝手に思い込んでお盆中に受験しようと思っていましたが、受験申し込みを進めてみると受験可能日は8月27日からと判明しました。
 
 調整の結果、9月8日の受験となりました。
 
@@ -40,7 +40,7 @@ image: true
 
 生成AIについてはほとんど触れないままでしたので、2年前に取得したAWS Certified Machine Learning - SpecialtyやG検定で身に着けた知識からのスタートになりました。
 
-なお、AWS Summitで発表されてから少しずつ準備をしようと思っていましたが、8月頭に別の資格試験が控えていたため、実質準備開始したのはお盆前からの1か月弱になりました。
+なお、AWS Summitで発表されてから少しずつ準備しようと考えていましたが、8月頭に別の資格試験が控えていたため、実質準備開始したのはお盆前からの1か月弱になりました。
 
 ### 試験ガイド
 
@@ -107,7 +107,7 @@ image: true
 
 ## 受験
 
-いつもと同じ博多駅近くのテストセンターで10時から受験してきました。
+いつもと同じ博多駅近くのテストセンターで10時から受験しました。
 
 Foundationalということもあり、ProfessionalやSpecialtyと比べると問題文が短く単純だと感じました。
 
@@ -127,14 +127,9 @@ Foundationalということもあり、ProfessionalやSpecialtyと比べると�
 
 ## まとめ
 
-- 今回も無事一発合格できました。
+- 無事に一発合格で14冠になれました。
 - 試験自体はAssociate以上のAWS認定を取得していれば難しく感じないと思います。
 - 昨今のトレンドから、どうしても生成AI中心に準備したくなりますが、機械学習や責任あるAIに関する知識も必須であることに気を付けましょう。
-- 関連する資格として、以下の取得を検討してもいいかもしれません。
-（※筆者は各検定団体の回し者ではありません）
-  - [G検定](https://www.jdla-exam.org/d/)
-  - [生成AIパスポート](https://guga.or.jp/generativeaiexam/)
-  - [データサイエンティスト検定](https://www.datascientist.or.jp/dscertification/)
 
 以上、簡単なまとめになりますが、これから受験を予定されている方の参考になれば幸いです。
 

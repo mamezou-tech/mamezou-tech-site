@@ -68,6 +68,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 
 - [Electron アプリの E2E テストを Playwright で書く](/blogs/2022/06/05/test-electron-app-with-playwright/)
 - [LambdaでPlaywrightを動かす(Lambdaレイヤー / コンテナ)](/blogs/2024/07/19/lambda-playwright-container-tips/)
+- [WSL上のPlaywrightの実行ブラウザを画面表示するときにハマったこと](/blogs/2024/09/10/playwright_headed_wsl/)
 
 ### Cypress
 

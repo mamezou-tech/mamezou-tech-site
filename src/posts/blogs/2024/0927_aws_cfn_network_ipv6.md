@@ -2,6 +2,7 @@
 title: AWS CloudFormationでやさしくネットワーク構築 - IPv6対応、NATゲートウェイ設置切替作業も易しくてお財布にも優しい！
 author: yuji-kurabayashi
 date: 2024-09-27
+image: true
 tags: [ AWS, IaC, CloudFormation, Network, IPv6, DualStack ]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 豆蔵オリジナルロボットBEANus
 author: takehiro-toyoshima
-tags: [ロボット, Beanus]
+tags: [ロボット, BEANus]
 date: 2024-03-23
 image: true
 ---

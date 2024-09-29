@@ -21,24 +21,24 @@
       "url": "/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/"
     },
     {
-      "title": "Google Test を使ってみる（その５：GoogleMock編）",
-      "url": "/blogs/2023/10/08/google-test-05/"
+      "title": "Tauri 2.0 が RC になってるので触ってみる",
+      "url": "/blogs/2024/09/22/try-tauri-v2-rc/"
     },
     {
       "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
       "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
     },
     {
+      "title": "IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）",
+      "url": "/iot/internet-of-things-15/"
+    },
+    {
+      "title": "Java用モック・フレームワーク「Mockito」を使ってみる（その２：void型メソッドのモック編）",
+      "url": "/blogs/2023/08/16/using-mockito-void-method/"
+    },
+    {
       "title": "Windows Terminal で Git Bash を快適に使う",
       "url": "/blogs/2023/09/08/windows-terminal-with-git-bash/"
-    },
-    {
-      "title": "Nuxt3入門(第4回) - Nuxtのルーティングを理解する",
-      "url": "/nuxt/nuxt3-routing/"
-    },
-    {
-      "title": "手書き風ドローツール Excalidraw のススメ",
-      "url": "/blogs/2023/03/22/use-excalidraw/"
     }
   ]
 }

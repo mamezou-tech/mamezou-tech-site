@@ -34,9 +34,9 @@ A.h
 
 typedef struct {
     int member1;
-    char member2[50];
+    // char member2[50]; // protectedは対応しません
     int member3;
-    char member4[50];
+    // char member4[50]; // packageは対応しません
 } A;
 
 // コンストラクタとデストラクタ
@@ -45,9 +45,9 @@ void A_destroy(A* a);
 
 // メソッド
 void A_method1(A* a);
-char* A_method2(A* a);
+// char* A_method2(A* a); // protectedは対応しません
 void A_method3(A* a);
-char* A_method4(A* a);
+// char* A_method4(A* a); // packageは対応しません
 
 #endif
 ```
@@ -66,11 +66,11 @@ A* A_create(int member1, const char* member2, int member3, const char* member4) 
         return NULL; // メモリ確保失敗
     }
     a->member1 = member1;
-    strncpy(a->member2, member2, sizeof(a->member2) - 1);
-    a->member2[sizeof(a->member2) - 1] = '\0';
+    // strncpy(a->member2, member2, sizeof(a->member2) - 1); // protectedは対応しません
+    // a->member2[sizeof(a->member2) - 1] = '\0';
     a->member3 = member3;
-    strncpy(a->member4, member4, sizeof(a->member4) - 1);
-    a->member4[sizeof(a->member4) - 1] = '\0';
+    // strncpy(a->member4, member4, sizeof(a->member4) - 1); // packageは対応しません
+    // a->member4[sizeof(a->member4) - 1] = '\0';
     return a;
 }
 
@@ -157,15 +157,15 @@ C.h
 #define C_H
 
 typedef struct {
-    int member1;
+    // 静的変数なのでstructには含めない
 } C;
 
 // コンストラクタとデストラクタ
-C* C_create(int member1);
+C* C_create();
 void C_destroy(C* c);
 
 // メソッド
-int C_method1(C* c);
+int C_method1();
 
 #endif
 ```
@@ -176,13 +176,19 @@ C.c
 #include <stdlib.h>
 #include "C.h"
 
+// 静的変数 (クラス全体で共有される)
+static int member1;
+
 // コンストラクタ
-C* C_create(int member1) {
+C* C_create() {
     C* c = (C*)malloc(sizeof(C));
     if (c == NULL) {
         return NULL; // メモリ確保失敗
     }
-    c->member1 = member1;
+
+    // 静的変数に初期値を設定（インスタンスごとではなく、クラス全体で保持）
+    member1 = 100;
+
     return c;
 }
 
@@ -192,9 +198,10 @@ void C_destroy(C* c) {
 }
 
 // メソッド
-int C_method1(C* c) {
+// クラス図で操作名に下線が付いています（＝static操作）が、そもそも、このマッピングでは操作はすべてstatic操作として実装されているため、特に違いがありません。
+int C_method1() {
     printf("C::method1 called\n");
-    return c->member1;
+    return member1;
 }
 ```
 
@@ -221,7 +228,7 @@ int main() {
     B_destroy(b);
 
     // クラスCのインスタンス作成とメソッドのテスト
-    C* c = C_create(100);
+    C* c = C_create();
     printf("C::method1 returns: %d\n", C_method1(c));
     C_destroy(c);
 
@@ -250,7 +257,6 @@ void A_destroy(A* a);
 
 // メソッド
 void A_setRoleB(A* a, B* b);
-B* A_getRoleB(A* a);
 
 // 新しく追加するpublicメソッド
 void A_publicMethod(A* a);
@@ -286,11 +292,6 @@ void A_destroy(A* a) {
 // roleBの設定
 void A_setRoleB(A* a, B* b) {
     a->roleB = b;  // クラスBへの関連を設定
-}
-
-// roleBの取得
-B* A_getRoleB(A* a) {
-    return a->roleB;  // クラスBへの関連を取得
 }
 
 // 新しく追加するpublicメソッド
@@ -399,7 +400,6 @@ void A_destroy(A* a);
 
 // メソッド
 void A_setRoleB(A* a, B* b);
-B* A_getRoleB(A* a);
 
 // クラスAのpublicメソッド
 void A_publicMethod(A* a);
@@ -441,11 +441,6 @@ void A_setRoleB(A* a, B* b) {
     if (b != NULL) {
         B_setRoleA(b, a);  // 双方向で関連を設定
     }
-}
-
-// roleBの取得
-B* A_getRoleB(A* a) {
-    return a->roleB;
 }
 
 // Aのpublicメソッド (roleBのメソッドを呼ぶ)
@@ -607,7 +602,7 @@ A.c
 
 // コンストラクタ
 A* A_create(B* b) {
-    if (b == NULL) {
+    if (b == NULL) { // 多重度が1固定なので、生成時からbを存在させる
         return NULL;  // クラスBのインスタンスがNULLならエラー
     }
 
@@ -780,34 +775,39 @@ int A_addRoleB(A* a, B* b) {
         printf("A::addRoleB: Cannot add more B instances (limit reached)\n");
         return -1;  // 追加できない場合
     }
-    a->roleB[a->numRoleB] = b;  // インスタンスを追加
-    a->numRoleB++;
-    return 0;
+    // 最初のNULLの位置に新しいインスタンスを追加
+    for (int i = 0; i < MAX_B_INSTANCES; i++) {
+        if (a->roleB[i] == NULL) {
+            a->roleB[i] = b;
+            a->numRoleB++;
+            return 0;
+        }
+    }
+    return -1;  // 理論上ここには到達しないはず
 }
 
 // クラスBのインスタンスを削除
 void A_removeRoleB(A* a, int index) {
-    if (index < 0 || index >= a->numRoleB) {
+    if (index < 0 || index >= MAX_B_INSTANCES || a->roleB[index] == NULL) {
         printf("A::removeRoleB: Invalid index\n");
         return;
     }
-    if (a->roleB[index] != NULL) {
-        B_destroy(a->roleB[index]);  // インスタンスを解放
-        a->roleB[index] = NULL;
+    // 指定されたインデックスのクラスBのインスタンスを削除
+    B_destroy(a->roleB[index]);
+    a->roleB[index] = NULL;
 
-        // 指定されたインデックスのクラスBのインスタンスを削除し、配列を詰めて再配置します。
-        for (int i = index; i < a->numRoleB - 1; i++) {
-            a->roleB[i] = a->roleB[i + 1];
-        }
-        a->roleB[a->numRoleB - 1] = NULL;
-        a->numRoleB--;
+    // 配列を詰める（index以降の要素を左に移動）
+    for (int i = index; i < MAX_B_INSTANCES - 1; i++) {
+        a->roleB[i] = a->roleB[i + 1];
     }
+    a->roleB[MAX_B_INSTANCES - 1] = NULL;  // 最後の要素をNULLにする
+    a->numRoleB--;
 }
 
 // クラスBのインスタンスにアクセスし、メソッドを呼び出す
 void A_publicMethod(A* a) {
     // クラスAが保持する全てのクラスBのインスタンスのメソッドを呼び出します。
-    for (int i = 0; i < a->numRoleB; i++) {
+    for (int i = 0; i < MAX_B_INSTANCES; i++) {
         if (a->roleB[i] != NULL) {
             printf("A::publicMethod is calling B::method1 for instance %d\n", i);
             int result = B_method1(a->roleB[i]);
@@ -933,7 +933,7 @@ A.c
 
 // コンストラクタ
 A* A_create(B* b) {
-    if (b == NULL) {
+    if (b == NULL) { // 多重度が1固定なので、生成時からbを存在させる
         return NULL;  // クラスBのインスタンスがNULLならエラー
     }
 
@@ -1092,7 +1092,7 @@ A* A_create(B* b) {
 
 // デストラクタ
 void A_destroy(A* a) {
-    if (a->roleB != NULL) {
+    if (a->roleB != NULL) { // コンポジションの場合は、全体側が消滅すると部分側も同時に消滅する
         B_destroy(a->roleB);  // クラスBのインスタンスを解放
     }
     free(a);
@@ -1222,7 +1222,7 @@ A.h
 
 #define MAX_ENTRIES 10  // 最大のキーと値のペア数
 
-typedef struct {
+typedef struct {  // 限定子は、C++のライブラリのstd::mapや、JavaのMap<key,value>などに相当しますが、２つの配列で実現しています。
     int keys[MAX_ENTRIES];  // キーの配列
     B* roleB[MAX_ENTRIES];  // クラスBのインスタンスの配列
     int count;              // 現在の登録されているペア数
@@ -1550,7 +1550,7 @@ main.c
 
 int main() {
     // クラスBのインスタンスを作成（基底クラスであるクラスAのインスタンスも内部で作成される）
-    B* b = B_create();
+    B* b = B_create(100);
 
     // BのpublicMethodを呼び出して、クラスAに処理を委譲
     B_publicMethod(b);
@@ -1716,4 +1716,3 @@ int main() {
 # おわりに
 
 本記事は、今後も更新していく可能性があります。ご利用の際は、最新の情報をご覧ください。
-

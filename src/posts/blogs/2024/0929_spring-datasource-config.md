@@ -1,11 +1,11 @@
 ---
-title: Springの小話 - DataSouce構成を理解しよう
+title: Springの小話 - DataSourceのConfigを理解しよう
 author: toshio-ogiwara
 date: 2024-09-29
 tags: [java, spring, spring-boot, Springの小話]
 image: true
 ---
-Springといっても今回はSpring BootのDataSource構成の小話です。  
+Springといっても今回はSpring BootのDataSourceのConfig(構成)の小話です。  
 DataSourceの構成はAutoConfigurationが`spring.datasource.*`の設定で色々と自動でやってくれて便利ですが、その一方でデバッグ時にこれどこで設定されてるのだっけ？と悩んだりすることはありませんか。私はなんど理解しても綺麗に忘れます。そこで今回は備忘録を兼ねAutoConfigurationを使わず素の状態でDataSourceを構成する方法を説明したいと思います。素の構成を理解することでAutoConfigurationの裏で行われていることが分かってくるかと思います。
 
 DataSourceの構成は「[データアクセス :: Spring Boot - リファレンスドキュメント](https://spring.pleiades.io/spring-boot/how-to/data-access.html#howto.data-access.configure-custom-datasource)」で説明されていますが、細かい内部動作までは説明されていないため、今回はこの内容を補足する形で説明しています。

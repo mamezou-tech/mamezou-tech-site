@@ -3,7 +3,7 @@ title: UMLをプログラミング言語で実装するには？ C言語(超シ�
 author: takayuki-oguro
 date: 2024-09-30
 tags: [UML, C言語]
-image: false
+image: true
 ---
 
 # はじめに

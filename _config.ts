@@ -251,7 +251,18 @@ site.filter("rssUrl", (html: string, base: string) => {
 site.helper(
   "mermaidTag",
   () =>
-    `<script async src="https://unpkg.com/mermaid@9.3.0/dist/mermaid.min.js">document.addEventListener('DOMContentLoaded', mermaid.initialize({startOnLoad:true}));</script>`,
+    `<script type="module">
+const initializeMermaid = async () => {
+  const mermaid = (await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")).default;
+  mermaid.initialize({startOnLoad:true})
+  mermaid.registerIconPacks([ 
+    { name: 'logos', loader: () => fetch('https://unpkg.com/@iconify-json/logos@1.2.0/icons.json').then((res) => res.json())},
+    { name: 'mdi', loader: () => fetch('https://unpkg.com/@iconify-json/mdi@1.2.0/icons.json').then((res) => res.json())}
+  ])
+};
+const tag = window.document.querySelector('pre.mermaid');
+if (tag) initializeMermaid()
+</script>`,
   { type: "tag" },
 );
 

@@ -55,6 +55,9 @@ files = [
 ]
 
 client.beta.vector_stores.file_batches.upload_and_poll(store.id, files=files)
+
+for file in files:
+    file.close()
 ```
 
 これでファイル(ブログ記事)はベクトル化されて登録されます。

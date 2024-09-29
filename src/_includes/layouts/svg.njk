@@ -1,0 +1,16 @@
+---
+layout: layouts/base.njk
+---
+{{ comp.SiteNav() | safe }}
+
+<header class="tdbc-hero">
+  <div class="tdbc-container">
+    <h1 class="text-mz tdbc-mb-none tdbc-page-title">
+    {{ title }}
+    </h1>
+  </div>
+</header>
+<main class="tdbc-container">
+  {{ content | safe }}
+  {%- mermaidTag %}
+</main>

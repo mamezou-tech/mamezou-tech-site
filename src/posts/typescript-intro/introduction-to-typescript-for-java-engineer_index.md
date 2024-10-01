@@ -39,14 +39,16 @@ TypeScriptで書かれたコードはJavaScriptにトランスパイルされ、
 
 以下のようなコンテンツを予定してます。
 
-* [変数](/typescript-intro/introduction-to-typescript-for-java-engineer_variable)［let、const、var、型注釈、型推論］
+* [変数](/typescript-intro/introduction-to-typescript-for-java-engineer_variable)：let、const、var、型注釈、型推論
 * 型
-  * [プリミティブ型](/typescript-intro/introduction-to-typescript-for-java-engineer_primitive-type)［number、bigint、string、boolean、symbol、null、undefined］
-  * [その他の基本型](/typescript-intro/introduction-to-typescript-for-java-engineer_other-basic-type)［any、object、unknown、void、never、enum、型アサーション、型ガード、スプレッド演算子、分割代入］
-  * [集合を扱う型](/typescript-intro/introduction-to-typescript-for-java-engineer_collection-type)［array、tuple、Set、Map］
-  * 特殊な型［union、intersection、literal、index signature］※作成中
+  * [プリミティブ型](/typescript-intro/introduction-to-typescript-for-java-engineer_primitive-type)：number、bigint、string、boolean、symbol、null、undefined
+  * [その他の基本型](/typescript-intro/introduction-to-typescript-for-java-engineer_other-basic-type)：any、object、unknown、void、never、enum、型アサーション、型ガード、
+  スプレッド演算子、分割代入
+  * [集合を扱う型](/typescript-intro/introduction-to-typescript-for-java-engineer_collection-type)：array、tuple、Set、Map
+  * [特殊な型](/typescript-intro/introduction-to-typescript-for-java-engineer_special-type)：union、intersection、literal、template literal type、object literal、mapped type、conditional type、
+  index signature
 * 関数　※作成中
-* オブジェクト［インターフェイス、タイプエイリアス、クラス］※作成中
+* オブジェクト：インターフェイス、タイプエイリアス、クラス　※作成中
 * ジェネリクス　※作成中
 
 ## 執筆時の環境

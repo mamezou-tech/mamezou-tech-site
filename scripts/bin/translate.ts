@@ -16,24 +16,28 @@ const Chinese = {
 };
 
 const makeMessage = (text: string, language: string) => {
-  return `Translate Japanese articles into ${language}.
-The following should not be translated.
+  return `Translate the following Japanese markdown article into ${language}.
 
-- Source code (but translate comments)
-- Names of books included in the article
-- HTML tags (like video,script). These tags should output as is.
-- Image link or url
+Please follow these instructions:
 
-Also, do not output anything other than the translated text.
+- For the front matter (YAML between \`---\` and \`---\`):
+  - Translate only the \`title\` field into English.
+  - Wrap the translated title in double quotes \`"..."\` to prevent YAML syntax errors, especially if it contains special characters like \`:\`.
+  - Leave all other fields in the front matter unchanged.
+  - **Do not wrap the front matter in code blocks or add any additional formatting. Output it exactly as \`---\`, followed by the YAML content, and ending with \`---\`.**
+- In the main body of the article:
+  - Translate all Japanese text into English.
+  - Do not translate source code (but do translate comments within the code).
+  - Do not translate names of books mentioned in the article.
+  - Do not translate HTML tags like \`<video>\` or \`<script>\`; output them as they are.
+  - Do not translate image links or URLs.
+- Do not output anything other than the translated text.
 
-Header part (known as Front Matter) included in markdown should be output.
-Header part stats with \`---\`, also ends with \`---\`. Do not convert this part to \`\`\`markdown(end with \`\`\`).
-Also, translated title in Header Part wrapped with \`"\`(double quote).
+Here are specific translation rules:
 
-Here are the rules for translating.
-- \`豆蔵\` is translated to Mamezou.
- 
-Articles to be translated are as follows.
+- Translate \`豆蔵\` as \`Mamezou\`.
+
+Please translate the following article:
 
 ${text}
 `;
@@ -57,6 +61,7 @@ function updateMd(translated: string, originalFrontMatter: string) {
   const { frontMatter: translatedFrontMatter, payload } = separateMd(translated);
   const frontMatterYaml: any = yaml.load(originalFrontMatter);
   frontMatterYaml.translate = true;
+  console.log(translatedFrontMatter)
   const translatedYaml = yaml.load(translatedFrontMatter) as any;
   console.log(translatedYaml);
   frontMatterYaml.title = translatedYaml.title;

@@ -2,7 +2,7 @@
 title: OpenAIのStructured Outputsを使ってAIの出力スキーマを定義する
 author: noboru-kudo
 date: 2024-08-10
-tags: [OpenAI, GPT, typescript, zod]
+tags: [OpenAI, GPT, typescript, zod, 生成AI]
 image: true
 ---
 

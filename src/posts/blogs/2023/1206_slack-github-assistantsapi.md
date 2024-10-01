@@ -2,7 +2,7 @@
 title: SlackとOpenAI Assistants APIでGitHubのPRレビューを効率化する
 author: noboru-kudo
 date: 2023-12-06
-tags: [ OpenAI, GPT, GitHub, lambda, aws-cdk, AWS, slack, advent2023 ]
+tags: [ OpenAI, GPT, GitHub, lambda, aws-cdk, AWS, slack, advent2023, 生成AI ]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2023/
 image: true
 ---

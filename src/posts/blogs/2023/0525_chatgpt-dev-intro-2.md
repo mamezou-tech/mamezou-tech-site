@@ -2,7 +2,7 @@
 title: AWS LambdaでChatGPTプラグイン開発を試してみる - AWSデプロイ編
 author: noboru-kudo
 date: 2023-05-25
-tags: [chatgpt, OpenAI, サーバーレス, lambda, aws-cdk, AWS]
+tags: [chatgpt, OpenAI, サーバーレス, lambda, aws-cdk, AWS, 生成AI]
 ---
 
 以下記事の続編です。

@@ -31,6 +31,8 @@ UML を様々なプログラミング言語で実装していくシリーズで�
 
 - [UMLをプログラミング言語で実装するには？ Go言語編](/blogs/2024/07/01/uml-x-mapping-go1/)
 - [UMLをプログラミング言語で実装するには？ Python編](/blogs/2024/07/12/uml-x-mapping-python1/)
+- [UMLをプログラミング言語で実装するには？ C言語(超シンプル版)編](/blogs/2024/09/30/uml-x-mapping-c1/)
+- [UMLをプログラミング言語で実装するには？ C言語(インスタンス対応)編](/blogs/2024/09/30/uml-x-mapping-c2/)
 
 ## モデリングツール
 ### Enterprise Architect

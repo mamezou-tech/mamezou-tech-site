@@ -2,7 +2,7 @@
 title: ChatGPT先生に教わりながら「Transformerの肝」である「注意機構（Attention機構）」を可視化する
 author: shuichi-takatsu
 date: 2023-03-26
-tags: [ディープラーニング, 深層学習, 機械学習, chatgpt, transformer, attention]
+tags: [ディープラーニング, 深層学習, 機械学習, chatgpt, transformer, attention, 生成AI]
 ---
 
 [前回](/blogs/2023/03/22/using-transformer-02/)と[前々回](/blogs/2023/03/20/using-transformer-01/)では機械学習アーキテクチャ「Transformer」を使って簡単な文章生成に挑戦しました。  

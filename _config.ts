@@ -20,7 +20,7 @@ import footNote from "npm:markdown-it-footnote@^3.0.3";
 import container from "npm:markdown-it-container@^3.0.0";
 import katex from "npm:@traptitech/markdown-it-katex@^3.5.0";
 import containerOptions from "./lume/markdown-it/container_options.ts";
-import { filterByPost, getPostArticles } from "./lume/filters/utils.ts";
+import { filterByPost, generalTags, getPostArticles } from './lume/filters/utils.ts';
 import Search from "lume/core/searcher.ts";
 import externalLinkPlugin from "./lume/markdown-it/external_link_plugin.ts";
 import imageSwipePlugin from "./lume/markdown-it/image_swipe_plugin.ts";
@@ -251,7 +251,18 @@ site.filter("rssUrl", (html: string, base: string) => {
 site.helper(
   "mermaidTag",
   () =>
-    `<script async src="https://unpkg.com/mermaid@9.3.0/dist/mermaid.min.js">document.addEventListener('DOMContentLoaded', mermaid.initialize({startOnLoad:true}));</script>`,
+    `<script type="module">
+const initializeMermaid = async () => {
+  const mermaid = (await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")).default;
+  mermaid.initialize({startOnLoad:true})
+  mermaid.registerIconPacks([ 
+    { name: 'logos', loader: () => fetch('https://unpkg.com/@iconify-json/logos@1.2.0/icons.json').then((res) => res.json())},
+    { name: 'mdi', loader: () => fetch('https://unpkg.com/@iconify-json/mdi@1.2.0/icons.json').then((res) => res.json())}
+  ])
+};
+const tag = window.document.querySelector('pre.mermaid');
+if (tag) initializeMermaid()
+</script>`,
   { type: "tag" },
 );
 
@@ -283,6 +294,15 @@ You can find the original version [here](${article.url}).
 site.process([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;
   const search = new Search({ pages, files: [], sourceData: new Map() });
+  const articles = getPostArticles(search)
+  const jsonArray = articles.map(data => (JSON.stringify({
+    title: data.title,
+    url: data.url,
+    tags: data.tags.filter(tag => !generalTags.includes(tag))
+  })));
+  const encoder = new TextEncoder();
+  void Deno.writeFile("articles.jsonl", new Uint8Array(encoder.encode(jsonArray.join('\n'))));
+
   const summary = Object.values(makeAuthorArticles(search)).map((v) => {
     const result = v.articles.reduce((acc, cur) => {
       if (!cur.date) return acc;
@@ -299,7 +319,6 @@ site.process([".md"], (pages) => {
     // console.log(v.name, result);
     return { name: v.name, result };
   });
-  const encoder = new TextEncoder();
   const start = DateTime.fromISO("2022-01-01");
   const end = DateTime.now().startOf("month");
   const input = summary.map((s) => {

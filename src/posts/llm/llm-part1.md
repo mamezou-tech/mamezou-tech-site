@@ -2,7 +2,7 @@
 title: RAGを利用して国会会議録に基づいて質問に回答するLLMを作る方法
 author: todo-masato 
 date: 2023-09-27
-tags: [RAG]
+tags: [RAG, 生成AI]
 ---
 
 ## はじめに

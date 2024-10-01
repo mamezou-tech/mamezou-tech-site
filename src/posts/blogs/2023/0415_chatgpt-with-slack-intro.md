@@ -2,7 +2,7 @@
 title: Rust + AWS Lambdaを使ってSlackでChatGPTと会話する
 author: noboru-kudo
 date: 2023-04-15
-tags: [サーバーレス, lambda, AWS, chatgpt, slack, rust]
+tags: [サーバーレス, lambda, AWS, chatgpt, slack, rust, 生成AI]
 ---
 
 以前以下の記事でRustをAWS Lambda上で動かす方法をご紹介しました。

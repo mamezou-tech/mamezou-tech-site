@@ -51,7 +51,6 @@ Java エンジニアをターゲットとした TypeScript 入門連載が始ま
 ### 機械学習・生成 AI
 
 - [画像AIで異常検知：事例に合わせたモデル選定と実践](/blogs/2024/07/10/anomalydetection/)
-- [Raspberry Pi5 で挑戦！YOLOv8を使った生物の個体識別](/blogs/2024/08/09/rpi5-indivisual-recognintion/)
 - [OpenAIのStructured Outputsを使ってAIの出力スキーマを定義する](/blogs/2024/08/10/openai-structured-output-intro/)
 - [OpenAIの File Search の結果を分析してチューニングする](/blogs/2024/09/14/openai-filesearch-tuning/)
 

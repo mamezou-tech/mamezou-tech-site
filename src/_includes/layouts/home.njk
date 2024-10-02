@@ -46,7 +46,7 @@ layout: layouts/base.njk
 
   <div>
     <fieldset class="chatgpt-jargon mameka-column">
-      <legend><img alt="mameka" width="30px" height="100%" src="/img/logo/mameka6_30.png" />豆香の豆知識(Powered by GPT-4o)</legend>
+      <legend><img alt="mameka" width="30px" height="100%" src="/img/logo/mameka6_30.png" />豆香の豆知識</legend>
       <img class="column-image" src="{{ meta.imageUrl }}/mameka/{{ gpt.columns[0].created | isoDate }}-daily-column-300.webp" width="300px" style="margin-right: 20px;" alt="image for mameka column" />
       <div class="mb-2 text-lg">{{ gpt.columns[0].title }}</div>
       <div>{{ gpt.columns[0].text | safe }}</div>

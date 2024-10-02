@@ -1,5 +1,5 @@
 ---
-title: 豆香の豆知識(Powered by GPT-4)
+title: 豆香の豆知識(Powered by AI)
 url: /gpt/mameka/
 layout: layouts/post.njk
 author: mameka

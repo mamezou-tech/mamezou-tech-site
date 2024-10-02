@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "generate:column": "tsx bin/generate-column.ts",
+    "generate:column": "tsx bin/generate-column-o1.ts",
     "generate:weekly-ranking": "tsx bin/weekly-ranking.ts",
     "translate:en": "tsx bin/translate.ts en"
   },
@@ -18,7 +18,7 @@
     "cheerio": "^1.0.0-rc.12",
     "js-yaml": "^4.1.0",
     "luxon": "^3.4.3",
-    "openai": "^4.55.4",
+    "openai": "^4.67.0",
     "sharp": "^0.33.3",
     "zod": "^3.23.8"
   },

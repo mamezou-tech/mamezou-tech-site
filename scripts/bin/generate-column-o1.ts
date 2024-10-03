@@ -168,9 +168,10 @@ function today() {
 
 async function generateImage(column: string, date: string) {
   const response = await openai.images.generate({
-    prompt: `generate images suitable for the following column written by 豆香(japanese cute girl) .
-- The image should be cartoon-like.
-- Include characters as well as objects whenever possible.
+    prompt: `Generate a cartoon-like image inspired by the following column written by 豆香 (a cheerful and cute Japanese girl). 
+Focus on visually representing the key themes and ideas from the column. 
+Include both characters and objects related to the topic, but avoid displaying any text in the image. 
+Ensure that the image is vivid and playful
 
 "${column}"`,
     model: 'dall-e-3',

@@ -69,7 +69,7 @@ sub-issue として登録した issue にも sub-issue が追加できるので�
 
 ![Set Group](https://i.gyazo.com/058bf940e8b428dc61ddd4bf67f66ba7.png)
 
-issue 単位でのグループ表示となりました。
+グループ表示により階層が表現されました。
 
 ![Group by parent issue](https://i.gyazo.com/1614410ec508e8f8af200510c8169e18.png)
 

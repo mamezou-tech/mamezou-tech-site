@@ -1,7 +1,7 @@
 ---
 title: 新登場の OpenAI の Realtime API でAIと音声会話する
 author: noboru-kudo
-date: 2024-10-09
+date: 2024-10-07
 tags: [OpenAI, GPT, 生成AI, typescript]
 image: true
 ---

@@ -6,22 +6,134 @@ date: 2024-10-20
 tags: [開発環境, docker, wsl, ubuntu, Git, vscode]
 image: true
 ---
-- Docker使ってますか？
-- CI/CDでDocker Image作るのはもちろんですが、やはりコンテナの有用性は、環境に依存せずどこでも同じように動作することですよね
-- それって開発環境でみんな同じ環境が使えたら嬉しくないですか？
-- そんなときに使えるのが`devcontainer`の仕組みです
-    - Node.js？npx？どんどんバージョン増えるので要らないです。
-    - wingetが使えるようになった？便利ですよね。でも環境構築には要りません。
-    - プロジェクトの新規加入メンバーに導入手順を渡して1日浪費？もっっっったいないし面倒！！ (やることでプロジェクトの理解は深まると思いますが)
-- [注釈] devcontainerはMicrosoftがリファレンスを出しているので、MicrosoftのVSCodeが率先して環境整備しているように見えます。
-    - 現に、開発用イメージもmicrosoftのものやvscodeがデフォルトユーザーになっているものが基本になっています。
-- このdevcontainerをリポジトリに組み込んだり、.devcontainerフォルダを共有すれば同じように環境再現できます。
+
+みなさん`Docker`活用してますか？
+CI/CDで`Docker Image`を作るのはもちろんですが、やはりコンテナの有用性は、
+**環境に依存せずどこでも同じように動作すること**ですよね
+
+それで*開発環境でみんな同じ環境が使えたら嬉しくないですか？*
+そんなときに使えるのが`devcontainer`の仕組みです
+
+- Node.js？npx？どんどんバージョン増えるので要らないです。
+- wingetが使えるようになった？便利ですよね。でも環境構築には要りません。
+- プロジェクトの新規加入メンバーに導入手順を渡して1日浪費？もっっっったいないし面倒！！
+  (やることでプロジェクトの理解は深まると思いますが)
+
+::::info:分かる/できるようになること
+今回紹介する`devcontainer`をリポジトリに組み込んだり、
+`.devcontainer`フォルダを共有すれば同じように環境再現できます。
+::::
+
+:::check:前提条件
+VSCode (WindowsにそのままインストールでOK)
+　+
+【拡張機能】
+
+- `ms-ceintl.vscode-language-pack-ja` 一応日本語化用
+- `ms-vscode-remote.remote-containers` devcontainerに必要
+- `ms-vscode-remote.remote-wsl` WSL環境に必要
+::::
 
 ## 説明する内容
 
-- 開発環境イメージの選定
+1. [WSLのインストール](#)
+1. [WSLにDocker CLIをインストール](#)
+1. [開発環境イメージの選定](#)
 
 ---
+
+## WSLのインストール
+
+1. WSL本体の導入
+
+    Powershell (管理者権限) で以下を実行
+
+    ```powershell
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+    # 実行後に再起動が必要
+    ```
+
+1. Ubuntuのディストリビューションを指定してインストール
+
+    コマンドプロンプトで以下を実行
+
+    ```bash
+    SET DISTRIBUTION=Ubuntu-22.04
+    wsl --install --distribution %DISTRIBUTION%
+
+    # keychainに必要なsshのバージョンアップ
+    winget install Microsoft.OpenSSH.Beta
+    ```
+
+:::column:ディストリビューションのアンインストール
+wsl --unregister Ubuntu-22.04
+winget uninstall Canonical.Ubuntu.2204
+:::
+
+## WSLにDocker CLIをインストール
+
+Windowsの`Docker Desktop`には会社の制限がありますよね。
+Dockerが使えないと泣いていたあなたでもWSLが使えるなら、`Docker CLI`で解決です！
+以下をWSLのターミナルで実行して数分待てばインストール完了です。
+
+:::column:VSCodeからWSL環境を開く
+
+1. Ctrl+Shift+Pでコマンドパレットを開く
+1. `WSL: Connect to WSL`を入力しEnter
+1. 前提の拡張機能が入っていればウィンドウが切り替わるはずです
+1. ターミナルをBashで開けるようになっていれば問題ありません
+:::
+
+```bash
+sudo apt update
+sudo apt install -y \
+ ca-certificates \
+ curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt update
+sudo apt install -y \
+ docker-ce \
+ docker-ce-cli \
+ containerd.io \
+ docker-buildx-plugin \
+ docker-compose-plugin &&
+  sudo apt clean &&
+  sudo rm -rf /var/lib/apt/lists/*
+
+sudo service docker start
+sudo usermod -aG docker $USER
+# ターミナル再起動後にsudo無しで実行可能
+```
+
+上記コマンドの詳細が知りたければこちらをご参照ください[^1]
+[^1]: [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+
+## 作業ディレクトリの用意
+
+適当なフォルダをWSL上で用意してください。
+
+```bash:sample.sh
+mkdir ~/devEnvSample
+code ~/devEnvSample
+```
+
+:::column:codeコマンド
+
+引数でパスを指定し、
+
+- 対象がファイルであれば、カレントウィンドウで開いて編集できるようになります
+- 対象がフォルダであれば、ウィンドウを切り替えてワークフォルダが指定のパスに切り替わります
+:::
+
+===================================== ここまで一旦完了
 
 ## 開発環境イメージの選定
 
@@ -200,3 +312,7 @@ LANG="C.UTF-8"
 [dockerhub](https://hub.docker.com/)
 [devcontainer_metadata_reference](https://containers.dev/implementors/json_reference/)
 [features](https://containers.dev/features)
+WindowsにインストールしたVSCodeの拡張機能は最小限にして、WSLのVSCodeに基本的に使いたい機能を入れています。
+
+- [注釈] devcontainerはMicrosoftがリファレンスを出しているので、MicrosoftのVSCodeが率先して環境整備しているように見えます。
+    - 現に、開発用イメージもmicrosoftのものやvscodeがデフォルトユーザーになっているものが基本になっています。

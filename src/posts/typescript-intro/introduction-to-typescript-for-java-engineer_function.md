@@ -57,7 +57,57 @@ fnVariableArgument(1, 2, 3, 4, 5, 6, 7, 8, 9, 10); //55
 
 :::
 
-## 引数に関数を使用する
+## 型ガード関数
+
+型ガード関数は[こちらのコラム](/typescript-intro/introduction-to-typescript-for-java-engineer_other-basic-type/#object（オブジェクト型）)を確認してください。
+
+## オーバーロード
+
+関数の仕様とそれに対する実装の関係のことです。  
+JavaScriptにオーバーロードがないため、TypeScriptは1つの関数に異なる関数シグネチャをもつ形で実装します。  
+Javaと比較すると特殊に感じる点の1つです。  
+
+```ts: TypeScript
+function fnOverload(x: number, y: number): number;
+function fnOverload(x: number, y: string): number;
+function fnOverload(x: number, y: number | string): number {
+  if (typeof y === "number") {
+    return x * y;
+  }
+  return x * 2;
+};
+```
+
+```java: Javaではどうなるか
+interface IOverload {
+  int fnOverload(int x, int y);
+  int fnOverload(int x, String y);
+}
+class COverload implements IOverload {
+  @Override
+  public int fnOverload(int x, int y) {
+    return x * y;
+  }
+  @Override
+  public int fnOverload(int x, String y) {
+    return x * 2;
+  }
+}
+```
+
+:::info
+**TypeScriptとJavaの相違点**
+* TypeScript: 1つの関数で、複数の仕様を実装します。
+* Java: 仕様ごとに実装を設けます。
+:::
+
+## 高階関数
+
+高階関数とは、「引数に関数が含まれる」「戻り値が関数」「左記の両方」のいずれかを満たす関数のことです。  
+TypeScriptでは、JavaScript同様高階関数を扱うことができます。  
+以降、これらのバリエーションについて確認します。
+
+### 引数に関数を使用する
 
 引数に関数（a）を使用して、関数内でaを実行する処理例を確認します。
 
@@ -118,12 +168,13 @@ fn_yn(10, (y) -> {System.out.println("fn_yn=%s".formatted(y + 2));});
 fn_ny(() -> {return 1;});
 fn_nn(() -> {System.out.println("fn_nn=%s".formatted(2));});
 ```
-* 1: 引数、戻り値ありはFunctionで対応できます。
-* 2: 引数あり、戻り値なしはConsumerで対応できます。
-* 3: 引数なし、戻り値ありはSupplierで対応できます。
-* 4: 引数、戻り値なしはRunnableで対応できます。
+Javaは関数（メソッド）が第一級オブジェクトではなく、直接的に引数や戻り値に使用できないため、関数インターフェイスを使用することで同等の処理を表現できます。
+* 1: 引数、戻り値ありはFunctionインターフェイスで対応できます。
+* 2: 引数あり、戻り値なしはConsumerインターフェイスで対応できます。
+* 3: 引数なし、戻り値ありはSupplierインターフェイスで対応できます。
+* 4: 引数、戻り値なしはRunnableインターフェイスで対応できます。
 
-## 戻り値に関数を使用する
+### 戻り値に関数を使用する
 
 関数の処理結果として、関数を戻り値として返す処理例を確認します。
 
@@ -136,11 +187,21 @@ fnRetFn(2)(); //6
 Function<Integer, Integer> fnRetFn = x -> x * 3; //*1
 fnRetFn.apply(2); //6
 ```
-* 1: 引数、戻り値ありの関数を返すため、Functionで対応しています。
+* 1: 引数、戻り値ありの関数を返すため、Functionインターフェイスで対応しています。
 
-## 関数をカリー化して使用する
+### 関数をカリー化して使用する
 
-関数をカリー化して使用する処理例を確認します。
+カリー化とは、複数の引数を取る関数を、1つの引数を取る関数を連続して適用する形に変換する応用的な手法です。  
+
+TypeScriptでカリー化を使うメリットは以下のとおりです。
+* 部分適用: 関数の引数を一部固定することで、新しい関数を生成できます。
+* 関数合成: 複数の関数を組み合わせることで、より複雑な処理を表現できます。
+* 遅延評価: 引数が渡されるまで、計算が遅延できます。
+* 関数型プログラミングのスタイル: 関数を第一級オブジェクトとして扱う関数型プログラミングのスタイルを取り入れることができます。
+
+メリットが多い反面、デメリットもあるので注意して使用したいところです。
+* 可読性の低下: コードが複雑になり、可読性の低下を招く可能性があります。
+* 性能の低下: 関数が生成されるたび、クロージャーが生成されるため、性能の低下を招く可能性があります。
 
 ```ts: TypeScript
 const fnCurry = (x: number) => (y: number) => {return x * y;};
@@ -151,58 +212,12 @@ fnCurry(2)(3); //6
 Function<Integer, Function<Integer, Integer>> fnCurry = x -> y -> x * y; //*1
 fnCurry.apply(2).apply(3); //6
 ```
-* 1: 引数、戻り値ありの関数を返すため、Functionで対応しています。
+* 1: 引数、戻り値ありの関数を返すため、Functionインターフェイスで対応しています。
 
-## 型ガード関数
+### JavaScript/TypeScript組み込みの高階関数
 
-型ガード関数は[こちらのコラム](/typescript-intro/introduction-to-typescript-for-java-engineer_other-basic-type/#object（オブジェクト型）)を確認してください。
-
-## オーバーロード
-
-関数の仕様とそれに対する実装の関係のことです。  
-JavaScriptにオーバーロードがないため、TypeScriptは1つの関数に異なる関数シグネチャをもつ形で実装します。  
-Javaと比較すると特殊に感じる点の1つです。  
-
-```ts: TypeScript
-function fnOverload(x: number, y: number): number;
-function fnOverload(x: number, y: string): number;
-function fnOverload(x: number, y: number | string): number {
-  if (typeof y === "number") {
-    return x * y;
-  }
-  return x * 2;
-};
-```
-
-```java: Javaではどうなるか
-interface IOverload {
-  int fnOverload(int x, int y);
-  int fnOverload(int x, String y);
-}
-class COverload implements IOverload {
-  @Override
-  public int fnOverload(int x, int y) {
-    return x * y;
-  }
-  @Override
-  public int fnOverload(int x, String y) {
-    return x * 2;
-  }
-}
-```
-
-:::info
-**TypeScriptとJavaの相違点**
-* TypeScript: 1つの関数で、複数の仕様を実装します。
-* Java: 仕様ごとに実装を設けます。
-:::
-
-
-## 高階関数
-
-高階関数を使用した例を確認します。
-同等のメソッドがJavaでも提供されているため、あまり変わりません。
-高階関数とは、「引数に関数が含まれる」「戻り値が関数」「左記の両方」のいずれかを満たす関数のことです。
+JavaScript/TypeScript組み込みの高階関数を使用した例を確認します。
+同等のメソッドがJavaでも提供されているため、大きな差はありません。
 
 |関数名|説明|戻り値|
 |-----|----|------|

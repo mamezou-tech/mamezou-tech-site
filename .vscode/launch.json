@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "name": "Launch Chrome",
+      "preLaunchTask": "deno: serve",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}

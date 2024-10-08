@@ -10,8 +10,12 @@ image: true
 - CI/CDでDocker Image作るのはもちろんですが、やはりコンテナの有用性は、環境に依存せずどこでも同じように動作することですよね
 - それって開発環境でみんな同じ環境が使えたら嬉しくないですか？
 - そんなときに使えるのが`devcontainer`の仕組みです
-- [注釈] devcontainerは「私が作った」というところが特にないように感じていますが、MicrosoftのVSCodeが率先して環境整備しているように見えます。
+    - Node.js？npx？どんどんバージョン増えるので要らないです。
+    - wingetが使えるようになった？便利ですよね。でも環境構築には要りません。
+    - プロジェクトの新規加入メンバーに導入手順を渡して1日浪費？もっっっったいないし面倒！！ (やることでプロジェクトの理解は深まると思いますが)
+- [注釈] devcontainerはMicrosoftがリファレンスを出しているので、MicrosoftのVSCodeが率先して環境整備しているように見えます。
     - 現に、開発用イメージもmicrosoftのものやvscodeがデフォルトユーザーになっているものが基本になっています。
+- このdevcontainerをリポジトリに組み込んだり、.devcontainerフォルダを共有すれば同じように環境再現できます。
 
 ## 説明する内容
 
@@ -190,3 +194,9 @@ LANG="C.UTF-8"
     }
 }
 ```
+
+## その他
+
+[dockerhub](https://hub.docker.com/)
+[devcontainer_metadata_reference](https://containers.dev/implementors/json_reference/)
+[features](https://containers.dev/features)

@@ -47,7 +47,7 @@ TypeScriptで書かれたコードはJavaScriptにトランスパイルされ、
   * [集合を扱う型](/typescript-intro/introduction-to-typescript-for-java-engineer_collection-type)：array、tuple、Set、Map
   * [特殊な型](/typescript-intro/introduction-to-typescript-for-java-engineer_special-type)：union、intersection、literal、template literal type、object literal、mapped type、conditional type、
   index signature
-* 関数　※作成中
+* [関数](/typescript-intro/introduction-to-typescript-for-java-engineer_function)
 * オブジェクト：インターフェイス、タイプエイリアス、クラス　※作成中
 * ジェネリクス　※作成中
 

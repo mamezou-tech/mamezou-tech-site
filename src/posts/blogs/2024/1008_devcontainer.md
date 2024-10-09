@@ -1,57 +1,71 @@
 ---
 title: 【イマドキ開発環境】devcontainerでローカルすっきり開発環境構築！
 author: toshiki-nakasu
-# 公開日として設定されますので、それを考慮した日付にするようにしてください
 date: 2024-10-20
-tags: [開発環境, docker, wsl, ubuntu, Git, vscode, Codespaces]
+tags: [開発環境, devcontainer, docker, wsl, ubuntu, Git, vscode, Codespaces, ssh]
 image: true
 ---
 
-::::info:この記事で紹介すること
+:::info:この記事で紹介すること
 
-- `devcontainer`をローカルで構築します
-    - `devcontainer`をリポジトリに組み込めば、誰でも同じように環境再現できるようになります
-- `devcontainer`と`WSL`と`Git`の連携
-- `Docker`の勉強の一環にもなります
-- その他`devcontainer`のノウハウ
-::::
+- *devcontainer*をローカルで構築します
+    *devcontainer*をリポジトリに組み込めば、誰でも同じように環境再現できるようになります
+- *devcontainer*と*WSL*と*Git*の連携
+- *Docker*の勉強の一環にもなります
+- その他*devcontainer*のノウハウ
+:::
 
 ## はじめに
 
-みなさん`Docker`活用してますか？
-CI/CDで`Docker Image`を使うのはもちろんですが、やはりコンテナの有用性は、
-**環境に依存せずどこでも同じように動作すること**ですよね
+みなさん**Docker**活用してますか
+CI/CDでDocker Imageを使うのはもちろんですが、やはりコンテナの有用性は、
+**環境に依存せずどこでも同じように動作すること**ですよね。
 
-それを活用して**みんな同じ開発環境が使えたら嬉しくないですか？**
-そんなときに使えるのが`devcontainer`の仕組みです
+それを活用して**みんな同じ開発環境が使えたら嬉しくないですか**
+そんなときに使えるのが**devcontainer**の仕組みです。
 
-:::column:devcontainerを活用した機能で、GitHub Codespacesというのもあるよ
-リポジトリをまるごとdevcontainerで他の開発者と共有できるので**やりたいことは叶います！**
-ただし、筆者は以下の理由でちゃんと使えていませんでした。
+:::column:GitHub Codespaces
 
-- ブラウザで動かすので操作に癖がある
-- 環境はローカルに置いておきたい (リポジトリを直接弄っている気がしてソワソワする)
+devcontainerを活用した機能で、GitHub Codespacesというのもあります。
+リポジトリをまるごとdevcontainerで他の開発者と共有できるので**やりたいことは叶います**。
+ただし、筆者は以下の理由で使っていませんでした。
+
+- ブラウザで動かすので操作に癖がある。
+- 環境はローカルに置いておきたい (リポジトリを直接弄っている気がしてソワソワする)。
 
 ですが、devcontainerを理解すればCodespacesが何をやっているかが分かるようになるので、
 その勉強としても試してみる価値はあると思います。
 
-GitHub Codespacesについては、こちらをチェック！
-　→ [GitHub CodespacesによるJavaのチーム開発環境の作り方](https://developer.mamezou-tech.com/blogs/2023/06/26/codespaces-for-java/)
+GitHub Codespacesについては、こちらをチェック
+[GitHub CodespacesによるJavaのチーム開発環境の作り方](https://developer.mamezou-tech.com/blogs/2023/06/26/codespaces-for-java/)
+
 :::
 
-- Node.js？npx？どんどんバージョン増えるので要らないです。
-- wingetが使えるようになった？便利ですよね。でも環境構築するときに結局細々した設定が必要！
-- プロジェクトの新規加入メンバーに導入手順を渡して1日浪費？もっっっったいないし面倒！！
+- Node.js, npxなどはどんどんバージョン増えるので入れたくないです。
+- wingetも便利ですが、環境構築するときに結局細々した設定が必要です。
+- プロジェクトの新規加入メンバーに導入手順を渡して1日浪費するのは、もったいないし面倒。
   (やることでプロジェクトの理解は深まると思いますが)
 
 :::check:前提条件
-VSCode (WindowsにそのままインストールでOK)
+
+*VSCode* (WindowsにそのままインストールでOK)
 　+
-【拡張機能】 `code --install-extension [拡張機能ID]`
-`ms-ceintl.vscode-language-pack-ja` 一応日本語化用
-`ms-vscode-remote.remote-containers` devcontainerに必要
-`ms-vscode-remote.remote-wsl` WSL環境に必要
-::::
+【拡張機能】
+
+- *ms-ceintl.vscode-language-pack-ja*: 一応、日本語化用
+- *ms-vscode-remote.remote-containers*: devcontainerに必要
+- *ms-vscode-remote.remote-wsl*: WSL環境に必要
+
+なければ以下を実行してください。
+
+```batch
+winget install Microsoft.VisualStudioCode
+code --install-extension ms-ceintl.vscode-language-pack-ja
+code --install-extension ms-vscode-remote.remote-containers
+code --install-extension ms-vscode-remote.remote-wsl
+```
+
+:::
 
 ## 説明する内容
 
@@ -59,6 +73,8 @@ VSCode (WindowsにそのままインストールでOK)
 1. 作業ディレクトリの用意
 1. 開発環境イメージの選定と定義
 1. devcontainer.jsonの実装
+1. devcontainerの立ち上げ
+1. リポジトリにpushじゃあああ
 
 ---
 
@@ -79,15 +95,15 @@ VSCode (WindowsにそのままインストールでOK)
 
     コマンドプロンプトで以下を実行 (時間かかります)
 
-    ```bash
+    ```batch
     SET DISTRIBUTION=Ubuntu-22.04
     wsl --install --distribution %DISTRIBUTION%
-    # たぶんここでデフォルトユーザーとパスワードの入力がある
+    REM デフォルトユーザーとパスワードの設定
     ```
 
     :::column:ディストリビューションのアンインストール
 
-    ```bash
+    ```batch
     wsl --unregister Ubuntu-22.04
     winget uninstall Canonical.Ubuntu.2204
     ```
@@ -96,16 +112,16 @@ VSCode (WindowsにそのままインストールでOK)
 
 ### WSLにDocker CLIをインストール
 
-Windowsの`Docker Desktop`には会社の制限がありますよね。
-Dockerが使えないと泣いていたあなたでもWSLが使えるなら、`Docker CLI`で解決です！
+Windowsの*Docker Desktop*には会社の制限がありますよね。
+Dockerが使えないと泣いていたあなたでもWSLが使えるなら、*Docker CLI*で解決です。
 以下をWSLのターミナルで実行して数分待てばインストール完了です。
 
 :::column:VSCodeをWSL環境で開く方法
 
-1. Ctrl+Shift+Pでコマンドパレットを開く
+1. `Ctrl+Shift+P`でコマンドパレットを開く
 1. `WSL: Connect to WSL`を入力しEnter
 1. 前提の拡張機能が入っていればウィンドウが切り替わるはずです
-1. WSLでのターミナルは`Bash`を使いましょう
+1. WSLでのターミナルは*Bash*を使いましょう
 :::
 
 ```bash
@@ -137,46 +153,60 @@ sudo usermod -aG docker $USER
 # ターミナル再起動後にsudo無しで実行可能
 ```
 
-上記コマンドの詳細が知りたければこちらをご参照ください
-　→ [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+上記コマンドの詳細が知りたければこちらをご参照ください [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+
+:::check:Docker拡張機能
+
+- WSL環境のVSCodeにDockerの拡張機能*ms-azuretools.vscode-docker*を入れておくことをオススメします。
+    コンテナやイメージの一覧がすぐ見られます。
+- Windows環境に入れる場合、*Docker Desktop*がないと怒られます。
+
+:::
 
 ### とりあえずGitもセットアップ
 
 ```bash
 git config --global user.name "[名前]"
-git config --global user.email [メールアドレス]
+git config --global user.email "[メールアドレス]"
 ssh -T git@github.com
 # yes
 ```
 
 ## 作業ディレクトリの用意
 
-1. 適当なフォルダをWSL上で用意してください。(下記の例はユーザーフォルダ直下の`devEnvSample`フォルダ)
+:::info:参照リポジトリ
+
+以降で作るものの完成形は、こちらのリポジトリの内容です [devcontainer_sample](https://github.com/toshiki-nakasu/devcontainer_sample)
+
+:::
+
+1. 適当なフォルダをWSL上で用意してください。
+    (下記の例はユーザーフォルダ直下の*devcontainer_sample*フォルダ)
 
     ```bash
-    mkdir ~/devEnvSample
-    code ~/devEnvSample
+    mkdir ~/devcontainer_sample
+    code ~/devcontainer_sample
     ```
 
     :::column:codeコマンド
 
-    VSCodeのコマンドです。PATHを通せばcmdからでも任意のものがVSCodeで開けるゾ
-    引数でパスを指定し、
+    VSCodeのコマンドです。PATHを通せばcmdからでも任意のものがVSCodeで開けます。
+    引数でパスを指定します。
 
-    - 対象がファイルであれば、カレントウィンドウで開いて編集できるようになります
-    - 対象がフォルダであれば、ウィンドウを切り替えてワークフォルダが指定のパスに切り替わります
+    - 対象がファイルであれば、カレントウィンドウで開いて編集できるようになります。
+    - 対象がフォルダであれば、ウィンドウを切り替えてワークフォルダが指定のパスに切り替わります。
 
-    詳細はリファレンスで
-    　→ [The Visual Studio Code command-line interface](https://code.visualstudio.com/docs/editor/command-line)
+    詳細はリファレンスで。 [The Visual Studio Code command-line interface](https://code.visualstudio.com/docs/editor/command-line)
+
     :::
 
-1. 作成したフォルダが新規ウィンドウで開かれているので、ここで.devcontainerフォルダを作成
+1. 作成したフォルダが新規ウィンドウで開かれているので、ここで *.devcontainer*フォルダを作成
 
     ```bash
     mkdir .devcontainer
     ```
 
-1. 作成した.devcontainerフォルダ内にファイルを作成
+1. 作成した *.devcontainer*フォルダ内にファイルを作成
 
     ```bash
     touch .devcontainer/{Dockerfile,devcontainer.env,compose.yaml,devcontainer.json}
@@ -184,8 +214,8 @@ ssh -T git@github.com
 
 1. こうなっていればOKです
 
-    ```txt
-    ~/devEnvSample$ tree -a
+    ```textile
+    ~/devcontainer_sample$ tree -a
     .
     └── .devcontainer
         ├── Dockerfile
@@ -207,39 +237,42 @@ ssh -T git@github.com
 いよいよdevcontainerのDocker Image設定ファイルを作っていきます。
 
 :::stop:VSCode公式リファレンスについて
+
 [VSCodeのリファレンス](https://code.visualstudio.com/docs/devcontainers/containers)には、開発言語に合わせてイメージとイメージタグを選択するフローが記載されていますが、
-正直これはオススメできません。
+個人的にこれはオススメできません。
 
 イマドキの開発は、複数の言語を同時に使った開発が多いと思っています。
 Java用のイメージを使ってdevcontainerを使っていても、
 途中で別の言語のインストールをしていたら、イメージを使っている意味が薄くなってしまいます。
 
 そのためベースイメージはベーシック, プレーンなものを選びましょう。
-また、devcontainer.jsonから直接、使用するイメージを使うことができますが、docker-composeを使用することをオススメします。
+また、devcontainer.jsonから直接、使用するイメージを使うことができますが、**docker-compose**を使用することをオススメします。
+
 :::
 
 1. Dockerfileにベースイメージを定義
 
-    ```Dockerfile:Dockerfile
+    ```docker:Dockerfile
     ARG TAG
     FROM ubuntu:${TAG}
     ```
 
     - alpineなどの軽量イメージを使っても、なんだかんだ不都合があったりするので、
-        私はよく普通のubuntuイメージを使っています。
-    - とりあえず引数でイメージタグを受けるようにだけしてあります。
-    - その他、基本的にどの開発環境でも必要なライブラリ等があればインストールしておいてOKです。
+        私はよく普通のubuntuイメージを使っています
+    - このファイルでは、引数でイメージタグを受けるようにしてあります
+    - その他、基本的にどの開発環境でも必要なライブラリ等があればインストールしておいてOKです
+    - 自分で探したい人はDocker Hubから見つけましょう [dockerhub](https://hub.docker.com/)
 
 1. Docker Image用のenvファイルを定義
-    システムの根本的なものだけ定義し、次のcomposeファイルで使います。
+    **システムの根本的なものだけ定義**し、次のcomposeファイルで使います
 
-    ```env:devcontainer.env
+    ```ini:devcontainer.env
     TZ="Asia/Tokyo"
     LANG="C.UTF-8"
     ```
 
 1. docker-composeにサービスを定義
-    4行目の`ubuntu`というサービス名を、後述のdevcontainer.jsonで使います。
+    **4行目の*ubuntu*というサービス名を、後述のdevcontainer.jsonで使います**
 
     ```yaml:compose.yaml
     version: '3.8'
@@ -259,16 +292,16 @@ Java用のイメージを使ってdevcontainerを使っていても、
 
     :::column:docker-composeのファイル名
 
-    いつの間にか`compose.yaml`が推奨になっていたらしい
-    [Compose file reference](https://docs.docker.com/reference/compose-file/#compose-file)
+    いつの間にか「*compose.yaml*」が推奨になっていたらしい [Compose file reference](https://docs.docker.com/reference/compose-file/#compose-file)
+
     :::
 
 なんと、イメージ選定と定義は以上です。
-Javaの環境は？とかはまた後で。
+Javaの環境などについては↓の*features*で。
 
 ## devcontainer.jsonの実装
 
-これから作るのはこちら
+これから作るのはこちら。
 
 ```json:devcontainer.json
 {
@@ -312,7 +345,7 @@ Javaの環境は？とかはまた後で。
     // info: key is output stage
     "overrideCommand": true,
 
-    // IDE
+    // ## IDE
     "customizations": {
         "vscode": {
             "extensions": [],
@@ -322,87 +355,373 @@ Javaの環境は？とかはまた後で。
 }
 ```
 
-===================================== ここまで一旦完了
+それぞれ区切って解説します
+詳細はリファレンスへ [Dev Container metadata reference](https://containers.dev/implementors/json_reference/)
 
-## featuresについて
+### To create image
 
-- devcontainerにはfeaturesの指定があります。
-- [features](https://containers.dev/features)
-- なんと、このfeaturesを指定することで特定の言語の環境構築をイメージの中で一緒にやってくれるんです。拡張機能も一緒につけてくれるおまけ付きです
-    - (個人的には)追加で入れてくる拡張機能は自分で指定したいところですが...
-- 個人的によく使うfeatures
-    - ghcr.io/devcontainers/features/common-utils:2
-        - イメージ内のユーザー作成 (UIDも指定可能)
-    - ghcr.io/devcontainers/features/git:1
-        - Gitの環境構築 (大体のイメージには標準でありますが、一応)
-    - ghcr.io/devcontainers/features/java:1
-        - Javaの環境構築 (もちろんバージョン指定可能)
-    - ghcr.io/devcontainers/features/node:1
-        - Node.jsの環境構築 (もちろんバージョン指定可能)
-    - ghcr.io/devcontainers/features/aws-cli:1
-        - AWS-CLIも入れられます
-    - ghcr.io/devcontainers/features/terraform:1
-        - Terraformも入れられます
+作成するコンテナの名前とdevcontainerを開いたときのworkspaceFolderを指定します (Dockerfileの`WORKDIR`と同じ)。
+*shutdownAction*はdevcontainerを終了したときの動作で、デフォルトは*stopCompose*ですが、
+気になるので明示的に書いています。
 
-## bindについて
+```json
+{
+    "name": "mySample",
+    "workspaceFolder": "/workspace",
+    "shutdownAction": "stopCompose",
+}
+```
 
-- さて、gitやaws-cliの話が出て気になった方もいるかもしれませんが、ローカルで使っている.gitconfigや.awsを開発環境でも使いたいですよね？
-- もちろん、devcontainerでもフォルダバインドが可能です。
-- バインドの設定は1行で書かないようにしましょうね！！！
-- 実は.gitconfigの設定は自動でマウントされるようになっています
-- [Docker豆知識] .dockerignoreを`devcontainer.json`の階層に置いておいたりすると、ボリュームにしておきたいnode_modulesなどの除外ができます。
-    - ただし、`.gitignore`とは若干勝手が違うので、記述は最低限にしましょう
+### From base image
 
-### devcontainerでGitが使えないんだが？
+compose.yamlのパスとその中から使うサービス名を記述します。
+*runServices*で複数起動もできます。便利そうだけど、活用できてない。
 
-- ssh-agentが必要なんですね
-- wslの.bashrcとかに書いちゃいましょうね～
+```json
+{
+    "dockerComposeFile": ["./compose.yaml"],
+    "service": "ubuntu",
+    "runServices": [],
+}
+```
 
-## 環境変数
+:::alert:イメージの指定について
 
-- AWS_DEFAULT_PROFILEなんかも開発環境で決まってますよね。こういうのはイメージの環境変数にしてしまいましょうね～
+イメージの指定は3種類あります。
+それぞれのパターンによって必須パラメータが異なるので、詳細はリファレンスをご確認ください。
 
-## イメージたくさん出てきてない？？
+1. *devcontainer.json*に直接イメージを指定
+1. *compose.yaml*からサービスを指定 (今回はコレ)
+1. *Dockerfile*を指定
 
-- 実は、devcontainerではdevcontainer用のイメージを作った上で、コンテナを起動しているんです。
-- 名前に関しては諦めてください
+:::
 
-## Dockerなんだから初期するときのコマンドも実行しろ
+### Resources
 
-- たくさんあります
-- ただし！！スクリプトをファイルで実行したい場合は注意が必要！コンテナにバインドして、そのパスを指定して実行するように！
+一番カスタマイズするところです。
 
-## devcontainer専用の変数
+```json
+{
+    "mounts": [
+        {
+            "type": "bind",
+            "source": "${localWorkspaceFolder}",
+            "target": "${containerWorkspaceFolder}",
+            "consistency": "delegated"
+        }
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "username": "developer"
+        },
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+}
+```
 
-## vscodeの設定
+#### *mounts*
 
-### settings
+- devcontainer内で活用するファイルやフォルダを紐付けましょう
+    ここで見慣れない変数が出てきました
+    *\${localWorkspaceFolder}*: VSCodeで現在開いているウィンドウのルートパスに置き換わります
+    *\${containerWorkspaceFolder}*: *workspaceFolder*で指定したパスに置き換わります
+    その他、詳細はリファレンスへ [Variables in devcontainer.json](https://containers.dev/implementors/json_reference/#variables-in-devcontainerjson)
+- 書くことは普段のDockerのbindやvolumeの内容と変わりません
+    volumeは*compose.yaml*で定義していなくても*devcontainer.json*で記述すれば作ってくれます
+- また、この段階ではコンテナがないので環境変数が使えません。使える変数も限られているのでちょっと不便
 
-- リポジトリに含むもよし、ここで設定するのもよし。
-- vscodeで開いているうちは、ユーザーのsettings.jsonも使われますのでご安心を。
+    :::column:dockerのmountの記述
 
-### extensions
+    Dockerを普段から活用している皆さんは、*short syntax*ではなく*long syntax*で書きましょう。 [^1]
+    [Docker-docs-jaのリファレンス](https://docs.docker.jp/storage/bind-mounts.html#v-mount)
 
-- devcontainer.jsonでも指定できますが、よく使うセットリストってありますよね？
-- どのdevcontainerでも使うような拡張機能は外出しできます
-    - settings.jsonの`dev.containers.defaultExtensions`で一覧指定できます。これだけでdevcontainer.jsonはだいぶスリムになると思います
+    :::
 
-## (入れるかどうかは悩む) Docker cli
+    :::column:.dockerignore
 
-## その他
+    .dockerignoreを*devcontainer.json*の階層に置いておいたりすると、mountでvolumeにしておきたい*node_modules*などの除外ができます。
+    ただし、*.gitignore*とは若干勝手が違うので、記述は最低限にしましょう。
 
-```bash
-# keychainに必要なsshのバージョンアップ
+    :::
+
+#### *features*
+
+これがdevcontainerの一番の特徴といっても過言ではありません (名前の通り)
+
+- **このfeaturesを指定することで特定の言語の環境構築や設定を諸々済ませてくれます**
+    拡張機能も一緒につけてくれるおまけ付きです (個人的には追加で入れてくる拡張機能は自分で指定したいところですが...)。
+- 存在するfeatureはここから探してください [Features](https://containers.dev/features)
+- featureによってはパラメータでバージョンなどを指定できます。
+- **個人的によく使うfeatureをご紹介**
+
+    | feature | コメント |
+    | --- | --- |
+    | *ghcr.io/devcontainers/features/common-utils:2* | イメージ内のユーザー作成 (UIDも指定可能)<br>デフォルトは*vscode*ユーザーが作られるのですが、なんか嫌なので使っています。|
+    | *ghcr.io/devcontainers/features/git:1* | Gitの環境構築 (大体のイメージには標準でありますが、一応入れています) |
+    | *ghcr.io/devcontainers/features/java:1* | Javaの環境構築 (もちろんバージョン指定可能) |
+    | *ghcr.io/devcontainers/features/node:1* | Node.jsの環境構築 (もちろんバージョン指定可能) |
+    | *ghcr.io/devcontainers/features/aws-cli:1* | AWS-CLIが入れられます |
+    | *ghcr.io/devcontainers/features/terraform:1* | Terraformが入れられます |
+
+### Environment
+
+```json
+{
+    "remoteUser": "developer",
+    "containerEnv": {},
+    "remoteEnv": {},
+    "portsAttributes": { "80": { "label": "http", "onAutoForward": "silent" } },
+}
+```
+
+#### *remoteUser*
+
+コンテナで作業する際のユーザー名。
+
+#### *containerEnv*
+
+**あまり使わないことを推奨**
+コンテナ固有の環境変数で、変化するとコンテナの再構築が必要。
+
+#### *remoteEnv*
+
+- 接続時のみに反映される環境変数。
+- *containerEnv*よりも使いやすい。
+- *AWS_DEFAULT_PROFILE*などセットして使っています。
+    - もちろんその際は`~/.aws`をマウントしましょうね。
+
+#### *portsAttributes*
+
+属性についてはリファレンスを参照してください。 [Port attributes](https://containers.dev/implementors/json_reference/#port-attributes)
+
+:::alert:portの穴開けについて
+
+今回使っていませんが、*forwardPorts*も同じような機能があり、どちらを使った方が良いかはまだ分かっていません。
+
+:::
+
+### Container command
+
+```json
+{
+    "overrideCommand": true,
+}
+```
+
+- コンテナのcreate時やattach時にコマンドを実行できます。
+    - タイミングやライフサイクルによってコマンドが6種類もあります。
+    - 例えばコンテナを構築した時に、*node_modules*のvolumeの`chown`や`npm install`をするが、
+        コンテナにattachしたときは実行する必要が無いなど。
+- 定義できるコマンドはこちら (注意点もたくさんあります)。 [Lifecycle scripts](https://containers.dev/implementors/json_reference/#lifecycle-scripts)
+
+:::alert:overrideCommand
+
+*Dockerfile*や*docker-compose*を使ってdevcontainerを定義している場合、(今回も該当)
+記載しているように*overrideCommand*を*true*にした上で定義する必要があります。
+
+:::
+
+:::stop:私がハマったポイント
+
+- スクリプトファイルを実行したい場合、それをバインドした時の絶対パスを書かないと実行できない。
+    WSLのパスではダメ。
+- スクリプトファイルの実行は`sh $スクリプトファイルパス`。
+    `/bin/bash`や`bash`は使えなかった。
+
+得たノウハウ↓
+
+- *.devcontainer*をリポジトリに含む場合
+    - 気にしなくて良い
+- *.devcontainer*をリポジトリに含めない場合
+    1. *.devcontainer*内にscriptフォルダを用意し、その中に実行したいスクリプトを実装
+    1. `/workspace/repos`にリポジトリをbind
+    1. `/workspace/script`に`.devcontainer/script`をbind
+        - スクリプトフォルダのパスを環境変数にするのも良い
+
+:::
+
+### IDE
+
+```json
+{
+    "customizations": {
+        "vscode": {
+            "extensions": [],
+            "settings": {}
+        }
+    }
+}
+```
+
+IDE固有の記述です。
+これもリファレンスがあります。みなさんの好きなもので使えると良いですね。 [Supporting tools and services](https://containers.dev/supporting)
+
+今回はVSCodeに限った紹介をします。
+
+#### *extensions*
+
+- devcontainer内で自動的にインストールされる拡張機能で、拡張機能のIDを指定します
+- featuresによっては自動的にインストールされる拡張機能もありますが、重複は問題ありません
+
+:::check:devcontainer内のVSCode拡張機能
+
+VSCodeを活用する際に、拡張機能をたくさん使っている方も少なくないと思います。
+そんなみなさんが、「devcontainerごとにいちいち拡張機能をリストアップできるかーい」って思うと思います (私は思いました)。
+
+そんなあなたに朗報です。
+VSCodeの*settings.json*に`dev.containers.defaultExtensions`の項目を配列型で定義しそこに拡張機能IDを書いておけば、
+*devcontainer.json*に書かなくても毎回使うような拡張機能はここから勝手にインストールしてくれます。
+
+これを設定すれば、*devcontainer.json*にはそのプロジェクトで必要な最低限の拡張機能を書くだけで良くなります。
+
+:::
+
+#### *settings*
+
+- リポジトリの *.vscode*に含むもよし、ここで設定するのもよし。
+- ユーザーの*settings.json*も使われますのでご安心を。
+- なので私はあんまりここに書かないです
+
+## devcontainerの立ち上げ
+
+おめでとうございます。
+ここまでで設定ファイルができあがれば、あとは以下の手順でdevcontainerを立ち上げることができます。
+
+1. WSL環境のVSCodeで、`Ctrl+Shift+P`でコマンドパレットを開く
+1. `Dev Containers: Rebuild and Reopen in Container`を入力しEnter
+    - VSCodeで開いているワークフォルダから *.devcontainer/\*/devcontainer.json*を探して、構文チェックが済むとcreateが始まります (複数あると選択ポップアップが出ます)。
+    - create中にエラーがあってもWSLに戻って、エラースタックが表示されるので安心です
+1. devcontainer起動後のウィンドウで、VSCodeの拡張機能のインストールが完了すればバッチリです
+1. WSLに戻る場合は、再度コマンドパレットを開いて、`Dev Containers: Reopen Folder in WSL`を実行します
+1. 次回以降はコマンドパレットから、`Dev Containers: Reopen in Container`を実行します。
+    時間がかからなくなります
+1. WSLのVSCodeに*ms-azuretools.vscode-docker*拡張機能を入れておけば、
+    コンテナやイメージの一覧が出るので嬉しいです
+
+:::column:Dev Container CLI
+
+思っていたより長文になってしまってスミマセン。
+ここで一息入れましょう。
+(この後に思いもよらない壁があります)
+
+ところで、devcontainerの機能にもCLIがあるんですね。私も知らなかったです。[devcontainer CLI](https://code.visualstudio.com/docs/devcontainers/devcontainer-cli)
+vscodeのtaskやlaunch.jsonが大好きな人には嬉しい機能ですね (私とか)。
+
+:::
+
+## リポジトリにpushじゃあああ
+
+:::info:ここからの話
+
+ここからはdevcontainerの構築とは少し違う話になります。
+**リポジトリが前提になります。**
+少し前に出た、*.devcontainer*フォルダをリポジトリに含む, 含まないは一旦関係ありません。
+
+:::
+
+devcontainer環境下で開発をしていて、リモートリポジトリの内容を更新したので、
+いざ`git push`...というときにエラーが出ます。
+
+「そうか、*.gitconfig*のbindをしていないじゃないか」
+→ 違います。devcontainerは *~/.gitconfig*を自動で複製してくれます。
+
+:::stop:GitのSSH
+
+どうやらHTTPSで`git clone`している場合は問題ないようなのですが、
+SSHキーを使用している場合はローカルのssh-agentの起動と、ssh-addが必要なようです。 [Sharing git credentials](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials)
+しかも、ssh-agentは起動のたびに秘密鍵の登録が必要でした。
+しかしWSLで素直にそれをやっていると、ssh-agentがどんどん増えてしまうようです。
+
+:::
+
+というわけで、そのあたりの導入をします。
+
+### Windows側のSSHインストール
+
+```batch
+REM sshのバージョンアップ
 winget install Microsoft.OpenSSH.Beta
 ```
 
-[dockerhub](https://hub.docker.com/)
-[devcontainer_metadata_reference](https://containers.dev/implementors/json_reference/)
-[features](https://containers.dev/features)
+### WSLでsshキー生成
 
-VSCodeのタスク機能を使って、devcontainerの立ち上げやリビルドを設定しておくと嬉しいかもですね
-[devcontainer CLI](https://code.visualstudio.com/docs/devcontainers/devcontainer-cli)
-WindowsにインストールしたVSCodeの拡張機能は最小限にして、WSLのVSCodeに基本的に使いたい機能を入れています。
+```bash
+KEY_NAME=ed25519
 
-- [注釈] devcontainerはMicrosoftがリファレンスを出しているので、MicrosoftのVSCodeが率先して環境整備しているように見えます。
-    - 現に、開発用イメージもmicrosoftのものやvscodeがデフォルトユーザーになっているものが基本になっています。
+sudo apt update
+sudo apt install -y \
+   openssh-client \
+   keychain \
+   socat \
+   xsel &&
+  sudo apt clean &&
+  sudo rm -rf /var/lib/apt/lists/*
+
+# keyがなければ生成
+if [ ! -f $HOME/.ssh/id_${KEY_NAME} ]; then
+   ssh-keygen -t ${KEY_NAME}
+   echo "clipboard: id_${KEY_NAME}.pub content"
+   cat $HOME/.ssh/id_${KEY_NAME}.pub | xsel -bi
+fi
+
+# 自動エージェント起動の設定
+echo \
+   "if [ -z \"\$SSH_AUTH_SOCK\" ]; then
+   RUNNING_AGENT=\"\`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'\`\"
+   if [ \"\$RUNNING_AGENT\" = \"0\" ]; then
+        ssh-agent -s &> $HOME/.ssh/ssh-agent
+   fi
+   eval \`cat $HOME/.ssh/ssh-agent\` > /dev/null
+   ssh-add $HOME/.ssh/id_${KEY_NAME} 2> /dev/null
+fi" \
+   >$HOME/.bash_profile
+
+echo \
+   "/usr/bin/keychain -q --nogui $HOME/.ssh/id_${KEY_NAME}
+source $HOME/.keychain/$(hostname)-sh" \
+   >$HOME/.bashrc
+```
+
+軽く説明します。
+
+1. 必要なものを`apt install`しています。
+1. `~/.ssh/id_ed25519`がなければ生成します。
+    - 公開鍵はクリップボードに送られています。
+1. ssh-agentの起動とssh-addを *.bash_profile*に**上書き**します。
+    - 困るようであれば追記に修正してください。
+1. keychainというもので、devcontainerとの連携を定義し *.bashrc*に**上書き**します
+    - 困るようであれば追記に修正してください。
+1. 手動で、GitHubのSSHキー登録先にクリップボードの内容を登録してください。
+    <https://github.com/settings/keys>
+1. あとはdevcontainer内部で、`ssh -T git@github.com`が実行できれば問題ありません。
+
+[^1]: 「『Docker Composeのmountを1行で書くな』校歌を作詞してください」
+
+    ```textfile:Copilotくんの作詞
+    Verse 1: コンテナの海を渡り
+        我らのコードは進む
+        1行のmountは避けて
+        安全な道を選ぶ
+    Chorus: Docker Composeの力
+        我らの手に宿り
+        未来のシステム築く
+        団結の力で
+
+    Verse 2: 設定ファイルを見つめ
+        誤りを防ぐために
+        1行のmountはやめて
+        明確な道を示す
+    Chorus: Docker Composeの力
+        我らの手に宿り
+        未来のシステム築く
+        団結の力で
+
+    Verse 3: チームの力を信じ
+        共に進むこの道
+        1行のmountは捨てて
+        新たな未来を描く
+    Chorus: Docker Composeの力
+        我らの手に宿り
+        未来のシステム築く
+        団結の力で
+    ```

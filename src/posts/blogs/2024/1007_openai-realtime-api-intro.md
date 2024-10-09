@@ -258,6 +258,50 @@ ws.on('message', (message) => {
 実際にこのスクリプトをCLIから実行すれば、AIと音声で継続的に会話できます。
 日本語の精度は今ひとつな気がしますが、会話の切り替えや割り込みも結構自然に感じました。
 
+:::column:消費トークンの確認
+トークン消費量を確認する場合は、`response.done`イベントを参照します。
+このイベントはRealtime APIからレスポンス完了する都度実行されます。
+
+```json
+{
+  "type": "response.done",
+  "event_id": "event_AGFqWW4CX2z42FF0vlp6v",
+  "response": {
+    "object": "realtime.response",
+    "id": "resp_AGFqVS4FcpdQVsZzorL9X",
+    "status": "completed",
+    "output": [
+      {
+        // 省略
+      }
+    ],
+    "usage": {
+      "total_tokens": 140,
+      "input_tokens": 118,
+      "output_tokens": 22,
+      "input_token_details": {
+        "cached_tokens": 0,
+        "text_tokens": 102,
+        "audio_tokens": 16
+      },
+      "output_token_details": {
+        "text_tokens": 22,
+        "audio_tokens": 0
+      }
+    }
+  }
+}
+```
+
+`usage`プロパティでテキスト、音声のトークン消費量が確認できます。
+
+具体的な費用についてはOpenAIの公式ページから確認してください。
+
+- [OpenAI Pricing](https://openai.com/api/pricing/)
+
+テキストと音声ではトークン単価が大きく異なりますので、使いすぎて大変な請求にならないように注意しましょう。
+:::
+
 ## まとめ
 
 今回は登場したばかりのRealtime APIを使ってCLIベースの簡単なスクリプトを書いてみました。

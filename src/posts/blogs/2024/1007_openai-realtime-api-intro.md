@@ -314,6 +314,6 @@ ws.on('message', (message) => {
 
 :::info
 Function callingバージョンも公開しました。
-- [OpenAI の Realtime API で Function calling を使って音声で任意の関数を実行する](/blogs/2024/10/09/openai-realtime-api-function-calling/)
+- [OpenAI の Realtime API で音声を使って任意の関数を実行する(Function calling編)](/blogs/2024/10/09/openai-realtime-api-function-calling/)
 :::
 

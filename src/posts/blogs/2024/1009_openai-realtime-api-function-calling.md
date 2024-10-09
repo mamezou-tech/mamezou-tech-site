@@ -1,5 +1,5 @@
 ---
-title: OpenAI の Realtime API で Function calling を使って音声で任意の関数を実行する
+title: OpenAI の Realtime API で音声を使って任意の関数を実行する(Function calling編)
 author: noboru-kudo
 date: 2024-10-09
 tags: [OpenAI, RealtimeAPI, GPT, 生成AI, typescript]

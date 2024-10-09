@@ -3,46 +3,68 @@ title: 【イマドキ開発環境】devcontainerでローカルすっきり開�
 author: toshiki-nakasu
 # 公開日として設定されますので、それを考慮した日付にするようにしてください
 date: 2024-10-20
-tags: [開発環境, docker, wsl, ubuntu, Git, vscode]
+tags: [開発環境, docker, wsl, ubuntu, Git, vscode, Codespaces]
 image: true
 ---
 
+::::info:この記事で紹介すること
+
+- `devcontainer`をローカルで構築します
+    - `devcontainer`をリポジトリに組み込めば、誰でも同じように環境再現できるようになります
+- `devcontainer`と`WSL`と`Git`の連携
+- `Docker`の勉強の一環にもなります
+- その他`devcontainer`のノウハウ
+::::
+
+## はじめに
+
 みなさん`Docker`活用してますか？
-CI/CDで`Docker Image`を作るのはもちろんですが、やはりコンテナの有用性は、
+CI/CDで`Docker Image`を使うのはもちろんですが、やはりコンテナの有用性は、
 **環境に依存せずどこでも同じように動作すること**ですよね
 
-それで*開発環境でみんな同じ環境が使えたら嬉しくないですか？*
+それを活用して**みんな同じ開発環境が使えたら嬉しくないですか？**
 そんなときに使えるのが`devcontainer`の仕組みです
 
+:::column:devcontainerを活用した機能で、GitHub Codespacesというのもあるよ
+リポジトリをまるごとdevcontainerで他の開発者と共有できるので**やりたいことは叶います！**
+ただし、筆者は以下の理由でちゃんと使えていませんでした。
+
+- ブラウザで動かすので操作に癖がある
+- 環境はローカルに置いておきたい (リポジトリを直接弄っている気がしてソワソワする)
+
+ですが、devcontainerを理解すればCodespacesが何をやっているかが分かるようになるので、
+その勉強としても試してみる価値はあると思います。
+
+GitHub Codespacesについては、こちらをチェック！
+　→ [GitHub CodespacesによるJavaのチーム開発環境の作り方](https://developer.mamezou-tech.com/blogs/2023/06/26/codespaces-for-java/)
+:::
+
 - Node.js？npx？どんどんバージョン増えるので要らないです。
-- wingetが使えるようになった？便利ですよね。でも環境構築には要りません。
+- wingetが使えるようになった？便利ですよね。でも環境構築するときに結局細々した設定が必要！
 - プロジェクトの新規加入メンバーに導入手順を渡して1日浪費？もっっっったいないし面倒！！
   (やることでプロジェクトの理解は深まると思いますが)
-
-::::info:分かる/できるようになること
-今回紹介する`devcontainer`をリポジトリに組み込んだり、
-`.devcontainer`フォルダを共有すれば同じように環境再現できます。
-::::
 
 :::check:前提条件
 VSCode (WindowsにそのままインストールでOK)
 　+
-【拡張機能】
-
-- `ms-ceintl.vscode-language-pack-ja` 一応日本語化用
-- `ms-vscode-remote.remote-containers` devcontainerに必要
-- `ms-vscode-remote.remote-wsl` WSL環境に必要
+【拡張機能】 `code --install-extension [拡張機能ID]`
+`ms-ceintl.vscode-language-pack-ja` 一応日本語化用
+`ms-vscode-remote.remote-containers` devcontainerに必要
+`ms-vscode-remote.remote-wsl` WSL環境に必要
 ::::
 
 ## 説明する内容
 
-1. [WSLのインストール](#)
-1. [WSLにDocker CLIをインストール](#)
-1. [開発環境イメージの選定](#)
+1. WSLのセットアップ (できていれば飛ばしてOK)
+1. 作業ディレクトリの用意
+1. 開発環境イメージの選定と定義
+1. devcontainer.jsonの実装
 
 ---
 
-## WSLのインストール
+## WSLのセットアップ (できていれば飛ばしてOK)
+
+### WSLのインストール
 
 1. WSL本体の導入
 
@@ -55,33 +77,35 @@ VSCode (WindowsにそのままインストールでOK)
 
 1. Ubuntuのディストリビューションを指定してインストール
 
-    コマンドプロンプトで以下を実行
+    コマンドプロンプトで以下を実行 (時間かかります)
 
     ```bash
     SET DISTRIBUTION=Ubuntu-22.04
     wsl --install --distribution %DISTRIBUTION%
-
-    # keychainに必要なsshのバージョンアップ
-    winget install Microsoft.OpenSSH.Beta
+    # たぶんここでデフォルトユーザーとパスワードの入力がある
     ```
 
-:::column:ディストリビューションのアンインストール
-wsl --unregister Ubuntu-22.04
-winget uninstall Canonical.Ubuntu.2204
-:::
+    :::column:ディストリビューションのアンインストール
 
-## WSLにDocker CLIをインストール
+    ```bash
+    wsl --unregister Ubuntu-22.04
+    winget uninstall Canonical.Ubuntu.2204
+    ```
+
+    :::
+
+### WSLにDocker CLIをインストール
 
 Windowsの`Docker Desktop`には会社の制限がありますよね。
 Dockerが使えないと泣いていたあなたでもWSLが使えるなら、`Docker CLI`で解決です！
 以下をWSLのターミナルで実行して数分待てばインストール完了です。
 
-:::column:VSCodeからWSL環境を開く
+:::column:VSCodeをWSL環境で開く方法
 
 1. Ctrl+Shift+Pでコマンドパレットを開く
 1. `WSL: Connect to WSL`を入力しEnter
 1. 前提の拡張機能が入っていればウィンドウが切り替わるはずです
-1. ターミナルをBashで開けるようになっていれば問題ありません
+1. WSLでのターミナルは`Bash`を使いましょう
 :::
 
 ```bash
@@ -113,34 +137,192 @@ sudo usermod -aG docker $USER
 # ターミナル再起動後にsudo無しで実行可能
 ```
 
-上記コマンドの詳細が知りたければこちらをご参照ください[^1]
-[^1]: [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+上記コマンドの詳細が知りたければこちらをご参照ください
+　→ [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+
+### とりあえずGitもセットアップ
+
+```bash
+git config --global user.name "[名前]"
+git config --global user.email [メールアドレス]
+ssh -T git@github.com
+# yes
+```
 
 ## 作業ディレクトリの用意
 
-適当なフォルダをWSL上で用意してください。
+1. 適当なフォルダをWSL上で用意してください。(下記の例はユーザーフォルダ直下の`devEnvSample`フォルダ)
 
-```bash:sample.sh
-mkdir ~/devEnvSample
-code ~/devEnvSample
-```
+    ```bash
+    mkdir ~/devEnvSample
+    code ~/devEnvSample
+    ```
 
-:::column:codeコマンド
+    :::column:codeコマンド
 
-引数でパスを指定し、
+    VSCodeのコマンドです。PATHを通せばcmdからでも任意のものがVSCodeで開けるゾ
+    引数でパスを指定し、
 
-- 対象がファイルであれば、カレントウィンドウで開いて編集できるようになります
-- 対象がフォルダであれば、ウィンドウを切り替えてワークフォルダが指定のパスに切り替わります
+    - 対象がファイルであれば、カレントウィンドウで開いて編集できるようになります
+    - 対象がフォルダであれば、ウィンドウを切り替えてワークフォルダが指定のパスに切り替わります
+
+    詳細はリファレンスで
+    　→ [The Visual Studio Code command-line interface](https://code.visualstudio.com/docs/editor/command-line)
+    :::
+
+1. 作成したフォルダが新規ウィンドウで開かれているので、ここで.devcontainerフォルダを作成
+
+    ```bash
+    mkdir .devcontainer
+    ```
+
+1. 作成した.devcontainerフォルダ内にファイルを作成
+
+    ```bash
+    touch .devcontainer/{Dockerfile,devcontainer.env,compose.yaml,devcontainer.json}
+    ```
+
+1. こうなっていればOKです
+
+    ```txt
+    ~/devEnvSample$ tree -a
+    .
+    └── .devcontainer
+        ├── Dockerfile
+        ├── compose.yaml
+        ├── devcontainer.env
+        └── devcontainer.json
+    ```
+
+    :::column:treeコマンドはデフォルトでは入っていません
+
+    ```bash
+    sudo apt install tree
+    ```
+
+    :::
+
+## 開発環境イメージの選定と定義
+
+いよいよdevcontainerのDocker Image設定ファイルを作っていきます。
+
+:::stop:VSCode公式リファレンスについて
+[VSCodeのリファレンス](https://code.visualstudio.com/docs/devcontainers/containers)には、開発言語に合わせてイメージとイメージタグを選択するフローが記載されていますが、
+正直これはオススメできません。
+
+イマドキの開発は、複数の言語を同時に使った開発が多いと思っています。
+Java用のイメージを使ってdevcontainerを使っていても、
+途中で別の言語のインストールをしていたら、イメージを使っている意味が薄くなってしまいます。
+
+そのためベースイメージはベーシック, プレーンなものを選びましょう。
+また、devcontainer.jsonから直接、使用するイメージを使うことができますが、docker-composeを使用することをオススメします。
 :::
 
+1. Dockerfileにベースイメージを定義
+
+    ```Dockerfile:Dockerfile
+    ARG TAG
+    FROM ubuntu:${TAG}
+    ```
+
+    - alpineなどの軽量イメージを使っても、なんだかんだ不都合があったりするので、
+        私はよく普通のubuntuイメージを使っています。
+    - とりあえず引数でイメージタグを受けるようにだけしてあります。
+    - その他、基本的にどの開発環境でも必要なライブラリ等があればインストールしておいてOKです。
+
+1. Docker Image用のenvファイルを定義
+    システムの根本的なものだけ定義し、次のcomposeファイルで使います。
+
+    ```env:devcontainer.env
+    TZ="Asia/Tokyo"
+    LANG="C.UTF-8"
+    ```
+
+1. docker-composeにサービスを定義
+    4行目の`ubuntu`というサービス名を、後述のdevcontainer.jsonで使います。
+
+    ```yaml:compose.yaml
+    version: '3.8'
+
+    services:
+        ubuntu:
+            build:
+                context: .
+                dockerfile: Dockerfile
+                args:
+                    TAG: 22.04
+            image: plane:22.04
+            hostname: ubuntu
+            env_file:
+                - devcontainer.env
+    ```
+
+    :::column:docker-composeのファイル名
+
+    いつの間にか`compose.yaml`が推奨になっていたらしい
+    [Compose file reference](https://docs.docker.com/reference/compose-file/#compose-file)
+    :::
+
+なんと、イメージ選定と定義は以上です。
+Javaの環境は？とかはまた後で。
+
+## devcontainer.jsonの実装
+
+これから作るのはこちら
+
+```json:devcontainer.json
+{
+    // # devcontainer.json sample
+    // recommend: Do not sort json
+    // ## To create image
+    "name": "mySample",
+    "workspaceFolder": "/workspace",
+    "shutdownAction": "stopCompose",
+
+    // ## From base image
+    "dockerComposeFile": ["./compose.yaml"],
+    "service": "ubuntu",
+    "runServices": [],
+
+    // ## Resources
+    // warning: Can not use Env
+    "mounts": [
+        {
+            "type": "bind",
+            "source": "${localWorkspaceFolder}",
+            "target": "${containerWorkspaceFolder}",
+            "consistency": "delegated"
+        }
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "username": "developer"
+        },
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+
+    // ## Environment
+    "remoteUser": "developer",
+    "containerEnv": {},
+    "remoteEnv": {},
+    "portsAttributes": { "80": { "label": "http", "onAutoForward": "silent" } },
+
+    // ## Container command
+    // warning: To use .sh you need mount
+    // info: key is output stage
+    "overrideCommand": true,
+
+    // IDE
+    "customizations": {
+        "vscode": {
+            "extensions": [],
+            "settings": {}
+        }
+    }
+}
+```
+
 ===================================== ここまで一旦完了
-
-## 開発環境イメージの選定
-
-- [vscodeのリファレンス](https://code.visualstudio.com/docs/devcontainers/containers)には、開発言語に合わせてイメージとイメージタグを選択するフローが記載されていますが、正直これはオススメできません。
-- イマドキの開発は、複数の言語を同時に使った開発が多いと思っています。Java用のイメージを使ってdevcontainerを使っていても、途中で別の言語のインストールをしていたら、イメージの意味が薄くなってしまいます。
-- なので、イメージはベーシックな、プレーンなものを選びましょう。
-- また、devcontainer.jsonから直接、使用するイメージを使うことができますが、docker-composeを使用することをオススメします。
 
 ## featuresについて
 
@@ -207,111 +389,19 @@ code ~/devEnvSample
 
 ## (入れるかどうかは悩む) Docker cli
 
-## オレオレdevcontainerセット
-
-```Dockerfile:Dockerfile
-ARG TAG
-FROM ubuntu:${TAG}
-```
-
-```yaml:compose.yaml
-version: '3.8'
-
-services:
-    ubuntu:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            args:
-                TAG: 22.04
-        image: plane:22.04
-        hostname: ubuntu
-        env_file:
-            - devcontainer.env
-```
-
-```env:devcontainer.env
-TZ="Asia/Tokyo"
-LANG="C.UTF-8"
-```
-
-```json:devcontainer.json
-{
-    // # devcontainer.json sample
-    // recommend: Do not sort json
-    // ## To create image
-    "name": "mySample",
-    "workspaceFolder": "/workspace",
-    "shutdownAction": "stopCompose",
-
-    // ## From base image
-    "dockerComposeFile": ["./compose.yaml"],
-    "service": "ubuntu",
-    "runServices": [],
-
-    // ## Resources
-    // warning: Can not use Env
-    "mounts": [
-        {
-            "type": "bind",
-            "source": "${localWorkspaceFolder}",
-            "target": "${containerWorkspaceFolder}",
-            "consistency": "delegated"
-        }
-    ],
-    "features": {
-        "ghcr.io/devcontainers/features/common-utils:2": {
-            "username": "developer"
-        },
-        "ghcr.io/devcontainers/features/git:1": {}
-    },
-
-    // ## Environment
-    "remoteUser": "developer",
-    "containerEnv": {
-        "scriptFolder": "${containerWorkspaceFolder}/.devcontainer/script"
-    },
-    "remoteEnv": {},
-    "portsAttributes": { "80": { "label": "http", "onAutoForward": "silent" } },
-
-    // ## Container command
-    // warning: To use .sh you need mount
-    // info: key is output stage
-    "overrideCommand": true,
-    "initializeCommand": {
-        "Step": "echo [INFO] initializeCommand"
-    },
-    "onCreateCommand": {
-        "Step": "sh ${containerEnv:scriptFolder}/sample.sh onCreateCommand"
-    },
-    "updateContentCommand": {
-        "Step": "sh ${containerEnv:scriptFolder}/sample.sh updateContentCommand"
-    },
-    "postCreateCommand": {
-        "Step": "sh ${containerEnv:scriptFolder}/sample.sh postCreateCommand"
-    },
-    "postStartCommand": {
-        "Step": "sh ${containerEnv:scriptFolder}/sample.sh postStartCommand"
-    },
-    "postAttachCommand": {
-        "Step": "sh ${containerEnv:scriptFolder}/sample.sh postAttachCommand"
-    },
-
-    // IDE
-    "customizations": {
-        "vscode": {
-            "extensions": [],
-            "settings": {}
-        }
-    }
-}
-```
-
 ## その他
+
+```bash
+# keychainに必要なsshのバージョンアップ
+winget install Microsoft.OpenSSH.Beta
+```
 
 [dockerhub](https://hub.docker.com/)
 [devcontainer_metadata_reference](https://containers.dev/implementors/json_reference/)
 [features](https://containers.dev/features)
+
+VSCodeのタスク機能を使って、devcontainerの立ち上げやリビルドを設定しておくと嬉しいかもですね
+[devcontainer CLI](https://code.visualstudio.com/docs/devcontainers/devcontainer-cli)
 WindowsにインストールしたVSCodeの拡張機能は最小限にして、WSLのVSCodeに基本的に使いたい機能を入れています。
 
 - [注釈] devcontainerはMicrosoftがリファレンスを出しているので、MicrosoftのVSCodeが率先して環境整備しているように見えます。

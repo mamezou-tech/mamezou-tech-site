@@ -33,7 +33,7 @@
 
   // ## Environment
   "remoteUser": "developer",
-  "containerEnv": {},
+  "containerEnv": { "myBlogPath": "src/posts/blogs/2024/1008_devcontainer.md" },
   "remoteEnv": {},
   "portsAttributes": {
     "8080": { "label": "http", "onAutoForward": "silent" }

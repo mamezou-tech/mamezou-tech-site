@@ -2,7 +2,7 @@
 title: 新登場の OpenAI の Realtime API でAIと音声会話する
 author: noboru-kudo
 date: 2024-10-07
-tags: [OpenAI, GPT, 生成AI, typescript]
+tags: [OpenAI, RealtimeAPI, GPT, 生成AI, typescript]
 image: true
 ---
 
@@ -21,7 +21,7 @@ Realtime APIはこの問題を解消する新しいAPIで、テキストだけ�
 
 - [OpenAI Doc - Realtime API](https://platform.openai.com/docs/guides/realtime)
 
-このRealtime APIを使ってCLIベースの簡単な会話のやりとりを実装してみましたのでご紹介します(Function callingは次回予定)。
+このRealtime APIを使ってCLIベースの簡単な会話のやりとりを実装してみましたのでご紹介します。
 
 なお、本記事に掲載しているソースコードはRealtime APIを扱っている部分にフォーカスし、終了処理等は省略しています。
 ソースコード全体は[こちら](https://gist.github.com/kudoh/c0995ba2233138312c2f412868f196d0)で公開しています。
@@ -179,7 +179,7 @@ ws.on('open', () => {
 筆者の環境(MacBook Pro 2023年モデル)では、音声入力に内蔵マイクを使うと自分の声だけでなくAIが再生した音声も拾ってしまいました。
 これにより、「再生した音声の入力 -> レスポンス取得(AIが自分の声に反応) -> 取得した音声再生」 のループに陥りました。 
 Rate Limitオーバーが検知されてエラーが発生しますが、かなりのトークン量を消費します(＝高コスト)。
-ここでは、音声の入出力に外部オーディオデバイス(AirPods Pro等)を使用したところ解消しました。
+ここでは、音声の入出力に外部オーディオデバイスを使用したところ解消しました。
 :::
 
 :::column:テキストで入力する
@@ -256,7 +256,50 @@ ws.on('message', (message) => {
 `event.delta`に音声データがBase64エンコードされた状態で段階的に送信されてきますので、デコード後にそのままスピーカー(SoXプロセスの標準入力)に流せば完成です。
 
 実際にこのスクリプトをCLIから実行すれば、AIと音声で継続的に会話できます。
-日本語の精度は今ひとつな気がしますが、会話の切り替えや割り込みも結構自然に感じました。
+日本語の精度は今ひとつな気がしますが、会話の切り替えも自然に感じました。
+
+:::column:消費トークンの確認
+トークン消費量を確認する場合は、`response.done`イベントを参照します。
+このイベントはRealtime APIからレスポンス完了する都度発火されます。
+
+以下は`response.done`イベントの出力サンプルです。
+
+```json
+{
+  "type": "response.done",
+  "event_id": "event_AGFqWW4CX2z42FF0vlp6v",
+  "response": {
+    "object": "realtime.response",
+    "id": "resp_AGFqVS4FcpdQVsZzorL9X",
+    "status": "completed",
+    "output": [
+        // 省略
+    ],
+    "usage": {
+      "total_tokens": 140,
+      "input_tokens": 118,
+      "output_tokens": 22,
+      "input_token_details": {
+        "cached_tokens": 0,
+        "text_tokens": 102,
+        "audio_tokens": 16
+      },
+      "output_token_details": {
+        "text_tokens": 22,
+        "audio_tokens": 0
+      }
+    }
+  }
+}
+```
+
+`usage`プロパティでテキスト、音声のトークン消費量が確認できます。
+具体的な費用については、OpenAIの公式ページから確認してください。
+
+- [OpenAI Pricing](https://openai.com/api/pricing/)
+
+テキストと音声ではトークン単価が大きく異なりますので、使いすぎて大変な請求にならないように注意しましょう。
+:::
 
 :::column:消費トークンの確認
 トークン消費量を確認する場合は、`response.done`イベントを参照します。
@@ -312,3 +355,9 @@ ws.on('message', (message) => {
  
 ただし、Realtime APIの音声入出力はかなり高単価なので、遊び過ぎると高額な費用になりますのでその点はご注意ください(自己責任でお願いします)。
 今後はもっとチューニングしてみたり、Function callingを試してみたいと思います。
+
+:::info
+Function callingバージョンも公開しました。
+- [OpenAI の Realtime API で音声を使って任意の関数を実行する(Function calling編)](/blogs/2024/10/09/openai-realtime-api-function-calling/)
+:::
+

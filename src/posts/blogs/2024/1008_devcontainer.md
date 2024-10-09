@@ -1,7 +1,7 @@
 ---
 title: 【イマドキ開発環境】devcontainerでローカルすっきり開発環境構築！
 author: toshiki-nakasu
-date: 2024-10-20
+date: 2024-10-10
 tags: [開発環境, devcontainer, docker, wsl, ubuntu, Git, vscode, Codespaces, ssh]
 image: true
 ---

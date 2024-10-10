@@ -164,7 +164,7 @@ To send input audio, use the `input_audio_buffer.append` event, setting the Base
 As mentioned earlier, since we are using VAD mode, the end of the input audio or interruptions are judged server-side (Realtime API), and an audio response is returned. You don't need to worry about the end of the conversation here, just keep sending the audio.
 
 :::alert:Be cautious of speaker-to-microphone loopback
-In the author's environment (MacBook Pro 2023 model), using the built-in microphone for audio input picked up not only my voice but also the AI's playback audio. This led to a loop of "played audio input -> response acquisition (AI reacts to my voice) -> playback of acquired audio". A Rate Limit over is detected, causing an error, but it consumes a significant amount of tokens (= high cost). This was resolved by using external audio devices (such as AirPods Pro) for audio input and output.
+In the author's environment (MacBook Pro 2023 model), using the built-in microphone for audio input picked up not only my voice but also the AI's playback audio. This led to a loop of "played audio input -> response acquisition (AI reacts to my voice) -> playback of acquired audio". A Rate Limit over is detected, causing an error, but it consumes a significant amount of tokens (= high cost). This was resolved by using external audio devices for audio input and output.
 :::
 
 :::column:Inputting via text

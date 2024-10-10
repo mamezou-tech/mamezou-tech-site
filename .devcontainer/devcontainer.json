@@ -2,7 +2,7 @@
   // # devcontainer.json sample
   // recommend: Do not sort json
   // ## To create image
-  "name": "deveropperSite",
+  "name": "deveroperSite",
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
 

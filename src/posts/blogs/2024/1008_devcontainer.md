@@ -1,5 +1,5 @@
 ---
-title: 【イマドキ開発環境】devcontainerでローカルすっきり開発環境構築！
+title: 【devcontainer完全ガイド】DockerとWSLでイマドキの最強の開発環境を手に入れよう！
 author: toshiki-nakasu
 date: 2024-10-11
 tags: [開発環境, devcontainer, docker, wsl, ubuntu, Git, vscode, Codespaces, ssh]
@@ -285,8 +285,8 @@ Java用のイメージを使ってdevcontainerを使っていても、
     ```
 
 1. docker-composeにサービスを定義
-    ubuntuのイメージからplaneというイメージを作っています。
-    この例は最低限の実装なのでplaneイメージには何も有り難みがないです。
+    ubuntuのイメージからplainというイメージを作っています。
+    この例は最低限の実装なのでplainイメージには何も有り難みがないです。
     **4行目の*ubuntu*というサービス名を、後述のdevcontainer.jsonで使います**
 
     ```yaml:compose.yaml
@@ -299,7 +299,7 @@ Java用のイメージを使ってdevcontainerを使っていても、
                 dockerfile: Dockerfile
                 args:
                     TAG: 22.04
-            image: plane:22.04
+            image: plain:22.04
             hostname: ubuntu
             env_file:
                 - devcontainer.env
@@ -731,7 +731,7 @@ source $HOME/.keychain/$(hostname)-sh" \
 またお気づきかもしれませんが、今回Docker Imageが3つ登場します。
 
 1. ubuntu:22.04
-1. plane:22.04
+1. plain:22.04
 1. devcontainerのイメージ
 
 *compose.yaml*を開発環境で共有して一カ所で管理してしまうと、同じイメージを参照して不都合があったので、

@@ -16,8 +16,6 @@ social
 .idea
 .vscode
 !.vscode/settings.json
-!.vscode/launch.json
-!.vscode/tasks.json
 
 # textlint cache
 kvs-node-localstorage

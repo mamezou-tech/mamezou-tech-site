@@ -100,7 +100,7 @@ My first word is "${keyword}" on "${theme}".
 
   // const column = result.choices[0].message?.parsed as z.infer<typeof GeneratedColumn>;
   const column = result.choices[0].message?.content as string;
-  console.log(JSON.stringify(column, null, 2));
+  console.log(column);
 
   const formattedDate = today();
   if (!process.env.DISABLE_IMAGE_GENERATION) {
@@ -238,4 +238,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const reportDir = `${__dirname}/../../src/_data`;
 const reportFile = `${reportDir}/gpt.json`;
 
-await main(reportFile);
+try {
+  await main(reportFile);
+} catch (e) {
+  console.warn('error occurred, retrying...', { e });
+  await main(reportFile);
+}

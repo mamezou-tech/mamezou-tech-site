@@ -164,7 +164,7 @@ Please pick one of these keywords and write a short article about it.No markdown
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: column
+          text: item.text
         }
       },
       {

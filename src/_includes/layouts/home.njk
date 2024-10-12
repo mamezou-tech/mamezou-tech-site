@@ -48,6 +48,7 @@ layout: layouts/base.njk
     <fieldset class="chatgpt-jargon mameka-column">
       <legend><img alt="mameka" width="30px" height="100%" src="/img/logo/mameka6_30.png" />豆香の豆知識</legend>
       <img class="column-image" src="{{ meta.imageUrl }}/mameka/{{ gpt.columns[0].created | isoDate }}-daily-column-300.webp" width="300px" style="margin-right: 20px;" alt="image for mameka column" />
+      <div class="mb-2 text-lg">{{ gpt.columns[0].title }}</div>
       <div>{{ gpt.columns[0].text | safe }}</div>
       <div class="mt-2">{{ gpt.columns[0].conclusion | safe }}</div>
       <div><b>※本コラムはAIで生成したものです。内容の正確性を保証するものではありません。</b></div>

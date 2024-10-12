@@ -46,7 +46,7 @@ Your columns should follow these guidelines:
 - The article should include funny jokes.
 - Write in Japanese.
 - Your Output should be plain text, not markdown
-- Your Output should be between 600-700 characters.
+- **Your article must be more than 600 characters long**. If your article is shorter, please add more details or examples.
 - The article should be written in cheerful and energetic colloquialisms.
 - You should not use honorifics such as "です" and "ます".
 
@@ -54,7 +54,6 @@ Your columns should follow these guidelines:
 {title}
 
 {content}
-
 `
 }
 
@@ -87,18 +86,21 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
 
   console.log(keywords.words);
   // const keyword = pickup(keywords.words, pastTitles);
+  const content = `${systemMessage.content}
+
+The theme is "${theme}".
+The keywords are: 
+${keywords.words.map(w => `- ${w}`).join('\n')}.
+
+Please pick one of these keywords and write a short article about it.`;
+  fs.writeFileSync('prompt.txt', content)
   const result = await openai.chat.completions.create({
     model: 'o1-preview',
     // model: 'gpt-4o-mini', // for testing
     messages: [
       {
         role: 'user',
-        content: `${systemMessage.content}
-
-
-The theme is "${theme}".
-The keywords are: ${keywords.words.join(',')}.
-Please pick one of these keywords and write a short article about it.No markdown formatting, such as "##", should be used.`
+        content: content
       }
     ],
     // max_tokens: 2048,

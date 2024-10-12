@@ -115,7 +115,7 @@ Describes the overall settings for the AI, similar to the instructions in the As
 Specifies the model for converting input audio to text. This is necessary if text data from audio input is needed. The text data can be obtained from the `conversation.item.input_audio_transcription.completed` event (this event did not fire if not specified). It's better to specify it to determine if the input audio is being converted as expected.
 
 **turn_detection**
-Specifies the mode for detecting conversation switches in the Realtime API. You can specify `none` (no detection) or `server_vad` (VAD: voice activity detection). If VAD is enabled, the Realtime API automatically adjusts the response timing by detecting conversation ends or interruptions. Here, VAD is explicitly specified for explanation purposes, but it is the default setting.
+Specifies the mode for detecting conversation switches in the Realtime API. You can specify null (no detection) or `server_vad` (VAD: voice activity detection). If VAD is enabled, the Realtime API automatically adjusts the response timing by detecting conversation ends or interruptions. Here, VAD is explicitly specified for explanation purposes, but it is the default setting.
 
 Many other settings can be made with the `session.update` event. Refer to the official API reference for event details.
 

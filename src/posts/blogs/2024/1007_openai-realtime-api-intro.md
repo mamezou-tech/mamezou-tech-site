@@ -123,7 +123,7 @@ Assistants APIのinstructionsやChat Completion APIのSystem Messageと同じよ
 入力音声が期待通りに変換されているのかを判断するために指定しておいた方が良いと思います。
 
 **turn_detection**
-Realtime APIが会話の切り替えを検知するモードを指定します。`none`(検知しない)か`server_vad`(VAD: voice activity detection)を指定できます。
+Realtime APIが会話の切り替えを検知するモードを指定します。null(検知しない)か`server_vad`(VAD: voice activity detection)を指定できます。
 VADが有効になっている場合、Realtime API側で会話の終わりや割り込みを検知してレスポンスのタイミングを自動調整してくれます。
 ここでは項目を説明するために明示的にVADを指定していますが、VADはデフォルトになっています。
 

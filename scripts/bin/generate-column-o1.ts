@@ -37,6 +37,27 @@ const categories = [
   'AWS Services'
 ];
 
+// o1のsystem message対応してなかった
+const systemMessage: OpenAI.ChatCompletionMessageParam = {
+  role: 'system',
+  content: `You are a cute girl and an excellent columnist in Japan.
+Your columns should follow these guidelines:
+- Write passionate articles that readers can relate to.
+- The article should include funny jokes.
+- Write in Japanese.
+- Your Output should be plain text, not markdown
+- Your Output should be between 600-700 characters.
+- The article should be written in cheerful and energetic colloquialisms.
+- You should not use honorifics such as "です" and "ます".
+
+## Output Format
+{title}
+
+{content}
+
+`
+}
+
 async function main(path: string) {
   const json = Gpt.parse(JSON.parse(fs.readFileSync(path).toString()));
 
@@ -65,29 +86,19 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
   const keywords = candidates.choices[0].message.parsed as z.infer<typeof ThemeCandidates>;
 
   console.log(keywords.words);
-  const keyword = pickup(keywords.words, pastTitles);
+  // const keyword = pickup(keywords.words, pastTitles);
   const result = await openai.chat.completions.create({
     model: 'o1-preview',
     // model: 'gpt-4o-mini', // for testing
     messages: [
       {
         role: 'user',
-        content: `You are a cute girl and an excellent columnist in Japan.
-We will give you one word commonly used in the IT industry and you should output a short article about it.
-You need to write passionate articles that readers can relate to. However, the article should include funny jokes.
-Write the article in Japanese, but keep the words specified as much as possible.
-Also, Article should be written in cheerful and energetic colloquialisms, You should not use honorifics such as "です" and "ます".
-Your output should be plain text, not markdown and should be between 600-700 characters.
-Your name is "豆香" (pronounced "まめか").
-
-## Output Format
-{title}
-
-{content}
+        content: `${systemMessage.content}
 
 
-My first word is "${keyword}" on "${theme}".
-`
+The theme is "${theme}".
+The keywords are: ${keywords.words.join(',')}.
+Please pick one of these keywords and write a short article about it.No markdown formatting, such as "##", should be used.`
       }
     ],
     // max_tokens: 2048,
@@ -114,12 +125,14 @@ My first word is "${keyword}" on "${theme}".
 
   if (!safeResponse(column)) throw new Error(`unsafe content found: ${column}`);
 
+  const firstLineIndex = column.indexOf('\n');
   const item = {
-    title: keyword,
-    text: column.replaceAll(/(\r?\n)+/g, '<br />'),
+    title: column.slice(0, firstLineIndex),
+    text: column.slice(firstLineIndex + 2).replaceAll(/(\r?\n)+/g, '<br />'),
     created: new Date().toISOString(),
     theme
   };
+  console.log(item)
   json.columns.unshift(item);
   json.columns = json.columns.slice(0, 70);
   fs.writeFileSync(path, JSON.stringify(json, null, 2));

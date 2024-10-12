@@ -95,6 +95,11 @@ My first word is "${keyword}" on "${theme}".
     // temperature: 0.7,
     temperature: 1.0, // for o1 model
     // response_format: zodResponseFormat(GeneratedColumn, 'column')
+    store: true,
+    metadata: {
+      assistant: 'mameka',
+      usage: 'column'
+    }
   });
   // if (result.choices[0].message.refusal) throw new Error(result.choices[0].message.refusal);
 

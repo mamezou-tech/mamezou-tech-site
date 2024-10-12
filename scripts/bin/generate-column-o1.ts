@@ -93,7 +93,6 @@ The keywords are:
 ${keywords.words.map(w => `- ${w}`).join('\n')}.
 
 Please pick one of these keywords and write a short article about it.`;
-  fs.writeFileSync('prompt.txt', content)
   const result = await openai.chat.completions.create({
     model: 'o1-preview',
     // model: 'gpt-4o-mini', // for testing

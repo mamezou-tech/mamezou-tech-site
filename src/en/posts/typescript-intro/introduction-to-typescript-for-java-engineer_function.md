@@ -7,9 +7,9 @@ tags:
   - java
 image: true
 prevPage: >-
-  ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_special-type.md
+  ./src/en/posts/typescript-intro/introduction-to-typescript-for-java-engineer_special-type.md
 nextPage: >-
-  ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_object.md
+  ./src/en/posts/typescript-intro/introduction-to-typescript-for-java-engineer_object.md
 translate: true
 
 ---

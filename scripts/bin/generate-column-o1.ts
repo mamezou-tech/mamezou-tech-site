@@ -127,9 +127,10 @@ Please pick one of these keywords and write a short article about it.`;
   if (!safeResponse(column)) throw new Error(`unsafe content found: ${column}`);
 
   const firstLineIndex = column.indexOf('\n');
+  const text = column.slice(firstLineIndex + 2);
   const item = {
     title: column.slice(0, firstLineIndex),
-    text: column.slice(firstLineIndex + 2).replaceAll(/(\r?\n)+/g, '<br />'),
+    text: text.replaceAll(/(\r?\n)+/g, '<br />'),
     created: new Date().toISOString(),
     theme
   };
@@ -165,7 +166,7 @@ Please pick one of these keywords and write a short article about it.`;
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: item.text
+          text: text
         }
       },
       {

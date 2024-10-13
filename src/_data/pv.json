@@ -9,36 +9,36 @@
       "url": "/blogs/2022/12/08/jwt-auth/"
     },
     {
-      "title": "2024年版！VS Code で Java 開発環境を構築する",
-      "url": "/blogs/2024/07/18/write-java-with-vscode-2024/"
+      "title": "新登場の OpenAI の Realtime API でAIと音声会話する",
+      "url": "/blogs/2024/10/07/openai-realtime-api-intro/"
     },
     {
-      "title": "直感が理性に大反抗！「モンティ・ホール問題」",
-      "url": "/blogs/2022/07/04/monty-hall-problem/"
+      "title": "2024年版！VS Code で Java 開発環境を構築する",
+      "url": "/blogs/2024/07/18/write-java-with-vscode-2024/"
     },
     {
       "title": "Tauri 2.0 が RC になってるので触ってみる",
       "url": "/blogs/2024/09/22/try-tauri-v2-rc/"
     },
     {
+      "title": "直感が理性に大反抗！「モンティ・ホール問題」",
+      "url": "/blogs/2022/07/04/monty-hall-problem/"
+    },
+    {
       "title": "Google Test を使ってみる（その５：GoogleMock編）",
       "url": "/blogs/2023/10/08/google-test-05/"
-    },
-    {
-      "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
-      "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
-    },
-    {
-      "title": "WSL2上にUbuntu-22.04LTSを導入し、Dockerをインストールしようとしたら、いろいろとハマった件",
-      "url": "/blogs/2023/09/09/docker_ubuntu_on_wsl2/"
     },
     {
       "title": "IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）",
       "url": "/iot/internet-of-things-15/"
     },
     {
-      "title": "手書き風ドローツール Excalidraw のススメ",
-      "url": "/blogs/2023/03/22/use-excalidraw/"
+      "title": "Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする",
+      "url": "/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/"
+    },
+    {
+      "title": "Java用モック・フレームワーク「Mockito」を使ってみる（その２：void型メソッドのモック編）",
+      "url": "/blogs/2023/08/16/using-mockito-void-method/"
     }
   ]
 }

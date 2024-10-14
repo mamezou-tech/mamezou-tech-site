@@ -5,7 +5,7 @@ date: 2024-10-14
 tags: [java, spring, spring-boot, Springの小話]
 image: true
 ---
-Java16でrecordクラスが正式化されてからそれなりに時間が経ち、今ではすっかり普通に使われるようになりました。筆者はデータクラスの実装にLombokを使っていますが、そろそろ若干の後ろめたさを感じてきました。そんなこともあり最近重い腰をやっと上げ、まずはSpring Bootの`@ConfigurationPropeties`のバインドクラスをLombokからrecordクラスに変えてみました。今回はそこで得たrecordクラスの利用法や使用感を紹介したいと思います。最初に結論をいってしまうと、recordクラス、Lombokの`@Data`と遜色なく使えて便利でお勧めです。
+Java16でrecordクラスが正式化されてからそれなりに時間が経ち、今ではすっかり普通に使われるようになりました。筆者はデータクラスの実装にLombokを使っていますが、そろそろ若干の後ろめたさを感じてきました。そんなこともあり最近重い腰をやっと上げ、まずはSpring Bootの`@ConfigurationProperties`のバインドクラスをLombokからrecordクラスに変えてみました。今回はそこで得たrecordクラスの利用法や使用感を紹介したいと思います。最初に結論をいってしまうと、recordクラス、Lombokの`@Data`と遜色なく使えて便利でお勧めです。
 
 :::info
 この記事はSpring Boot 3.3.4で動作を確認しています。また記事で説明したコードはGitHubの[こちら](https://github.com/extact-io/configurationproperties-with-record)にアップしています。
@@ -14,7 +14,7 @@ Java16でrecordクラスが正式化されてからそれなりに時間が経�
 # Lombokの`@Data`を使った例
 実装法や使用感は従来のLombokを使ったバインドクラスをrecordクラスに変えてみるのがわかりやすいと思います。ということで、今回は次の設定とクラスを例にrecordクラスではどうなるかを説明していきます。
 
-- `@ConfigurationPropeties`でバインドする設定
+- `@ConfigurationProperties`でバインドする設定
 ```yaml
 test:
   jwt-issuer:
@@ -28,7 +28,7 @@ test:
       exp: 30 # 有効期限（分単位）
 ```
 
-- `@ConfigurationPropeties`で設定をバインドするクラス
+- `@ConfigurationProperties`で設定をバインドするクラス
 ```java
 @ConfigurationProperties(prefix = "test.jwt-issuer")
 @Validated // (1)
@@ -72,7 +72,7 @@ public class JwtIssuerDataProperties {
 }
 ```
 
-`@ConfigurationPropeties`がもつ機能をある程度網羅する例を使いたかったため、アプリで実際に使っているJWTの設定クラスを使っていることもあり若干難しく見えますが、`@ConfigurationPropeties`での利用を前提とした場合、注目するポイントは次になります。（逆にいうと他はあまり気にしなくてもOKです）
+`@ConfigurationProperties`がもつ機能をある程度網羅する例を使いたかったため、アプリで実際に使っているJWTの設定クラスを使っていることもあり若干難しく見えますが、`@ConfigurationProperties`での利用を前提とした場合、注目するポイントは次になります。（逆にいうと他はあまり気にしなくてもOKです）
 1. バインドする設定が存在しなかった場合の初期値を定義している → (2)(6)(10)
 2. ネストしたオブジェクトを持っている → (4)(5)
 3. バインドされた値をもとにした導出メソッドを持っている → (7)(8)(11)
@@ -82,7 +82,7 @@ public class JwtIssuerDataProperties {
 [^1]: `RsaKeyConversionServicePostProcessor`のBeanが登録されていればパス(String)から`RSAPrivateKey`の型変換を自動で行うことができます。通常このPostProcesorは`@EnableWebSecurity`で登録されます。なおサンプルでは秘密鍵をクラスパス上に置いていますが、非常に重要なデータなので、本番環境ではセキュリティが確保された安全な場所に配置しましょう。
 
 :::column: 設定値のバインドはフィールドアクセスで行われる
-`@ConfigurationPropeties`は設定キーにマッチするフィールドにキーに対する設定値をバインドする機能ですが、この設定値のバインドはプロパティアクセス(setter呼び出し)ではなくフィールドアクセスで行われます。したがって、実はバインドクラスにgetter/setterがなくても設定値はフィールドにバインドされます。
+`@ConfigurationProperties`は設定キーにマッチするフィールドにキーに対する設定値をバインドする機能ですが、この設定値のバインドはプロパティアクセス(setter呼び出し)ではなくフィールドアクセスで行われます。したがって、実はバインドクラスにgetter/setterがなくても設定値はフィールドにバインドされます。
 
 これを考えるとバインドクラスに用いるLombokのアノテーションはgetter/setterの両方を生成する`@Data`ではなく、getterしか生成しないイミュータブルな`@Value`がよい気がしますが1点だけ難点があります。それは初期値を持つフィールドに`@NonFinal`が必要になることです。
 
@@ -101,7 +101,7 @@ public class JwtIssuerDataProperties {
 # recordクラスを使う場合のキモ
 では、先ほどのLombokのバインドクラスをrecordクラスの実装に変えてみたいと思いますが、ここでキモとなるのが初期値の設定です。
 
-recordクラスはフィールドを宣言しないため、「普通のクラス」のようにフィールド宣言時に初期値を設定することはできません。また、recordクラスで初期値を定義する場合は次のように外から指定する値だけを引数に持つコンストラクタを新たに定義し、それを呼び出すことが定石ですが`@ConfigurationPropeties`で使うことができるコンストラクタは１つだけです。よって、この定石も使えません。
+recordクラスはフィールドを宣言しないため、「普通のクラス」のようにフィールド宣言時に初期値を設定することはできません。また、recordクラスで初期値を定義する場合は次のように外から指定する値だけを引数に持つコンストラクタを新たに定義し、それを呼び出すことが定石ですが`@ConfigurationProperties`で使うことができるコンストラクタは１つだけです。よって、この定石も使えません。
 
 ```java
 @ConfigurationProperties(prefix = "test.jwt-issuer")
@@ -183,7 +183,7 @@ Spring Bootはrecordクラスのコンストラクタを呼び出す際、引数
 導出メソッドの定義や型変換、BeanValidationによる検証はLombokの`@Data`クラスや「普通のクラス」と全く同じように行うことができます。
 
 # recordクラスではできないこと
-ここまでの内容を見るとrecordクラスは「普通のクラス」と遜色なく`@ConfigurationPropeties`のバインドクラスとして使うことができるように見えますが、筆者が知る限り1つだけrecordクラスにできないことがあります。
+ここまでの内容を見るとrecordクラスは「普通のクラス」と遜色なく`@ConfigurationProperties`のバインドクラスとして使うことができるように見えますが、筆者が知る限り1つだけrecordクラスにできないことがあります。
 
 それはJavaConfigによるバインドプロパティの指定です。Lombokの`@Data`クラスなど「普通のクラス」の場合、次のようにすることでバインドプロパティを実行時に決定することができます。
 
@@ -205,4 +205,4 @@ JwtIssuerDataProperties jwtIssuerDataProperties() {
 # さいごに
 最後に説明したJavaConfigによるバインドプロパティの指定はrecordクラスではできませんが、このケースが必要となるのは筆者の経験上、かなり稀です。
 
-recordクラスはJavaの言語仕様に含まれる標準機能でかつ、Lombokの`@Data`に比べても機能的に大きな遜色はなく、イミュータブルなデータクラスを簡潔に記述できることから、`@ConfigurationPropeties`には原則recordクラスにし、JavaConfigによるバインドプロパティの指定など、recordクラスではできないケースがある場合にのみLombokを使うようにするのがよいのではないかと思います。
+recordクラスはJavaの言語仕様に含まれる標準機能でかつ、Lombokの`@Data`に比べても機能的に大きな遜色はなく、イミュータブルなデータクラスを簡潔に記述できることから、`@ConfigurationProperties`には原則recordクラスにし、JavaConfigによるバインドプロパティの指定など、recordクラスではできないケースがある場合にのみLombokを使うようにするのがよいのではないかと思います。

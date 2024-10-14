@@ -79,7 +79,7 @@ public class JwtIssuerDataProperties {
 4. BeanValidationによる設定値の検証を行っている → (1)(3)(9)
 5. Stringの設定値から`RSAPrivateKey`型[^1]やenum型、`LocalDateTime`型などへの型変換が自動で行われる
 
-[^1]: `RsaKeyConversionServicePostProcessor`のBeanが登録されていればパス(String)から`RSAPrivateKey`の型変換を自動で行うことができます。通常このPostProcesorは`@EnableWebSecurity`で登録されます。なおサンプルでは秘密鍵をクラスパス上に置いていますが、非常に重要なデータなので、本番環境ではセキュリティが確保された安全な場所に配置しましょう。
+[^1]: `RsaKeyConversionServicePostProcessor`のBeanが登録されていればパス(String)から`RSAPrivateKey`の型変換を自動で行うことができます。通常このPostProcessorは`@EnableWebSecurity`で登録されます。なおサンプルでは秘密鍵をクラスパス上に置いていますが、非常に重要なデータなので、本番環境ではセキュリティが確保された安全な場所に配置しましょう。
 
 :::column: 設定値のバインドはフィールドアクセスで行われる
 `@ConfigurationProperties`は設定キーにマッチするフィールドにキーに対する設定値をバインドする機能ですが、この設定値のバインドはプロパティアクセス(setter呼び出し)ではなくフィールドアクセスで行われます。したがって、実はバインドクラスにgetter/setterがなくても設定値はフィールドにバインドされます。

@@ -2,7 +2,7 @@
 title: 新登場の OpenAI の Realtime API でAIと音声会話する
 author: noboru-kudo
 date: 2024-10-07
-tags: [OpenAI, RealtimeAPI, GPT, 生成AI, typescript]
+tags: [RealtimeAPI, OpenAI, GPT, 生成AI, typescript]
 image: true
 ---
 
@@ -129,7 +129,7 @@ VADが有効になっている場合、Realtime API側で会話の終わりや�
 
 その他にも多数の設定が`session.update`イベントで可能です。イベント詳細は公式APIリファレンスを参照してください。
 
-- [OpenAI API Reference - session.updated](https://platform.openai.com/docs/api-reference/realtime-server-events/session-updated)
+- [OpenAI API Reference - session.update](https://platform.openai.com/docs/api-reference/realtime-client-events/session/update)
 
 ## Realtime APIに音声をインプットする
 

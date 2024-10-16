@@ -224,9 +224,9 @@ ws.on('message', (message) => {
 });
 ```
 `item.name`に`session.update`で指定した関数名、`item.arguments`に実行する引数(JSON文字列)が設定されてきますので、これをもとに関数を実行(Google検索)します。
-関数実行結果は[conversation.item.createイベント](https://platform.openai.com/docs/api-reference/realtime-server-events/conversation/item/created)でRealtime APIに連携します。
+関数実行結果は[conversation.item.createイベント](https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/create)でRealtime APIに連携します。
 
-注意点として、実行結果の連携後にレスポンス生成([response.createイベント](https://platform.openai.com/docs/api-reference/realtime-server-events/response/created))を要求する必要があります(これをしないと何も応答してくれません)。
+注意点として、実行結果の連携後にレスポンス生成([response.createイベント](https://platform.openai.com/docs/api-reference/realtime-client-events/response/create))を要求する必要があります(これをしないと何も応答してくれません)。
 こうすると、関数実行結果をもとに回答が生成されて音声としてレスポンスが送信されてきます。このイベント([response.audio.delta](https://platform.openai.com/docs/api-reference/realtime-server-events/response/audio/delta))は音声ストリーミングとしてサブスクライブしてますので、そのままスピーカーから再生されることになります([前回記事](/blogs/2024/10/07/openai-realtime-api-intro/#realtime-apiからのレスポンス音声を再生する)参照)。
 
 ここでの実行の流れを整理すると以下の通りです(送信・購読しているイベントのみ表示)。

@@ -150,10 +150,10 @@ Function calling can be specified in a single `session.update` event along with 
 
 If it is determined that function execution is necessary, the Realtime API sends the function's arguments in the following event. Based on a quick investigation, it seems that the function arguments can be obtained from the following events.
 
-- [response.function_call_arguments.delta](https://platform.openai.com/docs/api-reference/realtime-server-events/response-function-call-arguments-delta)
-- [response.function_call_arguments.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response-function-call-arguments-done)
-- [response.output_item.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response-output-item-done)
-- [response.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response-done)
+- [response.function_call_arguments.delta](https://platform.openai.com/docs/api-reference/realtime-server-events/response/function_call_arguments/delta)
+- [response.function_call_arguments.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response/function_call_arguments/done)
+- [response.output_item.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response/output_item/done)
+- [response.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response/done)
 
 There are various events, which can be confusing...
 Checking the [reference implementation](https://github.com/openai/openai-realtime-api-beta) available, it seems that arguments streamed in the `response.function_call_arguments.delta` event are accumulated and the function is executed in the `response.output_item.done` event.
@@ -221,9 +221,9 @@ ws.on('message', (message) => {
   }
 });
 ```
-`item.name` is set with the function name specified in `session.update`, and `item.arguments` contains the execution arguments (JSON string), based on which the function (Google search) is executed. The function execution result is relayed to the Realtime API with the [conversation.item.create event](https://platform.openai.com/docs/api-reference/realtime-server-events/conversation-item-created).
+`item.name` is set with the function name specified in `session.update`, and `item.arguments` contains the execution arguments (JSON string), based on which the function (Google search) is executed. The function execution result is relayed to the Realtime API with the [conversation.item.create event](https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/create).
 
-Note that it is necessary to request response generation ([response.create event](https://platform.openai.com/docs/api-reference/realtime-client-events/response-create)) after relaying the execution result (otherwise, there will be no response). This way, a response is generated based on the function execution result and sent as audio. This event ([response.audio.delta](https://platform.openai.com/docs/api-reference/realtime-server-events/response-audio-delta)) is subscribed to as audio streaming, so it will be played directly through the speakers (see [previous article](/blogs/2024/10/07/openai-realtime-api-intro/#realtime-apiからのレスポンス音声を再生する)).
+Note that it is necessary to request response generation ([response.create event](https://platform.openai.com/docs/api-reference/realtime-client-events/response-create)) after relaying the execution result (otherwise, there will be no response). This way, a response is generated based on the function execution result and sent as audio. This event ([response.audio.delta](https://platform.openai.com/docs/api-reference/realtime-server-events/response/audio/delta)) is subscribed to as audio streaming, so it will be played directly through the speakers (see [previous article](/blogs/2024/10/07/openai-realtime-api-intro/#realtime-apiからのレスポンス音声を再生する)).
 
 The flow of execution here is organized as follows (only the events being sent and subscribed to are shown).
 

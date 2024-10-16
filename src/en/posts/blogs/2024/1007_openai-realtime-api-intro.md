@@ -119,7 +119,7 @@ Specifies the mode for detecting conversation switches in the Realtime API. You 
 
 Many other settings can be made with the `session.update` event. Refer to the official API reference for event details.
 
-- [OpenAI API Reference - session.updated](https://platform.openai.com/docs/api-reference/realtime-server-events/session-updated)
+- [OpenAI API Reference - session.update](https://platform.openai.com/docs/api-reference/realtime-client-events/session/update)
 
 ## Inputting Audio to the Realtime API
 

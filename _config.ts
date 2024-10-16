@@ -110,6 +110,7 @@ site.use(esbuild({
 
 site.copy("fonts");
 site.copy("img");
+site.copy("IndexNowKey.txt", "62f91e28a3954a4fbc90fd3c76a307e0.txt")
 
 site.helper("year", () => `${new Date().getFullYear()}`, { type: "tag" });
 site.helper("currentDate", () => {

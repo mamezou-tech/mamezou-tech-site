@@ -5,14 +5,14 @@ date: 2024-10-14
 tags: [java, spring, spring-boot, Springの小話]
 image: true
 ---
-Java16でrecordクラスが正式化されてからそれなりに時間が経ち、今ではすっかり普通に使われるようになりました。筆者はデータクラスの実装にLombokを使っていますが、そろそろ若干の後ろめたさを感じてきました。そんなこともあり最近重い腰をやっと上げ、まずはSpring Bootの`@ConfigurationProperties`のバインドクラスをLombokからrecordクラスに変えてみました。今回はそこで得たrecordクラスの利用法や使用感を紹介したいと思います。最初に結論をいってしまうと、recordクラス、Lombokの`@Data`と遜色なく使えて便利でお勧めです。
+Java16でrecordクラスが正式化されてからそれなりに時間が経ち、今ではすっかり普通に使われるようになりました。筆者はデータクラスの実装にLombokを使っていますが、そろそろ若干の後ろめたさを感じてきました。そんなこともあり重い腰をやっと上げ、Spring Bootの`@ConfigurationProperties`のバインドクラスをLombokからrecordクラスにまずは変えてみました。今回はそこで得たrecordクラスの利用法や使用感を紹介したいと思います。最初に結論をいうと、recordクラス、Lombokの`@Data`と遜色なく使えて便利でお勧めです。
 
 :::info
 この記事はSpring Boot 3.3.4で動作を確認しています。また記事で説明したコードはGitHubの[こちら](https://github.com/extact-io/configurationproperties-with-record)にアップしています。
 :::
 
 # Lombokの`@Data`を使った例
-実装法や使用感は従来のLombokを使ったバインドクラスをrecordクラスに変えてみるのがわかりやすいと思います。ということで、今回は次の設定とクラスを例にrecordクラスではどうなるかを説明していきます。
+実装法や使用感は従来のLombokのクラスをrecordクラスに変えてみるのがわかりやすいと思います。ということで、今回は次の設定とクラスをrecordクラスにしたらどうなるかを例に説明していきます。
 
 - `@ConfigurationProperties`でバインドする設定
 ```yaml
@@ -72,7 +72,7 @@ public class JwtIssuerDataProperties {
 }
 ```
 
-`@ConfigurationProperties`がもつ機能をある程度網羅する例を使いたかったため、アプリで実際に使っているJWTの設定クラスを例にしていることもあり若干難しく見えますが、`@ConfigurationProperties`での利用を前提とした場合、注目するポイントは次になります。（逆にいうと他はあまり気にしなくてもOKです）
+`@ConfigurationProperties`の機能をある程度網羅した例を使いたかったため、実際利用しているJWTの設定クラスを例にしていることもあり若干難しく見えますが、`@ConfigurationProperties`の利用における注目ポイントは次のとおりです。（逆にいうと他はあまり気にしなくてもOKです）
 1. バインドする設定が存在しなかった場合の初期値を定義している → (2)(6)(10)
 2. ネストしたオブジェクトを持っている → (4)(5)
 3. バインドされた値をもとにした導出メソッドを持っている → (7)(8)(11)
@@ -82,9 +82,9 @@ public class JwtIssuerDataProperties {
 [^1]: `RsaKeyConversionServicePostProcessor`のBeanが登録されていればパス(String)から`RSAPrivateKey`の型変換を自動で行うことができます。通常このPostProcessorは`@EnableWebSecurity`で登録されます。なおサンプルでは秘密鍵をクラスパス上に置いていますが、非常に重要なデータなので、本番環境ではセキュリティが確保された安全な場所に配置しましょう。
 
 :::column: 設定値のバインドはフィールドアクセスで行われる
-`@ConfigurationProperties`は設定キーにマッチするフィールドにキーに対する設定値をバインドする機能ですが、この設定値のバインドはプロパティアクセス(setter呼び出し)ではなくフィールドアクセスで行われます。したがって、実はバインドクラスにgetter/setterがなくても設定値はフィールドにバインドされます。
+`@ConfigurationProperties`は設定キーにマッチするフィールドにキーに対する設定値をバインドする機能ですが、この設定値のバインドはプロパティアクセス(setter呼び出し)ではなくフィールドアクセスで行われます。このため、バインドクラスにgetter/setterがなくても実は設定値にフィールドはバインドされます。
 
-これを考えるとバインドクラスに用いるLombokのアノテーションはgetter/setterの両方を生成する`@Data`ではなく、getterしか生成しないイミュータブルな`@Value`がよい気がしますが1点だけ難点があります。それは初期値を持つフィールドに`@NonFinal`が必要になることです。
+こう考えるとバインドクラスに用いるLombokのアノテーションはgetter/setterの両方を生成する`@Data`ではなく、getterしか生成しないイミュータブルな`@Value`がよい気がしますが1点だけ難点があります。それは初期値を持つフィールドに`@NonFinal`が必要になることです。
 
 ```java
 @ConfigurationProperties(prefix = "test.jwt-issuer")
@@ -95,13 +95,13 @@ public class JwtIssuerDataProperties {
     ...
 ```
 
-`@Value`はデフォルトですべてのフィールドをfinalにするため、`@NonFinal`を付けないとインスタンス生成時にフィールドの値が初期値でfixされてしまいます。筆者はこの点が好みではないため、作法的にはイミュータブルな`@Value`がよいと思いつつ、ミュータブルな`@Data`を使っています。（賛否両論あると思いますが）
+`@Value`はデフォルトですべてのフィールドをfinalにするため、`@NonFinal`を付けないとインスタンス生成時にフィールドが初期値でfixされてしまいます。筆者はこの点が好みではないため、作法的にはイミュータブルな`@Value`がよいと思いつつ、ミュータブルな`@Data`を使っています。（賛否両論あると思いますが）
 :::
 
 # recordクラスを使う場合のキモ
 では、先ほどのLombokのバインドクラスをrecordクラスの実装に変えてみたいと思いますが、ここでキモとなるのが初期値の設定です。
 
-recordクラスはフィールドを宣言しないため、「普通のクラス」のようにフィールド宣言時に初期値を設定することはできません。また、recordクラスで初期値を定義する場合は次のように外から指定する値だけを引数に持つコンストラクタを新たに定義し、それを呼び出すことが定石ですが`@ConfigurationProperties`で使うことができるコンストラクタは１つだけです。よって、この定石も使えません。
+recordクラスはフィールドを宣言しないため「普通のクラス」のようにフィールド宣言時に初期値を設定することはできません。また、recordクラスで初期値を定義する場合は次のように外から指定する値だけを引数に持つコンストラクタを新たに定義し、それを呼び出すことが定石ですが`@ConfigurationProperties`で使うことができるコンストラクタは１つだけです。よって、この定石も使えません。
 
 ```java
 @ConfigurationProperties(prefix = "test.jwt-issuer")
@@ -172,7 +172,7 @@ public record JwtIssuerRecordProperties(
 ## 値フィールドに対する`@DefaultValue`の指定
 recordクラスでは(1)(4)(5)のように初期値を設定したいコンストラクタ引数に`@DefaultValue`で初期値を指定します。
 
-Spring Bootはrecordクラスのコンストラクタを呼び出す際、引数にバインドする設定がない場合にnullを設定しますが、引数に`@DefaultValue`が付けられている場合は、アノテーションに指定されている文字列をSpring Frameworkが持つ型変換サービス(ConversionService)を使って引数の型に変換し、変換した値を設定することで初期値の設定を実現しています。
+Spring Bootはrecordクラスのコンストラクタを呼び出す際、引数にバインドする設定がない場合はnullを設定しますが、引数に`@DefaultValue`が付けられている場合は、アノテーションに指定されている文字列をSpring Frameworkの型変換サービス(ConversionService)で型変換した値を設定します。recordクラスの初期値はこの仕組みを使って設定します。
 
 ## ネストしたオブジェクトに対する`@DefaultValue`の指定
 同じ`@DefaultValue`の指定でも(2)と(3)は上述の初期値の設定とは少し意味合いが異なります。
@@ -198,7 +198,7 @@ JwtIssuerDataProperties jwtIssuerDataProperties() {
 ```
 <br>
 
-このような使い方はプレフィックスが異なるだけの設定が複数ある場合に使ったりしますが、これはrecordクラスではできません。
+この使い方はプレフィックスが異なる複数の設定がある場合に使ったりしますが、これはrecordクラスではできません。
 
 上述のコラム欄にも書きましたが「普通のクラス」ではバインドクラスのインスタンスが生成された後にフィールドアクセスによる値の設定が行われますが、recordクラスのフィールドは内部的にfinalであるため、インスタンス生成後にフィールドの値を変更することはできません。これがrecordクラスではできない理由となります。
 

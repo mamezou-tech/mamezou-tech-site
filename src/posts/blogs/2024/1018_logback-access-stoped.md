@@ -51,6 +51,8 @@ Logback-access の dependency 定義を次のようにするとエラーは解�
 </dependency>
 ```
 
+`artifactId`が`logback-access-tomcat`に変わっているので要注意です。
+
 # 動かなくなった原因
 いろいろ調べていった結果、Spring BootをBumpして動かなくなった原因は以下のとおりでした。
 
@@ -69,7 +71,7 @@ Logback-access の dependency 定義を次のようにするとエラーは解�
 
 ということで、動かなくなった原因はわかったのですが、問題はLogback-accessのどのバージョンを使えばよいかでした。
 
-Maven Centralを除くと、Logback本体と同じv1.5系がLogback-accessにもあったので、コレだなと思い指定したが動かず、、、よくよく見てみるとv1.5系の実体はpomだけで中身がない！実質、使えないバージョンということがわかる。
+Maven Centralを除くと、Logback本体と同じv1.5系がLogback-accessにもあったので、コレだなと思い指定したが動かず、、、よくよく見てみるとv1.5系の実体はリポジトリが移動したよ！のお知らせだけのpomで中身がない！実質、使えないバージョンということがわかる。
 
 しょうがないので、まじめに調べるかと思い、Logback-accessの[公式ページ](https://logback.qos.ch/access.html)をみているとなにやら難しそうなことが書かれていて結局artifactとバージョンになにを指定すればいいのかよくわからず。が、ダメもとで[解決方法](#まずは解決方法)のとおりに指定したら問題なく動いて🙌となりました。
 

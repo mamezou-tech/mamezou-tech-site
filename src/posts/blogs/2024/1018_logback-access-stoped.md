@@ -1,7 +1,7 @@
 ---
 title: Springの小話 - Spring Bootを3.3系にBumpしたらLogback-accessが動かなくなった
 author: toshio-ogiwara
-date: 2024-10-17
+date: 2024-10-18
 tags: [java, spring, spring-boot, Springの小話]
 image: true
 ---

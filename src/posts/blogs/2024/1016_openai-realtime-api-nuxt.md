@@ -324,8 +324,8 @@ export function useAudio({ audioCanvas, logMessage, onFlushCallback }: Params) {
   /**
    * 再生する音声をキューに格納 -> 順次再生
    */
-  function enqueueAudio(buffer: Float32Array) {
-    audioQueue.push(buffer);
+  function enqueueAudio(buffer: ArrayBuffer) {
+    audioQueue.push(arrayBufferToAudioData(buffer));
     if (!isPlaying.value) {
       playFromQueue();
     }

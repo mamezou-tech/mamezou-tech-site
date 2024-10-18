@@ -321,8 +321,8 @@ export function useAudio({ audioCanvas, logMessage, onFlushCallback }: Params) {
   /**
    * Enqueue audio to be played -> Play sequentially
    */
-  function enqueueAudio(buffer: Float32Array) {
-    audioQueue.push(buffer);
+  function enqueueAudio(buffer: ArrayBuffer) {
+    audioQueue.push(arrayBufferToAudioData(buffer));
     if (!isPlaying.value) {
       playFromQueue();
     }

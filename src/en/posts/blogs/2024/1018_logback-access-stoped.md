@@ -1,6 +1,6 @@
 ---
 title: >-
-  A Little Story of Spring - Logback-access Stopped Working After Bumping Spring
+  Spring's Little Story - Logback-access Stopped Working After Bumping Spring
   Boot to 3.3 Series
 author: toshio-ogiwara
 date: 2024-10-18T00:00:00.000Z

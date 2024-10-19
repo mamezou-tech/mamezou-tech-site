@@ -93,31 +93,38 @@ The keywords are:
 ${keywords.words.map(w => `- ${w}`).join('\n')}.
 
 Please pick one of these keywords and write a short article about it.`;
-  const result = await openai.chat.completions.create({
-    model: 'o1-preview',
-    // model: 'gpt-4o-mini', // for testing
-    messages: [
-      {
-        role: 'user',
-        content: content
-      }
-    ],
-    // max_tokens: 2048,
-    max_completion_tokens: 3072, // for o1 model
-    // temperature: 0.7,
-    temperature: 1.0, // for o1 model
-    // response_format: zodResponseFormat(GeneratedColumn, 'column')
-    store: true,
-    metadata: {
-      assistant: 'mameka',
-      usage: 'column'
-    }
-  });
-  // if (result.choices[0].message.refusal) throw new Error(result.choices[0].message.refusal);
 
-  // const column = result.choices[0].message?.parsed as z.infer<typeof GeneratedColumn>;
-  const column = result.choices[0].message?.content as string;
-  console.log(column);
+  async function createColumn() {
+    const result = await openai.chat.completions.create({
+      model: 'o1-preview',
+      // model: 'gpt-4o-mini', // for testing
+      messages: [
+        {
+          role: 'user',
+          content: content
+        }
+      ],
+      // max_tokens: 2048,
+      max_completion_tokens: 3072, // for o1 model
+      // temperature: 0.7,
+      temperature: 1.0, // for o1 model
+      // response_format: zodResponseFormat(GeneratedColumn, 'column')
+      store: true,
+      metadata: {
+        assistant: 'mameka',
+        usage: 'column'
+      }
+    });
+    const column = result.choices[0].message?.content as string;
+    console.log(column);
+    return column;
+  }
+  let column = await createColumn();
+  for(let retry = 1; retry <= 3; retry++) {
+    console.warn('too short column!! retrying...', retry)
+    column = await createColumn()
+    if (column.length > 600) break;
+  }
 
   const formattedDate = today();
   if (!process.env.DISABLE_IMAGE_GENERATION) {

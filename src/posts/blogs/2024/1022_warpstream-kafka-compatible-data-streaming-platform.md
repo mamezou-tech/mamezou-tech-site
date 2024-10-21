@@ -1,13 +1,13 @@
 ---
-title: WrapStream - Confluent が獲得した Kafka 互換のデータストリーミングプラットフォーム
+title: WarpStream - Confluent が獲得した Kafka 互換のデータストリーミングプラットフォーム
 author: masahiro-kondo
 date: 2024-10-22
-tags: [WrapStream, Kafka]
+tags: [WarpStream, Kafka]
 image: true
 ---
 
 ## はじめに
-WrapStream は Apache Kafka 互換のデータストリーミングプラットフォームです。
+WarpStream は Apache Kafka 互換のデータストリーミングプラットフォームです。
 
 S3 などのオブジェクトストレージとシングルバイナリのエージェントだけで構成され、AZ(availability zone) 間のネットワーキングコストなし、ディスク管理不要、高いスケーラビリティを特徴とします。
 
@@ -17,7 +17,7 @@ S3 などのオブジェクトストレージとシングルバイナリのエ�
 
 [Confluent acquires WarpStream | Confluent](https://www.confluent.io/blog/confluent-acquires-warpstream/)
 
-WrapStream のコファウンダーの人のブログに買収の経緯が書かれています。
+WarpStream のコファウンダーの人のブログに買収の経緯が書かれています。
 
 [WarpStream is Dead, Long Live WarpStream](https://www.warpstream.com/blog/warpstream-is-dead-long-live-warpstream)
 

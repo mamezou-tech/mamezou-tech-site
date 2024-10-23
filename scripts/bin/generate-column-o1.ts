@@ -55,6 +55,22 @@ Your columns should follow these guidelines:
 
 {content}
 `
+};
+
+
+function checkFormat(column: string) {
+  const lines = column.split('\n');
+  if (lines.length < 3) {
+    return false;
+  }
+  const [, emptyLine, ...payloadLines] = lines;
+  if (emptyLine.trim() !== '') {
+    return false; // The second line is not empty
+  }
+  if (payloadLines.length === 0) {
+    return false; // No payload
+  }
+  return true;
 }
 
 async function main(path: string) {
@@ -76,7 +92,7 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
   };
   const candidates = await openai.beta.chat.completions.parse({
     model: 'gpt-4o-mini',
-    messages: [ prompt ],
+    messages: [prompt],
     response_format: zodResponseFormat(ThemeCandidates, 'theme_candidates')
   });
   if (candidates.choices[0].message.refusal) {
@@ -119,11 +135,16 @@ Please pick one of these keywords and write a short article about it.`;
     console.log(column);
     return column;
   }
+
   let column = await createColumn();
-  for(let retry = 1; retry <= 3; retry++) {
-    console.warn('too short column!! retrying...', retry)
-    column = await createColumn()
-    if (column.length > 600) break;
+  for (let retry = 0; retry <= 3; retry++) {
+    if (column.length <= 600 || !checkFormat(column)) {
+      console.warn('too short column or illegal format!! retrying...', retry);
+      column = await createColumn();
+    } else {
+      console.info('check OK!')
+      break;
+    }
   }
 
   const formattedDate = today();
@@ -141,7 +162,6 @@ Please pick one of these keywords and write a short article about it.`;
     created: new Date().toISOString(),
     theme
   };
-  console.log(item)
   json.columns.unshift(item);
   json.columns = json.columns.slice(0, 70);
   fs.writeFileSync(path, JSON.stringify(json, null, 2));

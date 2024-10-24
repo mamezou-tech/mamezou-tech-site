@@ -3,6 +3,7 @@ title: CodeBuild + ECR + AWS BatchでAWS Lambda pythonレイヤー作成
 author: yuji-kurabayashi
 date: 2024-10-25
 tags: [ AWS, lambda, Python, docker, CodeBuild, CloudFormation, ECR, Batch, Fargate ]
+image: true
 ---
 
 # 背景

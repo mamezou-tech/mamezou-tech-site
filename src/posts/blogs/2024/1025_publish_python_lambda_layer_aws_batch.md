@@ -273,7 +273,7 @@ CodeBuildプロジェクトの「編集」->「環境」->「追加設定」->�
 
 以下、x86_64向けのパラメータ設定例です。
 
-| 環境変数名 | 値(arm64向け) | コメント |
+| 環境変数名 | 値(x86_64向け) | コメント |
 | --- | --- | --- |
 | IMAGE_TAG | latest | CodeBuildで作成したdockerイメージに付与するタグです。`DOCKER_BUILD_OPTIONS`の`--build-arg BASE_IMAGE_TAG`に設定するものと同じものを設定して識別できるようにするのもありです。 |
 | DOCKER_BUILD_OPTIONS | --build-arg BASE_IMAGE_TAG=3.12.2024.10.16.13 | ベースイメージのタグを指定します。[ここ](https://hub.docker.com/r/amazon/aws-lambda-python/tags)から目的のpythonバージョンかつOS/ARCHがamd64のものを探します。|

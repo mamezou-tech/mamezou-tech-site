@@ -1,5 +1,5 @@
 ---
-title: CodeBuild + ECR + AWS BatchでAWS Lambda pythonレイヤー作成
+title: CodeBuild + ECR + AWS BatchでAWS Lambda Pythonレイヤー作成
 author: yuji-kurabayashi
 date: 2024-10-25
 tags: [ AWS, lambda, Python, docker, CodeBuild, CloudFormation, ECR, Batch, Fargate ]
@@ -8,23 +8,31 @@ image: true
 
 # 背景
 
-　AWS Lambdaの対応言語の中でもpythonはコード実行までの手間と学習コスト的にもお手軽で利用率が高いようです。私の主要言語はJavaなのですが、手っ取り早くLambdaを使いたいときは不慣れであってもお手軽なpythonを使いたくなります。
-　そして、Lambdaで外部ライブラリの力を借りたくなった時は[レイヤー](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/chapter-layers.html)というものを用意する必要があります。AWSが予め用意してくれているレイヤーで事足りればよいのですが、そうではない場合は自前でレイヤーを用意しなければなりません。しかし、実際に手を動かしてみるとpythonの環境構築（OpenSSL絡み）でハマってしまい大変でした。そこで、大変なpython環境構築には手を出したくないのでdockerを使い、面倒なコマンド作業をシェルにして実行できたらいいなと思い、レイヤー作成ツールを作ってみました。
+　AWS Lambdaの対応言語の中でもPythonはコード実行までの手間と学習コスト的にもお手軽で利用率が高いようです。私の主要言語はJavaなのですが、手っ取り早くLambdaを使いたいときは不慣れであってもお手軽なPythonを使いたくなります。
+　そして、Lambdaで外部ライブラリの力を借りたくなった時は[レイヤー](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/chapter-layers.html)というものを用意する必要があります。AWSが予め用意してくれているレイヤーで事足りればよいのですが、そうではない場合は自前でレイヤーを用意しなければなりません。しかし、実際に手を動かしてみるとPythonの環境構築（OpenSSL絡み）でハマってしまい大変でした。そこで、大変なPython環境構築には手を出したくないのでdockerを使い、面倒なコマンド作業をシェルにして実行できたらいいなと思い、レイヤー作成ツールを作ってみました。
 　レイヤー作成ツールのdockerコンテナをどこで実行するべきなのかについては、紆余曲折を経てAWS Batchで実行することにしました。イメージのビルドにはCodeBuildを用います。そしてCodeBuildとAWS Batch環境構築用にCloudFormationテンプレートを用意しました。
 
-:::column:dockerコンテナ実行環境の紆余曲折
+# コンテナ実行環境にAWS Batchを採用した背景
 
 本稿のAWS Batchを試す前に以下を全て試しましたが、そもそも無理だったり、出来たとしても納得ができるものではなかったので断念しました。
 
-1. Lambda
-    * Lambdaをコンテナで実行しているときは`/tmp`ディレクトリにしか書き込みができません。`pip install`でインストール先を`/tmp`にしましたが、結局インストールの管理情報の書き込みが`/tmp`以外のディレクトリに対して行われるのでエラーになってしまい断念しました。
-    * 参考までに、[コンテナ開発者向けの AWS Lambda](https://aws.amazon.com/jp/blogs/news/aws-lambda-for-the-containers-developer/)の「コンテナの制約」に以下の記載があります。
-        * コンテナは読み取り専用のルートファイルシステムで実行されます（ /tmp は書き込み可能な唯一のパスです）
-1. CloudShell
-    * 標準でdockerが使えて無料でいいなと思ったのですが、CloudShell自体のCPUアーキテクチャーがx86_64だけしかなさそうで、Amazonが推しているarm64で作成したイメージのコンテナ実行ができなかったため断念しました。[docker用クロスプラットフォームエミュレーター](https://hub.docker.com/r/tonistiigi/binfmt)を入れてみても上手くいきませんでした。
-1. EC2
-    * arm64のインスタンスを用意したので、当然arm64で作成したイメージのコンテナ実行はできました。しかし、都度利用するには手順が多くて、インスタンス稼働時間も純粋にコンテナ実行時間のみにはできずコストが勿体ないので、AWS Batchがよさそうだと思いました。
-:::
+## 試行その１ - Lambda
+
+LambdaのレイヤーをLambdaで作成出来たら便利で面白いなと思って試してみました。
+Lambdaをコンテナで実行しているときは`/tmp`ディレクトリにしか書き込みができません。`pip install`でインストール先を`/tmp`にしましたが、結局インストールの管理情報の書き込みが`/tmp`以外のディレクトリに対して行われるのでエラーになってしまい断念しました。
+
+参考までに、[コンテナ開発者向けの AWS Lambda](https://aws.amazon.com/jp/blogs/news/aws-lambda-for-the-containers-developer/)の「コンテナの制約」に以下の記載があります。
+
+> コンテナは読み取り専用のルートファイルシステムで実行されます（ /tmp は書き込み可能な唯一のパスです）
+
+## 試行その２ - CloudShell
+
+標準でdockerが使えて無料なのでいいなと思って試してみました。
+CloudShell自体のCPUアーキテクチャーがx86_64だけしかなさそうで、Amazonが推しているarm64で作成したイメージのコンテナ実行ができなかったため断念しました。[docker用クロスプラットフォームエミュレーター](https://hub.docker.com/r/tonistiigi/binfmt)を入れてみても上手くいきませんでした。
+
+## 試行その３ - EC2
+
+arm64のインスタンスを用意したので、当然arm64で作成したイメージのコンテナ実行はできました。しかし、都度利用するには手順が多くて、インスタンス稼働時間も純粋にコンテナ実行時間のみにはできずコストが勿体ないので、AWS Batchがよさそうだと思いました。
 
 # レイヤー作成ツール
 
@@ -34,9 +42,9 @@ image: true
 
 * <span style="font-size: 120%;"><b>[PublishPythonLambdaLayer.sh](https://github.com/yuji-kurabayashi/publish_lambda_layer/blob/main/python/PublishPythonLambdaLayer.sh)</b></span>
 
-一般的にpythonのLambdaレイヤーを作成および登録する手順は以下の通りです。
+一般的にPythonのLambdaレイヤーを作成および登録する手順は以下の通りです。
 
-1. pythonライブラリインストールコマンドを実行します
+1. Pythonライブラリインストールコマンドを実行します
     * 対象ライブラリを列挙した[requirements.txt](https://pip.pypa.io/en/latest/reference/requirements-file-format/)ファイルを用意します
     * [`python -m pip install [options] -r <requirements file> [package-index-options] ...`](https://pip.pypa.io/en/latest/cli/pip_install/#pip-install)
 1. レイヤー（zipファイル）を作成します
@@ -49,11 +57,11 @@ image: true
 1. Lambdaレイヤーを登録します
     * AWS CLIだと[`publish-layer-version`](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/lambda/publish-layer-version.html)
 
-レイヤー作成シェルではこれらを一気通貫で実施します。なお、python自作モジュールも併せて含めたLambdaレイヤーの作成には対応していません。
+レイヤー作成シェルではこれらを一気通貫で実施します。なお、Python自作モジュールも併せて含めたLambdaレイヤーの作成には対応していません。
 
 作成したLambdaレイヤーアップロード先のS3バケット名を指定しない場合はレイヤー作成までを行います。実行している環境からはS3に接続できないことが予めわかっている、といった場合でもレイヤー作成までは利用できるようにするためです。レイヤー（zipファイル）さえ作成できてファイルが手元にあれば、あとは手作業でなんとか対応できますよね。
 
-また、普通にpythonが利用できる環境であれば、レイヤー作成シェルのみを直接利用してレイヤーを作成できます。
+また、普通にPythonが利用できる環境であれば、レイヤー作成シェルのみを直接利用してレイヤーを作成できます。
 
 レイヤー作成シェルの使い方の詳細は以下のようなコマンドで確認できます。
 
@@ -117,9 +125,9 @@ CMD [ "" ]
 ```
 
 1. ベースイメージ
-    * [amazon/aws-lambda-python](https://hub.docker.com/r/amazon/aws-lambda-python/)を利用します。AWS Lambda pythonの実行環境そのものなのでレイヤーを作成するには最適な環境です。
+    * [amazon/aws-lambda-python](https://hub.docker.com/r/amazon/aws-lambda-python/)を利用します。AWS Lambda Pythonの実行環境そのものなのでレイヤーを作成するには最適な環境です。
 1. ベースイメージタグ
-    * docker build時にベースイメージのタグを`--build-arg BASE_IMAGE_TAG=<tag>`で指定できます。利用したいCPUアーキテクチャやpythonバージョンに見合った環境を柔軟に選択できます。例えば`3.11`や`3.12`を指定できます。しかし、Amazon Linux 2ベースのpython3.11では`yum`、Amazon Linux 2023ベースのpython3.12では`dnf`しか使えず、互換性がありませんでした。そこで、dnfコマンドが通るかどうかをチェックして、dnfとyumの使い分けをするようにして対応しました。
+    * docker build時にベースイメージのタグを`--build-arg BASE_IMAGE_TAG=<tag>`で指定できます。利用したいCPUアーキテクチャやPythonバージョンに見合った環境を柔軟に選択できます。例えば`3.11`や`3.12`を指定できます。しかし、Amazon Linux 2ベースのPython3.11では`yum`、Amazon Linux 2023ベースのPython3.12では`dnf`しか使えず、互換性がありませんでした。そこで、dnfコマンドが通るかどうかをチェックして、dnfとyumの使い分けをするようにして対応しました。
 1. インストールなどの初期化処理
     * [ヒアドキュメント](https://www.docker.com/blog/introduction-to-heredocs-in-dockerfiles/)で書いています。コマンドを頑張って`&& \`で数珠繋ぎしなくて済むので複雑な処理が書きやすくなり、その結果dockerイメージのレイヤ数も減らしやすくなるのでイメージのサイズを小さくできます。
 1. その他
@@ -269,14 +277,14 @@ CodeBuildプロジェクトの「編集」->「環境」->「追加設定」->�
 | 環境変数名 | 値(arm64向け) | コメント |
 | --- | --- | --- |
 | IMAGE_TAG | latest | CodeBuildで作成したdockerイメージに付与するタグです。`DOCKER_BUILD_OPTIONS`の`--build-arg BASE_IMAGE_TAG`に設定するものと同じものを設定して識別できるようにするのもありです。 |
-| DOCKER_BUILD_OPTIONS | --build-arg BASE_IMAGE_TAG=3.12.2024.10.15.10 | ベースイメージのタグを指定します。[ここ](https://hub.docker.com/r/amazon/aws-lambda-python/tags)から目的のpythonバージョンかつOS/ARCHがarm64のものを探します。|
+| DOCKER_BUILD_OPTIONS | --build-arg BASE_IMAGE_TAG=3.12.2024.10.15.10 | ベースイメージのタグを指定します。[ここ](https://hub.docker.com/r/amazon/aws-lambda-python/tags)から目的のPythonバージョンかつOS/ARCHがarm64のものを探します。|
 
 以下、x86_64向けのパラメータ設定例です。
 
 | 環境変数名 | 値(x86_64向け) | コメント |
 | --- | --- | --- |
 | IMAGE_TAG | latest | CodeBuildで作成したdockerイメージに付与するタグです。`DOCKER_BUILD_OPTIONS`の`--build-arg BASE_IMAGE_TAG`に設定するものと同じものを設定して識別できるようにするのもありです。 |
-| DOCKER_BUILD_OPTIONS | --build-arg BASE_IMAGE_TAG=3.12.2024.10.16.13 | ベースイメージのタグを指定します。[ここ](https://hub.docker.com/r/amazon/aws-lambda-python/tags)から目的のpythonバージョンかつOS/ARCHがamd64のものを探します。|
+| DOCKER_BUILD_OPTIONS | --build-arg BASE_IMAGE_TAG=3.12.2024.10.16.13 | ベースイメージのタグを指定します。[ここ](https://hub.docker.com/r/amazon/aws-lambda-python/tags)から目的のPythonバージョンかつOS/ARCHがamd64のものを探します。|
 
 :::alert:ベースイメージのタグはバージョンを固定できるものを明示的に指定すべし
 `DOCKER_BUILD_OPTIONS`で`--build-arg BASE_IMAGE_TAG`を指定しない場合は`latest`が適用されます。ちなみに`latest`でdocker buildしていると、ある日突然ベースイメージで使われる内部のバージョンが上がってしまい、その結果動作に影響が出てしまって突然動かなくなってしまうというリスクがあります。よって一般的にはバージョンが固定されるタグを明示的に指定することが望ましいです。ちなみに[amazon/aws-lambda-python](https://hub.docker.com/r/amazon/aws-lambda-python/)では、`latest`の他に`3.11`や`3.12`などでも内部でバージョンが上がってしまうので注意します。
@@ -504,7 +512,7 @@ Lambdaはタイムアウト時間がデフォルトで3秒なので、念のた�
 ### ソースコード
 
 レイヤーで取り込んだモジュール（requests, httpx）を利用してみます。
-ついでに`platform.python_version()`で、実際に動作しているpythonのバージョンを取得してみます。
+ついでに`platform.python_version()`で、実際に動作しているPythonのバージョンを取得してみます。
 
 ```python:lambda_function.py
 import platform
@@ -526,14 +534,14 @@ def lambda_handler(event, context):
 
 ### 実行結果
 
-HTTPリクエストが通っており、動作しているpythonバージョンが返されて成功しているのでレイヤーが利用できています。
+HTTPリクエストが通っており、動作しているPythonバージョンが返されて成功しているのでレイヤーが利用できています。
 
 |![Lambda実行結果](/img/blogs/2024/1025_publish_python_lambda_layer_aws_batch/018.jpg)|
 |:--|
 
-レイヤー作成のベースイメージ(3.12.7)がリリースされて間もなかったので、実際のLambda(3.12.5)がまだ追い付いていなかったようです。もしpythonのバージョンが違っている状態でうまく動かなかったときは、pythonバージョンが一致するようにベースイメージを選定し直してレイヤーを作り直してみるとよいかもしれません。
+レイヤー作成のベースイメージ(3.12.7)がリリースされて間もなかったので、実際のLambda(3.12.5)がまだ追い付いていなかったようです。もしPythonのバージョンが違っている状態でうまく動かなかったときは、Pythonバージョンが一致するようにベースイメージを選定し直してレイヤーを作り直してみるとよいかもしれません。
 
 # 最後に
 
-今回はpythonで実現しましたが、レイヤー作成ツールの中身（Dockerfileとシェルのみ）を差し替えれば他のLambda対応言語もこの方式で簡単にレイヤー作成できるのではないかと思います。
+今回はPythonで実現しましたが、レイヤー作成ツールの中身（Dockerfileとシェルのみ）を差し替えれば他のLambda対応言語もこの方式で簡単にレイヤー作成できるのではないかと思います。
 そして、イメージ作成環境のCodeBuildおよびコンテナ実行環境のAWS BatchのCloudFormationテンプレートは、レイヤー作成ツールには特化せず汎用的に利用できるように作ったので、これを用いて自由な言語で自由にツールやアプリケーションを用意できると思います。

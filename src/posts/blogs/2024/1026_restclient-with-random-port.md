@@ -25,7 +25,7 @@ Spring Bootはテストで起動したサーブレットコンテナのポート
 
 ```java
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT) // (1)
-class RestclientWithRamdomPortApplicationTests {
+class RestclientWithRandomPortApplicationTest {
 
     @Autowired
     private RestClient restClient; // (3)
@@ -54,7 +54,7 @@ class RestclientWithRamdomPortApplicationTests {
 }
 ```
 
-できなり理由の説明の前にテストコードの流れを簡単に説明すると
+できない理由の前にテストコードの流れを簡単に説明すると
 - (1)の指定でランダムポートでサーブレットコンテナを起動
 - (2)の引数で`local.server.port`の設定を受け取り、そのポート番号を使って生成したRestClientインスタンスをBeanとして登録
 - (3)の`@Autowired`で(2)で登録したRestClientインスタンスを受け取り

@@ -621,7 +621,7 @@ item004b instanceof Item004; //true
 * 5: `extends`は`true`になりましたが、`instanceof`は`false`になります。
 :::
 
-## index signature（インデックス型）
+## index-signature（インデックスシグネチャ）
 
 任意の属性を動的に受容する型の定義方法です。  
 

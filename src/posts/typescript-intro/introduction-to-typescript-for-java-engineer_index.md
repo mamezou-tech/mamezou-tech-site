@@ -48,7 +48,7 @@ TypeScriptで書かれたコードはJavaScriptにトランスパイルされ、
   * [特殊な型](/typescript-intro/introduction-to-typescript-for-java-engineer_special-type)：union、intersection、literal、template literal type、object literal、mapped type、conditional type、
   index signature
 * [関数](/typescript-intro/introduction-to-typescript-for-java-engineer_function)
-* オブジェクト：インターフェイス、タイプエイリアス、クラス　※作成中
+* [オブジェクト](/typescript-intro/introduction-to-typescript-for-java-engineer_object)：インターフェイス、タイプエイリアス、クラス
 * ジェネリクス　※作成中
 
 ## 執筆時の環境

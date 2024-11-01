@@ -2,6 +2,7 @@
 title: AWS小ネタ - 裏技！？AWS CloudShellで操作ユーザーの資格情報を簡単にゲット！
 author: yuji-kurabayashi
 date: 2024-11-01
+image: true
 tags: [ AWS, CloudShell, docker, CloudFormation ]
 ---
 

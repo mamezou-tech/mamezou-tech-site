@@ -7,9 +7,9 @@ tags:
   - java
 image: true
 prevPage: >-
-  ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_function.md
+  ./src/en/posts/typescript-intro/introduction-to-typescript-for-java-engineer_function.md
 nextPage: >-
-  ./src/posts/typescript-intro/introduction-to-typescript-for-java-engineer_generics.md
+  ./src/en/posts/typescript-intro/introduction-to-typescript-for-java-engineer_generics.md
 translate: true
 
 ---
@@ -21,55 +21,55 @@ This time, we will explain interfaces and classes, which are familiar in object-
 |Name|JavaScript|TypeScript|Java|Usage|
 |---|---|---|---|---|
 |Interface|-|interface|interface|Used to define the structure of an object|
-|Type Alias|-|type|≒interface|Used to give an alias to an existing type|
+|Type Alias|-|type|≒interface|Used to give an existing type a different name|
 |Class|class|class|class|Used to define the entity of an object|
 
 ```mermaid
 classDiagram
   Interface "0..*" <|-- Interface
-  Type Alias "0..*" <-- Type Alias: <br>Composition
-  Abstract Class "0..1" <|-- Abstract Class
+  TypeAlias "0..*" <-- TypeAlias: <br>Composition
+  AbstractClass "0..1" <|-- AbstractClass
   Class "0..1" <|-- Class
 
-  Interface "0..*" <-- Type Alias: Composition
-  Interface "0..*" <|.. Abstract Class
+  Interface "0..*" <-- TypeAlias: Composition
+  Interface "0..*" <|.. AbstractClass
   Interface "0..*" <|.. Class
 
-  Type Alias "0..*" <|-- Interface
-  Type Alias "0..*" <|.. Abstract Class
-  Type Alias "0..*" <|.. Class
+  TypeAlias "0..*" <|-- Interface
+  TypeAlias "0..*" <|.. AbstractClass
+  TypeAlias "0..*" <|.. Class
 
-  Abstract Class "0..1" <|-- Class
+  AbstractClass "0..1" <|-- Class
 ```
 
 ## interface
 
-Used when you want to define the shape of an object or the specification of a class.
+Used when you want to define the shape of an object or the specifications of a class.
 * Interfaces can inherit from each other. Type aliases can also be inherited.
-* Redeclaration possible: You can declare interfaces with the same name.
-* When converted to JavaScript, interfaces have no entity, so they cannot be compared with `instanceof`.
+* Redeclarable: You can declare an interface with the same name.
+* When converted to JavaScript, interfaces have no entity, so they cannot be compared with `instanceof`, etc.
 
 ### Declaring an Interface
 
-The syntax and definition example of an interface are as follows.
+Below are the syntax and definition examples for interfaces.
 
 ```ts: Syntax
 /**
- * _Interface Name_ : The name of the interface
- * _readonly_       :(Optional) Specify if you want to make it read-only.
- * _Attribute Name_ : Attribute name
- * _Attribute Type_ : Type of the attribute
- * _Method Name_    : Behavior
- * _Arguments_      :(Optional) Set if it has arguments. If specifying multiple, separate with `,`.
- * _Return Type_    : Type of the return value
+ * _InterfaceName_: The name of the interface
+ * _readonly_     : (Optional) Specify if you want to make it read-only.
+ * _AttributeName_: Attribute name
+ * _AttributeType_: Attribute type
+ * _MethodName_   : Behavior
+ * _Arguments_    : (Optional) Set if it has arguments. If specifying multiple, separate them with `,`.
+ * _ReturnType_   : Return type
  */
-interface _Interface Name_ {
-  _readonly_ _Attribute Name_: _Attribute Type_;
-  _Method Name_(_Arguments_): _Return Type_;
+interface _InterfaceName_ {
+  _readonly_ _AttributeName_: _AttributeType_;
+  _MethodName_(_Arguments_): _ReturnType_;
 }
 ```
-* The semicolon at the end of the sentence can also be defined with a comma.
-* Behavior can also be defined with an arrow function.
+* Semicolons at the end of statements can also be defined with commas.
+* Behaviors can also be defined with arrow functions.
 
 ```ts: Definition Example
 interface BasePerson {
@@ -96,13 +96,13 @@ interface BasePerson_comma {
 * 2: Arguments specified with `?` (optional arguments) allow undefined.
 * 3: Behavior specification defined with an arrow function
 * 4: Accessor specification defined with shorthand
-* 5: Example written with a comma at the end
+* 5: Example written with commas at the end of statements
 
 :::info
 **Differences between TypeScript and Java**
 * TypeScript: 
   * Attribute specifications can be defined.
-  * When transpiled to JavaScript, the interface has no entity, so it cannot be type-checked with `instanceof`. Use type guards if type checking is necessary.
+  * When transpiled to JavaScript, interfaces have no entity, so type checking cannot be done with `instanceof`. Use type guards if type checking is necessary.
 * Java: 
   * Attribute specifications cannot be defined. Define accessor specifications as a substitute.
   * `instanceof` can be used for type checking of interfaces.
@@ -110,8 +110,8 @@ interface BasePerson_comma {
 
 ### Defining Constructor Signatures
 
-You can define constructor signatures in an interface.  
-There may be scenes where it can be utilized by combining with generics or [index signatures](/typescript-intro/introduction-to-typescript-for-java-engineer_special-type#index-signature).
+You can define constructor signatures in interfaces.  
+There may be scenes where it can be utilized in combination with generics or [index signatures](/en/typescript-intro/introduction-to-typescript-for-java-engineer_special-type#index-signature).
 
 ```ts: TypeScript
 interface BasePerson {
@@ -133,16 +133,16 @@ const person1: PersonConstructor = Person;
 const person2 = new person1(1, "suzuki");
 ```
 
-```java: How it would be in Java
+```java: What happens in Java
 // There is no corresponding feature.
 ```
-You can achieve similar functionality by using the Factory Method pattern.
+You can achieve similar functionality by using patterns like the Factory method.
 
-### Redeclaring an Interface
+### Redeclaring Interfaces
 
-This is a mechanism to redefine an interface with the same name and merge the interfaces.  
+This is the mechanism to redefine an interface with the same name and merge interfaces.  
 * Consistency between interfaces must be maintained.
-* The interface to be redefined must be within the same scope (if the scope is different, it is treated as a different entity).
+* The interface being redefined must be in the same scope (if in a different scope, it will be treated as a different entity).
 
 ```ts: TypeScript
 interface BasePerson {
@@ -172,13 +172,13 @@ class Person1 implements BasePerson {
   }
 }
 ```
-* 1: Such a declaration is not possible because consistency between interfaces is not maintained.
-* 2: Attributes defined in the redeclaration are added.
+* 1: Such a declaration cannot be made because consistency between interfaces is not maintained.
+* 2: Attributes defined by redeclaration are added.
 
-```java: How it would be in Java
+```java: What happens in Java
 // There is no corresponding feature.
 ```
-You can express similar functionality by allowing inheritance relationships in interfaces or implementing additional specifications in separate interfaces.
+You can express similar functionality by adding specifications to interfaces with inheritance relationships or implementing additional specifications as separate interfaces.
 
 ```mermaid
 classDiagram
@@ -216,19 +216,19 @@ classDiagram
 :::info
 **Differences between TypeScript and Java**
 * TypeScript: You can declare interfaces with the same name within the same scope.
-* Java: You cannot declare interfaces with the same name within the same scope. It is possible if you separate the scope by dividing packages.
+* Java: You cannot declare interfaces with the same name within the same scope. It is possible if you separate the scope by dividing packages, etc.
 :::
 
 :::check
 **When to use interface redeclaration**
-* It is a convenient feature depending on how you use it, but it is a feature prone to bugs, so its use should be limited.
+* While it can be a convenient feature depending on how you use it, it's a feature prone to bugs, so its use should be limited.
   * It can be effectively utilized when you want to make changes to interfaces that cannot be directly changed (or are difficult to change), such as external systems, legacy systems, or libraries.
-  * If it can be directly changed in your domain, it is recommended not to use it easily.
+  * If direct changes are possible, such as in your own domain, it is recommended not to use it easily.
 :::
 
-### Inheriting Interfaces
+### Inheritance of Interfaces
 
-An example of inheriting an interface is as follows.  
+Below is an example of interface inheritance.  
 The way to implement it is the same as in Java.
 
 ```ts: TypeScript
@@ -242,7 +242,7 @@ interface BasePerson extends BasePerson0 {
 }
 ```
 
-```java: How it would be in Java
+```java: What happens in Java
 interface BasePerson0 {
   int getId();
   void setId(int id);
@@ -255,37 +255,37 @@ interface BasePerson extends BasePerson0 {
   void setAddress(String address);
 }
 ```
-* Attributes cannot be defined in interfaces, so accessor specifications are defined as a substitute.
+* Since attributes cannot be defined in interfaces, accessor specifications are defined as a substitute.
 
 ## type (Type Alias)
 
-Refers to a mechanism used when you want to give an alias to an existing type.  
-* Type aliases cannot inherit from each other, but you can achieve similar functionality with [intersection types](/typescript-intro/introduction-to-typescript-for-java-engineer_special-type#intersection). Interfaces can also be composed with intersections.
+This refers to the mechanism used when you want to give an existing type a different name.  
+* Type aliases cannot inherit from each other, but you can achieve similar functionality with [intersection types](/en/typescript-intro/introduction-to-typescript-for-java-engineer_special-type#intersection). Interfaces can also be composed with intersections.
 
 ### Declaring a Type Alias
 
-The syntax and definition example of a type alias are as follows.
+Below are the syntax and definition examples for type aliases.
 
 ```ts: Syntax
 /**
- * _Type Alias Name_ : The name of the type alias
- * _readonly_        :(Optional) Specify if you want to make it read-only.
- * _Attribute Name_  : Attribute name
- * _Attribute Type_  : Type of the attribute
- * _Method Name_     : Behavior
- * _Arguments_       :(Optional) Set if it has arguments. If specifying multiple, separate with `,`.
- * _Return Type_     : Type of the return value
+ * _TypeAliasName_: The name of the type alias
+ * _readonly_     : (Optional) Specify if you want to make it read-only.
+ * _AttributeName_: Attribute name
+ * _AttributeType_: Attribute type
+ * _MethodName_   : Behavior
+ * _Arguments_    : (Optional) Set if it has arguments. If specifying multiple, separate them with `,`.
+ * _ReturnType_   : Return type
  */
 
-type _Type Alias Name_ = _Attribute Type_; // When giving an alias to a type
-type _Type Alias Name_ = _(_Arguments_) => _Return Type_; // When giving an alias to a function
-type _Type Alias Name_ = { // When giving an alias to a type with a structure
-  _readonly_ _Attribute Name_: _Attribute Type_,
-  _Method Name_(_Arguments_): _Return Type_,
+type _TypeAliasName_ = _AttributeType_; // When giving a type a different name
+type _TypeAliasName_ = _(_Arguments_) => _ReturnType_; // When giving a function a different name
+type _TypeAliasName_ = { // When giving a structured type a different name
+  _readonly_ _AttributeName_: _AttributeType_,
+  _MethodName_(_Arguments_): _ReturnType_,
 };
 ```
-* If the type or method specified is singular, braces are not needed.
-* If specifying multiple, the delimiter can also be defined with a semicolon.
+* If the specified type or method is singular, curly braces are not needed.
+* If specifying multiple, the delimiter can also be defined with semicolons.
 * Methods can also be defined with arrow functions.
 
 ```ts: Definition Example
@@ -332,17 +332,17 @@ type Name_comma = {
   firstName: string;
 };
 ```
-* 1: Example of giving an alias to a type
-* 2: Example of giving an alias to a function
-* 3: Example of giving an alias to a type with a structure
-* 4: This is not a method but an attribute. Handling changes depending on how the instance is created.
+* 1: Example of giving a type a different name
+* 2: Example of giving a function a different name
+* 3: Example of giving a structured type a different name
+* 4: This is not a method but an attribute. It behaves differently depending on how the instance is created.
 * 5: Defined as an arrow function, `this` is fixed to the outer scope. Therefore, `this` cannot reference `name`.
-* 6: Defined directly as a function, recognized as an attribute but behaves as an instance method. Therefore, `this` can reference `name`.
-* 7: Example written with a semicolon as a delimiter
+* 6: Defined as a direct function, it is recognized as an attribute but behaves as an instance method. Therefore, `this` can reference `name`.
+* 7: Example written with semicolons as delimiters
 
 ### Defining Constructor Signatures
 
-Similar to interfaces, you can define constructor signatures with type aliases.  
+Like interfaces, constructor signatures can also be defined with type aliases.
 
 ```ts: TypeScript
 type BasePerson = {id: number, name: string};
@@ -359,15 +359,15 @@ const person1: PersonConstructor = Person;
 const person2 = new person1(1, "suzuki");
 ```
 
-```java: How it would be in Java
+```java: What happens in Java
 // There is no corresponding feature.
 ```
-You can achieve similar functionality by using the Factory Method pattern.
+You can achieve similar functionality by using patterns like the Factory method.
 
 ### Composing Type Aliases
 
 Type aliases cannot have inheritance relationships.  
-You can compose them with intersection types, so let's check the implementation example.
+They can be composed with intersection types, so let's check the implementation example.
 
 ```ts: TypeScript
 type Person1 = { id: number, name: string };
@@ -377,17 +377,17 @@ type Person = Person1 & Person2; // { id: number; name: string; address: string;
 let person: Person = { id: 1, name: "suzuki", address: "tokyo", birthDate: "2000-01-01" };
 ```
 
-```java: How it would be in Java
+```java: What happens in Java
 // There is no corresponding feature.
 ```
-You can express similar functionality by allowing inheritance relationships in interfaces or implementing additional specifications in separate interfaces.  
-The implementation image is the same as "Redeclaring an Interface" so it is omitted.
+You can express similar functionality by adding specifications to interfaces with inheritance relationships or implementing additional specifications as separate interfaces.  
+The implementation image is the same as "Redeclaring Interfaces", so it is omitted.
 
-### Appendix: Defining Type Aliases with Utility Types
+### Appendix: Example of Defining Type Aliases Using Utility Types
 
 By using utility types, you can define type aliases without mass-producing similar definitions.  
-There seem to be many scenes where it can be utilized, such as when you want to create a request object for an API.  
-Although convenient, it is a good strategy to avoid overuse as it can become difficult to understand when combined too much.  
+There seem to be many scenes where this can be utilized, such as when creating request objects for APIs.  
+Although convenient, it is a good strategy to avoid overuse as it can become difficult to understand if combined too much.  
 ```ts: TypeScript
 type Person = { id: number, name: string, address: string, birthDate: string };
 
@@ -398,26 +398,26 @@ type ReadonlyPerson = Readonly<Person>; // { readonly id: number; readonly name:
 type RequiredPerson = Required<OptionalPerson>; // { id:string; name: string; address: string; birthDate: string; } *5
 ```
 * 1: Exclude some attributes
-* 2: Pick some attributes
+* 2: Pick up some attributes
 * 3: Make all attributes optional
 * 4: Make all attributes read-only
 * 5: Make all attributes required
 
 :::check
 **How should interfaces and type aliases be used differently?**
-Since both can do similar things, you need to establish a design policy to use them differently.  
+Since both can do similar things, it is necessary to set design policies and use them differently.  
 Below is one suggestion for differentiation.
-* Basic Policy
-  * Choose the method that can adopt a structure that matches the model (do not easily substitute composition for things with inheritance relationships, etc.)
-  * If component definitions based on design methodologies such as DDD are established, decide which to choose for each component
-  * If in doubt, decide in advance which to lean towards
+* Basic policy
+  * Choose the method that can take the structure according to the model (e.g., do not easily substitute compositions for things with inheritance relationships)
+  * If component definitions based on design methodologies like DDD are established, decide which to choose for each component
+  * If unsure, decide in advance which to lean towards
 * Interface
   * Define the structure of an object
   * Define types with inheritance relationships
   * Define types to be published as extension points
 * Type Alias
-  * Give an alias to an existing type
-  * Use union types or intersection types to define types
+  * Give an existing type a different name
+  * Use union types, intersection types, etc., to define types
   * Define function types
 :::
 
@@ -425,34 +425,34 @@ Below is one suggestion for differentiation.
 
 Used when you want to define the entity of an object.
 * Interfaces and type aliases can be implemented
-* Abstract classes can define abstract methods
+* Abstract methods can be defined in abstract classes
 * Classes can inherit from each other
 
 ### Declaring a Class
 
-The syntax and definition example of a class are as follows.
+Below are the syntax and definition examples for classes.
 
 ```ts: Syntax
 /**
- * _abstract_     :(Optional) Specify if it is an abstract class or abstract method.
- * _Class Name_   : The name of the class
- * _Access Modifier_:(Optional) Set if you want to set the scope. (public, protected, private. If unspecified, it is treated as public)
- * _static_       :(Optional) Specify if it is a class method or class variable.
- * _readonly_     :(Optional) Specify if you want to make it read-only.
- * _Attribute Name_: Attribute name
- * _Attribute Type_:(Optional) Type of the attribute
- * _Assigned Value_:(Optional) Set if initial value setting is necessary. Referred to as "right-hand side" in the text.
- * _Method Name_  : Behavior
- * _Arguments_    :(Optional) Set if it has arguments. If specifying multiple, separate with `,`.
- * _Return Type_  :(Optional) Set if you want to explicitly specify the return type.
+ * _abstract_     : (Optional) Specify if it's an abstract class or abstract method.
+ * _ClassName_    : The name of the class
+ * _AccessModifier_: (Optional) Set if you want to specify the scope. (public, protected, private. If unspecified, it is treated as public)
+ * _static_       : (Optional) Specify if it's a class method or class variable.
+ * _readonly_     : (Optional) Specify if you want to make it read-only.
+ * _AttributeName_: Attribute name
+ * _AttributeType_: (Optional) Attribute type
+ * _AssignedValue_: (Optional) Set if you need to set an initial value. Referred to as "right-hand side" in the text.
+ * _MethodName_   : Behavior
+ * _Arguments_    : (Optional) Set if it has arguments. If specifying multiple, separate them with `,`.
+ * _ReturnType_   : (Optional) Set if you want to explicitly specify the return type.
  */
-_abstract_ class _Class Name_ {
-  _Access Modifier_ _static_ _readonly_ _Attribute Name_: _Attribute Type_ = _Assigned Value_; //Attribute
+_abstract_ class _ClassName_ {
+  _AccessModifier_ _static_ _readonly_ _AttributeName_: _AttributeType_ = _AssignedValue_; //Attribute
 
   constructor(_Arguments_) {/** Optional processing. */}
 
-  _Access Modifier_ _abstract_ _Method Name_(_Arguments_): _Return Type_; //Abstract method
-  _Access Modifier_ _static_ _Method Name_(_Arguments_): _Return Type_ {/** Optional processing. */}; //Method
+  _AccessModifier_ _abstract_ _MethodName_(_Arguments_): _ReturnType_; //Abstract method
+  _AccessModifier_ _static_ _MethodName_(_Arguments_): _ReturnType_ {/** Optional processing. */}; //Method
 }
 ```
 * Methods can also be defined with arrow functions.
@@ -466,7 +466,7 @@ abstract class BasePerson {
   abstract editAddress(address: string): void;
 
   /**
-   * Get a formatted name for display.
+   * Get the name formatted for display.
    * @returns Name for display
    */
   abstract getViewName: () => string;
@@ -503,21 +503,20 @@ class Person extends BasePerson {
 :::info
 **Differences between TypeScript and Java**
 * TypeScript:
-  * Access modifiers cannot be set on classes
+  * Access modifiers cannot be set for classes
   * Type aliases can be implemented
 * Java:
- ,* Java:
-  * Access modifiers can be set on classes
+  * Access modifiers can be set for classes
 
 **In JavaScript**
-* Interfaces and type aliases cannot be used
+* Interfaces and type aliases cannot,be used
 * Abstract classes and abstract methods cannot be defined
 :::
 
 ### Declaring a Class with Shorthand
 
-Attributes can be automatically defined by adding access modifiers to the constructor parameters.  
-Accessors can be defined using the `get`/`set` keywords.
+Attributes can be automatically defined by adding access modifiers to the parameters of the constructor.  
+Accessors can be defined with the `get`/`set` keywords.
 
 ```ts: TypeScript
 class Person {
@@ -539,14 +538,14 @@ let person = new Person(1, "suzuki", "tokyo"); //{1, suzuki, tokyo}
 person.id;
 person.id = 2; //{2, suzuki, tokyo}
 ```
-* 1: No access modifier, so not recognized as an attribute, resulting in an error
-* 2: Out of scope, so cannot be referenced
+* 1: Since it has no access modifier and is not recognized as an attribute, it results in an error.
+* 2: It cannot be referenced as it is out of scope.
 
 ### Implementing Interfaces
 
 Interfaces are implemented by abstract classes or classes.  
-The way to implement them is the same as in Java.  
-Implementation by abstract classes is omitted as the content does not change.
+The implementation method is the same as in Java.  
+The implementation with abstract classes is omitted as the content does not change.
 
 ```mermaid
 classDiagram
@@ -567,7 +566,7 @@ interface BasePerson {
   getViewName(): string;
 }
 
-// Implemented by class
+// Implement with class
 class Person implements BasePerson {
   id: number;
   name: string;
@@ -580,7 +579,7 @@ class Person implements BasePerson {
 }
 ```
 
-```java: How it would be in Java
+```java: What happens in Java
 // Interface
 interface BasePerson {
   void setId(Long id);
@@ -589,7 +588,7 @@ interface BasePerson {
   String getViewName();
 }
 
-// Implemented by class
+// Implement with class
 @AllArgsConstructor
 @Getter
 @Setter
@@ -605,9 +604,9 @@ class Person implements BasePerson {
 
 ### Class Inheritance
 
-Inheritance can be performed in combinations of `Abstract Class <- Abstract Class`, `Abstract Class <- Class`, and `Class <- Class`.  
-The way to implement it is the same as in Java.
-The code example shows `Abstract Class <- Class`. Other cases are omitted as the implementation does not change.
+Inheritance can be performed with combinations of `abstract class<-abstract class`, `abstract class<-class`, and `class<-class`.  
+The implementation method is the same as in Java.
+The code example shows `abstract class<-class`. Other cases are omitted as the implementation does not change.
 
 ```mermaid
 classDiagram
@@ -644,7 +643,7 @@ class Person extends BasePerson {
 }
 ```
 
-```java: How it would be in Java
+```java: What happens in Java
 // Abstract class
 @AllArgsConstructor
 @Getter
@@ -671,13 +670,13 @@ class Person extends BasePerson {
 
 ### Checking Scope
 
-Let's check the scope of attributes and behaviors. 
+Let's check the scope of attributes and behaviors.
 
 |Access Modifier|Accessible Range (TypeScript)|Accessible Range (Java)| 
 |---|---|---|
-|public|Accessible from anywhere|Same as left|
+|public|Can be accessed from anywhere|Same as left|
 |protected|Only within the same class and subclasses|Only within the same package and subclasses|
-|Unspecified|Treated as public, so the scope is the same as public|Package private: Only within the same package|
+|Unspecified|Treated as public, so the scope is the same as public|package private: Only within the same package|
 |private|Only within the same class|Same as left|
 
 The code example includes the following verification content.
@@ -697,9 +696,9 @@ classDiagram
     +doInstanceMethod()
   }
   Person <-- Caller: Access from outside the class
-  Person <-- Person's instance: Access from the instance
+  Person <-- Instance of Person: Access from an instance
   Person <|-- Employee
-  Person <-- Employee: Access from the subclass
+  Person <-- Employee: Access from a subclass
 ```
 
 ```ts: TypeScript
@@ -735,7 +734,7 @@ class Person {
 
 /** Subclass. **/
 class Employee extends Person {
-  //*****Access from within the subclass
+  //***** Access from within the subclass
   doMethod() {
     Person.attrStaticPub;
     Person.attrStaticPro;
@@ -760,7 +759,7 @@ class Employee extends Person {
 }
 
 const caller = () => {
-  //****Access from outside the class
+  //**** Access from outside the class
   Person.attrStaticPub;
   // Person.attrStaticPro; //*1
   Person.attrStaticNoDef;
@@ -771,7 +770,7 @@ const caller = () => {
   Person.doStaticNoDef();
   // Person.doStaticPri(); //*1
 
-  //****Access from the instance
+  //**** Access from an instance
   let person = new Person(1, 2, 3, 4);
 
   person.attrPub;
@@ -785,10 +784,10 @@ const caller = () => {
   // person.doPri(); //*1
 }
 ```
-* 1: Cannot be accessed because it is out of scope
-* 2: Protected cannot be called from the instance
+* 1: Cannot be accessed as it is out of scope
+* 2: protected cannot be called from an instance
 
-```java: How it would be in Java
+```java: What happens in Java
 // The range of protected is different, so the package is divided.
 
 //package example.person;
@@ -827,7 +826,7 @@ public class Employee extends Person {
     super(attrPub, attrPro, attrNoDef, attrPri);
   }
 
-  //*****Access from within the subclass
+  //***** Access from within the subclass
   void doMethod() {
     System.out.println(Person.attrStaticPub);
     System.out.println(Person.attrStaticPro);
@@ -854,7 +853,7 @@ public class Employee extends Person {
 //package example.caller;
 public class Caller {
   public void callPerson() {
-    //****Access from outside the class
+    //**** Access from outside the class
     System.out.println(Person.attrStaticPub);
     // System.out.println(Person.attrStaticPro); // *1
     System.out.println(Person.attrStaticNoDef);
@@ -865,7 +864,7 @@ public class Caller {
     Person.doStaticNoDef();
     // Person.doStaticPri(); //*1
 
-    //****Access from the instance
+    //**** Access from an instance
     var person = new Person(1, 2, 3, 4);
 
     System.out.println(person.attrPub);
@@ -880,17 +879,17 @@ public class Caller {
   }
 }
 ```
-* 1: Cannot be accessed because it is out of scope
-* 2: Protected cannot be called from the instance
+* 1: Cannot be accessed as it is out of scope
+* 2: protected cannot be called from an instance
 
 :::info
 **Differences between TypeScript and Java**
 * TypeScript
   * If the scope is unspecified, it is treated as public
-  * Range of protected: Accessible only within the same class and subclasses
+  * Range of protected: Can only be accessed within the same class and subclasses
 * Java
   * If the scope is unspecified, it becomes package private
-  * Range of protected: Accessible only within the same package and subclasses
+  * Range of protected: Can only be accessed within the same package and subclasses
 :::
 
 

@@ -43,9 +43,9 @@ It is open-source and provided under the Apache License 2.0. ([TypeScript Reposi
 
 The planned contents are as follows:
 
-* [Variables](/typescript-intro/introduction-to-typescript-for-java-engineer_variable) [let, const, var, type annotations, type inference]
+* [Variables](/en/typescript-intro/introduction-to-typescript-for-java-engineer_variable) [let, const, var, type annotations, type inference]
 * Types
-  * [Primitive Types](/typescript-intro/introduction-to-typescript-for-java-engineer_primitive-type) [number, bigint, string, boolean, symbol, null, undefined]
+  * [Primitive Types](/en/typescript-intro/introduction-to-typescript-for-java-engineer_primitive-type) [number, bigint, string, boolean, symbol, null, undefined]
   * Other Basic Types [any, unknown, void, never, enum] ※In preparation
   * Collection Types [array, tuple, Set, Map] ※In preparation
   * Special Types [union, intersection, literal, index signature] ※In preparation

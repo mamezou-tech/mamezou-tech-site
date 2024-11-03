@@ -36,22 +36,37 @@ Logback-access の dependency 定義を次のようにするとエラーは解�
 - 変更前
 ```xml
 <dependency>
-    <groupId>ch.qos.logback</groupId>
-    <artifactId>logback-access</artifactId>
-    <version>(1.4系など2.0未満のバージョン)</version>
+  <groupId>ch.qos.logback</groupId>
+  <artifactId>logback-access</artifactId>
+  <version>(1.4系など2.0未満のバージョン)</version>
 </dependency>
 ```
 
 - 変更後
 ```xml
 <dependency>
-    <groupId>ch.qos.logback.access</groupId>
-    <artifactId>logback-access-tomcat</artifactId>
-    <version>2.0.4</version>
+  <groupId>ch.qos.logback.access</groupId>
+  <artifactId>logback-access-tomcat</artifactId>
+  <version>2.0.4</version>
+  <exclusions>
+    <exclusion>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-catalina</artifactId>
+    </exclusion>
+    <exclusion>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-coyote</artifactId>
+    </exclusion>
+  </exclusions>
 </dependency>
 ```
 
 `artifactId`が`logback-access-tomcat`に変わっているので要注意です。
+
+:::check: 2024/11/03 情報追加
+変更後のdependency定義に除外設定の exclusions を追加しました。  
+Spring BootではTomcatの実体である tomcat-coyote と tomcat-catalina の依存は不要ですが、logback-access-tomcat の推移的依存により含まれてきます。この依存があると本来参照して欲しい tomcat-embed の AbstractProtocol のメソッドがクラスのロード順により見つからなくなる場合があります。このため、不要なこの2つの依存を明示的に除外するようにします。
+:::
 
 # 動かなくなった原因
 いろいろ調べていった結果、Spring BootをBumpして動かなくなった原因は以下のとおりでした。

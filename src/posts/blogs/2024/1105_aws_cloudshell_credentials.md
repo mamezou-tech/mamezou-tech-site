@@ -52,8 +52,10 @@ AWS_DEFAULT_REGION="ap-northeast-1"
 
 # CloudShell裏技活用例
 
-例えば、CloudShell上でdockerコンテナを実行し、dockerコンテナ内でAWS CLIを使いたいケースです。
-CloudShell上で以下を実行すると、
+例えば、AWS CLIを使っているツールをdockerコンテナ化して、これをCloudShellにてコンテナ実行して利用する場合です。私が以前執筆した「[CodeBuild + ECR + AWS BatchでAWS Lambda Pythonレイヤー作成](/blogs/2024/10/25/publish_python_lambda_layer_aws_batch/)」という記事の「コンテナ実行環境にAWS Batchを採用した背景」-「試行その２ - CloudShell」にてCloudShellでdockerコンテナを実行して試していた旨の記述がありますが、実はこの試行の中でCloudShellの裏技を利用していました。
+　このようなツールを作る際に試行錯誤していると、処理内容を変更すると必要な権限も変わりますし、権限の問題でエラーになってしまうと起きている問題の原因の切り分けが難しくなってスムーズに検証が進まないのは非効率です。そこでこの裏技を使うと、そもそも使うこと自体が非常に簡単で、操作ユーザー（自分）の権限をごく短時間だけ利用できるのはとても便利でした。
+
+例えば、CloudShellにて以下を実行すると、（この例だとCloudShellで直接`aws s3 ls`を実行すればよいのではないかというツッコミは一旦無しで）
 
 ```sh
 docker run --rm amazon/aws-cli s3 ls
@@ -67,14 +69,10 @@ Unable to locate credentials. You can configure credentials by running "aws conf
 
 dockerコンテナ内のAWS CLIが資格情報を利用できるようにするには、コンテナに[AWS CLIが認識する特定の環境変数名](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/cli-configure-envvars.html)で資格情報を設定する必要があります。
 
-そこで、以下のようなシェルを用意しました。
-
-<span style="font-size: 120%;"><b>[publish_temporary_credentials.sh](https://github.com/yuji-kurabayashi/publish_temporary_credentials/blob/main/publish_temporary_credentials.sh)</b></span>
+そこで、以下のようなシェル「[publish_temporary_credentials.sh](https://github.com/yuji-kurabayashi/publish_temporary_credentials/blob/main/publish_temporary_credentials.sh)」を用意しました。
 
 `aws sts assume-role`を利用したい場合はシェルの第一引数にロールのARNをセットします。
-そして、予めポリシーやロールを用意しておく必要があるので、これらを簡単に作成できるCloudFormationテンプレートを用意しました。このテンプレートを利用すると、許可したいアクションを指定してポリシーを用意して、さらに既存のポリシーを組み合わせて資格情報を発行するためのロールを作成できます。
-
-<span style="font-size: 120%;"><b>[cfn_assume_role.yaml](https://github.com/yuji-kurabayashi/publish_temporary_credentials/blob/main/cfn_assume_role.yaml)</b></span>
+そして、`aws sts assume-role`を利用したい場合は、予めポリシーやロールを用意しておく必要があるので、これらを簡単に作成できるCloudFormationテンプレート「[cfn_assume_role.yaml](https://github.com/yuji-kurabayashi/publish_temporary_credentials/blob/main/cfn_assume_role.yaml)」を用意しました。このテンプレートを利用すると、許可したいアクションを指定してポリシーを用意して、さらに既存のポリシーと組み合わせて資格情報を発行するためのロールを作成できます。
 
 ```shell:publish_temporary_credentials.sh
 #bin/sh
@@ -113,12 +111,13 @@ export TEMPORARY_AWS_SESSION_TOKEN="$TEMPORARY_SESSION_TOKEN"
 * exportコマンド風に出力しているのは、発行した資格情報をCloudShell以外の環境で利用したい場合にコピーペーストして利用できるようにするためです。
 * AWS CLIでの実行コマンドによっては、資格情報の他にリージョンの設定が必要になる場合もあるので併せて出力してセットしています。
     * 実際にdockerコンテナ内で`aws s3 cp`コマンドを実行したらリージョンが指定されていないというエラーが出てしまいました。
-* 発行した資格情報を以下の環境変数名で設定します。シェルで設定している環境変数を実際に反映するには、`source`を付与して`source ./publish_temporary_credentials.sh`のように実行する必要があります。
+* 発行した資格情報を以下の環境変数名で設定します。直接「AWS_ACCESS_KEY_ID」などに設定していない理由は、CloudShellで直接利用するAWS CLIに影響が出てしまうのを避けるためです。
     * TEMPORARY_AWS_ACCESS_KEY_ID
     * TEMPORARY_AWS_SECRET_ACCESS_KEY
     * TEMPORARY_AWS_SESSION_TOKEN
 
 以下のようにシェルを実行した後で`docker run`コマンドの環境変数で資格情報等を渡して実行すると成功します。
+シェルを実行する際のポイントとして、シェルの処理内で設定している環境変数を実際に環境に反映するには、`source`を付与して`source ./publish_temporary_credentials.sh`のように実行する必要があります。
 
 ```shell
 chmod +x ./publish_temporary_credentials.sh

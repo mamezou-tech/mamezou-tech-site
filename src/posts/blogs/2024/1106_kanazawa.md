@@ -2,13 +2,14 @@
 title: FargateのTIPS
 author: shigeki-shoji
 date: 2024-11-06
-tags: [AWS]
+tags: [AWS, Fargate]
 ---
 
-こんにちは、AWS認定インストラクターの[庄司](https://github.com/edward-mamezou)です。
+こんにちは、AWS認定インストラクター[^1]の[庄司](https://github.com/edward-mamezou)です。
 
 11月2日「[JAWS-UG金沢支部×コンテナ支部合同企画 物理コンテナ見ながらコンテナ勉強会！](https://jawsug-kanazawa.connpass.com/event/325803/)」が金沢港で開催されました。
 金沢は2000年問題対応でしばらく住んでいたお気に入りの地です。そのこともあり、今回応募しFargateについての話をする機会を得ました。
+この記事では、当日の発表で使ったスライド「[Fargateを使った研修の話](https://speakerdeck.com/takesection/fargatewoshi-tutayan-xiu-nohua)」の内容を説明します。
 
 ## コンテナイメージをECRにPushするGitHub Actions
 
@@ -19,7 +20,7 @@ GitHub ActionsでビルドしたコンテナイメージをECRにpushする時�
 3. aws-actions/amazon-ecr-loginを使ってECRにログイン
 4. docker/build-push-actionを使って、コンテナイメージのビルドとECRへのpush
 
-実は3つ目の部分は、最近のdocker/login-actionを使用することができます。こちらを使うようにした方がコンテナイメージのpush先に何を利用するか(ECR、DockerHubやAzure Container Registry等)に応じて使用するアクションの変更から解放されると思います。
+実は3つ目の部分は、最新のdocker/login-actionを使用することができます。こちらを使うようにした方がコンテナイメージのpush先に何を利用するか(ECR、DockerHubやAzure Container Registry等)に応じて使用するアクションの変更から解放されると思います。
 
 ## マルチプラットフォーム対応のコンテナイメージをECRにPushする時の注意点
 
@@ -100,7 +101,4 @@ GitHub ActionsでビルドしたコンテナイメージをECRにpushする時�
 COVID-19パンデミックの前はよく金沢に行っていました。兼六園や金沢城跡は25年以上前に初めて訪れた時からずっとお気に入りの場所です。また金沢で登壇する機会があればぜひ行きたいと思います。
 JAWS-UG 金沢支部、コンテナ支部のスタッフのみなさん、参加者のみなさん、ありがとうございました！！
 
-## 参考
-
-- [Fargateを使った研修の話](https://speakerdeck.com/takesection/fargatewoshi-tutayan-xiu-nohua)
-- [AWS【公式】トレーニング](https://www.mamezou.com/services/hrd/aws_training)
+[^1]: [AWS【公式】トレーニング](https://www.mamezou.com/services/hrd/aws_training)

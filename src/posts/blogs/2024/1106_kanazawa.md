@@ -2,7 +2,7 @@
 title: FargateのTIPS
 author: shigeki-shoji
 date: 2024-11-06
-tags: [AWS, Fargate]
+tags: [AWS, Fargate, tips]
 ---
 
 こんにちは、AWS認定インストラクター[^1]の[庄司](https://github.com/edward-mamezou)です。

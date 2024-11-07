@@ -1,4 +1,3 @@
-import { ask } from '../util/chat-gpt.js';
 import fs from 'fs';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -8,28 +7,38 @@ import console from 'console';
 import sharp from 'sharp';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { WebClient } from '@slack/web-api';
+import z from 'zod';
+import { zodResponseFormat } from 'openai/helpers/zod';
 
-type Gpt = {
-  columns: {
-    title: string,
-    text: string,
-    created: string,
-    theme: string
-  }[]
-};
+const Gpt = z.object({
+  columns: z.array(z.object({
+    title: z.string(),
+    text: z.string(),
+    created: z.string(),
+    theme: z.string()
+  }))
+});
+const ThemeCandidates = z.object({
+  words: z.array(z.string()).describe('theme of today\'s column')
+});
+const GeneratedColumn = z.object({
+  title: z.string().describe('column\'s title'),
+  text: z.string().describe('column\'s body'),
+  conclusion: z.string()
+});
 
 const categories = [
   'Robotics',
-  'EdTech Innovations',
-  'AWS Services',
-  'Tech Startups',
-  'Edge Computing',
-  'Frontend Technology',
-  'Latest AI products or services'
+  'Serverless Architecture and Trends',
+  'Next-Generation Databases',
+  'Zero Trust Security Architecture',
+  'Frontend Technology Trends',
+  'Latest AI products or services',
+  'AWS Services'
 ];
 
 async function main(path: string) {
-  const json: Gpt = JSON.parse(fs.readFileSync(path).toString());
+  const json = Gpt.parse(JSON.parse(fs.readFileSync(path).toString()));
 
   const theme = categories[new Date().getDay()];
   const pastTitles = json.columns
@@ -37,60 +46,62 @@ async function main(path: string) {
     .map(column => column.title);
   const prompt: OpenAI.ChatCompletionMessageParam = {
     content: `Think column's theme of \`${theme}\` used by IT developers.
-Output about 20 themes. The themes must be professional and new. Please output concrete service or technology names as much as possible, rather than abstract ones such as \`API\` or \`Cloud\`.
-
-Output json format:
-\`\`\`
-{
-  words: [<array of word>]
-}
-\`\`\`
+Output about 20 themes. The themes must be professional and new. 
+Please output concrete service or technology names as much as possible, rather than abstract ones such as \`API\` or \`Cloud\`.
 
 Do not output the following words.
 ${pastTitles.map(title => `- ${title}`).join('\n')}
 `,
     role: 'user'
   };
-  const keywordsResponse = await ask({
-    messages: [prompt],
-    maxTokens: 1024,
-    temperature: 0.7,
-    responseFormat: 'json_object'
+  const candidates = await openai.beta.chat.completions.parse({
+    model: 'gpt-4o-mini',
+    messages: [ prompt ],
+    response_format: zodResponseFormat(ThemeCandidates, 'theme_candidates')
   });
-  const keywords: { words: string[] } = JSON.parse(keywordsResponse.choices[0].message?.content ?? '{}');
+  if (candidates.choices[0].message.refusal) {
+    throw new Error(candidates.choices[0].message.refusal);
+  }
+  const keywords = candidates.choices[0].message.parsed as z.infer<typeof ThemeCandidates>;
 
   console.log(keywords.words);
   const keyword = pickup(keywords.words, pastTitles);
-  const result = await ask({
-    model: 'gpt-4o',
-    messages: [prompt, {
-      role: 'assistant',
-      content: keywordsResponse.choices[0].message?.content
-    }, {
-      role: 'user',
-      content: `You are a cute girl and an excellent columnist in Japan.
+  const result = await openai.beta.chat.completions.parse({
+    model: 'gpt-4o-2024-08-06',
+    // model: 'gpt-4o-mini', // for testing
+    messages: [
+      {
+        role: 'user',
+        content: `You are a cute girl and an excellent columnist in Japan.
 We will give you one word commonly used in the IT industry and you should output a short article about it.
 You need to write passionate articles that readers can relate to. However, the article should include funny jokes.
-Please do not output "yes" or "I understand", only the article.
-Articles should be written in Japanese with cheerful and energetic colloquialisms and should not use honorifics such as "です" and "ます".
+Write the article in Japanese, but keep the words specified as much as possible.
+Also, Article should be written in cheerful and energetic colloquialisms, You should not use honorifics such as "です" and "ます".
 Your name is "豆香" (pronounced "まめか").
 My first word is "${keyword}" on "${theme}".
 `
-    }],
-    maxTokens: 2048,
-    temperature: 0.7
+      }
+    ],
+    max_tokens: 2048,
+    temperature: 0.7,
+    response_format: zodResponseFormat(GeneratedColumn, 'column')
   });
-  const column = result.choices[0].message?.content?.trim() || '';
+  if (result.choices[0].message.refusal) throw new Error(result.choices[0].message.refusal);
+
+  const column = result.choices[0].message?.parsed as z.infer<typeof GeneratedColumn>;
+  console.log(JSON.stringify(column, null, 2));
 
   const formattedDate = today();
-  await generateImage(column, formattedDate);
+  if (!process.env.DISABLE_IMAGE_GENERATION) {
+    await generateImage(column.text + column.conclusion, formattedDate);
+  }
 
-  if (!column) throw new Error('no content');
-  if (!safeResponse(column) || !safeResponse(column)) throw new Error(`un-safe content found: ${column}`);
+  if (!safeResponse(column.text) || !safeResponse(column.conclusion)) throw new Error(`unsafe content found: ${column}`);
 
   const item = {
-    title: keyword,
-    text: column.replaceAll(/(\r?\n)+/g, '<br />'),
+    title: column.title,
+    text: column.text.replaceAll(/(\r?\n)+/g, '<br />'),
+    conclusion: column.conclusion.replaceAll(/(\r?\n)+/g, '<br />'),
     created: new Date().toISOString(),
     theme
   };
@@ -111,7 +122,7 @@ My first word is "${keyword}" on "${theme}".
         type: 'header',
         text: {
           type: 'plain_text',
-          text: `${formattedDate}の豆香の豆知識(by GPT-4o)`
+          text: `${formattedDate}の豆香の豆知識`
         }
       },
       {
@@ -125,13 +136,20 @@ My first word is "${keyword}" on "${theme}".
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: column
+          text: column.text
+        }
+      },
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: column.conclusion
         }
       },
       {
         type: 'image',
         alt_text: '豆香コラム画像',
-        image_url: `https://image.mamezou-tech.com/mameka/${formattedDate}-daily-column-300.webp`,
+        image_url: `https://image.mamezou-tech.com/mameka/${formattedDate}-daily-column-300.webp`
       }
     ]
   });
@@ -144,6 +162,7 @@ function today() {
   const day = now.getDate().toString().padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
+
 async function generateImage(column: string, date: string) {
   const response = await openai.images.generate({
     prompt: `generate images suitable for the following column written by 豆香(japanese cute girl) .
@@ -163,7 +182,7 @@ async function generateImage(column: string, date: string) {
     throw new Error('illegal image format');
   }
   const width = 300;
-  const optimizedImage = await sharp(Buffer.from(base64Image, 'base64') )
+  const optimizedImage = await sharp(Buffer.from(base64Image, 'base64'))
     .resize(width)
     .toFormat('webp', { quality: 80 })
     .toBuffer();

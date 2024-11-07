@@ -10,10 +10,6 @@ translate: true
 
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2023/10/30/aws-scheduled-pipeline/).
-:::
 
 
 

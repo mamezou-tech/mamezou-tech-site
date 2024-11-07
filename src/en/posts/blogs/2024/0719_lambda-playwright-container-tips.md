@@ -11,14 +11,7 @@ tags:
   - テスト
 image: true
 translate: true
-
 ---
-
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2024/07/19/lambda-playwright-container-tips/).
-:::
-
 
 
 Currently, a commonly used tool for cross-browser testing is [Playwright](https://playwright.dev/). Even outside of testing, many teams use it simply as a browser automation tool or for scraping purposes.
@@ -210,15 +203,20 @@ RUN apt-get clean && \
 
 # Lambda Runtime interface client
 WORKDIR /ric
-COPY ric/package*.json /ric
-RUN npm ci
+RUN --mount=type=bind,source=ric/package.json,target=/ric/package.json \
+    --mount=type=bind,source=ric/package-lock.json,target=/ric/package-lock.json \
+    --mount=type=cache,target=/root/.npm,sharing=locked \
+    npm ci
 
 # Lambda Function
 WORKDIR /app
-COPY tsconfig.json package*.json container-func.ts /app/
+RUN --mount=type=bind,source=package.json,target=/app/package.json \
+    --mount=type=bind,source=package-lock.json,target=/app/package-lock.json \
+    --mount=type=cache,target=/root/.npm,sharing=locked \
+    npm ci
 
-RUN npm ci
-RUN npx esbuild --bundle --format=cjs --platform=node --outdir=dist container-func.ts
+RUN --mount=type=bind,source=web-scraper.ts,target=/app/container-func.ts \
+    npx esbuild --bundle --format=cjs --platform=node --outdir=dist container-func.ts
 
 FROM node:20
 

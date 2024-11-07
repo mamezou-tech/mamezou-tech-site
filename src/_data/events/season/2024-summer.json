@@ -4,73 +4,85 @@
       "date": "7月29日(月)",
       "author": "toshio-ogiwara",
       "githubUser": "ogiwarat",
-      "title": "仮）DDDってなんでオニオンとかといっしょに出てくるの？を社内で聞いてみた"
+      "title": "DDDってなんでオニオンとかといっしょに出てくるの？を社内で聞いてみた",
+      "url": "/blogs/2024/07/29/why-ddd-onion/"
     },
     {
       "date": "7月30日(火)",
       "author": "shuji-morimoto",
       "githubUser": "shuji-morimoto",
-      "title": "奥さんが「ガスコンロつけっぱなしで危ない思いをしたので警告音出るものがほしいなぁ」というのでメディアプレイヤーを作ってみた"
+      "title": "奥さんが「ガスコンロつけっぱなしで危ない思いをしたので警告音出るものがほしいなぁ」というのでメディアプレイヤーを作ってみた",
+      "url": "/blogs/2024/07/30/simple-media-player/"
     },
     {
       "date": "7月31日(水)",
       "author": "shinichiro-iwaki",
       "githubUser": "shinichiro-iwaki",
-      "title": "何か怖い話を書いてみようと思います"
+      "title": "DX御伽噺:イマドキ開発のちょっぴり怖い話",
+      "url": "/blogs/2024/07/31/recent-scary-stories/"
     },
     {
       "date": "8月1日(木)",
       "author": "misato-kamei",
       "githubUser": "misato-kamei",
-      "title": "T.B.D."
+      "title": "駆け出しスクラムマスター Stage2 オンライン開発チームの雰囲気づくり",
+      "url": "/blogs/2024/08/01/fledgling-scrum-master-stage2/"
     },
     {
       "date": "8月2日(金)",
       "author": "kazuya-nakamura",
       "githubUser": "nakk-mame",
-      "title": "T.B.D."
+      "title": "プロダクトオーナーの煩悩： サラリーマンPOの目から見たインセプションデッキのおもいで",
+      "url": "/agile/agile-po-complaints_02/"
     },
     {
       "date": "8月5日(月)",
       "author": "shigeki-shoji",
       "githubUser": "edward-mamezou",
-      "title": "T.B.D."
+      "title": "アジャイル開発をうまく進めるために",
+      "url": "/blogs/2024/08/05/cognitive-load/"
     },
     {
       "date": "8月6日(火)",
       "author": "tomohiro-fujii",
       "githubUser": "tomohiro-fujii33",
-      "title": "「まだ他の”手法”がいるのか？」と言われてもAmplioを紹介する"
+      "title": "まだ他の”手法”がいるのか？と言われてもAmplioを紹介する",
+      "url": "/blogs/2024/08/06/whatisamplio/"
     },
     {
       "date": "8月7日(水)",
       "author": "shohei-yamashita",
       "githubUser": "shohei-yamashit",
-      "title": "TiDBについて書きたいです（変更あるかもしれませんが）。"
+      "title": "NewSQL分散データベースTiDBをハンズオンつきで紹介してみる",
+      "url": "/blogs/2024/08/07/tidb_intro/"
     },
     {
       "date": "8月8日(木)",
       "author": "yasunori-shiota",
       "githubUser": "shiota",
-      "title": "仮）分散システムあるある（うまくまとまらなかったら変えさせてください）"
+      "title": "ほんの少しだけOpenAPI Generatorを拡張してみません？",
+      "url": "/blogs/2024/08/08/openapi-generator-constraints/"
     },
     {
       "date": "8月9日(金)",
       "author": "minoru-matsumoto",
       "githubUser": "minosys3",
-      "title": "Raspberry Pi5 で挑戦！YOLOv8 を使った生物の個体識別"
+      "title": "Raspberry Pi5 で挑戦！YOLOv8を使った生物の個体識別",
+      "url": "/blogs/2024/08/09/rpi5-indivisual-recognintion/"
     },
     {
       "date": "8月12日(月)",
       "author": "kenta-ishihara",
       "githubUser": "kenta-ishihara",
-      "title": "仮)Java Apache Commons Langについて"
+      "title": "Javaのプログラミングをサポート！Apache Commons Lang入門",
+      "url": "/blogs/2024/08/12/apatche_commons_lang/"
     },
     {
       "date": "8月13日(火)",
       "author": "kohei-tsukano",
       "githubUser": "KoheiTsukano",
-      "title": "仮)React入門"      
+      "title": "React入門したらuseEffectとライフサイクルで詰まったのでまとめてみた",
+      "url": "/blogs/2024/08/13/react_useeffect/"
     }
   ]
 }

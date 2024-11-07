@@ -44,13 +44,13 @@ layout: layouts/base.njk
       </div>
     {%- set adYear = tags | adventCalendarTag %}
     {%- if adYear %}
-    <div class="event-marker advent">
+    <div class="event-marker advent mb-2">
       <a target="_blank" rel="noopener noreferrer" href="{{ adventCalendarUrl }}"><img width="20px" src="/img/icons/christmas-tree.svg" alt="christmas-tree"/>アドベントカレンダー{{adYear}}</a>
     </div>
     {%- endif %}
     {%- set summerYear = tags | summerRelayTag %}
     {%- if summerYear %}
-    <div class="event-marker summer">
+    <div class="event-marker summer mb-2">
       <a target="_blank" rel="noopener noreferrer" href="{{ summerRelayUrl }}"><img width="20px" src="/img/icons/summer-sun.png" alt="summer-sun"/>夏のリレー連載{{summerYear}}</a>
     </div>
     {%- endif %}

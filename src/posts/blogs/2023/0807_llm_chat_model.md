@@ -2,7 +2,7 @@
 title: 日本語GPTで雑談対話モデルを作ろう
 author: takafumi-okubo
 date: 2023-08-07
-tags: [summer2023,自然言語処理,機械学習,GPT,OpenAI,大規模言語モデル,LLM,ファインチューニング]
+tags: [summer2023,自然言語処理,機械学習,GPT,OpenAI,大規模言語モデル,LLM,ファインチューニング, 生成AI]
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2023-summer/
 ---
 この記事は[夏のリレー連載2023](/events/season/2023-summer/)の11日目の記事です。

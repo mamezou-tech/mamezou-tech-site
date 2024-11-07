@@ -14,10 +14,6 @@ translate: true
 
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](/nuxt/nuxt3-state-management).
-:::
 
 
 

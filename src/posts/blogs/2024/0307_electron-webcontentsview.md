@@ -137,6 +137,10 @@ BaseWindow は BrowserWindow のように直接的な API は提供せず、cont
 
 BrowserWindow の setBrowserView/getBrowserView に相当するものは複数ビュー前提であれば不要だと思いますが、全ての ChildView を取得するメソッドは欲しいところです。
 
+:::info:2024.8.27追記
+全ての ChildView を取得するのは contentView のインスタンスプロパティ children で可能です。これは View の配列になっています。
+:::
+
 :::column: View の Z 軸入れ替え
 BrowserWindow の setTopBrowserView のような Z 軸の順序を入れ替える便利 API も提供してほしいなと思います。addChildView のシグネチャは以下のように index 指定が可能なのでアプリ側でも実装できそうではありますが。
 

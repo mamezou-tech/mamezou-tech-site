@@ -1,4 +1,4 @@
-interface Props extends Lume.Data {
+interface Props {
   title: string;
   lpLink: string;
   image: {
@@ -8,7 +8,7 @@ interface Props extends Lume.Data {
   };
 }
 
-export default (props: Props) => (
+export default (props: Props & { children: React.JSX.Element }) => (
   <fieldset className="ad">
     <legend>注目イベント！</legend>
     <div className="ad-text">
@@ -23,7 +23,7 @@ export default (props: Props) => (
       rel="noreferrer noopener"
     >
       <img
-        alt="mameyose"
+        alt="event banner"
         height={props.image.height}
         width={props.image.width}
         src={props.image.src}

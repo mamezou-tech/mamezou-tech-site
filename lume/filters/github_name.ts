@@ -1,4 +1,4 @@
-import contributorsJson from "../../src/_data/contributors.json" assert {
+import contributorsJson from "../../src/_data/contributors.json" with {
   type: "json",
 };
 export const githubName = (authorName: string): string => {

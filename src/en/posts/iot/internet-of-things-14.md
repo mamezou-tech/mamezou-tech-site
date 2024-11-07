@@ -15,10 +15,6 @@ image: true
 translate: true
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/iot/internet-of-things-14/).
-:::
 
 
 This article is the 18th day article of the Mamezou Developer Site Advent Calendar 2023.

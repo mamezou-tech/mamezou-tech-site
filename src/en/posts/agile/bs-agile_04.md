@@ -6,10 +6,6 @@ prevPage: ./src/posts/agile/bs-agile_03.md
 translate: true
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/agile/bs-agile_04/).
-:::
 
 
 

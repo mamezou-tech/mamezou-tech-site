@@ -13,10 +13,6 @@ translate: true
 
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2024/06/16/serverless-framework-v4-summary/).
-:::
 
 
 

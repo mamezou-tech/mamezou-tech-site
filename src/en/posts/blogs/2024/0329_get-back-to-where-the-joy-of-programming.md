@@ -9,10 +9,6 @@ image: true
 translate: true
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](/blogs/2024/03/29/get-back-to-where-the-joy-of-programming/).
-:::
 
 ![Titris](/img/blogs/2024/0329_get-back-to-where-the-joy-of-programming/titris-h.png)
 

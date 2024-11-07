@@ -12,10 +12,6 @@ translate: true
 
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2024/06/13/git_notes_for_newcommers/).
-:::
 
 
 

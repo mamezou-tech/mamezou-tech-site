@@ -2,7 +2,7 @@
 title: LangChainのJava用ライブラリLangChain4jを使ってみる
 author: kotaro-miura
 date: 2024-05-13
-tags: [RAG, OpenAI, GPT, LangChain]
+tags: [RAG, OpenAI, GPT, LangChain, 生成AI]
 image: true
 ---
 

@@ -10,10 +10,6 @@ image: true
 translate: true
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2024/07/13/valibot-intro/).
-:::
 
 When performing data validation in JavaScript, especially in TypeScript projects, libraries like [Zod](https://zod.dev/) and [Yup](https://github.com/jquense/yup) are often used. This time, I will introduce a library called [Valibot](https://valibot.dev/), which has recently been gaining attention as an alternative to these.
 

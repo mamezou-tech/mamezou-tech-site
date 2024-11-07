@@ -7,10 +7,6 @@ image: true
 translate: true
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2024/03/20/wasmeredge-beta/).
-:::
 
 
 

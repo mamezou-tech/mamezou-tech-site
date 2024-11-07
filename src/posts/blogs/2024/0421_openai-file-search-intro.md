@@ -2,7 +2,7 @@
 title: OpenAI Assistants API(v2)で新しくなったFile Search(Vector Stores)を使う
 author: noboru-kudo
 date: 2024-04-21
-tags: [RAG, OpenAI, GPT]
+tags: [RAG, OpenAI, GPT, 生成AI]
 image: true
 ---
 

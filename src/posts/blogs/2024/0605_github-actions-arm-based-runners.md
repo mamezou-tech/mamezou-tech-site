@@ -23,6 +23,12 @@ GitHub のブログでは、Arm テクノロジーがデータセンターの電
 
 [Per-minute rates | About billing for GitHub Actions - GitHub Docs](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates)
 
+:::info:2024.09.05追記
+Arm 版の Linux / Windows Runner が GA になりました。
+
+[GitHub Actions: arm64 Linux and Windows runners are now generally available · GitHub Changelog](https://github.blog/changelog/2024-09-03-github-actions-arm64-linux-and-windows-runners-are-now-generally-available/)
+:::
+
 ## Arm ベースの Runner をオーガニゼーションに登録する
 Arm ベースの Runner は有料プラン(Team 以上)のオーガニゼーションで利用できます。
 

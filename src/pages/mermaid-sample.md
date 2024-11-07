@@ -4,7 +4,7 @@ exclude: true
 url: /mermaid-sample/
 ---
 
-<https://mermaid-js.github.io/mermaid/#/>
+<https://mermaid.js.org/>
 
 ## フローチャート
 
@@ -344,4 +344,168 @@ pie
     "Potassium" : 50.05
     "Magnesium" : 10.01
     "Iron" :  5
+```
+
+## Gitグラフ
+
+```text
+gitGraph
+    commit id: "ZERO"
+    branch develop
+    branch release
+    commit id:"A"
+    checkout main
+    commit id:"ONE"
+    checkout develop
+    commit id:"B"
+    checkout main
+    merge develop id:"MERGE"
+    commit id:"TWO"
+    checkout release
+    cherry-pick id:"MERGE" parent:"B"
+    commit id:"THREE"
+    checkout develop
+    commit id:"C"
+```
+```mermaid
+gitGraph
+    commit id: "ZERO"
+    branch develop
+    branch release
+    commit id:"A"
+    checkout main
+    commit id:"ONE"
+    checkout develop
+    commit id:"B"
+    checkout main
+    merge develop id:"MERGE"
+    commit id:"TWO"
+    checkout release
+    cherry-pick id:"MERGE" parent:"B"
+    commit id:"THREE"
+    checkout develop
+    commit id:"C"
+```
+
+## マインドマップ
+
+- [Mermaid Doc - Maindmap](https://mermaid.js.org/syntax/mindmap.html)
+
+```text
+mindmap
+  root((mindmap))
+    Origins
+      Long history
+      ::icon(fa fa-book)
+      Popularisation
+        British popular psychology author Tony Buzan
+    Research
+      On effectiveness<br/>and features
+      On Automatic creation
+        Uses
+            Creative techniques
+            Strategic planning
+            Argument mapping
+    Tools
+      Pen and paper
+      Mermaid
+```
+```mermaid
+mindmap
+  root((mindmap))
+    Origins
+      Long history
+      ::icon(fa fa-book)
+      Popularisation
+        British popular psychology author Tony Buzan
+    Research
+      On effectiveness<br/>and features
+      On Automatic creation
+        Uses
+            Creative techniques
+            Strategic planning
+            Argument mapping
+    Tools
+      Pen and paper
+      Mermaid
+```
+
+## ベータ機能(v11.2時点)
+
+### XY チャート
+
+```text
+xychart-beta
+    title "Sales Revenue"
+    x-axis [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
+    y-axis "Revenue (in $)" 4000 --> 11000
+    bar [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
+    line [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
+```
+```mermaid
+xychart-beta
+    title "Sales Revenue"
+    x-axis [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
+    y-axis "Revenue (in $)" 4000 --> 11000
+    bar [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
+    line [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
+```
+
+### アーキテクチャ図
+
+- [Mermaid Doc - Architecture Diagrams Documentation (v11.1.0+)](https://mermaid.js.org/syntax/architecture.html)
+
+現時点でアイコンは以下です。他にもご要望あれば追加します([ここ](https://icones.js.org/)から選択できます)。
+- [ロゴ](https://icones.js.org/collection/logos)
+- [Googleマテリアルデザインアイコン](https://icones.js.org/collection/mdi)
+
+```text
+architecture-beta
+    group api(logos:aws)
+
+    service emp(mdi:account-multiple)
+    service user(mdi:account-multiple)
+    service slack_app(logos:slack)
+    service openai_api(logos:openai)
+    service func1(logos:aws-lambda)[Callback] in api
+    service sqs(logos:aws-sqs) in api
+    service func2(logos:aws-lambda)[API executor] in api
+    service db(logos:aws-dynamodb)[DynamoDB] in api
+    service storage(logos:aws-s3)[Storage] in api
+    service cdn(logos:aws-cloudfront) in api
+
+    emp:R --> L:slack_app
+    slack_app:R --> L:func1
+    func1:R --> L:sqs
+    sqs:R --> L:func2
+    func2:T -- B:db
+    func2:B -- R:storage
+    func2:R --> L:openai_api
+    storage:L -- R:cdn
+    user:R --> L:cdn
+```
+```mermaid
+architecture-beta
+    group api(logos:aws)
+
+    service emp(mdi:account-multiple)
+    service user(mdi:account-multiple)
+    service slack_app(logos:slack)
+    service openai_api(logos:openai)
+    service func1(logos:aws-lambda)[Callback] in api
+    service sqs(logos:aws-sqs) in api
+    service func2(logos:aws-lambda)[API executor] in api
+    service db(logos:aws-dynamodb)[DynamoDB] in api
+    service storage(logos:aws-s3)[Storage] in api
+    service cdn(logos:aws-cloudfront) in api
+
+    emp:R --> L:slack_app
+    slack_app:R --> L:func1
+    func1:R --> L:sqs
+    sqs:R --> L:func2
+    func2:T -- B:db
+    func2:B -- R:storage
+    func2:R --> L:openai_api
+    storage:L -- R:cdn
+    user:R --> L:cdn
 ```

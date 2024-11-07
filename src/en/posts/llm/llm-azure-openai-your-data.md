@@ -13,10 +13,6 @@ translate: true
 
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/ml/llm/llm-azure-openai-your-data/).
-:::
 
 
 

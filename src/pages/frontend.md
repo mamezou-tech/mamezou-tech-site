@@ -85,6 +85,27 @@ Bun は高速性と Node.js 互換が特徴の JavaScript ランタイムです�
 - [開発環境の Node.js を Bun に置き換えてみる](/blogs/2023/11/21/replace-nodejs-with-bun-in-devenv/)
 - [Bun で実行可能バイナリをクロスコンパイルできるようになりました](/blogs/2024/05/20/bun-cross-compile/)
 
+## TypeScript
+今やバックエンドでも使用される TypeScript。静的型付けを特徴とし、Deno や Bun などの JavaScript ランタイムでは第一級言語として扱われています。
+
+### Javaエンジニアが始めるTypeScript入門
+Java エンジニア向けの TypeScript 入門。連載開始しました。**New!!**
+
+- [Javaエンジニアが始めるTypeScript入門（第1回：イントロダクション）](/typescript-intro/introduction-to-typescript-for-java-engineer_index/)
+- [Javaエンジニアが始めるTypeScript入門（第2回：変数）](/typescript-intro/introduction-to-typescript-for-java-engineer_variable/)
+- [Javaエンジニアが始めるTypeScript入門（第3回：プリミティブ型）](/typescript-intro/introduction-to-typescript-for-java-engineer_primitive-type/)
+- [Javaエンジニアが始めるTypeScript入門（第4回：その他の基本型）](/typescript-intro/introduction-to-typescript-for-java-engineer_other-basic-type)
+- [Javaエンジニアが始めるTypeScript入門（第5回：集合を扱う型）](/typescript-intro/introduction-to-typescript-for-java-engineer_collection-type)
+- [Javaエンジニアが始めるTypeScript入門（第6回：特殊な型）](/typescript-intro/introduction-to-typescript-for-java-engineer_special-type)
+- [Javaエンジニアが始めるTypeScript入門（第7回：関数）](/typescript-intro/introduction-to-typescript-for-java-engineer_function)
+- [Javaエンジニアが始めるTypeScript入門（第8回：オブジェクト）](/typescript-intro/introduction-to-typescript-for-java-engineer_object)
+
+### ブログ
+- [Valibot: 超軽量＆型安全なスキーマバリデーションライブラリ](/blogs/2024/07/13/valibot-intro/)
+- [TypeScript 向けの軽量ORマッパー Drizzle を使う](/blogs/2024/06/12/drizzle-intro/)
+- [TypeScript v5.2で導入されるusing宣言とDecorator Metadataを使ってみる](/blogs/2023/07/19/typescript-5-2-intro/)
+- [TypeScript5で導入されたStage 3のDecoratorを眺めてみる](/blogs/2023/02/15/typescript5-decorator-intro/)
+
 ## エッジ環境
 コンテンツの配信先を CDN にしてホスト管理プロセスを無くす Jamstack なアーキテクチャが普及してきています。さらに静的コンテンツのみならず、データベース機能も各サービスから提供され始めました。ここでは Netlify[^1] をはじめとするエッジ環境の活用についてご紹介します。
 

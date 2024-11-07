@@ -11,10 +11,6 @@ translate: true
 
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/blogs/2023/12/19/what-scrum-master/).
-:::
 
 
 

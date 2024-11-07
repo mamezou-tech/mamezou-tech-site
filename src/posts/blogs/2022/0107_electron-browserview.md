@@ -5,10 +5,11 @@ date: 2022-01-07
 tags: electron
 ---
 
-:::alert:2024.7.22追記
+:::alert:2024.7.22、8.28追記
 BrowserView は WebContentsView に置き換えられ、現在非推奨になっています。BrowserView の API は残っていますが、新規開発では、WebContentsView を使いましょう。以下の記事でも紹介しています。
 
-[Electron に BrowserView を置き換える WebContentsView が実装されたので見てみる](/blogs/2024/03/06/electron-webcontentsview/)
+- [Electron に BrowserView を置き換える WebContentsView が実装されたので見てみる](/blogs/2024/03/06/electron-webcontentsview/)
+- [Electron - WebContentsView 時代のアプリ構造を可視化してみる](/blogs/2024/08/28/electron-webcontentsview-app-structure)
 :::
 
 Electron には Web コンテンツを表示する仕組みとして当初から WebView が提供されており、多くのアプリで採用されています。現在 WebView のドキュメント冒頭には使用を避けるよう警告が書かれています。

@@ -11,10 +11,6 @@ translate: true
 
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/lume/lume-search/).
-:::
 
 
 

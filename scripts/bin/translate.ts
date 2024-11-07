@@ -1,4 +1,4 @@
-import { ask } from '../util/chat-gpt.js';
+import { ask } from '../util/chat.js';
 import fs, { promises as fsPromises } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
@@ -16,35 +16,32 @@ const Chinese = {
 };
 
 const makeMessage = (text: string, language: string) => {
-  return `Translate Japanese articles into ${language}.
-The following should not be translated.
+  return `Translate the following Japanese markdown article into ${language}.
 
-- Source code (but translate comments)
-- Names of books included in the article
-- HTML tags (like video,script). These tags should output as is.
-- Image link or url
+Please follow these instructions:
 
-Also, do not output anything other than the translated text.
+- For the front matter (YAML between \`---\` and \`---\`):
+  - Translate only the \`title\` field into English.
+  - Wrap the translated title in double quotes \`"..."\` to prevent YAML syntax errors, especially if it contains special characters like \`:\`.
+  - Leave all other fields in the front matter unchanged.
+  - **Do not wrap the front matter in code blocks or add any additional formatting. Output it exactly as \`---\`, followed by the YAML content, and ending with \`---\`.**
+- In the main body of the article:
+  - Translate all Japanese text into English.
+  - Do not translate source code (but do translate comments within the code).
+  - Do not translate names of books mentioned in the article.
+  - Do not translate HTML tags like \`<video>\` or \`<script>\`; output them as they are.
+  - Do not translate image links or URLs.
+- Do not output anything other than the translated text.
 
-Header part (known as Front Matter) included in markdown should be output.
-Header part stats with \`---\`, also ends with \`---\`.
-Also, translated title wrapped with \`"\`(double quote).
+Here are specific translation rules:
 
-Here are the rules for translating.
-- \`豆蔵\` is translated to Mamezou.
- 
-Articles to be translated are as follows.
+- Translate \`豆蔵\` as \`Mamezou\`.
+
+Please translate the following article:
 
 ${text}
 `;
 };
-
-const makeNote = (path: string) => `
-:::alert
-This article has been automatically translated.
-The original article is [here](${path}).
-:::
-`;
 
 const baseDir = path.dirname(process.cwd());
 
@@ -60,10 +57,11 @@ function separateMd(result: string) {
   return { frontMatter, payload };
 }
 
-function updateMd(translated: string, originalUrlPath: string, originalFrontMatter: string) {
+function updateMd(translated: string, originalFrontMatter: string) {
   const { frontMatter: translatedFrontMatter, payload } = separateMd(translated);
   const frontMatterYaml: any = yaml.load(originalFrontMatter);
   frontMatterYaml.translate = true;
+  console.log(translatedFrontMatter)
   const translatedYaml = yaml.load(translatedFrontMatter) as any;
   console.log(translatedYaml);
   frontMatterYaml.title = translatedYaml.title;
@@ -72,8 +70,6 @@ function updateMd(translated: string, originalUrlPath: string, originalFrontMatt
   return `---
 ${finalFrontMatter}
 ---
-${makeNote(originalUrlPath)}
-
 ${payload}
 `;
 }
@@ -86,7 +82,8 @@ async function chat(text: string, option: { language: string; dir: string }) {
       content: makeMessage(text, option.language)
     }],
     temperature: 0.4,
-    maxTokens: 4096
+    maxTokens: 4096,
+    model: 'gpt-4o-2024-08-06'
   } satisfies Parameters<typeof ask>[number];
 
   const response = await ask(request);
@@ -127,7 +124,7 @@ async function translate({ filePath, originalLink }: { filePath: string, origina
   const match = filePath.match(/.*\/src\/(?<dir>.*)/);
   if (!match?.groups?.dir) throw new Error('no dir for ' + filePath);
 
-  const updatedMd = updateMd(result, originalLink, originalFrontMatter);
+  const updatedMd = updateMd(result, originalFrontMatter);
   const newFilePath = `${baseDir}/src/${option.dir}/${match.groups.dir}`;
   await fsPromises.mkdir(path.dirname(newFilePath), { recursive: true });
   await fsPromises.writeFile(newFilePath, updatedMd);

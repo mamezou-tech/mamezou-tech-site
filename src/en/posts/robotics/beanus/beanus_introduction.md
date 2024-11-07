@@ -1,17 +1,13 @@
 ---
 title: Mamezou Original Robot Beanus
 author: takehiro-toyoshima
-tags: [ロボット, Beanus]
+tags: [ロボット, BEANus]
 date: 2024-03-23T00:00:00.000Z
 image: true
 translate: true
 
 ---
 
-:::alert
-This article has been automatically translated.
-The original article is [here](https://developer.mamezou-tech.com/robotics/beanus/beanus_introduction/).
-:::
 
 
 

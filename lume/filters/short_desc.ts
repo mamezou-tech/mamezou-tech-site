@@ -30,7 +30,7 @@ export const shortDesc = (
   if (path.includes("/en/posts")) {
     return chop(
       content.replace(
-        /^.*article has been automatically translated\.The original article is here\./,
+        /^.*To reach a broader audience, this article has been translated from Japanese\.You can find the original version here\./,
         "",
       ),
       400,

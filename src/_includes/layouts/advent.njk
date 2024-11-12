@@ -13,6 +13,9 @@ layout: layouts/base.njk
     </header>
 
     <main class="event__content">
+      {%- if imageUrl %}
+        <p><img src={{ imageUrl }} alt="cover" style="display:block; margin: auto;" /></P>
+      {%- endif %}
       {{ comp.Calendar({ year: year, weekend: weekend }) | safe }}
     </main>
 

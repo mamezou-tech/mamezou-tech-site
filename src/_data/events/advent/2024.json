@@ -1,0 +1,97 @@
+{
+  "entries": [
+    {
+      "dayOfWeek": "Mon."
+    },
+    {
+      "dayOfWeek": "Tue."
+    },
+    {
+      "dayOfWeek": "Wed."
+    },
+    {
+      "dayOfWeek": "Thu."
+    },
+    {
+      "dayOfWeek": "Fri."
+    },
+    {
+      "date": "2"
+    },
+    {
+      "date": "3",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "ミューテーションテストの開発組み込みを考える(仮)"
+    },
+    {
+      "date": "4",
+      "author": "noboru-kudo",
+      "githubUser": "kudoh",
+      "title": "何か書きます"
+    },
+    {
+      "date": "5"
+    },
+    {
+      "date": "6"
+    },
+    {
+      "date": "9",
+      "author": "shuji-morimoto",
+      "githubUser": "shuji-morimoto",
+      "title": "何か書きます"
+    },
+    {
+      "date": "10"
+    },
+    {
+      "date": "11"
+    },
+    {
+      "date": "12",
+      "author": "minoru-matsumoto",
+      "githubUser": "minosys3",
+      "title": "Raspberry Pi + TWELITEで作る室温監視システム"
+    },
+    {
+      "date": "13"
+    },
+    {
+      "date": "16",
+      "author": "akihiro-ishida",
+      "githubUser": "mamezou-ishida",
+      "title": "リファインメントについて（仮）"
+    },
+    {
+      "date": "17"
+    },
+    {
+      "date": "18",
+      "author": "shohei-yamashita",
+      "githubUser": "shohei-yamashit",
+      "title": "何か書きます"
+    },
+    {
+      "date": "19"
+    },
+    {
+      "date": "20",
+      "author": "yasunori-shiota",
+      "githubUser": "shiota",
+      "title": ".NET Core 系で書いてみます。"
+    },
+    {
+      "date": "23",
+      "author": "shigeki-shoji",
+      "githubUser": "edward-mamezou",
+      "title": "何か書きます"
+    },
+    {
+      "date": "24"
+    },
+    {
+      "date": "25"
+    }
+  ]
+}

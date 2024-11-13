@@ -103,7 +103,10 @@
       "title": "何か書きます"
     },
     {
-      "date": "24"
+      "date": "24",
+      "author": "yoshihisa-muta",
+      "githubUser": "ymuta",
+      "title": "Cosense + 生成 AI の記事を書きます"
     },
     {
       "date": "25"

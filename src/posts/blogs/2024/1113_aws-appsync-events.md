@@ -6,7 +6,7 @@ tags: [AWS, appsync, nuxt, websocket]
 image: true
 ---
 
-先月末にAWS AppSyncから新しいAPIが導入されました。
+先月末にAWS AppSyncに新しいAPIが導入されました。
 
 - [AWS AppSync Events の発表: サーバーレス WebSocket API で、あらゆる規模の Web およびモバイルのリアルタイムエクスペリエンスを実現](https://aws.amazon.com/jp/blogs/news/announcing-aws-appsync-events-serverless-websocket-apis/)
 

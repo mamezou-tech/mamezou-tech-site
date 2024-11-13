@@ -43,10 +43,16 @@
       "title": "何か書きます"
     },
     {
-      "date": "10"
+      "date": "10",
+      "author": "toshiki-nakasu",
+      "githubUser": "toshiki-nakasu",
+      "title": "「GASでGaroon -> GCalへの一方向の同期スクリプト書きました」な記事"
     },
     {
-      "date": "11"
+      "date": "11",
+      "author": "kohei-tsukano",
+      "githubUser": "KoheiTsukano",
+      "title": "何か書きます"
     },
     {
       "date": "12",
@@ -55,7 +61,10 @@
       "title": "Raspberry Pi + TWELITEで作る室温監視システム"
     },
     {
-      "date": "13"
+      "date": "13",
+      "author": "tomohiro-fujii",
+      "githubUser": "tomohiro-fujii33",
+      "title": "初学者向けの見積もりの話を書きたいです"
     },
     {
       "date": "16",
@@ -64,7 +73,10 @@
       "title": "リファインメントについて（仮）"
     },
     {
-      "date": "17"
+      "date": "17",
+      "author": "kenta-ishihara",
+      "githubUser": "kenta-ishihara",
+      "title": "何か書きます"
     },
     {
       "date": "18",
@@ -73,7 +85,10 @@
       "title": "何か書きます"
     },
     {
-      "date": "19"
+      "date": "19",
+      "author": "takafumi-okubo",
+      "githubUser": "TakOkubo",
+      "title": "何か書きます"
     },
     {
       "date": "20",

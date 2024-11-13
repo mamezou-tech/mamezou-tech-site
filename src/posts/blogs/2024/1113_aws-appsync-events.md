@@ -228,7 +228,7 @@ curl -H "x-api-key:${API_KEY}" -H "Host:$HTTP_HOST" \
 
 APIキーやHTTPエンドポイントはマネジメントコンソールから確認できます。
 
-次に、IAMの場合です。curlの7.75.0以上はAWS認証に対応していますので、特別な準備は必要ありません。
+次に、IAMの場合です。curlの7.75.0以上はAWSのSigV4署名プロトコルに対応していますので、特別な準備は必要ありません。
 
 ```shell
 curl --aws-sigv4 "aws:amz:ap-northeast-1:appsync" \

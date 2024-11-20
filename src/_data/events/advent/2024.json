@@ -118,7 +118,10 @@
       "title": "Cosense + 生成 AI の記事を書きます"
     },
     {
-      "date": "25"
+      "date": "25",
+      "author": "takashi-egawa",
+      "githubUser": "egglang",
+      "title": "なんか書きます"
     }
   ]
 }

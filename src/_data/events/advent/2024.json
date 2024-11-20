@@ -1,0 +1,127 @@
+{
+  "entries": [
+    {
+      "dayOfWeek": "Mon."
+    },
+    {
+      "dayOfWeek": "Tue."
+    },
+    {
+      "dayOfWeek": "Wed."
+    },
+    {
+      "dayOfWeek": "Thu."
+    },
+    {
+      "dayOfWeek": "Fri."
+    },
+    {
+      "date": "2",
+      "author": "takahiro-maeda",
+      "githubUser": "Deth-True",
+      "title": "何か書きます"
+    },
+    {
+      "date": "3",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "ミューテーションテストの開発組み込みを考える(仮)"
+    },
+    {
+      "date": "4",
+      "author": "noboru-kudo",
+      "githubUser": "kudoh",
+      "title": "何か書きます"
+    },
+    {
+      "date": "5",
+      "author": "misato-kamei",
+      "githubUser": "misato-kamei",
+      "title": "何か書きます"
+    },
+    {
+      "date": "6",
+      "author": "kazuyuki-shiratani",
+      "githubUser": "k-shiratani",
+      "title": "何か書きます"
+    },
+    {
+      "date": "9",
+      "author": "shuji-morimoto",
+      "githubUser": "shuji-morimoto",
+      "title": "何か書きます"
+    },
+    {
+      "date": "10",
+      "author": "toshiki-nakasu",
+      "githubUser": "toshiki-nakasu",
+      "title": "「GASでGaroon -> GCalへの一方向の同期スクリプト書きました」な記事"
+    },
+    {
+      "date": "11",
+      "author": "kohei-tsukano",
+      "githubUser": "KoheiTsukano",
+      "title": "何か書きます"
+    },
+    {
+      "date": "12",
+      "author": "minoru-matsumoto",
+      "githubUser": "minosys3",
+      "title": "Raspberry Pi + TWELITEで作る室温監視システム"
+    },
+    {
+      "date": "13",
+      "author": "tomohiro-fujii",
+      "githubUser": "tomohiro-fujii33",
+      "title": "初学者向けの見積もりの話を書きたいです"
+    },
+    {
+      "date": "16",
+      "author": "akihiro-ishida",
+      "githubUser": "mamezou-ishida",
+      "title": "リファインメントについて（仮）"
+    },
+    {
+      "date": "17",
+      "author": "kenta-ishihara",
+      "githubUser": "kenta-ishihara",
+      "title": "何か書きます"
+    },
+    {
+      "date": "18",
+      "author": "shohei-yamashita",
+      "githubUser": "shohei-yamashit",
+      "title": "何か書きます"
+    },
+    {
+      "date": "19",
+      "author": "takafumi-okubo",
+      "githubUser": "TakOkubo",
+      "title": "何か書きます"
+    },
+    {
+      "date": "20",
+      "author": "yasunori-shiota",
+      "githubUser": "shiota",
+      "title": ".NET Core 系で書いてみます。"
+    },
+    {
+      "date": "23",
+      "author": "shigeki-shoji",
+      "githubUser": "edward-mamezou",
+      "title": "何か書きます"
+    },
+    {
+      "date": "24",
+      "author": "yoshihisa-muta",
+      "githubUser": "ymuta",
+      "title": "Cosense + 生成 AI の記事を書きます"
+    },
+    {
+      "date": "25",
+      "author": "takashi-egawa",
+      "githubUser": "egglang",
+      "title": "なんか書きます"
+    }
+  ]
+}

@@ -415,5 +415,11 @@ members.json か emp.json に変更があると、PR が作られます。
 
 ![bot PR](https://i.gyazo.com/ea5a6606c603c6d818d203846c3d69ab.png)
 
+:::column:2024.11.19 追記
+本記事を書いてから30日以上経過し、PAT が expire してワークフロー実行が失敗してたのを見過ごしていました。気づけないのは問題なので、以下の過去記事のように Slack でワークフロー実行や PR 作成を通知するように設定しました。
+
+[Slack の GitHub インテグレーションで GitHub Actions ワークフローのイベントを通知可能に](https://developer.mamezou-tech.com/blogs/2022/12/12/notify-github-actions-workflow-to-slack/)
+:::
+
 ## さいごに
 以上、GitHub オーガニゼーションのメンバーを把握するための簡易な仕組みを構築した話でした。あまり手をかけずに自動化をしたいので Bun のようにオールインワンの JavaScript ランタイムを使うのはフィットする気がしました。

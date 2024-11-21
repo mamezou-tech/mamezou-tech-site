@@ -67,7 +67,7 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
   console.log(keywords.words);
   const keyword = pickup(keywords.words, pastTitles);
   const result = await openai.beta.chat.completions.parse({
-    model: 'gpt-4o-2024-08-06',
+    model: 'gpt-4o-2024-11-20',
     // model: 'gpt-4o-mini', // for testing
     messages: [
       {

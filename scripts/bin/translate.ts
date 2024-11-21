@@ -83,7 +83,7 @@ async function chat(text: string, option: { language: string; dir: string }) {
     }],
     temperature: 0.4,
     maxTokens: 4096,
-    model: 'gpt-4o-2024-08-06'
+    model: 'gpt-4o-2024-11-20'
   } satisfies Parameters<typeof ask>[number];
 
   const response = await ask(request);

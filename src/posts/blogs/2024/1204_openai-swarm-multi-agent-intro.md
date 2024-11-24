@@ -64,16 +64,16 @@ class Agent(BaseModel):
 
 このようにSwarmのエージェントの定義は非常にシンプルで、最低限必要なもののみにフォーカスしたものになっていると言えそうです。
 
-## Handoffs
+## Handoff
 
-エージェントオーケストレーションの肝がHandoffsです。
+エージェントオーケストレーションの肝がHandoffです。
 以下Cookbookからの引用です。
 
 > Let's define a handoff as an agent (or routine) handing off an active conversation to another agent, much like when you get transfered to someone else on a phone call. Except in this case, the agents have complete knowledge of your prior conversation!
 
 電話を他の人に転送するイメージとのことです。
 
-エージェントオーケストレーションのコンテキストで言うと、実行すべきタスクが自分の責任範囲を超えると判断したら、適切なエージェントにバトンタッチ(引き継ぎ)することがHandoffsと言えそうです。
+エージェントオーケストレーションのコンテキストで言うと、実行すべきタスクが自分の責任範囲を超えると判断したら、適切なエージェントにバトンタッチ(引き継ぎ)することがHandoffと言えそうです。
 
 エージェントA -> エージェントBへのタスク引き継ぎの場合は以下のようなイメージです。
 
@@ -82,46 +82,46 @@ flowchart LR
     Start@{ shape: circle, label: "開始" } --> ThinkA
     subgraph エージェントA
         ThinkA(タスク判断) --> TaskA(タスク実行)    
-        ThinkA --> Handoffs(エージェントB引き継ぎ)
+        ThinkA --> Handoff(エージェントB引き継ぎ)
     end
     subgraph エージェントB
         ThinkB(タスク判断) --> TaskB(タスク実行)
     end
-    Handoffs -->|Handoffs| ThinkB
+    Handoff -->|Handoff| ThinkB
     TaskA --> End@{ shape: stadium, label: "終了"}
     TaskB --> End
 ```
 
-このように、次々にHandoffsを繋いでいけばもっと多数のエージェントでも同じように引き継ぎできます。
+次々にHandoffでエージェント間を繋いでいけば、より大きなエージェントオーケストレーションのネットワークを構築できます。
 
-Swarmでは、エージェント引き継ぎ用の関数をツールに加えることでHandoffsを実現します。
-Handoffs関数は以下のようなものになります。
+Swarmでは、エージェント引き継ぎ用の関数をツールに加えることでHandoffを実現します。
+Handoff関数は以下のようなものになります。
 
 ```python
 # 引き継ぎ先エージェント
 refund_agent = Agent(...)
 
-# Handoffs関数
+# Handoff関数
 def transfer_to_refunds():
     """ユーザーが返金に関する要求した場合に実行してください"""
     return refund_agent
 ```
 
-戻り値として次のエージェントを返すのがHandoffs関数のルールです。
-また、Handoffs関数は`transfer_to_XXX`(XXX:エージェント名)というネーミングにすることで、LLMが適切に実行可否を判断してくれるとのことです。
+戻り値として次のエージェントを返すのがHandoff関数のルールです。
+また、Handoff関数は`transfer_to_XXX`(XXX:エージェント名)というネーミングにすることで、LLMが適切に実行可否を判断してくれるとのことです。
 
-このHandoffs関数を引き継ぎ元のエージェントのツール(`functions`)として指定しておきます。
+このHandoff関数を引き継ぎ元のエージェントのツール(`functions`)として指定しておきます。
 
 ```python
 triage_agent = Agent(
     name="Triage Agent",
     instructions=triage_instructions,
-    # Handoffs関数を設定
+    # Handoff関数を設定
     functions=[transfer_to_flight_refunds, transfer_to_xxxx],
 )
 ```
 
-このエージェントはHandoffs関数のみを設定していますが、もちろん通常の関数と組み合わせても構いません。
+このエージェントはHandoff関数のみを設定していますが、もちろん通常の関数と組み合わせても構いません。
 このような形で指定しておくと、エージェント(LLM)は適切な次のエージェントを選択して、現在のタスクを引き継ぐことになります。
 
 ## Swarmの実行シーケンス
@@ -138,15 +138,15 @@ sequenceDiagram
     User->>Swarm: 実行(エージェント,プロンプト,コンテキスト)
 
     loop
-        Swarm->>API: Chat Completion API(プロンプト or Handoffs or タスク実行結果)
+        Swarm->>API: Chat Completion API(プロンプト or Handoff or タスク実行結果)
         API->>API: ツール実行判断
         alt ツール実行=True
             API-->>Swarm: ツール実行要求
-            Swarm->>Agent: ツール実行(Handoffs or タスク実行関数)
+            Swarm->>Agent: ツール実行(Handoff or タスク実行関数)
             Agent-->>Swarm: 実行結果
 
             opt 実行結果=エージェント
-                Swarm->>Swarm: アクティブエージェント変更(Handoffs)
+                Swarm->>Swarm: アクティブエージェント変更(Handoff)
             end
         else　ツール実行=False
             API-->>Swarm: レスポンスメッセージ
@@ -157,8 +157,8 @@ sequenceDiagram
 ```
 
 LLMがツール実行不要と判断する(つまりメッセージを生成する)まで、Chat Completion APIを実行し続けるシンプルなものになっています。
-その中でHandoffs関数が実行された場合にアクティブエージェントを切り替えていきます。
-また、上図には表していませんが、Handoffs発生時はメッセージの履歴やコンテキスト情報も引き継ぎ、後続エージェントが過去の情報やユーザーコンテキストを参照できる仕組みになっています。
+その中でHandoff関数が実行された場合にアクティブエージェントを切り替えていきます。
+また、上図には表していませんが、Handoff発生時はメッセージの履歴やコンテキスト情報も引き継ぎ、後続エージェントが過去の情報やユーザーコンテキストを参照できる仕組みになっています。
 
 なお、全自動ではなくユーザー・エージェント間で対話しながらタスクを実行する場合は、このシーケンスをループするだけで実現可能です。Swarmでは[run_demo_loop関数](https://github.com/openai/swarm/blob/main/swarm/repl/repl.py#L60)として用意されています。
 
@@ -172,7 +172,7 @@ LLMがツール実行不要と判断する(つまりメッセージを生成す�
 - 宿泊施設提案エージェント: 目的地付近の宿泊施設を提案
 - 交通手段提案エージェント: 出発地と目的地に基づき最適な交通手段を選定
 
-ここでは旅行プラン統合エージェントがユーザーの窓口になって、各エージェントから情報を収集して(Handoffs)、最終的な旅行プラン提案書を作成する構成とします。
+ここでは旅行プラン統合エージェントがユーザーの窓口になって、各エージェントから情報を収集して(Handoff)、最終的な旅行プラン提案書を作成する構成とします。
 
 ```mermaid
 sequenceDiagram
@@ -183,15 +183,15 @@ sequenceDiagram
     participant Transportation as 交通手段提案エージェント
 
     User ->> Planner: プラン作成依頼
-    Planner ->> Spots: Handoffs
+    Planner ->> Spots: Handoff
     Spots ->> Spots: 観光地リスト作成
-    Spots ->> Planner: Handoffs
-    Planner ->> Accommodations: Handoffs
+    Spots ->> Planner: Handoff
+    Planner ->> Accommodations: Handoff
     Accommodations ->> Accommodations: 宿泊施設リスト作成
-    Accommodations ->> Planner: Handoffs
-    Planner ->> Transportation: Handoffs
+    Accommodations ->> Planner: Handoff
+    Planner ->> Transportation: Handoff
     Transportation ->> Transportation: 交通手段提案
-    Transportation ->> Planner: Handoffs
+    Transportation ->> Planner: Handoff
     Planner ->> Planner: 旅行プラン提案書作成
     Planner ->> User: 旅行プラン提示
 ```
@@ -209,7 +209,7 @@ pip install git+https://github.com/openai/swarm.git
 from swarm import Agent, Swarm
 
 
-# Handoffs関数
+# Handoff関数
 def transfer_to_tourist_spot():
     """観光地提案エージェントに引き継ぐ時に実行する"""
     return tourist_spot_agent
@@ -249,13 +249,13 @@ travel_planner_agent = Agent(
 )
 ```
 
-ここでは各エージェントへのHandoffs関数を作成して設定します。旅行プラン立案タスク自体は生成AIのテキスト生成能力を活用するため特定の関数は指定していません。
-`instructions`に具体的な指示を書かないと、エージェントに引き継ぎせず自分勝手なレスポンスを生成してしまうことが多かったので、Handoffs関数(ツール)の実行指示を明確に記述しました。
+ここでは各エージェントへのHandoff関数を作成して設定します。旅行プラン立案タスク自体は生成AIのテキスト生成能力を活用するため特定の関数は指定していません。
+`instructions`に具体的な指示を書かないと、エージェントに引き継ぎせず自分勝手なレスポンスを生成してしまうことが多かったので、Handoff関数(ツール)の実行指示を明確に記述しました。
 
 続いて、残りのエージェントの実装です。
 
 ```python
-# 再起用のHandoffs関数
+# 再起用のHandoff関数
 def transfer_to_travel_planner():
     """旅行プラン統合エージェントに引き継ぐ場合に実行する"""
     return travel_planner_agent
@@ -325,7 +325,7 @@ transportation_agent = Agent(
 )
 ```
 
-ここでは、各エージェントはその責務に応じたダミーのタスク実行関数に加えて、旅行プラン統合エージェントへのHandoffs関数(`transfer_to_travel_planner`)も設定しています。
+ここでは、各エージェントはその責務に応じたダミーのタスク実行関数に加えて、旅行プラン統合エージェントへのHandoff関数(`transfer_to_travel_planner`)も設定しています。
 これにより、タスク実行後はその結果を持って再度旅行プラン統合エージェントに制御を戻すようにしています。
 
 最後にmain関数です。

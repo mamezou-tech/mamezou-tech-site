@@ -4,7 +4,6 @@ author: takahiro-maeda
 date: 2024-12-02
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2024/
 tags: [advent2024, ターミナルエミュレータ, ターミナル, RLogin]
-image: true
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第1日目の記事です。
@@ -73,21 +72,21 @@ TeraTermに慣れている人におすすめな初期設定を以下に挙げま
 - 左クリックの範囲指定だけクリップボードにコピーする
 - 右クリックで貼り付け
 
-![クリップボード設定画面](/src/img/blogs/2024/1202_RLogin_introduction/rlogin_initial_clipbord.png)
+![クリップボード設定画面](/img/blogs/2024/1202_RLogin_introduction/rlogin_initial_clipbord.png)
 
 追加で筆者のオススメの設定を以下にあげます。
 - カラー設定
 - 背景を変えたい場合、デフォルトで用意されいているプリセットが14セットあります。
 - サーバーの環境（本番・開発）や、役割（バックエンド・DBサーバー）などで色分けするとよいと思います。
 
-![ターミナル背景カラー設定画面](/src/img/blogs/2024/1202_RLogin_introduction/rlogin_backscreen_color_setting.png)
+![ターミナル背景カラー設定画面](/img/blogs/2024/1202_RLogin_introduction/rlogin_backscreen_color_setting.png)
 
 - カラー>背景設定
 - バックグラウンド画像にテキストを追加
 デフォルトの特殊文字列で、スクリーンの任意の位置にエントリ名とサーバーアドレスを表示できます。
 
-![バックグラウンドテキスト設定画面](/src/img/blogs/2024/1202_RLogin_introduction/rlogin_initial_backscreen.png)
-![バックグラウンドテキスト表示イメージ](/src/img/blogs/2024/1202_RLogin_introduction/rlogin_connect_azure_ssh_initial.png)
+![バックグラウンドテキスト設定画面](/img/blogs/2024/1202_RLogin_introduction/rlogin_initial_backscreen.png)
+![バックグラウンドテキスト表示イメージ](/img/blogs/2024/1202_RLogin_introduction/rlogin_connect_azure_ssh_initial.png)
 
 ### 接続情報の保存
 
@@ -104,7 +103,7 @@ TeraTermに慣れている人におすすめな初期設定を以下に挙げま
 
 サーバーを選択して、「OK」ボタンでサーバーに接続できます。
 
-![サーバー接続画面](/src/img/blogs/2024/1202_RLogin_introduction/rlogin_server_select.png)
+![サーバー接続画面](/img/blogs/2024/1202_RLogin_introduction/rlogin_server_select.png)
 
 ## おすすめ機能3選
 
@@ -112,7 +111,7 @@ TeraTermに慣れている人におすすめな初期設定を以下に挙げま
 Rloginの目玉機能であるのが、「画面分割機能」です。
 近年は1920×1080のフルHDがデフォルトになりつつあり、4K・8K・ウルトラワイドなど画面解像度が高くなったことで表示できる情報量が増えています。[^5]
 
-![画面分割デモ](/src/img/blogs/2024/1202_RLogin_introduction/rlogin_full_screen.png)
+![画面分割デモ](/img/blogs/2024/1202_RLogin_introduction/rlogin_full_screen.png)
 
 1つの画面で複数のサーバー情報を同時に見たいという方にはこの機能はとても便利で充実しています。
 （もちろん、Rloginを複数ウィンドウでの利用も可能です。）
@@ -143,11 +142,11 @@ Rloginの目玉機能であるのが、「画面分割機能」です。
 
 - 末尾にタブが混入しているケース
 
-![末尾にタブが混入しているケース](/src/img/blogs/2024/1202_RLogin_introduction/rlogin_paste_tab_pattern.png)
+![末尾にタブが混入しているケース](/img/blogs/2024/1202_RLogin_introduction/rlogin_paste_tab_pattern.png)
 
 - 末尾に改行が混入しているケース
 
-![末尾に改行が混入しているケース](/src/img/blogs/2024/1202_RLogin_introduction/rlogin_paste_rn_pattern.png)
+![末尾に改行が混入しているケース](/img/blogs/2024/1202_RLogin_introduction/rlogin_paste_rn_pattern.png)
 
 どちらも、ペースト確認機能のエディター上で不要なタブや改行を削除の上、送信可能です。
 
@@ -157,11 +156,11 @@ Rloginの目玉機能であるのが、「画面分割機能」です。
 文字列を検索したい場合に利用でき、英大文字・小文字区別なし検索・ワイルドカード/正規表現検索にも対応しています。
 これもちょっと調べたいなと思った時に使える、便利な機能です。
 
-![検索機能を使う](/src/img/blogs/2024/1202_RLogin_introduction/rlogin_string_search.png)
+![検索機能を使う](/img/blogs/2024/1202_RLogin_introduction/rlogin_string_search.png)
 
 検索した文字列が色付いて表示されます。
 
-![検索機能の結果](/src/img/blogs/2024/1202_RLogin_introduction/rlogin_string_search_result.png)
+![検索機能の結果](/img/blogs/2024/1202_RLogin_introduction/rlogin_string_search_result.png)
 
 ## まとめ
 今回の記事では紹介しきれないほど、様々な機能がRLoginにはあります。

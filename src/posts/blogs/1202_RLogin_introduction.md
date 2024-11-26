@@ -86,7 +86,7 @@ exeをショートカットやタスクバーに保存しておくと、すぐ�
     ![テンプレート用の設定](/img/blogs/2024/1202_RLogin_introduction/rlogin_template_setting.png)
     - テンプレートとして保存し、標準設定としておきます。
     ![標準設定](/img/blogs/2024/1202_RLogin_introduction/rlogin_default_setting.png)
-    - 接続先の新規作成すると、標準設定した黄枠項目が全てONになっていることが分かります。
+    - 接続先の新規作成すると、標準設定した項目（黄枠）が全てONになっていることが分かります。
     ![標準設定を引き継いだ状態](/img/blogs/2024/1202_RLogin_introduction/rlogin_new_server_connect.png)
 - 標準設定を除外、別の接続設定を引き継ぎたい場合
   - サーバー選択画面から該当サーバーを右クリックし、「標準設定に戻す」で以下変更が可能です。

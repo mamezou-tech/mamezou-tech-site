@@ -253,12 +253,12 @@ public class GameResultRepositoryTest {
 ここで定義していない呼び出され方をした場合、AssertionErrorが発生します。
 ↓はGameResultDao.findByPlayerメソッドの引数が"Ken"で呼び出されたことと、"Ryu"で1回呼び出されるはずが0回呼び出された旨のエラー表示です。
 
-`
+```
 java.lang.AssertionError: 
   Unexpected method call EasyMock for interface dao.GameResultDao -> GameResultDao.findByPlayer("Ken"):
     EasyMock for interface dao.GameResultDao -> GameResultDao.findByPlayer("Ryu"): expected: 1, actual: 0
     ...
-`
+```
 
 
 ### 4:定義したふるまいの実行を準備する
@@ -290,12 +290,12 @@ java.lang.AssertionError:
 
 ↓はverifyメソッドの呼び出し時点で定義されたのに呼び出されていないモックのメソッドがあることを示すエラーです。
 
-`
+```
 java.lang.AssertionError: 
   Expectation failure on verify:
     EasyMock for interface dao.GameResultDao -> GameResultDao.findByPlayer("Ken"): expected: 1, actual: 0
     ...
-`
+```
 
 ## キャプチャ機能
 

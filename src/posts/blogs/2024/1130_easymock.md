@@ -37,6 +37,14 @@ public class GameResult {
     /** 対戦結果(0:引き分け 1:プレイヤー1の勝利 2:プレイヤー2の勝利) */
     private int result;
 
+    // コンストラクタ
+    public GameResult(Long id, String player1, String player2, int result) {
+        this.id = id;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.result = result;
+    }
+
     // 以下getterとsetterを省略
 }
 ```
@@ -164,11 +172,11 @@ public class GameResultRepositoryTest {
     public void testCalcWinningRate() throws Exception {
         /* Daoの返り値にしたい対戦結果のリスト */
         List<GameResult> resultList = new ArrayList<>();
-        resultList.add(createGameResult(1L, "Ryu", "Ken", 1));
-        resultList.add(createGameResult(2L, "Guile", "Ryu", 1));
-        resultList.add(createGameResult(4L, "Guile", "Ryu", 2));
-        resultList.add(createGameResult(5L, "Ryu", "Ken", 2));
-        resultList.add(createGameResult(6L, "Ryu", "Ken", 0));
+        resultList.add(new GameResult(1L, "Ryu", "Ken", 1));
+        resultList.add(new GameResult(2L, "Guile", "Ryu", 1));
+        resultList.add(new GameResult(4L, "Guile", "Ryu", 2));
+        resultList.add(new GameResult(5L, "Ryu", "Ken", 2));
+        resultList.add(new GameResult(6L, "Ryu", "Ken", 0));
 
         // 3:ふるまいを定義する
         expect(mockGameResultDao.findByPlayer("Ryu")).andReturn(resultList);
@@ -182,16 +190,6 @@ public class GameResultRepositoryTest {
         // 5:定義したとおりにふるまったかを確認する
         verify(mockGameResultDao);
     }
-
-    /* 対戦結果インスタンスを作るメソッド */
-    private GameResult createGameResult(Long id, String player1, String player2, int result) {
-        GameResult gameResult = new GameResult();
-        gameResult.setId(id);
-        gameResult.setPlayer1(player1);
-        gameResult.setPlayer2(player2);
-        gameResult.setResult(result);
-        return gameResult;
-    }
 }
 ```
 
@@ -202,9 +200,25 @@ public class GameResultRepositoryTest {
     mockGameResultDao = mock(GameResultDao.class);
 ```
 
-「@BeforeEach」アノテーションを付けたメソッド内で「mockGameResultDao」の中身となるモックオブジェクトを作成しています。
-「mock」メソッドを使うことで引数に渡したクラスを模倣したモックオブジェクトが作られます。(バージョンによっては「createMock」メソッド)
-ユーザーガイドによると、バージョン3.2以降ではモックオブジェクトを差し込む操作も含めてアノテーションを使う方法もあるようです。
+「@BeforeEach」アノテーションを付けたメソッド内で「mockGameResultDao」の中身となるモックオブジェクトを作成しています。「mock」メソッドを使うことで引数に渡したクラスを模倣したモックオブジェクトが作られます。
+
+::: info
+モック作成についての補足
+
+mockメソッドはeasymockバージョン3.4から使用可能で、それ以前のバージョンはcreateMockを使用します。
+```java
+mockGameResultDao = createMock(GameResultDao.class);
+```
+↓createMockのjavadoc
+> <GameResultDao> GameResultDao org.easymock.EasyMock.createMock(Class<?> toMock)
+> Creates a mock object that implements the given interface, order checking is disabled by default.
+>
+> Note: This is the old version of mock(Class), which is more completion friendly
+
+
+また、バージョン3.2以降ではモックオブジェクトを差し込む操作も含めてアノテーションを使う方法もあります。[ユーザーガイド](https://easymock.org/user-guide.html#:~:text=There%20is%20a%20nice%20and%20shorter%20way%20to%20create%20your%20mocks%20and%20inject%20them%20to%20the%20tested%20class.%20Here%20is%20the%20example%20above%2C%20now%20using%20annotations%3A)
+::::
+
 
 ### 2:モックオブジェクトを差し込む
 
@@ -216,7 +230,7 @@ public class GameResultRepositoryTest {
 ```
 
 作ったモックがテスト対象のロジックで使われるようにする必要があります。
-今回のテスト対象はgetterを用意していないため「java.lang.reflect.Field」でリフレクションします。これによってテスト対象クラスの「gameResultDao」がモックを使うようにセットしています。
+今回のテスト対象クラス「GameResultRepository」は変数「gameResultDao」のgetterを用意していないため「java.lang.reflect.Field」を用いてリフレクションにより取得させます。これによってテスト対象である「testee」内の変数「gameResultDao」がモックオブジェクトに差し替えられます。
 他によくあるパターンとしては、他のリポジトリから取得してきたドメインのロジックをモックするなどがあります。こういった場合はリポジトリのモックからドメインのモックを返すように、ふるまいを作ったりします。
 
 ### 3:ふるまいを定義する
@@ -226,7 +240,7 @@ public class GameResultRepositoryTest {
     expect(mockGameResultDao.findByPlayer("Ryu")).andReturn(resultList);
 ```
 
-作成されたモックオブジェクトのメソッド呼び出しをすると、そのメソッドの呼ばれ方を定義します。返り値などを定義する場合は「org.easymock.EasyMock.expect」の引数の中でメソッドの呼び出され方を定義し、続く「andReturn」メソッドの引数に返り値を定義します。
+モックオブジェクトのメソッド呼び出しによって、そのメソッドのふるまいを定義します。後に「replay」を行うと定義した通りにふるまうようになります。返り値などを定義する場合は「org.easymock.EasyMock.expect」の引数の中でメソッドの呼び出され方を定義し、続く「andReturn」メソッドの引数に返り値を定義します。
 ↑の例の場合、「mockGameResultDaoのfindByPlayerメソッドが引数"Ryu"で呼ばれたらresultListを返す。」というふるまいを定義しています。
 何度か呼ばれる場合、同じ動きをするなら続けて「times」メソッドを使います。別の動き方をする場合はその数だけ定義します。また、同じ引数に対しては基本的に定義した順にふるまいます。
 
@@ -313,11 +327,11 @@ import org.easymock.Capture;
     public void testCalcWinningRate() throws Exception {
 
         List<GameResult> resultList = new ArrayList<>();
-        resultList.add(createGameResult(1L, "Ryu", "Ken", 1));
-        resultList.add(createGameResult(2L, "Guile", "Ryu", 1));
-        resultList.add(createGameResult(4L, "Guile", "Ryu", 2));
-        resultList.add(createGameResult(5L, "Ryu", "Ken", 2));
-        resultList.add(createGameResult(6L, "Ryu", "Ken", 0));
+        resultList.add(new GameResult(1L, "Ryu", "Ken", 1));
+        resultList.add(new GameResult(2L, "Guile", "Ryu", 1));
+        resultList.add(new GameResult(4L, "Guile", "Ryu", 2));
+        resultList.add(new GameResult(5L, "Ryu", "Ken", 2));
+        resultList.add(new GameResult(6L, "Ryu", "Ken", 0));
 
         // 1:キャプチャを作成する
         Capture<String> captured = Capture.newInstance();

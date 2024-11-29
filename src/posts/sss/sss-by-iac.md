@@ -1,7 +1,7 @@
 ---
 title: IaCでSales Support Systemのインフラ構築
 author: tadashi-nakamura
-date: 2024-11-15
+date: 2024-12-02
 tags: [sss, IaC, AWS, API Gateway, CloudMap, ECS, Fargate, terraform]
 ---
 

@@ -1,7 +1,18 @@
 import { Context } from 'https://edge.netlify.com/';
 import cheerio from 'https://esm.sh/cheerio@1.0.0-rc.12';
 
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
 export default async (req: Request, ctx: Context) => {
+  if (req.method === 'OPTIONS') {
+    // preflightリクエスト
+    return new Response(null, {
+      headers,
+    });
+  }
   const url = new URL(req.url);
   const targetUrl = url.searchParams.get('url');
 
@@ -25,7 +36,7 @@ export default async (req: Request, ctx: Context) => {
         JSON.stringify({ error: 'Failed to fetch target URL' }),
         {
           status: 500,
-          headers: { 'Content-Type': 'application/json' },
+          headers,
         }
       );
     }
@@ -39,7 +50,7 @@ export default async (req: Request, ctx: Context) => {
     };
 
     return new Response(JSON.stringify(ogData), {
-      headers: { 'Content-Type': 'application/json' },
+      headers,
     });
   } catch (error) {
     console.error('Error fetching OG data:', error);

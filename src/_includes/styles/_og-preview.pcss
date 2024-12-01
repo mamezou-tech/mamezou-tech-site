@@ -1,0 +1,44 @@
+.og-preview {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 95%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: #fff;
+}
+
+.og-preview:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.og-image {
+  width: 200px;
+  height: 120px;
+  object-fit: cover;
+  border-right: 1px solid #ddd;
+}
+
+/* モバイル時に画像を非表示 */
+@media (max-width: 768px) {
+  .og-image {
+    display: none;
+  }
+}
+
+.og-title {
+  flex: 1;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  overflow-wrap: break-word; /* 長い単語を折り返す */
+  word-wrap: break-word; /* 互換性のため */
+  white-space: normal; /* 折り返しを有効化 */
+  line-height: 1.4; /* 行間を調整 */
+}

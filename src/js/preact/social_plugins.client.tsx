@@ -1,5 +1,5 @@
-import { render as preactRender } from "npm:preact@^10.18.1";
-import { useEffect, useRef } from "npm:preact@^10.18.1/hooks";
+import { render as preactRender } from "npm:preact@^10.25.0";
+import { useEffect, useRef } from "npm:preact@^10.25.0/hooks";
 
 function SocialPlugins({ url, path }: { url: string; path: string }) {
   const followList = useRef<HTMLElement>(null!);

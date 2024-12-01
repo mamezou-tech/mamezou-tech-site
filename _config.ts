@@ -23,6 +23,7 @@ import containerOptions from "./lume/markdown-it/container_options.ts";
 import { filterByPost, generalTags, getPostArticles } from './lume/filters/utils.ts';
 import Search from "lume/core/searcher.ts";
 import externalLinkPlugin from "./lume/markdown-it/external_link_plugin.ts";
+import ogPreviewPlugin from "./lume/markdown-it/og_preview_plugin.ts";
 import imageSwipePlugin from "./lume/markdown-it/image_swipe_plugin.ts";
 import codeClipboard, {
   markdownItCopyButton,
@@ -65,6 +66,7 @@ const markdown: Partial<MarkdownOptions> = {
     [katex, { throwOnError: false, errorColor: "#cc0000", strict: false }],
     externalLinkPlugin,
     imageSwipePlugin,
+    ogPreviewPlugin,
     markdownItCopyButton,
     markdownItCodeBlock, // must place after copyButton plugin
   ],

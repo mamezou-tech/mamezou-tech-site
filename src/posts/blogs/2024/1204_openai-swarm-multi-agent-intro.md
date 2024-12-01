@@ -22,7 +22,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 @[og](https://cookbook.openai.com/examples/orchestrating_agents)
 
-本記事のタイトルで使っているSwarmは、この記事で言及しているエージェントオーケストレーションのサンプル実装としてGitHub公開されているものです(筆者は名前を見てDocker Swarmを思い出しました[^3])。
+本記事のタイトルで使っているSwarmは、この記事で言及しているエージェントオーケストレーションのサンプル実装としてGitHubで公開されているものです(筆者は名前を見てDocker Swarmを思い出しました[^3])。
 
 [^3]: Docker Swarmとは全く別物ではありますが、Docker Swarmはコンテナ、OpenAIのSwarmはエージェントを協調動作させるものなので、対象が違うだけで意味合いは同じですね。
 

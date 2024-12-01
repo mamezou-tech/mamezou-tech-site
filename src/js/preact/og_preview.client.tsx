@@ -40,7 +40,7 @@ const OgPreview = ({ url }: { url: string }) => {
   if (!ogData) {
     return (
       <div className="og-preview-loading">
-        Loading preview for <a href={url} target="_blank">${url}</a>
+        Loading preview for <a href={url} target="_blank">{url}</a>
       </div>
     );
   }

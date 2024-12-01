@@ -1,5 +1,5 @@
-import { render as preactRender } from "npm:preact@^10.11.0";
-import { useEffect, useState } from "npm:preact@^10.11.0/hooks";
+import { render as preactRender } from "npm:preact@^10.25.0";
+import { useEffect, useState } from "npm:preact@^10.25.0/hooks";
 import { useHeadsObserver } from "./hooks.ts";
 
 function slugify(target: string) {
@@ -57,9 +57,10 @@ function Toc(
       toc.style.top = top < 0 ? "0" : `${top}px`;
     });
   }, []);
-  const sendGa = (ev: React.MouseEvent<HTMLAnchorElement>, name: string) =>
+  const sendGa = (ev: React.MouseEvent<HTMLAnchorElement>, name: string) => {
     "gtag" in window && typeof window.gtag === "function" &&
-    window.gtag("event", name, { type: "toc" });
+      window.gtag("event", name, { type: "toc" });
+  };
   if (!data.length) return;
 
   const makeList = (nodes: Node[]) => {
@@ -99,34 +100,38 @@ function Toc(
       </ul>
     );
   };
-  const defaultMameyoseImage = (<a
-    href="https://mamezou.connpass.com/"
-    onClick={(ev: MouseEvent) => sendGa(ev, 'click_mameyose')}
-    target="_blank"
-    rel="noreferrer noopener"
-  >
-    <img
-      alt="mameyose"
-      height="60"
-      width="198"
-      src="/img/logo/logo-mameyose_banner60.png"
-      style={{ backgroundColor: '#ffffff' }}
-    />
-  </a>)
-  const mameyoseImage = (<a
-    href="https://mamezou.connpass.com/event/336997/"
-    onClick={(ev: MouseEvent) => sendGa(ev, 'click_mameyose')}
-    target="_blank"
-    rel="noreferrer noopener"
-  >
-    <img
-      alt="mameyose"
-      height="168"
-      width="200"
-      src="/img/event/20241126-mameyose.png"
-      style={{ backgroundColor: '#ffffff' }}
-    />
-  </a>)
+  const defaultMameyoseImage = (
+    <a
+      href="https://mamezou.connpass.com/"
+      onClick={ev => sendGa(ev, "click_mameyose")}
+      target="_blank"
+      rel="noreferrer noopener"
+    >
+      <img
+        alt="mameyose"
+        height="60"
+        width="198"
+        src="/img/logo/logo-mameyose_banner60.png"
+        style={{ backgroundColor: "#ffffff" }}
+      />
+    </a>
+  );
+  const mameyoseImage = (
+    <a
+      href="https://mamezou.connpass.com/event/336997/"
+      onClick={ev => sendGa(ev, "click_mameyose")}
+      target="_blank"
+      rel="noreferrer noopener"
+    >
+      <img
+        alt="mameyose"
+        height="168"
+        width="200"
+        src="/img/event/20241126-mameyose.png"
+        style={{ backgroundColor: "#ffffff" }}
+      />
+    </a>
+  );
   return (
     <div className="post__toc_preact">
       {imageEnabled && (
@@ -141,7 +146,7 @@ function Toc(
       <p className="toc-container-header">Contents</p>
       {makeList(data)}
       <div>
-        {mameyoseImage}
+        {defaultMameyoseImage}
       </div>
       <div>
         <a

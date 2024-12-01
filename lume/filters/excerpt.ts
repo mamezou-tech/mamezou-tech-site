@@ -21,5 +21,5 @@ export const excerpt = (content: string | React.ReactElement) => {
     return "";
   }
   const target = isReactComponent(content) ? content.props.children : content;
-  return chop(normalizeContent(target));
+  return chop(normalizeContent(target), 250);
 };

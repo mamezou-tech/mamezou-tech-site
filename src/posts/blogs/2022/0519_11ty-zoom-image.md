@@ -60,7 +60,7 @@ const markdownLibrary = markdownIt({
     md.renderer.rules.image = function (tokens, idx, options, env, self) {
       const imageTag = originalRule(tokens, idx, options, env, self);
       const token = tokens[idx];
-      return `<a id="image-swipe-${idx}" class="image-swipe" href="${token.attrs[token.attrIndex("src")][1]}" target="_blank" rel="noopener noreferrer">${imageTag}</a>`;
+      return `<a id="image-swipe-${Math.floor(Math.random() * 10000)}" class="image-swipe" href="${token.attrs[token.attrIndex("src")][1]}" target="_blank" rel="noopener noreferrer">${imageTag}</a>`;
     }
   });
 

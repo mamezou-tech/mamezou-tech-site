@@ -13,7 +13,7 @@ translate: true
 
 At the end of last month, a new API was introduced to AWS AppSync.
 
-- [Announcing AWS AppSync Events: serverless WebSocket APIs to power real-time web and mobile experiences at any scale](https://aws.amazon.com/blogs/mobile/announcing-aws-appsync-events-serverless-websocket-apis/)
+@[og](https://aws.amazon.com/blogs/mobile/announcing-aws-appsync-events-serverless-websocket-apis/)
 
 AppSync has been known as a managed service for GraphQL, but now a new WebSocket-based Event API option has been added. Since the Event API is WebSocket-based, events can be received immediately on the client side. As it follows a Pub/Sub model, it supports sending events not only to specific clients but also via broadcast and multicast.
 

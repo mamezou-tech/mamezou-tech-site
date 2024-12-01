@@ -20,15 +20,15 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 今回は、そんな期待のAIエージェントが協調して1つの目的を実行する(エージェントオーケストレーション)仕組みを学びたいと思います。
 これを実現する方法は色々と考えられますが、今回はOpenAI Cookbookの以下記事で言及している方法を深掘りしてみます。
 
-- [OpenAI Cookbook - Orchestrating Agents: Routines and Handoffs](https://cookbook.openai.com/examples/orchestrating_agents)
+@[og](https://cookbook.openai.com/examples/orchestrating_agents)
 
-本記事のタイトルで使っているSwarmは、この記事で言及しているエージェントオーケストレーションの実装として公開されているものです(筆者は名前を見てDocker Swarmを思い出しました[^3])。
+本記事のタイトルで使っているSwarmは、この記事で言及しているエージェントオーケストレーションのサンプル実装としてGitHub公開されているものです(筆者は名前を見てDocker Swarmを思い出しました[^3])。
 
 [^3]: Docker Swarmとは全く別物ではありますが、Docker Swarmはコンテナ、OpenAIのSwarmはエージェントを協調動作させるものなので、対象が違うだけで意味合いは同じですね。
 
-- [GitHub openai/swarm](https://github.com/openai/swarm/tree/main)
+@[og](https://github.com/openai/swarm/tree/main)
 
-本レポジトリは上述のCookbookのためのサンプル扱いですが、エージェントオーケストレーションの考え方を学ぶ上で有用なものになっています。
+本レポジトリは公式プロダクトではなくサンプルですが、エージェントオーケストレーションの考え方を学ぶ上で有用なものになっています。
 
 ## Swarmのコンセプト
 

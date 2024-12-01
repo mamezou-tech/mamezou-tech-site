@@ -62,3 +62,7 @@
 [[edge_functions]]
   function = "og"
   path = "/og/*"
+
+[[edge_functions]]
+function = "og-preview"
+  path = "/api/og/preview"

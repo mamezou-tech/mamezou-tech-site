@@ -12,6 +12,7 @@
 @import "../_includes/styles/_card.pcss";
 @import "../_includes/styles/_layout.pcss";
 @import "../_includes/styles/_sitenav.pcss";
+@import "../_includes/styles/_og-preview.pcss";
 
 @tailwind base;
 @tailwind components;

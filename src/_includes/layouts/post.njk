@@ -118,6 +118,19 @@ layout: layouts/base.njk
         {% endif %}
       </nav>
     </aside>
+    <script type="module">
+      import { render } from '/js/preact/og_preview.client.js';
+      const links = document.querySelectorAll('div.og-preview');
+      links.forEach(placeholder => {
+        const url = placeholder.getAttribute('data-og-url');
+        const container = document.createElement('div');
+        const parent = placeholder.parentElement;
+        if (parent) {
+          parent.replaceChild(container, placeholder);
+          render({url}, container);
+        }
+      });
+    </script>
     <div style="margin-top:0">
       <div id='recommendation-app'></div>
       <script type="module">

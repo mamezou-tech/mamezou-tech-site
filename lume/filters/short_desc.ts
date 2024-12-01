@@ -37,6 +37,6 @@ export const shortDesc = (
       true,
     );
   } else {
-    return chop(content, 200, false);
+    return chop(content, 250, false);
   }
 };

@@ -1,5 +1,5 @@
-import { render as preactRender } from "npm:preact@^10.11.0";
-import { useEffect, useState } from "npm:preact@^10.11.0/hooks";
+import { render as preactRender } from "npm:preact@^10.25.0";
+import { useEffect, useState } from "npm:preact@^10.25.0/hooks";
 
 const ignoreTag = /^\d{4}年$/;
 

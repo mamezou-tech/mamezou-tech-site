@@ -13,7 +13,7 @@ const OgPreview = ({ url }: { url: string }) => {
     const fetchOgData = async () => {
       try {
         const response = await fetch(
-          `/api/og/preview?url=${encodeURIComponent(url)}`,
+          `https://developer.mamezou-tech.com/api/og/preview?url=${encodeURIComponent(url)}`,
         );
         setOgData(await response.json());
       } catch (err) {

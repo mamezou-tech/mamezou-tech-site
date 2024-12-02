@@ -1,6 +1,6 @@
 ---
 title: ミューテーションテストの技法でテストの十分性を評価する
-uthor: shinichiro-iwaki
+author: shinichiro-iwaki
 date: 2024-12-03
 tags: [テスト, advent2024]
 image: true

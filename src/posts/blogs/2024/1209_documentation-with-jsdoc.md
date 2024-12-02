@@ -1,5 +1,5 @@
 ---
-title: JSDocによるドキュメント生成
+title: JSDoc(+Docdash)を使ったMarkdownによるドキュメント生成術
 author: shuji-morimoto
 date: 2024-12-09
 tags: [javascript, jsdoc, markdown, advent2024]

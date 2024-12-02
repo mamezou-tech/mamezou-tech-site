@@ -690,7 +690,7 @@ resource "aws_apigatewayv2_integration" "mz_dev_app" {
 ## オーサライザーの作成
 
 Cognito と連携して JWT 認証[^8]する既存の仕組みを利用して JWT オーサライザーを作成します。
-JWT をりようするので、`authorizer_type`は当然`JWT`となります。
+JWT を利用するので、`authorizer_type`は当然`JWT`となります。
 `jwt_configuration`には Cognito のユーザープールクライアント ID とユーザープールエンドポイントを指定します。
 
 [^8]: JWT に関しては豆蔵デベロッパーサイトの「[基本から理解する JWT と JWT 認証の仕組み](/blogs/2022/12/08/jwt-auth/)」を参照。

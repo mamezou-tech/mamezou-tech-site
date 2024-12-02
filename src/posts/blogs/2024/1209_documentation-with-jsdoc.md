@@ -21,7 +21,7 @@ image: true
 
 # Markdownによるドキュメント作成
 
-お客様に納品するソフトウェア設計書はWord文書で納品することが多いのです。しかし、とあるプロジェクトではソフトウェア設計書のフォーマットに指定がなく、オンラインでも見たいとの要望によりMarkdownで記述することがありました。
+お客様に納品するソフトウェア設計書はWord文書で納品することが多いですが、とあるプロジェクトではソフトウェア設計書のフォーマットに指定がなく、オンラインでも見たいとの要望によりMarkdownで記述することがありました。
 
 ところが、設計書ですのでUMLのダイアグラムやそれらの説明を記載するのですがすべてを1ファイル(1ページ)で記載すると見通しが悪くなります。章単位でファイルを作成しMarkdownで記述したいところです。
 
@@ -31,7 +31,7 @@ image: true
 - JavaScriptで作成したソースファイルからAPIリファレンスを生成する
 - 目次・見出しを生成し、ここからリンクをクリックして各章の内容を表示する
 
-FizzBuzzBearというJavaScriptでFizzBuzz問題を解く2Dアニメーションプログラムを作成し、それに対するソフトウェア説明書を作成してみます。
+サンプルとしてFizzBuzzBearというJavaScriptでFizzBuzz問題を解く2Dアニメーションプログラムを作成し、それに対するソフトウェア説明書(の雛形)を作成してみます。
 
 
 # JSDocによるドキュメント表示
@@ -208,14 +208,17 @@ PDF化や印刷には不向き(用紙サイズやページ区切りの概念が�
         "typedefs": true,
         "navLevel": 0,
         "private": false,
-        // 適用するスクリプトはスタイルシートの設定
-        // 変換されたHTMLファイルからロードされるため
-        // DOM操作を行いたい場合は指定する
-        "scripts": ["scripts/local_settings.css", "scripts/local_settings.js"],
+        // 各文書に適用するスクリプトとスタイルシートを指定
+        // 変換されたHTMLファイルからロードされるためDOM操作を
+        // 行いたい場合は指定する
+        "scripts": [
+            "scripts/local_settings.css",
+            "scripts/local_settings.js"
+        ],
         // 見出しの設定
         "menu": {
             // xxxx.mdファイルはtutorial-xxxx.htmlとなるため
-            // リンクにはHTMLに変換されたファイル名を指定する
+            // hrefにはHTMLに変換されたファイル名を指定する
             "起動方法": {
                 "href":"tutorial-run_app.html",
                 "target":"_self",
@@ -266,6 +269,6 @@ if (window.location.pathname.split('/').pop().startsWith('tutorial-')) {
 # ブラウザでMarkdown文書を表示する
 私はMarkdownの整形結果を確認するときは [Markdown Viewer](https://github.com/simov/markdown-viewer)を利用してブラウザ(Chrome)で確認しています。様々なブラウザのエクステンションに対応しているようです。
 
-Markdownファイルをブラウザにドラッグ＆ドロップすると整形して表示されます。
+このエクステンションを有効にするとMarkdownファイルをブラウザにドラッグ＆ドロップすると整形して表示されます。
 
 [Content Options](https://github.com/simov/markdown-viewer#table-of-contents)にあるautoreloadをtrueにするとエディタで編集して保存したタイミングでブラウザ上に結果が反映されます。現在の表示位置も覚えているようで、スクロールする手間もなく便利です。また、見出しの生成もできるようです。

@@ -21,28 +21,26 @@ image: true
 
 # Markdownによるドキュメント作成
 
-お客様に納品するソフトウェア設計書はWord文書で納品することが多いのですが、まずはMarkdownで下書きしてからWordに書き写すことが多いです。2度手間になりますが文書編集は使い慣れたエディタで作業することでストレス無く記述ができます。
-
-とあるプロジェクトではソフトウェア設計書のフォーマットは特に指定がなく、オンラインでも見れたらいいねとのことでしたのでMarkdownで記述することがありました。
+お客様に納品するソフトウェア設計書はWord文書で納品することが多いのです。しかし、とあるプロジェクトではソフトウェア設計書のフォーマットに指定がなく、オンラインでも見たいとの要望によりMarkdownで記述することがありました。
 
 ところが、設計書ですのでUMLのダイアグラムやそれらの説明を記載するのですがすべてを1ファイル(1ページ)で記載すると見通しが悪くなります。章単位でファイルを作成しMarkdownで記述したいところです。
 
 要望としては以下が求められました。
 
 - 複数のMarkdownをまとめてHTMLに変換する
-- Javascriptで作成したソースファイルからAPIリファレンスを生成する
+- JavaScriptで作成したソースファイルからAPIリファレンスを生成する
 - 目次・見出しを生成し、ここからリンクをクリックして各章の内容を表示する
 
-FizzBuzzBearというJavascriptでFizzBuzz問題を解く2Dアニメーションプログラムを作成し、それに対するソフトウェア説明書を作成してみます。
+FizzBuzzBearというJavaScriptでFizzBuzz問題を解く2Dアニメーションプログラムを作成し、それに対するソフトウェア説明書を作成してみます。
 
 
 # JSDocによるドキュメント表示
 
-[JSDoc](https://github.com/jsdoc/jsdoc)はJavascriptのAPIリファレンスを作成するときに利用されていますが、文書(tutorialと呼ばれる)の記述にも利用できます。
+[JSDoc](https://github.com/jsdoc/jsdoc)はJavaScriptのAPIリファレンスを作成するときに利用されていますが、文書(tutorialと呼ばれる)の記述にも利用できます。
 
-文書はMarkdown形式で記述します。文書間でリンク(リンク先のMarkdown文書が自動的にHTMLに変換された文書のURLとなります)を張ることができ、見出しも作ることができます。静的なWebページに変換されるためオンラインドキュメントとして参照することができます。
+文書はMarkdown形式で記述します。文書間でリンク(リンク先のMarkdown文書が自動的にHTMLに変換された文書のURLとなります)を張ることができ、見出しも作ることができます。静的なWebページに変換されるためオンラインドキュメントとして参照できます。
 
-JSDocなら上述の要望に応えられますが見た目がイマイチなところがあります。
+JSDocなら上述の要望に応えられますが見た目でイマイチなところがあります。
 
 
 ## README(トップページ)のサンプル
@@ -69,29 +67,29 @@ JSDocなら上述の要望に応えられますが見た目がイマイチなと
 
 # Docdashによるドキュメント表示
 
-JSDocのデフォルトテンプレートにはいくつか不満点がありました。これを解決するために[Docdash](https://github.com/clenemt/docdash)を利用します。DocdashはJSDocで利用することができるテンプレートです。このテンプレートを利用することで見た目を変化させることができ、さらに独自のカスタマイズが可能になります。
+JSDocのデフォルトテンプレートにはいくつか不満点がありました。これを解決するために[Docdash](https://github.com/clenemt/docdash)を利用します。DocdashはJSDocで利用できるテンプレートです。このテンプレートを利用することで見た目を変化させることができ、さらに独自のカスタマイズが可能になります。
 
-JSDocのデフォルトテンプレートは見やすさという面では個人的にはイマイチとの印象ですがDocdashを利用すると解決することができます。
+JSDocのデフォルトテンプレートは見やすさという面では個人的にはイマイチとの印象ですがDocdashを利用すると解決できます。
 
 ## README(トップページ)のサンプル
 ![](/img/blogs/2024/1209_documentation-with-jsdoc/jsdoc_docdash.png)
 
 - 目次が左側
-- Javascriptを利用することでヘッダーを消すなどカスタマイズができる😊
+- JavaScriptを利用することでヘッダーを消すなどカスタマイズができる😊
 - 目次が指定の順序で表示できる😊
 
 ## 文書(tutorial)のサンプル
 ![](/img/blogs/2024/1209_documentation-with-jsdoc/jsdoc_docdash_article.png)
 - Markdownの記述そのままで表示😊
-    - Javascriptでヘッダーを削除
+    - JavaScriptでヘッダーを削除しました
 
 ## APIリファレンスのサンプル
 ![](/img/blogs/2024/1209_documentation-with-jsdoc/jsdoc_docdash_classes.png)
 - プロパティ名やメソッド名が見やすい😊
 - 左のメニューにメソッド名が表示される😊
-    - 設定により表示/非表示切り替えもできる
+    - 設定により表示/非表示切り替えもできます
 - 検索ボックスでAPIを検索することができる
-    - 非表示にすることもできる
+    - 非表示にもできます
 
 
 # インストールと実行
@@ -110,7 +108,7 @@ tar -xf main.zip
 - main.zipアーカイブを展開するとFizzBuzzBear-mainフォルダが作成されます
 
 :::info
-Windows 10 Version 1809 (October 2018 Update) 以降ではcurlとtarが使え、tarでzipファイルを展開できるようです
+Windows 10 Version 1809 (October 2018 Update) 以降ではcurlとtarが使え、tarでzipファイルを展開できるようです。
 :::
 
 
@@ -123,7 +121,7 @@ npm install
 - package.jsonに記載した `JSDoc`, `Docdash` 関連のモジュールがインストールされます
 
 :::alert
-IPv6環境ではスクリプトのダウンロードが進まないようです。その場合は `set NODE_OPTIONS="--dns-result-order=ipv4first"` でIPv4を優先するように指定してください
+IPv6環境ではスクリプトのダウンロードが進まないようです。その場合は `set NODE_OPTIONS="--dns-result-order=ipv4first"` でIPv4を優先するように指定してください。
 :::
 
 
@@ -145,7 +143,7 @@ start docs/_site/index.html
 ```
 
 :::alert
-PDF化や印刷には不向き(用紙サイズやページ区切りの概念がない)であることに注意してください
+PDF化や印刷には不向き(用紙サイズやページ区切りの概念がない)であることに注意してください。
 :::
 
 
@@ -262,7 +260,7 @@ if (window.location.pathname.split('/').pop().startsWith('tutorial-')) {
     }
 }
 ```
-- リソース名がtutorial-で始まるとき、そのdocumentでselectorでマッチする要素を非表示にします
+- リソース名がtutorial-から始まるとき、そのdocumentのselectorでマッチする要素を非表示にします
 
 
 # ブラウザでMarkdown文書を表示する

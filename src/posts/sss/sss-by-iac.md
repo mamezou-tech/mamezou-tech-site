@@ -1,8 +1,8 @@
 ---
 title: IaCでSales Support Systemのインフラ構築
 author: tadashi-nakamura
-date: 2024-12-02
-tags: [sss, IaC, AWS, API Gateway, CloudMap, ECS, Fargate, terraform]
+date: 2024-12-03
+tags: [IaC, AWS, API Gateway, CloudMap, ECS, Fargate, terraform]
 ---
 
 # はじめに
@@ -45,7 +45,7 @@ EKS と ECS の主な要素の比較表です。
 | Cron                          | タスク定義の範囲外 | マニフェストで定義 |
 | 定義ファイルの CICD           | なし               | GitOps             |
 | スケジュールタスク            | あり               | なし               |
-| クラスター作成速度            | 約 2 秒            | 約 5 から 10 分    |
+| クラスター作成速度            | 約 2 秒            | 約 5 分から 10 分  |
 
 :::
 
@@ -66,10 +66,11 @@ AWS API Gateway は別途利用決定していたので、API Gateway の後段�
 ![NLB版のシステム構成図](/img/sss/sss-by-iac-nlb.png "NLB版のシステム構成図")
 
 以下に実際に比較した内容を示します[^1]。
+◯、△、× で 3 点、2 点、1 点として単純にポイントを算出して最高得点となったものを採用しました。
 
 [^1]: クリティカルな非機能要件のない SSS ではあまり差が出なかったので、ちょっと恣意的な感じになっていますが・・・（汗）
 
-| 要素     | コスト | ノウハウ | 機能                                   | サービス間通信  | 統合         | ポイント | 結果   |
+| サービス | コスト | ノウハウ | 機能                                   | サービス間通信  | 統合         | ポイント | 結果   |
 | -------- | :----: | :------: | -------------------------------------- | --------------- | ------------ | -------- | ------ |
 | CloudMap |   〇   |    ×     | 〇 Microservices 向け Mapper           | 〇 おそらく可能 | △ HTTP       | 12       | 採用！ |
 | ALB      |   ×    |    〇    | 〇 レイヤー 7。機能が NLB に比べ豊富   | △ 不明？        | △ HTTP       | 11       |        |
@@ -109,7 +110,7 @@ ECS クラスターの Terraform コードは以下のようになります。
 ここで、Fargate 起動タイプ用の ECS クラスターとするため、`capacity_providers`に`"FARGATE"`を指定しています。
 なお、`local.`となっているのは Terraform のローカル変数で定義されている値です。
 
-```terraform:main.tf
+```hcl:main.tf
 resource "aws_ecs_cluster" "this" {
   name = local.ecs_cluster_name
 }
@@ -142,7 +143,7 @@ SSS では更にメトリックスデータの出力のための権限をイン�
 [管理ポリシーとインラインポリシーのいずれかを選択する](https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/access_policies-choosing-managed-or-inline.html)
 :::
 
-```terraform:main.tf
+```hcl:main.tf
 resource "aws_iam_role" "ecs_task_exec" {
   name               = local.ecs_task_execution_role_name
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role_policy.json
@@ -194,7 +195,7 @@ DynamoDB などを利用するアプリケーションを実行する場合は�
 今回利用するアプリケーションは静的なページを返すだけの単純な Web アプリケーションなので、実行に際して追加するものはありません。
 ここではサンプルとしてタスク実行ロールと同じポリシーを付与しています。
 
-```terraform:ecs_task.tf
+```hcl:ecs_task.tf
 resource "aws_iam_role" "mz_dev_app" {
   name               = "${local.app_name}-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role_policy.json
@@ -244,7 +245,7 @@ ECS タスク定義で指定されている`cpu`と`memory`はタスクに含ま
 
 [^3]: ECS タスク定義の設定の詳細については [Amazon ECS タスク定義パラメータ](https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_definition_parameters.html) を参照。
 
-```terraform:ecs_task.tf
+```hcl:ecs_task.tf
 resource "aws_ecs_task_definition" "mz_dev_app" {
   family                = "${local.prefix}-site"
 
@@ -292,7 +293,7 @@ EOF
 
 以下は ECS タスク定義で定義したアプリケーションに対する CloudWatch のロググループの定義になります。
 
-```terraform:ecs_task.tf
+```hcl:ecs_task.tf
 resource "aws_cloudwatch_log_group" "mz_dev_app" {
   name              = "/aws/ecs/fargate/${local.app_name}"
   retention_in_days = var.log_retention_in_days
@@ -317,7 +318,7 @@ ECS タスク定義では「何をどのように動かすか」を定義し、E
 
 なお、`service_registry`はサービスレジストリである CloudMap に対するサービスの登録に関する情報を設定しています。
 
-```terraform:ecs_service.tf
+```hcl:ecs_service.tf
 resource "aws_ecs_service" "mz_dev_app" {
   name                 = local.app_name
   cluster              = aws_ecs_cluster.this.id
@@ -351,7 +352,7 @@ ECS で動作するアプリケーション用のセキュリティグループ�
 アウトプットルールはすべてを許可しています。
 実際のルールは ECS クラスター利用するアプリケーションに合わせる必要があります。
 
-```terraform:main.tf
+```hcl:main.tf
 resource "aws_security_group" "ecs" {
   name   = local.ecs_security_group_name
   vpc_id = var.vpc_id
@@ -404,7 +405,7 @@ AWS Lambda の実行ロールは AWS Lambda の関数がアクセスする AWS �
 
 [^4]: AWS Lambda の実行ロールに関しては[実行ロールを使用した Lambda 関数のアクセス許可の定義](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/lambda-intro-execution-role.html)を参照。
 
-```terraform:preflight.tf
+```hcl:preflight.tf
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -436,7 +437,7 @@ AWS Lambda のハンドラ(`aws_lambda_function.preflight`リソースの`handle
 Preflight 用 AWS Lambda は簡単な関数なのでこれだけです。
 より本格的なアプリケーション用の AWS Lambda を作成する場合は、コンテナイメージや AWS Lambda Layers の指定などができます。
 
-```terraform:preflight.tf
+```hcl:preflight.tf
 data "archive_file" "preflight" {
   type        = "zip"
   source_file = "${path.module}/lambda/preflight.py"
@@ -472,7 +473,7 @@ SSS では`_`を使っていたのですが、ライブラリのバージョン�
 結局、エラーを解消するためにプライベート DNS 名前空間の名称を修正することになりました。
 :::
 
-```terraform:main.tf
+```hcl:main.tf
 resource "aws_service_discovery_private_dns_namespace" "this" {
   name = local.service_discovery_dns_namespace
   vpc  = var.vpc_id
@@ -493,7 +494,7 @@ SSS では Java のサービスと Python のサービスでポートが異な�
 
 [^5]: [サービスの検出に関する考慮事項](https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/service-discovery.html#service-discovery-considerations)を参照。
 
-```terraform:ecs_service.tf
+```hcl:ecs_service.tf
 resource "aws_service_discovery_service" "mz_dev_app" {
   name         = local.app_name
   namespace_id = aws_service_discovery_private_dns_namespace.this.id
@@ -537,7 +538,11 @@ AWS API Gateway で RESTful API を提供する場合は REST API と HTTP API �
 [REST API と HTTP API のどちらかを選択する](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/http-api-vs-rest.html)
 :::
 
-```terraform:apigw.tf
+HTTP API の場合、CORS を設定するとプリフライト OPTIONS リクエストのレスポンスをするようになります[^7]。
+
+[^7]: HTTP API の場合は機能が少ないためか、残念ながら、REST API で推奨されている [Mock 統合](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/how-to-mock-integration-console.html)がサポートされていないようです。
+
+```hcl:apigw.tf
 resource "aws_apigatewayv2_api" "this" {
   name          = "${local.prefix}-api-gateway"
 
@@ -565,7 +570,7 @@ SSS では REST API を使って UI とバックエンドの通信していま�
 他にはログに関する設定をしています。
 `access_log_settings`の`format`で出力する項目を指定しています。
 
-```terraform:apigw.tf
+```hcl:apigw.tf
 resource "aws_apigatewayv2_stage" "this" {
   name        = "$default"
 
@@ -592,7 +597,7 @@ resource "aws_apigatewayv2_stage" "this" {
 
 以下は API Gateway の`$default`ステージに対する CloudWatch のロググループの定義になります。
 
-```terraform:apigw.tf
+```hcl:apigw.tf
 resource "aws_cloudwatch_log_group" "api_gateway" {
   name              = "/aws/api-gateway/mz-dev"
   retention_in_days = var.log_retention_in_days
@@ -603,7 +608,7 @@ resource "aws_cloudwatch_log_group" "api_gateway" {
 
 後ほど作成する HTTP API ルートから VPC 内のプライベートリソースに接続するプライベート統合を作成するため、VPC リンクを作成します。
 
-```terraform:apigw.tf
+```hcl:apigw.tf
 resource "aws_apigatewayv2_vpc_link" "this" {
   name               = "${local.prefix}-vpc-link"
   security_group_ids = [var.default_security_group_id]
@@ -627,7 +632,7 @@ HTTP API ルートをバックエンドのサービスと接続するための�
 
 API Gateway から直接 AWS Lambda を呼び出す場合、呼び出すための許可を設定する必要があります。
 
-```terraform:apigw.tf
+```hcl:apigw.tf
 resource "aws_lambda_permission" "preflight" {
   statement_id  = "AllowAPIGatewayPreflight"
   action        = "lambda:InvokeFunction"
@@ -649,7 +654,7 @@ Preflight に対する統合を作成します。
 `integration_method`についてはチュートリアルやサンプルを参考に`POST`のみを指定しています。
 `payload_format_version`は管理コンソールではデフォルトで最新版となるようですが、Terraform は`1.0`となるため、明示的に指定しています。
 
-```terraform:apigw.tf
+```hcl:apigw.tf
 resource "aws_apigatewayv2_integration" "preflight" {
   api_id                 = aws_apigatewayv2_api.this.id
 
@@ -669,7 +674,7 @@ CloudMap サービス検出を使用した統合となるのでアプリケー�
 `integration_method`はサンプルアプリケーションの場合、`GET`のみでも大丈夫ですが、一般的には`ANY`とするので`ANY`としています。
 VPC リンク経由での接続となるので `connection_type`は`VPC_LINK`、`connection_id`には先に定義した VPC リンクの ID を指定します。
 
-```terraform:ecs_service.tf
+```hcl:ecs_service.tf
 resource "aws_apigatewayv2_integration" "mz_dev_app" {
   api_id             = aws_apigatewayv2_api.this.id
 
@@ -684,13 +689,13 @@ resource "aws_apigatewayv2_integration" "mz_dev_app" {
 
 ## オーサライザーの作成
 
-Cognito と連携して JWT 認証[^7]する既存の仕組みを利用して JWT オーサライザーを作成します。
+Cognito と連携して JWT 認証[^8]する既存の仕組みを利用して JWT オーサライザーを作成します。
 JWT をりようするので、`authorizer_type`は当然`JWT`となります。
 `jwt_configuration`には Cognito のユーザープールクライアント ID とユーザープールエンドポイントを指定します。
 
-[^7]: JWT に関しては豆蔵デベロッパーサイトの「[基本から理解する JWT と JWT 認証の仕組み](/blogs/2022/12/08/jwt-auth/)」を参照。
+[^8]: JWT に関しては豆蔵デベロッパーサイトの「[基本から理解する JWT と JWT 認証の仕組み](/blogs/2022/12/08/jwt-auth/)」を参照。
 
-```terraform:apigw.tf
+```hcl:apigw.tf
 resource "aws_apigatewayv2_authorizer" "jwt_authorizer" {
   name             = "${local.prefix}-jwt-authorizer"
 
@@ -717,7 +722,7 @@ resource "aws_apigatewayv2_authorizer" "jwt_authorizer" {
 Preflight チェックとして HTTP メソッドが`OPTION`のルートも定義します。
 こちらはオーサライザーを指定しないので`target`の AWS Lambda のみとなります。
 
-```terraform:ecs_service.tf
+```hcl:ecs_service.tf
 resource "aws_apigatewayv2_route" "mz_dev_app_preflight" {
   api_id    = aws_apigatewayv2_api.this.id
   route_key = "OPTIONS /{proxy+}"
@@ -736,11 +741,11 @@ resource "aws_apigatewayv2_route" "mz_dev_app" {
 
 # 外部入力
 
-既存の AWS リソースの ID などは Terraform の`variable`[^8]として定義しています。
+既存の AWS リソースの ID などは Terraform の`variable`[^9]として定義しています。
 以下に変数、型、デフォルト値、概要を示します。
 型が`object`となっている変数についての詳細は各変数の表にて同じく詳細を示してあります。
 
-[^8]: `variable`については[Input Variables](https://developer.hashicorp.com/terraform/language/values/variables)を参照。
+[^9]: `variable`については[Input Variables](https://developer.hashicorp.com/terraform/language/values/variables)を参照。
 
 | 変数名                       | 型             | デフォルト値 | 概要                                     |
 | ---------------------------- | -------------- | ------------ | ---------------------------------------- |

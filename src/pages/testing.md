@@ -100,3 +100,7 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 - [Java用モック・フレームワーク「Mockito」を使ってみる（その１：基本編）](/blogs/2023/08/13/using-mockito-basic/)
 - [Java用モック・フレームワーク「Mockito」を使ってみる（その２：void型メソッドのモック編）](/blogs/2023/08/16/using-mockito-void-method/)
 - [Java用モック・フレームワーク「Mockito」を使ってみる（その３：テストケースをまとめる編）](/blogs/2023/08/18/using-mockito-parameterizedtest/)
+
+### PIT (PiTest)
+
+- [ミューテーションテストの技法でテストの十分性を評価する](/blogs/2024/12/03/mutation-testing/)

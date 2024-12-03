@@ -26,7 +26,8 @@
       "date": "3",
       "author": "shinichiro-iwaki",
       "githubUser": "shinichiro-iwaki",
-      "title": "ミューテーションテストの開発組み込みを考える(仮)"
+      "title": "ミューテーションテストの技法でテストの十分性を評価する",
+      "url": "/blogs/2024/12/03/mutation-testing/"
     },
     {
       "date": "4",

@@ -19,13 +19,15 @@
       "date": "2",
       "author": "takahiro-maeda",
       "githubUser": "Deth-True",
-      "title": "何か書きます"
+      "title": "脱TeraTerm、便利で簡単な「RLogin」を使ってみよう。",
+      "url": "/blogs/2024/12/02/rlogin_introduction/"
     },
     {
       "date": "3",
       "author": "shinichiro-iwaki",
       "githubUser": "shinichiro-iwaki",
-      "title": "ミューテーションテストの開発組み込みを考える(仮)"
+      "title": "ミューテーションテストの技法でテストの十分性を評価する",
+      "url": "/blogs/2024/12/03/mutation-testing/"
     },
     {
       "date": "4",

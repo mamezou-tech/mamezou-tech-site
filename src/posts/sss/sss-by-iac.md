@@ -1,7 +1,7 @@
 ---
 title: IaCでSales Support Systemのインフラ構築
 author: tadashi-nakamura
-date: 2024-12-03
+date: 2024-12-04
 tags: [IaC, AWS, API Gateway, CloudMap, ECS, Fargate, terraform]
 ---
 
@@ -376,88 +376,6 @@ resource "aws_security_group" "ecs" {
 }
 ```
 
-# Preflight 用 AWS Lambda の作成
-
-CloudMap や API Gateway の構築の前に、Preflight チェックで利用する AWS Lambda を作成します。
-
-## Preflight 関数の実装
-
-関数の内容は単純に 200 系のコード（レスポンスが空なので 204）と 2 つの HTTP ヘッダを返すだけの単純な実装です。
-
-```python:preflight.py
-def lambda_handler(event, context):
-    return {
-        'statusCode': 204,
-        'headers': {
-            'Access-Control-Allow-Origin': '*',
-            "Access-Control-Allow-Headers": "Content-Type",
-        }
-    }
-```
-
-## Preflight 用 AWS Lambda の実行ロール
-
-ここでは`aws_lambda_function`の`role`に設定する IAM ロール、AWS Lambda の実行ロールを作成します。
-AWS Lambda の実行ロールは AWS Lambda の関数がアクセスする AWS リソースのためではなく、AWS Lambda の関数自体の実行に必要な許可です[^4]。
-例えば、AWS Lambda に対して CloudWatch でログを記録する場合、`logs:PutLogEvents`などのアクセス許可をこの IAM ロールに付与する必要があります。
-なお、AWS Lambda の関数内でアクセスする AWS リソースに対する許可は`aws_lambda_permission`で付与します。
-ざっくりというと、ECS タスクのタスク実行ロールとタスクロールにそれぞれ対応するものと考えられます。
-
-[^4]: AWS Lambda の実行ロールに関しては[実行ロールを使用した Lambda 関数のアクセス許可の定義](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/lambda-intro-execution-role.html)を参照。
-
-```hcl:preflight.tf
-data "aws_iam_policy_document" "lambda_assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    effect  = "Allow"
-
-    principals {
-      identifiers = ["lambda.amazonaws.com"]
-      type        = "Service"
-    }
-  }
-}
-
-resource "aws_iam_role" "preflight" {
-  name               = "${local.prefix}-lambda-preflight-function-role"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
-}
-```
-
-## AWS Lambda の作成
-
-先程の関数の実装と IAM ロールを踏まえて、Preflight の AWS Lambda を作成します。
-AWS Lambda のハンドラ(`aws_lambda_function.preflight`リソースの`handler`属性)は`<ファイル名>.<関数名>`とする必要があります。
-また、関数の実装ファイルはアーカイブにするため、`data`の`archive_file`で定義します。
-
-他には実行環境に関する設定などを追加します。
-この Preflight は Python で実装されているので Python の実行バージョンを指定しています。
-また、`architectures`にデフォルトの`"x86_64"`ではなく、コスト面で有利な`"arm64"`を指定してます。
-
-Preflight 用 AWS Lambda は簡単な関数なのでこれだけです。
-より本格的なアプリケーション用の AWS Lambda を作成する場合は、コンテナイメージや AWS Lambda Layers の指定などができます。
-
-```hcl:preflight.tf
-data "archive_file" "preflight" {
-  type        = "zip"
-  source_file = "${path.module}/lambda/preflight.py"
-  output_path = "preflight_lambda_function.zip"
-}
-
-resource "aws_lambda_function" "preflight" {
-  function_name    = "${local.prefix}-lambda-preflight-function"
-  handler          = "preflight.lambda_handler"
-  filename         = data.archive_file.preflight.output_path
-  source_code_hash = data.archive_file.preflight.output_base64sha256
-
-  role             = aws_iam_role.preflight.arn
-
-  architectures = ["arm64"]
-  runtime          = "python3.12"
-  timeout          = 3
-}
-```
-
 # CloudMap の構築
 
 API Gateway とアプリケーションの仲立ちをするための CloudMap を構築します。
@@ -490,9 +408,9 @@ resource "aws_service_discovery_private_dns_namespace" "this" {
 
 DNS レコードにはサービス検出の場合はタイプが`A`か`SRV`である必要があります。
 SSS では Java のサービスと Python のサービスでポートが異なっているため、ポート指定ができる`SRV`を指定しています。
-また、 AWS で推奨されている HealthCheckCustomConfig を Amazon ECS サービスのサービス検出により管理されるコンテナレベルのヘルスチェックを使用しています[^5]。
+また、 AWS で推奨されている HealthCheckCustomConfig を Amazon ECS サービスのサービス検出により管理されるコンテナレベルのヘルスチェックを使用しています[^4]。
 
-[^5]: [サービスの検出に関する考慮事項](https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/service-discovery.html#service-discovery-considerations)を参照。
+[^4]: [サービスの検出に関する考慮事項](https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/service-discovery.html#service-discovery-considerations)を参照。
 
 ```hcl:ecs_service.tf
 resource "aws_service_discovery_service" "mz_dev_app" {
@@ -520,7 +438,7 @@ resource "aws_service_discovery_service" "mz_dev_app" {
 
 ## HTTP API の作成
 
-まずは API Gateway の基本要素として種別と CORS 設定[^6]を定義します。
+まずは API Gateway の基本要素として種別と CORS 設定[^5]を定義します。
 SSS では以下の理由で種別は HTTP API としました。
 
 - JWT 認証をサポートしている
@@ -528,7 +446,7 @@ SSS では以下の理由で種別は HTTP API としました。
 - 最小限の機能で構成されている
 - 低価格である
 
-[^6]: CORS の詳細は[Cross-Origin Resource Sharingr(CORS)](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS)を参照。
+[^5]: CORS の詳細は[Cross-Origin Resource Sharingr(CORS)](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS)を参照。
 
 :::check:REST API vs HTTP API
 AWS API Gateway で RESTful API を提供する場合は REST API と HTTP API の 2 つがあります。
@@ -538,9 +456,10 @@ AWS API Gateway で RESTful API を提供する場合は REST API と HTTP API �
 [REST API と HTTP API のどちらかを選択する](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/http-api-vs-rest.html)
 :::
 
-HTTP API の場合、CORS を設定するとプリフライト OPTIONS リクエストのレスポンスをするようになります[^7]。
+API Gateway の CORS を設定するだけでプリフライト OPTIONS リクエストのレスポンスをするようになります[^6]。
+なお、HTTP ステータスコードは 204 を返します。
 
-[^7]: HTTP API の場合は機能が少ないためか、残念ながら、REST API で推奨されている [Mock 統合](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/how-to-mock-integration-console.html)がサポートされていないようです。
+[^6]: HTTP API の場合は機能が少ないためか、残念ながら、REST API で推奨されている [Mock 統合](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/how-to-mock-integration-console.html)がサポートされていないようです。
 
 ```hcl:apigw.tf
 resource "aws_apigatewayv2_api" "this" {
@@ -550,8 +469,8 @@ resource "aws_apigatewayv2_api" "this" {
 
   cors_configuration {
     allow_origins     = var.allow_origins
-    allow_headers     = ["origin", "x-requested-with", "content-type", "authorization", "accept"]
-    allow_methods     = ["GET", "POST", "DELETE", "PUT", "OPTIONS"]
+    allow_headers     = ["authorization", "origin", "content-type", "accept", "x-requested-with"]
+    allow_methods     = ["GET", "POST", "DELETE", "PUT"]
     allow_credentials = true
     max_age           = var.cors_max_age
   }
@@ -619,55 +538,6 @@ resource "aws_apigatewayv2_vpc_link" "this" {
 ## 統合の作成
 
 HTTP API ルートをバックエンドのサービスと接続するための統合を作成します。
-今回は以下の２つのに対する統合を作成します。
-
-- Preflight の AWS Lambda
-- サンプルアプリケーションの CloudMap サービス
-
-### Preflight の統合
-
-まずは、Preflight の統合を作成します。
-
-#### API Gateway から Preflight 用 AWS Lambda の呼び出し許可の付与
-
-API Gateway から直接 AWS Lambda を呼び出す場合、呼び出すための許可を設定する必要があります。
-
-```hcl:apigw.tf
-resource "aws_lambda_permission" "preflight" {
-  statement_id  = "AllowAPIGatewayPreflight"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.preflight.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.this.execution_arn}/*/*"
-}
-```
-
-管理コンソールでは以下のように確認できます。
-
-![API GatewayへのAWS Lambda呼び出し許可付与](/img/sss/sss-by-iac-lambda-permission.png "管理コンソールでの表示")
-
-#### Preflight の統合の作成
-
-Preflight に対する統合を作成します。
-
-`integration_type`は AWS Lambda が AWS サービスなので`AWS_PROXY`となります。
-`integration_method`についてはチュートリアルやサンプルを参考に`POST`のみを指定しています。
-`payload_format_version`は管理コンソールではデフォルトで最新版となるようですが、Terraform は`1.0`となるため、明示的に指定しています。
-
-```hcl:apigw.tf
-resource "aws_apigatewayv2_integration" "preflight" {
-  api_id                 = aws_apigatewayv2_api.this.id
-
-  integration_type       = "AWS_PROXY"
-  integration_uri        = aws_lambda_function.preflight.invoke_arn
-  integration_method     = "POST"
-  payload_format_version = "2.0"
-}
-```
-
-### アプリケーションの統合
-
-続いてアプリケーションの統合を作成します。
 
 HTTP API のプライベート統合の場合、`integration_type`は`HTTP_PROXY`のみとなります。
 CloudMap サービス検出を使用した統合となるのでアプリケーションの CloudMap サービスを`integration_uri`に指定します。
@@ -689,11 +559,11 @@ resource "aws_apigatewayv2_integration" "mz_dev_app" {
 
 ## オーサライザーの作成
 
-Cognito と連携して JWT 認証[^8]する既存の仕組みを利用して JWT オーサライザーを作成します。
+Cognito と連携して JWT 認証[^7]する既存の仕組みを利用して JWT オーサライザーを作成します。
 JWT を利用するので、`authorizer_type`は当然`JWT`となります。
 `jwt_configuration`には Cognito のユーザープールクライアント ID とユーザープールエンドポイントを指定します。
 
-[^8]: JWT に関しては豆蔵デベロッパーサイトの「[基本から理解する JWT と JWT 認証の仕組み](/blogs/2022/12/08/jwt-auth/)」を参照。
+[^7]: JWT に関しては豆蔵デベロッパーサイトの「[基本から理解する JWT と JWT 認証の仕組み](/blogs/2022/12/08/jwt-auth/)」を参照。
 
 ```hcl:apigw.tf
 resource "aws_apigatewayv2_authorizer" "jwt_authorizer" {
@@ -719,16 +589,7 @@ resource "aws_apigatewayv2_authorizer" "jwt_authorizer" {
 `route_key`で使用している`each.key`では`var.ecs_service.http_methods`で複数定義されている HTTP メソッドが個々に指定されます。
 `target`には統合、`authorizer_id`にはオーサライザーを指定しています。
 
-Preflight チェックとして HTTP メソッドが`OPTION`のルートも定義します。
-こちらはオーサライザーを指定しないので`target`の AWS Lambda のみとなります。
-
 ```hcl:ecs_service.tf
-resource "aws_apigatewayv2_route" "mz_dev_app_preflight" {
-  api_id    = aws_apigatewayv2_api.this.id
-  route_key = "OPTIONS /{proxy+}"
-  target    = "integrations/${aws_apigatewayv2_integration.preflight.id}"
-}
-
 resource "aws_apigatewayv2_route" "mz_dev_app" {
   for_each = var.ecs_service.http_methods
   api_id             = aws_apigatewayv2_api.this.id
@@ -741,15 +602,14 @@ resource "aws_apigatewayv2_route" "mz_dev_app" {
 
 # 外部入力
 
-既存の AWS リソースの ID などは Terraform の`variable`[^9]として定義しています。
+既存の AWS リソースの ID などは Terraform の`variable`[^8]として定義しています。
 以下に変数、型、デフォルト値、概要を示します。
 型が`object`となっている変数についての詳細は各変数の表にて同じく詳細を示してあります。
 
-[^9]: `variable`については[Input Variables](https://developer.hashicorp.com/terraform/language/values/variables)を参照。
+[^8]: `variable`については[Input Variables](https://developer.hashicorp.com/terraform/language/values/variables)を参照。
 
 | 変数名                       | 型             | デフォルト値 | 概要                                     |
 | ---------------------------- | -------------- | ------------ | ---------------------------------------- |
-| `aws_account_id`             | `string`       |              | AWS アカウント ID                        |
 | `vpc_id`                     | `string`       |              | VPC ID                                   |
 | `default_security_group_id`  | `string`       |              | デフォルトセキュリティグループ ID        |
 | `allow_origins`              | `list(string)` |              | 許可するオリジン                         |

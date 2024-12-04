@@ -197,13 +197,13 @@ sequenceDiagram
 ```
 
 早速コードを書いていきます。
-まず、SwarmはGitHubから直接インストールします。
+事前にSwarmをインストールしておきます。
 
 ```shell
 pip install git+https://github.com/openai/swarm.git
 ```
 
-まずは各エージェントの実行結果を受けて最終的な旅行プランを立案する旅行プラン統合エージェントです。
+最初に、各エージェントの実行結果を受けて最終的な旅行プランを立案する旅行プラン統合エージェントです。
 
 ```python
 from swarm import Agent, Swarm

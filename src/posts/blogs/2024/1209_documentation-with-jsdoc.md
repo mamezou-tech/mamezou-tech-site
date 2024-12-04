@@ -36,7 +36,8 @@ image: true
 
 # JSDocによるドキュメント表示
 
-[JSDoc](https://github.com/jsdoc/jsdoc)はJavaScriptのAPIリファレンスを作成するときに利用されていますが、文書(tutorialと呼ばれる)の記述にも利用できます。
+JSDoc はJavaScriptのAPIリファレンスを作成するときに利用されていますが、文書(tutorialと呼ばれる)の記述にも利用できます。
+@[og](https://github.com/jsdoc/jsdoc/)
 
 文書はMarkdown形式で記述します。文書間でリンク(リンク先のMarkdown文書が自動的にHTMLに変換された文書のURLとなります)を張ることができ、見出しも作ることができます。静的なWebページに変換されるためオンラインドキュメントとして参照できます。
 
@@ -67,9 +68,11 @@ JSDocなら上述の要望に応えられますが見た目でイマイチなと
 
 # Docdashによるドキュメント表示
 
-JSDocのデフォルトテンプレートにはいくつか不満点がありました。これを解決するために[Docdash](https://github.com/clenemt/docdash)を利用します。DocdashはJSDocで利用できるテンプレートです。このテンプレートを利用することで見た目を変化させることができ、さらに独自のカスタマイズが可能になります。
+JSDocのデフォルトテンプレートにはいくつか不満点がありました。これを解決するために Docdash を利用します。
+@[og](https://github.com/clenemt/docdash/)
+Docdash は JSDoc で利用できるテンプレートです。このテンプレートを利用することで見た目を変化させることができ、さらに独自のカスタマイズが可能になります。
 
-JSDocのデフォルトテンプレートは見にくくイマイチですが、Docdashを利用すると解決できます。
+JSDoc のデフォルトテンプレートは見にくくイマイチですが、Docdash を利用すると解決できます。
 
 ### README(トップページ)のサンプル
 
@@ -95,7 +98,9 @@ JSDocのデフォルトテンプレートは見にくくイマイチですが、
 
 # インストールと実行
 
-[Node.js](https://nodejs.org/en/download/prebuilt-installer)をインストールしてください。
+Node.js をインストールしてください。
+@[og](https://nodejs.org/)
+インストーラは[こちら](https://nodejs.org/en/download/prebuilt-installer)から。
 
 :::alert
 以下、Windowsでの処理を対象としています。なお、Windows PowerShellだとスクリプト実行エラーとなるようです。Windowsではコマンドプロンプト(cmd.exe)やGit Bash(bash.exe)を利用してください。
@@ -268,7 +273,8 @@ if (window.location.pathname.split('/').pop().startsWith('tutorial-')) {
 
 
 # ブラウザでMarkdown文書を表示する
-私はMarkdownの整形結果を確認するときは [Markdown Viewer](https://github.com/simov/markdown-viewer)を利用してブラウザ(Chrome)で確認しています。様々なブラウザのエクステンションに対応しているようです。
+私はMarkdownの整形結果を確認するときは Markdown Viewer を利用してブラウザ(Chrome)で確認しています。様々なブラウザのエクステンションに対応しているようです。
+@[og](https://github.com/simov/markdown-viewer/)
 
 このエクステンションを有効にするとMarkdownファイルをブラウザにドラッグ＆ドロップすると整形して表示されます。
 

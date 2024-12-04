@@ -1,5 +1,5 @@
 ---
-title: LiquidTextでAWS認定資格を突破しよう
+title: LiquidTextで効率的にAWS認定資格を攻略しよう
 author: shohei-yamashita
 date: 2024-12-18
 tags: [advent2024, 学び, AWS]
@@ -10,7 +10,7 @@ image: true
 これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第13日目の記事です。
 
 ## はじめに
-ビジネスソリューション事業部の山下です。今回はLuquidTextというドキュメント管理ツールについて、AWS認定資格と関連させて紹介させていただきます。
+ビジネスソリューション事業部の山下です。今回はLiquidTextというドキュメント管理ツールについて、AWS認定資格と関連させて紹介させていただきます。
 本記事で話す内容とそうでないものは以下の通りです。
 ### 話すこと
 - LiquidTextの紹介

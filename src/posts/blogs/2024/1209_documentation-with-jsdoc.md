@@ -43,7 +43,7 @@ image: true
 JSDocなら上述の要望に応えられますが見た目でイマイチなところがあります。
 
 
-## README(トップページ)のサンプル
+### README(トップページ)のサンプル
 ![](/img/blogs/2024/1209_documentation-with-jsdoc/jsdoc_default.png)
 - 目次が右側に配置される
 - ヘッダーにHomeと表示される😞
@@ -51,7 +51,7 @@ JSDocなら上述の要望に応えられますが見た目でイマイチなと
 - 目次が各文書のファイル名順に表示される😞
     - 設定ではファイル名と表示名の対応を記述して作成している
 
-## 文書(tutorial)のサンプル
+### 文書(tutorial)のサンプル
 ![](/img/blogs/2024/1209_documentation-with-jsdoc/jsdoc_default_article.png)
 - 文書は下記のように記述しているが表示が冗長😞
     ```text:class_structure.md
@@ -60,7 +60,7 @@ JSDocなら上述の要望に応えられますが見た目でイマイチなと
     クラス図を記述します。
     ```
 
-## APIリファレンスのサンプル
+### APIリファレンスのサンプル
 ![](/img/blogs/2024/1209_documentation-with-jsdoc/jsdoc_default_classes.png)
 - カテゴリ名が大きく、プロパティ名やメソッド名が小さくて判りにくい😞
 
@@ -69,21 +69,22 @@ JSDocなら上述の要望に応えられますが見た目でイマイチなと
 
 JSDocのデフォルトテンプレートにはいくつか不満点がありました。これを解決するために[Docdash](https://github.com/clenemt/docdash)を利用します。DocdashはJSDocで利用できるテンプレートです。このテンプレートを利用することで見た目を変化させることができ、さらに独自のカスタマイズが可能になります。
 
-JSDocのデフォルトテンプレートは見やすさという面では個人的にはイマイチとの印象ですがDocdashを利用すると解決できます。
+JSDocのデフォルトテンプレートは見にくくイマイチですが、Docdashを利用すると解決できます。
 
-## README(トップページ)のサンプル
+### README(トップページ)のサンプル
+
 ![](/img/blogs/2024/1209_documentation-with-jsdoc/jsdoc_docdash.png)
 
 - 目次が左側
 - JavaScriptを利用することでヘッダーを消すなどカスタマイズができる😊
 - 目次が指定の順序で表示できる😊
 
-## 文書(tutorial)のサンプル
+### 文書(tutorial)のサンプル
 ![](/img/blogs/2024/1209_documentation-with-jsdoc/jsdoc_docdash_article.png)
 - Markdownの記述そのままで表示😊
     - JavaScriptでヘッダーを削除しました
 
-## APIリファレンスのサンプル
+### APIリファレンスのサンプル
 ![](/img/blogs/2024/1209_documentation-with-jsdoc/jsdoc_docdash_classes.png)
 - プロパティ名やメソッド名が見やすい😊
 - 左のメニューにメソッド名が表示される😊
@@ -100,7 +101,7 @@ JSDocのデフォルトテンプレートは見やすさという面では個人
 以下、Windowsでの処理を対象としています。なお、Windows PowerShellだとスクリプト実行エラーとなるようです。Windowsではコマンドプロンプト(cmd.exe)やGit Bash(bash.exe)を利用してください。
 :::
 
-## サンプルアプリ(FizzBuzzBear)のダウンロード
+### サンプルアプリ(FizzBuzzBear)のダウンロード
 ```console
 curl -L -O https://github.com/shuji-morimoto/FizzBuzzBear/archive/refs/heads/main.zip
 tar -xf main.zip
@@ -112,7 +113,7 @@ Windows 10 Version 1809 (October 2018 Update) 以降ではcurlとtarが使え、
 :::
 
 
-## 必要なモジュールのインストール
+### 必要なモジュールのインストール
 ```console
 cd FizzBuzzBear-main
 set NODE_OPTIONS="--dns-result-order=ipv4first"
@@ -125,19 +126,19 @@ IPv6環境ではスクリプトのダウンロードが進まないようです�
 :::
 
 
-## ドキュメントを生成する
+### ドキュメントを生成する
 ```console
 npm run docs
 ```
 - package.jsonに記載した `docs` スクリプトを実行します
 
 
-## ブラウザでFizzBuzzBearアプリを実行する
+### ブラウザでFizzBuzzBearアプリを実行する
 ```console
 start src/index.html
 ```
 
-## ブラウザでソフトウェア設計書を開く
+### ブラウザでソフトウェア設計書を開く
 ```console
 start docs/_site/index.html
 ```

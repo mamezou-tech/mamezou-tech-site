@@ -7,7 +7,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 image: true
 ---
 
-これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第13日目の記事です。
+これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第18日目の記事です。
 
 ## はじめに
 ビジネスソリューション事業部の山下です。今回はLiquidTextというドキュメント管理ツールについて、AWS認定資格と関連させて紹介させていただきます。

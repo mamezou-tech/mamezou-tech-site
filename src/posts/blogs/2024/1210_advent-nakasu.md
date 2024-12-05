@@ -4,6 +4,7 @@ title: 【初挑戦！】Google Apps Scriptを使ってGaroonとのスケジュ�
 author: toshiki-nakasu
 date: 2024-12-10
 tags: [advent2024, tools, Google Apps Script, Google Calendar, nodejs, npm, cybozu, garoon, javascript]
+image: true
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/) 第7日目の記事です。

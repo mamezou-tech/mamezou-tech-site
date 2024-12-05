@@ -7,7 +7,7 @@ tags: [advent2024, tools, Google Apps Script, Google Calendar, nodejs, npm, cybo
 image: true
 ---
 
-これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/) 第7日目の記事です。
+これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/) 第10日目の記事です。
 
 :::info:この記事で紹介すること
 

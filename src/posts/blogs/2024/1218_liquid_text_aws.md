@@ -2,7 +2,7 @@
 title: LiquidTextで効率的にAWS認定資格を攻略しよう
 author: shohei-yamashita
 date: 2024-12-18
-tags: [advent2024, 学び, AWS]
+tags: [liquidtext, tools, 学び, AWS, advent2024]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2024/
 image: true
 ---
@@ -10,18 +10,20 @@ image: true
 これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第18日目の記事です。
 
 ## はじめに
-ビジネスソリューション事業部の山下です。今回はLiquidTextというドキュメント管理ツールについて、AWS認定資格と関連させて紹介させていただきます。
-本記事で話す内容とそうでないものは以下の通りです。
-### 話すこと
+ビジネスソリューション事業部の山下です。今回はLiquidTextというドキュメント管理ツールについて、AWS認定資格の学習と関連させて紹介させていただきます。
+本記事で書く内容とそうでないものは以下の通りです。
+
+### 書くこと
 - LiquidTextの紹介
 - AWS認定資格の学習とLiquidTextとの相性
 - 自身の活用例
-### 話さないこと
+### 書かないこと
 - 特定のAWS認定資格の攻略法
 - LiquidTextの細かい機能
 
 ## LiquidTextとは
-近年注目を集めているドキュメントツールです。文章中のテキストや図を抽出してストックできるなど、ドキュメントそのものにとどまらず知識体系の効率的な管理が可能です。
+@[og](https://www.liquidtext.net/)
+近年注目を集めているドキュメントツールです。文章中のテキストや図を抽出してストックできるなど、ドキュメントにとどまらず知識の効率的な管理が可能です。
 [公式ページ](https://www.liquidtext.net/)では次のような特徴が紹介されています。
 - 柔軟なPDFアノテーション機能：ドラッグ＆ドロップで簡単にハイライトやメモを追加可能
 - 直感的な文書比較：複数のPDFを同時に開いて横断的に参照・比較が可能

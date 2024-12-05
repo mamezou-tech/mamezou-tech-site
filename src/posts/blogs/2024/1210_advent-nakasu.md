@@ -3,14 +3,14 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 title: 【やってみた】初めてGoogle Apps Scriptを使ってGaroonとのスケジュールを共有できるようにしてみた
 author: toshiki-nakasu
 date: 2024-12-10
-tags: [advent2024, tools, Google Apps Script, Google Calendar, nodejs, npm, cybozu, garoon]
+tags: [advent2024, tools, Google Apps Script, Google Calendar, nodejs, npm, cybozu, garoon, javascript]
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第7日目の記事です。
 
 :::info:この記事で紹介すること
 
-- *devcontainer*をローカルで構築します
+- ローカルは*devcontainer*で構築します
 - *Google Apps Script*をつかって*Cybozu Garoon*から*Google Calendar*にスケジュールを同期します
     - 定期実行させます
 - その他*Google Apps Script*ローカル環境開発のノウハウ
@@ -20,16 +20,15 @@ tags: [advent2024, tools, Google Apps Script, Google Calendar, nodejs, npm, cybo
 
 こんなこと考えたことはありませんか？
 
-- 「APIを使ってスクリプトを書いたけど、お金掛けてAWSに環境作るのもなぁ」
+- 「APIを使ってスクリプトを書いたけど、わざわざこのためにお金掛けてサーバー立てて環境作るのもなぁ」
 - Googleのスプレッドシートとかにスクリプトが使えるのは聞いたことがあるけどよくわからない
 
-これが私の状況でした。
-
-今回はこの状況から、ローカルで処理をJavaScriptで書いて、**Google Apps Script**にアップロードして定期実行させるようになりました。
+これが私の状況でしたが、ローカルで処理をJavaScriptで書いて**Google Apps Script**にアップロードして定期実行させるようになりました。
 
 ## 本題
 
 私が個人で現在運用しているリポジトリは[こちら](https://github.com/toshiki-nakasu/syncGaroonToGoogle)です。
+
 これから説明する内容も含まれているので、ご参考にどうぞ。
 
 ### 環境構築
@@ -69,13 +68,13 @@ tags: [advent2024, tools, Google Apps Script, Google Calendar, nodejs, npm, cybo
 - 環境構築で活用している`clasp`ライブラリを活用していますが、
     私の力不足か、TypeScriptのトランスパイルと`clasp push`が同時にできなかったです。
 - *Google Apps Script*にアップロードされた`.gs`ファイルは全てグローバルな変数扱いとなり、複数ファイルになっていても相互に参照ができます。
-    - ローカルでディレクトリ分けして開発することはできますが、*Google Apps Script*上では階層はUIに表示されません。
-        - `src/service/GaroonApiService.js`の階層構造が合った場合、`src/service/GaroonApiService.gs`という名前のスクリプトファイル扱いになります
+    - ローカルでディレクトリ分けして開発はできますが、*Google Apps Script*上で階層はUIに表示されません。
+        - `src/service/GaroonApiService.js`の**階層構造**があった場合、`src/service/GaroonApiService.gs`という**名前の**スクリプトファイル扱いになります。
 :::
 
 #### *ライブラリ*
 
-スクリプトが生成されると`appsscript.json`が作成されますが、ここで*Google Calendar*のライブラリを使えるように指定します。
+スクリプトが生成されると`appsscript.json`が作成されるので、ここで*Google Calendar*のライブラリを使えるように定義します。
 
 ```json:appsscript.json
 {
@@ -119,7 +118,8 @@ function setScriptProperties() {
 
 - `TimeZone`: *Google Calendar*の表記が思い通りにならないです。
 - `CalendarName`: 任意のカレンダー名です。なければ作成します。
-- `GaroonDomain`, `GaroonUserName`, `GaroonUserPassword`: 企業の環境に合わせて設定してください。特に`GaroonUserName`は企業によると思います。`GaroonUserPassword`があるので、リポジトリにこのプロパティファイルを含めないように気をつけてください。
+- `GaroonDomain`, `GaroonUserName`, `GaroonUserPassword`: 企業の環境に合わせて設定してください。特に`GaroonUserName`は企業によると思います。
+    `GaroonUserPassword`があるので、リポジトリにこのプロパティファイルを含めないように気をつけてください。
 - `GaroonProfileType`, `GaroonProfileCode`: スケジュール内の自分が特定できるようにするための定義です。
 - `WorkTimeStart`, `WorkTimeEnd`: この時間内に同期を実行するようにします。
 - `SyncDaysBefore`, `SyncDaysAfter`: 同期するスケジュールの範囲です。
@@ -177,6 +177,8 @@ function sync() {
 1. 追加, 更新, 削除されたイベントを抽出 (Google, Garoon両方)
 1. 抽出されたイベントに応じて同期先に同期 (現行ではGaroon->Googleのみ)
 1. *Google Calendar*の同期トークンを最新化して終了
+
+---
 
 #### *サービスクラス*
 
@@ -372,7 +374,8 @@ function sync() {
 ## おわりに
 
 - 今回初めて*Google Apps Script*を使いましたが、一番の難点はローカル開発環境とその結果をpushする部分でした。
-    - TypeScriptが使えるようにしたかったですが、Garoonの予定をいちいち見に行くのが嫌だったので実装を優先しました。(もうここまで書いてしまうとTypeScript移行したくない)
+    - TypeScriptが使えるようにしたかったですが、Garoonの予定をいちいち見に行くのが嫌だったので実装を優先しました。(でももうここまで書いてしまうとTypeScript移行したくない)
+    - また、Googleのライブラリはnodejsなどで取得できなさそうだったので、仕方ない気もしています。
     - *clasp*について理解できたことや、*Google Apps Script*内でのスコープがないことなど、思ったより使いにくい感想ですが、これ無料なんですよね。それなら良し。
-- GaroonのスケジュールをGoogle Calendarに同期できるようにしましたが、双方向ではないので、結局Garoonの方をマスターとして管理しているので安心感はあります。(他の人に迷惑を掛けない)
+- GaroonのスケジュールをGoogle Calendarへ同期できるようにしましたが、双方向ではないので、結局Garoonの方をマスターとして管理しているので安心感はあります。(他の人に迷惑を掛けない)
     - いずれは双方向同期できるようにしたいですね。

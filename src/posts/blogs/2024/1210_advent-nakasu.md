@@ -3,18 +3,17 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 title: 【初挑戦！】Google Apps Scriptを使ってGaroonとのスケジュールを共有できるようにしてみた
 author: toshiki-nakasu
 date: 2024-12-10
-tags: [advent2024, tools, Google Apps Script, Google Calendar, nodejs, npm, cybozu, garoon, javascript]
+tags: [Google Apps Script, Google Calendar, nodejs, npm, tools, javascript, advent2024]
 image: true
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/) 第10日目の記事です。
 
 :::info:この記事で紹介すること
+*Google Apps Script*をつかって*Cybozu Garoon*から*Google Calendar*にスケジュールを同期します。
+同期を定期実行させます。
 
-- ローカルは*devcontainer*で構築します
-- *Google Apps Script*をつかって*Cybozu Garoon*から*Google Calendar*にスケジュールを同期します
-    - 定期実行させます
-- その他*Google Apps Script*ローカル環境開発のノウハウ
+その他*Google Apps Script*ローカル環境開発のノウハウ
 :::
 
 ## はじめに
@@ -24,7 +23,7 @@ image: true
 - 「APIを使ってスクリプトを書いたけど、わざわざこのためにお金掛けてサーバー立てて環境作るのもなぁ」
 - Googleのスプレッドシートとかにスクリプトが使えるのは聞いたことがあるけどよくわからない
 
-これが私の状況でしたが、ローカルで処理をJavaScriptで書いて**Google Apps Script**にアップロードして定期実行させるようになりました。
+今回、ローカルで処理をJavaScriptで書いて**Google Apps Script**にアップロードし、トリガーを設定しておくことでイベント同期を定期実行するようにできました。
 
 :::check
 このスクリプトのおかげでスケジュールの通知をGoogle Calendarにだけ絞ることができて、ストレスめっちゃ減りました。
@@ -38,7 +37,7 @@ Garoonのスケジュール通知って別途アプリケーション入れた�
 
 これを活用することで、**Cybozu GaroonからGoogle Calendarへの同期が可能になっています**。
 
-:::alert
+:::info
 双方向の同期はできていません
 :::
 
@@ -130,7 +129,7 @@ function setScriptProperties() {
 }
 ```
 
-- `TimeZone`: *Google Calendar*の表記が思い通りにならないです。
+- `TimeZone`: *Google Calendar*新規作成時のデフォルトタイムゾーンになります。
 - `CalendarName`: 任意のカレンダー名です。なければ作成します。
 - `GaroonDomain`, `GaroonUserName`, `GaroonUserPassword`: 企業の環境に合わせて設定してください。特に`GaroonUserName`は企業によると思います。
     :::stop
@@ -226,8 +225,8 @@ function sync() {
     ```js
     createCalendar(name) {
         const option = {
-        timeZone: properties.getProperty('TimeZone'),
-        color: CalendarApp.Color.PURPLE,
+            timeZone: properties.getProperty('TimeZone'),
+            color: CalendarApp.Color.PURPLE,
         };
         const retCalendar = CalendarApp.createCalendar(name, option);
         console.info('Createing GCal calendar...');
@@ -237,7 +236,7 @@ function sync() {
     }
     ```
 
-    - `option`でデフォルトカラーの指定ができますが、手動で再設定しないと表示がおかしいです。
+    - `option`内でデフォルトカラーの指定をしていますが、結局手動で再設定しないと文字色が黒のままで凄く見づらいです。
     - 構築のクールタイムを置いてからメソッドを終了します。
 
 - イベント取得
@@ -300,7 +299,8 @@ function sync() {
     }
     ```
 
-    面倒なので、一旦削除してから再作成するようにしています。
+    - 変更差分をGaroonから取得するのが大変そうだったので、一旦削除してから再作成するようにしています。
+    - 引数が配列の要素になっているのは、イベント削除には`gCalEvent`, イベント作成には`garoonEvent`のみの情報が必要だからです。
 
 - イベント削除
 
@@ -318,7 +318,7 @@ function sync() {
 
 ***Garoon*のデータアクセス**
 
-リファレンスは[こちら](https://cybozu.dev/ja/garoon/docs/rest-api/)
+リファレンスは[こちら](https://cybozu.dev/ja/garoon/docs/rest-api/)[^2]
 
 - Garoonの方はREST APIを叩いていくことになります。
     - `クラウド版`と`パッケージ版`があり、`クラウド版`を使ったコードになっています。
@@ -351,11 +351,8 @@ function sync() {
         }
         ```
 
-        :::check
-        ユーザー名とパスワードをBASE64化してヘッダーに埋め込むことで暗号化しています。
-        :::
-
-    - APIの実行は`apiAction`メソッドの内部で`UrlFetchApp`を使っています。
+        - ユーザー名とパスワードをBASE64でエンコードしてヘッダーに埋め込んでいます。
+        - APIの実行は`apiAction`メソッドの内部で`UrlFetchApp`を使っています。
 
 - イベント取得
 
@@ -376,7 +373,7 @@ function sync() {
 
 :::info
 冒頭にもお伝えしたとおり、Google CalendarからCybozu Garoon作成, 更新, 削除は未実装です...。
-ポイントは、Google Calendarで同期をかけたときのデータ形式と、上記の`getEvents`で取得したときのデータ形式が全然違うことです。
+ポイントは、Google Calendarで同期差分を取得したときのデータ形式と、上記の`getEvents`で取得したときのデータ形式が全然違うことです。
 ﾀｽｹﾃ...。
 :::
 
@@ -424,3 +421,6 @@ function sync() {
 
     もし可能であれば、コードをモジュール化して、機能ごとに分割することをお勧めします。これにより、コードの可読性が向上し、メンテナンスも容易になります。
     ```
+
+[^2]: このAPIを使って、ようやく在席情報のリセットができました。
+    私の知る限り、GUIからリセットする方法はありませんでした。

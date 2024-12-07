@@ -37,6 +37,11 @@ Here are specific translation rules:
 
 - Translate \`豆蔵\` as \`Mamezou\`.
 
+### Important Instructions:
+- **Translate the entire article without summarizing or skipping any sections.** Do not output phrases like "The rest of the article continues" or "Summary of the remaining content."
+- If the article is long, **continue outputting all content until the very end**. Do not truncate, skip, or summarize any part of the article.
+- **Your response must be the full translated content as is**, including all text, code comments, and other elements present in the article.
+
 Please translate the following article:
 
 ${text}
@@ -81,13 +86,13 @@ async function chat(text: string, option: { language: string; dir: string }) {
       role: 'user',
       content: makeMessage(text, option.language)
     }],
-    temperature: 0.4,
-    maxTokens: 4096,
-    model: 'gpt-4o-2024-11-20'
+    // temperature: 0,
+    // maxTokens: 8192 * 2,
+    model: 'o1-preview-2024-09-12'
   } satisfies Parameters<typeof ask>[number];
 
   const response = await ask(request);
-  console.log('finish_reason', response.choices[0].finish_reason);
+  console.log('finish_reason', response.choices[0].finish_reason, response.usage);
   replies.push(response.choices[0].message.content);
   if (response.choices[0].finish_reason === 'length') {
     async function retry(prevMessage: OpenAI.ChatCompletionMessageParam, times = 0) {
@@ -97,10 +102,10 @@ async function chat(text: string, option: { language: string; dir: string }) {
         messages: [
           ...(request.messages),
           prevMessage,
-          {
-            role: 'user',
-            content: 'continue'
-          }
+          // {
+          //   role: 'user',
+          //   content: 'continue'
+          // }
         ]
       });
       replies.push(retryResp.choices[0].message.content);

@@ -18,8 +18,8 @@ export async function ask(request: Request): Promise<OpenAI.ChatCompletion> {
       model: request.model ?? 'gpt-4o-mini',
       user: request.userId,
       messages: request.messages,
-      max_tokens: request.maxTokens ?? 1024,
-      temperature: request.temperature ?? 0.7,
+      // max_tokens: request.maxTokens,
+      // temperature: request.temperature ?? 0.7,
       response_format: {
         type: request.responseFormat ?? 'text'
       }

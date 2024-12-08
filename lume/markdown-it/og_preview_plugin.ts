@@ -31,6 +31,6 @@ export default function markdownItOgPreview(md: MarkdownIt, options = {}) {
 
   md.renderer.rules.og_preview = (tokens: Token[], idx: number) => {
     const url = tokens[idx].attrGet('data-url');
-    return `<div class="og-preview" data-og-url="${url}"><a href="${url}" target="_blank">${url}</a></div>`;
+    return `<div class="og-preview" style="overflow-wrap: break-word" data-og-url="${url}"><a href="${url}" target="_blank">${url}</a></div>`;
   };
 };

@@ -13,7 +13,7 @@ const OgPreview = ({ url }: { url: string }) => {
     const fetchOgData = async () => {
       try {
         const response = await fetch(
-          `https://developer.mamezou-tech.com/api/og/preview?url=${encodeURIComponent(url)}`,
+          `https://developer.mamezou-tech.com/api/og/preview?url=${encodeURIComponent(url)}`
         );
         setOgData(await response.json());
       } catch (err) {
@@ -40,7 +40,8 @@ const OgPreview = ({ url }: { url: string }) => {
   if (!ogData) {
     return (
       <div className="og-preview-loading">
-        Loading preview for <a href={url} target="_blank">{url}</a>
+        Loading preview for <a href={url} className="new-tab-link"
+                               target="_blank" rel="noopener noreferrer">{url}</a>
       </div>
     );
   }

@@ -121,7 +121,7 @@ TypeScriptのリファレンス（[Mapped Types](https://www.typescriptlang.org/
 一方、サバイバルTypeScrtipt（[Mapped Types](https://typetypescriptbook.jp/reference/type-reuse/mapped-types)）ではユニオンから生成できるという主旨の説明がされています。
 > Mapped Typesは主にユニオン型と組み合わせて使います。
 
-TypeScript本家の記述では「特定の型から別の型を作ること」を可能にするのがMapped Typesであるという書き方がされています[^1]。
+TypeScript本家の記述では「特定の型から別の型を作ること」を可能にするのがMapped Typesであるとされています[^1]。
 ただ、実例を見るとTypeから別のTypeを生成するにも、ユニオン型を経由して生成しているように見えます。
 本記事においては、説明の都合上、ユニオン型から別のタイプを生成するという方向性とさせてください。
 頭に入れるべき構文は次のとおりです。

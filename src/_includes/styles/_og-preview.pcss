@@ -1,0 +1,74 @@
+.og-preview {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 95%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.og-preview:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.og-image {
+  width: 200px;
+  height: 120px;
+  object-fit: contain;
+  border-right: 1px solid #ddd;
+}
+
+.og-title {
+  flex: 1;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+.og-preview-loading {
+  max-width: 95%;
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  .og-preview {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .og-image {
+    width: 100%;
+    max-width: 300px;
+    max-height: 180px;
+    object-fit: contain;
+    margin: 5px auto;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .og-title {
+    padding: 12px;
+    font-weight: bold;
+    color: #0458b3;
+    text-align: center;
+    text-decoration: underline;
+  }
+}
+
+.og-preview:active {
+  transform: scale(0.98); /* タップ時の縮小 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

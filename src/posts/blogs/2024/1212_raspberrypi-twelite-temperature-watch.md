@@ -9,7 +9,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第9日目の記事です。
 
-こんにちは。毎回、超小型コンピュータ raspberry pi の記事を書いていますが、今回もこれにちなんだ記事です。
+こんにちは。毎回、超小型コンピュータ Raspberry pi の記事を書いていますが、今回もこれにちなんだ記事です。
 
 Raspberry pi は小型で扱いやすいコンピュータではあるのですが、部屋の温湿度を監視させる場合、以下の課題があります。
 
@@ -43,7 +43,7 @@ TWELITE とは、[モノワイヤレス社](https://mono-wireless.com/)が販売
 
 # TWELITE と温湿度センサーの接続（電子工作）
 
-温湿度センサーとしては、手元に転がっていた [SHT-31](https://sensirion.com/jp/products/product-catalog/SHT31-DIS-B)を SIP 形状に拡張したモジュールを使用しました。 [^1]
+温湿度センサーとしては、手元にあった [SHT-31](https://sensirion.com/jp/products/product-catalog/SHT31-DIS-B)を SIP 形状に拡張したモジュールを使用しました。 [^1]
 
 SHT-31 の通信インタフェースは I2C なので、TWELITE のサンプルアプリの I2C ライブラリを使えば簡単にプログラミングできるのですが、勉強がてら独自に実装してみました。 [^2]
 

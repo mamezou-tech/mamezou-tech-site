@@ -1,13 +1,13 @@
 ---
 title: Raspberry pi と TWELITE で作る室温・湿度監視システムの構築
-author: matsumoto-minoru
+author: minoru-matsumoto
 date: 2024-12-12
 tags: [raspberry-pi, TWELITE, 無線監視, advent2024]
 image: true
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2024/
 ---
 
-これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第9日目の記事です。
+これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第12日目の記事です。
 
 こんにちは。毎回、超小型コンピュータ Raspberry pi の記事を書いていますが、今回もこれにちなんだ記事です。
 

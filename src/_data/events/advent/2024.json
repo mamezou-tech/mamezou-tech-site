@@ -61,7 +61,8 @@
       "date": "10",
       "author": "toshiki-nakasu",
       "githubUser": "toshiki-nakasu",
-      "title": "「GASでGaroon -> GCalへの一方向の同期スクリプト書きました」な記事"
+      "title": "【初挑戦！】Google Apps Scriptを使ってGaroonとのスケジュールを共有できるようにしてみた",
+      "url": "/blogs/2024/12/10/sync-garoon-to-google-calendar/"
     },
     {
       "date": "11",

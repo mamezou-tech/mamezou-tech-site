@@ -7,7 +7,7 @@ tags: [AWS, advent2024]
 image: true
 ---
 
-これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第8日目の記事です。
+これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第11日目の記事です。
 
 ## はじめに
 

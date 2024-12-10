@@ -81,9 +81,9 @@ myApplicationsではタグ付けしてから遡ってコストを取得してく
 この点でいえばコスト配分タグは最近のアップデートによって、タグ付けしてから12か月分の利用状況を遡って取得してくれます。myApplicationsでもバックフィルをリクエストできるようになるアップデートを待ちましょう。
 作成したアプリケーションのコストをCost Explorerで表示したい場合は、myApplicationsウィジェットから飛ぶか、Cost Explorerの画面右側、フィルターの「タグ」でアプリケーションの`awsApplication`タグを選択すればよいです。
 
-[^2]:Resource Explorerはこちらの解説記事で詳しく解説されています。[[新機能] リージョン・サービスを横断してリソースを検索できる AWS Resource Explorer が使えるようになっていました - DevelopersIO](https://dev.classmethod.jp/articles/aws-resource-explorer-new/)
-[^3]:タグからリソースを追加する方法はこちらで解説されています。指定したタグをつけたリソースが新たに作られると自動的にアプリケーションのリソースへ登録してくれるそうです。[[アップデート] myApplication でカスタムタグを使ったリソースの追加と、タグ同期機能によるリソースの自動追加が出来るようになりました - DevelopersIO](https://dev.classmethod.jp/articles/myapplications-tag-sync/)
-[^4]:Amazon CloudWatch Application Signalsについてはこちら。[Amazon CloudWatch Application Signals 徹底解説 - Qiita](https://qiita.com/AoTo0330/items/4d3cf0f6126f1a2a76c5)
+[^2]:Resource Explorerはこちらの解説記事で詳しく解説されています。([[新機能] リージョン・サービスを横断してリソースを検索できる AWS Resource Explorer が使えるようになっていました - DevelopersIO](https://dev.classmethod.jp/articles/aws-resource-explorer-new/))
+[^3]:タグからリソースを追加する方法はこちらで解説されています。指定したタグをつけたリソースが新たに作られると自動的にアプリケーションのリソースへ登録してくれるそうです。([[アップデート] myApplication でカスタムタグを使ったリソースの追加と、タグ同期機能によるリソースの自動追加が出来るようになりました - DevelopersIO](https://dev.classmethod.jp/articles/myapplications-tag-sync/))
+[^4]:Amazon CloudWatch Application Signalsについてはこちら。([Amazon CloudWatch Application Signals 徹底解説 - Qiita](https://qiita.com/AoTo0330/items/4d3cf0f6126f1a2a76c5))
 
 ## myApplicationsで作られるアプリケーションの実体は？
 
@@ -98,7 +98,8 @@ myApplicationsウィジェットでアプリケーションを作成した際に
 myApplicationsで作成されるアプリケーションは端的に言ってしまえばService Catalog App RegistryのApplicationになります。実際にService Catalog App RegistryではmyApplicationsで作成したアプリケーションが表示されており、この画面からでもアプリケーションの作成が行えます。
 Service Catalog App RegistryのApplicationはリソースをまとめるためにResource Groupsリソースを作成します。これにより、名前にそれぞれAppTags、ApplicationとつくResource Groupsが作成されますが、まとめられたリソースが紐づけられているのはAppTagsの方で、Applicationの方はAppTagsへの参照を持つだけです。
 `awsApplication`タグのvalueで指定されるARNのリソースはApplicationのResource Groupsリソースです。リソースをまとめているAppTagsのResource Groupsを直接紐づけて依存しないようにしています。
-上記の内容は[こちら](https://qiita.com/hiramax/items/00dd304a311ba40acc63)の記事で詳しく解説されています。興味があればご覧ください。
+上記の内容はこちらの記事で詳しく解説されています。興味があればご覧ください。
+@[og](https://qiita.com/hiramax/items/00dd304a311ba40acc63)
 
 ## おわりに
 

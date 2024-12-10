@@ -73,14 +73,14 @@ Resource Explorerのアクティベートにはアグリゲータインデック
 このリソースの追加では自動的に`awsApplication`タグの付与が行われます。このタグのvalueはアプリケーションのARNです。厳密には後述しますがResource GroupsというリソースのARNになります。
 私がアプリケーションの作成を試した際はタグの自動付与に失敗したリソースがありました。その際は直接当該リソースへこの`awsApplication`タグを付与すればリソース一覧へ追加してくれます。
 
-![myApplicationsのウィジット](https://i.gyazo.com/0255fc963ab067d450d2ad8c3df16f07.png)
+![myApplicationsのウィジェット](https://i.gyazo.com/0255fc963ab067d450d2ad8c3df16f07.png)
 
-myApplicationsウィジットではアプリケーションのコストのほか、アラームやメトリクスの表示もできます。
+myApplicationsウィジェットではアプリケーションのコストのほか、アラームやメトリクスの表示もできます。
 ちなみに、メトリクスの表示にはAmazon CloudWatch Application Signalsというこれまたre:Invent2023で登場したサービスを利用します[^4]。料金は毎月初回10TBまでは0.35 USD/GBなので気にならない方はONにするといいかもしれません。
 
 myApplicationsではタグ付けしてから遡ってコストを取得してくれるような機能はないようで、当月のコストは0 USDと予想されるコストも表示されていません。
 この点でいえばコスト配分タグは最近のアップデートによって、タグ付けしてから12か月分の利用状況を遡って取得してくれます。myApplicationsでもバックフィルをリクエストできるようになるアップデートを待ちましょう。
-作成したアプリケーションのコストをCost Explorerで表示したい場合は、myApplicationsウィジットから飛ぶか、Cost Explorerの画面右側、フィルターの「タグ」でアプリケーションの`awsApplication`タグを選択すればよいです。
+作成したアプリケーションのコストをCost Explorerで表示したい場合は、myApplicationsウィジェットから飛ぶか、Cost Explorerの画面右側、フィルターの「タグ」でアプリケーションの`awsApplication`タグを選択すればよいです。
 
 [^2]:Resource Explorerはこちらの解説記事で詳しく解説されています。[[新機能] リージョン・サービスを横断してリソースを検索できる AWS Resource Explorer が使えるようになっていました - DevelopersIO](https://dev.classmethod.jp/articles/aws-resource-explorer-new/)
 [^3]:タグからリソースを追加する方法はこちらで解説されています。指定したタグをつけたリソースが新たに作られると自動的にアプリケーションのリソースへ登録してくれるそうです。[[アップデート] myApplication でカスタムタグを使ったリソースの追加と、タグ同期機能によるリソースの自動追加が出来るようになりました - DevelopersIO](https://dev.classmethod.jp/articles/myapplications-tag-sync/)
@@ -90,7 +90,7 @@ myApplicationsではタグ付けしてから遡ってコストを取得してく
 
 ここで気になるのはmyApplicationsで作られる「アプリケーション」とは具体的にどのようなリソースなのか？です。`awsApplication`タグのvalueとしてアプリケーションのARNを指定しますが、これは前述したようにResource GroupsというリソースのARNになります。
 Resource Groupsは文字通り複数のリソースをグループ化し管理するためのリソースです。myApplicationsはこのResource GroupsをService Catalogの力を借りて作成します。
-myApplicationsウィジットでアプリケーションを作成した際に作られるリソースは以下の3つです。
+myApplicationsウィジェットでアプリケーションを作成した際に作られるリソースは以下の3つです。
 
 - Service Catalog App RegistryのApplication
 - Resource Groups（AppTags）
@@ -104,6 +104,6 @@ Service Catalog App RegistryのApplicationはリソースをまとめるため�
 
 ## おわりに
 
-簡単にアプリケーションごとのダッシュボードが作成できるmyApplicationsについてご紹介しました。アプリケーションを作成してすぐにはコストの表示ができないのが少し残念ですが、コストの可視化以外にも様々なウィジットが作成できるため活用してみてはいかがでしょうか。
+簡単にアプリケーションごとのダッシュボードが作成できるmyApplicationsについてご紹介しました。アプリケーションを作成してすぐにはコストの表示ができないのが少し残念ですが、コストの可視化以外にも様々なウィジェットが作成できるため活用してみてはいかがでしょうか。
 元々の目的であるコストの見直しは今回できなかったのですが、コスト削減法についても知れ、特にmyApplicationsと同じくre:Invent2023で発表された[The Frugal Architect](https://thefrugalarchitect.com/laws/)と呼ばれるコスト最適化における原則について勉強してみようと思いました。
 

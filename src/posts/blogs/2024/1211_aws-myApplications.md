@@ -19,8 +19,7 @@ image: true
 
 今回、コストの見直しをしようと思いまずはコスト最適化のベストプラクティスを調べてみました。
 AWSから出されているホワイトペーパーのうち、AWSアーキテクチャ設計のベストプラクティスとしてAWS Well-Architectedフレームワークというものが公開されています。
-このフレームワークは6つの柱によって支えられており、そのうちの一つに`コスト最適化の柱`があります。
-@[og](https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/cost-optimization-pillar/welcome.html?ref=wellarchitected-wp)
+このフレームワークは6つの柱によって支えられており、そのうちの一つに[コスト最適化の柱](https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/cost-optimization-pillar/welcome.html?ref=wellarchitected-wp)があります。
 
 コスト最適化の柱が示すベストプラクティスは5つあり、その中に`クラウド財務管理を実施する`というものがあります。
 クラウドとオンプレではそのコスト管理方法も異なってくるため、クラウドソリューションではそれに適した方法でコストの管理、最適化、計画を行います。
@@ -99,8 +98,7 @@ myApplicationsウィジェットでアプリケーションを作成した際に
 myApplicationsで作成されるアプリケーションは端的に言ってしまえばService Catalog App RegistryのApplicationになります。実際にService Catalog App RegistryではmyApplicationsで作成したアプリケーションが表示されており、この画面からでもアプリケーションの作成が行えます。
 Service Catalog App RegistryのApplicationはリソースをまとめるためにResource Groupsリソースを作成します。これにより、名前にそれぞれAppTags、ApplicationとつくResource Groupsが作成されますが、まとめられたリソースが紐づけられているのはAppTagsの方で、Applicationの方はAppTagsへの参照を持つだけです。
 `awsApplication`タグのvalueで指定されるARNのリソースはApplicationのResource Groupsリソースです。リソースをまとめているAppTagsのResource Groupsを直接紐づけて依存しないようにしています。
-上記の内容はこちらの記事で詳しく解説されています。興味があればご覧ください。
-@[og](https://qiita.com/hiramax/items/00dd304a311ba40acc63)
+上記の内容は[こちら](https://qiita.com/hiramax/items/00dd304a311ba40acc63)の記事で詳しく解説されています。興味があればご覧ください。
 
 ## おわりに
 

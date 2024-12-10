@@ -1,5 +1,5 @@
 ---
-title: 早く教えて欲しかったtype-challenges初級チートシート
+title: 事前に知っておきたいtype-challenges初級チートシート
 author: shohei-yamashita
 date: 2024-12-10
 tags: [typescript, type-challenges]
@@ -17,7 +17,7 @@ TypeScriptの型に関する理論や知識を知っていても、うまく使�
 ## 書くこと/書かないこと
 ### 書くこと
 - 型パズル（初級）を突破するための、やや応用的な知識
-	- Distributed Conditional Types
+	- Distributive Conditional Types
 	- Mapped Types
 	- infer
 - 型パズルの例題
@@ -25,15 +25,7 @@ TypeScriptの型に関する理論や知識を知っていても、うまく使�
 - TypeScriptの基本的な内容
 - 型パズルの問題と解答(ご自身の目で確認してください)
 ## TypeScriptの基本
-TypeScriptの基本については、この記事で網羅できません。弊社宇畑氏による過去の投稿記事も併せてご参照ください。
-[Javaエンジニアが始めるTypeScript入門（第1回：イントロダクション）](https://developer.mamezou-tech.com/typescript-intro/introduction-to-typescript-for-java-engineer_index/)
-[Javaエンジニアが始めるTypeScript入門（第2回：変数）](https://developer.mamezou-tech.com/typescript-intro/introduction-to-typescript-for-java-engineer_variable/)
-[Javaエンジニアが始めるTypeScript入門（第3回：プリミティブ型）](https://developer.mamezou-tech.com/typescript-intro/introduction-to-typescript-for-java-engineer_primitive-type/)
-[Javaエンジニアが始めるTypeScript入門（第4回：その他の基本型）](https://developer.mamezou-tech.com/typescript-intro/introduction-to-typescript-for-java-engineer_other-basic-type/)
-[Javaエンジニアが始めるTypeScript入門（第5回：集合を扱う型）](https://developer.mamezou-tech.com/typescript-intro/introduction-to-typescript-for-java-engineer_collection-type/)
-[Javaエンジニアが始めるTypeScript入門（第6回：特殊な型）](https://developer.mamezou-tech.com/typescript-intro/introduction-to-typescript-for-java-engineer_special-type/)
-[Javaエンジニアが始めるTypeScript入門（第7回：関数）](https://developer.mamezou-tech.com/typescript-intro/introduction-to-typescript-for-java-engineer_function/)
-[Javaエンジニアが始めるTypeScript入門（第8回：オブジェクト）](https://developer.mamezou-tech.com/typescript-intro/introduction-to-typescript-for-java-engineer_object/)
+TypeScriptの基本については、この記事で網羅できません。弊社宇畑氏による[javaエンジニアが始めるtypescript入門](https://developer.mamezou-tech.com/frontend/#javaエンジニアが始めるtypescript入門)も併せてご参照ください。
 
 ## 実行環境について
 ```typescript
@@ -60,31 +52,31 @@ function sum(...numbers: number[]) {
 ```
 なんと型でも使えます（はじめはここからつまずきました）。
 
-## Distributed Conditional Types
+## Distributive Conditional Types
 以下の例がわかる方は読み飛ばしてください。Test型はどんな型になるでしょうか？
 ```typescript
 type IsString<T> = T extends string ? true: false
 type Test = IsString<"success" | 200>
 ```
-Distributed Conditional Typesを直訳すると、分配された条件型という表現になります。
-TypeScriptのリファレンス（[Distributed Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)）においては以下のように説明されています。
+Distributive Conditional Typesを直訳すると、分配された条件型という表現になります。
+TypeScriptのリファレンス（[Distributive Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)）においては以下のように説明されています。
 > When conditional types act on a generic type, they become *distributive* when given a union type. For example, take the following:
-条件型に対してユニオン型を与えると、ユニオン型が分配されて、Distributed Conditional Typesとなるといった解釈ができます。
+条件型に対してユニオン型を与えると、ユニオン型が分配されて、Distributive Conditional Typesとなるといった解釈ができます。
 以下に具体例を提示します。
 ```typescript
 type MyCommon<U, T> = U extends T ? U : never;
 type Result2 = MyCommon<'a' | 'b' | 'c', 'a' | 'c' | 'd'> // 'a' | 'c'
 ```
 このMyCommonは2つのユニオンの共通部分をユニオンとして抽出する型定義です。
-この型がどのように機能しているのかを確認するため、実際の値を代入してみましょう。
+この型がどのように機能しているのかを確認するため、実際の値に置き換えてみましょう。
 ```typescript
 type MyCommon<U, T> = U extends T ? U : never;
 // = ('a' | 'b' | 'c') extends ('a' | 'c' | 'd') ? ('a' | 'b' | 'c') : never
 ```
-ここで、条件型に対してユニオン型が与えられていることからDistributed Conditional Typesとなります。
+ここで、条件型に対してユニオン型が与えられていることからDistributive Conditional Typesとなります。
 具体的には以下のような分配が行われ、最終的にはユニオン型として定義されます。
 ```typescript
-// type MyCommon<U, T> = U extends T ? U : never;
+type MyCommon<U, T> = U extends T ? U : never;
 // = ('a' | 'b' | 'c') extends ('a' | 'c' | 'd') ? ('a' | 'b' | 'c') : never
 // ↓
 // ='a' extends ('a' | 'c' | 'd') ? 'a' : never 　
@@ -129,7 +121,7 @@ TypeScriptのリファレンス（[Mapped Types](https://www.typescriptlang.org/
 一方、サバイバルTypeScrtipt（[Mapped Types](https://typetypescriptbook.jp/reference/type-reuse/mapped-types)）ではユニオンから生成できるという主旨の説明がされています。
 > Mapped Typesは主にユニオン型と組み合わせて使います。
 
-フォーマルとしては型から型というのが正しいのかもしれません[^1]。
+TypeScript本家の記述では「特定の型から別の型を作ること」を可能にするのがMapped Typesであるという書き方がされています[^1]。
 ただ、実例を見るとTypeから別のTypeを生成するにも、ユニオン型を経由して生成しているように見えます。
 本記事においては、説明の都合上、ユニオン型から別のタイプを生成するという方向性とさせてください。
 頭に入れるべき構文は次のとおりです。

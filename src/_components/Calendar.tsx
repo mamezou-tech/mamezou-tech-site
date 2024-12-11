@@ -1,15 +1,11 @@
 const Entry = (
-  { dayOfWeek, date, author, githubUser, title, url }: Lume.Data,
+  { dayOfWeek, date, author, nonContrib ,githubUser, title, url }: Lume.Data,
 ) => {
   const authorImageURL = githubUser
     ? `https://github.com/${githubUser}.png`
     : '/img/android-chrome-192x192.png'; // GitHub アカウントがない場合のデフォルト画像
-  // _ で始まる author はリンクを生成しない
-  const authorLink = author && !author.startsWith('_') ? `/authors/${author}` : null;
-  let authorName = author;
-  if (author && author.startsWith('_')) {
-    authorName = author.slice(1);
-  }
+  // contributors.json に未登録の author はリンクを生成しない
+  const authorLink = author && !nonContrib ? `/authors/${author}` : null;
   return (
     <div
       style={{
@@ -37,8 +33,8 @@ const Entry = (
               />
             </a>
           )}
-        {authorLink ? <a href={authorLink}>{authorName}</a> : null}
-        {!authorLink && authorName ? authorName : null}
+        {authorLink ? <a href={authorLink}>{author}</a> : null}
+        {!authorLink && author ? author : null}
       </p>
       <p style={{ textAlign: "left", fontSize: "14px" }}>
         {url ? <a href={url}>{title}</a> : title}
@@ -78,6 +74,7 @@ export default ({ year, weekend, events }: Lume.Data) => {
             dayOfWeek={entry.dayOfWeek}
             date={entry.date}
             author={entry.author}
+            nonContrib={entry.nonContrib}
             githubUser={entry.githubUser}
             title={entry.title}
             url={entry.url}

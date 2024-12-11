@@ -115,7 +115,8 @@
     },
     {
       "date": "23",
-      "author": "_naoko-nakayama",
+      "author": "naoko-nakayama",
+      "nonContrib": true,
       "title": "何か書きます"
     },
     {
@@ -126,7 +127,8 @@
     },
     {
       "date": "25",
-      "author": "_takashi-egawa",
+      "author": "takashi-egawa",
+      "nonContrib": true,
       "githubUser": "egglang",
       "title": "なんか書きます"
     }

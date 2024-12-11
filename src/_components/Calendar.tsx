@@ -3,8 +3,13 @@ const Entry = (
 ) => {
   const authorImageURL = githubUser
     ? `https://github.com/${githubUser}.png`
-    : null;
-  const authorLink = author ? `/authors/${author}` : null;
+    : '/img/android-chrome-192x192.png'; // GitHub アカウントがない場合のデフォルト画像
+  // _ で始まる author はリンクを生成しない
+  const authorLink = author && !author.startsWith('_') ? `/authors/${author}` : null;
+  let authorName = author;
+  if (author && author.startsWith('_')) {
+    authorName = author.slice(1);
+  }
   return (
     <div
       style={{
@@ -17,7 +22,7 @@ const Entry = (
       <p style={{ textAlign: "center" }}>{dayOfWeek}</p>
       <p style={{ textAlign: "center" }}>{date}</p>
       <p style={{ fontSize: "14px" }}>
-        {authorImageURL &&
+        {author &&
           (
             <a href={authorLink}>
               <img
@@ -32,7 +37,8 @@ const Entry = (
               />
             </a>
           )}
-        {author ? <a href={authorLink}>{author}</a> : author}
+        {authorLink ? <a href={authorLink}>{authorName}</a> : null}
+        {!authorLink && authorName ? authorName : null}
       </p>
       <p style={{ textAlign: "left", fontSize: "14px" }}>
         {url ? <a href={url}>{title}</a> : title}

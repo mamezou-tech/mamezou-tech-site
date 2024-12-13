@@ -20,6 +20,12 @@ enTitle: Robotics
 
 - [豆蔵オリジナルロボットBEANus](/robotics/beanus/beanus_introduction/)
 
+## 清掃ロボット
+
+弊社オリジナルの清掃ロボット開発に関する記事をまとめてゆきます。
+
+- [ロボットの落下から立ち直る—設計改善の記録](/robotics/clean-robot/falling-down/)
+
 ## ロボット工学
 
 主に工場や店舗で使われるロボットマニピュレータ制御の基礎技術をまとめてます。

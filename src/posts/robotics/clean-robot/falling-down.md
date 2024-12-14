@@ -2,7 +2,7 @@
 title: ロボットの落下から立ち直る—設計改善の記録
 author: masayuki-kono
 tags: [ロボット開発, 太陽光発電, 清掃ロボット]
-date: 2025-xx-xx
+date: 2025-12-15
 image: true
 ---
 

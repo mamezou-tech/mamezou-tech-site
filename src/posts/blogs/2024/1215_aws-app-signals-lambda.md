@@ -16,7 +16,7 @@ CloudWatch Application Signalsは2023年にプレビューとして登場し、�
 Application Signalsは、OpenTelemetryを使って収集したメトリクスをダッシュボードやサービスマップとして可視化してくれます。
 また、SLO(Service Level Objective)をベースとして、目標達成をサポートするプロセスはビジネス視点でとても合理的です。
 
-今回は、今後はAWSの標準APMツールとして定着していくことになりそうなこの機能をLambdaで試してみます。
+今回は、AWSの標準APMツールとして定着していくことになりそうなこの機能をLambdaで試してみます。
 
 ## Application Signals有効化
 
@@ -197,6 +197,9 @@ Synthetics CanariesとClient Pagesは今回利用していませんので何も�
 ## SLOを定義する
 
 Application Signalsによるオートディスカバリや標準化ダッシュボードを見てきましたが、さらにSLOを定義してビジネス目線でのモニタリングをやってみます。
+少し長いですが、以下ドキュメントで記述されています。
+
+- [AWS CloudWatch Doc - Service level objectives (SLOs)](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-ServiceLevelObjectives.html)
 
 ここでも、AWS CDKを使ってSLOを作成します。
 Application Signalsは現状L1コンストラクトしかありませんので、CloudFormationで記述するのと同等です。
@@ -234,7 +237,7 @@ if (this.node.tryGetContext('createSLO') === 'true') {
 }
 ```
 
-ここでは以下をSLOとしました。
+ここでのSLO定義は以下です。
 
 **SLI(Service Level Indicator)**
 SLOの指標とするメトリクスです。
@@ -280,7 +283,7 @@ $$
 例えば、上記可用性SLOのバーンレートを考えてみます。
 バーンレートの5分間のLook-back window内で1000リクエストがあり200リクエストでエラーが発生した場合は以下のように計算できます。
 
-- 許容エラー率(エラーバジェット): 100% - 95% = 5%
+- エラーバジェット: 100% - 95% = 5%
 - 実際のエラー率: 200 / 1000 * 100 = 20%
 - バーンレート: 20% / 5% = 4
 

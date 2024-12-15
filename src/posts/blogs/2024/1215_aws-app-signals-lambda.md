@@ -16,7 +16,7 @@ CloudWatch Application Signalsは2023年にプレビューとして登場し、�
 Application Signals は、OpenTelemetryを利用して収集したメトリクスを ダッシュボードやサービスマップ として直感的に可視化します。
 さらに、SLO(Service Level Objective)に基づき、システムの目標達成度を測定・管理することで、ビジネス視点での合理的な運用改善をサポートします。
 
-今回は、AWSの標準APMツールとして注目されるこの機能を、Lambdaサービスを対象に試してみます。
+今回は、AWSの標準APMツールとして注目されるこの機能を、Lambda関数を対象に試してみます。
 
 ## Application Signals有効化
 
@@ -27,9 +27,9 @@ Application SignalsがサービスディスカバリやSLOを計測するため�
 
 Step 2 は各サービスで有効にするので対応不要です。
 
-## モニタリング対象のLambdaを実装する
+## モニタリング対象のLambda関数を実装する
 
-まずは、モニタリング対象のLambdaを作成します。
+まずは、モニタリング対象のLambda関数を作成します。
 ここでは以下のLambdaイベントハンドラを作成しました。
 
 ```typescript
@@ -65,9 +65,9 @@ module.exports = { handler }
 
 S3バケットへPUTした後に、5%の確率でエラーを発生させています。
 
-## Application Signals有効化してLambdaをデプロイする
+## Application Signalsを有効化してLambda関数をデプロイする
 
-作成したLambdaをデプロイします。
+作成したLambda関数をデプロイします。
 ここではAWS CDKを使います。
 
 ```typescript
@@ -148,7 +148,7 @@ LambdaでApplication Signalsを利用するポイントは以下です。
 AWSのADOT Lambdaレイヤーは[公式ドキュメント](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Signals-Enable-Lambda.html#Enable-Lambda-Layers)に記載されているものを使います。
 
 :::info
-必須ではありませんが、公式ドキュメントによるとこれに加えてX-RayのActive Tracingを有効にすることも推奨されています。
+必須ではありませんが、公式ドキュメントではこれに加えてX-RayのActive Tracingを有効にすることも推奨されています。
 :::
 
 これをデプロイします。
@@ -255,7 +255,7 @@ SLOの指標とするメトリクスです。
 採用する指標は可用性(`AVAILABILITY`)とレイテンシ(`LATENCY`)がデフォルトで選択できます。今回は`AVAILABILITY`を指定しました。
 これ以外にも監視対象サービスの任意CloudWatchメトリクスも指定可能です。
 
-また指標の算出方法として、一定期間毎に評価する方式と成功リクエスト数で算出する方式の2種類が選択できます。
+また指標の算出方法として、一定期間毎に評価する方式とリクエスト数で算出する方式の2種類が選択できます。
 ここでは計算が単純なリクエストベースを採用しました。
 
 **SLO目標(`goal`)**
@@ -331,13 +331,13 @@ SLOを定義するだけで、いい感じのダッシュボードを作成し�
 SLOは定義して現在の状態を可視化しましたが、通知メカニズムを構築しなければ意味がありません。
 Application Signals自体はSLOに関連するメトリクスをCloudWatchに登録するまでで、これを監視してアラームを発報するのはCloudWatchアラームの役割です。
 
-今回は以下の3つのタイミングでアラートを作成します。
+今回は以下の3つのアラートを作成します。
 
-1. エラーバジェットが残30%の警告
+1. エラーバジェットが残30%
 2. エラーバジェットが枯渇(=SLO未達成)
-3. 一定期間で10%以上のエラーバジェットを消費
+3. 短期・長期のバーンレート
 
-### 1. エラーバジェットが残30%の警告 
+### 1. エラーバジェットが残30% 
 
 ```typescript
 const warningAlarm = new cloudwatch.Alarm(this, 'AvailabilityWarningAlarm', {
@@ -356,7 +356,7 @@ const warningAlarm = new cloudwatch.Alarm(this, 'AvailabilityWarningAlarm', {
          SloName: availabilitySLO.name
       },
       unit: cloudwatch.Unit.PERCENT,
-      period: cdk.Duration.minutes(2)
+      period: cdk.Duration.minutes(1)
    })
 });
 warningAlarm.addAlarmAction(new actions.SnsAction(/* alarm action */));
@@ -365,9 +365,9 @@ warningAlarm.addAlarmAction(new actions.SnsAction(/* alarm action */));
 Application Signalsは`AWS/ApplicationSignals`ネームスペースに送信されてます。
 その中でメトリクス名`AttainmentRate`には、現在のSLO達成率が送信されています。
 これを監視すれば良さそうです。
-ここではエラーバジェット5%の70%で3.5%、つまり96.5%を切った時点で通知すればいいことになります。
+ここでは、5%のエラーバジェットのうち 70%（3.5%）を消費した時点、つまり 達成率が96.5%を下回った場合に通知するよう設定しています。
 
-### 2. エラーバジェットが枯渇(=SLO未達成)
+### 2. エラーバジェット枯渇(=SLO未達成)
 
 ```typescript
 const attainmentAlarm = new cloudwatch.Alarm(this, 'AvailabilityAttainmentGoalAlarm', {
@@ -386,7 +386,7 @@ const attainmentAlarm = new cloudwatch.Alarm(this, 'AvailabilityAttainmentGoalAl
          SloName: availabilitySLO.name
       },
       unit: cloudwatch.Unit.PERCENT,
-      period: cdk.Duration.minutes(2)
+      period: cdk.Duration.minutes(1)
    })
 });
 attainmentAlarm.addAlarmAction(new actions.SnsAction(/* alarm action */));
@@ -394,9 +394,9 @@ attainmentAlarm.addAlarmAction(new actions.SnsAction(/* alarm action */));
 
 使用するメトリクスは警告通知と同じですが、閾値はSLOの目標値(95%)と同じになります。
 
-### 3. 一定期間で10%以上のエラーバジェットを消費
+### 3. 短期・長期バーンレート
 
-もちろん単一バーンレートに対するアラームでも良いのですが、ここでは短期・短期のバーンレートを組み合わせて使うことでアラートの精度を向上させます。
+1つのLook-back windowのバーンレートに対するアラームのみでも良いのですが、ここでは短期・長期のバーンレートを組み合わせて使うことでアラートの精度を向上させます。
 
 - 短期バーンレート(5分)：エラーが現在進行中であることを素早く検知・確認する。エラーが止まるとすぐに閾値を下回るため、アラートが速やかに解除される。
 - 長期バーンレート(1時間)：持続的なエラーの傾向を確認する。スパイク的なエラー等、短期バーンレートの誤検知をフィルタリングする。
@@ -421,7 +421,7 @@ const burnRateAlarm_5min = new cloudwatch.Alarm(this, 'AvailabilityBurnRateAlarm
          SloName: availabilitySLO.name,
          BurnRateWindowMinutes: '5'
       },
-      period: cdk.Duration.minutes(2)
+      period: cdk.Duration.minutes(1)
    })
 });
 
@@ -441,7 +441,7 @@ const burnRateAlarm_60min = new cloudwatch.Alarm(this, 'AvailabilityBurnRateAlar
          SloName: availabilitySLO.name,
          BurnRateWindowMinutes: '60'
       },
-      period: cdk.Duration.minutes(2)
+      period: cdk.Duration.minutes(1)
    })
 });
 
@@ -461,10 +461,10 @@ compositeAlarm.addAlarmAction(new actions.SnsAction(/* alarm action */));
 アラームの閾値は、以下の式で計算します。
 
 $$
-\text{閾値} = \frac{\text{エラーバジェット消費率(\%)} \times \text{SLO期間(分)}}{\text{Look-back window(分)}}
+\text{バーンレート閾値} = \frac{\text{エラーバジェット消費率(\%)} \times \text{SLO期間(分)}}{\text{Look-back window(分)}}
 $$
 
-ここでは、60分間でエラーバジェットの10%を消費した時点で通知をしたいので、`0.1*(24*60)/60`で2.4が閾値になります。
+ここでは、60分間(Look-back window)でエラーバジェットの10%消費を閾値としました。つまり`0.1*(24*60)/60`となり、2.4が閾値になります。
 これで短期(5分)、長期(60分)の各バーンレートのアラームを作成し、さらに両アラームのAND条件としてCompositeAlarmを作成すれば完成です。
 
 ## まとめ

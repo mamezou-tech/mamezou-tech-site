@@ -393,7 +393,10 @@ attainmentAlarm.addAlarmAction(new actions.SnsAction(topic));
 
 ### 3. 一定期間で10%以上のエラーバジェットを消費
 
-もちろん単一バーンレートに対するアラームでも良いのですが、ここでは長期・短期のバーンレートを組み合わせて使うことで、短期バーンレートで発生しがちな誤検知を抑えてアラートの精度を向上させます。
+もちろん単一バーンレートに対するアラームでも良いのですが、ここでは短期・短期のバーンレートを組み合わせて使うことでアラートの精度を向上させます。
+
+- 短期バーンレート(5分)：エラーが現在進行中であることを素早く検知・確認する。エラーが止まるとすぐに閾値を下回るため、アラートが速やかに解除される。
+- 長期バーンレート(1時間)：持続的なエラーの傾向を確認する。短期の誤検知をフィルタリングする役割。
 
 CloudWatchの[Composite Alarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Composite_Alarm_How_To.html)を使います。
 
@@ -448,16 +451,18 @@ const compositeAlarm = new cloudwatch.CompositeAlarm(this, 'AvailabilityBurnRate
 compositeAlarm.addAlarmAction(new actions.SnsAction(topic));
 ```
 
-バーンレートのメトリクスは`BurnRate`に送信されますので、これをチェックします。
-SLO名+バーンレート期間(`BurnRateWindowMinutes`)のディメンションでバーンレートが登録されています
+先ほどはSLO達成率を監視対象にしましたが、バーンレートは`BurnRate`メトリクス[^2]に送信されますので、これをチェックします。
 
-ここでのアラーム閾値の計算式は以下です。
+[^2]: SLO名+Look-back window(`BurnRateWindowMinutes`)のディメンションから確認可能です。
+
+アラーム閾値は以下で計算しました。
 
 $$
-\text{アラーム閾値} = \text{エラーバジェット消費率 (\%)} \times \frac{\text{SLO期間 (分)}}{\text{長期バーンレート Look-back window (分)}}
+\text{エラーバジェット消費率(\%)} \times \frac{\text{SLO期間(分)}}{\text{Look-back window(分)}}
 $$
 
-ここでは10%のエラーバジェットを消費した時点で通知をしたいので、`0.1*(24*60)/60`でバーンレート2.4が閾値になります。
+ここでは、60分間でエラーバジェットの10%を消費した時点で通知をしたいので、`0.1*(24*60)/60`で2.4が閾値になります。
+これで短期、長期の各バーンレートのアラームを作成し、さらに両アラームのAND条件としてCompositeAlarmを作成すれば完成です。
 
 ## まとめ
 

@@ -3,13 +3,13 @@ title: GitHub Copilotの使い方と導入前に知っておきたいこと
 author: kenta-ishihara
 date: 2024-12-17
 tags: [GitHub Copilot, advent2024]
-image: true　
+image: true
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2024](/events/advent-calendar/2024/)第17日目の記事です。
 
 ## はじめに
-前を向きたいときに[バーガーキングのビッグベット](https://app.burgerking.co.jp/bkad/bigbet/index.html)を食べる石原です。
+前を向きたいときに[バーガーキングのビッグベッド](https://app.burgerking.co.jp/bkad/bigbet/index.html)を食べる石原です。
 最近現場の方で[GitHub Copilot](https://docs.github.com/ja/copilot)(以後Copilotと略称)を使えるようになったので、使い方と導入前に知っておきたいことをまとめてみました。
 Copilotの導入を検討している方や、現在利用している方の一助になれば幸いです。
 (本記事はWindows + IntelliJ環境での記事になります。予めご了承ください)
@@ -81,5 +81,5 @@ Copilotの導入を検討している方や、現在利用している方の一�
     - 過信するのも良くないですが、使える環境であれば新人ほどCopilotを上手く利用しながら作業した方が効率良く作業出来るかも。
 
 ## 終わりに
-ChatGPTやCopilotをコーディング中の調べもので使うのが割と当たり前になりつつあるなか、「ググる」とか「ggrks」とかはもう死語になりつつあるのかなとふと思いました。
-(怖くて聞けない)AIにしてもGoogle先生にしても、利用者自身が考え、書いたコードに責任をもつことについてはいつの時代も変わらないのかもしれないですね。
+ChatGPTやCopilotをコーディング中の調べもので使うのが割と当たり前になりつつあるなか、「ググる」とか「ggrks」とかはもう死語になりつつあるのかなとふと思いました。 (怖くて聞けない)
+AIにしてもGoogle先生にしても、利用者自身が考え、書いたコードに責任をもつことについてはいつの時代も変わらないのかもしれないですね。

@@ -10,17 +10,17 @@ image: true
 
 @[og](https://aws.amazon.com/jp/blogs/aws/track-performance-of-serverless-applications-built-using-aws-lambda-with-application-signals/)
 
-CloudWatch Application Signalsは2023年にプレビューとして登場し、今年GAになった新しいAPM(Application Performance Monitoring)機能です。
+CloudWatch Application Signalsは2023年にプレビューとして登場し、今年GAになったばかりの新しいAPM(Application Performance Monitoring)機能です。
 今まではEKS、ECS、EC2のみのサポートでしたが、ついにLambdaにも対応しました。
 
-Application Signalsは、OpenTelemetryを使って収集したメトリクスをダッシュボードやサービスマップとして可視化してくれます。
-また、SLO(Service Level Objective)をベースとして、目標達成をサポートするプロセスはビジネス視点でとても合理的です。
+Application Signals は、OpenTelemetryを利用して収集したメトリクスを ダッシュボードやサービスマップ として直感的に可視化します。
+さらに、SLO(Service Level Objective)に基づき、システムの目標達成度を測定・管理することで、ビジネス視点での合理的な運用改善をサポートします。
 
-今回は、AWSの標準APMツールとして定着していくことになりそうなこの機能をLambdaで試してみます。
+今回は、AWSの標準APMツールとして注目されるこの機能を、Lambdaサービスを対象に試してみます。
 
 ## Application Signals有効化
 
-Application SignalsがサービスディスカバリやSLOを計測するためには、ログやメトリクスに対するアクセス許可が別途必要です。
+Application SignalsがサービスディスカバリやSLOを計測するためには、ログやメトリクスに対するアクセス許可が初回のみ必要です。
 ここではマネジメントコンソールから有効にしました。
 
 ![](https://i.gyazo.com/fecf90245236a16c771593d54f7a7c8c.png)
@@ -30,7 +30,7 @@ Step 2 は各サービスで有効にするので対応不要です。
 ## モニタリング対象のLambdaを実装する
 
 まずは、モニタリング対象のLambdaを作成します。
-今回は以下のLambdaを作成しました。
+ここでは以下のLambdaイベントハンドラを作成しました。
 
 ```typescript
 import type { APIGatewayProxyHandler } from 'aws-lambda';
@@ -63,7 +63,7 @@ const handler: APIGatewayProxyHandler = async () => {
 module.exports = { handler }
 ```
 
-ここではS3バケットへPUTした後に、5%の確率でエラーを発生させています。
+S3バケットへPUTした後に、5%の確率でエラーを発生させています。
 
 ## Application Signals有効化してLambdaをデプロイする
 
@@ -102,7 +102,7 @@ export class LambdaAppSignalStack extends cdk.Stack {
       }
     });
 
-    // 以下よりAWS管理のLambda LayerのARN取得
+    // 以下よりADOT Lambda LayerのARN取得
     // https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Signals-Enable-Lambda.html#Enable-Lambda-Layers
     const awsOtelDistro = lambda.LayerVersion.fromLayerVersionArn(this, 'AWSOtelExtension',
       'arn:aws:lambda:ap-northeast-1:615299751070:layer:AWSOpenTelemetryDistroJs:5');
@@ -111,13 +111,16 @@ export class LambdaAppSignalStack extends cdk.Stack {
       functionName: 'flaky-api-for-app-signals',
       entry: './lambda/index.ts',
       handler: 'handler',
-      tracing: lambda.Tracing.ACTIVE, // X-RayのActive Tracing有効化(任意)
-      layers: [awsOtelDistro], // 2. ADOTレイヤー
+      // X-RayのActive Tracing有効化(任意)
+      tracing: lambda.Tracing.ACTIVE,
+      // 2. ADOTレイヤー
+      layers: [awsOtelDistro],
       runtime: lambda.Runtime.NODEJS_22_X,
       timeout: cdk.Duration.seconds(10),
       environment: {
         BUCKET_NAME: bucket.bucketName,
-        AWS_LAMBDA_EXEC_WRAPPER: '/opt/otel-instrument' // 3. Application Signals有効化
+        // 3. Application Signals有効化
+        AWS_LAMBDA_EXEC_WRAPPER: '/opt/otel-instrument'
       }
     });
     const url = new lambda.FunctionUrl(this, 'SampleFunctionUrl', {
@@ -135,17 +138,20 @@ export class LambdaAppSignalStack extends cdk.Stack {
 }
 ```
 
-AWS LambdaでApplication Signalsを利用する手順は以下の通りです。
+LambdaでApplication Signalsを利用するポイントは以下です。
 
-1. AWSマネージドポリシーをLambdaの実行ロールに指定
+1. 以下AWSマネージドポリシーをLambdaの実行ロールに指定
     - `CloudWatchLambdaApplicationSignalsExecutionRolePolicy`
 2. AWSが提供するADOT(AWS Distro for OpenTelemetry)をLambdaレイヤーとして追加
 3. 環境変数`AWS_LAMBDA_EXEC_WRAPPER`に`/opt/otel-instrument`を指定
 
 AWSのADOT Lambdaレイヤーは[公式ドキュメント](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Signals-Enable-Lambda.html#Enable-Lambda-Layers)に記載されているものを使います。
-また、公式ドキュメントによるとこれに加えてX-RayのActive Tracingを有効にすることも推奨されています。
 
-これをCDKのCLIからデプロイします。
+:::info
+必須ではありませんが、公式ドキュメントによるとこれに加えてX-RayのActive Tracingを有効にすることも推奨されています。
+:::
+
+これをデプロイします。
 
 ```shell
 cdk deploy
@@ -157,7 +163,7 @@ cdk deploy
 
 Application SignalsとX-Rayのトレーシングが有効になっています。
 
-Lambda Function URLを有効にしていますので、curl等でアクセスできます。
+Lambda Function URLを有効にしていますので、curl等のツールからアクセスできます。
 
 ```shell
 curl https://xxxxxxxxxxxxxxxxxx.lambda-url.ap-northeast-1.on.aws/
@@ -166,8 +172,8 @@ curl https://xxxxxxxxxxxxxxxxxx.lambda-url.ap-northeast-1.on.aws/
 
 ## Application Signalsのサービス、サービスマップを確認する
 
-モニタリング対象サービスでトラフィックが発生すると、Application Signalsはサービスの追加を検知し、Application Signalsから確認できるようになります。
-このプロセスには一定時間(5分程度？)かかります。
+対象サービスでトラフィックが発生すると、Application Signalsはサービスの追加を検知し、Application Signalsから確認できるようになります(自動検知)。
+このプロセスには一定時間(5分程度)かかります。
 
 ![app signals - service discovery](https://i.gyazo.com/1f1355841ff9636187af93ca83e1267e.png)
 
@@ -184,19 +190,20 @@ curl https://xxxxxxxxxxxxxxxxxx.lambda-url.ap-northeast-1.on.aws/
 
 Synthetics CanariesとClient Pagesは今回利用していませんので何も表示されません。
 
-サンプル数が少なく見栄えが良くないですが、Lambdaのメトリクスや依存関係(S3)が可視化されています。
-必要に応じてX-Rayで分析するとボトルネックも見えやすくなるかと思います。
+サンプル数が少なく、あまり見栄えが良くないですが、Lambdaのメトリクスや依存関係(S3)が可視化されています。
+必要に応じてX-Rayで分析すると、ボトルネックも見えやすくなるかと思います。
 
 次にApplication Signalsのサービスマップを確認します。
 
 ![app signals - service map](https://i.gyazo.com/75ceee8e8642ee7f3d9c89b60c571b1d.png)
 
 今回作成したLambda -> S3バケットの関係が可視化されています(X-Rayのトレースマップと似ているような)。
-各ノードやエッジをクリックすると該当部分のメトリクスを確認できます。
+各ノードやエッジをクリックすると、該当部分のメトリクスを確認できます。
 
 ## SLOを定義する
 
-Application Signalsによるオートディスカバリや標準化ダッシュボードを見てきましたが、さらにSLOを定義してビジネス目線でのモニタリングをやってみます。
+Application Signalsによる自動検知やダッシュボードを見てきましたが、さらにSLOを定義してビジネス目線でのモニタリングをやってみます。
+
 少し長いですが、以下ドキュメントで記述されています。
 
 - [AWS CloudWatch Doc - Service level objectives (SLOs)](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-ServiceLevelObjectives.html)
@@ -232,7 +239,10 @@ if (this.node.tryGetContext('createSLO') === 'true') {
         }
      },
      // バーンレート(5分、60分の時間枠)
-     burnRateConfigurations: [{ lookBackWindowMinutes: 5 }, { lookBackWindowMinutes: 60 }]
+     burnRateConfigurations: [
+        { lookBackWindowMinutes: 5 },
+        { lookBackWindowMinutes: 60 }
+     ]
    });
 }
 ```
@@ -243,23 +253,25 @@ if (this.node.tryGetContext('createSLO') === 'true') {
 SLOの指標とするメトリクスです。
 
 採用する指標は可用性(`AVAILABILITY`)とレイテンシ(`LATENCY`)がデフォルトで選択できます。今回は`AVAILABILITY`を指定しました。
-これ以外にもモニタリング対象サービスの任意CloudWatchメトリクスも指定可能です。
+これ以外にも監視対象サービスの任意CloudWatchメトリクスも指定可能です。
 
-また指標の算出方法として、一定間隔毎に評価する方式(`sli`)と成功リクエスト数で算出する方式(`requestBasedSli`)の2種類が選択できます。
+また指標の算出方法として、一定期間毎に評価する方式と成功リクエスト数で算出する方式の2種類が選択できます。
 ここでは計算が単純なリクエストベースを採用しました。
 
 **SLO目標(`goal`)**
-先ほど作成したLambdaは5%の確率で失敗するようにしました。
-これに合わせて、SLOの目標値(`attainmentGoal`)をギリギリ超えるか超えないかという95%にしました。
+先ほど作成したLambda関数は、5%の確率で失敗する設定にしました。
+これに合わせて、SLOの目標値(`attainmentGoal`)は「95%」に設定し、目標達成がギリギリ超えるかどうかという状況を意図的に作り出しています。
 
-監視期間は直近24時間をローリングインターバル(`rollingInterval`)として、現在時刻からスライドしていくことで最新のメトリクスを見るようにしています。
-他にもカレンダーインターバル(日/週/月等)の`calendarInterval`も指定可能です。
-常に最新情報を見るローリングインターバルは短期的な異常を素早く検知できますが、ビジネス目線のカレンダーインターバルの方がステークホルダーへの説明がしやすいかと思います。
+監視期間は1日間のローリングインターバル(`rollingInterval`)を使用し、現在時刻から直近のメトリクスをスライドしながら常に監視する設定です。
+ローリングインターバルは短期的な異常を素早く検知できるのが利点です。
+
+一方で、カレンダーインターバル(`calendarInterval`)を使用すれば、固定された期間で監視できます。
+カレンダーインターバルは、ビジネス視点での可視化やステークホルダーへの説明がしやすいため、状況に応じて使い分けるのが効果的です。
 
 **バーンレート(`burnRateConfigurations`)**
-説明がちょっと難しいのがバーンレート(BurnRate)です[^1]。
-バーンレートは指定された期間内でエラーバジェット(許容されるエラー)がどの程度の速さで消費されているかを表す指標です(コラム参照)。
-バーンレート出典元のGoogleの[Site Reliability Workbook](https://sre.google/workbook/alerting-on-slos/)では、長期と短期の振り返り期間のバーンレートを組み合わせることで信頼性のあるアラートが実現できると言及されています。
+少し難解に感じるかもしれませんが、バーンレート(Burn Rate)[^1]は指定された期間内 にエラーバジェット（許容されるエラー）がどの程度の速さで消費されているかを示す指標です(詳細は後述のコラムを参照)。
+
+バーンレートの概念は、Googleの[Site Reliability Workbook](https://sre.google/workbook/alerting-on-slos/)で提唱されており、長期と短期の振り返り期間（Look-back window）を組み合わせることで、信頼性の高いアラートを実現できると述べられています。
 
 これに倣い、ここでは5分と60分の振り返り期間(Look-back window)を設定しました。
 
@@ -267,39 +279,40 @@ SLOの指標とするメトリクスです。
 
 :::column:バーンレートの計算式
 
-計算式はシンプルです。期間内に発生したエラー率(%)からエラーバジェット(%)を割った値になります。
+計算式はシンプルです。期間内に発生したエラー率(%)をエラーバジェット(%)で割った値として定義されます。
 
 $$
 \text{バーンレート} = \frac{\text{実際のエラー率}}{\text{エラーバジェット}}
 $$
 
-エラーバージェットは1からSLO目標値を差し引いた値です(99%であれば1%)。その名の通り、SLO期間内に予定しているエラー発生の予算です。
-その値の大きさによって以下の状況になります。
+エラーバージェットは1からSLO目標値を差し引いた値です(99%であれば1%)。その名の通り、SLO期間内で許容されるエラーの予算を示します。
 
-- 1の場合: エラーバジェットをちょうど使い切るペース
-- 1以上の場合: SLO監視期間到来前にエラーバジェットが枯渇するペース(対処が必要)
-- 1以下の場合: エラーバジェットに収まっている(理想的だがリスクを取ってないとも見做される)
+バーンレートはその値の大きさによって以下のように解釈されます。
+
+- 1の場合: エラーバジェットをちょうど使い切るペース。
+- 1以上の場合: エラーバジェットが枯渇するペース。SLO期間の終了前に予算が使い切られるため対処が必要。
+- 1以下の場合: エラーバジェットの範囲内に収まっている状態。理想的だがリスクを取ってないと見做される可能性もある。
 
 例えば、上記可用性SLOのバーンレートを考えてみます。
-バーンレートの5分間のLook-back window内で1000リクエストがあり200リクエストでエラーが発生した場合は以下のように計算できます。
+Look-back window内で1000リクエストがあり200リクエストでエラーが発生した場合は以下のように計算できます。
 
 - エラーバジェット: 100% - 95% = 5%
 - 実際のエラー率: 200 / 1000 * 100 = 20%
 - バーンレート: 20% / 5% = 4
 
 となり予定の4倍の速度でエラーバジェットを消費していることになります。
-この状態が続けばSLO監視期間の1/4でエラーバジェットは枯渇してしまうため、即時の対応が必要になります。
+この状態が続けばSLO監視期間(1日)の1/4(6時間)でエラーバジェットが枯渇してしまうため、即時の対応が必要になります。
 :::
 
-SLOをデプロイします。今回はパラメータとして`createSLO`を`true`にして実行します。
+ではSLOをデプロイします。今回はパラメータとして`createSLO`を`true`にして実行します。
 
 ```shell
 cdk deploy --context createSLO=true
 ```
 
 :::alert
-SLOは対象サービスがApplication Signalsがサービスを検知してからでないと作成できません。
-つまり、Lambda作成と同タイミングでSLOも作成しようとすると、サービスが見つからずにエラーになります。
+SLOはApplication Signalsがサービスを検知してからでないと作成できません。
+つまり、Lambda作成と同タイミングでSLOも作成しようとすると、対象サービスが見つからずデプロイエラーになります。
 
 これを回避するために、ここで対応しているようにフラグ(createSLO)で切り替えたり、スタック自体を分離する等、実行タイミングを調整する工夫が必要です。
 :::
@@ -311,7 +324,7 @@ SLOは対象サービスがApplication Signalsがサービスを検知してか�
 SLOを定義するだけで、いい感じのダッシュボードを作成してくれます。
 今回は94.5%とSLOに指定した95%の可用性は達成できていない状態になっています(2リクエスト分のエラーバジェットを超過)。
 
-また、中程のバーンレートのグラフ見ると短期の振り返り期間(5分)がリクエストの失敗に敏感に反応している一方で長期化の振り返り期間(60分)は平準化されている様子も確認できます。
+また、中程のバーンレートのグラフ見ると短期のLook-back window(5分)がリクエストの失敗に敏感に反応している一方で、長期のLook-back window(60分)は平準化されている様子も確認できます。
 
 ## SLOベースでCloudWatchアラームを作成する
 
@@ -323,19 +336,6 @@ Application Signals自体はSLOに関連するメトリクスをCloudWatchに登
 1. エラーバジェットが残30%の警告
 2. エラーバジェットが枯渇(=SLO未達成)
 3. 一定期間で10%以上のエラーバジェットを消費
-
-通知方法はSNSを利用したメール通知とします。
-以下でSNSトピックとメールサブスクリプションを事前に用意します。
-
-```typescript
-const mail = this.node.getContext('mail'); // デプロイ時にアドレス指定
-const topic = new sns.Topic(this, 'SampleTopic', {
-   topicName: 'flaky-api-for-app-signals-topic'
-});
-topic.addSubscription(new subscriptions.EmailSubscription(mail));
-```
-
-以降はこのSNSトピックをアラームアクションとして追加しています。
 
 ### 1. エラーバジェットが残30%の警告 
 
@@ -356,10 +356,10 @@ const warningAlarm = new cloudwatch.Alarm(this, 'AvailabilityWarningAlarm', {
          SloName: availabilitySLO.name
       },
       unit: cloudwatch.Unit.PERCENT,
-      period: cdk.Duration.minutes(5)
+      period: cdk.Duration.minutes(2)
    })
 });
-warningAlarm.addAlarmAction(new actions.SnsAction(topic));
+warningAlarm.addAlarmAction(new actions.SnsAction(/* alarm action */));
 ```
 
 Application Signalsは`AWS/ApplicationSignals`ネームスペースに送信されてます。
@@ -386,10 +386,10 @@ const attainmentAlarm = new cloudwatch.Alarm(this, 'AvailabilityAttainmentGoalAl
          SloName: availabilitySLO.name
       },
       unit: cloudwatch.Unit.PERCENT,
-      period: cdk.Duration.minutes(5)
+      period: cdk.Duration.minutes(2)
    })
 });
-attainmentAlarm.addAlarmAction(new actions.SnsAction(topic));
+attainmentAlarm.addAlarmAction(new actions.SnsAction(/* alarm action */));
 ```
 
 使用するメトリクスは警告通知と同じですが、閾値はSLOの目標値(95%)と同じになります。
@@ -399,9 +399,9 @@ attainmentAlarm.addAlarmAction(new actions.SnsAction(topic));
 もちろん単一バーンレートに対するアラームでも良いのですが、ここでは短期・短期のバーンレートを組み合わせて使うことでアラートの精度を向上させます。
 
 - 短期バーンレート(5分)：エラーが現在進行中であることを素早く検知・確認する。エラーが止まるとすぐに閾値を下回るため、アラートが速やかに解除される。
-- 長期バーンレート(1時間)：持続的なエラーの傾向を確認する。短期の誤検知をフィルタリングする役割。
+- 長期バーンレート(1時間)：持続的なエラーの傾向を確認する。スパイク的なエラー等、短期バーンレートの誤検知をフィルタリングする。
 
-CloudWatchの[Composite Alarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Composite_Alarm_How_To.html)を使います。
+このようなケースでは、[Composite Alarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Composite_Alarm_How_To.html)を使って複数アラームをまとめます。
 
 ```typescript
 const burnRateAlarm_5min = new cloudwatch.Alarm(this, 'AvailabilityBurnRateAlarm_5min', {
@@ -451,27 +451,28 @@ const compositeAlarm = new cloudwatch.CompositeAlarm(this, 'AvailabilityBurnRate
    alarmDescription: '短期、長期の複合バーンレートアラーム',
    alarmRule: cloudwatch.AlarmRule.allOf(burnRateAlarm_5min, burnRateAlarm_60min)
 })
-compositeAlarm.addAlarmAction(new actions.SnsAction(topic));
+compositeAlarm.addAlarmAction(new actions.SnsAction(/* alarm action */));
 ```
 
-先ほどはSLO達成率を監視対象にしましたが、バーンレートは`BurnRate`メトリクス[^2]に送信されますので、これをチェックします。
+先ほどはSLO達成率を監視対象にしましたが、バーンレートは`BurnRate`メトリクス[^2]として送信されるため、これを監視対象にします。
 
 [^2]: SLO名+Look-back window(`BurnRateWindowMinutes`)のディメンションから確認可能です。
 
-アラーム閾値は以下で計算しました。
+アラームの閾値は、以下の式で計算します。
 
 $$
-\text{エラーバジェット消費率(\%)} \times \frac{\text{SLO期間(分)}}{\text{Look-back window(分)}}
+\text{閾値} = \frac{\text{エラーバジェット消費率(\%)} \times \text{SLO期間(分)}}{\text{Look-back window(分)}}
 $$
 
 ここでは、60分間でエラーバジェットの10%を消費した時点で通知をしたいので、`0.1*(24*60)/60`で2.4が閾値になります。
-これで短期、長期の各バーンレートのアラームを作成し、さらに両アラームのAND条件としてCompositeAlarmを作成すれば完成です。
+これで短期(5分)、長期(60分)の各バーンレートのアラームを作成し、さらに両アラームのAND条件としてCompositeAlarmを作成すれば完成です。
 
 ## まとめ
 
 今回はLambdaを対象にApplication Signalsを使ったモニタリングを試してみました。
-ADOTが提供する自動計装のおかげで、アプリケーション側のソースコードには手を入れる必要がありませんし、標準化されたダッシュボードも自動作成してくれますので職人技も不要です！
-今後のLambdaのモニタリングは、Application Signalsを使ったSLOベースのものに置き換えが進んでいくのかなと思います。
+ADOTが提供する自動計装のおかげで、アプリケーション側のソースコードに手を入れる必要がありませんし、標準化されたダッシュボードも自動で作成してくれますので職人技も不要です！
+今後のLambdaのモニタリングは、Application Signalsを使ったSLOベースのアプローチへと置き換わっていく流れが加速するのではないでしょうか。
 
-とはいえ、モニタリングで難しいのはアラート自体の定義です(いつも悩まされます)。
-この辺りはある程度の决めで進めていって、定期的(開始当初は短期的なサイクルで)に実績ベースで見直していくのが良さそうですね。
+とはいえ、モニタリングで最も難しいのは「メトリクスの選定」と「アラートの定義」 です。
+これは毎回悩まされるポイントですが、まずは 一定のルールを決めて進め、短期的なサイクルで定期的に実績を見直すのが良さそうです。
+運用を繰り返す中で調整を重ね、より精度の高い監視体制を構築していきたいですね。

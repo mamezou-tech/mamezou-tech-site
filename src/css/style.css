@@ -402,3 +402,7 @@ span.code-filename + pre {
     }
   }
 }
+
+.katex-block {
+  overflow-x: auto;
+}

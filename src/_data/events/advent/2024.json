@@ -96,7 +96,8 @@
       "date": "17",
       "author": "kenta-ishihara",
       "githubUser": "kenta-ishihara",
-      "title": "GitHub Copilotの使い方と導入前に知っておきたいこと"
+      "title": "GitHub Copilotの使い方と導入前に知っておきたいこと",
+      "url": "/blogs/2024/12/17/github_copilot/"
     },
     {
       "date": "18",
@@ -108,7 +109,7 @@
       "date": "19",
       "author": "takafumi-okubo",
       "githubUser": "TakOkubo",
-      "title": "何か書きます"
+      "title": "ローカルLLMを使ったボイドシミュレーション（llama.cpp、llama-cpp-python）"
     },
     {
       "date": "20",

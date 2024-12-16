@@ -20,6 +20,12 @@ enTitle: Robotics
 
 - [豆蔵オリジナルロボットBEANus](/robotics/beanus/beanus_introduction/)
 
+## 清掃ロボット
+
+弊社オリジナルの清掃ロボット開発に関する記事をまとめてゆきます。
+
+- [ロボットの落下から立ち直る—設計改善の記録](/robotics/clean-robot/falling-down/)
+
 ## ロボット工学
 
 主に工場や店舗で使われるロボットマニピュレータ制御の基礎技術をまとめてます。
@@ -47,7 +53,6 @@ enTitle: Robotics
 - [Open62541 を使用した OPC-UA クライアント開発](/robotics/opcua/opcua_open62541_client/)
 - [C++でProtocol Buffersを使ってみる](/blogs/2024/03/08/protocol-buffers-cpp/)
 
-
 ## ロボットビジョン
 
 ### 2D カメラ
@@ -61,12 +66,10 @@ enTitle: Robotics
 
 - [RealSense D435f で Disparity Shift を調整した話](/robotics/vision/realsense-d435f-disparity-shift/)
 
-
 ## GUI
 
 - [Blockly によるビジュアルプログラミングの紹介](/robotics/gui/visual-programing-with-blockly/)
 - [QtWidgets vs QtQuick](/robotics/gui/qtwidget-vs-qtquick/)
-
 
 ## ROS
 

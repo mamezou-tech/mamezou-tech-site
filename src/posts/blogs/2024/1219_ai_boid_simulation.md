@@ -3,7 +3,7 @@ title: ローカルLLMを使ったボイドシミュレーション（llama.cpp�
 author: takafumi-okubo
 date: 2024-12-19
 summerRelayUrl: https://developer.mamezou-tech.com/events/advent-calendar/2024/
-tags: [advent2024, Python, PyGame, ボイド, シミュレーション, 生成AI, LLM, AI]
+tags: [ボイド, LLM, 生成AI, AI, Python, PyGame, シミュレーション, advent2024]
 image: true
 ---
 

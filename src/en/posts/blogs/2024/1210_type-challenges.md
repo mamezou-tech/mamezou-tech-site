@@ -124,7 +124,7 @@ In other words, Mapped Types are used when you want to create a different type f
 
 [^1]: In the aforementioned article by our company's Ubatake-san ([article](https://developer.mamezou-tech.com/typescript-intro/introduction-to-typescript-for-java-engineer_special-type/#mapped-type（マッピング型）)), it is also written that you can define "new types from existing types".
 
-On the other hand, in サバイバルTypeScript ([Mapped Types](https://typetypescriptbook.jp/reference/type-reuse/mapped-types)), it is explained that you can generate from a union, implying:
+On the other hand, in Survival TypeScript ([Mapped Types](https://typetypescriptbook.jp/reference/type-reuse/mapped-types)), it is explained that you can generate from a union, implying:
 > Mapped Types are mainly used in combination with union types.
 
 In TypeScript's official documentation, Mapped Types are said to enable "creating different types from specific types"[^1].
@@ -185,7 +185,7 @@ const fn = (v: boolean) => {
  type ResultString = MyReturnType<typeof fn> 
  // should be "success" | "error"
 ```
-In サバイバルTypeScript ([infer](https://typescriptbook.jp/reference/type-reuse/infer)), it is written as follows.
+In Survival TypeScript ([infer](https://typescriptbook.jp/reference/type-reuse/infer)), it is written as follows.
 > `infer` is a type operator used within Conditional Types. `infer` can only be written on the right side of an `extends`.
 
 Honestly, I didn't understand what was being said, but after investigating, I found the following description[^2].

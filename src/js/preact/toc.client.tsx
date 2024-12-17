@@ -146,7 +146,7 @@ function Toc(
       <p className="toc-container-header">Contents</p>
       {makeList(data)}
       <div>
-        {mameyoseImage}
+        {defaultMameyoseImage}
       </div>
       <div>
         <a

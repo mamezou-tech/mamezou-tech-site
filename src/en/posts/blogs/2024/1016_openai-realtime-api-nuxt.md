@@ -241,7 +241,7 @@ export const useRealtimeApi = ({ url, logMessage, onMessageCallback }: Params) =
     };
 
     ws.onerror = (error) => {
-      logMessage('Error occurred😭: ' + error.message);
+      logMessage('Error occurred😭');
     };
 
     ws.onmessage = (message: MessageEvent) => {
@@ -303,7 +303,7 @@ export function useAudio({ audioCanvas, logMessage, onFlushCallback }: Params) {
     try {
       // Prepare microphone (request permission)
       const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+      audioContext = new window.AudioContext({ sampleRate: 24000 });
 
       // Omitted (audio input conversion and callback execution)
     } catch (e) {

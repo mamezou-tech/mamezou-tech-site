@@ -243,7 +243,7 @@ export const useRealtimeApi = ({ url, logMessage, onMessageCallback }: Params) =
     };
 
     ws.onerror = (error) => {
-      logMessage('Error occurred😭: ' + error.message);
+      logMessage('Error occurred😭');
     };
 
     ws.onmessage = (message: MessageEvent) => {
@@ -306,7 +306,7 @@ export function useAudio({ audioCanvas, logMessage, onFlushCallback }: Params) {
     try {
       // マイクの準備(許可要求)
       const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+      audioContext = new window.AudioContext({ sampleRate: 24000 });
 
       // 省略(音声入力変換とコールバック処理実行)
     } catch (e) {

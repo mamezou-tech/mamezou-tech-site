@@ -110,7 +110,8 @@
       "date": "19",
       "author": "takafumi-okubo",
       "githubUser": "TakOkubo",
-      "title": "ローカルLLMを使ったボイドシミュレーション（llama.cpp、llama-cpp-python）"
+      "title": "ローカルLLMを使ったボイドシミュレーション（llama.cpp、llama-cpp-python）",
+      "url": "/blogs/2024/12/19/ai_boid_simulation/"
     },
     {
       "date": "20",

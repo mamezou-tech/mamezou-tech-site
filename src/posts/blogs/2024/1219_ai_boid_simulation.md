@@ -1028,8 +1028,8 @@ def main():
 ```python
 prompts = [
 		{
-			"role": "user",
-			"content":
+			"role": "system",
+			"content": 
 				"I want to determine the angle and velocity of an agent on a 2D plane based on the following rules:\n" + 
 				"・The agent moves away from enemies based on their relative distances.\n" + 
 				"・The agent moves toward foods based on their relative distances.\n" + 
@@ -1039,9 +1039,11 @@ prompts = [
 				"・The agent's angle and velocity should also be returned in JSON format.\n" + 
 				"・Do not include any extra text or explanations.\n" +
 				"Input example:{ 'enemies': [{'angle': 0, 'distance': 2}, {'angle': 10, 'distance': 10}], 'foods': [{'angle': 45, 'distance': 400}, {'angle': 5, 'distance': 500}] }\n"
-				"Output example:{'angle': 45, 'velocity': 4.5}\n" +
-				"------------------------------------------\n" +
-				'{ "enemies": [], "foods": [] }'
+				"Output example:{'angle': 45, 'velocity': 4.5}"
+		},
+		{
+			"role": "user",
+			"content":'{ "enemies": [], "foods": [] }'
 		},
 		{
 			"role": "assistant",
@@ -1071,8 +1073,8 @@ prompts = [
 日本語訳をすると、以下のような感じです。
 ```
 以下のルールに従って2次元平面上のAgentのangleとvelocityを求めたい。
-・Agentとenemiesのそれぞれの相対距離（distance)から判断して、enemyから逃げる。
-・Agentとfoodsのそれぞれの相対距離（distance)から判断して、foodに向かう。
+・Agentとenemiesのそれぞれの相対距離（distance）から判断して、enemyから逃げる。
+・Agentとfoodsのそれぞれの相対距離（distance）から判断して、foodに向かう。
 ・Agentは最も近いfoodに向かいます。ただしfoodとenemyが近い場合、enemyを避けて別のfoodに向かいます。
 ・上記の条件からangleとvelocityを求める。
 ・enemyとfoodのdistanceとangleはJSON形式で渡します。

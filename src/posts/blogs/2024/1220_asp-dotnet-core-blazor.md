@@ -1,5 +1,5 @@
 ---
-title: はじめての ASP.NET Core Blazor アプリ（概要編）
+title: Blazor入門：ASP.NET Coreで始める最新Web開発
 author: yasunori-shiota
 date: 2024-12-20
 tags: [dotnet, advent2024]

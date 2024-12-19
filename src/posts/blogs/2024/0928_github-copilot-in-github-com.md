@@ -2,7 +2,7 @@
 title: GitHub Copilot が github.com サイト内でも実装されました
 author: masahiro-kondo
 date: 2024-09-28
-tags: [GitHub, Copilot]
+tags: [GitHub Copilot, GitHub]
 image: true
 ---
 

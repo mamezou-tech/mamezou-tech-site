@@ -1,5 +1,5 @@
 ---
-title: 仕方なくやる雑用、会社の利益になる雑用
+title: 雑用が会社の利益に変わる瞬間
 author: naoko-nakayama
 date: 2024-12-23
 tags: [advent2024]

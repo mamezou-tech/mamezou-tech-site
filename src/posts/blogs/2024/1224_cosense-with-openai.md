@@ -2,6 +2,7 @@
 title: 社内ノウハウ・ノウフー共有における生成AIの活用
 author: yoshihisa-muta
 date: 2024-12-24
+image: true
 tags: [scrapbox, advent2024]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2024/
 ---

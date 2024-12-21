@@ -34,13 +34,13 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 そこで、生成 AI ([OpenAI API](https://openai.com/index/openai-api/)) に関する知見の獲得を兼ね、ドッグフーディング的にこの課題を解消できないか、ということで今回の取り組みを実施することにしました。
 
-![](https://i.gyazo.com/7e3cfd39a269fd7fde2626c91910d480.png)
+![](https://i.gyazo.com/b59b768d7dc9151752b4fbe37b9659b8.png)
 
 ## 生成 AI を使った情報の引き出しの仕組み
 
 ざっくりと、以下のような図の形で実現しています。
 
-![](https://i.gyazo.com/67782c16c33a4b7256e340cd81dbdc73.png)
+![](https://i.gyazo.com/dc581040bbc19d4741d5b361cb65427e.png)
 
 情報の入力から引き出しまでの流れは以下の通りです。
 1. 情報入力
@@ -60,8 +60,8 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 [^3]:顧客、プロジェクトといったリンクが付いている機微情報については情報取得の対象から除外しています。
 
 ### (3) 情報転送 & RAG 生成の指示  
-次に GitHub Actions が (2) で取得した情報を OpenAI API に送信し、RAG[^4] 生成を指示します。  
-[^4]: RAG は Retrieve and Generate の略で、情報取得と生成を同時に行う AI モデルです。
+次に GitHub Actions が (2) で取得した情報を OpenAI API に送信し、ベクトルデータベース更新[^4]を指示します。  
+[^4]: RAG は Retrieve and Generate の略で、情報取得と生成を同時に行う AI モデルです。なお、OpenAI のドキュメントには RAG という表現はなく、ナレッジベースのことを VectorStore、それを使った検索を File Search と呼んでいます。
 
 ### (4) 質問入力  
 情報の引き出しは、社内のコミュニケーションツールである [Slack](https://slack.com/) を使って行います。具体的には Slack App (@mame-kun) に対して質問を投げかけます。

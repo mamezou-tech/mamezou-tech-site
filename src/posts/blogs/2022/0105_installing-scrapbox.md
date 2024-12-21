@@ -5,7 +5,7 @@ date: 2022-01-05
 tags: Cosense(旧Scrapbox)
 ---
 
-これは、[Cosense Advent Calendar 2021 - Adventar](https://adventar.org/calendars/7106) 22 日目の記事です。
+これは、[Scrapbox Advent Calendar 2021 - Adventar](https://adventar.org/calendars/7106) 22 日目の記事です。
 
 普段 [豆蔵デベロッパーサイト](https://developer.mamezou-tech.com/) では技術情報を中心に紹介しています。
 

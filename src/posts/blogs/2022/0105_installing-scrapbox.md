@@ -1,5 +1,5 @@
 ---
-title: Cosense の社内導入
+title: Cosense (旧Scrapbox) の社内導入
 author: yoshihisa-muta
 date: 2022-01-05
 tags: Cosense(旧Scrapbox)

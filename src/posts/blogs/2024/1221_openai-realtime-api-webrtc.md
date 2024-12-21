@@ -80,12 +80,14 @@ export default defineEventHandler(async () => {
 - client_secret.value: 一時認証キー(Ephemeral Key)
 - client_secret.expires_at: 認証キーの有効期限(発行後1分間)
 
+---
+
+以降は、クライアントサイドのRealtime API関連のソースコードについて説明します。
+全ソースコードは以下から確認できます。
+
+@[og](https://github.com/kudoh/nuxt-openai-realtimeapi-example/tree/main/pages/webrtc.vue)
+
 ## 認証キー取得
-
-ここからは、クライアントサイドでのRealtime API関連のソースコードについて説明します。
-メインとなるソースコードは以下のリンクから確認できます：
-
-- [GitHub kudoh/nuxt-openai-realtimeapi-example - /pages/webrtc.vue](https://github.com/kudoh/nuxt-openai-realtimeapi-example/tree/main/pages/webrtc.vue)です。
 
 ユーザーから接続要求があると、先ほど作成したサーバーAPIを呼び出し、Realtime APIから一時的な認証キー(Ephemeral Key)を取得します。
 

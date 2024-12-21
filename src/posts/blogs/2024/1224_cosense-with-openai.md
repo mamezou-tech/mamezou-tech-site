@@ -34,13 +34,13 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 そこで、生成 AI ([OpenAI API](https://openai.com/index/openai-api/)) に関する知見の獲得を兼ね、ドッグフーディング的にこの課題を解消できないか、ということで今回の取り組みを実施することにしました。
 
-![](https://i.gyazo.com/6f800b245867b35744ef6e0006dfd0c6.png)
+![](https://i.gyazo.com/7e3cfd39a269fd7fde2626c91910d480.png)
 
 ## 生成 AI を使った情報の引き出しの仕組み
 
 ざっくりと、以下のような図の形で実現しています。
 
-![](https://i.gyazo.com/1ebb56fffe145c6c2cc806fbcad11771.png)
+![](https://i.gyazo.com/67782c16c33a4b7256e340cd81dbdc73.png)
 
 情報の入力から引き出しまでの流れは以下の通りです。
 1. 情報入力
@@ -127,7 +127,7 @@ Cosense からの情報取得と、一般的な情報をうまく組み合わせ
  - 自分の書き込んだノウハウが誰かの役に立つと自覚
    - 各社員が上記効果を実感することで、社内ノウハウ・ノウフーの蓄積 (＝Cosense への書き込み) に積極的に貢献するようになり、ノウハウ・ノウフー共有のさらなるモチベーションが生まれました。これにより、情報のインプットとアウトプットを結ぶ好循環のループができつつあります。
 
-![](https://i.gyazo.com/17c15bf0894ad21bfba74d336fd8e1fa.png)
+![](https://i.gyazo.com/70165e2d3ee478457c5efd6e877dde2e.png)
 
 ## まとめ
 いかがでしたか。

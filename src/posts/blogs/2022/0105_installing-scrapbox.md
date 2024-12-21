@@ -2,7 +2,7 @@
 title: Cosense (旧Scrapbox) の社内導入
 author: yoshihisa-muta
 date: 2022-01-05
-tags: Cosense(旧Scrapbox)
+tags: scrapbox
 ---
 
 これは、[Scrapbox Advent Calendar 2021 - Adventar](https://adventar.org/calendars/7106) 22 日目の記事です。

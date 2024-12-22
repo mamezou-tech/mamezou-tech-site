@@ -98,7 +98,7 @@ Cosense からの情報取得と、一般的な情報をうまく組み合わせ
     
  
  - ナレッジベース(Cosense)アクセス
-   - OpenAI の[ファイル検索(RAG)](https://platform.openai.com/docs/assistants/tools/file-search)を利用した効率的な情報取得
+   - OpenAI の[File Search](https://platform.openai.com/docs/assistants/tools/file-search)を利用した効率的な情報取得
      - セマンティック検索とキーワード検索のハイブリッド方式
 	 - Cosense の情報は定期的に取り込んで最新化
    - 社内情報のため、社外ユーザーからのアクセスを禁止
@@ -115,7 +115,7 @@ Cosense からの情報取得と、一般的な情報をうまく組み合わせ
  
  - マルチモーダル
     - Slack の添付画像については OpenAI API の Storage サービスに連携することで画像入力を実現
-      - OpenAI の[Vision](https://platform.openai.com/docs/guides/vision)を使用
+      - OpenAI の [Vision](https://platform.openai.com/docs/guides/vision) を使用
       - 音声入力については現時点で未対応
 
 ## 今回の取り組みによる効果
@@ -132,6 +132,6 @@ Cosense からの情報取得と、一般的な情報をうまく組み合わせ
 ## まとめ
 いかがでしたか。
 
-生成 AI は、開発生産性の向上といった業務効率向上での活用がまだまだ主流のように感じています。今回ご紹介した取り組みを通じ、生成 AI が組織文化のちょっとした変化にも寄与できるとの確認ができました。
+生成 AI は、開発生産性の向上といった業務効率向上での活用がまだまだ主流のように感じています。今回の取り組みを通じ、生成 AI が組織文化のちょっとした変化にも寄与できるとの確認ができました。
 
 本記事が、みなさまの生成 AI 活用の今後のヒントとなれば嬉しいです。

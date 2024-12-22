@@ -13,7 +13,6 @@ tags:
   - typescript
 image: true
 translate: true
-
 ---
 
 The OpenAI Realtime API introduced in October 2024 is a groundbreaking API that enables real-time voice conversations with AI in any application.
@@ -26,7 +25,7 @@ With this update, client applications running in browsers are now recommended to
 
 In a previous article, we implemented a voice conversation app using WebSocket with Nuxt, but this time we'll try a version using the newly supported WebRTC.
 
-@[og](https://developer.mamezou-tech.com/blogs/2024/10/16/openai-realtime-api-nuxt/)
+@[og](https://developer.mamezou-tech.com/en/blogs/2024/10/16/openai-realtime-api-nuxt/)
 
 Below is the configuration of the Realtime API WebRTC version.
 

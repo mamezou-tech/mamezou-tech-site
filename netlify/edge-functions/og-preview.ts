@@ -9,18 +9,19 @@ const headers = {
 export default async (req: Request, ctx: Context) => {
   if (req.method === 'OPTIONS') {
     // preflightリクエスト
-    return new Response(null, {
-      headers,
-    });
+    return new Response(null, { headers });
   }
   const url = new URL(req.url);
-  const targetUrl = url.searchParams.get('url');
+  let targetUrl = url.searchParams.get('url');
 
   if (!targetUrl) {
     return new Response(JSON.stringify({ error: 'Missing URL parameter' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
     });
+  }
+  if (targetUrl.startsWith('/')) {
+    targetUrl = `https://developer.mamezou-tech.com${targetUrl}`;
   }
 
   try {

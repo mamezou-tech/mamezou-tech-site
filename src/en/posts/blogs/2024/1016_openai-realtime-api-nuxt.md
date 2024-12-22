@@ -12,65 +12,70 @@ tags:
   - typescript
 image: true
 translate: true
+
 ---
 
-Until now, I have created a CLI-based voice conversation script using OpenAI's Realtime API.
+Up to now, I have created CLI-based voice conversation scripts using OpenAI's Realtime API.
 
-- [Voice Conversations with AI Using the Newly Released OpenAI Realtime API](/blogs/2024/10/07/openai-realtime-api-intro/)
-- [Executing Arbitrary Functions Using Voice with OpenAI's Realtime API (Function Calling Edition)](/blogs/2024/10/09/openai-realtime-api-function-calling/)
+@[og](/en/blogs/2024/10/07/openai-realtime-api-intro/)
+@[og](/en/blogs/2024/10/09/openai-realtime-api-function-calling/)
 
-Thanks to the voice conversion tool [SoX (Sound eXchange)](https://sourceforge.net/projects/sox/), this script was easy to implement, but I also wanted to try creating a web app. Here, I will use the Vue framework [Nuxt](https://nuxt.com/) to create an app that allows voice conversations with the Realtime API on a web browser.
+Thanks to the audio conversion tool [SoX (Sound eXchange)](https://sourceforge.net/projects/sox/), these scripts were easy to implement, but I wanted to try making a web app as well. Here, I will create an app using the Vue framework [Nuxt](https://nuxt.com/) that allows voice conversations with the Realtime API on a web browser.
 
 :::info
-An official sample React-based web app from OpenAI is available on GitHub. I have heavily referenced this repository while writing this article.
+On December 18, 2024, the WebRTC version of the Realtime API was introduced. With this update, browser apps are now recommended to use WebRTC instead of WebSocket.
 
-- [GitHub openai/openai-realtime-console](https://github.com/openai/openai-realtime-console)
+We have also introduced the WebRTC version in the following article, so please refer to it.
+
+@[og](/en/blogs/2024/12/21/openai-realtime-api-webrtc/)
 :::
 
-The structure of the web app is as follows.
+The configuration of the web app is as follows.
 
 ![Nuxt Realtime API Diagram](https://i.gyazo.com/d39dc7613edaf48339677522320c0e9a.png)
 
-Accessing the Realtime API directly from the browser would expose the OpenAI API key to users. To avoid this, we use Nuxt's server function (Nitro) to mediate access to the Realtime API.
+If you access the Realtime API directly from the browser, you will be exposing your OpenAI API key to users. To avoid this, we use Nuxt's server functionality (Nitro) to mediate access to the Realtime API.
 
-Below is a video of this web app in action (**unmute to hear the AI voice. Please be mindful of your surroundings**).
+Below is a video of this web app in action (**Unmute to hear the AI's voice. Please be mindful of your surroundings before unmuting**).
 
 <video width="60%" autoplay muted loop playsinline controls style="margin: 15px 0;">
 <source src="https://i.gyazo.com/d7f6919c131918fdeb2f644d76e8a7a4.mp4" type="video/mp4"/>
 </video>
 
-In this video, my input voice was not recorded (for some reason), but I am actually speaking as represented by the text messages and audio waveform.
+In this video, my input voice was not recorded (for some reason), but in reality, I am speaking as represented by the text messages and audio waveforms.
 
-This article focuses on key parts and does not cover all the source code. The source code is available on GitHub, so if you want to try it out, please run it yourself (note that the Realtime API is quite expensive, so be careful not to overuse it).
+This article focuses on the important parts, so I will not list or explain all the source code. The source code is published on GitHub, so if you want to actually try it out, please run it (however, the Realtime API is quite expensive, so please be careful not to overuse it).
 
-- [GitHub kudoh/nuxt-openai-realtimeapi-example](https://github.com/kudoh/nuxt-openai-realtimeapi-example)
+@[og](https://github.com/kudoh/nuxt-openai-realtimeapi-example)
 
 :::alert
-This sample is a simple implementation aimed at experimenting with app development using the Realtime API. It only implements minimal functionality and does not consider scalability or fault tolerance. It is not suitable for production use.
+This sample is intended to experiment with app development using the Realtime API and is a simplified implementation focusing on simplicity. Only the minimum necessary functions are implemented, and scalability, fault tolerance, etc., are not considered. It is not suitable for actual operational use.
 :::
 
 ## Setup
 
-I will only explain the overview. First, create an application from the Nuxt CLI.
+I will only explain the overview.
+
+First, create an application from the Nuxt CLI.
 
 ```shell
 npx nuxi@latest init <nuxt-app-name>
 cd <nuxt-app-name>
 ```
 
-Here, I installed the latest Nuxt version v3.13.2 at the time. Next, install the necessary libraries.
+Here, I installed Nuxt v3.13.2, which is the latest at the moment. Next, install the necessary libraries.
 
 ```shell
 # WebSocket client (Nitro)
 npm install ws
 
-# Development libraries, Nuxt modules, etc. (eslint, tailwindcss...)
+# Development libraries, Nuxt modules (eslint, tailwindcss...)
 npm install -D @types/ws eslint @nuxt/eslint @nuxtjs/tailwindcss
 ```
 
-In the browser, use the [WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) implemented as a web API, but for interactions with the Realtime API on the server side, use [ws](https://www.npmjs.com/package/ws).
+From the browser, we use the [WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) implemented as a Web API in the browser, but we use [ws](https://www.npmjs.com/package/ws) for communication with the Realtime API on the server side.
 
-The nuxt.config.ts is as follows.
+The `nuxt.config.ts` is as follows.
 
 ```typescript:nuxt.config.ts
 export default defineNuxtConfig({
@@ -94,7 +99,7 @@ export default defineNuxtConfig({
 });
 ```
 
-The key point is the `nitro.experimental.websocket` setting. To mediate the Realtime API, WebSocket communication is needed on the server side as well, but Nitro, used by Nuxt as the server engine, currently treats WebSocket support as experimental. As shown above, you need to explicitly enable it if you want to use it.
+The key point is the setting of `nitro.experimental.websocket`. To mediate access to the Realtime API, server-side WebSocket communication is required, but Nitro, used by Nuxt as a server engine, currently treats WebSocket as experimental. As shown above, you need to explicitly enable it if you want to use it.
 
 ## Application Structure
 
@@ -110,27 +115,29 @@ The main components of the application are as follows.
 │   ├── audioVisualizer.ts     // Audio waveform visualization
 │   └── realtimeApi.ts         // Realtime API communication
 ├── public
-│   └── audio-processor.js     // Conversion processing of recorded audio (audio thread processing)
+│   └── audio-processor.js     // Processing of recorded audio (audio thread processing)
 ├── utils
-│   └── index.ts               // Entry point for common functions (omitted as it only converts audio formats)
+│   └── index.ts               // Entry point for common functions (omitted as only audio format conversion)
+├── pages
+│   └── websocket.vue          // UI component
 ├── app.vue                    // Entry point
 ├── nuxt.config.ts
 └── package.json
 ```
 
-It's a regular Nuxt SSR application, but a relay server for the Realtime API is prepared under the server directory.
+It's a normal Nuxt SSR application, but we have prepared a relay server to the Realtime API under the `server` directory.
 
 From here, I will explain an overview of each component.
 
 ## Relay Server
 
-In Nuxt, you can create server-side APIs just by placing source code under the server/routes directory.
+In Nuxt, you can create server-side APIs just by placing source code under the `server/routes` directory.
 
 - [Nuxt Docs - Server Routes](https://nuxt.com/docs/guide/directory-structure/server#server-routes)
 
-Here, I will use this to create a relay server for the Realtime API. However, it will be implemented as a WebSocket server rather than a regular API.
+Here, we will use this to create a relay server to the Realtime API. However, it will be implemented as a WebSocket server instead of the usual API.
 
-It is implemented as follows.
+I implemented it as follows.
 
 ```typescript:/server/routes/ws.ts
 import { WebSocket } from 'ws';
@@ -150,7 +157,7 @@ export default defineWebSocketHandler({
         },
       });
     }
-    const instructions = 'Please speak cheerfully and energetically. Act like a close friend and do not use honorifics. Output should be in Japanese.';
+    const instructions = 'Speak cheerfully and energetically. Act like a close friend, and do not use honorifics. Please output in Japanese.';
 
     connections[peer.id].on('open', () => {
       // Realtime API session settings
@@ -165,12 +172,12 @@ export default defineWebSocketHandler({
       }));
     });
     connections[peer.id].on('message', (message) => {
-      // Relay Realtime API server events directly to the client
+      // Realtime API server events are returned to the client as is
       peer.send(message.toString());
     });
   },
   message(peer, message) {
-    // Relay client events directly to the Realtime API
+    // Client events are relayed to the Realtime API as is
     connections[peer.id].send(message.text());
   },
   close(peer) {
@@ -184,36 +191,36 @@ export default defineWebSocketHandler({
 });
 ```
 
-The WebSocket server API (Nitro) is defined using defineWebSocketHandler. Various event hooks for WebSocket are implemented as arguments.
+We define the WebSocket server API (Nitro) using `defineWebSocketHandler`. In the argument, we implement various WebSocket event hooks.
 
-The main implementation here includes the following:
+The main implementation here is as follows.
 
-1. Connecting and disconnecting from the Realtime API
-2. Session settings (session.update)
+1. Connecting and disconnecting connections with the Realtime API
+2. Session settings (`session.update`)
 3. Relaying client events to the Realtime API
-4. Relaying server events to the client (web browser)
+4. Relaying server events from the Realtime API to the client (web browser)
 
-As such, it only has the function of relaying events between the client (web browser) and the Realtime API, aside from connecting to the Realtime API.
+As such, aside from the connection to the Realtime API, the server only functions to relay events between the client (web browser) and the Realtime API.
 
-If you modify this to be an API specialized for the application's purpose rather than just a relay server, the client-side implementation might feel more streamlined.
+If you modify this from a mere relay server to an API specialized for application purposes, the client-side implementation might look cleaner.
 
 :::column:Nitro's WebSocket Support
-Nuxt's server engine, Nitro, uses a cross-platform WebSocket library called [crossws](https://crossws.unjs.io/) for implementing WebSocket servers. For more details on implementing with crossws, refer to the official documentation below.
+Nuxt's server engine Nitro uses a cross-platform WebSocket library called [crossws](https://crossws.unjs.io/) for WebSocket server implementation. For details on the implementation using crossws, please refer to the official documentation below.
 
 - [crossws Doc](https://crossws.unjs.io/guide)
 
-Although not used here, it also supports the Pub/Sub pattern, making it easy to implement conversations with multiple users.
+Although not used here, it also supports the Pub/Sub pattern, making it easy to implement conversations among multiple users.
 :::
 
-## Client Features (Composables)
+## Client Functions (Composables)
 
-Three Composables are prepared as components this time.
+This time, the composables prepared as components are three.
 
-### Realtime API Client (realtimeApi.ts)
+### Realtime API Client (`realtimeApi.ts`)
 
 - [GitHub - /composables/realtimeApi.ts](https://github.com/kudoh/nuxt-openai-realtimeapi-example/blob/main/composables/realtimeApi.ts)
 
-Although it is called a Realtime API client, it does not directly access the Realtime API but goes through a relay server.
+Although called a Realtime API client, it does not directly access the Realtime API but goes through the relay server.
 
 ```typescript:/composables/realtimeApi.ts
 type Params = {
@@ -268,15 +275,15 @@ export const useRealtimeApi = ({ url, logMessage, onMessageCallback }: Params) =
 };
 ```
 
-As mentioned earlier, it uses the [WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) implemented in the browser to interact with the relay server.
+As mentioned earlier, we are using the [WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) implemented in the browser to interact with the relay server.
 
-Handling of Realtime API server events requires audio-related processing such as playback, so instead of implementing it here, it executes a callback received as a parameter.
+Since handling of server events from the Realtime API requires audio-related processing such as audio playback, we implement it not here but by executing the callback passed as a parameter.
 
-### Audio Processing (audio.ts)
+### Audio Processing (`audio.ts`)
 
 - [GitHub - /composables/audio.ts](https://github.com/kudoh/nuxt-openai-realtimeapi-example/blob/main/composables/audio.ts)
 
-It provides functions for inputting audio from the microphone and playing audio output from the Realtime API through speakers. Since it becomes lengthy if fully included, I will excerpt mainly the interface part.
+This provides functions for voice input from the microphone and output from the Realtime API to be played back from the speaker. It's too long to include all, so I will excerpt and focus on the interface parts.
 
 ```typescript:/composables/audio.ts
 const BUFFER_SIZE = 8192;
@@ -296,7 +303,7 @@ export function useAudio({ audioCanvas, logMessage, onFlushCallback }: Params) {
 
   /**
    * Function to start audio recording
-   * Audio is buffered and callback executed after exceeding a certain size or time
+   * Audio is buffered and flushes after exceeding a certain size or after a certain time interval, then executes the callback
    */
   async function startRecording() {
     isRecording.value = true;
@@ -305,7 +312,7 @@ export function useAudio({ audioCanvas, logMessage, onFlushCallback }: Params) {
       const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioContext = new window.AudioContext({ sampleRate: 24000 });
 
-      // Omitted (audio input conversion and callback execution)
+      // Omitted (audio input conversion and callback processing)
     } catch (e) {
       // Omitted
     }
@@ -319,7 +326,7 @@ export function useAudio({ audioCanvas, logMessage, onFlushCallback }: Params) {
   }
 
   /**
-   * Enqueue audio to be played -> Play sequentially
+   * Enqueue audio to be played – sequentially play back
    */
   function enqueueAudio(buffer: ArrayBuffer) {
     audioQueue.push(arrayBufferToAudioData(buffer));
@@ -327,7 +334,7 @@ export function useAudio({ audioCanvas, logMessage, onFlushCallback }: Params) {
       playFromQueue();
     }
   }
-  
+
   return {
     startRecording,
     stopRecording,
@@ -338,42 +345,42 @@ export function useAudio({ audioCanvas, logMessage, onFlushCallback }: Params) {
 }
 ```
 
-It uses the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) implemented in the browser for audio recording and playback.
+We use the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) implemented as standard in the browser to record and play back audio.
 
-Note that the Web Audio API adopts a 32bit-float audio format, which the Realtime API does not currently support. Therefore, mutual conversion to the default format PCM16 is necessary for both recording and playback[^1].
+Note that the Web Audio API employs a 32-bit float audio format, but the Realtime API currently does not support it. Therefore, we need to record in PCM16 and perform mutual conversion during both recording and playback.
 
-[^1]: In OpenAI's [official sample](https://github.com/openai/openai-realtime-console), conversion processing is offloaded to the audio thread using [AudioWorklet](https://developer.mozilla.org/en-US/docs/Web/API/AudioWorklet) for both input and output, but this sample only uses it for input. For production-level use, it would be preferable to execute the output side on the audio thread as in the official sample.
+[^1]: OpenAI's [official sample](https://github.com/openai/openai-realtime-console) uses [AudioWorklet](https://developer.mozilla.org/en-US/docs/Web/API/AudioWorklet) to perform the conversion process in the audio thread for both input and output, but this sample uses it only for input. To make it production-level, it would be desirable to execute the output side in the audio thread as in the official sample.
 
-Also, since audio is returned as a stream response faster than playback speed, implementing a queuing process is necessary to prevent overlapping audio output.
+Also, since the audio returns as a stream response faster than playback speed, if you don't implement queuing processing, an issue occurs where audio outputs overlap. Although this is not directly related to the Realtime API, this is where I struggled the most 😂
 
-Although not directly related to the Realtime API, this was the most challenging part 😂 Nonetheless, since audio processing is akin to the UI in programming involving audio, I realized I need to improve further.
+That said, audio processing is akin to the UI in programming that uses voice, so I realized I need to improve more.
 
-### Audio Visualization (audioVisualizer.ts)
+### Audio Visualization (`audioVisualizer.ts`)
 
 - [GitHub - /composables/audioVisualizer.ts](https://github.com/kudoh/nuxt-openai-realtimeapi-example/blob/main/composables/audioVisualizer.ts)
 
-It provides functionality to render audio signals as waveforms on a Canvas element. It uses the [AnalyserNode](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode) audio analysis tool provided as a web API in the browser to visualize audio signals in real-time.
+This provides a function to draw audio signals as waveforms on a Canvas element. It uses [AnalyserNode](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode), an audio analysis tool provided in the browser as a Web API, to visualize audio signals in real-time.
 
-This feature is not the main topic of the article, so the source code is omitted.
+Since this function is not the main subject of the article, I will omit posting the source code.
 
-## Entry Point (app.vue)
+## UI Component (`websocket.vue`)
 
-- [GitHub - /app.vue](https://github.com/kudoh/nuxt-openai-realtimeapi-example/blob/main/app.vue)
- 
-Finally, the application's entry point. Since it is a single page this time, the page component is directly implemented in Nuxt's entry point, app.vue. Since various functions are extracted as Composable components, the page component is simplified.
+- [GitHub - /websocket.vue](https://github.com/kudoh/nuxt-openai-realtimeapi-example/blob/main/pages/websocket.vue)
 
-UI rendering is off-topic, so I will excerpt and explain the parts related to audio recording and Realtime API integration below.
+Finally, the application's UI. Since we have extracted various functions into composable components, the page component has become simple.
+
+Because UI rendering deviates from the main topic, I will extract and explain the parts of audio recording and Realtime API integration.
 
 ### Audio Recording
 
-The main processing is implemented in the audio processing (audio.ts) Composable. The responsibility of this page component is to implement the processing (callback function) when the recorded audio is flushed[^2].
+The main processing is implemented in the audio processing (`audio.ts`) composable. The responsibility of this page component is to implement the processing (callback function) when the recorded audio is flushed.
 
-[^2]: By default, audio data is processed in 256-byte increments, resulting in high-frequency audio transmission. The audio processing Composable buffers audio data and flushes it every 8192 bytes or 1 second.
+[^2]: By default, audio data is processed in 256-byte chunks, resulting in very frequent audio transmissions. In the audio processing composable, audio data is buffered and set to flush every 8192 bytes or every 1 second.
 
 ```typescript
-// Callback when playing audio is flushed
+// Callback when audio is flushed during recording
 function handleAudioFlush(buffer: ArrayBuffer) {
-  // Send audio input from the microphone to the Realtime API
+  // Send microphone audio input to the Realtime API
   sendMessage({ type: 'input_audio_buffer.append', audio: arrayBufferToBase64(buffer) });
 }
 
@@ -384,14 +391,14 @@ const { startRecording, stopRecording, enqueueAudio, isRecording } = useAudio({
 });
 ```
 
-Here, the buffered audio data is Base64 encoded and sent to the Realtime API as an [input_audio_buffer.append](https://platform.openai.com/docs/api-reference/realtime-client-events/input_audio_buffer/append) event.
+Here, we encode the buffered audio data in Base64 and send it to the Realtime API as an [input_audio_buffer.append](https://platform.openai.com/docs/api-reference/realtime-client-events/input_audio_buffer/append) event.
 
 ### Realtime API
 
-Since the WebSocket client implementation around the Realtime API is extracted as a Composable component, you only need to implement the event handler for server events and pass it here.
+Since the WebSocket client implementation around the Realtime API has also been extracted into a composable as a component, here we just need to implement the event handler when a server event occurs and pass it in.
 
 ```typescript
-// RealtimeAPI server event handler
+// Realtime API server event handler
 function handleWebSocketMessage(message: MessageEvent) {
   const event = JSON.parse(message.data);
   logEvent(event.type);
@@ -401,7 +408,7 @@ function handleWebSocketMessage(message: MessageEvent) {
       break;
     }
     case 'response.audio_transcript.done':
-      // Delay logging as the event may fire before the response
+      // Output voice text. It can be fired before the user's voice, so display it with a delay
       setTimeout(() => logMessage(`🤖: ${event.transcript}`), 100);
       break;
     case 'conversation.item.input_audio_transcription.completed':
@@ -426,16 +433,18 @@ const { connect, isConnected, disconnect, sendMessage } = useRealtimeApi({
 });
 ```
 
-The main processing of the callback function here includes the following two (excluding error processing).
+The main processing of the callback function here is as follows (excluding error handling).
 
 **Audio Data Playback**
-The audio output from the Realtime API is set in the payload of the `response.audio.delta` event. The audio data is not provided all at once but incrementally as a stream in deltas. This is queued in the audio processing's queue (enqueueAudio). This queue is played sequentially through the speakers.
 
-**Text Message Rendering**
-The Realtime API can output text messages for both input and output audio. Here, this event is hooked to store it in a reactive variable. As a result, it is displayed in real-time in a chat-like manner.
+The Realtime API's audio output is set in the payload of the `response.audio.delta` event. The audio data is not all at once but is stored incrementally in delta as a stream format. We enqueue this in the audio processing queue (`enqueueAudio`). This queue is sequentially played back from the speaker.
+
+**Text Message Display**
+
+The Realtime API can output text messages not only for input voice but also for output voice. Here, we hook this event and store it in a reactive variable. As a result, it is displayed in real-time like a chat.
 
 ## Conclusion
 
-The above is an overview of the key points when trying out web app development using the Realtime API.
+I have explained the key points when trying web app development using the Realtime API, focusing on the overview.
 
-I struggled with many pitfalls, especially in audio processing. Nonetheless, a web app allows for easy use by multiple users, and there are many potential use cases. I hope to find time to improve aspects like scalability.
+I struggled a lot, especially with audio-related processing, which had many pitfalls. That said, since web apps allow easy use by multiple people, there are many potential use cases. I hope to find time to improve aspects like scalability.

@@ -8,8 +8,8 @@ image: true
 
 今までOpenAIのRealtime APIを使ってCLIベースの音声会話スクリプトを作成しました。
 
-- [新登場の OpenAI の Realtime API でAIと音声会話する](/blogs/2024/10/07/openai-realtime-api-intro/)
-- [OpenAI の Realtime API で音声を使って任意の関数を実行する(Function calling編)](/blogs/2024/10/09/openai-realtime-api-function-calling/)
+@[og](/blogs/2024/10/07/openai-realtime-api-intro/)
+@[og](/blogs/2024/10/09/openai-realtime-api-function-calling/)
 
 このスクリプトは音声変換ツールの[SoX(Sound eXchange)](https://sourceforge.net/projects/sox/)のおかげで簡単に実装できましたが、やっぱりWebアプリも作ってみたいですね。
 ここではVueフレームワークの[Nuxt](https://nuxt.com/)を使用して、Webブラウザ上でRealtime APIと音声会話するアプリを作成します。
@@ -20,7 +20,7 @@ image: true
 
 WebRTC版についても以下記事で紹介していますので、ご参照ください。
 
-@[og](https://developer.mamezou-tech.com/blogs/2024/12/21/openai-realtime-api-webrtc/)
+@[og](/blogs/2024/12/21/openai-realtime-api-webrtc/)
 :::
 
 Webアプリの構成は以下のようになります。
@@ -41,7 +41,7 @@ Webアプリの構成は以下のようになります。
 本記事は重要な部分にフォーカスするため、全てのソースコードを掲載・説明しません。
 ソースコードはGitHubで公開していますので、実際に試してみたい方は動かしてみていただければと思います(ただし、Realtime APIは結構高いので使い過ぎにご注意ください)。
 
-- [GitHub kudoh/nuxt-openai-realtimeapi-example](https://github.com/kudoh/nuxt-openai-realtimeapi-example)
+@[og](https://github.com/kudoh/nuxt-openai-realtimeapi-example)
 
 :::alert
 本サンプルはRealtime APIを使ったアプリ開発を実験することを目的としており、シンプルさを重視した簡易実装です。

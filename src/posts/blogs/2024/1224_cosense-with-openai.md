@@ -106,10 +106,10 @@ Cosense からの情報取得と、一般的な情報をうまく組み合わせ
 
  
  - Web 検索 / ブラウジング
-    - 最新情報取得やハルシネーション抑制のため Google 検索やブラウジング機能を実装
+    - 最新情報取得やハルシネーション抑制のため Perplexity 検索やブラウジング機能を実装
       - 単なる URL フェッチでなく、実ブラウザによる操作 ([Playwright](https://playwright.dev/) 利用) で JavaScript ベース(SPA 等)の Web サイトにも対応
         - この工夫については、[別記事](/blogs/2024/07/19/lambda-playwright-container-tips/)を参照
-    - Google 検索は[Google カスタムサーチ](https://programmablesearchengine.google.com/about/)を利用([SerpAPI](https://serpapi.com/) は費用面ネックで見送り)
+    - Perplexity 検索は [Perplexity API](https://docs.perplexity.ai/home) を利用
     - [Function Calling](https://platform.openai.com/docs/assistants/tools/function-calling) を使用して実際の利用判断は AI アシスタントに委ねる
  
  

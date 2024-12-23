@@ -21,7 +21,9 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 ![](https://i.gyazo.com/9f66dcad9f0c37a203d50ea1bc35f41e.png)
 
-なお Cosense 導入前の課題と、それを Cosense を使ってどのように解決したのか、そしてその効果については [Cosense (旧Scrapbox) の社内導入](/blogs/2022/01/05/installing-scrapbox/)を参照ください。
+なお Cosense 導入前の課題と、それを Cosense を使ってどのように解決したのか、そしてその効果については 下記記事を参照ください。
+
+@[og](https://developer.mamezou-tech.com/blogs/2022/01/05/installing-scrapbox/)
 
 ## Cosense 活用における現在の課題
 

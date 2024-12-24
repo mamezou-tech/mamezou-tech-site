@@ -104,3 +104,4 @@ JavaScriptのテスティングフレームワークとして、スタンダー�
 ### PIT (PiTest)
 
 - [ミューテーションテストの技法でテストの十分性を評価する](/blogs/2024/12/03/mutation-testing/)
+- [ミューテーションテストの開発組み込みを考える](/blogs/2024/12/26/mutation-optimization/)

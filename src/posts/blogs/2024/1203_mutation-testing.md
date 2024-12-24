@@ -2,7 +2,7 @@
 title: ミューテーションテストの技法でテストの十分性を評価する
 author: shinichiro-iwaki
 date: 2024-12-03
-tags: [テスト, ミューテーションテスト, PIT, PiTest, advent2024]
+tags: [ミューテーションテスト, PIT, PiTest, テスト, advent2024]
 image: true
 ---
 

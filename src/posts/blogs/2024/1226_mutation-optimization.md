@@ -2,7 +2,7 @@
 title: ミューテーションテストの開発組み込みを考える
 author: shinichiro-iwaki
 date: 2024-12-26
-tags: [テスト]
+tags: [テスト, ミューテーションテスト, PIT, PiTest]
 image: true
 ---
 

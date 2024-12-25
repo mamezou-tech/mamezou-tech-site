@@ -15,7 +15,7 @@ layout: layouts/base.njk
         <a class="lg:text-white lg:text-center lg:block text-sm"
            href="{{ en }}">Switch to English</a>
       </div>
-      {% elseif ja %}
+      {% elif ja %}
       <div class="relative lg:fixed lg:bottom-5 lg:right-5 lg:bg-blue-900 lg:bg-opacity-50 lg:p-2 lg:rounded-md lg:shadow-lg cursor-pointer">
         <a class="lg:text-white lg:text-center lg:block text-sm"
            href="{{ ja }}">日本語に切り替え</a>
@@ -32,9 +32,11 @@ layout: layouts/base.njk
         <div style="float: left; margin-bottom: 0.5rem">
         <span> Author: </span>
         {%- set github = author | githubName %}
-        {%- if github %}
+        {%- if github and github !== 'NA' %}
           <a href="/authors/{{ author }}/" title="{{ author }} の記事一覧">{{ author | safe }}
           <img width="40" height="40" style="margin-left: 0.2rem" alt="{{ author }}の画像" src="https://github.com/{{ github }}.png?size=40" /></a>
+        {%- elif github === 'NA' %}
+          <a href="/authors/{{ author }}/" title="{{ author }} の記事一覧">{{ author | safe }}</a>
         {%- else %}
           <span>{{ author | safe }}</span>
         {%- endif %}

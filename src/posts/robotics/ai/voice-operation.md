@@ -301,7 +301,7 @@ rate_limits.updatedの内容の例を以下へ示します。
 
 ### [error](https://platform.openai.com/docs/api-reference/realtime-server-events/error)
 
-APIリファレンスの[Session lifecycle events](https://platform.openai.com/docs/guides/realtime-model-capabilities#session-lifecycle-events)に記載されている通り、WebRTCのセッションを開始して30分経過するとセッションが強制的に切断されます。
+APIリファレンスの[Session lifecycle events](https://platform.openai.com/docs/guides/realtime-model-capabilities#session-lifecycle-events)に記載されている通り、WebRTCのセッションが確立して30分経過するとセッションが強制的に切断されます。
 
 ```text
 The maximum duration of a Realtime session is 30 minutes.
@@ -339,20 +339,19 @@ Realtime APIはステートフルなAPIですが、セッションを再生成�
 LLMとの会話はユーザとの音声の入出力のみで構成される訳ではなく、本イベントでシステムからテキスト形式で会話のアイテムを追加できます。
 用途としては以下の通りです。
 
-- response.doneイベントで呼ばれた関数呼び出し（`function_call`）の結果応答
-    - 関数呼び出しが失敗した場合にはその理由や対処方法
+- response.doneイベントで指定された関数呼び出し（`function_call`）の結果応答
+    - 関数呼び出しが失敗した場合にはその理由や対処方法を入力する
 
         :::info
         ロボットへの操作指示に成功した場合、無言で動作した方が使い勝手は良いため、今回は失敗時にのみ入力するようにしました
         :::
 
-    - IOやバッテリーといった状態の取得要求であればその情報
-- システムからの状態通知
-    - 警告や異常発生時の通知
+    - IOやバッテリーといった状態の取得要求であればその情報を入力する
+- システムからの状態（警告や異常）通知
 - 前回のセッションの会話の履歴の入力
     - 今回は実施していませんが、セッションを跨いで会話の文脈を引き継ぎたい場合に必要となります
 
-conversation.item.createの例を以下へ示します。call_idはresponse.doneイベントに含まれるfunction_callのcall_idと同値を設定します。
+関数呼び出しの結果応答の例を以下へ示します。call_idはresponse.doneイベントに含まれるfunction_callのcall_idと同値を設定します。
 
 ```json
 {

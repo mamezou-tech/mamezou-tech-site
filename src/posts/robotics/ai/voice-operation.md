@@ -28,7 +28,8 @@ SBCには制御アプリケーション以外にWebサーバーも動作し、�
 
 制御アプリケーションは複数のROS2ノードで構成され、これらのノードが[ROS2の通信](https://docs.ros.org/en/humble/How-To-Guides/Topics-Services-Actions.html)（トピック、サービス、アクション）を介して連携し、各機能を実現します。
 
-以下の図は主要ノードの構成イメージです。各種ハードウェアの通信ドライバのほか、robot_navigatorというノードが自律走行などの制御を統括します。RemoteOperationUIはrosbridge_websocketノードを中継して [roslibjs](https://github.com/RobotWebTools/roslibjs)でROS2側の各ノードと通信するWebアプリケーションであり、ROS2には直接は依存していません。
+以下の図は主要ノードの構成イメージです。各種ハードウェアの通信ドライバのほか、robot_navigatorというノードが自律走行などの制御を統括します。
+RemoteOperationUIはrosbridge_websocketノードを中継して[roslibjs](https://github.com/RobotWebTools/roslibjs)でROS2の各ノードと通信するWebアプリケーションであり、ROS2には直接依存していません。
 
 実際には他にも多くのトピックやノードが存在し、またノード間の通信は多対多の形で行われます。
 
@@ -53,7 +54,9 @@ RemoteOperationUIから各ROS2ノードが提供するトピックやサービ�
     - 清掃の初期位置へ移動する
     - 清掃を開始する
 
-コード上はトピックのメッセージの値を文字列化してLLMへ入力しているのみですが、適切な言い回しで回答してくれています。`カメラLEDのI/Oの値を教えて`のようにメッセージに含まれる一部の情報を回答させることも可能でした。予め閾値を指示しておき、バッテリーの電圧値が変化したら逐次LLMへ入力するようにすれば、「あと何分でバッテリーを交換すれば良い？」といった質問も答えられるかもしれません（今後試してゆきたいと思います）。
+コード上はトピックのメッセージの値を文字列化してLLMへ入力しているのみですが、適切な言い回しで回答してくれています。
+`カメラLEDのI/Oの値を教えて`のようにメッセージに含まれる一部の情報を回答させることも可能でした。
+予め閾値を指示しておき、バッテリーの電圧値を変化毎にLLMへ入力するようにすれば、「あと何分でバッテリーを交換すれば良い？」といった質問も答えられるかもしれません。今後試してゆきたいと思います。
 
 また走行機能には旋回方向に関するオプションがあるため音声入力で指示しています。どんな選択肢があるかも教えてくれます。
 
@@ -106,7 +109,7 @@ body: JSON.stringify({
     to add casual, relatable expressions (like "my suction cup feet!").`; 
     ```
 
-    - 多言語対応を考慮し、冒頭で設定された言語で話すように指示しています
+    - 多言語対応を考慮し、設定言語で話すように冒頭で指示しています
         - 指定しないと日本語で話しかけたのに第一声がスペイン語となる場合があったため、多言語対応の有無に関わらず明確に指定した方が良さそうです
     - ちなみにinstructionsはオプションで、指定しないと以下の内容となります
         - セッション開始後も[session.update](https://platform.openai.com/docs/api-reference/realtime-client-events/session)のイベントでinstructionsの内容は更新可能ですが通信回数を減らすためCreate sessionのリクエストボディに記述しています
@@ -164,7 +167,7 @@ body: JSON.stringify({
     - descriptionで関数や引数の説明を記述します
 
     :::info
-    凄く丁寧な関数コメントを記述している気分です。関数コメントを動的に取得して`description`に設定するような作りにすれば、I/F仕様とプロンプトで内容を共通化できて保守性が上がるかもと、いろいろアイデアを膨らませています。
+    凄く丁寧な関数コメントを記述している気分です。関数コメントを動的に取得して`description`へ設定するような作りにすれば、I/F仕様とプロンプトで内容を共通化できて保守性が上がるかもと、いろいろアイデアを膨らませています。
     :::
 
 ## サーバーからイベント受信
@@ -199,7 +202,7 @@ UIでセッションの確立状態を表示するために使用しています
     - レスポンスの生成毎に出力トークン数が増加するため、更新後のレートリミットが通知されます
     - この時点では通知された内容は予約値であり、最終的にはresponse.doneのタイミングで確定するようです
 7. [response.output_item.added](https://platform.openai.com/docs/api-reference/realtime-server-events/response/output_item)
-    - レスポンスの生成中に新しい会話アイテムが生成されたことが通知されます
+    - レスポンスの生成中に新しい会話アイテムが生成されたことの通知です
     - ここでは`清掃を開始して・・・`を受けて関数呼び出しが発生するため、これが新たな会話アイテムとして追加されています
 8. [conversation.item.created](https://platform.openai.com/docs/api-reference/realtime-server-events/conversation/item)
     - 新しい会話アイテムが生成されたことの通知です
@@ -208,7 +211,8 @@ UIでセッションの確立状態を表示するために使用しています
 
 10. [response.function_call_arguments.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response/function_call_arguments/done)
     - このイベントから関数の引数が含まれます
-    - これをトリガに関数を呼び出すことは可能ですが、APIリファレンスによると`Also emitted when a Response is interrupted, incomplete, or cancelled.`とあり、その場合の本イベントの扱いが不明のため、最後に通知されるresponse.doneのイベントを使用しています
+    - これをトリガに関数を呼び出すことは可能ですが、APIリファレンスによると以下の記述があり、その場合の本イベントの扱いが不明のため、最後に通知されるresponse.doneのイベントを使用しています
+        - `Also emitted when a Response is interrupted, incomplete, or cancelled.`
 11. [response.output_item.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response/output_item/done)
 12. [response.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response/done)
 
@@ -257,10 +261,12 @@ response.doneの内容の例を以下へ示します。
 }
 ```
 
-response.outputの配列にtypeがfunction_callの要素が存在したら、対応する関数を呼び出します。
+response.outputの配列にtypeがfunction_callの要素が存在したら、以下のフィールドを参照して対応する関数を呼び出します。
 
-nameがセッションの生成時に指定したtoolsの各要素のname（関数の識別子）に対応します。
-argumentsが各要素のparameters.propertiesに指定した引数に対応します。
+- name
+    - セッションの生成時に指定したtoolsのname（関数の識別子）に対応します
+- arguments
+    - セッションの生成時に指定したtoolsのparameters.propertiesで定義した引数に対応します
 
 call_idはサーバー側で発番したfunction_callの識別子です。関数呼び出しの結果を返してさらに応答させる場合に使用します（後述します）。
 
@@ -268,9 +274,9 @@ call_idはサーバー側で発番したfunction_callの識別子です。関数
 
 前述した通り、レスポンスの生成時に通知される更新後のレートリミットです。
 
-レスポンスの生成毎にRPD（Request per day）のカウントが1つ増加しますが、現時点ではRealtime APIのRPDは100と少ないため、すぐにリミットに達してしまいます。14m24s（100 Requests / 24h）経過すると新たに1つリクエストが可能となりますが、使用時は何度か会話を行うため、基本的にはリミットに達したら翌日まで待つ、といった運用となります。
+レスポンスの生成毎にRPD（Request per day）のカウントが1つ増加しますが、現時点ではRealtime APIのRPDは100と少ないため、すぐにリミットに達してしまいます。14m24s（100 Requests / 24h）経過すると新たに1つリクエストが可能となりますが、使用時は何度か会話するため、基本的にはリミットに達したら翌日まで待つ、といった運用となります。
 
-デモの開始時点でリミットまでの残数がいくつあるかは重要なので、rate_limits.updatedのイベントに含まれるRPDのカウントをUIに表示するようにしています。
+デモの開始時点でリミットまでの残数がいくつあるかは重要なので、rate_limits.updatedのイベントに含まれるRPDのカウントをUIで表示するようにしています。
 
 rate_limits.updatedの内容の例を以下へ示します。
 
@@ -320,9 +326,9 @@ The maximum duration of a Realtime session is 30 minutes.
 ```
 
 :::info
-Realtime APIはステートフルなAPIですが、セッションを再開するとそれまでの会話の履歴は失われます。
-今回のアプリケーションではロボットへの指示が主な用途で会話の履歴がそれほど重要ではないため、特に対処はしていませんが、
-会話の文脈を引き継ぎたい場合は、会話の履歴（テキストデータ）をクライアント側で保持しておき、セッションの再開時にconversation.item.createでLLMへ入力するといった対処が必要そうです。
+Realtime APIはステートフルなAPIですが、セッションを再生成するとそれまでの会話の履歴は失われます。
+今回のアプリケーションではロボットへの指示が主な用途で会話の履歴がそれほど重要ではないため、特に対処はしていません。
+会話の文脈を引き継ぎたい場合は、会話の履歴（テキストデータ）をクライアント側で保持しておき、セッションの生成時にconversation.item.createでLLMへ再入力する必要がありそうです。
 :::
 
 ## サーバーへのイベント送信
@@ -331,13 +337,15 @@ Realtime APIはステートフルなAPIですが、セッションを再開す�
 
 ### [conversation.item.create](https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item)
 
-会話に新しいアイテムを追加するイベントです。LLMとの会話はユーザとの音声の入出力のみで構成される訳ではなく、本イベントでシステムからテキストデータで会話のアイテムを追加することができます。用途としては以下です。
+会話へ新しいアイテムを追加するイベントです。
+LLMとの会話はユーザとの音声の入出力のみで構成される訳ではなく、本イベントでシステムからテキスト形式で会話のアイテムを追加できます。
+用途としては以下の通りです。
 
 - response.doneイベントで呼ばれた関数呼び出し（`function_call`）の結果応答
     - 関数呼び出しが失敗した場合にはその理由や対処方法
 
         :::info
-        ロボットへの操作指示で成功した場合は無言で仕事を始めた方が使い勝手が良いため、今回は失敗時にのみ入力するようにしました
+        ロボットへの操作指示に成功した場合、無言で動作した方が使い勝手は良いため、今回は失敗時にのみ入力するようにしました
         :::
 
     - IOやバッテリーといった状態の取得要求であればその情報
@@ -360,7 +368,7 @@ conversation.item.createの例を以下へ示します。call_idはresponse.done
 }
 ```
 
-関数呼び出しの結果応答ではなく、システムからの能動的な通知である場合は、itemのtypeは`message`とします。以下の例ではroleは`system`としていますが、前回のセッション時の会話の履歴でユーザからの音声（をテキスト化したもの）を再入力する場合はroleは`user`となります。
+関数呼び出しの結果応答ではなく、システムからの能動的な通知である場合は、itemのtypeは`message`とします。以下の例ではroleを`system`としていますが、前回のセッションの会話の履歴からユーザの音声（をテキスト化したもの）を再入力する場合はroleを`user`とします。
 
 ```json
 {
@@ -381,7 +389,7 @@ conversation.item.createの例を以下へ示します。call_idはresponse.done
 
 ### [response.create](https://platform.openai.com/docs/api-reference/realtime-client-events/response)
 
-conversation.item.createで会話にアイテムを追加した後に、応答の音声を生成させる場合に使用します（会話にアイテムを追加しただけでは音声は生成されません）。
+conversation.item.createで会話へアイテムを追加した後に、応答の音声を生成させる場合に使用します（会話にアイテムを追加しただけでは、音声は生成されません）。
 
 以下の例はfunction_call_outputの応答の音声を生成するときのイベントの内容です。response.instructionsで応答の対象を明示していますが、指定しなくても直前のconversation.item.createの内容に対する応答の音声が生成されるため、省略は可能です。
 
@@ -407,18 +415,20 @@ conversation.item.createで会話にアイテムを追加した後に、応答�
 }
 ```
 
-以下はバッテリー低下時のconversation.item.createを送信してresponse.createを送信した後に生成された応答の音声です(**再生すると音声が出ます。周囲の環境にご注意ください**)。
+以下はバッテリー低下時に生成された応答の音声です(**再生すると音声が出ます。周囲の環境にご注意ください**)。
 
 <video width="40%" playsinline controls>
   <source src="https://i.gyazo.com/0743e6f9a1252384845a7f54445d89e3.mp4" type="video/mp4"/>
 </video>
 
-緊急地震速報みたいな感じになってしまいました。😅
+緊急地震速報みたいな感じになってしまいました（😅）。
 
 ## まとめ
 
 現時点ではRPDが100と制限が厳しく、実運用での活用にはまだ課題が残りますが、これは時間の経過とともに解決されていくと考えています。
 
-自律走行ロボットのUIについて、工場や倉庫などの使用環境では、手袋を着用していたり、両手がふさがっていたりするため、タッチパネルなどのGUIでの操作が困難なケースがあります。音声操作を組み込むことで、このような環境でも直感的な操作が可能となり、使用性を大きく向上できると期待しています。従来、音声操作機能を実用レベルで実装するには技術的なハードルが高く、開発コストも大きな課題でしたが、LLMの活用によってこれらの障壁が大幅に下がりつつあります。
+自律走行ロボットのUIについて、工場や倉庫などの使用環境では、手袋を着用していたり、両手がふさがっていたりするため、タッチパネルなどのGUIでの操作は困難なケースがあります。
+音声操作を組み込むことで、このような環境でも直感的な操作が可能となり、使用性を大きく向上できると期待しています。
+従来、音声操作機能を実用レベルで実装するには技術的なハードルが高く、開発コストも大きな課題でしたが、LLMの活用によってこれらの障壁が大幅に下がりつつあります。
 
 近い将来、様々なロボットプロジェクトにおいて、音声操作機能の実装が当たり前となる時代が来るのではないでしょうか。

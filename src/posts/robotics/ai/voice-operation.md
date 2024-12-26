@@ -2,7 +2,7 @@
 title: OpenAI Realtime APIのWebRTCでロボットを操作する
 author: masayuki-kono
 tags: [ロボット開発, 自律走行ロボット, ROS2, RealtimeAPI, OpenAI, WebRTC]
-date: 2025-12-27
+date: 2024-12-27
 image: true
 ---
 

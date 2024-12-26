@@ -170,7 +170,7 @@ export const voiceCommandTools = [
 
 ## サーバーからのイベント受信
 
-セッション確立後、音声入力が受け付けられるようになり、会話中にサーバーからは様々なイベントが通知されますが、今回は以下のtypeのイベントをハンドリングしました。
+セッション確立後、音声がメディアストリームとしてサーバー間で入出力されます。会話中にサーバーから様々なイベントが通知されますが、今回は以下のtypeのイベントをハンドリングしました。
 
 ### [session.created](https://platform.openai.com/docs/api-reference/realtime-server-events/session)
 
@@ -330,7 +330,7 @@ Realtime APIはステートフルなAPIですが、セッションを再生成�
 
 ## サーバーへのイベント送信
 
-ユーザからの音声入力はRTCPeerConnectionを介してそのままサーバーへ送信されますが、以下のtypeのイベントをクライアントからサーバーへ送信するケースがあります。
+ユーザからの音声入力はメディアストリームとしてサーバーへ送信されますが、以下のtypeのイベントをシステムからサーバーへ送信するケースがあります。
 
 ### [conversation.item.create](https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item)
 

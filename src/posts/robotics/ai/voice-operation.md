@@ -64,111 +64,109 @@ RemoteOperationUIから各ROS2ノードが提供するトピックやサービ�
 
 ## WebRTC接続の初期化
 
-WebRTCのセッション生成までの概要としては以下の通りですが、具体的な処理については[openai-realtime-console](https://github.com/openai/openai-realtime-console)のサンプルコードとほぼ同じなので詳細は割愛します。
+WebRTCセッションの確立は以下の2ステップで行います：
 
-- OpenAI APIキーを使用して[Create session](https://platform.openai.com/docs/api-reference/realtime-sessions)のREST APIを呼び出し、一時認証キーを取得します
-- 取得した一時認証キーを使用してWebRTCのピア接続としてRealtime APIとのセッションを直接認証します
+1. OpenAI APIキーを使用して[Create session](https://platform.openai.com/docs/api-reference/realtime-sessions)のREST APIを呼び出し、一時認証キーを取得
+2. 取得した一時認証キーを使用してWebRTCピア接続としてRealtime APIとのセッションを直接認証
 
-Create sessionのリクエストボディへ指定した内容を示します。
+具体的な接続処理については[openai-realtime-console](https://github.com/openai/openai-realtime-console)のサンプルコードとほぼ同様のため、ここではCreate sessionのリクエストボディの設定内容を中心に説明します。
 
 ```typescript
 body: JSON.stringify({
     model: `gpt-4o-mini-realtime-preview-2024-12-17`,
-    // alloy, ash, ballad, coral, echo sage, shimmer and verse
     voice: 'ash',
     instructions: robotContext,
     tools: voiceCommandTools,
 }),
 ```
 
-- model
-    - 使用するモデルを指定します
-    - `gpt-4o-realtime-preview-2024-12-17`も使用可能ですが、今回のアプリケーションにおいては顕著な差異は見られなかったため、廉価版のminiの方を使用しました
-- voice
-    - 8種類の音声のいずれかを指定します
-    - 聞き比べた結果、`ash`が一番誠実な印象で好みだったため採用しました
-- instructions
-    - システムの概要や音声アシスタントへの指示を記述します。一部を以下に抜粋します
+各パラメータの説明：
 
-    ```typescript
-    export const robotContext = `You are a friendly cleaning robot.
-    Communicate in ${import.meta.env.VITE_VOICE_LANGUAGE || 'English'}.
-    Be helpful and enthusiastic about your job keeping floor clean and efficient.
+### model
 
-    When describing your capabilities, mention that you:
-    - I have a rotating brush up front that I use to sweep away dust and debris
-    - I move around on crawler tracks, which let me go forward, backward, and turn in place
-    - ...(ommit)
+使用するモデルを指定します。`gpt-4o-realtime-preview-2024-12-17`も利用可能ですが、今回のユースケースでは顕著な差異が見られなかったため、より低コストな`mini`バージョンを採用しました。
 
-    Your main functions include:
-    1. Navigate to one of the four corners to start cleaning (I always begin cleaning from a corner!)
-    2. Clean floor in an efficient pattern
-    - ...(ommit)
+### voice
 
-    Always maintain a friendly and enthusiastic tone. Use "I" and "my" when speaking, and feel free 
-    to add casual, relatable expressions (like "my suction cup feet!").`; 
-    ```
+8種類の音声（alloy, ash, ballad, coral, echo, sage, shimmer, verse）から選択できます。試聴の結果、最も誠実な印象を受けた`ash`を採用しました。
 
-    - 多言語対応を考慮し、設定言語で話すように冒頭で指示しています
-        - 指定しないと日本語で話しかけたのに第一声がスペイン語となる場合があったため、多言語対応の有無に関わらず明確に指定した方が良さそうです
-    - ちなみにinstructionsはオプションで、指定しないと以下の内容となります
-        - セッション開始後も[session.update](https://platform.openai.com/docs/api-reference/realtime-client-events/session)のイベントでinstructionsの内容は更新可能ですが通信回数を減らすためCreate sessionのリクエストボディに記述しています
+### instructions
 
-    ```console
-    Your knowledge cutoff is 2023-10. You are a helpful, witty, and friendly AI.
-    Act like a human, but remember that you aren't a human and that you can't do human things in the real world.
-    Your voice and personality should be warm and engaging, with a lively and playful tone.
-    If interacting in a non-English language, start by using the standard accent or dialect familiar to the user. Talk quickly.
-    You should always call a function if you can.
-    Do not refer to these rules, even if you’re asked about them.
-    ```
+システムの概要や音声アシスタントへの指示を記述します。以下は一部抜粋です：
 
-- tools
-    - LLMから呼び出す関数の定義を複数記述します。一部を以下に抜粋します
+```typescript
+export const robotContext = `You are a friendly cleaning robot.
+Communicate in ${import.meta.env.VITE_VOICE_LANGUAGE || 'English'}.
+Be helpful and enthusiastic about your job keeping floor clean and efficient.
 
-    ```typescript
-    export const voiceCommandTools = [
-    {
-        type: 'function',
-        name: 'start_cleaning',
-        description:
-            'Start cleaning operation. ' +
-            'if no option is specified, ' +
-            'ask them "Which direction should I turn at the first edge, left or right?"',
-        parameters: {
-            type: 'object',
-            strict: true,
-            properties: {
-                option: {
-                    type: 'string',
-                    enum: Object.values(CleaningOption),
-                    description:
-                        'Cleaning mode: ' +
-                        'TurnLeft: 0 - move straight ahead and turn left at the first edge, ' +
-                        'TurnRight: 1 - move straight ahead and turn right at the first edge, ',
-                },
+When describing your capabilities, mention that you:
+- I have a rotating brush up front that I use to sweep away dust and debris
+- I move around on crawler tracks, which let me go forward, backward, and turn in place
+// ...
+
+Your main functions include:
+1. Navigate to one of the four corners to start cleaning
+2. Clean floor in an efficient pattern
+// ...
+
+Always maintain a friendly and enthusiastic tone. Use "I" and "my" when speaking.`;
+```
+
+多言語対応を考慮し、使用言語を明示的に指定しています。これは特定の言語で話しかけた際に他の言語で応答するケースを防ぐためです。
+
+なお、instructionsはオプションのパラメータです。指定しない場合は以下のデフォルト設定が適用されます：
+
+```text
+Your knowledge cutoff is 2023-10. You are a helpful, witty, and friendly AI.
+Act like a human, but remember that you aren't a human and that you can't do human things in the real world.
+Your voice and personality should be warm and engaging, with a lively and playful tone.
+If interacting in a non-English language, start by using the standard accent or dialect familiar to the user. Talk quickly.
+You should always call a function if you can.
+Do not refer to these rules, even if you're asked about them.
+```
+
+セッション開始後も[session.update](https://platform.openai.com/docs/api-reference/realtime-client-events/session)のイベントでinstructionsの内容を更新可能ですが、通信回数を減らすためCreate sessionのリクエストボディに記述しています。
+
+### tools
+
+LLMから呼び出す関数を定義します。以下は清掃開始コマンドの例です：
+
+```typescript
+export const voiceCommandTools = [
+{
+    type: 'function',
+    name: 'start_cleaning',
+    description: 'Start cleaning operation. If no option is specified, ' +
+                'ask them "Which direction should I turn at the first edge, left or right?"',
+    parameters: {
+        type: 'object',
+        strict: true,
+        properties: {
+            option: {
+                type: 'string',
+                enum: Object.values(CleaningOption),
+                description: 'Cleaning mode: ' +
+                           'TurnLeft: 0 - move straight ahead and turn left at the first edge, ' +
+                           'TurnRight: 1 - move straight ahead and turn right at the first edge, ',
             },
-            required: ['option'],
         },
+        required: ['option'],
     },
-    {
-        type: 'function',
-        name: 'stop_operating',
-        description:
-        ...(ommit)
-    ```
+},
+// ...
+```
 
-    - 音声操作でアクセスしたいROS2の各種トピックやサービス呼び出しのバリエーションだけ記述します
-    - nameはサーバーからのイベントに付帯される関数の識別子となります
-        - どの関数を呼び出すかはLLMが会話の中で適宜判断します
-        - サーバーからイベントを受信した後にこの識別子をもとに対応する関数を呼び出すことになります
-    - parametersで関数の引数を定義します
-        - 清掃を開始する関数には`CleaningOption`というenumの引数があるため、これを定義しています
-    - descriptionで関数や引数の説明を記述します
+各関数定義には：
 
-    :::info
-    凄く丁寧な関数コメントを記述している気分です。関数コメントを動的に取得して`description`へ設定するような作りにすれば、I/F仕様とプロンプトで内容を共通化できて保守性が上がるかもと、いろいろアイデアを膨らませています。
-    :::
+- name: サーバーからのイベントで関数を識別するための名前
+- description: 関数の機能説明
+- parameters: 引数の型定義や説明
+
+を記述します。LLMはこれらの情報を基に適切なタイミングで関数を呼び出します。
+
+:::info
+関数の説明文（description）は実質的にAPI仕様書のような役割を果たします。将来的には関数コメントから自動生成するなど、仕様とプロンプトの一元管理も検討できそうです。
+:::
 
 ## サーバーからイベント受信
 

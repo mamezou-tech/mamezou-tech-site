@@ -206,7 +206,6 @@ UIでセッションの確立状態を表示するために使用しています
     - 新しい会話アイテムが生成されたことの通知です
     - このイベントにも関数の識別子は付帯されていますが、関数の引数は含まれません
 9. [response.function_call_arguments.delta](https://platform.openai.com/docs/api-reference/realtime-server-events/response/function_call_arguments)
-
 10. [response.function_call_arguments.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response/function_call_arguments/done)
     - このイベントから関数の引数が含まれます
     - これをトリガに関数を呼び出すことは可能ですが、APIリファレンスによると以下の記述があり、その場合の本イベントの扱いが不明のため、最後に通知されるresponse.doneのイベントを使用しています
@@ -274,7 +273,7 @@ call_idはサーバー側で発番したfunction_callの識別子です。関数
 
 レスポンスの生成毎にRPD（Request per day）のカウントが1つ増加しますが、現時点ではRealtime APIのRPDは100と少ないため、すぐにリミットに達してしまいます。14m24s（100 Requests / 24h）経過すると新たに1つリクエストが可能となりますが、使用時は何度か会話するため、基本的にはリミットに達したら翌日まで待つ、といった運用となります。
 
-デモの開始時点でリミットまでの残数がいくつあるかは重要なので、rate_limits.updatedのイベントに含まれるRPDのカウントをUIで表示するようにしています。
+デモ中にリミットまでの残数がいくつあるかを確認できることは重要なので、rate_limits.updatedのイベントに含まれるRPDのカウントをUIで表示するようにしています。
 
 rate_limits.updatedの内容の例を以下へ示します。
 

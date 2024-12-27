@@ -50,6 +50,7 @@ RemoteOperationUIから各ROS2ノードが提供するトピックやサービ�
 - 各ノードからサブスクライブしたトピックのメッセージの値を確認する
     - バッテリーの電圧値
     - I/O
+    - 運転状態
 - トピックのパブリッシュやサービスを呼び出す
     - 清掃の初期位置へ移動する
     - 清掃を開始する
@@ -62,12 +63,16 @@ RemoteOperationUIから各ROS2ノードが提供するトピックやサービ�
 
 以降でRealtime APIをどのようにアプリケーションに組み込んだかを解説します。
 
-## WebRTC接続の初期化
+## WebRTCセッションの確立
 
 WebRTCセッションの確立は以下の2ステップで行います：
 
-1. OpenAI APIキーを使用して[Create session](https://platform.openai.com/docs/api-reference/realtime-sessions)のREST APIを呼び出し、一時認証キーを取得
-2. 取得した一時認証キーを使用してWebRTCピア接続としてRealtime APIとのセッションを直接認証
+1. OpenAI APIキーを使用して`https://api.openai.com/v1/realtime/sessions`へPOSTし、WebRTCのSFUサーバーから一時認証キーを取得
+    - リクエストボディの仕様は[Create session](https://platform.openai.com/docs/api-reference/realtime-sessions)を参照
+2. 取得した一時認証キーを使用して`https://api.openai.com/v1/realtime`へPOSTし、WebRTCセッションを確立
+    - 音声の再生用にaudio要素を生成
+    - [getUserMedia](https://developer.mozilla.org/ja/docs/Web/API/MediaDevices/getUserMedia)でマイクのメディアストリームを取得
+    - HTTPのRequest/ResponseでSDPを交換
 
 具体的な接続処理については[openai-realtime-console](https://github.com/openai/openai-realtime-console)のサンプルコードとほぼ同様のため、ここではCreate sessionのリクエストボディの設定内容を中心に説明します。
 
@@ -323,7 +328,7 @@ The maximum duration of a Realtime session is 30 minutes.
 ```
 
 :::info
-Realtime APIはステートフルなAPIですが、セッションを再生成するとそれまでの会話の履歴は失われます。
+Realtime APIのセッションはステートフルですが、セッションを再生成するとそれまでの会話の履歴は失われます。
 今回のアプリケーションではロボットへの指示が主な用途で会話の履歴がそれほど重要ではないため、特に対処はしていません。
 会話の文脈を引き継ぎたい場合は、会話の履歴（テキストデータ）をクライアント側で保持しておき、セッションの生成時にconversation.item.createでLLMへ再入力する必要がありそうです。
 :::

@@ -63,12 +63,18 @@ function checkFormat(column: string) {
   if (lines.length < 3) {
     return false;
   }
-  const [, emptyLine, ...payloadLines] = lines;
+  const [title, emptyLine, ...payloadLines] = lines;
+  if (title.length < 10) {
+    console.warn('the title is too short', title)
+    return false;
+  }
   if (emptyLine.trim() !== '') {
-    return false; // The second line is not empty
+    console.warn('The second line is not empty')
+    return false;
   }
   if (payloadLines.length === 0) {
-    return false; // No payload
+    console.warn('No payload')
+    return false;
   }
   return true;
 }
@@ -214,13 +220,26 @@ function today() {
 }
 
 async function generateImage(column: string, date: string) {
-  const response = await openai.images.generate({
-    prompt: `Generate a cartoon-like image inspired by the following column written by 豆香 (a cheerful and cute Japanese girl). 
-Focus on visually representing the key themes and ideas from the column. 
-Include both characters and objects related to the topic, but avoid displaying any text in the image. 
-Ensure that the image is vivid and playful
+  const promptSuggestion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'user',
+        content: `output image generation **prompt** suitable for the following column written by 豆香(japanese cute girl) .
+- The image should be cartoon-like.
+- Include characters as well as objects whenever possible.
+- Tha prompt should be in English.
 
-"${column}"`,
+# Column
+${column}
+`
+      }
+    ],
+  })
+  console.log(promptSuggestion.choices[0].message.content)
+
+  const response = await openai.images.generate({
+    prompt: promptSuggestion.choices[0].message.content || column,
     model: 'dall-e-3',
     size: '1024x1024',
     response_format: 'b64_json',

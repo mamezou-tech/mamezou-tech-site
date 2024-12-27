@@ -164,12 +164,25 @@ function today() {
 }
 
 async function generateImage(column: string, date: string) {
-  const response = await openai.images.generate({
-    prompt: `generate images suitable for the following column written by 豆香(japanese cute girl) .
+  const promptSuggestion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'user',
+        content: `output image generation **prompt** suitable for the following column written by 豆香(japanese cute girl) .
 - The image should be cartoon-like.
 - Include characters as well as objects whenever possible.
+- Tha prompt should be in English.
 
-"${column}"`,
+# Column
+${column}
+`
+      }
+    ],
+  })
+
+  const response = await openai.images.generate({
+    prompt: promptSuggestion.choices[0].message.content || column,
     model: 'dall-e-3',
     size: '1024x1024',
     response_format: 'b64_json',

@@ -65,7 +65,7 @@ RemoteOperationUIから各ROS2ノードが提供するトピックやサービ�
 
 ## WebRTCセッションの確立
 
-WebRTCセッションの確立は以下の2ステップで行います：
+WebRTCセッションの確立は以下の2ステップで行います。
 
 1. OpenAI APIキーを使用して`https://api.openai.com/v1/realtime/sessions`へPOSTし、WebRTCのSFUサーバーから一時認証キーを取得
     - リクエストボディの仕様は[Create session](https://platform.openai.com/docs/api-reference/realtime-sessions)を参照
@@ -86,7 +86,7 @@ body: JSON.stringify({
 }),
 ```
 
-各パラメータの説明：
+各パラメータの説明を以下に示します。
 
 ### model
 
@@ -98,7 +98,7 @@ body: JSON.stringify({
 
 ### instructions
 
-システムの概要や音声アシスタントへの指示を記述します。以下は一部抜粋です：
+システムの概要や音声アシスタントへの指示を記述します。以下は一部抜粋です。
 
 ```typescript
 export const robotContext = `You are a friendly cleaning robot.
@@ -120,7 +120,7 @@ Always maintain a friendly and enthusiastic tone. Use "I" and "my" when speaking
 
 多言語対応を考慮し、使用言語を明示的に指定しています。これは特定の言語で話しかけた際に他の言語で応答するケースを防ぐためです。
 
-なお、instructionsはオプションのパラメータです。指定しない場合は以下のデフォルト設定が適用されます：
+なお、instructionsはオプションのパラメータです。指定しない場合は以下のデフォルト設定が適用されます。
 
 ```text
 Your knowledge cutoff is 2023-10. You are a helpful, witty, and friendly AI.
@@ -135,7 +135,7 @@ Do not refer to these rules, even if you're asked about them.
 
 ### tools
 
-LLMから呼び出す関数を定義します。以下は清掃開始コマンドの例です：
+LLMから呼び出す関数を定義します。以下は清掃開始コマンドの例です。
 
 ```typescript
 export const voiceCommandTools = [
@@ -162,13 +162,11 @@ export const voiceCommandTools = [
 // ...
 ```
 
-各関数定義には：
+各関数定義には以下を記述します。LLMはこれらの情報を基に適切なタイミングで関数を呼び出します。
 
 - name: サーバーからのイベントで関数を識別するための名前
 - description: 関数の機能説明
 - parameters: 引数の型定義や説明
-
-を記述します。LLMはこれらの情報を基に適切なタイミングで関数を呼び出します。
 
 :::info
 関数の説明文（description）は実質的にAPI仕様書のような役割を果たします。将来的には関数コメントから自動生成するなど、仕様とプロンプトの一元管理も検討できそうです。
@@ -185,7 +183,7 @@ export const voiceCommandTools = [
 1. クライアントがユーザーの音声データをサーバーへ送信
 2. サーバーが音声を解析し、`response.done`イベントを送信
     - このイベントには清掃開始関数の呼び出し情報が含まれる
-3. クライアントが`response.done`に含まれる関数情報に基づいて清掃開始関数を実行
+3. クライアントが`response.done`の関数情報に基づいて清掃開始関数を実行
 4. クライアントが関数の実行結果を`conversation.item.create`イベントでサーバーへ送信
     - この例では清掃開始の失敗を通知
 5. サーバーが応答を生成し、`response.done`イベントを送信
@@ -194,7 +192,7 @@ export const voiceCommandTools = [
 7. クライアントが受信した音声データをスピーカーから出力
     - 清掃開始の失敗理由と対処方法が説明される
 
-このフローの特徴は、会話アイテムが2つの方法で生成される点です：
+このフローの特徴は、会話アイテムが2つの方法で生成される点です。
 
 1. ユーザーの音声入力
 2. クライアントコードからの`conversation.item.create`イベント
@@ -204,12 +202,12 @@ export const voiceCommandTools = [
 :::info
 関数の呼び出しが失敗した場合、クライアントから通知した失敗理由がLLMによって解釈され、音声で出力されるだけでなく、状況に応じて別の関数呼び出しが自動的に行われることもあります。
 
-例えば、セッション生成時にtoolsで定義した各関数に対して:
+例えば、セッション生成時にtoolsで定義した各関数に対して、
 
 - 実行のための事前条件
 - 事前条件を満たすために必要な関数の呼び出し順序
 
-をinstructionsに記述しておくことで、LLMが自動的に:
+をinstructionsに記述しておくことで、LLMが自動的に、
 
 1. ユーザの指示を解釈
 2. 必要な事前条件を確認

@@ -194,8 +194,8 @@ export const voiceCommandTools = [
 
 このフローの特徴は、会話アイテムが2つの方法で生成される点です。
 
-1. ユーザーの音声入力
-2. クライアントコードからの`conversation.item.create`イベント
+- ユーザーの音声入力
+- クライアントコードからの`conversation.item.create`イベント
 
 どちらの場合も、最終的にサーバーからの`response.done`イベントとして応答が返されます。
 

@@ -72,6 +72,7 @@ WebRTCセッションの確立は以下の2ステップで行います：
 2. 取得した一時認証キーを使用して`https://api.openai.com/v1/realtime`へPOSTし、WebRTCセッションを確立
     - 音声の再生用にaudio要素を生成
     - [getUserMedia](https://developer.mozilla.org/ja/docs/Web/API/MediaDevices/getUserMedia)でマイクのメディアストリームを取得
+    - データチャネルを生成してイベントハンドラを登録
     - HTTPのRequest/ResponseでSDPを交換
 
 具体的な接続処理については[openai-realtime-console](https://github.com/openai/openai-realtime-console)のサンプルコードとほぼ同様のため、ここではCreate sessionのリクエストボディの設定内容を中心に説明します。
@@ -173,13 +174,55 @@ export const voiceCommandTools = [
 関数の説明文（description）は実質的にAPI仕様書のような役割を果たします。将来的には関数コメントから自動生成するなど、仕様とプロンプトの一元管理も検討できそうです。
 :::
 
+## LLMから関数が呼び出されるまでの流れ
+
+セッション確立後、音声はメディアストリーム、イベント（JSONデータ）はデータチャネルを介してクライアントとサーバー間でやりとりされます。
+
+ユーザが`清掃を開始して、右旋回で`とマイクへ入力した後に、清掃開始の結果がスピーカーから出力されるまでの流れを一例として示します。実際には様々なtypeのイベントがサーバーから通知されますが、ここでは代表的なイベントとのみを示しています。
+
+![清掃開始シーケンス](/img/robotics/ai/start-cleaning-sequence.png)
+
+1. [Client] 音声データをサーバーへ送信する
+2. [Server] response.doneのイベントをクライアントへ送信する
+      - 清掃開始の関数と引数の情報が含まれる
+3. [Client] response.doneに付帯されたfunction_callに対応する関数を呼び出す
+      - 清掃開始の関数を呼び出す
+4. [Client] conversation.item.createのイベントをサーバーへ送信する
+      - 清掃開始の関数の呼び出しに失敗した旨が含まれる
+5. [Server] response.doneのイベントをクライアントへ送信する
+      - 音声出力のテキストが含まれる
+6. [Server] 音声データをクライアントへ送信する
+7. [Client] 音声データをスピーカーから出力する
+      - 清掃開始に失敗した旨が出力される
+
+ポイントとしては、会話のアイテムが生成されるトリガとして、音声入力とユーザコードからのイベント（conversation.item.create）の2種類があり、それらの応答として最終的にresponse.doneのイベントがサーバーから通知されることです。
+
+今回はユーザコードで音声データは扱っていませんが、response.doneのイベントに付帯されたメッセージから音声出力のテキストを取得できます。
+
+:::info
+関数の呼び出しが失敗した場合、クライアントから通知した失敗理由がLLMによって解釈され、音声で出力されるだけでなく、状況に応じて別の関数呼び出しが自動的に行われることもあります。
+
+例えば、セッション生成時にtoolsで定義した各関数に対して:
+
+- 実行のための事前条件
+- 事前条件を満たすために必要な関数の呼び出し順序
+
+をinstructionsに記述しておくことで、LLMが自動的に:
+
+1. ユーザの指示を解釈
+2. 必要な事前条件を確認
+3. 条件を満たすために必要な関数を順次呼び出し
+
+という一連の制御を行うことが可能になるかもしれません。これにより、ユーザは細かい実行手順を意識することなく、必要最低限の指示でロボットを操作できるようになります。
+:::
+
 ## サーバーからのイベント受信
 
-セッション確立後、音声がメディアストリームとしてサーバー間で入出力されます。会話中にサーバーから様々なイベントが通知されますが、今回は以下のtypeのイベントをハンドリングしました。
+会話中にサーバーから様々なイベントが通知されますが、今回は以下のtypeのイベントをハンドリングしました。
 
 ### [session.created](https://platform.openai.com/docs/api-reference/realtime-server-events/session)
 
-文字通りセッションの確立後に通知されるイベントです。
+セッションの確立後に通知されるイベントです。
 UIでセッションの確立状態を表示するために使用しています。
 
 ### [response.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response/done)
@@ -235,8 +278,8 @@ response.doneの内容の例を以下へ示します。
         "object": "realtime.item",
         "type": "function_call",
         "status": "completed",
-        "name": "start_cleaning",　               // 関数の識別子
-        "call_id": "call_BaRhg5LjLJ2HnmAo",　     // サーバー側で発番したfunction_callの識別子
+        "name": "start_cleaning",                 // 関数の識別子
+        "call_id": "call_BaRhg5LjLJ2HnmAo",       // サーバー側で発番したfunction_callの識別子
         "arguments": "{\"option\":\"TurnRight\"}" // 関数の引数
       }
     ],
@@ -335,7 +378,7 @@ Realtime APIのセッションはステートフルですが、セッション�
 
 ## サーバーへのイベント送信
 
-ユーザからの音声入力はメディアストリームとしてサーバーへ送信されますが、以下のtypeのイベントをシステムからサーバーへ送信するケースがあります。
+ユーザからの音声入力はメディアストリームを介してサーバーへ送信されますが、以下のtypeのイベントをシステムからサーバーへ送信するケースがあります。
 
 ### [conversation.item.create](https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item)
 

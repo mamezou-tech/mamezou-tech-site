@@ -13,32 +13,32 @@
       "url": "/blogs/2024/07/18/write-java-with-vscode-2024/"
     },
     {
+      "title": "OpenAI Realtime API の音声会話アプリを WebRTC を使って実装する",
+      "url": "/blogs/2024/12/21/openai-realtime-api-webrtc/"
+    },
+    {
       "title": "文字コード これだけは覚えておこう ～シフトJIS編～",
       "url": "/blogs/2024/06/16/moji-code1/"
     },
     {
-      "title": "Google Test を使ってみる（その５：GoogleMock編）",
-      "url": "/blogs/2023/10/08/google-test-05/"
+      "title": "雑用が会社の利益に変わる瞬間",
+      "url": "/blogs/2024/12/23/miscellaneous-work/"
     },
     {
-      "title": "GitHub Actions - 構成変数(環境変数)が外部設定できるようになったので用途を整理する",
-      "url": "/blogs/2023/01/16/github-actions-configuration-variables/"
-    },
-    {
-      "title": "新登場の OpenAI の Realtime API でAIと音声会話する",
-      "url": "/blogs/2024/10/07/openai-realtime-api-intro/"
-    },
-    {
-      "title": "【devcontainer完全ガイド】DockerとWSLで最強のイマドキ開発環境を手に入れよう！",
-      "url": "/blogs/2024/10/11/devcontainer/"
-    },
-    {
-      "title": "手書き風ドローツール Excalidraw のススメ",
-      "url": "/blogs/2023/03/22/use-excalidraw/"
+      "title": "Windows Terminal で Git Bash を快適に使う",
+      "url": "/blogs/2023/09/08/windows-terminal-with-git-bash/"
     },
     {
       "title": "IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）",
       "url": "/iot/internet-of-things-15/"
+    },
+    {
+      "title": "Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする",
+      "url": "/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/"
+    },
+    {
+      "title": "Google Test を使ってみる（その５：GoogleMock編）",
+      "url": "/blogs/2023/10/08/google-test-05/"
     }
   ]
 }

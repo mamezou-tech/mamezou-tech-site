@@ -20,7 +20,7 @@ Realtime APIのWebRTC対応については以下の記事でもご紹介して�
 
 ![システム構成](/img/robotics/ai/system-structure-related-to-sbc-proto-2nd.png)
 
-SBCには制御アプリケーション以外にWebサーバーも動作し、遠隔操作用のWebUI（図中のRemoteOperationUI）を提供します。このWebUIを操作することで、自律清掃の開始や停止、手動操作が行えます。
+SBCには制御アプリケーション以外にWebサーバーも動作し、遠隔操作用のWebUI（図中のRemoteOperationUI）を提供します。このWebUIを操作することで、自律走行の開始や停止、手動操作が行えます。
 
 今回はこのRemoteOperationUIに音声操作機能を組み込みました。
 
@@ -35,7 +35,7 @@ RemoteOperationUIはrosbridge_websocketノードを中継して[roslibjs](https:
 
 ![ノード構成](/img/robotics/ai/node-structure-proto-2nd.png)
 
-RemoteOperationUIから各ROS2ノードが提供するトピックやサービスにアクセス可能であり、Realtime APIからこれらのトピックやサービスを利用できるようにしました。
+RemoteOperationUIは各ROS2ノードが提供するトピックやサービスにアクセス可能であり、Realtime APIからこれらのトピックやサービスを利用できるようにしました。
 
 ## デモ動画
 
@@ -57,7 +57,10 @@ RemoteOperationUIから各ROS2ノードが提供するトピックやサービ�
 
 コード上はトピックのメッセージの値を文字列化してLLMへ入力しているのみですが、適切な言い回しで回答してくれています。
 動画には含まれていませんが、例えば、`カメラLEDのI/Oの値を教えて`のようにメッセージに含まれる一部の情報を回答させることも可能でした。
-また、バッテリーの電圧値を変化毎にLLMへ入力し、予め閾値を指示しておけば、「あと何分でバッテリーを交換すれば良い？」といった質問にも答えられる可能性があります。この機能は今後実装を検討したいと考えています。
+
+:::info
+バッテリーの交換が必要な電圧値を指示しておき、電圧の計測値と減少率をLLMへ入力した場合に、「あと何分でバッテリーを交換すれば良い？」を質問してみましたが、期待通りの回答は得られませんでした。単純な四則演算でも、現時点のモデル（`gpt-4o-realtime-preview-2024-12-17`や`gpt-4o-mini-realtime-preview-2024-12-17`）では正確な計算を委ねるのは難しいようです。今後のモデルの進化に期待したいところです。
+:::
 
 走行機能には旋回方向に関するオプションがあり、これも音声入力で指示できます。また、どのような選択肢があるかをLLMに質問することも可能です。
 
@@ -120,7 +123,7 @@ Always maintain a friendly and enthusiastic tone. Use "I" and "my" when speaking
 
 多言語対応を考慮し、使用言語を明示的に指定しています。これは特定の言語で話しかけた際に他の言語で応答するケースを防ぐためです。
 
-なお、instructionsはオプションのパラメータです。指定しない場合は以下のデフォルト設定が適用されます。
+なお、instructionsは省略可能なパラメータで、指定しない場合は以下のデフォルト設定が適用されます。
 
 ```text
 Your knowledge cutoff is 2023-10. You are a helpful, witty, and friendly AI.
@@ -172,13 +175,15 @@ export const voiceCommandTools = [
 関数の説明文（description）は実質的にAPI仕様書のような役割を果たします。将来的には関数コメントから自動生成するなど、仕様とプロンプトの一元管理も検討できそうです。
 :::
 
+今回はROS2のトピックのパブリッシュやサービスの呼び出しを行う関数を登録しました。**システムの状態（IOやバッテリーの電圧値など）を取得する関数は登録していません。** サブスクライブしたこれらのトピックのコールバック毎に最新の状態をLLMへ入力し（入力の方法については後述します）、ユーザからシステムの状態を問われたらLLMが事前に入力された状態に基づいて回答します。
+
 ## LLMから関数が呼び出されるまでの流れ
 
 セッション確立後、音声はメディアストリーム、イベント（JSONデータ）はデータチャネルを介してクライアントとサーバー間でやりとりされます。
 
 以下は、ユーザーが「清掃を開始して、右旋回で」と発話してから、清掃開始の結果が音声出力されるまでの一連の流れです。実際にはより多くのイベントが発生しますが、主要なものだけを示しています。
 
-![清掃開始シーケンス](/img/robotics/ai/start-cleaning-sequence.png)
+![LLMからの関数呼び出し（応答音声あり）](/img/robotics/ai/call-function-with-response.png)
 
 1. クライアントがユーザーの音声データをサーバーへ送信
 2. サーバーが音声を解析し、`response.done`イベントを送信
@@ -222,8 +227,7 @@ export const voiceCommandTools = [
 
 ### [session.created](https://platform.openai.com/docs/api-reference/realtime-server-events/session)
 
-セッションの確立後に通知されるイベントです。
-UIでセッションの確立状態を表示するために使用しています。
+セッションの確立後に通知されるイベントです。UIでセッションの確立状態を表示するために使用しています。
 
 ### [response.done](https://platform.openai.com/docs/api-reference/realtime-server-events/response/done)
 
@@ -378,7 +382,7 @@ Realtime APIのセッションはステートフルですが、セッション�
 
 ## サーバーへのイベント送信
 
-ユーザからの音声入力はメディアストリームを介してサーバーへ送信されますが、以下のtypeのイベントをシステムからサーバーへ送信するケースがあります。
+ユーザからの音声入力はメディアストリームを介してサーバーへ送信されますが、以下のtypeのイベントをクライアントコードからサーバーへ送信するケースがあります。
 
 ### [conversation.item.create](https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item)
 
@@ -388,15 +392,8 @@ LLMとの会話はユーザとの音声の入出力のみで構成される訳�
 
 - response.doneイベントで指定された関数呼び出し（`function_call`）の結果応答
     - 関数呼び出しが失敗した場合にはその理由や対処方法を入力する
-
-        :::info
-        ロボットへの操作指示に成功した場合、無言で動作した方が使い勝手は良いため、今回は失敗時にのみ入力するようにしました
-        :::
-
-    - IOやバッテリーといった状態の取得要求であればその情報を入力する
-- システムからの状態（警告や異常）通知
-- 前回のセッションの会話の履歴の入力
-    - 今回は実施していませんが、セッションを跨いで会話の文脈を引き継ぎたい場合に必要となります
+- システムからの能動的な状態通知
+    - サブスクライブしたトピック（IOやバッテリーの電圧値、運転状態など）のコールバック毎に最新の状態を入力する
 
 関数呼び出しの結果応答の例を以下へ示します。call_idはresponse.doneイベントに含まれるfunction_callのcall_idと同値を設定します。
 
@@ -412,11 +409,11 @@ LLMとの会話はユーザとの音声の入出力のみで構成される訳�
 }
 ```
 
-関数呼び出しの結果応答ではなく、システムからの能動的な通知である場合は、itemのtypeは`message`とします。以下の例ではroleを`system`としていますが、前回のセッションの会話の履歴からユーザの音声（をテキスト化したもの）を再入力する場合はroleを`user`とします。
+関数呼び出しの結果応答ではなく、システムからの状態通知である場合は、itemのtypeは`message`とします。
 
 ```json
 {
-  "event_id": "client_54c6fe9b-effb-4457-b313-1af9199752a1",
+  "event_id": "client_45bdca38-42d3-421e-8ef1-15edc1be637c",
   "type": "conversation.item.create",
   "item": {
     "type": "message",
@@ -424,7 +421,7 @@ LLMとの会話はユーザとの音声の入出力のみで構成される訳�
     "content": [
       {
         "type": "input_text",
-        "text": "Battery power is low, please recharge."
+        "text": "Battery status: Left: 17.7V (6 minutes until charge threshold), Right: 17.7V (6 minutes until charge threshold) (Low battery threshold: 11.0V, Charge recommended threshold: 14.0V)"
       }
     ]
   }
@@ -447,7 +444,8 @@ conversation.item.createで会話へアイテムを追加した後に、応答�
 }
 ```
 
-警告や異常発生時の通知の場合は、注意喚起として強めな口調で話しかけるようにresponse.instructionsへ指定しています。
+システムからの状態通知では基本的には応答の音声は生成せず、異常発生時にのみ状態通知後に応答の音声を生成するようにしています。
+この場合、注意喚起として強めな口調で話しかけるようにresponse.instructionsへ指定しています。
 
 ```json
 {
@@ -459,13 +457,70 @@ conversation.item.createで会話へアイテムを追加した後に、応答�
 }
 ```
 
+直前にconversation.item.createで入力した状態通知の内容に対して応答の音声を生成する指示となります。
+
 以下はバッテリー低下時に生成された応答の音声です(**再生すると音声が出ます。周囲の環境にご注意ください**)。
 
 <video width="40%" playsinline controls>
   <source src="https://i.gyazo.com/0743e6f9a1252384845a7f54445d89e3.mp4" type="video/mp4"/>
 </video>
 
-緊急地震速報みたいな感じになってしまいました（😅）。
+instructionsの指示が強すぎて、緊急地震速報みたいな感じになってしまいました（😅）。
+
+## 各種シーケンス
+
+最後に、各種シーケンスをまとめてみました。
+
+### システムからの状態通知（応答音声なし）
+
+![システムからの状態通知（音声応答なし）](/img/robotics/ai/notify-system-status-without-response.png)
+
+- クライアントコードでCleanRobotControllerを構成する各ROS2ノードがパブリッシュするトピックをサブスクライブ
+- サブスクライブしたトピックのコールバック毎にconversation.item.createでサーバーへ送信
+
+システムの状態の変化毎にLLMへ入力してゆきますが、ユーザへの音声応答は生成しません。ユーザから音声で状態取得の指示があった場合は、LLMが事前に入力されたシステムの状態に基づいて回答します。
+
+:::info
+センサやモータ状態のトピックは100msec程度の比較的短い周期でパブリッシュされることが一般的ですが、このような周期的にパブリッシュされるトピックをLLMへ入力する場合はトークン数が多くならないように注意して下さい。
+今回ご紹介したバッテリー状態も周期的にパブリッシュされるトピックなので、一定値以上変化した場合にのみLLMへ入力するように制限しています。
+:::
+
+### システムからの状態通知（応答音声あり）
+
+![システムからの状態通知（音声応答あり）](/img/robotics/ai/notify-system-status-with-response.png)
+
+[システムからの状態通知（応答音声なし）](#システムからの状態通知応答音声なし)のシーケンスの後に、response.createイベントを送信して応答の音声を生成しています。
+conversation.item.createイベントで送信した内容に基づいて応答の音声が生成されます。
+
+### ユーザからの状態取得指示
+
+![ユーザからの状態取得指示](/img/robotics/ai/get-system-status-from-user.png)
+
+[システムからの状態通知（音声応答なし）](#システムからの状態通知応答音声なし)で事前に入力されたシステムの状態に基づいて、LLMが音声応答を生成します。
+
+:::info
+最新のシステムの状態を取得する関数をtoolsに登録する方法も考えられますが、以下の理由から状態変化毎にLLMへ入力する方式を採用しています。
+
+- 各状態の取得関数を個別に定義する実装コストを削減できる
+- 過去の状態変化の履歴を踏まえた、より文脈に即した応答が期待できる
+
+:::
+
+### LLMからの関数呼び出し（応答音声なし）
+
+関数呼び出しで関数の実行に成功した場合のシーケンスです。
+
+![LLMからの関数呼び出し（応答音声なし）](/img/robotics/ai/call-function-without-response.png)
+
+クライアントコードはresponse.doneイベントに含まれるfunction_callに対応する関数を実行します。関数の実行に成功した旨をconversation.item.createイベントでサーバーへ送信します。
+
+### LLMからの関数呼び出し（応答音声あり）
+
+関数呼び出しで関数の実行に失敗した場合のシーケンスです。
+
+![LLMからの関数呼び出し（応答音声あり）](/img/robotics/ai/call-function-with-response.png)
+
+クライアントコードはresponse.doneイベントに含まれるfunction_callに対応する関数を実行します。関数の実行に失敗した旨をconversation.item.createイベントでサーバーへ送信し、response.createイベントで応答の音声を生成します。
 
 ## まとめ
 

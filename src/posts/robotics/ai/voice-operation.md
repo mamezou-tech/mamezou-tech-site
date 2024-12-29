@@ -123,7 +123,7 @@ Always maintain a friendly and enthusiastic tone. Use "I" and "my" when speaking
 
 多言語対応を考慮し、使用言語を明示的に指定しています。これは特定の言語で話しかけた際に他の言語で応答するケースを防ぐためです。
 
-なお、instructionsは省略可能なパラメータで、指定しない場合は以下のデフォルト設定が適用されます。
+なお、instructionsは省略可能なパラメータで、指定しない場合は以下の内容が適用されます。
 
 ```text
 Your knowledge cutoff is 2023-10. You are a helpful, witty, and friendly AI.
@@ -476,7 +476,7 @@ instructionsの指示が強すぎて、緊急地震速報みたいな感じに�
 ![システムからの状態通知（音声応答なし）](/img/robotics/ai/notify-system-status-without-response.png)
 
 - クライアントコードでCleanRobotControllerを構成する各ROS2ノードがパブリッシュするトピックをサブスクライブ
-- サブスクライブしたトピックのコールバック毎にconversation.item.createでサーバーへ送信
+- サブスクライブしたトピックのコールバック毎にconversation.item.createイベントをサーバーへ送信
 
 システムの状態の変化毎にLLMへ入力してゆきますが、ユーザへの音声応答は生成しません。ユーザから音声で状態取得の指示があった場合は、LLMが事前に入力されたシステムの状態に基づいて回答します。
 
@@ -524,6 +524,14 @@ conversation.item.createイベントで送信した内容に基づいて応答�
 クライアントコードはresponse.doneイベントのfunction_callに対応する関数を実行します。関数の実行に失敗した旨をconversation.item.createイベントでサーバーへ送信し、response.createイベントで応答の音声を生成します。
 
 ## まとめ
+
+本システムの開発を通じて、以下のようなシンプルな設計がロボットシステムにおいても現実的になってきたことを実感しました。
+
+- システムの状態を逐次LLMへ入力
+- システムが提供するAPIをLLMへツールとして登録
+- ユーザーとの対話や情報提供、システム機能の呼び出しはAIアシスタントに委ねる
+
+特にROS2のようなアーキテクチャではサービスが分散化されており、システムの状態取得や操作が細かな粒度で行えるため、LLMとの統合がしやすいように考えています。
 
 現時点ではRPDが100と制限が厳しく、実運用での活用にはまだ課題が残りますが、これは時間の経過とともに解決されていくと考えています。
 

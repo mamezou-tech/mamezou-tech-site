@@ -16,9 +16,9 @@ Realtime APIのWebRTC対応については以下の記事でもご紹介して�
 
 本ロボットは産業用の清掃ロボットです。前方に回転ブラシを搭載しており、走行しながら床の塵やゴミを掻き出す機能を備えています。
 
-ロボットにはPico-ITX仕様の小型のSBCが搭載されており、このSBC上でロボットを制御するアプリケーション（図中のCleanRobotController）が動作します。SBC周辺のシステム構成を以下に示します。
+ロボットにはPico-ITX仕様の小型のSBCが搭載されており、このSBC上でロボットを制御するアプリケーション（図中のCleanRobotController）が動作します。SBC周辺のシステム構成を簡略化したものを以下に示します。
 
-![システム構成](/img/robotics/ai/system-structure-related-to-sbc-proto-2nd.png)
+![システム構成](/img/robotics/ai/system-structure-sbc-and-pc.png)
 
 SBCには制御アプリケーション以外にWebサーバーも動作し、遠隔操作用のWebUI（図中のRemoteOperationUI）を提供します。このWebUIを操作することで、自律走行の開始や停止、手動操作が行えます。
 

@@ -29,7 +29,10 @@ function Toc(
   const key = path.split("/").pop();
 
   useEffect(() => {
-    const tags = document.querySelectorAll("h1,h2");
+    let tags = document.querySelectorAll("h1,h2,h3");
+    if (tags.length > 20) {
+      tags = document.querySelectorAll("h1,h2");
+    }
     const newData = Array.from(tags).slice(1)
       .map((t) => ({
         tag: t.tagName,

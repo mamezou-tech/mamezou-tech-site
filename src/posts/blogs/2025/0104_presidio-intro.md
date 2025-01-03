@@ -159,13 +159,10 @@ entity: PERSON, start: 0, end: 8, text: <PERSON>, operator: replace
 
 ## 個人情報識別(Recognizer)のカスタマイズ
 
-Presidioはデフォルトの状態でも一定の精度で個人情報を検出できます。しかし、実運用では日本特有の情報や組織独自のフォーマットを正確に検出する必要があり、カスタマイズがほぼ必須になります。
-
-
 Presidioはデフォルトの状態でも一定の精度で個人情報を検出できることが分かります。
 ただ、実運用では日本特有の情報や組織独自のフォーマットを正確に検出する必要があり、カスタマイズがほぼ必須になると思います。
 
-Presidioでの個人情報識別ルールのカスタマイズにおいて中心的な役割を果たすのがRecognizerです。
+個人情報識別ルールのカスタマイズにおいて中心的な役割を果たすのがRecognizerです。
 
 各Recognizerは、異なる手法を用いて1つまたは複数のエンティティ(人名、電話番号、住所等)を検出します。
 その実現には以下の手法が活用されます。
@@ -219,17 +216,15 @@ Recognizerをカスタマイズする場合にチェックするクラスは以�
 - [RemoteRecognizer](https://github.com/microsoft/presidio/blob/main/presidio-analyzer/presidio_analyzer/remote_recognizer.py)
   - 外部サービスを含むリモートプロセスで使用されるRecognizer。
 
-要件にもよりますが、一般的にはLocalRecognizerまたはPatternRecognizerをカスタマイズすることが多くなるかと思います。
+また、上図にはほとんど載せていませんがPresidioには多くの組み込みRecognizerが用意されています。
 
-また、Presidioには多くの組み込みRecognizerが用意されています。
+@[og](https://github.com/microsoft/presidio/tree/main/presidio-analyzer/presidio_analyzer/predefined_recognizers)
 
-- [GitHub microsoft/presidio - /presidio-analyzer/presidio_analyzer/predefined_recognizers](https://github.com/microsoft/presidio/tree/main/presidio-analyzer/presidio_analyzer/predefined_recognizers)
-
-まずはこの中のRecognizerをカスタマイズできるか確認し、できない場合に自作するのが良いかと思います。自作する場合は組み込みRecognizerのソースコードが大いに参考になるはずです。
+まずはこの中のRecognizerをカスタマイズできるか確認し、できない場合に自作するのが良いかと思います。自作する場合は組み込みRecognizerのソースコードが大いに参考になります。
 
 ### 組み込みRecognizerのカスタマイズ
 
-今回は、Presidioに組み込まれているRecognizerの設定を少し変えてみました。
+今回は、Presidioに組み込まれているRecognizerの設定を変えてみました。
 
 #### 電話番号の日本対応
 
@@ -305,7 +300,7 @@ entity: PHONE_NUMBER, start: 10, end: 22, score: 0.75
 
 ただ、Presidioにはクレジットカード番号は組み込みRecognizer([CreditCardRecognizer](https://github.com/microsoft/presidio/blob/main/presidio-analyzer/presidio_analyzer/predefined_recognizers/credit_card_recognizer.py))が用意されています。
 このRecognizerは正規表現のパターンマッチングに加えて、チェックサムのバリデーションもします。
-とはいえ、ソースコードをよく読んでみると、このRecognizerは英語、スペイン語等の一部の言語のみ対応していて日本語にはサポートされていません[^4]。
+とはいえ、ソースコードをよく読んでみると、このRecognizerは英語、スペイン語等の一部の言語のみ対応していて日本語には対応していません[^4]。
 
 [^4]: 単語の区切り(\b)が必要だったり、全角数字やハイフンにも対応していません。この辺りの問題があるのでデフォルトでは設定されていないのかもしれません。
 
@@ -383,7 +378,7 @@ CreditCardRecognizerは正規表現一致後にチェックサム検証を通過
 - `MZ-`(固定値) + 数字4桁(入社年-西暦) + `-`(固定値) + 数字6桁(連番)
   - 例）MZ-2000-000001
 - 入社年は19xxまたは20xxのみ有効
-- 全角文字も識別可能
+- 全角文字を許容
 
 このRecognizerを自作してみます。ここでは正規表現で社員番号を識別するPatternRecognizerを作成します。
 
@@ -421,7 +416,7 @@ sample_texts = [
     "MZ-2001-000001",
     "ＭＺー２００１ー０００００１", # 全角
     "社員番号: MZ-1990-000001", # 文脈補強
-    "MZ-3001-000001", # 不正
+    "MZ-3001-000001", # 不正(入社年が3001年)
     "MZ-2001-000000", # 連番がオールゼロ
     "MZ-2001-999999", # 連番がオール9
     "MZ-2099-000001", # 不正な西暦(未来)
@@ -441,6 +436,30 @@ for sample_text in sample_texts:
 新規エンティティのため、コンストラクタで`supported_entity`にエンティティ名(MZ_EMP_NUMBER)を指定しました。
 また、電話番号の例と同様に、文脈によるスコア補強のためコンテキスト(`社員`)も設定しています。
 最後に、このRecognizerをレジストリに追加すれば完了です。
+
+:::column:バッチ処理として個人情報を検出する
+上記ソースコードではテキストごとに個人情報検出をしていますが、バッチ処理として実行する[BatchAnalyzerEngine](https://github.com/microsoft/presidio/blob/main/presidio-analyzer/presidio_analyzer/batch_analyzer_engine.py)も用意されています。
+これを使うとIterableまたはDictで用意したテキストから個人情報の検出が実行できます。
+
+以下はBatchAnalyzerEngineを使って書き換えた場合のソースコードです。
+
+```python
+# (前略)
+analyzer.registry.add_recognizer(emp_number_recognizer)
+# サンプルテキスト
+sample_texts = [
+  # ...(省略)
+]
+batchAnalyzer = BatchAnalyzerEngine(analyzer_engine=analyzer)
+batch_results = batchAnalyzer.analyze_iterator(
+    texts=sample_texts, 
+    language="ja", 
+    entities=["MZ_EMP_NUMBER"]
+)
+for index, results in enumerate(batch_results):
+    print(f"text: {sample_texts[index]}, score:{results[0].score if len(results) > 0 else 'None'}")
+```
+:::
 
 これを実行すると以下のようになります(コメント追記してます)。
 
@@ -513,7 +532,7 @@ analyzer.registry.add_recognizer(emp_number_recognizer)
 
 - スコア0.5 -> 0.3として、正規表現一致のみはスコアを低めにする
 - validation_resultメソッドをオーバーライドして追加ルールを実装する。
-  - PatternRecognizerではTrueを返すと1.0、Falseを返すと0.0(その結果個人情報として検出しない)でスコアを上書きする。
+  - PatternRecognizerはTrueを返すと1.0、Falseを返すと0.0(個人情報として検出しない)でスコアを上書きする。
 
 こうすることで正規表現に加えて、個別のバリデーションによって検出精度を調整します。
 同じテキストで実行すると、今度は以下の結果になりました。
@@ -578,7 +597,7 @@ print(anonymized_text.text)
 <SECRET>の電話番号は<SECRET>です。クレジットカード番号は<SECRET>です。
 ```
 
-全ての個人情報が<SECRET>に置換されています。
+全ての個人情報が`<SECRET>`に置換されています。
 
 ### マスキング
 
@@ -632,7 +651,7 @@ print(anonymized_text.text)
 ```
 
 `custom`オペレータに匿名化用関数(`replacer`)を指定しています。
-ここで指定した関数は元のエンティティ文字数分のランダムなカタカナを返するものです。
+ここで指定した関数は元のエンティティ文字数分のランダムなカタカナを返すものです。
 
 匿名化の結果は以下です。
 

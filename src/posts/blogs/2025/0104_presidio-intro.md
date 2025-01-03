@@ -3,6 +3,7 @@ title: "Microsoft Presidio: 個人情報保護に特化したオープンソー�
 author: noboru-kudo
 date: 2025-01-04
 tags: [生成AI, LLM, 機械学習, Python]
+image: true
 ---
 
 近年、個人情報の保護に対する意識がますます高まっていると感じます。

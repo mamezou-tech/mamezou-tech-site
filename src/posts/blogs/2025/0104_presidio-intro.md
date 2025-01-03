@@ -2,7 +2,7 @@
 title: "Microsoft Presidio: 個人情報保護に特化したオープンソースツール"
 author: noboru-kudo
 date: 2025-01-04
-tags: [生成AI, LLM, 機械学習, Python]
+tags: [自然言語処理, 機械学習, 生成AI, LLM, Python]
 image: true
 ---
 
@@ -13,7 +13,7 @@ image: true
 
 @[og](https://github.com/microsoft/presidio/)
 
-Presidioは、個人を特定できる情報(PII: Personally Identifiable Information)を検出し、匿名化するために設計されたフレームワークです。
+Presidioは、個人を特定できる情報(PII: Personally Identifiable Information)を検出し、匿名化するために設計されたPythonフレームワークです。
 これにより、企業や開発者はLLMや他のシステムで安全にデータを活用することが可能になります。
 
 Presidioの特徴としては、非構造化データの中から個人情報を高精度で検出できる点が挙げられます。
@@ -133,7 +133,7 @@ results = analyzer.analyze(
 
 ### 個人情報の匿名化(Presidio Anonymizer)
 
-次に、個人情報を匿名化してみます。以下先ほどの個人情報の検出に続けて記述します。
+次に、個人情報を匿名化してみます。先ほどの個人情報の検出に続けて以下を記述します。
 
 ```python
 from presidio_anonymizer import AnonymizerEngine
@@ -276,7 +276,7 @@ PhoneRecognizerのコンストラクタで地域(`supported_regions`)に`JP`を�
 [^1]: PhoneRecognizerは内部で[phonenumbers](https://pypi.org/project/phonenumbers/)を使って各地域に対応した電話番号フォーマットを識別しています。
 
 また、ここで`context`に`電話`を指定しています。
-これはPresidioのContext Enhancement機能を利用して、文脈に基づいてスコアを調整する仕組みです。エンティティの前後[^2]に電話という単語が含まれている場合、電話番号である可能性が高いと判断し、スコアを加算[^3]します。
+これはPresidioのContext Enhancement機能を利用して、文脈に基づいてスコアを調整する仕組みです。ここではエンティティの前後[^2]に「電話」という単語が含まれている場合、電話番号である可能性が高いと判断し、スコアを加算[^3]します。
 加算スコアや文脈の範囲は自由に調整可能です。詳しくは公式ドキュメントをご覧ください。
 
 [^2]: デフォルト設定だと前5トークンにコンテキストの単語が含まれているかを確認します。利用しているEnhancerのソースコードは[こちら](https://github.com/microsoft/presidio/blob/main/presidio-analyzer/presidio_analyzer/context_aware_enhancers/lemma_context_aware_enhancer.py)です。
@@ -366,7 +366,7 @@ CreditCardRecognizerは正規表現一致後にチェックサム検証を通過
 
 - [GitHub microsoft/presidio - /presidio-analyzer/presidio_analyzer/conf/default_recognizers.yaml](https://github.com/microsoft/presidio/blob/main/presidio-analyzer/presidio_analyzer/conf/default_recognizers.yaml)
 
-見ていただくと分かりますが、現時点(`2.2.356`)では日本を意識した設定はありません。
+見ていただくと分かりますが、現時点(`2.2.356`)では日本を考慮した設定はありません。
 ここで実施しているようにソースコードベースで変更するよりも、あらかじめ専用の設定ファイルを用意した方が良いかもしれませんね。
 :::
 
@@ -530,7 +530,7 @@ analyzer.registry.add_recognizer(emp_number_recognizer)
 
 先ほどのRecognizerとの機能的な違いは以下です。
 
-- スコア0.5 -> 0.3として、正規表現一致のみはスコアを低めにする
+- パターン一致スコアを0.5 -> 0.3に減らし、正規表現一致だけではスコアを低くする
 - validation_resultメソッドをオーバーライドして追加ルールを実装する。
   - PatternRecognizerはTrueを返すと1.0、Falseを返すと0.0(個人情報として検出しない)でスコアを上書きする。
 
@@ -552,7 +552,7 @@ text: MZ-1900-000001, score:0.3  # OK(入社年が遠い過去なので低スコ
 
 ## 匿名化(Anonymizer)のカスタマイズ
 
-これまで個人情報の検出(Analyzer)に焦点を当ててきましたが、最後に匿名化(Anonymizer)についても簡単に見ていきます。
+これまで個人情報の検出(Analyzer)のカスタマイズに焦点を当ててきましたが、最後に匿名化(Anonymizer)の方についても簡単に見ていきます。
 Presidioのデフォルト設定では、以下のように検出した個人情報をエンティティ名(PERSONやPHONE_NUMBERなど)で置換します。
 
 ```

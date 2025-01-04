@@ -222,9 +222,9 @@ Recognizerをカスタマイズする場合にチェックするクラスは以�
 
 まずはこの中のRecognizerをカスタマイズできるか確認し、できない場合に自作するのが良いかと思います。自作する場合は組み込みRecognizerのソースコードが大いに参考になります。
 
-### 組み込みRecognizerのカスタマイズ
+### 組み込みRecognizer
 
-今回は、Presidioに組み込まれているRecognizerの設定を変えてみました。
+ここでは、Presidioに組み込まれているRecognizerをカスタマイズして適用してみます。
 
 #### 電話番号の日本対応
 
@@ -638,15 +638,15 @@ print(anonymized_text.text)
 
 ```python
 def replacer(entity: str):
-  katakana = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン"
-  return ''.join(random.choices(katakana, k=len(entity)))
+    katakana = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン"
+    return ''.join(random.choices(katakana, k=len(entity)))
 
 anonymized_text = anonymizer.anonymize(
-  text=sample_text,
-  analyzer_results=results,
-  operators={
-    "PERSON": OperatorConfig(operator_name="custom", params={"lambda": replacer}),
-  })
+    text=sample_text,
+    analyzer_results=results,
+    operators={
+        "PERSON": OperatorConfig(operator_name="custom", params={"lambda": replacer}),
+    })
 print(anonymized_text.text)
 ```
 

@@ -342,7 +342,7 @@ for result in results:
     print(f"entity: {result.entity_type}, start: {result.start}, end: {result.end}, score: {result.score}")
 ```
 
-手順には電話番号(PhoneRecognizer)と同じです。CreditCardRecognizerのインスタンスを生成してレジストリに追加します。
+手順は電話番号(PhoneRecognizer)と同じです。CreditCardRecognizerのインスタンスを生成してレジストリに追加します。
 CreditCardRecognizer生成時には、全角フォーマットを考慮した正規表現(`pattern`)や置換条件(`replacement_pairs`)をカスタマイズします。
 
 以下は実行結果です。
@@ -354,7 +354,7 @@ entity: PHONE_NUMBER, start: 10, end: 22, score: 0.75
 ```
 
 全角フォーマットのクレジットカード番号が正しく検出されています。
-CreditCardRecognizerは正規表現一致後にチェックサム検証を通過するとスコアが1.0に補正されます。
+CreditCardRecognizerは正規表現一致後にチェックサム検証を通過するとスコアが1.0に補正されます(通過しなければ0.0)。
 
 :::info
 ここではコードベースで設定していますが、YAMLファイルでの指定も可能です。

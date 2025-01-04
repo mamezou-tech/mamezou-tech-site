@@ -519,7 +519,7 @@ class MyEmpNumberRecognizer(PatternRecognizer):
         current_year = datetime.now().year
         if year > current_year:
             return False # 未来日:スコア0.0
-        if current_year - 50 <= year <= current_year:
+        elif current_year - 50 <= year <= current_year:
             return True # 適切な範囲内:スコア1.0
         else:
             return None # スコア変更なし(遠い過去)
@@ -666,8 +666,7 @@ print(anonymized_text.text)
 本記事では、Microsoft Presidioの基本的な使い方から、AnalyzerやAnonymizerのカスタマイズまでを簡単にご紹介しました。
 Presidioはフレームワークとして拡張性を重視して設計されており、ここで紹介したもの以外にも多くの拡張ポイントが用意されています。
 
-Presidioは、さまざまなユースケースで役立つ可能性を秘めています。
-少し考えるだけでも、以下のようなものが思い付きます。
+Presidioが活用されるユースケースはかなり幅広いです。少し考えるだけでも、以下のようなものが思い付きます。
 
 - LLMのファインチューニングに使用する学習データからの個人情報の匿名化
 - RAG (Retrieval-Augmented Generation) における個人情報の除去

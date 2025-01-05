@@ -18,7 +18,7 @@ The OpenAI Realtime API now supports WebRTC, and prices have been significantly 
 
 For more information about the Realtime API's WebRTC support, please also refer to the following article.
 
-@[og](https://developer.mamezou-tech.com/blogs/2024/12/21/openai-realtime-api-webrtc/)
+@[og](https://developer.mamezou-tech.com/en/blogs/2024/12/21/openai-realtime-api-webrtc/)
 
 ## System Configuration
 

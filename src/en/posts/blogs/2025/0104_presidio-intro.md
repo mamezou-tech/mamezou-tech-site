@@ -563,9 +563,9 @@ So far, we have focused on customizing the detection (Analyzer) of personal info
 In Presidio's default settings, the detected personal information is replaced with the entity name (PERSON or PHONE_NUMBER) as follows.
 
 ```
-"Mamezou Taro's phone number is 03-1234-5678. The credit card number is ４５００ー１２３４ー５６７８ー９０１２."
+豆蔵太郎の電話番号は03-1234-5678です。クレジットカード番号は４５００ー１２３４ー５６７８ー９０１２です。"
 ↓
-"<PERSON>'s phone number is <PHONE_NUMBER>. The credit card number is <CREDIT_CARD>."
+<PERSON>の電話番号は<PHONE_NUMBER>です。クレジットカード番号は<CREDIT_CARD>です。
 ```
 
 Customization of anonymization can be achieved simply by specifying the `operators` argument of the Anonymizer.
@@ -600,7 +600,7 @@ Here, we set the default rule to replace with `<SECRET>` using the `replace` ope
 The result is as follows.
 
 ```
-"<SECRET>'s phone number is <SECRET>. The credit card number is <SECRET>."
+<SECRET>の電話番号は<SECRET>です。クレジットカード番号は<SECRET>です。
 ```
 
 All personal information has been replaced with `<SECRET>`.
@@ -632,7 +632,7 @@ We specify the operator as `mask` and set parameters.
 The result is as follows.
 
 ```
-"<PERSON>'s phone number is ********5678. The credit card number is ４５００ー**************."
+<PERSON>の電話番号は********5678です。クレジットカード番号は４５００ー**************です。
 ```
 
 The phone number and credit card number have been partially masked.
@@ -662,10 +662,10 @@ The function specified here returns a random katakana string of the same length 
 The result of the anonymization is as follows.
 
 ```
-"タルフワ's phone number is <PHONE_NUMBER>. The credit card number is <CREDIT_CARD>."
+タルフワの電話番号は<PHONE_NUMBER>です。クレジットカード番号は<CREDIT_CARD>です。
 ```
 
-`Mamezou Taro` has been replaced with a random katakana string `タルフワ`.
+`豆蔵太郎` has been replaced with a random katakana string `タルフワ`.
 
 ## Conclusion
 

@@ -61,7 +61,7 @@ app.whenReady().then(() => {
 });
 
 function buildMenuTemplate(params) {
-  const menuTemplete = [
+  const menuTemplate = [
     {
       label: 'menu1',
       click: () => { console.log('menu1 clicked'); }
@@ -71,7 +71,7 @@ function buildMenuTemplate(params) {
       click: () => { console.log('menu2 clicked'); }
     },
   ];
-  return menuTemplete;
+  return menuTemplate;
 }
 
 function createWindow() {

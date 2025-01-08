@@ -19,7 +19,7 @@
   command = "deno task lume"
 
   [build.environment]
-    NODE_VERSION="18"
+    NODE_VERSION="22"
 
   [[redirects]]
     from = "/feed/"

@@ -89,7 +89,7 @@ Bun は高速性と Node.js 互換が特徴の JavaScript ランタイムです�
 今やバックエンドでも使用される TypeScript。静的型付けを特徴とし、Deno や Bun などの JavaScript ランタイムでは第一級言語として扱われています。
 
 ### Javaエンジニアが始めるTypeScript入門
-Java エンジニア向けの TypeScript 入門。連載開始しました。**New!!**
+Java エンジニア向けの TypeScript 入門。連載開始しました。
 
 - [Javaエンジニアが始めるTypeScript入門（第1回：イントロダクション）](/typescript-intro/introduction-to-typescript-for-java-engineer_index/)
 - [Javaエンジニアが始めるTypeScript入門（第2回：変数）](/typescript-intro/introduction-to-typescript-for-java-engineer_variable/)
@@ -99,6 +99,7 @@ Java エンジニア向けの TypeScript 入門。連載開始しました。**N
 - [Javaエンジニアが始めるTypeScript入門（第6回：特殊な型）](/typescript-intro/introduction-to-typescript-for-java-engineer_special-type)
 - [Javaエンジニアが始めるTypeScript入門（第7回：関数）](/typescript-intro/introduction-to-typescript-for-java-engineer_function)
 - [Javaエンジニアが始めるTypeScript入門（第8回：オブジェクト）](/typescript-intro/introduction-to-typescript-for-java-engineer_object)
+- [Javaエンジニアが始めるTypeScript入門（第9回：ジェネリクス）](/typescript-intro/introduction-to-typescript-for-java-engineer_generics)
 
 ### ブログ
 - [Valibot: 超軽量＆型安全なスキーマバリデーションライブラリ](/blogs/2024/07/13/valibot-intro/)

@@ -108,7 +108,6 @@ function Toc(
       href="https://mamezou.connpass.com/"
       onClick={ev => sendGa(ev, "click_mameyose")}
       target="_blank"
-      rel="noreferrer noopener"
     >
       <img
         alt="mameyose"
@@ -121,16 +120,15 @@ function Toc(
   );
   const mameyoseImage = (
     <a
-      href="https://mamezou.connpass.com/event/338906/"
+      href="https://mamezou.connpass.com/event/342203/"
       onClick={ev => sendGa(ev, "click_mameyose")}
       target="_blank"
-      rel="noreferrer noopener"
     >
       <img
         alt="mameyose"
-        height="168"
+        height="112"
         width="200"
-        src="/img/event/20241217-mameyose.png"
+        src="/img/event/20250123-mameyose.png"
         style={{ backgroundColor: "#ffffff" }}
       />
     </a>
@@ -149,14 +147,13 @@ function Toc(
       <p className="toc-container-header">Contents</p>
       {makeList(data)}
       <div>
-        {defaultMameyoseImage}
+        {mameyoseImage}
       </div>
       <div>
         <a
           href="https://wwwrecruit.mamezou.com/"
           onClick={(ev) => sendGa(ev, "click_recruit")}
           target="_blank"
-          rel="noreferrer noopener"
         >
           <img
             alt="recruit"

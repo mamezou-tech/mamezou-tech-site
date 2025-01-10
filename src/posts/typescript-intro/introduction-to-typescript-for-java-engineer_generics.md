@@ -78,7 +78,7 @@ const corporate: Corporate = {id: 1, name: "suzuki", rank: {rank: "A", corpArg: 
 const individual: Individual = {id: 1, name: "suzuki", rank: {rank: "A", indArg: "corp"}, dateOfBirth: "2000-01"}
 ```
 * 1-1: `Corporate`型で型パラメーターを指定していないため、`Customer`で設定している初期型が使用されます。
-* 1-2: `Corporate.rank`は`Rank`型として扱われているので、そのまま`corpArg`を使おうとするとエラーになります。エラーを回避するため、コード例では型アサーションを掛けています。
+* 1-2: `Corporate`型のrankは`Rank`型として扱われているため、型パラメーターを指定しないまま`CorporateRank`にしか存在しない`corpArg`を使おうとするとエラーになります。コード例では型アサーションで型を明示して、使用する型を指定しているため、エラーになりません。
 
 ```java: Javaではどうなるのか
 // 対応する機能はありません。

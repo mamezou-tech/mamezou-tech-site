@@ -100,7 +100,7 @@ The image is as follows.
 
 However, according to the official recommendations of Golang, control using channels, as shown next, is recommended.
 
-### channel (Channel)
+### Channels
 Go language has something called channels, which are like communication paths that can safely pass values.
 By using channels, it's possible to handle thread-safe variables without using Mutex.
 ![650b4c607420bd5927931bd61757a651.png](https://i.gyazo.com/650b4c607420bd5927931bd61757a651.png)

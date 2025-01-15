@@ -119,7 +119,7 @@ CYCLE dst SET is_cycle USING path
 [^2]: データモデルの設計は生成AIに任せてしまっています。
 
 サンプルは以下のリポジトリをご確認ください。
-[https://github.com/shohei-yamashit/Go_concurrent_with_git](https://github.com/shohei-yamashit/Go_concurrent_with_git)
+[https://github.com/shohei-yamashit/cycle-postgres-wild](https://github.com/shohei-yamashit/cycle-postgres-wild)
 
 :::info
 このサンプルにおいてはリポジトリ直下のcompose.ymlからDBコンテナを立ち上げることができます。

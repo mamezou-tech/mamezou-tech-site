@@ -1,5 +1,5 @@
 ---
-title: CYCLE句を使って安全に再帰クエリを実行しよう（PostgreSQL限定)
+title: PostgreSQLで安全な再帰クエリ！CYCLE句の使い方徹底解説
 author: shohei-yamashita
 date: 2025-01-17
 tags: [PostgreSQL, sql, relative, query]

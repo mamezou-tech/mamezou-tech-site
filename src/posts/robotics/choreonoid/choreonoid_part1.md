@@ -2,7 +2,7 @@
 title: Choreonoidで始めるロボットシミュレーション（その1）
 author: hayato-ota
 tags: [ロボット, Choreonoid]
-date: 2025-01-15
+date: 2025-01-17
 image: true
 ---
 
@@ -40,8 +40,8 @@ Choreonoid[^1]は、産業技術総合研究所（AIST）が開発したオー�
 
 
 ## GitHubリンク
-本記事で実装するコードは[こちら](https://github.com/hayat0-ota/choreonoid-simple-controllers/tree/part1)[^3]で共有しています。必要に応じてご覧ください。
-[^3]: [本記事のGitHubリポジトリ](https://github.com/hayat0-ota/choreonoid-simple-controllers/tree/part1)
+本記事で実装するコードは[こちら](https://github.com/hayat0-ota/choreonoid-simple-controllers/tree/Chapter1)[^3]で共有しています。必要に応じてご覧ください。
+[^3]: [本記事のGitHubリポジトリ](https://github.com/hayat0-ota/choreonoid-simple-controllers/tree/Chapter1)
 
 
 # 1. 開発環境構築
@@ -147,11 +147,11 @@ $ cp -r share/model/PA10 ext/PA10_JointAngleControl/model
 ```
 
 フォルダ構成は下記のようになるはずです。
-<pre>
+```
 ext/
-  ├-- PA10_JointAngleControl/
-      ├-- model/（※ share/model/PA10のコピー）
-</pre>
+└── PA10_JointAngleControl/
+    └── model/（※ share/model/PA10のコピー）
+```
 
 `model/PA10.body`ファイルの一部を以下に記します。  
 本ファイルはロボットモデルの定義がYAML言語にて記述されており、各リンクの形状・特性や各軸リミット、モデリングファイルが記載されています。
@@ -278,13 +278,13 @@ Chorenoidを起動したら、シミュレーションするための準備を�
 
 下記の場所に「project」フォルダを作成し、ファイル名を「PA10_JointAngleControl」として保存します。
 
-<pre>
+```
 ext/
-  ├-- PA10_JointAngleControl/
-      ├-- model/
-      ├-- project/                          <--- 新規作成
-          ├-- PA10_JointAngleControl.cnoid  <--- 保存ファイル
-</pre>
+└── PA10_JointAngleControl/
+    ├── model/
+    └── project/                          <--- 新規作成
+        └── PA10_JointAngleControl.cnoid  <--- 保存ファイル
+```
 
 ## ボディファイルの追加
 「ワールド」に子要素としてボディファイルを追加します。

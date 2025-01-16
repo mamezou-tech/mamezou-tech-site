@@ -158,9 +158,7 @@ CYCLE dst SET is_cycle USING path
     種の保全活動に関する情報を管理します。活動の説明、対象種、担当研究者との関連を持ちます。
 ```
 
-これだけだと全貌が掴めないのでER図も示します。
-主キー制約があればこのER図をそのまま利用できそうですが、今回は制約に頼らないものとします。
-
+これだけだと全体が分かりづらいのでER図も示します。
 ![46888a017f34e1b618686110822db2d6.png](https://i.gyazo.com/46888a017f34e1b618686110822db2d6.png)
 
 ## サンプルへのCYCLE句の適用
@@ -205,7 +203,7 @@ SELECT * FROM species_relative
 ```
 
 :::info
-他のDBMSと同様、DBのシステム情報をで管理するテーブルがPostgreSQLには備わっています。
+他のDBMSと同様、DBのシステム情報を管理するテーブルがPostgreSQLには備わっています。
 具体的には情報スキーマと呼ばれるスキーマにメタデータが収容されています。
 詳細：[https://www.postgresql.jp/document/16/html/information-schema.html](https://www.postgresql.jp/document/16/html/information-schema.html)
 今回はカラム名を参考にテーブルの関連を調べたいので、information.columnテーブルに着目しています。

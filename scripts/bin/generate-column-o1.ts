@@ -153,17 +153,18 @@ Please pick one of these keywords and write a short article about it.`;
     }
   }
 
-  const formattedDate = today();
-  if (!process.env.DISABLE_IMAGE_GENERATION) {
-    await generateImage(column, formattedDate);
-  }
-
   if (!safeResponse(column)) throw new Error(`unsafe content found: ${column}`);
 
+  const formattedDate = today();
   const firstLineIndex = column.indexOf('\n');
   const text = column.slice(firstLineIndex + 2);
+  const title = column.slice(0, firstLineIndex);
+  if (!process.env.DISABLE_IMAGE_GENERATION) {
+    await generateImage({title, details: text}, formattedDate);
+  }
+
   const item = {
-    title: column.slice(0, firstLineIndex),
+    title,
     text: text.replaceAll(/(\r?\n)+/g, '<br />'),
     created: new Date().toISOString(),
     theme
@@ -219,27 +220,23 @@ function today() {
   return `${year}-${month}-${day}`;
 }
 
-async function generateImage(column: string, date: string) {
+async function generateImage({ title, details }: { title: string, details: string }, date: string) {
   const promptSuggestion = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: 'gpt-4o',
     messages: [
       {
         role: 'user',
-        content: `output image generation **prompt** suitable for the following column written by 豆香(japanese cute girl) .
-- The image should be cartoon-like.
-- Include characters as well as objects whenever possible.
-- Tha prompt should be in English.
-
-# Column
-${column}
-`
+        content: `Create an anime-inspired, cartoon-style illustration focused on the theme: '${title}'. 
+Incorporate key elements from the following details: '${details}'. 
+Include both characters and objects whenever possible, using bright colors and a fun, playful atmosphere. 
+Reflect the perspective of author in all design aspects, who is a Japanese cute girl named '豆香'.`
       }
     ],
   })
   console.log(promptSuggestion.choices[0].message.content)
 
   const response = await openai.images.generate({
-    prompt: promptSuggestion.choices[0].message.content || column,
+    prompt: promptSuggestion.choices[0].message.content || `${title}\n${details}`,
     model: 'dall-e-3',
     size: '1024x1024',
     response_format: 'b64_json',

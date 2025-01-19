@@ -76,7 +76,7 @@ SELECT * FROM (
     , ('h', 'i')
 ) AS _(src, dst);
 
-WITH RECURSIVE full_connetivity AS (
+WITH RECURSIVE full_connectivity AS (
   -- Non-recursive term
   SELECT 
     *
@@ -87,11 +87,11 @@ WITH RECURSIVE full_connetivity AS (
   SELECT 
     fc.src
     , c.dst
-  FROM full_connetivity AS fc
+  FROM full_connectivity AS fc
   JOIN tmp_connectivity AS c ON (fc.dst = c.src)
 ) CYCLE dst SET is_cycle USING path -- Stores the history of dst in path to detect infinite loops
 
-SELECT * FROM full_connetivity;
+SELECT * FROM full_connectivity;
 ```
 
 Picking up only the CYCLE clause.

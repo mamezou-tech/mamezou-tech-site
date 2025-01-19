@@ -68,7 +68,7 @@ SELECT * FROM (
     , ('h', 'i')
 ) AS _(src, dst);
 
-WITH RECURSIVE full_connetivity AS (
+WITH RECURSIVE full_connectivity AS (
   -- 非再帰項
   SELECT 
     *
@@ -79,11 +79,11 @@ WITH RECURSIVE full_connetivity AS (
   SELECT 
     fc.src
     , c.dst
-  FROM full_connetivity AS fc
+  FROM full_connectivity AS fc
   JOIN tmp_connectivity AS c ON (fc.dst = c.src)
 ) CYCLE dst SET is_cycle USING path -- dstの履歴をpathに保存して、無限ループを検出する
 
-SELECT * FROM full_connetivity;
+SELECT * FROM full_connectivity;
 ```
 
 CYCLE句のみをピックアップします。

@@ -109,7 +109,7 @@ $ echo "export PATH=$PATH:~/Choreonoid_ws/choreonoid/build/bin" >> ~/.bashrc
 ```shell: choreonoid起動
 $ choreonoid
 ```
-![Choreonoid_起動時](../../../img/robotics/choreonoid/part1/choreonoid_launched.png)
+![Choreonoid_起動時](/img/robotics/choreonoid/part1/choreonoid_launched.png)
 
 開発環境の構築は以上で完了です。
 
@@ -120,7 +120,7 @@ $ choreonoid
 [^5]: [三菱重工 電動汎用多軸マニピュレータ（PA-10,25,60）](https://www.mhi.com/jp/products/energy/manipulator_robot.html)
 
 <div align="center">
-    <img src="../../../img/robotics/choreonoid/part1/pa_10.jpg" width=300>
+    <img src="/../../img/robotics/choreonoid/part1/pa_10.jpg" width=300>
     三菱重工 電動汎用多軸マニピュレータ PA-10
 </div>
 
@@ -264,7 +264,7 @@ $ choreonoid
 Chorenoidを起動したら、シミュレーションするための準備を行います。
 
 まず、「ファイル」タブ -> 「新規」->「ワールド」を選択し、ワールド名を「World」とします。
-![Choreonoid_ワールド追加](../../../img/robotics/choreonoid/part1/choreonoid_add_world.png)
+![Choreonoid_ワールド追加](/img/robotics/choreonoid/part1/choreonoid_add_world.png)
 
 :::info
 ワールドはすべての要素の親となる要素です。
@@ -274,7 +274,7 @@ Chorenoidを起動したら、シミュレーションするための準備を�
 
 この状態で一旦プロジェクトファイルを保存します。
 「ファイル」->「プロジェクトに名前をつけて保存」を選択します。
-![Choreonoid_プロジェクトを名前をつけて保存](../../../img/robotics/choreonoid/part1/choreonoid_save_project_with_file.png)
+![Choreonoid_プロジェクトを名前をつけて保存](/img/robotics/choreonoid/part1/choreonoid_save_project_with_file.png)
 
 下記の場所に「project」フォルダを作成し、ファイル名を「PA10_JointAngleControl」として保存します。
 
@@ -290,18 +290,18 @@ ext/
 「ワールド」に子要素としてボディファイルを追加します。
 「ワールド」を選択した状態で
 「ファイル」->「読み込み」->「ボディ」を選択します。
-![Choreonoid_ボディ追加](../../../img/robotics/choreonoid/part1/choreonoid_add_body.png)
+![Choreonoid_ボディ追加](/img/robotics/choreonoid/part1/choreonoid_add_body.png)
 
 先ほどコピーしたmodelフォルダ内の「PA10.body」を選択します。
 選択すると、画面上にPA10が表示されます。
-![Choreonoid_ボディ追加後](../../../img/robotics/choreonoid/part1/choreonoid_after_add_PA10.png)
+![Choreonoid_ボディ追加後](/img/robotics/choreonoid/part1/choreonoid_after_add_PA10.png)
 
 ## コントローラ設定
 制御対象モデルに対するコントローラを設定します。
 まず、PA10（制御対象モデル）を選択した状態で
 「ファイル」->「新規作成」->「シンプルコントローラ」を選択します。
 ここで、コントローラの名前は「JointAngleController」とします。
-![Choreonoid_シンプルコントローラ作成](../../../img/robotics/choreonoid/part1/choreonoid_add_simple_controller.png)
+![Choreonoid_シンプルコントローラ作成](/img/robotics/choreonoid/part1/choreonoid_add_simple_controller.png)
 
 :::info
 後ほど、生成したコントローラをこの部分で設定します。
@@ -311,16 +311,16 @@ ext/
 ワールド、コントローラの設定は以上で完了ですが、シミュレーション用のアイテムを作成します。
 ワールドを選択した状態で
 「ファイル」->「新規作成」->「AISTシミュレータ」を選択します。
-![Choreonoid_シミュレータ作成](../../../img/robotics/choreonoid/part1/choreonoid_add_simulator.png)
+![Choreonoid_シミュレータ作成](/img/robotics/choreonoid/part1/choreonoid_add_simulator.png)
 名前は「AISTSimulator」とします。
 
 ## プロジェクトの保存
 設定は以上で完了です。画面左上の「Save」アイコン押下して現在のプロジェクト構成をファイルに保存します。
-![Choreonoid_プロジェクト保存ボタン](../../../img/robotics/choreonoid/part1/choreonoid_save_project_button.png)
+![Choreonoid_プロジェクト保存ボタン](/img/robotics/choreonoid/part1/choreonoid_save_project_button.png)
 
 プロジェクトの準備は以上で完了です。Choreonoidを一旦閉じておきましょう。
 最終的なプロジェクト内の構成は下図のようになります。
-![Choreonoid_プロジェクト構成](../../../img/robotics/choreonoid/part1/choreonoid_project_structure.png)
+![Choreonoid_プロジェクト構成](/img/robotics/choreonoid/part1/choreonoid_project_structure.png)
 
 
 # 3. 目標関節角度指令を出力するコントローラの作成
@@ -635,19 +635,19 @@ choreonoid/build/lib/choreonoid-2.2/simplecontroller/PA10_JointAngleController.s
 また、「再読込」プロパティをTRUEに変更します。
 これにより、ビルド後に毎回SimpleControllerを設定し直す手間を省きます。
 
-![SimpleController設定](../../../img/robotics/choreonoid/part1/choreonoid_simplecontroller_property_setting.png)
+![SimpleController設定](/img/robotics/choreonoid/part1/choreonoid_simplecontroller_property_setting.png)
 
 ここまで完了したら、プロジェクトを保存します。
 
 ## シミュレーションの実行
 画面上部の「シミュレーション開始」ボタンを押下してシミュレーションを開始します。
 
-![シミュレーション開始](../../../img/robotics/choreonoid/part1/choreonoid_start_simulation_button.png)
+![シミュレーション開始](/img/robotics/choreonoid/part1/choreonoid_start_simulation_button.png)
 
 シミュレーションを開始すると、下図のように2.5秒毎にロボットの姿勢が変化します。
 また、毎回シミュレーションを開始しなおすと、ロボットの角度パターンがランダムに変化するはずです。
 
-![シミュレーション結果](../../../img/robotics/choreonoid/part1/choreonoid_simulation_result.gif)
+![シミュレーション結果](/img/robotics/choreonoid/part1/choreonoid_simulation_result.gif)
 
 # 5. まとめ
 今回はロボットの各軸を動かすSimpleControllerを作ってみましたが、依然として下記のような課題が残っています。

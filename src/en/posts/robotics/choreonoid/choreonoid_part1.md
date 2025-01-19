@@ -106,7 +106,7 @@ After restarting the terminal to reflect the above changes, execute the followin
 ```shell: Launch choreonoid
 $ choreonoid
 ```
-![Choreonoid at Launch](../../../img/robotics/choreonoid/part1/choreonoid_launched.png)
+![Choreonoid at Launch](/img/robotics/choreonoid/part1/choreonoid_launched.png)
 
 This completes the setup of the development environment.
 
@@ -117,7 +117,7 @@ In this sample, we will use the model of Mitsubishi Heavy Industries' manipulato
 [^5]: [Mitsubishi Heavy Industries Electric General-Purpose Multi-Axis Manipulator (PA-10, 25, 60)](https://www.mhi.com/jp/products/energy/manipulator_robot.html)
 
 <div align="center">
-    <img src="../../../img/robotics/choreonoid/part1/pa_10.jpg" width=300>
+    <img src="/img/robotics/choreonoid/part1/pa_10.jpg" width=300>
     Mitsubishi Heavy Industries Electric General-Purpose Multi-Axis Manipulator PA-10
 </div>
 
@@ -261,7 +261,7 @@ $ choreonoid
 Once Choreonoid is launched, we'll prepare for the simulation.
 
 First, select "File" tab -> "New" -> "World", and set the world name to "World".
-![Add World in Choreonoid](../../../img/robotics/choreonoid/part1/choreonoid_add_world.png)
+![Add World in Choreonoid](/img/robotics/choreonoid/part1/choreonoid_add_world.png)
 
 :::info
 The world is the parent element of all elements.
@@ -271,7 +271,7 @@ By adding elements while selecting the parent element in the item tree, you can 
 
 At this point, save the project file once.
 Select "File" -> "Save Project As".
-![Save Project As](../../../img/robotics/choreonoid/part1/choreonoid_save_project_with_file.png)
+![Save Project As](/img/robotics/choreonoid/part1/choreonoid_save_project_with_file.png)
 
 Create a "project" folder at the following location and save the file as "PA10_JointAngleControl".
 
@@ -287,18 +287,18 @@ ext/
 Add the body file as a child element to the "World".
 While the "World" is selected,
 select "File" -> "Load" -> "Body".
-![Add Body in Choreonoid](../../../img/robotics/choreonoid/part1/choreonoid_add_body.png)
+![Add Body in Choreonoid](/img/robotics/choreonoid/part1/choreonoid_add_body.png)
 
 Select "PA10.body" from the "model" folder we copied earlier.
 Once selected, the PA10 will appear on the screen.
-![After adding Body in Choreonoid](../../../img/robotics/choreonoid/part1/choreonoid_after_add_PA10.png)
+![After adding Body in Choreonoid](/img/robotics/choreonoid/part1/choreonoid_after_add_PA10.png)
 
 ## Controller Settings
 Set the controller for the target model to be controlled.
 First, with the PA10 (control target model) selected,
 select "File" -> "New" -> "SimpleController".
 Here, name the controller "JointAngleController".
-![Create SimpleController in Choreonoid](../../../img/robotics/choreonoid/part1/choreonoid_add_simple_controller.png)
+![Create SimpleController in Choreonoid](/img/robotics/choreonoid/part1/choreonoid_add_simple_controller.png)
 
 :::info
 We will later set the generated controller in this part.
@@ -308,16 +308,16 @@ We will later set the generated controller in this part.
 The settings for the world and controller are now complete, but we will create an item for the simulation.
 With the world selected,
 select "File" -> "New" -> "AIST Simulator".
-![Create Simulator in Choreonoid](../../../img/robotics/choreonoid/part1/choreonoid_add_simulator.png)
+![Create Simulator in Choreonoid](/img/robotics/choreonoid/part1/choreonoid_add_simulator.png)
 Name it "AISTSimulator".
 
 ## Saving the Project
 This completes the settings. Press the "Save" icon at the top left of the screen to save the current project configuration to a file.
-![Save Project Button in Choreonoid](../../../img/robotics/choreonoid/part1/choreonoid_save_project_button.png)
+![Save Project Button in Choreonoid](/img/robotics/choreonoid/part1/choreonoid_save_project_button.png)
 
 This completes the preparation of the project. Let's close Choreonoid for now.
 The final structure within the project will look like the figure below.
-![Project Structure in Choreonoid](../../../img/robotics/choreonoid/part1/choreonoid_project_structure.png)
+![Project Structure in Choreonoid](/img/robotics/choreonoid/part1/choreonoid_project_structure.png)
 
 # 3. Creating a Controller that Outputs Target Joint Angles
 ## Types of Controllers Available in Choreonoid
@@ -630,19 +630,19 @@ choreonoid/build/lib/choreonoid-2.2/simplecontroller/PA10_JointAngleController.s
 Also, change the "Reload" property to TRUE.
 This saves you the trouble of resetting the SimpleController every time after building.
 
-![SimpleController Settings](../../../img/robotics/choreonoid/part1/choreonoid_simplecontroller_property_setting.png)
+![SimpleController Settings](/img/robotics/choreonoid/part1/choreonoid_simplecontroller_property_setting.png)
 
 Once completed, save the project.
 
 ## Running the Simulation
 Press the "Start Simulation" button at the top of the screen to start the simulation.
 
-![Start Simulation](../../../img/robotics/choreonoid/part1/choreonoid_start_simulation_button.png)
+![Start Simulation](/img/robotics/choreonoid/part1/choreonoid_start_simulation_button.png)
 
 When the simulation starts, the robot's posture changes every 2.5 seconds as shown in the figure below.
 Also, every time you restart the simulation, the robot's angle patterns should change randomly.
 
-![Simulation Result](../../../img/robotics/choreonoid/part1/choreonoid_simulation_result.gif)
+![Simulation Result](/img/robotics/choreonoid/part1/choreonoid_simulation_result.gif)
 
 # 5. Summary
 In this article, we created a SimpleController to move each axis of the robot, but the following issues still remain.

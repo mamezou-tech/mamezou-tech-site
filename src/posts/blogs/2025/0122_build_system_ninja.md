@@ -1,5 +1,5 @@
 ---
-title: 高速なビルドシステムNinjaを使ってみた
+title: Ninjaでビルドを高速化！その使い方を徹底解説
 author: kotaro-miura
 date: 2025-01-22
 tags:  [Ninja,Make,graphviz]
@@ -15,7 +15,7 @@ image: true
 
 NinjaはMakeに比べて高速に動作することがウリのビルドシステムです。
 
-Googele Chromeのように約40,000ファイルのC++コードから単一の実行ファイルをコンパイルする大規模プロジェクトにおいて、そのビルドの高速化のために開発されました。[^ninja-his]
+Google Chromeのように約40,000ファイルのC++コードから単一の実行ファイルをコンパイルする大規模プロジェクトにおいて、そのビルドの高速化のために開発されました。[^ninja-his]
 
 [^ninja-his]:[Evan Martin. The Performance of Open Source Software Ninja](https://aosabook.org/en/posa/ninja.html)
 

@@ -2,7 +2,7 @@
 title: GitHub Issues で Sub-issues が作れるようになりました(ベータ)
 author: masahiro-kondo
 date: 2024-10-05
-tags: [GitHub]
+tags: [プロジェクト管理, GitHub]
 image: true
 ---
 

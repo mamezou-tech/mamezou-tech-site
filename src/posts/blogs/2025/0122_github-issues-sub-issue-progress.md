@@ -2,7 +2,7 @@
 title: GitHub Issues で Sub-issues による進捗状況把握ができます
 author: masahiro-kondo
 date: 2025-01-22
-tags: [GitHub]
+tags: [プロジェクト管理, GitHub]
 image: true
 ---
 
@@ -32,7 +32,7 @@ Table ビューや Roadmap ビューで、`Group By` に `Parent issue` を指�
 
 [親の issue と sub-issue の進行状況フィールドについて - GitHub Docs](https://docs.github.com/ja/issues/planning-and-tracking-with-projects/understanding-fields/about-parent-issue-and-sub-issue-progress-fields)
 
-前の記事で使ったリポジトリとプロジェクトを利用して設定してみます。前の issues はもうクローズされているので、新たに Issue と Sub-issues を追加しました。
+前の記事で使ったリポジトリとプロジェクトを利用して設定してみます。前の記事の Issue はもうクローズされているので、新たに Issue と Sub-issues を追加しました。
 
 ![Issue and sub-issues](https://i.gyazo.com/c9df8229161077e419feb93e3d411357.png)
 
@@ -50,7 +50,7 @@ Table ビューや Roadmap ビューで、`Group By` に `Parent issue` を指�
 
 それでは、進行状況フィールドを表示してみましょう。
 
-`+` ボタンから出るメニューで `Hiden fields` にある `Sub-issues progress` を選択します。
+`+` ボタンから出るメニューで `Hidden fields` にある `Sub-issues progress` を選択します。
 
 ![Set Sub-issues progress](https://i.gyazo.com/7b41cbf381a1bd7d6d58702c2286f55c.png)
 

@@ -1,5 +1,5 @@
 ---
-title: Perplexity のオンライン検索API Sonar を使う
+title: "オンライン検索×AI：Perplexity新API Sonarの概要と基本的な使い方"
 author: noboru-kudo
 date: 2025-01-22
 tags: [Sonar, Perplexity, 生成AI, LLM, Python]

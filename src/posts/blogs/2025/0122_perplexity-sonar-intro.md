@@ -110,7 +110,7 @@ print(body["usage"])
 ここで注意したいのは、ベータ機能の一部がアカウントのTierによって利用できるかどうかが変わる点です。
 詳細は以下公式ドキュメントのBeta Featuresセクションを参照してください。
 
-- [Sonar guid - Rate Limits and Usage Tiers](https://docs.perplexity.ai/guides/usage-tiers)
+- [Sonar Guide - Rate Limits and Usage Tiers](https://docs.perplexity.ai/guides/usage-tiers)
 
 ここでは時事ネタについて問い合わせをしてみました。以下のレスポンスが返ってきました。
 

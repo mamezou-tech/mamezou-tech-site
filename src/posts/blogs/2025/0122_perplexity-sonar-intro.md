@@ -81,7 +81,7 @@ payload = {
     "temperature": 0.2,
     "top_p": 0.9,
     "return_images": False,  # Tier2から利用可
-    "return_related_questions": False,  # Tier 2から利用可
+    "return_related_questions": False,  # Tier2から利用可
     "search_recency_filter": "month", 
     "top_k": 0,
     "stream": False,
@@ -100,6 +100,7 @@ response = requests.request("POST", url, json=payload, headers=headers)
 body = json.loads(response.text)
 
 print(body["choices"][0]["message"]["content"])
+# citationsより引用したURLが取得可能
 for idx, citation in enumerate(body["citations"]):
     print(f"[{idx + 1}]: {citation}")
 

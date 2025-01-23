@@ -1,5 +1,5 @@
 ---
-title: textlintのallowlistルールをKernelから活用する方法
+title: textlintのallowlistルールをkernelから活用する方法
 author: shohei-yamashita
 date: 2025-01-27
 tags: [textlint, typescript, javascript]
@@ -7,11 +7,11 @@ image: true
 ---
 
 ## 注意事項
-この記事は、関連記事で網羅できなかったことをフォローしている記事です。
-記事そのものの内容は独立していますが、細かい経緯を知りたい場合には前の記事をご確認ください。
+この記事は、[VSCodeで校正ツールのヒントを表示 - problem matcherの解説](/blogs/2025/01/24/vscode-problemmatcher/)で網羅できなかったことをフォローしている記事です。
+記事そのものの内容は独立していますが、これまでの背景を知りたい場合には[前の記事](/blogs/2025/01/24/vscode-problemmatcher/)をご確認ください。
 
-サンプルについては前回の記事と同様、以下に掲載しています。
-[https://github.com/shohei-yamashit/lint-sample-vscode](https://github.com/shohei-yamashit/lint-sample-vscode)
+前回の記事と同様、サンプルは以下に掲載しています。
+@[og](https://github.com/shohei-yamashit/lint-sample-vscode)
 
 ## 背景
 前回の記事の内容でテキスト上の問題をビューワーで確認するところまではできましたが、以下の課題が残っています。
@@ -53,7 +53,7 @@ const linter = createLinter({
 });
 ```
 
-コードの全文はサンプルリポジトリ内src/lint_modified.tsをご確認ください。
+コードの全文はサンプルリポジトリ内```src/lint_modified.ts```をご確認ください。
 適切なルールセットをlintの定義時に渡すことで、特定の記号を無視して校正できることを確認しました。
 
 ## textlintについて
@@ -69,12 +69,12 @@ textlintは、テキストやMarkdownファイルの校正を自動化するた�
 
 豆蔵デベロッパーサイトにおいては、CLIツールからではなくKernelからライブラリを切り出して校正に利用しています。
 
-## Kernelによる制御
+## kernelによる制御
 textlintのカーネルライブラリを呼び出して構成処理をする場合には、以下の流れでおおむね実行できます。
 
-1. まず、TextlintKernelDescriptorというクラスを準備し、ルールを定義しておく
-1. この定義を元にlintを実行するクラスであるLinterを作成する
-1. Linterがファイルや文字列を対象に校正する
+1. まず、```TextlintKernelDescriptor```というクラスを準備し、ルールを定義しておく
+1. この定義を元にlintを実行するクラスである```Linter```を作成する
+1. ```Linter```がファイルや文字列を対象に校正する
 
 サンプルから実装を抜粋します。
 ```typescript:lint_original.ts
@@ -84,19 +84,37 @@ const descriptor: TextlintKernelDescriptor = new TextlintKernelDescriptor({
   ],
   plugins: [{
     pluginId: "@textlint/markdown",
-    plugin: moduleInterop(markdownProcessor.default) as any,
+    plugin: moduleInterop(markdownProcessor.default) as any, //章末で解説
     options: {
       extensions: ".md",
     },
   }],
   filterRules: [],
 });
+
+// Linterを作成
+const linter = createLinter({
+  descriptor: descriptor,
+});
+
+// 以下Lint処理を実行
 ```
-TextlintKernelDescriptorにはrules, plugins, filterRulesという項目があります。
-特定の文字を無視した校正処理をしたい場合には、filterRules内を編集すれば良さそうです。
+```TextlintKernelDescriptor```には```rules```, ```plugins```, ```filterRules```という項目があります。
+特定の文字を無視した校正処理をしたい場合には、```filterRules```内を編集すれば良さそうです。
+
+:::info:moduleInterop関数について
+こちらは、"@textlint/module-interop"より提供されているユーティリティ関数です。
+モジュールのエクスポートが CommonJS 形式か ESモジュール形式かに関わらず、適切に処理できるようにするためのものです。
+現在、以下のような実装となっております。
+```typescript:module-interop/src/index.ts
+export function moduleInterop<T>(moduleExports: T): T {
+    return moduleExports && (moduleExports as any).__esModule ? (moduleExports as any).default! : moduleExports;
+}
+```
+:::
 
 ## textlint-filter-rule-allowlistについて
-text-lintにおいて、特定のパターンを無視したい場合には、textlint-filter-rule-allowlistと呼ばれる別のライブラリが提供されています。
+textlintにおいて、特定のパターンを無視したい場合には、```textlint-filter-rule-allowlist```と呼ばれるライブラリが利用できます。
 今回のケースのようなワードレベルの制御だけではなく、以下のような柔軟な指定も可能です。
 
 ```typescript
@@ -107,7 +125,7 @@ text-lintにおいて、特定のパターンを無視したい場合には、te
 
 ## メッセージのパースエラー対策
 もう1つの問題であるパースエラーについてですが、lintの結果を整形することで対処できます。
-Linterによる出力結果はオブジェクトになっています。この中に改行等[^2]があるとパースの失敗が確認できました。
+lintの結果はオブジェクトになっています。この中に改行等[^2]があるとパースの失敗が確認できました。
 
 [^2]: この例では現れませんでしたが、タイミングによっては連続した空白が現れます。エディタで見えるヒントの見栄えが悪くなるので除外します。
 
@@ -182,15 +200,16 @@ messageフィールドに含まれる連続した空白や改行を半角スペ�
 ![024bce60041df3b882c96de8b1f53d09.png](https://i.gyazo.com/024bce60041df3b882c96de8b1f53d09.png)
 
 ## まとめ
-今回は、textlintをKernelレベル制御する方法について例を交えながら、簡単に紹介させていただきました。
+今回は、textlintをkernelレベル制御する方法について例を交えながら、簡単に紹介させていただきました。
 単純にtextlintを実行するだけであれば、CLIツールで十分事足ります。
-ただ、text-lint/kernelモジュールレベルで制御することにより細かい処理が可能になります。
-今回は、JSで実装されている処理を組み込む例を紹介しました。
+ただ、text-lint/kernelモジュールを使えば、より細かい制御が可能になります。
+今回は、JavaScriptで実装されている処理を組み込む例を紹介しました。
 
 ## （参考）型レベルでのエビデンスチェック
 今回の実装について、型レベルで実装の妥当性を確認していきます。
 本章の情報は2025年1月20日時点での実装であることに注意してください。
-まず、TextlintKernelDescriptorの定義を確認します。TextlintKernelDescriptorには以下のようにコンストラクタがあります。
+まず、```TextlintKernelDescriptor```の定義を確認します。
+```TextlintKernelDescriptor```には以下のようなコンストラクタがあります。
 
 ```typescript:TextlintKernelDescriptor.ts:TextlintKernelDescriptor.ts
 // TextlintKernelDescriptor.ts
@@ -208,8 +227,8 @@ export class TextlintKernelDescriptor {
     // (略)
 }
 ```
-次にコンストラクタの引数であるTextlintKernelDescriptorArgsに着目します。
-filterRulesの型がTextlintKernelFilterRule[]で定義されていることが分かります。
+次にコンストラクタの引数である```TextlintKernelDescriptorArgs```に着目します。
+```filterRules```の型が```TextlintKernelFilterRule[]```で定義されていることが分かります。
 
 ```typescript:TextlintKernelDescriptor.ts
 // TextlintKernelDescriptor.ts
@@ -221,7 +240,7 @@ export interface TextlintKernelDescriptorArgs {
     plugins: TextlintKernelPlugin[];
 }
 ```
-次にTextlintKernelFilterRuleの細部に注目すると、ruleと呼ばれるフィールドを確認できます。
+次に```TextlintKernelFilterRule```の細部に注目すると、```rule```と呼ばれるフィールドを確認できます。
 ```typescript:textlint-kernel-interface.ts
 // textlint-kernel-interface.ts
 export interface TextlintKernelFilterRule {
@@ -235,8 +254,8 @@ export interface TextlintKernelFilterRule {
     options?: TextlintFilterRuleOptions | boolean;
 }
 ```
-TextlintFilterRuleReporterと、textlint-filter-rule-allowlist内の関数との間で整合性が取れれば、型レベルでの動作は保証されます。
-ここで、TextlintFilterRuleReporterの定義を確認します。
+```TextlintFilterRuleReporter```と、```textlint-filter-rule-allowlist```内の関数との間で整合性が取れれば、型レベルでの動作は保証されます。
+ここで、```TextlintFilterRuleReporter```の定義を確認します。
 
 ```typescript:TextlintFilterRuleModule.ts
 /**
@@ -263,7 +282,7 @@ export type TextlintFilterRuleReporter = (
 ) => TextlintFilterRuleReportHandler;
 ```
 
-次にtextlint-filter-rule-allowlistを見てみると、次のように実装されています。
+次に```textlint-filter-rule-allowlist```を見てみると、以下のように実装されています。
 
 ```javascript:textlint-filter-rule-allowlist.js
 // textlint-filter-rule-allowlist.js
@@ -294,9 +313,9 @@ function _default(context, options) {
   };
 }
 ```
-textlint-filter-rule-allowlistはあくまでJSのスクリプトなので、型情報はありません。
-しかしながら、引数名や返り値の形式をみると、TextlintFilterRuleReporterという型定義とJavaScriptでの実装は一致しているように見えます。
-したがって以下のような定義を作成することで、textlint-filter-rule-allowlistをKernelライブラリから呼び出せそうです[^4]。
+```textlint-filter-rule-allowlist```はあくまでJavaScriptで実装されているので、型情報はありません。
+しかしながら、引数名や返り値の形式を比較すると、```TextlintFilterRuleReporter```の型定義とJavaScriptでの実装は一致しているように見えます。
+したがって、以下のような定義を作成することで、```textlint-filter-rule-allowlist```をKernelライブラリから呼び出せそうです。
 
 ```diff-js:lint_modified.ts
 const descriptor: TextlintKernelDescriptor = new TextlintKernelDescriptor({
@@ -324,5 +343,3 @@ const linter = createLinter({
   descriptor: descriptor,
 });
 ```
-
-[^4]: モジュールのエクスポートが CommonJS 形式か ESモジュール形式かに関わらず、適切に処理できるようにするためのユーティリティです。

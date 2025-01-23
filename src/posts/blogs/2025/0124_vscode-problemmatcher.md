@@ -1,5 +1,5 @@
 ---
-title: VSCodeで校正ツールからのヒントをビューワーに表示しよう - ProblemMatcherの解説
+title: VSCodeで校正ツールのヒントを表示 - problem matcherの解説
 author: shohei-yamashita
 date: 2025-01-24
 tags: [vscode, textlint, regex]
@@ -7,10 +7,10 @@ image: true
 ---
 
 ## はじめに
-ビジネスソリューション事業部の山下です。今回は、Visual Studio Code(VSCode)のタスク機能で設定できるProbrem Matcherについて解説していこうと思います。
+ビジネスソリューション事業部の山下です。今回は、Visual Studio Code(VSCode)のタスク機能で設定できるProblem Matcherについて解説していこうと思います。
 普段の開発にあたって、コードチェック機能はエディタやその拡張機能で提供されるため、あまり意識しないはずです。
 しかしながら、スクラッチで開発したCLIツールの出力をエディタ上でも確認したいといったケースもあるでしょう。
-今回は、VSCode上での開発でTaskとProblem Matcherを併用することで、手軽に自作ツールの出力結果をヒントとして出す手順を紹介します。
+今回は、VSCode上での開発でTaskとproblem matcherを併用することで、手軽に自作ツールの出力結果をヒントとして出す手順を紹介します。
 本記事に関するサンプルコードは以下のリポジトリに掲載しております。
 [https://github.com/shohei-yamashit/lint-sample-vscode](https://github.com/shohei-yamashit/lint-sample-vscode)
 
@@ -28,22 +28,19 @@ deno task lint ${mdファイルのパス}
 ```sh
 /.../mamezou-tech-site/src/posts/blogs/2025/0117_cycle-postgres.md
    10:19  error  "で" が連続して2回使われています。                                                                                                                                                                ja-no-successive-word
-   10:20  error  "で" が連続して2回使われています。                                                                                                                                                                ja-no-successive-word
-   10:21  error  "で" が連続して2回使われています。                                                                                                                                                                ja-no-successive-word
-   11:4   error  漢字が7つ以上連続しています: 漢字七文字以上                                                                                                                                                       max-kanji-continuous-len
+   // (略)                                                                                   
    12:11  error  【dict2】 "することのできること"は冗長な表現です。"することの"を省き簡潔な表現にすると文章が明瞭になります。 解説: https://github.com/textlint-ja/textlint-rule-ja-no-redundant-expression#dict2  ja-no-redundant-expression
   128:3   error  文末が"。"で終わっていません。                                                                                                                                                                    ja-no-mixed-period
-  213:3   error  文末が"。"で終わっていません。                                                                                                                                                                    ja-no-mixed-period
 ✖ 7 problems (7 errors, 0 warnings)      
 ```
 
 基本的にはコンソール出力から修正箇所を特定しますが、修正量が多いと確認作業も一苦労です。
-そこでリサーチの結果、TaskとProblemMatcherの併用という手段に行き着きました。
-以下に示すように、修正箇所がヒントとして一目でわかるようになります。
+そこでリサーチの結果、Taskとproblem matcherの併用という手段に行き着きました。
+下の画面に示すように、修正箇所がヒントとして一目でわかるようになります。
 
 ![56417c0c0a1767ea8c321da603c590d8.png](https://i.gyazo.com/56417c0c0a1767ea8c321da603c590d8.png)
 
-## VSCodeのTaskとProblem Matcher
+## VSCodeのTaskとproblem matcher
 
 ### Taskについて
 TaskはVSCodeに備わっている標準機能の1つであり、一言でいえば、「コマンド操作にエイリアス等を指定できるVSCodeの標準機能」です。
@@ -52,8 +49,8 @@ tasks.jsonファイルに適切な定義をすることにより、様々なコ�
 tasks.jsonでは、コマンドそのものや実行方式に関わる設定ができるだけでなく、次に説明するようにコマンドをトリガーとした追加の操作を設定可能です。
 [^2]: [https://code.visualstudio.com/docs/editor/tasks#_binding-keyboard-shortcuts-to-tasks](https://code.visualstudio.com/docs/editor/tasks#_binding-keyboard-shortcuts-to-tasks)
 
-### ProblemMatcher
-Problem Matcherはtasks.jsonの設定項目の1つであり、エイリアス定義されたコマンドの出力をキャプチャしてエディタ上でヒントとして出すための設定項目です。
+### problem matcher
+problem matcherはtasks.jsonの設定項目の1つであり、エイリアス定義されたコマンドの出力をキャプチャしてエディタ上でヒントとして出すための設定項目です。
 本章では、公式に掲載されているサンプル[^3]を紹介します。
 [^3]: [https://code.visualstudio.com/docs/editor/tasks#_defining-a-problem-matcher](https://code.visualstudio.com/docs/editor/tasks#_defining-a-problem-matcher)
 
@@ -83,7 +80,7 @@ Problem Matcherはtasks.jsonの設定項目の1つであり、エイリアス定
 }
 ```
 
-ProblemMatcherに注目すると、次の4つの属性が確認できるはずです。
+problem matcherに注目すると、次の4つの属性が確認できるはずです。
 
 ```sh
 - owner
@@ -230,12 +227,9 @@ test.js
 ```sh
 /.../mamezou-tech-site/src/posts/blogs/2025/0117_cycle-postgres.md
    10:19  error   "で" が連続して2回使われています。                                                                                                                                                                ja-no-successive-word
-   10:20  error   "で" が連続して2回使われています。                                                                                                                                                                ja-no-successive-word
-   10:21  error   "で" が連続して2回使われています。                                                                                                                                                                ja-no-successive-word
    11:4   error ✔︎ 漢字が7つ以上連続しています: 漢字七文字以上                                                                                                                                                       max-kanji-continuous-len
    12:11  error  【dict2】 "することのできること"は冗長な表現です。"することの"を省き簡潔な表現にすると文章が明瞭になります。 解説: https://github.com/textlint-ja/textlint-rule-ja-no-redundant-expression#dict2  ja-no-redundant-expression
   128:3   error   文末が"。"で終わっていません。                                                                                                                                                                    ja-no-mixed-period
-  213:3   error   文末が"。"で終わっていません。
 ```
 
 一般化して記述すると次のようになります。
@@ -278,7 +272,7 @@ ${ファイルの絶対パス}
 ここで、サンプルを実行してみましょう。
 [https://github.com/shohei-yamashit/lint-sample-vscode](https://github.com/shohei-yamashit/lint-sample-vscode)
 
-サンプルリポジトリ上で校正処理を実行すると、以下のようにmdの編集画面に問題がヒントとして表示されます。
+サンプルリポジトリ上で校正処理を実行すると、以下のようにファイルを編集している画面にヒントが表示されます。
 
 ![ed0f92a0da10cefa2ce10ef1b1f72acf.png](https://i.gyazo.com/ed0f92a0da10cefa2ce10ef1b1f72acf.png)
 
@@ -286,8 +280,8 @@ ${ファイルの絶対パス}
 - “:::”といったプロジェクト特有のシンタックスも校正対象になってしまっている
 - エラーを十分にパースできない
 
-これらの問題の解決はProblemMatcherから逸脱するので別の記事で補足させてください。
+これらの問題の解決はproblem matcherから逸脱するので別の記事で補足させてください。
 
 ## まとめ
-今回はVScodeのTaskにあるProblemMatcher属性をコントロールすることで、CLIツールからの結果を反映できました。
+今回はVScodeのTaskにあるproblem matcher属性をコントロールすることで、CLIツールからの結果を反映できました。
 ツールさえ用意できれば、tasks.jsonを編集するだけでエディタ上でツールの結果を可視化できます。

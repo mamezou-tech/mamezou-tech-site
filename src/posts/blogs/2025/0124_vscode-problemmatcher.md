@@ -12,7 +12,7 @@ image: true
 しかしながら、スクラッチで開発したCLIツールの出力をエディタ上でも確認したいといったケースもあるでしょう。
 今回は、VSCode上での開発でTaskとproblem matcherを併用することで、手軽に自作ツールの出力結果をヒントとして出す手順を紹介します。
 本記事に関するサンプルコードは以下のリポジトリに掲載しております。
-[https://github.com/shohei-yamashit/lint-sample-vscode](https://github.com/shohei-yamashit/lint-sample-vscode)
+@[og](https://github.com/shohei-yamashit/lint-sample-vscode)
 
 ## 背景
 豆蔵デベロッパーサイトで記事を投稿する前には、記事のマークダウンに対してlintツールをかけることが決まりになっています[^1]。
@@ -269,8 +269,8 @@ ${ファイルの絶対パス}
       },
     }
 ```
-ここで、サンプルを実行してみましょう。
-[https://github.com/shohei-yamashit/lint-sample-vscode](https://github.com/shohei-yamashit/lint-sample-vscode)
+ここで、サンプルをみてましょう。リポジトリのリンクを再度掲載します。
+@[og](https://github.com/shohei-yamashit/lint-sample-vscode)
 
 サンプルリポジトリ上で校正処理を実行すると、以下のようにファイルを編集している画面にヒントが表示されます。
 

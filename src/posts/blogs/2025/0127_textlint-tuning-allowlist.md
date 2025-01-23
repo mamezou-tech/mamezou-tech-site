@@ -1,5 +1,5 @@
 ---
-title: 【補足記事】textlint-filter-rule-allowlistをkernelから使ってみよう
+title: textlintのallowlistルールをKernelから活用する方法
 author: shohei-yamashita
 date: 2025-01-27
 tags: [textlint, typescript, javascript]
@@ -14,8 +14,7 @@ image: true
 [https://github.com/shohei-yamashit/lint-sample-vscode](https://github.com/shohei-yamashit/lint-sample-vscode)
 
 ## 背景
-前回の記事の内容でテキスト上の問題をビューワーで確認するところまではできました。
-しかしながら、以下の課題が残っています。
+前回の記事の内容でテキスト上の問題をビューワーで確認するところまではできましたが、以下の課題が残っています。
 
 - プロジェクト特有のシンタックス（”:::”）まで検知されてしまう
 - メッセージのパースがうまくいかない
@@ -325,6 +324,5 @@ const linter = createLinter({
   descriptor: descriptor,
 });
 ```
-
 
 [^4]: モジュールのエクスポートが CommonJS 形式か ESモジュール形式かに関わらず、適切に処理できるようにするためのユーティリティです。

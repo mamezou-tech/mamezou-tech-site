@@ -2,7 +2,7 @@
 title: VSCodeで校正ツールのヒントを表示 - problem matcherの解説
 author: shohei-yamashita
 date: 2025-01-24
-tags: [vscode, textlint, regex]
+tags: [textlint, regex, vscode]
 image: true
 ---
 

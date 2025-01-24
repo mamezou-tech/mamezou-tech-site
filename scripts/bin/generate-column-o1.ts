@@ -118,7 +118,7 @@ Please pick one of these keywords and write a short article about it.`;
 
   async function createColumn() {
     const result = await openai.chat.completions.create({
-      model: 'o1-preview',
+      model: 'o1',
       // model: 'gpt-4o-mini', // for testing
       messages: [
         {
@@ -146,6 +146,7 @@ Please pick one of these keywords and write a short article about it.`;
   for (let retry = 0; retry <= 3; retry++) {
     if (column.length <= 600 || !checkFormat(column)) {
       console.warn('too short column or illegal format!! retrying...', retry);
+      await new Promise(resolve => setTimeout(resolve, 3000 * retry));
       column = await createColumn();
     } else {
       console.info('check OK!')

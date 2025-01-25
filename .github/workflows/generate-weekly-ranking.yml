@@ -15,15 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js environment
-        uses: actions/setup-node@v4
+      - name: Set up Deno environment
+        uses: denoland/setup-deno@v2
         with:
-          node-version: '20'
-          cache: npm
-          cache-dependency-path: scripts/package-lock.json
-
-      - name: Install
-        run: cd ${GITHUB_WORKSPACE}/scripts && npm ci
+          deno-version: v2.x
 
       - name: configure google credentials
         uses: google-github-actions/auth@v2
@@ -39,7 +34,7 @@ jobs:
           SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
         run: |
           cd ${GITHUB_WORKSPACE}/scripts
-          npm run generate:weekly-ranking
+          deno task generate:ranking
 
       - name: Commit and Create Pull request
         uses: peter-evans/create-pull-request@v6
@@ -49,7 +44,7 @@ jobs:
           author: "mameka <mameka-bot@mamezou.com>"
           branch: weekly-ranking-report
           delete-branch: true
-          title: "[auto-review] Update GA Report by github-actions"
+          title: "[auto-review] Update latest ranking"
           body: "Check weekly access ranking report."
           reviewers: kudoh
           labels: bot

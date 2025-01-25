@@ -1,45 +1,43 @@
-import fs from 'fs';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import OpenAI from 'openai';
-import openai from '../util/openai-client.js';
-import console from 'console';
-import sharp from 'sharp';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { WebClient } from '@slack/web-api';
-import z from 'zod';
-import { zodResponseFormat } from 'openai/helpers/zod';
+import { Buffer } from "node:buffer";
+import { dirname, fromFileUrl, join } from "@std/path";
+import { readFile, writeFile } from "@opensrc/jsonfile";
+import OpenAI from "@openai/openai";
+import openai from "../util/openai-client.ts";
+import sharp from "npm:sharp";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { WebClient } from "@slack/web-api";
+import z from "zod";
+import { zodResponseFormat } from "@openai/openai/helpers/zod";
 
 const Gpt = z.object({
   columns: z.array(z.object({
     title: z.string(),
     text: z.string(),
     created: z.string(),
-    theme: z.string()
-  }))
+    theme: z.string(),
+  })),
 });
 const ThemeCandidates = z.object({
-  words: z.array(z.string()).describe('theme of today\'s column')
+  words: z.array(z.string()).describe("theme of today's column"),
 });
 const GeneratedColumn = z.object({
-  title: z.string().describe('column\'s title'),
-  text: z.string().describe('column\'s body'),
-  conclusion: z.string()
+  title: z.string().describe("column's title"),
+  text: z.string().describe("column's body"),
+  conclusion: z.string(),
 });
 
 const categories = [
-  'Robotics',
-  'Serverless Architecture and Trends',
-  'Next-Generation Databases',
-  'Agile Developments',
-  'Frontend Technology Trends',
-  'Latest AI products or services',
-  'AWS Services'
+  "Robotics",
+  "Serverless Architecture and Trends",
+  "Next-Generation Databases",
+  "Agile Developments",
+  "Frontend Technology Trends",
+  "Latest AI products or services",
+  "AWS Services",
 ];
 
-// o1のsystem message対応してなかった
 const systemMessage: OpenAI.ChatCompletionMessageParam = {
-  role: 'system',
+  role: "system",
   content: `You are a cute girl and an excellent columnist in Japan.
 Your columns should follow these guidelines:
 - Write passionate articles that readers can relate to.
@@ -54,57 +52,58 @@ Your columns should follow these guidelines:
 {title}
 
 {content}
-`
+`,
 };
 
-
 function checkFormat(column: string) {
-  const lines = column.split('\n');
+  const lines = column.split("\n");
   if (lines.length < 3) {
     return false;
   }
   const [title, emptyLine, ...payloadLines] = lines;
   if (title.length < 10) {
-    console.warn('the title is too short', title)
+    console.warn("the title is too short", title);
     return false;
   }
-  if (emptyLine.trim() !== '') {
-    console.warn('The second line is not empty')
+  if (emptyLine.trim() !== "") {
+    console.warn("The second line is not empty");
     return false;
   }
   if (payloadLines.length === 0) {
-    console.warn('No payload')
+    console.warn("No payload");
     return false;
   }
   return true;
 }
 
 async function main(path: string) {
-  const json = Gpt.parse(JSON.parse(fs.readFileSync(path).toString()));
+  const json = Gpt.parse(await readFile(path));
 
   const theme = categories[new Date().getDay()];
   const pastTitles = json.columns
-    .filter(column => column.theme === theme)
-    .map(column => column.title);
+    .filter((column) => column.theme === theme)
+    .map((column) => column.title);
   const prompt: OpenAI.ChatCompletionMessageParam = {
     content: `Think column's theme of \`${theme}\` used by IT developers.
 Output about 20 themes. The themes must be professional and new. 
 Please output concrete service or technology names as much as possible, rather than abstract ones such as \`API\` or \`Cloud\`.
 
 Do not output the following words.
-${pastTitles.map(title => `- ${title}`).join('\n')}
+${pastTitles.map((title) => `- ${title}`).join("\n")}
 `,
-    role: 'user'
+    role: "user",
   };
   const candidates = await openai.beta.chat.completions.parse({
-    model: 'gpt-4o-mini',
+    model: "gpt-4o-mini",
     messages: [prompt],
-    response_format: zodResponseFormat(ThemeCandidates, 'theme_candidates')
+    response_format: zodResponseFormat(ThemeCandidates, "theme_candidates"),
   });
   if (candidates.choices[0].message.refusal) {
     throw new Error(candidates.choices[0].message.refusal);
   }
-  const keywords = candidates.choices[0].message.parsed as z.infer<typeof ThemeCandidates>;
+  const keywords = candidates.choices[0].message.parsed as z.infer<
+    typeof ThemeCandidates
+  >;
 
   console.log(keywords.words);
   // const keyword = pickup(keywords.words, pastTitles);
@@ -112,19 +111,19 @@ ${pastTitles.map(title => `- ${title}`).join('\n')}
 
 The theme is "${theme}".
 The keywords are: 
-${keywords.words.map(w => `- ${w}`).join('\n')}.
+${keywords.words.map((w) => `- ${w}`).join("\n")}.
 
 Please pick one of these keywords and write a short article about it.`;
 
   async function createColumn() {
     const result = await openai.chat.completions.create({
-      model: 'o1-preview',
+      model: "o1-preview",
       // model: 'gpt-4o-mini', // for testing
       messages: [
         {
-          role: 'user',
-          content: content
-        }
+          role: "user",
+          content: content,
+        },
       ],
       // max_tokens: 2048,
       max_completion_tokens: 3072, // for o1 model
@@ -133,9 +132,9 @@ Please pick one of these keywords and write a short article about it.`;
       // response_format: zodResponseFormat(GeneratedColumn, 'column')
       store: true,
       metadata: {
-        assistant: 'mameka',
-        usage: 'column'
-      }
+        assistant: "mameka",
+        usage: "column",
+      },
     });
     const column = result.choices[0].message?.content as string;
     console.log(column);
@@ -145,10 +144,10 @@ Please pick one of these keywords and write a short article about it.`;
   let column = await createColumn();
   for (let retry = 0; retry <= 3; retry++) {
     if (column.length <= 600 || !checkFormat(column)) {
-      console.warn('too short column or illegal format!! retrying...', retry);
+      console.warn("too short column or illegal format!! retrying...", retry);
       column = await createColumn();
     } else {
-      console.info('check OK!')
+      console.info("check OK!");
       break;
     }
   }
@@ -156,118 +155,124 @@ Please pick one of these keywords and write a short article about it.`;
   if (!safeResponse(column)) throw new Error(`unsafe content found: ${column}`);
 
   const formattedDate = today();
-  const firstLineIndex = column.indexOf('\n');
+  const firstLineIndex = column.indexOf("\n");
   const text = column.slice(firstLineIndex + 2);
   const title = column.slice(0, firstLineIndex);
-  if (!process.env.DISABLE_IMAGE_GENERATION) {
-    await generateImage({title, details: text}, formattedDate);
+  if (!Deno.env.get("DISABLE_IMAGE_GENERATION")) {
+    await generateImage({ title, details: text }, formattedDate);
   }
 
   const item = {
     title,
-    text: text.replaceAll(/(\r?\n)+/g, '<br />'),
+    text: text.replaceAll(/(\r?\n)+/g, "<br />"),
     created: new Date().toISOString(),
-    theme
+    theme,
   };
   json.columns.unshift(item);
   json.columns = json.columns.slice(0, 70);
-  fs.writeFileSync(path, JSON.stringify(json, null, 2));
-  const token = process.env.SLACK_BOT_TOKEN;
+  await writeFile(path, json, { spaces: 2 });
+  const token = Deno.env.get("SLACK_BOT_TOKEN");
   const web = new WebClient(token);
 
-  const channel = process.env.SLACK_CHANNEL_ID || 'D041BPULN4S';
+  const channel = Deno.env.get("SLACK_CHANNEL_ID") || "D041BPULN4S";
   await web.chat.postMessage({
     channel,
     mrkdwn: true,
-    text: '今日の豆香の豆知識',
+    text: "今日の豆香の豆知識",
     unfurl_media: false,
     blocks: [
       {
-        type: 'header',
+        type: "header",
         text: {
-          type: 'plain_text',
-          text: `${formattedDate}の豆香の豆知識`
-        }
+          type: "plain_text",
+          text: `${formattedDate}の豆香の豆知識`,
+        },
       },
       {
-        type: 'section',
+        type: "section",
         text: {
-          type: 'mrkdwn',
-          text: item.title
-        }
+          type: "mrkdwn",
+          text: item.title,
+        },
       },
       {
-        type: 'section',
+        type: "section",
         text: {
-          type: 'mrkdwn',
-          text: text
-        }
+          type: "mrkdwn",
+          text: text,
+        },
       },
       {
-        type: 'image',
-        alt_text: '豆香コラム画像',
-        image_url: `https://image.mamezou-tech.com/mameka/${formattedDate}-daily-column-300.webp`
-      }
-    ]
+        type: "image",
+        alt_text: "豆香コラム画像",
+        image_url:
+          `https://image.mamezou-tech.com/mameka/${formattedDate}-daily-column-300.webp`,
+      },
+    ],
   });
 }
 
 function today() {
   const now = new Date();
   const year = now.getFullYear();
-  const month = (now.getMonth() + 1).toString().padStart(2, '0');
-  const day = now.getDate().toString().padStart(2, '0');
+  const month = (now.getMonth() + 1).toString().padStart(2, "0");
+  const day = now.getDate().toString().padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
 
-async function generateImage({ title, details }: { title: string, details: string }, date: string) {
+async function generateImage(
+  { title, details }: { title: string; details: string },
+  date: string,
+) {
   const promptSuggestion = await openai.chat.completions.create({
-    model: 'gpt-4o',
+    model: "gpt-4o",
     messages: [
       {
-        role: 'user',
-        content: `Create an anime-inspired, cartoon-style illustration focused on the theme: '${title}'. 
+        role: "user",
+        content:
+          `Create an anime-inspired, cartoon-style illustration focused on the theme: '${title}'. 
 Incorporate key elements from the following details: '${details}'. 
 Include both characters and objects whenever possible, using bright colors and a fun, playful atmosphere. 
-Reflect the perspective of author in all design aspects, who is a Japanese cute girl named '豆香'.`
-      }
+Reflect the perspective of author in all design aspects, who is a Japanese cute girl named '豆香'.`,
+      },
     ],
-  })
-  console.log(promptSuggestion.choices[0].message.content)
+  });
+  console.log(promptSuggestion.choices[0].message.content);
 
   const response = await openai.images.generate({
-    prompt: promptSuggestion.choices[0].message.content || `${title}\n${details}`,
-    model: 'dall-e-3',
-    size: '1024x1024',
-    response_format: 'b64_json',
-    quality: 'standard'
+    prompt: promptSuggestion.choices[0].message.content ||
+      `${title}\n${details}`,
+    model: "dall-e-3",
+    size: "1024x1024",
+    response_format: "b64_json",
+    quality: "standard",
   });
 
   const image = response.data[0];
-  const base64Image = image.b64_json?.split(';base64,').pop();
+  const base64Image = image.b64_json?.split(";base64,").pop();
   if (!base64Image) {
-    throw new Error('illegal image format');
+    throw new Error("illegal image format");
   }
   const width = 300;
-  const optimizedImage = await sharp(Buffer.from(base64Image, 'base64'))
+  const optimizedImage = await sharp(Buffer.from(base64Image, "base64"))
     .resize(width)
-    .toFormat('webp', { quality: 80 })
+    .toFormat("webp", { quality: 80 })
     .toBuffer();
 
   await uploadToS3(`mameka/${date}-daily-column-${width}.webp`, optimizedImage);
-  console.log('Image optimized and saved');
+  console.log("Image optimized and saved");
 }
 
 async function uploadToS3(key: string, body: Buffer) {
-  const bucketName = 'mz-developer-site-image-bucket';
+  const bucketName = "mz-developer-site-image-bucket";
   const s3client = new S3Client({
-    region: 'ap-northeast-1'
+    region: "ap-northeast-1",
   });
   const uploadParams = {
     Bucket: bucketName,
     Key: key,
     Body: body,
-    ContentType: 'image/webp'
+    ContentType: "image/webp",
   };
   const command = new PutObjectCommand(uploadParams);
   await s3client.send(command);
@@ -286,7 +291,7 @@ function safeResponse(inputString: string) {
     /<script[^>]*>/i,
     /<\/script>/i,
     /<[^>]+on\w+=/i,
-    /javascript\s*:/i
+    /javascript\s*:/i,
   ];
 
   for (const pattern of patterns) {
@@ -297,13 +302,13 @@ function safeResponse(inputString: string) {
   return true;
 }
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const reportDir = `${__dirname}/../../src/_data`;
-const reportFile = `${reportDir}/gpt.json`;
+const __dirname = dirname(fromFileUrl(import.meta.url));
+const reportDir = join(__dirname, "../../src/_data");
+const reportFile = join(reportDir, "gpt.json");
 
 try {
   await main(reportFile);
 } catch (e) {
-  console.warn('error occurred, retrying...', { e });
+  console.warn("error occurred, retrying...", { e });
   await main(reportFile);
 }

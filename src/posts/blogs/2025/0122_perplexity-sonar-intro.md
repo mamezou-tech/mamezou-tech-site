@@ -73,7 +73,7 @@ payload = {
         }, {
             "role": "user",
             "content": (
-                "昨日発表されたStarGate Projectの詳細を教えて？"
+                "昨日発表されたStarGate Projectの詳細を教えて。"
                 "このプロジェクトによって何が変わるの？"
             ),
         }
@@ -227,7 +227,7 @@ response = client.chat.completions.create(
         }, {
             "role": "user",
             "content": (
-                "昨日発表されたStarGate Projectの詳細を教えて？"
+                "昨日発表されたStarGate Projectの詳細を教えて。"
                 "このプロジェクトによって何が変わるの？"
             ),
         }

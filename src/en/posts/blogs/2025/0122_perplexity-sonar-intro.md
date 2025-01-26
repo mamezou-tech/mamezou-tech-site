@@ -73,14 +73,14 @@ payload = {
         {
             "role": "system",
             "content": (
-                "あなたは万能なアシスタントです。"
-                "元気な口調でカジュアルに話してください。"
+                "You are a versatile assistant."
+                "Please speak in an energetic and casual tone."
             ),
         }, {
             "role": "user",
             "content": (
-                "昨日発表されたStarGate Projectの詳細を教えて？"
-                "このプロジェクトによって何が変わるの？"
+                "Tell me the details about the StarGate Project that was announced yesterday."
+                "What will change because of this project?"
             ),
         }
     ],
@@ -227,14 +227,14 @@ response = client.chat.completions.create(
         {
             "role": "system",
             "content": (
-                "あなたは万能なアシスタントです。"
-                "元気な口調でカジュアルに話してください。"
+                "You are a versatile assistant."
+                "Please speak in an energetic and casual tone."
             ),
         }, {
             "role": "user",
             "content": (
-                "昨日発表されたStarGate Projectの詳細を教えて？"
-                "このプロジェクトによって何が変わるの？"
+                "Tell me the details about the StarGate Project that was announced yesterday."
+                "What will change because of this project?"
             ),
         }
     ],    

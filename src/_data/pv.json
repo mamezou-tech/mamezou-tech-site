@@ -17,28 +17,28 @@
       "url": "/blogs/2024/06/16/moji-code1/"
     },
     {
-      "title": "GitHub Issues で Sub-issues が作れるようになりました(ベータ)",
-      "url": "/blogs/2024/10/05/github-issues-with-sub-issues-beta/"
+      "title": "OpenAI Realtime API の音声会話アプリを WebRTC を使って実装する",
+      "url": "/blogs/2024/12/21/openai-realtime-api-webrtc/"
     },
     {
-      "title": "【devcontainer完全ガイド】DockerとWSLで最強のイマドキ開発環境を手に入れよう！",
-      "url": "/blogs/2024/10/11/devcontainer/"
-    },
-    {
-      "title": "Google Test を使ってみる（その５：GoogleMock編）",
-      "url": "/blogs/2023/10/08/google-test-05/"
+      "title": "統計学で避けて通れない自由度の話",
+      "url": "/blogs/2022/06/20/degrees-of-freedom/"
     },
     {
       "title": "手書き風ドローツール Excalidraw のススメ",
       "url": "/blogs/2023/03/22/use-excalidraw/"
     },
     {
-      "title": "IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）",
-      "url": "/iot/internet-of-things-15/"
+      "title": "Google Test を使ってみる（その５：GoogleMock編）",
+      "url": "/blogs/2023/10/08/google-test-05/"
     },
     {
-      "title": "統計学で避けて通れない自由度の話",
-      "url": "/blogs/2022/06/20/degrees-of-freedom/"
+      "title": "【devcontainer完全ガイド】DockerとWSLで最強のイマドキ開発環境を手に入れよう！",
+      "url": "/blogs/2024/10/11/devcontainer/"
+    },
+    {
+      "title": "IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）",
+      "url": "/iot/internet-of-things-15/"
     }
   ]
 }

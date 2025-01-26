@@ -4,7 +4,7 @@
 echo "Starting Deno build task..."
 
 deno --version
-deno upgrade 2.1.7
+deno upgrade
 
 # Running Deno task
 deno task build

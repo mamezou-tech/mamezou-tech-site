@@ -3,7 +3,8 @@
 # Deno build task script
 echo "Starting Deno build task..."
 
-deno --version
+DENO_VERSION=$(deno --version | grep "deno " | awk '{print $2}')
+
 deno upgrade
 
 # Running Deno task

@@ -13,11 +13,10 @@
   # been specified, include it in the publish directory path.
   publish = "public"
 
-#  ignore  = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF src lume _config.ts deno.json netlify.toml"
+  ignore  = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF src lume _config.ts deno.json netlify.toml"
 
   # Default build command.
   command = "deno upgrade && deno task lume"
-#  command = "./build-netlify.sh"
 
   [build.environment]
     NODE_VERSION="22"

@@ -36,6 +36,15 @@ If you have the paid version (Pro) of Perplexity, you will receive a $5 credit e
 There are currently only two models available in Sonar: "sonar" and "sonar-pro".
 Both are specialized for online search and are designed to retrieve search results smoothly.
 
+:::info
+On January 29, 2025, a new feature called "sonar-reasoning" was introduced.
+This model is an online search model (with one search per query) based on the trending DeepSeek Reasoning model. According to Perplexity's announcement, this model is deployed in data centers in the United States and is not subject to censorship.
+
+If you're interested, be sure to give it a try!
+
+@[og](https://x.com/perplexity_ai/status/1884409454675759211)
+:::
+
 As you might guess from the name, "sonar-pro" has higher accuracy.
 The official documentation doesn't provide much detail, but it supports multi-step searches, a larger number of cited URLs, and a larger context window size (imagine Perplexity's Pro search features, and it becomes clearer).
 

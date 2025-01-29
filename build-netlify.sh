@@ -3,6 +3,8 @@
 # Deno build task script
 echo "Starting Deno build task..."
 
+sed -i.bak 's/"lock": true/"lock": false/' "deno.json"
+
 deno --version
 deno upgrade
 

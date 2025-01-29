@@ -1,5 +1,5 @@
 {
-  "lock": true,
+  "lock": false,
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "npm:react",

@@ -3,10 +3,13 @@
 # Deno build task script
 echo "Starting Deno build task..."
 
+# Temporarily disable the lockfile for older versions of Deno, such as 1.41
 sed -i.bak 's/"lock": true/"lock": false/' "deno.json"
 
 deno --version
 deno upgrade
+
+sed -i.bak 's/"lock": false/"lock": true/' "deno.json"
 
 # Running Deno task
 deno task build

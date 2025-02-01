@@ -8,6 +8,7 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { WebClient } from "@slack/web-api";
 import z from "zod";
 import { zodResponseFormat } from "@openai/openai/helpers/zod";
+import { KnownBlock } from 'npm:@slack/types';
 
 const Gpt = z.object({
   columns: z.array(z.object({
@@ -117,7 +118,8 @@ Please pick one of these keywords and write a short article about it.`;
 
   async function createColumn() {
     const result = await openai.chat.completions.create({
-      model: "o1-preview",
+      model: "o3-mini",
+      reasoning_effort: "high",
       // model: 'gpt-4o-mini', // for testing
       messages: [
         {
@@ -158,7 +160,8 @@ Please pick one of these keywords and write a short article about it.`;
   const firstLineIndex = column.indexOf("\n");
   const text = column.slice(firstLineIndex + 2);
   const title = column.slice(0, firstLineIndex);
-  if (!Deno.env.get("DISABLE_IMAGE_GENERATION")) {
+  const disableImageGeneration = Deno.env.get("DISABLE_IMAGE_GENERATION");
+  if (!disableImageGeneration) {
     await generateImage({ title, details: text }, formattedDate);
   }
 
@@ -175,40 +178,43 @@ Please pick one of these keywords and write a short article about it.`;
   const web = new WebClient(token);
 
   const channel = Deno.env.get("SLACK_CHANNEL_ID") || "D041BPULN4S";
+  const blocks: KnownBlock[] = [
+    {
+      type: "header",
+      text: {
+        type: "plain_text",
+        text: `${formattedDate}の豆香の豆知識`,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: item.title,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: text,
+      },
+    },
+  ];
+  if (!disableImageGeneration) {
+    blocks.push({
+      type: "image",
+      alt_text: "豆香コラム画像",
+      image_url:
+        `https://image.mamezou-tech.com/mameka/${formattedDate}-daily-column-300.webp`,
+    })
+  }
   await web.chat.postMessage({
     channel,
     mrkdwn: true,
     text: "今日の豆香の豆知識",
     unfurl_media: false,
-    blocks: [
-      {
-        type: "header",
-        text: {
-          type: "plain_text",
-          text: `${formattedDate}の豆香の豆知識`,
-        },
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: item.title,
-        },
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: text,
-        },
-      },
-      {
-        type: "image",
-        alt_text: "豆香コラム画像",
-        image_url:
-          `https://image.mamezou-tech.com/mameka/${formattedDate}-daily-column-300.webp`,
-      },
-    ],
+    blocks: blocks,
   });
 }
 
@@ -232,8 +238,7 @@ async function generateImage(
         content:
           `Create an anime-inspired, cartoon-style illustration focused on the theme: '${title}'. 
 Incorporate key elements from the following details: '${details}'. 
-Include both characters and objects whenever possible, using bright colors and a fun, playful atmosphere. 
-Reflect the perspective of author in all design aspects, who is a Japanese cute girl named '豆香'.`,
+Include both characters and objects whenever possible, using bright colors and a fun, playful atmosphere.`,
       },
     ],
   });

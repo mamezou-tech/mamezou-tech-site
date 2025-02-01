@@ -148,7 +148,7 @@ async function chat(text: string, option: { language: string; dir: string }) {
     }],
     // temperature: 0,
     // maxTokens: 8192 * 2,
-    model: "o1-preview-2024-09-12",
+    model: "o3-mini",
     // model: "gpt-4o-mini", // for testing
   } satisfies Parameters<typeof requestTranslate>[number];
 

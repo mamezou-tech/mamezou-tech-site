@@ -20,7 +20,11 @@ import footNote from "npm:markdown-it-footnote@^3.0.3";
 import container from "npm:markdown-it-container@^3.0.0";
 import katex from "npm:@traptitech/markdown-it-katex@^3.5.0";
 import containerOptions from "./lume/markdown-it/container_options.ts";
-import { filterByPost, generalTags, getPostArticles } from './lume/filters/utils.ts';
+import {
+  filterByPost,
+  generalTags,
+  getPostArticles,
+} from "./lume/filters/utils.ts";
 import Search from "lume/core/searcher.ts";
 import externalLinkPlugin from "./lume/markdown-it/external_link_plugin.ts";
 import ogPreviewPlugin from "./lume/markdown-it/og_preview_plugin.ts";
@@ -112,7 +116,7 @@ site.use(esbuild({
 
 site.copy("fonts");
 site.copy("img");
-site.copy("IndexNowKey.txt", "62f91e28a3954a4fbc90fd3c76a307e0.txt")
+site.copy("IndexNowKey.txt", "62f91e28a3954a4fbc90fd3c76a307e0.txt");
 
 site.helper("year", () => `${new Date().getFullYear()}`, { type: "tag" });
 site.helper("currentDate", () => {
@@ -270,18 +274,30 @@ site.preprocess([".md"], (pages) => {
   const search = new Search({ pages, files: [], sourceData: new Map() });
   const articles = getPostArticles(search);
   const translated = search.pages("translate=true");
-  for (const article of articles) {
-    const found = translated.find((en) =>
-      en.page.src.path === `/en${article.page.src.path}`
-    );
-    if (found) {
-      article.en = found.url;
-      found.ja = article.url;
-      found.page.data.content = `:::info
-To reach a broader audience, this article has been translated from Japanese.
+  const langs = [{
+    code: 'en',
+    dir: "en",
+    intro: (article: { url: string }) =>
+      `To reach a broader audience, this article has been translated from Japanese.
 You can find the original version [here](${article.url}).
-:::
-` + found.page.data.content
+`
+  }, {
+    code: 'zh',
+    dir: "zh-CN",
+    intro: (article: { url: string }) => `为了覆盖更广泛的受众，这篇文章已从日语翻译而来。
+您可以在[这里](${article.url})找到原始版本。`
+  }];
+  for (const article of articles) {
+    for (const lang of langs) {
+      const found = translated.find((translated) =>
+        translated.page.src.path === `/${lang.dir}${article.page.src.path}`
+      );
+      if (found) {
+        found.lang = lang.code;
+        article[lang.code] = found.url;
+        found.ja = article.url;
+        found.page.data.content = `:::info\n${lang.intro(article)}\n:::\n` + found.page.data.content;
+      }
     }
   }
 });
@@ -289,14 +305,17 @@ You can find the original version [here](${article.url}).
 site.process([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;
   const search = new Search({ pages, files: [], sourceData: new Map() });
-  const articles = getPostArticles(search)
-  const jsonArray = articles.map(data => (JSON.stringify({
+  const articles = getPostArticles(search);
+  const jsonArray = articles.map((data) => (JSON.stringify({
     title: data.title,
     url: data.url,
-    tags: data.tags.filter(tag => !generalTags.includes(tag))
+    tags: data.tags.filter((tag) => !generalTags.includes(tag)),
   })));
   const encoder = new TextEncoder();
-  void Deno.writeFile("articles.jsonl", new Uint8Array(encoder.encode(jsonArray.join('\n'))));
+  void Deno.writeFile(
+    "articles.jsonl",
+    new Uint8Array(encoder.encode(jsonArray.join("\n"))),
+  );
 
   const summary = Object.values(makeAuthorArticles(search)).map((v) => {
     const result = v.articles.reduce((acc, cur) => {

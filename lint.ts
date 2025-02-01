@@ -1,5 +1,8 @@
 import { createLinter, loadLinterFormatter } from "npm:textlint@13.3.3";
-import { TextlintKernelDescriptor, TextlintResult } from "npm:@textlint/kernel@13.3.3";
+import {
+  TextlintKernelDescriptor,
+  TextlintResult,
+} from "npm:@textlint/kernel@13.3.3";
 import { moduleInterop } from "npm:@textlint/module-interop@13.3.3";
 import * as jpPreset from "npm:textlint-rule-preset-ja-technical-writing@8.0.0";
 import * as proofdict from "npm:@proofdict/textlint-rule-proofdict@^3.1.2";
@@ -8,7 +11,7 @@ import * as markdownProcessor from "npm:@textlint/textlint-plugin-markdown@13.3.
 import * as allowlistFilter from "npm:textlint-filter-rule-allowlist";
 
 const excludes = ["ja-no-weak-phrase"];
-const filterRuleAllowExpressions = ["/:::/"]
+const filterRuleAllowExpressions = ["/:::/"];
 
 const presetRules = Object.entries(jpPreset.rules).map(([id, module]) => ({
   ruleId: id,

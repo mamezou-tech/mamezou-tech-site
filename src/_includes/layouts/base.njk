@@ -1,6 +1,12 @@
 <!DOCTYPE html>
-{%- set lang %}{% if translate == true %}en{% else %}ja{% endif %}{% endset -%}
-<html lang="{{ lang }}">
+{%- if lang == "en" -%}
+  {%- set langCode = "en" -%}
+{%- elif lang == "zh" -%}
+  {%- set langCode = "zh" -%}
+{%- else -%}
+  {%- set langCode = "ja" -%}
+{%- endif -%}
+<html lang="{{ langCode }}">
 {%- set siteName %}{% if translate == true %}{{ meta.siteEnName }}{% else %}{{ meta.siteName }}{% endif %}{% endset -%}
 {%- set pageTitle %}{% if title %}{{ title }} | {% endif %}{{ siteName }}{% endset -%}
 {%- set pageDescription %}{% shortDesc search.pages(), page, meta.siteDescription %}{% endset -%}

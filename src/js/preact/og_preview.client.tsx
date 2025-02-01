@@ -35,11 +35,16 @@ const OgPreview = ({ url }: { url: string }) => {
   const [isExternal, setIsExternal] = useState(false);
 
   useEffect(() => {
-    setIsExternal(!url.startsWith("/") && !url.startsWith("https://developer.mamezou-tech.com"));
+    setIsExternal(
+      !url.startsWith("/") &&
+        !url.startsWith("https://developer.mamezou-tech.com"),
+    );
     const fetchOgData = async () => {
       try {
         const response = await fetch(
-          `https://developer.mamezou-tech.com/api/og/preview?url=${encodeURIComponent(url)}`
+          `https://developer.mamezou-tech.com/api/og/preview?url=${
+            encodeURIComponent(url)
+          }`,
         );
         setOgData(await response.json());
       } catch (err) {
@@ -51,15 +56,14 @@ const OgPreview = ({ url }: { url: string }) => {
   }, [url]);
 
   if (error) {
-    return (
-      <Link href={url} isExternal={isExternal}>{url}</Link>
-    );
+    return <Link href={url} isExternal={isExternal}>{url}</Link>;
   }
 
   if (!ogData) {
     return (
       <div className="og-preview-loading">
-        Loading preview for <Link href={url} isExternal={isExternal}>{url}</Link>
+        Loading preview for{" "}
+        <Link href={url} isExternal={isExternal}>{url}</Link>
       </div>
     );
   }

@@ -92,6 +92,7 @@ type Request = {
   maxTokens?: number;
   responseFormat?: "text" | "json_object";
   model?: string;
+  reasoningEffort?: "high" | "medium" | "low";
 };
 const debug = !!Deno.env.get("DEBUG");
 export async function requestTranslate(
@@ -104,6 +105,7 @@ export async function requestTranslate(
       model: request.model ?? "gpt-4o-mini",
       user: request.userId,
       messages: request.messages,
+      reasoning_effort: request.reasoningEffort ?? "medium",
       // max_tokens: request.maxTokens,
       // temperature: request.temperature ?? 0.7,
       response_format: {
@@ -149,6 +151,7 @@ async function chat(text: string, option: { language: string; dir: string }) {
     // temperature: 0,
     // maxTokens: 8192 * 2,
     model: "o3-mini",
+    reasoningEffort: "high",
     // model: "gpt-4o-mini", // for testing
   } satisfies Parameters<typeof requestTranslate>[number];
 

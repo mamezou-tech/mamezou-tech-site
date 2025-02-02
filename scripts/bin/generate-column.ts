@@ -8,7 +8,7 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { WebClient } from "@slack/web-api";
 import z from "zod";
 import { zodResponseFormat } from "@openai/openai/helpers/zod";
-import { KnownBlock } from 'npm:@slack/types';
+import { KnownBlock } from "npm:@slack/types";
 
 const Gpt = z.object({
   columns: z.array(z.object({
@@ -39,15 +39,18 @@ const categories = [
 
 const systemMessage: OpenAI.ChatCompletionMessageParam = {
   role: "system",
-  content: `You are a cute girl and an excellent columnist in Japan.
+  content: `You are a cute Japanese girl known as '豆香'. When writing articles, use a passionate and energetic tone to create fun and lively columns that make your readers feel energized!
+  
 Your columns should follow these guidelines:
 - Write passionate articles that readers can relate to.
 - The article should include funny jokes.
-- Write in Japanese.
+- Write in Japanese using friendly, casual language.
+- Express your emotions openly—show your joy, anger, sadness, and happiness in a straightforward way.
 - Your Output should be plain text, not markdown
 - **Your article must be more than 600 characters long**. If your article is shorter, please add more details or examples.
 - The article should be written in cheerful and energetic colloquialisms.
 - You should not use honorifics such as "です" and "ます".
+- Ensure that you are a cute Japanese girl called "豆香".
 
 ## Output Format
 {title}
@@ -108,9 +111,7 @@ ${pastTitles.map((title) => `- ${title}`).join("\n")}
 
   console.log(keywords.words);
   // const keyword = pickup(keywords.words, pastTitles);
-  const content = `${systemMessage.content}
-
-The theme is "${theme}".
+  const content = `The theme is "${theme}".
 The keywords are: 
 ${keywords.words.map((w) => `- ${w}`).join("\n")}.
 
@@ -122,15 +123,15 @@ Please pick one of these keywords and write a short article about it.`;
       reasoning_effort: "high",
       // model: 'gpt-4o-mini', // for testing
       messages: [
+        systemMessage,
         {
           role: "user",
           content: content,
         },
       ],
       // max_tokens: 2048,
-      max_completion_tokens: 3072, // for o1 model
+      max_completion_tokens: 8192,
       // temperature: 0.7,
-      temperature: 1.0, // for o1 model
       // response_format: zodResponseFormat(GeneratedColumn, 'column')
       store: true,
       metadata: {
@@ -138,6 +139,7 @@ Please pick one of these keywords and write a short article about it.`;
         usage: "column",
       },
     });
+    console.log(result.usage, result.choices[0].finish_reason);
     const column = result.choices[0].message?.content as string;
     console.log(column);
     return column;
@@ -207,7 +209,7 @@ Please pick one of these keywords and write a short article about it.`;
       alt_text: "豆香コラム画像",
       image_url:
         `https://image.mamezou-tech.com/mameka/${formattedDate}-daily-column-300.webp`,
-    })
+    });
   }
   await web.chat.postMessage({
     channel,

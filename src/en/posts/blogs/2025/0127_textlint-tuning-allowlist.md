@@ -11,7 +11,7 @@ translate: true
 ---
 
 ## Important Notes
-This article follows up on points that could not be covered in [Displaying Hints for Proofreading Tools in VSCode - An Explanation of Problem Matcher](/blogs/2025/01/24/vscode-problemmatcher/). Although the content of this article is self-contained, if you want to know the background so far, please check out [the previous article](/en/blogs/2025/01/24/vscode-problemmatcher/).
+This article follows up on points that could not be covered in [Displaying Hints for Proofreading Tools in VSCode - An Explanation of Problem Matcher](/en/blogs/2025/01/24/vscode-problemmatcher/). Although the content of this article is self-contained, if you want to know the background so far, please check out [the previous article](/en/blogs/2025/01/24/vscode-problemmatcher/).
 
 As in the previous article, the sample is provided here.
 @[og](https://github.com/shohei-yamashit/lint-sample-vscode)

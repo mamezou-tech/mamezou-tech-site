@@ -76,3 +76,4 @@ enTitle: Robotics
 ## AI
 
 - [OpenAI Realtime APIのWebRTCでロボットを操作する](/robotics/ai/voice-operation/)
+- [ロボット開発者のための強化学習入門](/robotics/rl/rl_for_robot/)

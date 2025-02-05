@@ -9,31 +9,7 @@ layout: layouts/base.njk
   <article class="post mr-auto ml-auto">
     <header class="post__header">
       <h1>{{ title }}</h1>
-      {%- set langOptions = [] -%}
-      {%- if en -%}
-      {%- langOptions.push({ value: en, label: "Switch to English" }) -%}
-      {%- endif -%}
-      {%- if zh -%}
-      {%- langOptions.push({ value: zh, label: "切换到中文" }) -%}
-      {%- endif -%}
-      {%- if ja -%}
-      {%- langOptions.push({ value: ja, label: "日本語に切り替え" }) -%}
-      {%- endif -%}
-
-      <div class="relative lg:fixed lg:bottom-5 lg:right-5 lg:bg-blue-900 lg:bg-opacity-50 lg:p-2 lg:rounded-md lg:shadow-lg">
-        {% if langOptions.length > 0 %}
-        <select
-          class="w-full text-sm text-white bg-blue-900 border border-gray-300 rounded-md cursor-pointer"
-          onchange="location.href=this.value"
-        >
-          {%- for lang in langOptions -%}
-          <option value="{{ lang.value }}">{{ lang.label }}</option>
-          {%- endfor -%}
-        </select>
-        {% else %}
-        <p class="text-sm text-gray-300">切り替え可能な言語はありません</p>
-        {% endif %}
-      </div>
+      {{ comp.LangSwitch({url: url, ja: ja, en: en, zh: zh}) | safe }}
       <div class="post__details">
         <time datetime="{{ date | htmlDateString }}">
           {{ date | readableDate }}

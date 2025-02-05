@@ -2,7 +2,7 @@
 {%- if lang == "en" -%}
   {%- set langCode = "en" -%}
 {%- elif lang == "zh" -%}
-  {%- set langCode = "zh" -%}
+  {%- set langCode = "zh-CN" -%}
 {%- else -%}
   {%- set langCode = "ja" -%}
 {%- endif -%}
@@ -54,7 +54,13 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {%- if lang == "zh" -%}
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    {%- elif lang == "en" -%}
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    {%- else -%}
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Mochiy+Pop+One&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    {%- endif -%}
 
     <meta name="twitter:card" content="summary_large_image" />
     {% if meta.twitterUsername %}

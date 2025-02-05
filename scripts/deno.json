@@ -17,6 +17,6 @@
     "generate:column": "deno run --allow-env --allow-ffi --allow-sys --allow-net --allow-read --allow-write bin/generate-column.ts",
     "generate:ranking": "deno run --allow-env --allow-ffi --allow-sys --allow-net --allow-read --allow-write bin/weekly-ranking.ts",
     "translate:en": "deno run --allow-env --allow-sys --allow-net --allow-read --allow-write bin/translate.ts en",
-    "translate:cn": "deno run --allow-env --allow-sys --allow-net --allow-read --allow-write bin/translate.ts zh"
+    "translate:zh": "deno run --allow-env --allow-sys --allow-net --allow-read --allow-write bin/translate.ts zh"
   }
 }

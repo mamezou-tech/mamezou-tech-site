@@ -40,7 +40,7 @@ Here are specific translation rules:
 
 ### Important Instructions:
 - **Translate the entire article without summarizing or skipping any sections.** Do not output phrases like "The rest of the article continues" or "Summary of the remaining content."
-- If the article is long, **continue outputting all content until the very end**. Do not truncate, skip, or summarize any part of the article.
+- If the article is long, **continue outputting all content until the very end.** If the translation does not fit in one output, split the translation into multiple parts and automatically continue until the entire article is translated. Do not truncate or omit any part of the article.
 - **Your response must be the full translated content as is**, including all text, code comments, and other elements present in the article.
 
 Please translate the following article:
@@ -104,7 +104,7 @@ export async function requestTranslate(
       model: request.model ?? "gpt-4o-mini",
       user: request.userId,
       messages: request.messages,
-      reasoning_effort: request.reasoningEffort ?? "medium",
+      reasoning_effort: request.reasoningEffort,
       // max_tokens: request.maxTokens,
       // temperature: request.temperature ?? 0.7,
       response_format: {
@@ -148,9 +148,10 @@ async function chat(text: string, option: { language: string; dir: string }) {
       content: makeMessage(text, option.language),
     }],
     // temperature: 0,
-    // maxTokens: 8192 * 2,
-    model: "o3-mini",
+    // maxTokens: 8192 * 3,
+    // model: "gpt-4o-2024-11-20",
     reasoningEffort: "high",
+    model: "o3-mini",
     // model: "gpt-4o-mini", // for testing
   } satisfies Parameters<typeof requestTranslate>[number];
 
@@ -186,8 +187,8 @@ async function translate(
 }
 
 async function main() {
-  const [lang, filePath, originalUrlPath] = Deno.args.slice(2);
-
+  const [lang, filePath, originalUrlPath] = Deno.args;
+  console.info("lang", lang, filePath, originalUrlPath);
   let targetLang = English;
   if (lang === "en") {
     targetLang = English;

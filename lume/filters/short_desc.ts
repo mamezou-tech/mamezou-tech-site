@@ -36,6 +36,15 @@ export const shortDesc = (
       400,
       true,
     );
+  } else if (path.includes("/zh-CN/posts")) {
+    return chop(
+      content.replace(
+        /^.*为了覆盖更广泛的受众，这篇文章已从日语翻译而来。您可以在这里找到原始版本。/,
+        "",
+      ),
+      400,
+      true,
+    );
   } else {
     return chop(content, 250, false);
   }

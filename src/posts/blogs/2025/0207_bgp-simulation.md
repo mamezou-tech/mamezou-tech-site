@@ -1,5 +1,5 @@
 ---
-title: BGPの基礎と実践: bgpsimで経路制御をシミュレーションしよう
+title: BGPの基礎と実践 ~bgpsimで経路制御をシミュレーションしよう~
 author: shohei-yamashita
 date: 2025-02-07
 tags: [TCP/IP, bgp, シミュレーション, 探索]

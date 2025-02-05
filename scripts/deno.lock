@@ -1,12 +1,13 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@openai/openai@^4.80.1": "4.80.1",
+    "jsr:@openai/openai@^4.82.0": "4.82.0",
     "jsr:@opensrc/jsonfile@1": "1.0.0",
     "jsr:@std/fs@^1.0.10": "1.0.10",
     "jsr:@std/path@^1.0.8": "1.0.8",
     "npm:@aws-sdk/client-s3@3.726.0": "3.726.0_@aws-sdk+client-sts@3.726.0__@aws-sdk+client-sso-oidc@3.726.0___@aws-sdk+client-sts@3.726.0_@aws-sdk+client-sso-oidc@3.726.0__@aws-sdk+client-sts@3.726.0___@aws-sdk+client-sso-oidc@3.726.0____@aws-sdk+client-sts@3.726.0__@aws-sdk+client-sts@3.726.0___@aws-sdk+client-sso-oidc@3.726.0____@aws-sdk+client-sts@3.726.0_____@aws-sdk+client-sso-oidc@3.726.0___@aws-sdk+client-sso-oidc@3.726.0",
     "npm:@google-analytics/data@^4.4.0": "4.12.0",
+    "npm:@slack/types@*": "2.14.0",
     "npm:@slack/web-api@^7.8.0": "7.8.0",
     "npm:cheerio@1": "1.0.0",
     "npm:js-yaml@^4.1.0": "4.1.0",
@@ -18,8 +19,8 @@
     "npm:zod@^3.24.1": "3.24.1"
   },
   "jsr": {
-    "@openai/openai@4.80.1": {
-      "integrity": "7717bf90b2f8f59dbb0f7b1b35bd3a7c668692046fcfd01f9edf9d2b23badcdf",
+    "@openai/openai@4.82.0": {
+      "integrity": "823f5d77188af2f019d44f41db17cfef039c5443960d30a4559b4cf28222f316",
       "dependencies": [
         "npm:zod@3"
       ]
@@ -3705,7 +3706,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@openai/openai@^4.80.1",
+      "jsr:@openai/openai@^4.82.0",
       "jsr:@opensrc/jsonfile@1",
       "jsr:@std/fs@^1.0.10",
       "jsr:@std/path@^1.0.8",

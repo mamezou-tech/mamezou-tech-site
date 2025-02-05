@@ -8,6 +8,7 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { WebClient } from "@slack/web-api";
 import z from "zod";
 import { zodResponseFormat } from "@openai/openai/helpers/zod";
+import { KnownBlock } from "npm:@slack/types";
 
 const Gpt = z.object({
   columns: z.array(z.object({
@@ -38,15 +39,18 @@ const categories = [
 
 const systemMessage: OpenAI.ChatCompletionMessageParam = {
   role: "system",
-  content: `You are a cute girl and an excellent columnist in Japan.
+  content: `You are a cute Japanese girl known as '豆香'. When writing articles, use a passionate and energetic tone to create fun and lively columns that make your readers feel energized!
+  
 Your columns should follow these guidelines:
 - Write passionate articles that readers can relate to.
 - The article should include funny jokes.
-- Write in Japanese.
+- Write in Japanese using friendly, casual language.
+- Express your emotions openly—show your joy, anger, sadness, and happiness in a straightforward way.
 - Your Output should be plain text, not markdown
 - **Your article must be more than 600 characters long**. If your article is shorter, please add more details or examples.
 - The article should be written in cheerful and energetic colloquialisms.
 - You should not use honorifics such as "です" and "ます".
+- Ensure that you are a cute Japanese girl called "豆香".
 
 ## Output Format
 {title}
@@ -107,9 +111,7 @@ ${pastTitles.map((title) => `- ${title}`).join("\n")}
 
   console.log(keywords.words);
   // const keyword = pickup(keywords.words, pastTitles);
-  const content = `${systemMessage.content}
-
-The theme is "${theme}".
+  const content = `The theme is "${theme}".
 The keywords are: 
 ${keywords.words.map((w) => `- ${w}`).join("\n")}.
 
@@ -117,18 +119,19 @@ Please pick one of these keywords and write a short article about it.`;
 
   async function createColumn() {
     const result = await openai.chat.completions.create({
-      model: "o1-preview",
+      model: "o3-mini",
+      reasoning_effort: "high",
       // model: 'gpt-4o-mini', // for testing
       messages: [
+        systemMessage,
         {
           role: "user",
           content: content,
         },
       ],
       // max_tokens: 2048,
-      max_completion_tokens: 3072, // for o1 model
+      max_completion_tokens: 8192,
       // temperature: 0.7,
-      temperature: 1.0, // for o1 model
       // response_format: zodResponseFormat(GeneratedColumn, 'column')
       store: true,
       metadata: {
@@ -136,6 +139,7 @@ Please pick one of these keywords and write a short article about it.`;
         usage: "column",
       },
     });
+    console.log(result.usage, result.choices[0].finish_reason);
     const column = result.choices[0].message?.content as string;
     console.log(column);
     return column;
@@ -158,7 +162,8 @@ Please pick one of these keywords and write a short article about it.`;
   const firstLineIndex = column.indexOf("\n");
   const text = column.slice(firstLineIndex + 2);
   const title = column.slice(0, firstLineIndex);
-  if (!Deno.env.get("DISABLE_IMAGE_GENERATION")) {
+  const disableImageGeneration = Deno.env.get("DISABLE_IMAGE_GENERATION");
+  if (!disableImageGeneration) {
     await generateImage({ title, details: text }, formattedDate);
   }
 
@@ -175,40 +180,43 @@ Please pick one of these keywords and write a short article about it.`;
   const web = new WebClient(token);
 
   const channel = Deno.env.get("SLACK_CHANNEL_ID") || "D041BPULN4S";
+  const blocks: KnownBlock[] = [
+    {
+      type: "header",
+      text: {
+        type: "plain_text",
+        text: `${formattedDate}の豆香の豆知識`,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: item.title,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: text,
+      },
+    },
+  ];
+  if (!disableImageGeneration) {
+    blocks.push({
+      type: "image",
+      alt_text: "豆香コラム画像",
+      image_url:
+        `https://image.mamezou-tech.com/mameka/${formattedDate}-daily-column-300.webp`,
+    });
+  }
   await web.chat.postMessage({
     channel,
     mrkdwn: true,
     text: "今日の豆香の豆知識",
     unfurl_media: false,
-    blocks: [
-      {
-        type: "header",
-        text: {
-          type: "plain_text",
-          text: `${formattedDate}の豆香の豆知識`,
-        },
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: item.title,
-        },
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: text,
-        },
-      },
-      {
-        type: "image",
-        alt_text: "豆香コラム画像",
-        image_url:
-          `https://image.mamezou-tech.com/mameka/${formattedDate}-daily-column-300.webp`,
-      },
-    ],
+    blocks: blocks,
   });
 }
 
@@ -232,8 +240,7 @@ async function generateImage(
         content:
           `Create an anime-inspired, cartoon-style illustration focused on the theme: '${title}'. 
 Incorporate key elements from the following details: '${details}'. 
-Include both characters and objects whenever possible, using bright colors and a fun, playful atmosphere. 
-Reflect the perspective of author in all design aspects, who is a Japanese cute girl named '豆香'.`,
+Include both characters and objects whenever possible, using bright colors and a fun, playful atmosphere.`,
       },
     ],
   });

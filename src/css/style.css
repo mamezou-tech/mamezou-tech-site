@@ -417,3 +417,8 @@ span.code-filename + pre {
 .katex-block {
   overflow-x: auto;
 }
+
+/* back to top link */
+.hidden {
+  display: none;
+}

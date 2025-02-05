@@ -1,5 +1,5 @@
 ---
-title: bgpsimで学ぶBGPによるネットワーク経路制御
+title: BGPの基礎と実践: bgpsimで経路制御をシミュレーションしよう
 author: shohei-yamashita
 date: 2025-02-07
 tags: [TCP/IP, bgp, シミュレーション, 探索]
@@ -121,7 +121,7 @@ OSPF(Open Shortest Path First)も経路探索に用いられるプロトコル�
 :::
 
 ## bgpsimの操作方法
-ここからは、BGPをWeb上でシミュレートできるbgmsimについて紹介していきます。
+ここからは、BGPをWeb上でシミュレートできるbgpsimについて紹介していきます。
 2025年1月現在、以下のリンクからサイトに飛ぶことができます。
 [https://bgpsim.github.io/](https://bgpsim.github.io/)
 
@@ -174,9 +174,9 @@ Internal RouterとExternal Routerの2つから選べますが、まずはAS内�
 右側にメニューが現れるので、Advertised Routes内New routeにASのCIDR(100.0.0.0/24)を入力します。
 
 ![ac56784bceab557de019fddce8c3b4d1.png](https://i.gyazo.com/ac56784bceab557de019fddce8c3b4d1.png)
-この状態でAdvertiseボタンをクリックすると、さらに設定が追加できます。
+この状態でAdvertiseをクリックすると、さらに設定が追加できます。
 
-AS Pathを入力する項目があるので、任意のパス(この例では”2”)を入力してください。
+AS_PATHを入力する項目があるので、任意のパス(この例では”2”)を入力してください。
 
 ![6e8054833cdde818c13b586789bedca9.png](https://i.gyazo.com/6e8054833cdde818c13b586789bedca9.png)
 

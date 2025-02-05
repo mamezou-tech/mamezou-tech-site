@@ -1,9 +1,9 @@
 const Entry = (
-  { dayOfWeek, date, author, nonContrib ,githubUser, title, url }: Lume.Data,
+  { dayOfWeek, date, author, nonContrib, githubUser, title, url }: Lume.Data,
 ) => {
   const authorImageURL = githubUser
     ? `https://github.com/${githubUser}.png`
-    : '/img/android-chrome-192x192.png'; // GitHub アカウントがない場合のデフォルト画像
+    : "/img/android-chrome-192x192.png"; // GitHub アカウントがない場合のデフォルト画像
   // contributors.json に未登録の author はリンクを生成しない
   const authorLink = author && !nonContrib ? `/authors/${author}` : null;
   return (

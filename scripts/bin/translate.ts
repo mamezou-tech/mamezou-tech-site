@@ -11,9 +11,8 @@ const English = {
   language: "English",
   dir: "en",
 };
-// not yet impl
 const Chinese = {
-  language: "Chinese",
+  language: "Chinese(zh-CN)",
   dir: "zh-CN",
 };
 
@@ -23,12 +22,12 @@ const makeMessage = (text: string, language: string) => {
 Please follow these instructions:
 
 - For the front matter (YAML between \`---\` and \`---\`):
-  - Translate only the \`title\` field into English.
+  - Translate only the \`title\` field into ${language}.
   - Wrap the translated title in double quotes \`"..."\` to prevent YAML syntax errors, especially if it contains special characters like \`:\`.
   - Leave all other fields in the front matter unchanged.
   - **Do not wrap the front matter in code blocks or add any additional formatting. Output it exactly as \`---\`, followed by the YAML content, and ending with \`---\`.**
 - In the main body of the article:
-  - Translate all Japanese text into English.
+  - Translate all Japanese text into ${language}.
   - Do not translate source code (but do translate comments within the code).
   - Do not translate names of books mentioned in the article.
   - Do not translate HTML tags like \`<video>\` or \`<script>\`; output them as they are.
@@ -37,11 +36,11 @@ Please follow these instructions:
 
 Here are specific translation rules:
 
-- Translate \`豆蔵\` as \`Mamezou\`.
+- Translate \`豆蔵\` as \`${language === "English" ? "Mamezou" : "is"}\`.
 
 ### Important Instructions:
 - **Translate the entire article without summarizing or skipping any sections.** Do not output phrases like "The rest of the article continues" or "Summary of the remaining content."
-- If the article is long, **continue outputting all content until the very end**. Do not truncate, skip, or summarize any part of the article.
+- If the article is long, **continue outputting all content until the very end.** If the translation does not fit in one output, split the translation into multiple parts and automatically continue until the entire article is translated. Do not truncate or omit any part of the article.
 - **Your response must be the full translated content as is**, including all text, code comments, and other elements present in the article.
 
 Please translate the following article:
@@ -105,7 +104,7 @@ export async function requestTranslate(
       model: request.model ?? "gpt-4o-mini",
       user: request.userId,
       messages: request.messages,
-      reasoning_effort: request.reasoningEffort ?? "medium",
+      reasoning_effort: request.reasoningEffort,
       // max_tokens: request.maxTokens,
       // temperature: request.temperature ?? 0.7,
       response_format: {
@@ -149,9 +148,10 @@ async function chat(text: string, option: { language: string; dir: string }) {
       content: makeMessage(text, option.language),
     }],
     // temperature: 0,
-    // maxTokens: 8192 * 2,
-    model: "o3-mini",
+    // maxTokens: 8192 * 3,
+    // model: "gpt-4o-2024-11-20",
     reasoningEffort: "high",
+    model: "o3-mini",
     // model: "gpt-4o-mini", // for testing
   } satisfies Parameters<typeof requestTranslate>[number];
 
@@ -186,37 +186,48 @@ async function translate(
   await Deno.writeTextFile(newFilePath, updatedMd);
 }
 
-const [lang, filePath, originalUrlPath] = process.argv.slice(2);
-const targetLang = English;
-if (!filePath || !originalUrlPath) {
-  const targets = await retrieveTarget();
-  const failed = [];
-  const succeeded = [];
-  for (const target of targets) {
-    try {
-      if (existsSync(`${baseDir}/src/${targetLang.dir}${target.path}`)) {
-        console.info(`${target.path} has already translated(skip)`);
-        continue;
-      }
-      await translate({
-        filePath: `${baseDir}/src${target.path}`,
-        originalLink: target.link,
-      }, targetLang);
-      succeeded.push(target);
-    } catch (e) {
-      console.error("failed...", target, { e });
-      failed.push({ ...target, message: (e as Error).message });
-    }
+async function main() {
+  const [lang, filePath, originalUrlPath] = Deno.args;
+  console.info("lang", lang, filePath, originalUrlPath);
+  let targetLang = English;
+  if (lang === "en") {
+    targetLang = English;
+  } else {
+    targetLang = Chinese;
   }
-  await writeFile(
-    "translated.json",
-    { succeeded, failed },
-    { spaces: 2 },
-  );
-} else {
-  await translate({
-    filePath,
-    originalLink: originalUrlPath,
-  }, targetLang);
+
+  if (!filePath || !originalUrlPath) {
+    const targets = await retrieveTarget();
+    const failed = [];
+    const succeeded = [];
+    for (const target of targets) {
+      try {
+        if (existsSync(`${baseDir}/src/${targetLang.dir}${target.path}`)) {
+          console.info(`${target.path} has already translated(skip)`);
+          continue;
+        }
+        await translate({
+          filePath: `${baseDir}/src${target.path}`,
+          originalLink: target.link,
+        }, targetLang);
+        succeeded.push(target);
+      } catch (e) {
+        console.error("failed...", target, { e });
+        failed.push({ ...target, message: (e as Error).message });
+      }
+    }
+    await writeFile(
+      "translated.json",
+      { succeeded, failed },
+      { spaces: 2 },
+    );
+  } else {
+    await translate({
+      filePath,
+      originalLink: originalUrlPath,
+    }, targetLang);
+  }
+  console.info("DONE!");
 }
-console.info("DONE!");
+
+await main()

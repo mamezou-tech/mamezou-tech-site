@@ -20,7 +20,11 @@ import footNote from "npm:markdown-it-footnote@^3.0.3";
 import container from "npm:markdown-it-container@^3.0.0";
 import katex from "npm:@traptitech/markdown-it-katex@^3.5.0";
 import containerOptions from "./lume/markdown-it/container_options.ts";
-import { filterByPost, generalTags, getPostArticles } from './lume/filters/utils.ts';
+import {
+  filterByPost,
+  generalTags,
+  getPostArticles,
+} from "./lume/filters/utils.ts";
 import Search from "lume/core/searcher.ts";
 import externalLinkPlugin from "./lume/markdown-it/external_link_plugin.ts";
 import ogPreviewPlugin from "./lume/markdown-it/og_preview_plugin.ts";
@@ -112,7 +116,7 @@ site.use(esbuild({
 
 site.copy("fonts");
 site.copy("img");
-site.copy("IndexNowKey.txt", "62f91e28a3954a4fbc90fd3c76a307e0.txt")
+site.copy("IndexNowKey.txt", "62f91e28a3954a4fbc90fd3c76a307e0.txt");
 
 site.helper("year", () => `${new Date().getFullYear()}`, { type: "tag" });
 site.helper("currentDate", () => {
@@ -266,37 +270,80 @@ if (!Deno.env.has("MZ_DEBUG")) {
   site.scopedUpdates(...makeScopeUpdate("src"));
 }
 
+const TARGET_LANGS = {
+  en: {
+    code: "en",
+    dir: "en",
+    intro: (article: { url: string }) =>
+      `To reach a broader audience, this article has been translated from Japanese.
+You can find the original version [here](${article.url}).
+`,
+  },
+  zh: {
+    code: "zh",
+    dir: "zh-CN",
+    intro: (article: { url: string }) =>
+      `为了覆盖更广泛的受众，这篇文章已从日语翻译而来。
+您可以在[这里](${article.url})找到原始版本。`,
+  },
+};
 site.preprocess([".md"], (pages) => {
   const search = new Search({ pages, files: [], sourceData: new Map() });
-  const articles = getPostArticles(search);
-  const translated = search.pages("translate=true");
-  for (const article of articles) {
-    const found = translated.find((en) =>
-      en.page.src.path === `/en${article.page.src.path}`
+  const origins = getPostArticles(search);
+  const translated: Lume.Data[] = search.pages("translate=true");
+  const processTranslation = (article: Lume.Data) => {
+    const enTranslation = translated.find(
+      (data) => data.page.src.path === `/${TARGET_LANGS.en.dir}${article.page.src.path}`
     );
-    if (found) {
-      article.en = found.url;
-      found.ja = article.url;
-      found.page.data.content = `:::info
-To reach a broader audience, this article has been translated from Japanese.
-You can find the original version [here](${article.url}).
-:::
-` + found.page.data.content
+    const zhTranslation = translated.find(
+      (data) => data.page.src.path === `/${TARGET_LANGS.zh.dir}${article.page.src.path}`
+    );
+
+    if (enTranslation) {
+      enTranslation.lang = TARGET_LANGS.en.code;
+      article[TARGET_LANGS.en.code] = enTranslation.url;
+      enTranslation.ja = article.url;
+      enTranslation.page.data.content = `:::info\n${TARGET_LANGS.en.intro(article)}\n:::\n${enTranslation.page.data.content}`;
+      enTranslation.en = enTranslation.url;
+
+      if (zhTranslation) {
+        enTranslation.zh = zhTranslation.url;
+      }
     }
+
+    if (zhTranslation) {
+      zhTranslation.lang = TARGET_LANGS.zh.code;
+      article[TARGET_LANGS.zh.code] = zhTranslation.url;
+      zhTranslation.ja = article.url;
+      zhTranslation.page.data.content = `:::info\n${TARGET_LANGS.zh.intro(article)}\n:::\n${zhTranslation.page.data.content}`;
+      zhTranslation.zh = zhTranslation.url;
+
+      if (enTranslation) {
+        zhTranslation.en = enTranslation.url;
+      }
+    }
+  };
+
+  for (const origin of origins) {
+    processTranslation(origin);
+    origin.ja = origin.url;
   }
 });
 
 site.process([".md"], (pages) => {
   if (!Deno.env.has("MZ_DEBUG")) return;
   const search = new Search({ pages, files: [], sourceData: new Map() });
-  const articles = getPostArticles(search)
-  const jsonArray = articles.map(data => (JSON.stringify({
+  const articles = getPostArticles(search);
+  const jsonArray = articles.map((data) => (JSON.stringify({
     title: data.title,
     url: data.url,
-    tags: data.tags.filter(tag => !generalTags.includes(tag))
+    tags: data.tags.filter((tag) => !generalTags.includes(tag)),
   })));
   const encoder = new TextEncoder();
-  void Deno.writeFile("articles.jsonl", new Uint8Array(encoder.encode(jsonArray.join('\n'))));
+  void Deno.writeFile(
+    "articles.jsonl",
+    new Uint8Array(encoder.encode(jsonArray.join("\n"))),
+  );
 
   const summary = Object.values(makeAuthorArticles(search)).map((v) => {
     const result = v.articles.reduce((acc, cur) => {

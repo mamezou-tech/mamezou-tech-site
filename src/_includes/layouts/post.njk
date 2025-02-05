@@ -9,17 +9,7 @@ layout: layouts/base.njk
   <article class="post mr-auto ml-auto">
     <header class="post__header">
       <h1>{{ title }}</h1>
-      {%- if en %}
-      <div class="relative lg:fixed lg:bottom-5 lg:right-5 lg:bg-blue-900 lg:bg-opacity-50 lg:p-2 lg:rounded-md lg:shadow-lg cursor-pointer">
-        <a class="lg:text-white lg:text-center lg:block text-sm"
-           href="{{ en }}">Switch to English</a>
-      </div>
-      {% elif ja %}
-      <div class="relative lg:fixed lg:bottom-5 lg:right-5 lg:bg-blue-900 lg:bg-opacity-50 lg:p-2 lg:rounded-md lg:shadow-lg cursor-pointer">
-        <a class="lg:text-white lg:text-center lg:block text-sm"
-           href="{{ ja }}">日本語に切り替え</a>
-      </div>
-      {%- endif %}
+      {{ comp.LangSwitch({url: url, ja: ja, en: en, zh: zh}) | safe }}
       <div class="post__details">
         <time datetime="{{ date | htmlDateString }}">
           {{ date | readableDate }}

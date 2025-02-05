@@ -106,7 +106,7 @@ function Toc(
   const defaultMameyoseImage = (
     <a
       href="https://mamezou.connpass.com/"
-      onClick={ev => sendGa(ev, "click_mameyose")}
+      onClick={(ev) => sendGa(ev, "click_mameyose")}
       target="_blank"
     >
       <img
@@ -121,7 +121,7 @@ function Toc(
   const mameyoseImage = (
     <a
       href="https://mamezou.connpass.com/event/342203/"
-      onClick={ev => sendGa(ev, "click_mameyose")}
+      onClick={(ev) => sendGa(ev, "click_mameyose")}
       target="_blank"
     >
       <img

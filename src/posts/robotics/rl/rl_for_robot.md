@@ -41,8 +41,9 @@ image: true
 | :---: | :----------: | :---------------------------------: |
 |   0   |  カート位置 $x [\rm{m}]$  |         $x<-2.4, x>2.4$ で終了          |
 |   1   |  カート速度 $x^{\prime} [\rm{m/s}]$  |                  -                  |
-|   2   |  ポール角度 $\theta [\rm{rad}]$  | $\theta<-12^\circ$, $\theta>12^\circ$ で終了 |
+|   2   |  ポール角度 $\theta [\rm{rad}]$  | $\theta < -\frac{\pi}{15}, \quad \theta > \frac{\pi}{15}$ で終了 |
 |   3   | ポール角速度 $\theta^{\prime} [\rm{rad/s}]$|                  -                  |
+
 
 </div>
 
@@ -219,7 +220,8 @@ $$ R_t = \sum_{k = 0}^{\infty}\gamma^kr_{t+k} = r_t + \gamma r_{t+1} + \gamma^2r
 $$
 \begin{aligned}
 V^\pi(s) &= \sum_{a}\pi (a|s)\{ r + \gamma V^\pi (s^\prime)\} \\
-         &= \rm{P}(a=a_1|s)\{ r + \gamma V^\pi (s^\prime)\}+\rm{P}(a=a_2|s)\{ r + \gamma V^\pi (s^\prime)\} \\
+         &= {\rm{P}}(a=a_1|s)\{ r + \gamma V^\pi (s^\prime)\}+{\rm{P}}(a=a_2|s)\{ r + \gamma V^\pi (s^\prime)\} \\
+
          &= 0.5\times\{ 1 + 0\}+0.5\times\{ 1 + 0\} \\
          &= 1  
 \end{aligned}
@@ -278,7 +280,7 @@ $$
 y_i = r + \gamma \max_{a} Q(s,a;\theta) 
 $$
 
-- $r$ : 行動aをとったときに得られる報酬
+- $r$ : 行動 $a$をとったときに得られる報酬
 - $\max_{a} Q(s,a;\theta)$ : 価値が最大となる$a$を選んだときの行動価値
 
 <!-- Q学習の集束性について言及したい -->

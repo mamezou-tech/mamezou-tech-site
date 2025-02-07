@@ -38,7 +38,7 @@ jobs:
         with:
           commit-message: "feat: Add English-translated articles"
           author: "mameka <mameka-bot@mamezou.com>"
-          branch: auto-translation
+          branch: auto-translation-en
           delete-branch: true
           title: "[no-image] Add English-translated articles"
           body: >
@@ -85,7 +85,7 @@ jobs:
         with:
           commit-message: "feat: Add Chinese-translated articles"
           author: "mameka <mameka-bot@mamezou.com>"
-          branch: auto-translation
+          branch: auto-translation-zh
           delete-branch: true
           title: "[no-image] Add Chinese-translated articles"
           body: >

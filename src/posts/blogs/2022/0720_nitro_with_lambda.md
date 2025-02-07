@@ -8,11 +8,11 @@ templateEngineOverride: md
 
 2022-04-19にハイブリッドVueフレームワークの[Nuxt3](https://nuxt.com/)がRCバージョンになりました。
 
-- [Announcing Nuxt 3 Release Candidate](https://nuxtjs.org/announcements/nuxt3-rc/)
+@[og](https://nuxt.com/blog/nuxt3-rc)
 
 Nuxt3はVue3やTypeScript、Vite対応等の様々な改良・機能追加がありますが、大きな変更の1つにNitroエンジンの搭載があります。
 
-- [Nitro](https://nitro.unjs.io/)
+- [Nitro](https://nitro.build/)
 
 Nitro自体はNuxtに依存するものではなく、Node.js上で動作する軽量・高速JavaScriptサーバーです。Nuxt3ではユニバーサルモードのサーバー側ビルド・実行環境に利用されています。
 Nitroの大きな特徴として、当初からサーバーレス環境を前提としてデザインされており、[AWS Lambda](https://aws.amazon.com/jp/lambda/)や[Netlify](https://www.netlify.com/)、[Vercel](https://vercel.com/)等の各種サーバーレスプロバイダー上で動作可能です。
@@ -80,12 +80,12 @@ Nitroは内部的には[H3](https://github.com/unjs/h3)という軽量サーバ�
 このroutesディレクトリ内のスクリプトは、ファイル名やディレクトリ構成に応じてそのままH3のRouteとしてマッピングされます。明示的なルーティングの定義は不要です。
 実装方法の詳細は、以下NitroドキュメントやH3のドキュメントを参照してください。
 
-- [Nitro - Route Handling](https://nitro.unjs.io/guide/routing/)
+- [Nitro - Route Handling](https://nitro.build/guide/routing)
 
 また、上記スクリプトファイルにはimport文がありませんが、掲載を省略している訳ではありません。
 NitroではAuto Import機能が備わっており、よく利用するものはimportを記述する必要がありません。
 
-- [Nitro - Auto Imports](https://nitro.unjs.io/guide/auto-imports/)
+- [Nitro - Auto Imports](https://nitro.build/guide/utils#auto-imports)
 
 これをローカル環境で起動します。以下のコマンドを実行します。
 
@@ -190,7 +190,7 @@ NITRO_PRESET=aws-lambda npx nitropack build
 環境変数`NITRO_PRESET`に`aws-lambda`を指定します[^1]。このようにすることで、NitroはLambda用の実行コードを出力します。
 Lambda以外の場合もこのpresetを変更することで、プロバイダーに応じたビルド結果へ切り替えできるようになっています。
 なお、Netlify等の一部のプロバイダーではpresetを使わなくても自動検知可能です。
-プロバイダー設定の詳細は[公式ドキュメント](https://nitro.unjs.io/deploy/#zero-config-providers)を参照してください。
+プロバイダー設定の詳細は[公式ドキュメント](https://nitro.build/deploy)を参照してください。
 
 [^1]: presetの指定は設定ファイル(nitro.config.ts)でも可能です。
 
@@ -270,5 +270,5 @@ Node.js Serverと同じように、AWS LambdaでNitroのAPIサーバーが使え
 ---
 参考資料
 
-- [Nitroドキュメント](https://nitro.unjs.io/guide/getting-started/)
+- [Nitroドキュメント](https://nitro.build/guide)
 - [H3 GitHubレポジトリ](https://github.com/unjs/h3)

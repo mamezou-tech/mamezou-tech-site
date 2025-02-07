@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     backToTop.addEventListener("click", (e) => {
-      console.log("click:", e);
       e.preventDefault();
       globalThis.scrollTo({ top: 0, behavior: "smooth" });
     });

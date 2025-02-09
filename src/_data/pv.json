@@ -17,28 +17,28 @@
       "url": "/blogs/2024/06/16/moji-code1/"
     },
     {
-      "title": "IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）",
-      "url": "/iot/internet-of-things-15/"
-    },
-    {
       "title": "手書き風ドローツール Excalidraw のススメ",
       "url": "/blogs/2023/03/22/use-excalidraw/"
-    },
-    {
-      "title": "OpenAI Realtime API の音声会話アプリを WebRTC を使って実装する",
-      "url": "/blogs/2024/12/21/openai-realtime-api-webrtc/"
     },
     {
       "title": "Google Test を使ってみる（その５：GoogleMock編）",
       "url": "/blogs/2023/10/08/google-test-05/"
     },
     {
+      "title": "IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）",
+      "url": "/iot/internet-of-things-15/"
+    },
+    {
       "title": "【devcontainer完全ガイド】DockerとWSLで最強のイマドキ開発環境を手に入れよう！",
       "url": "/blogs/2024/10/11/devcontainer/"
     },
     {
-      "title": "Java用モック・フレームワーク「Mockito」を使ってみる（その２：void型メソッドのモック編）",
-      "url": "/blogs/2023/08/16/using-mockito-void-method/"
+      "title": "Pytestを使ってみる（その２：VSCode拡張機能編）",
+      "url": "/blogs/2023/03/05/using-pytest-02/"
+    },
+    {
+      "title": "Windows Terminal で Git Bash を快適に使う",
+      "url": "/blogs/2023/09/08/windows-terminal-with-git-bash/"
     }
   ]
 }

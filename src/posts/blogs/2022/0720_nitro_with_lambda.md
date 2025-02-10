@@ -18,59 +18,42 @@ Nitro自体はNuxtに依存するものではなく、Node.js上で動作する�
 Nitroの大きな特徴として、当初からサーバーレス環境を前提としてデザインされており、[AWS Lambda](https://aws.amazon.com/jp/lambda/)や[Netlify](https://www.netlify.com/)、[Vercel](https://vercel.com/)等の各種サーバーレスプロバイダー上で動作可能です。
 このようなマルチプロバイダー対応や移植性の高さから、NitroはユニバーサルJavaScriptサーバーというのが売りのようです。
 
-今回はNuxt3ではなく、あえてNitroにフォーカスしてその機能を試してみました(Nuxt3は別の機会で...)。
+今回はNuxt3ではなく、あえてNitroにフォーカスしてその機能を試してみました。
 
+:::info
+2025年2月10日:
+現時点のNitroの最新バージョン(v2.10.4)に合わせて記事全体を更新しました。
+:::
 
 ## Nitroをセットアップする
+
 Nitroドキュメント上でZero-Configセットアップと言っているだけあって簡単です。
-任意のディレクトリでnpmをセットアップします。
+
+Nitroをインストールします(現時点で最新のv2.10.4)。ここではNitro本体に加えてTypeScriptもインストール、初期化しました。
 
 ```shell
-mkdir nitro-sample
-cd nitro-sample
-npm init -y
+npx giget@latest nitro nitro-sample --install
 ```
 
-Nitroをインストールします(現時点で最新のv0.4.12)。ここではNitro本体に加えてTypeScriptもインストール、初期化しました。
-
-```shell
-npm install --save-dev nitropack typescript
-npx tsc --init
-```
-
-tscコマンドで生成されたtsconfig.jsonを修正します。以下関連部分のみの抜粋です。
-
-```json
-{
-  "compilerOptions": {
-    "extends": "./.nitro/types/tsconfig.json"
-  }
-}
-```
+`nitro-sample`ディレクトリが作成され、Nitroのプロジェクトテンプレートが作成されます。
 
 これで準備完了です。
 
 ## NitroでREST APIを作成する
 
-Nitroは実装も最小限です。REST APIは`routes`ディレクトリを作成し、その中にリクエストを処理するスクリプトファイルを配置するだけです。
+Nitroは実装も最小限です。REST APIは`/server/routes`ディレクトリ内にリクエストを処理するスクリプトファイルを配置するだけです。
 今回は/fooでアクセス可能なGET/POSTメソッドを用意しました。以下追加したファイルです。
 
-- routes/foo.get.ts
-```typescript
+```typescript:/server/routes/foo.get.ts
 export default eventHandler((event) => {
-  // 最新バージョンではこちら
   const { name } = getQuery(event);
-  // const { name } = useQuery(event)
   return `GET: ${name}`;
 })
 ```
 
-- routes/foo.post.ts
-```typescript
+```typescript:/server/routes/foo.post.ts
 export default eventHandler(async (event) => {
-  // 最新バージョンではこちら
   const { name } = await readBody<{ name: string }>(event);
-  // const { name } = await useBody<{ name: string }>(event)
   return `POST: ${name}`;
 })
 ```
@@ -90,17 +73,17 @@ NitroではAuto Import機能が備わっており、よく利用するものはi
 これをローカル環境で起動します。以下のコマンドを実行します。
 
 ```shell
-npx nitropack dev
+npm run dev
 ```
 
 デフォルトはローカルホストの3000ポートでサーバーが起動します。
 以下curlでの動作確認です。
 
 ```shell
-curl localhost:3000/foo?name=mamezou
+curl "http://localhost:3000/foo?name=mamezou"
 > GET: mamezou
 
-curl localhost:3000/foo -d '{"name": "mamezou"}' -H 'Content-Type: application/json'
+curl "http://localhost:3000/foo" -d '{"name": "mamezou"}' -H 'Content-Type: application/json'
 > POST: mamezou 
 ```
 
@@ -120,7 +103,7 @@ curl localhost:3000/foo -d '{"name": "mamezou"}' -H 'Content-Type: application/j
 以下のコマンドを実行します。
 
 ```shell
-npx nitropack build
+npm run build
 ```
 
 デフォルトは`.output`ディレクトリ配下にビルド成果物が出力されます。
@@ -132,19 +115,24 @@ npx nitropack build
 ├── public
 └── server
     ├── chunks
-    │ ├── foo.get.mjs
-    │ ├── foo.get.mjs.map
-    │ ├── foo.post.mjs
-    │ ├── foo.post.mjs.map
-    │ └── nitro
-    │     ├── node-server.mjs
-    │     └── node-server.mjs.map
+    │ ├── nitro
+    │ │ ├── nitro.mjs
+    │ │ └── nitro.mjs.map
+    │ └── routes
+    │     ├── foo.get.mjs
+    │     ├── foo.get.mjs.map
+    │     ├── foo.post.mjs
+    │     ├── foo.post.mjs.map
+    │     ├── index.mjs
+    │     └── index.mjs.map
     ├── index.mjs
     ├── index.mjs.map
     ├── node_modules
-    │ ├── buffer-from
-    │ ├── (...省略)
+    │ └── node-mock-http
+    │     (省略)
     └── package.json
+
+12 directories, 16 files
 ```
 
 Nitroはバンドラーとして[rollup](https://rollupjs.org/guide/en/)を使い、Tree Shakingで必要なもののみをバンドルします。
@@ -158,15 +146,13 @@ node .output/server/index.mjs
 ```
 
 Node.js Serverが起動します。これで先程同様にcurl等でAPIにアクセスできます。
-コンテナ等でNitroを動かす場合は、これを利用することになるかと思います。
+Node.jsのコンテナ等でNitroを動かす場合は、これを利用することになるかと思います。
 
 :::info
 ビルド設定は、`nitro.config.ts`を別途作成することで、環境によってカスタマイズできます。
 例えば、バンドルをミニファイする場合は以下のように指定します。
 
 ```typescript
-import { defineNitroConfig } from 'nitropack'
-
 export default defineNitroConfig({
   minify: true
 })
@@ -184,7 +170,7 @@ export default defineNitroConfig({
 Lambdaにデプロイする場合は、ビルド時にpresetを指定します。
 
 ```shell
-NITRO_PRESET=aws-lambda npx nitropack build
+NITRO_PRESET=aws-lambda npm run build
 ```
 
 環境変数`NITRO_PRESET`に`aws-lambda`を指定します[^1]。このようにすることで、NitroはLambda用の実行コードを出力します。
@@ -194,31 +180,54 @@ Lambda以外の場合もこのpresetを変更することで、プロバイダ�
 
 [^1]: presetの指定は設定ファイル(nitro.config.ts)でも可能です。
 
-ビルド結果を見ると、先程と少し変わっています。
-`.output/server/chunks`の中を見ると以下のようになりました。
+ビルド結果の`.output/server/chunks/nitro/nitro.mjs`を見ると、Lambdaのイベントハンドラに変わっています。
 
+```javascript:.output/server/chunks/nitro/nitro.mjs
+async function handler(event, context) {
+  const query = {
+    ...event.queryStringParameters,
+    ...event.multiValueQueryStringParameters
+  };
+  const url = withQuery(
+    event.path || event.rawPath,
+    query
+  );
+  const method = event.httpMethod || event.requestContext?.http?.method || "get";
+  if ("cookies" in event && event.cookies) {
+    event.headers.cookie = event.cookies.join(";");
+  }
+  const r = await nitroApp.localCall({
+    event,
+    url,
+    context,
+    headers: normalizeLambdaIncomingHeaders(event.headers),
+    method,
+    query,
+    body: event.isBase64Encoded ? Buffer.from(event.body || "", "base64").toString("utf8") : event.body
+  });
+  const isApiGwV2 = "cookies" in event || "rawPath" in event;
+  const awsBody = await normalizeLambdaOutgoingBody(r.body, r.headers);
+  const cookies = normalizeCookieHeader(r.headers["set-cookie"]);
+  return {
+    ...cookies.length > 0 && {
+      ...isApiGwV2 ? { cookies } : { multiValueHeaders: { "set-cookie": cookies } }
+    },
+    statusCode: r.status,
+    headers: normalizeLambdaOutgoingHeaders(r.headers, true),
+    body: awsBody.body,
+    isBase64Encoded: awsBody.type === "binary"
+  };
+}
 ```
-.output/server/chunks/
-├── foo.get.mjs
-├── foo.get.mjs.map
-├── foo.post.mjs
-├── foo.post.mjs.map
-└── nitro
-    ├── aws-lambda.mjs
-    └── aws-lambda.mjs.map
-```
-
-`nitro`配下がNode.js ServerからLambda向けに切り替わりました。
-実装内容は省略しますが、この中の`aws-lambda.mjs`を見るとLambda特有のリクエスト、レスポンスフォーマットを処理するようになっていました。
 
 これをAWSにデプロイします。
 ここでは、LambdaのデプロイにServerless Frameworkを使います。プロジェクトルート直下にserverless.yamlを用意しました。
 
-```yaml
+```yaml:serverless.yml
 service: nitro-sample
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs22.x
   region: ap-northeast-1
 package:
   patterns:
@@ -247,10 +256,10 @@ AWS CLIでLambadaのURLを確認し、curlでアクセスしてみます。 URL�
 LAMBDA_URL=$(aws lambda get-function-url-config --function-name nitro-sample-dev-foo --query FunctionUrl --output text)
 > https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.lambda-url.ap-northeast-1.on.aws/
 
-curl ${LAMBDA_URL}foo?name=mamezou
+curl "${LAMBDA_URL}foo?name=mamezou"
 > GET: mamezou
 
-curl ${LAMBDA_URL}foo -d '{"name": "mamezou"}' -H 'Content-Type: application/json'
+curl "${LAMBDA_URL}foo" -d '{"name": "mamezou"}' -H 'Content-Type: application/json'
 > POST: mamezou 
 ```
 

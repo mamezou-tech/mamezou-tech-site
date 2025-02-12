@@ -1,7 +1,7 @@
 ---
 title: ロボット開発者のための強化学習入門
 author: takashi-hasegawa
-date: 2025-02-07
+date: 2025-02-13
 tags: [強化学習, Q学習, ベルマン方程式]
 image: true
 ---

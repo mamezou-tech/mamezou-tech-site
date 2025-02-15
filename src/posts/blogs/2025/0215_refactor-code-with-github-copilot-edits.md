@@ -29,7 +29,7 @@ VS Code の Copilot Chat でコードを生成してもらうのは楽なので�
 
 @[og](https://github.blog/changelog/2025-02-05-view-and-iterate-on-generated-files-directly-within-copilot-chat-preview/)
 
-従来の VS Code 内の Copilot Chat と同様、毎回全量生成だったのですが、1度生成したファイルをベースとしてプロンプトにしたがって更新された内容が、直接更新されるようになっています。
+従来の VS Code 内の Copilot Chat と同様、毎回全量生成だったのですが、1度生成したファイルをベースとして、プロンプトにより更新された内容が直接反映されるようになっています。
 
 :::info
 GitHub サイトでの Copilot Chat については以下の記事で紹介しています。
@@ -99,7 +99,7 @@ Java で書かれた、あまりよろしくないコードを Copilot Edit で�
 
 では、リファクタリングをプロンプトで指示してみましょう。
 
-コードの詳細は示しませんが、Enployee というデータクラスと、EmployeeManager という管理クラスで、EmployeeManager が色々な機能を持ちすぎてやや複雑になっている状態です。
+コードの詳細は示しませんが、Employee というデータクラスと、EmployeeManager という管理クラスで、EmployeeManager が色々な機能を持ちすぎてやや複雑になっている状態です。
 
 「EmployeeManger が大きいのでいくつかのクラスに分割してください。」というプロンプトを投げてみました。
 

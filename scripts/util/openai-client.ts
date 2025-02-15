@@ -1,7 +1,7 @@
-import OpenAI from 'openai';
+import OpenAI from "@openai/openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: Deno.env.get("OPENAI_API_KEY"),
 });
 
 export default openai;

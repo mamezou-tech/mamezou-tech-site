@@ -18,7 +18,7 @@ function showAllTag(event: Event) {
   allTags && (allTags.style.display = "inline");
 }
 
-globalThis.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const link = document.querySelector("#show-all-tags");
   link && link.addEventListener("click", showAllTag);
 
@@ -38,4 +38,22 @@ globalThis.addEventListener("load", () => {
   document.querySelectorAll(".mameyose-event-link").forEach((el) => {
     el.addEventListener("click", () => sendGa("click_mameyose_event", "ad"));
   });
+
+  const backToTop = document.getElementById("back-to-top");
+  if (backToTop) {
+    globalThis.addEventListener("scroll", () => {
+      const scrollPosition = globalThis.scrollY ||
+        document.documentElement.scrollTop;
+      if (scrollPosition > 200) {
+        backToTop.classList.remove("hidden");
+      } else {
+        backToTop.classList.add("hidden");
+      }
+    });
+
+    backToTop.addEventListener("click", (e) => {
+      e.preventDefault();
+      globalThis.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
 });

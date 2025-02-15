@@ -1,5 +1,5 @@
 {
-  "lock": false,
+  "lock": true,
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "npm:react",
@@ -15,7 +15,7 @@
     "lint": "deno run --unstable-fs --allow-all --lock deno-lint.lock lint.ts"
   },
   "imports": {
-    "lume/": "https://deno.land/x/lume@v2.2.4/",
+    "lume/": "https://deno.land/x/lume@v2.5.0/",
     "encodeurl": "https://deno.land/x/encodeurl@1.0.0/mod.ts",
     "luxon": "npm:luxon@3.4.3",
     "prismjs/": "npm:/prismjs@1.29.0/",

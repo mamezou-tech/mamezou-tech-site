@@ -40,91 +40,105 @@
       "date": "5",
       "author": "misato-kamei",
       "githubUser": "misato-kamei",
-      "title": "何か書きます"
+      "title": "駆け出しスクラムマスター Stage3 スクラムは私生活に通ずる!?",
+      "url": "/blogs/2024/12/05/fledgling-scrum-master-stage3/"
     },
     {
       "date": "6",
       "author": "kazuyuki-shiratani",
       "githubUser": "k-shiratani",
-      "title": "何か書きます"
+      "title": "「AWS Certified Machine Learning Engineer - Associate Beta」を受験してAWS認定資格全15種取得してきた",
+      "url": "/blogs/2024/12/06/aws-certified-machine-learning-engineer/"
     },
     {
       "date": "9",
       "author": "shuji-morimoto",
       "githubUser": "shuji-morimoto",
-      "title": "何か書きます"
+      "title": "JSDoc(+Docdash)を使ったMarkdownによるドキュメント生成術",
+      "url": "/blogs/2024/12/09/documentation-with-jsdoc/"
     },
     {
       "date": "10",
       "author": "toshiki-nakasu",
       "githubUser": "toshiki-nakasu",
-      "title": "「GASでGaroon -> GCalへの一方向の同期スクリプト書きました」な記事"
+      "title": "【初挑戦！】Google Apps Scriptを使ってGaroonとのスケジュールを共有できるようにしてみた",
+      "url": "/blogs/2024/12/10/sync-garoon-to-google-calendar/"
     },
     {
       "date": "11",
       "author": "kohei-tsukano",
       "githubUser": "KoheiTsukano",
-      "title": "何か書きます"
+      "title": "AWSのコスト見直しに！myApplicationsでリソースをまとめて可視化する",
+      "url": "/blogs/2024/12/11/aws-myapplications/"
     },
     {
       "date": "12",
       "author": "minoru-matsumoto",
       "githubUser": "minosys3",
-      "title": "Raspberry Pi + TWELITEで作る室温監視システム"
+      "title": "Raspberry pi と TWELITE で作る室温・湿度監視システムの構築",
+      "url": "/blogs/2024/12/12/raspberrypi-twelite-temperature-watch/"
     },
     {
       "date": "13",
       "author": "tomohiro-fujii",
       "githubUser": "tomohiro-fujii33",
-      "title": "初学者向けの見積もりの話を書きたいです"
+      "title": "超入門者向け アジャイルの見積もりとの付き合い方は蒙古タンメンが教えてくれる。",
+      "url": "/blogs/2024/12/13/agile_estimation/"
     },
     {
       "date": "16",
       "author": "akihiro-ishida",
       "githubUser": "mamezou-ishida",
-      "title": "リファインメントについて（仮）"
+      "title": "謎のイベント「リファインメント」とは何か",
+      "url": "/blogs/2024/12/16/scrum-refinement/"
     },
     {
       "date": "17",
       "author": "kenta-ishihara",
       "githubUser": "kenta-ishihara",
-      "title": "何か書きます"
+      "title": "GitHub Copilotの使い方と導入前に知っておきたいこと",
+      "url": "/blogs/2024/12/17/github_copilot/"
     },
     {
       "date": "18",
       "author": "shohei-yamashita",
       "githubUser": "shohei-yamashit",
-      "title": "何か書きます"
+      "title": "LiquidTextで効率的にAWS認定資格を攻略しよう",
+      "url": "/blogs/2024/12/18/liquid_text_aws/"
     },
     {
       "date": "19",
       "author": "takafumi-okubo",
       "githubUser": "TakOkubo",
-      "title": "何か書きます"
+      "title": "ローカルLLMを使ったボイドシミュレーション（llama.cpp、llama-cpp-python）",
+      "url": "/blogs/2024/12/19/ai_boid_simulation/"
     },
     {
       "date": "20",
       "author": "yasunori-shiota",
       "githubUser": "shiota",
-      "title": ".NET Core 系で書いてみます。"
+      "title": "Blazor入門：ASP.NET Coreで始める最新Web開発",
+      "url": "/blogs/2024/12/20/asp-dotnet-core-blazor/"
     },
     {
       "date": "23",
-      "author": "shigeki-shoji",
-      "githubUser": "edward-mamezou",
-      "title": "何か書きます"
+      "author": "naoko-nakayama",
+      "title": "雑用が会社の利益に変わる瞬間",
+      "url": "/blogs/2024/12/23/miscellaneous-work/"
     },
     {
       "date": "24",
       "author": "yoshihisa-muta",
       "githubUser": "ymuta",
-      "title": "Cosense + 生成 AI の記事を書きます"
+      "title": "社内ノウハウ・ノウフー共有における生成AIの活用",
+      "url": "/blogs/2024/12/24/cosense-with-openai/"
     },
     {
       "date": "25",
       "author": "takashi-egawa",
       "githubUser": "egglang",
-      "title": "なんか書きます"
+      "title": "機械学習と倫理の話",
+      "url": "/blogs/2024/12/25/machine-learning-and-ethics/"
     }
   ]
 }

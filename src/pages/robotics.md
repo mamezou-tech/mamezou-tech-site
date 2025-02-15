@@ -47,7 +47,6 @@ enTitle: Robotics
 - [Open62541 を使用した OPC-UA クライアント開発](/robotics/opcua/opcua_open62541_client/)
 - [C++でProtocol Buffersを使ってみる](/blogs/2024/03/08/protocol-buffers-cpp/)
 
-
 ## ロボットビジョン
 
 ### 2D カメラ
@@ -61,14 +60,20 @@ enTitle: Robotics
 
 - [RealSense D435f で Disparity Shift を調整した話](/robotics/vision/realsense-d435f-disparity-shift/)
 
-
 ## GUI
 
 - [Blockly によるビジュアルプログラミングの紹介](/robotics/gui/visual-programing-with-blockly/)
 - [QtWidgets vs QtQuick](/robotics/gui/qtwidget-vs-qtquick/)
 
+## シミュレータ
+- [Choreonoidで始めるロボットシミュレーション（その1）](/robotics/choreonoid/choreonoid_part1)
 
 ## ROS
 
 - [ROS2 の UI 開発に Tauri を使用した話](/robotics/ros/ros2-tauri/)
 - [【ROS】Pilz Industrial Motion Plannerを使ってみた](/robotics/pilz/pilz)
+
+## AI
+
+- [OpenAI Realtime APIのWebRTCでロボットを操作する](/robotics/ai/voice-operation/)
+- [ロボット開発者のための強化学習入門](/robotics/rl/rl_for_robot/)

@@ -66,6 +66,10 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 ### 2023
 - [駆け出しSM Stage1：ファシリテーション](https://developer.mamezou-tech.com/blogs/2023/12/15/fledgling-scrum-master-stage1/)
 - [スクラムマスターとは結局何をする人なのか](https://developer.mamezou-tech.com/blogs/2023/12/19/what-scrum-master/)
+### 2024
+- [駆け出しスクラムマスター Stage3 スクラムは私生活に通ずる!?](https://developer.mamezou-tech.com/blogs/2024/12/05/fledgling-scrum-master-stage3/)
+- [超入門者向け アジャイルの見積もりとの付き合い方は蒙古タンメンが教えてくれる。](http://localhost:8080/blogs/2024/12/13/agile_estimation/)
+- [謎のイベント「リファインメント」とは何か](http://localhost:8080/blogs/2024/12/16/scrum-refinement/)
 
 ## 夏のリレー連載
 ### 2023

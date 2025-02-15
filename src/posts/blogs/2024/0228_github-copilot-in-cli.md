@@ -2,7 +2,7 @@
 title: GitHub Copilot in the CLI にコマンド入力を手伝ってもらう
 author: masahiro-kondo
 date: 2024-02-28
-tags: [Copilot, GitHub]
+tags: [GitHub Copilot, GitHub]
 image: true
 ---
 

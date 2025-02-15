@@ -49,7 +49,7 @@ TypeScriptで書かれたコードはJavaScriptにトランスパイルされ、
   index signature
 * [関数](/typescript-intro/introduction-to-typescript-for-java-engineer_function)
 * [オブジェクト](/typescript-intro/introduction-to-typescript-for-java-engineer_object)：インターフェイス、タイプエイリアス、クラス
-* ジェネリクス　※作成中
+* [ジェネリクス](/typescript-intro/introduction-to-typescript-for-java-engineer_generics)
 
 ## 執筆時の環境
 

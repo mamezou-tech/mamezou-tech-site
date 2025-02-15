@@ -6,20 +6,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-en:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js environment
-        uses: actions/setup-node@v4
+      - name: Set up Deno environment
+        uses: denoland/setup-deno@v2
         with:
-          node-version: '20'
-          cache: npm
-          cache-dependency-path: scripts/package-lock.json
-
-      - name: Install
-        run: cd ${GITHUB_WORKSPACE}/scripts && npm ci
+          deno-version: v2.x
 
       - name: Translate latest articles
         id: translate-latest-articles
@@ -28,9 +23,8 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
         run: |
-          set -eu
           cd ${GITHUB_WORKSPACE}/scripts
-          npm run translate:en
+          deno task translate:en
           cat translated.json
           {
             echo 'translated<<EOF'
@@ -44,11 +38,58 @@ jobs:
         with:
           commit-message: "feat: Add English-translated articles"
           author: "mameka <mameka-bot@mamezou.com>"
-          branch: auto-translation
+          branch: auto-translation-en
           delete-branch: true
           title: "[no-image] Add English-translated articles"
           body: >
             Check auto English-translated articles.
+            
+            The following articles have been translated.
+            
+            ```json
+
+            ${{ steps.translate-latest-articles.outputs.translated }}
+
+            ```
+          reviewers: kudoh
+          labels: bot
+  build-zh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Deno environment
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Translate latest articles
+        id: translate-latest-articles
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
+        run: |
+          cd ${GITHUB_WORKSPACE}/scripts
+          deno task translate:zh
+          cat translated.json
+          {
+            echo 'translated<<EOF'
+            cat translated.json
+            echo ''
+            echo EOF
+          } >> $GITHUB_OUTPUT
+
+      - name: Commit and Create Pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "feat: Add Chinese-translated articles"
+          author: "mameka <mameka-bot@mamezou.com>"
+          branch: auto-translation-zh
+          delete-branch: true
+          title: "[no-image] Add Chinese-translated articles"
+          body: >
+            Check auto Chinese-translated articles.
             
             The following articles have been translated.
             

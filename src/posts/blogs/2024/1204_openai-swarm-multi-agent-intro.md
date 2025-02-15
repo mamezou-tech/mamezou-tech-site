@@ -255,7 +255,7 @@ travel_planner_agent = Agent(
 続いて、残りのエージェントの実装です。
 
 ```python
-# 再起用のHandoff関数
+# 再帰用のHandoff関数
 def transfer_to_travel_planner():
     """旅行プラン統合エージェントに引き継ぐ場合に実行する"""
     return travel_planner_agent

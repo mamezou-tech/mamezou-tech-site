@@ -2,7 +2,7 @@
 title: GitHub Copilot が github.com サイト内でも実装されました
 author: masahiro-kondo
 date: 2024-09-28
-tags: [GitHub, Copilot]
+tags: [GitHub Copilot, GitHub]
 image: true
 ---
 
@@ -20,9 +20,23 @@ GitHub Copilot といえば、VS Code や GitHub CLI に組み込まれて開発
 
 [^1]: GitHub CLI の Copilot 機能については、「[GitHub Copilot in the CLI にコマンド入力を手伝ってもらう](/blogs/2024/02/28/github-copilot-in-cli/)」で紹介しています。
 
+:::info:2024.12.20追記
+12月18日に Copilot Chat が全 GitHub ユーザーに一般公開されました。
+
+[Copilot Chat on GitHub is now generally available for all users · GitHub Changelog](https://github.blog/changelog/2024-12-18-copilot-chat-on-github-is-now-generally-available-for-all-users/)
+:::
+
 Copilot が有効なアカウントでログインしているとページの右下にお馴染みのアイコンが表示されています。
 
 ![Copilot enabled](https://i.gyazo.com/f24dcbb0a6461e9bd7ad525e31bf52e3.png)
+
+:::info:2024.12.20追記
+現在は、この画面右下の UI はなくなっており、以下の URL でチャットを起動できます。
+
+[https://github.com/copilot](https://github.com/copilot)
+
+ソースコードや PR のページに関しては本記事で紹介した当時の UI が残っています。
+:::
 
 現在は以下の機能が提供されているようです。
 

@@ -8,17 +8,19 @@ image: true
 
 今までOpenAIのRealtime APIを使ってCLIベースの音声会話スクリプトを作成しました。
 
-- [新登場の OpenAI の Realtime API でAIと音声会話する](/blogs/2024/10/07/openai-realtime-api-intro/)
-- [OpenAI の Realtime API で音声を使って任意の関数を実行する(Function calling編)](/blogs/2024/10/09/openai-realtime-api-function-calling/)
+@[og](/blogs/2024/10/07/openai-realtime-api-intro/)
+@[og](/blogs/2024/10/09/openai-realtime-api-function-calling/)
 
 このスクリプトは音声変換ツールの[SoX(Sound eXchange)](https://sourceforge.net/projects/sox/)のおかげで簡単に実装できましたが、やっぱりWebアプリも作ってみたいですね。
 ここではVueフレームワークの[Nuxt](https://nuxt.com/)を使用して、Webブラウザ上でRealtime APIと音声会話するアプリを作成します。
 
 :::info
-OpenAIの公式サンプルとしてReactベースのWebアプリがGitHubで公開されています。
-本記事を執筆する上で、こちらのレポジトリも大いに参考にしています。
+2024年12月18日にWebRTC版のRealtime APIが導入されました。
+このアップデートにより、ブラウザアプリはWebSocketではなくWebRTCを利用することが推奨になりました。
 
-- [GitHub openai/openai-realtime-console](https://github.com/openai/openai-realtime-console)
+WebRTC版についても以下記事で紹介していますので、ご参照ください。
+
+@[og](/blogs/2024/12/21/openai-realtime-api-webrtc/)
 :::
 
 Webアプリの構成は以下のようになります。
@@ -39,7 +41,7 @@ Webアプリの構成は以下のようになります。
 本記事は重要な部分にフォーカスするため、全てのソースコードを掲載・説明しません。
 ソースコードはGitHubで公開していますので、実際に試してみたい方は動かしてみていただければと思います(ただし、Realtime APIは結構高いので使い過ぎにご注意ください)。
 
-- [GitHub kudoh/nuxt-openai-realtimeapi-example](https://github.com/kudoh/nuxt-openai-realtimeapi-example)
+@[og](https://github.com/kudoh/nuxt-openai-realtimeapi-example)
 
 :::alert
 本サンプルはRealtime APIを使ったアプリ開発を実験することを目的としており、シンプルさを重視した簡易実装です。
@@ -113,6 +115,8 @@ Realtime APIを仲介するにはサーバー側もWebSocket通信が必要で�
 │   └── audio-processor.js     // 録音した音声の変換処理(オーディオスレッド処理)
 ├── utils
 │   └── index.ts               // 共通関数をまとめたエントリーポイント(音声フォーマット変換のみのため省略)
+├── pages
+│   └── websocket.vue          // UIコンポーネント
 ├── app.vue                    // エントリーポイント
 ├── nuxt.config.ts
 └── package.json
@@ -243,7 +247,7 @@ export const useRealtimeApi = ({ url, logMessage, onMessageCallback }: Params) =
     };
 
     ws.onerror = (error) => {
-      logMessage('Error occurred😭: ' + error.message);
+      logMessage('Error occurred😭');
     };
 
     ws.onmessage = (message: MessageEvent) => {
@@ -306,7 +310,7 @@ export function useAudio({ audioCanvas, logMessage, onFlushCallback }: Params) {
     try {
       // マイクの準備(許可要求)
       const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+      audioContext = new window.AudioContext({ sampleRate: 24000 });
 
       // 省略(音声入力変換とコールバック処理実行)
     } catch (e) {
@@ -363,12 +367,11 @@ Web APIとしてブラウザで提供されているオーディオ分析ツー�
 
 この機能は記事の本題でありませんのでソースコード掲載は省略します。
 
-## エントリーポイント(app.vue)
+## UIコンポーネント(websocket.vue)
 
-- [GitHub - /app.vue](https://github.com/kudoh/nuxt-openai-realtimeapi-example/blob/main/app.vue)
+- [GitHub - /websocket.vue](https://github.com/kudoh/nuxt-openai-realtimeapi-example/blob/main/pages/websocket.vue)
  
-最後はアプリケーションのエントリーポイントです。
-今回は単一ページなので、ページコンポーネントをNuxtエントリーポイントのapp.vueに直接実装しました。
+最後はアプリケーションのUIです。
 各種機能をComposableとして部品に切り出しましたので、ページコンポーネントはシンプルになりました。
 
 UIレンダリングは本題から逸れるので、以下音声録音とRealtime API連携部分を抜粋して説明します。
@@ -411,7 +414,7 @@ function handleWebSocketMessage(message: MessageEvent) {
       break;
     }
     case 'response.audio_transcript.done':
-      // レスポンスより早くイベントが発火することがあるのでロギングを遅延させる
+      // 出力音声テキスト。ユーザー音声より先に発火することがあるので遅延表示
       setTimeout(() => logMessage(`🤖: ${event.transcript}`), 100);
       break;
     case 'conversation.item.input_audio_transcription.completed':

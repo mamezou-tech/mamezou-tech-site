@@ -26,6 +26,18 @@
   font-display: swap
 }
 
+@layer utilities {
+  html[lang="zh-CN"] body {
+    @apply font-zh;
+  }
+  html[lang="ja"] body {
+    @apply font-ja;
+  }
+  html[lang="en"] body {
+    @apply font-en;
+  }
+}
+
 *, *::before, *::after {
   box-sizing: border-box
 }
@@ -48,7 +60,6 @@ body {
   text-rendering: optimizeSpeed;
   @apply flex flex-col bg-white ;
   color: #252450;
-  font-family: "Helvetica Neue", "Arial", "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif, serif;
 
   @media screen(md) {
     &.bg-summer {
@@ -401,4 +412,13 @@ span.code-filename + pre {
       @apply hidden
     }
   }
+}
+
+.katex-block {
+  overflow-x: auto;
+}
+
+/* back to top link */
+.hidden {
+  display: none;
 }

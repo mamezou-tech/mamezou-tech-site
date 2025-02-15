@@ -1,0 +1,22 @@
+{
+  "imports": {
+    "@openai/openai": "jsr:@openai/openai@^4.82.0",
+    "@opensrc/jsonfile": "jsr:@opensrc/jsonfile@^1.0.0",
+    "@std/fs": "jsr:@std/fs@^1.0.10",
+    "@std/path": "jsr:@std/path@^1.0.8",
+    "@aws-sdk/client-s3": "npm:@aws-sdk/client-s3@3.726.0",
+    "@slack/web-api": "npm:@slack/web-api@^7.8.0",
+    "zod": "npm:zod@^3.24.1",
+    "cheerio": "npm:cheerio@^1.0.0",
+    "js-yaml": "npm:js-yaml@^4.1.0",
+    "luxon": "npm:luxon@^3.5.0",
+    "sharp": "npm:sharp@^0.33.5",
+    "@google-analytics/data": "npm:@google-analytics/data@^4.4.0"
+  },
+  "tasks": {
+    "generate:column": "deno run --allow-env --allow-ffi --allow-sys --allow-net --allow-read --allow-write bin/generate-column.ts",
+    "generate:ranking": "deno run --allow-env --allow-ffi --allow-sys --allow-net --allow-read --allow-write bin/weekly-ranking.ts",
+    "translate:en": "deno run --allow-env --allow-sys --allow-net --allow-read --allow-write bin/translate.ts en",
+    "translate:zh": "deno run --allow-env --allow-sys --allow-net --allow-read --allow-write bin/translate.ts zh"
+  }
+}

@@ -29,7 +29,10 @@ function Toc(
   const key = path.split("/").pop();
 
   useEffect(() => {
-    const tags = document.querySelectorAll("h1,h2");
+    let tags = document.querySelectorAll("h1,h2,h3");
+    if (tags.length > 20) {
+      tags = document.querySelectorAll("h1,h2");
+    }
     const newData = Array.from(tags).slice(1)
       .map((t) => ({
         tag: t.tagName,
@@ -103,9 +106,8 @@ function Toc(
   const defaultMameyoseImage = (
     <a
       href="https://mamezou.connpass.com/"
-      onClick={ev => sendGa(ev, "click_mameyose")}
+      onClick={(ev) => sendGa(ev, "click_mameyose")}
       target="_blank"
-      rel="noreferrer noopener"
     >
       <img
         alt="mameyose"
@@ -118,16 +120,15 @@ function Toc(
   );
   const mameyoseImage = (
     <a
-      href="https://mamezou.connpass.com/event/338906/"
-      onClick={ev => sendGa(ev, "click_mameyose")}
+      href="https://mamezou.connpass.com/event/342203/"
+      onClick={(ev) => sendGa(ev, "click_mameyose")}
       target="_blank"
-      rel="noreferrer noopener"
     >
       <img
         alt="mameyose"
-        height="168"
+        height="112"
         width="200"
-        src="/img/event/20241217-mameyose.png"
+        src="/img/event/20250123-mameyose.png"
         style={{ backgroundColor: "#ffffff" }}
       />
     </a>
@@ -146,14 +147,13 @@ function Toc(
       <p className="toc-container-header">Contents</p>
       {makeList(data)}
       <div>
-        {mameyoseImage}
+        {defaultMameyoseImage}
       </div>
       <div>
         <a
           href="https://wwwrecruit.mamezou.com/"
           onClick={(ev) => sendGa(ev, "click_recruit")}
           target="_blank"
-          rel="noreferrer noopener"
         >
           <img
             alt="recruit"

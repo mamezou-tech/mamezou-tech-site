@@ -38,7 +38,7 @@ export function useHeadsObserver() {
       rootMargin: "0% 0% -95% 0%",
     });
 
-    const elements = document.querySelectorAll("h1, h2");
+    const elements = document.querySelectorAll("h1, h2, h3");
     Array.from(elements).slice(1).forEach((elem) => {
       observer.current?.observe(elem);
     });

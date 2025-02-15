@@ -11,7 +11,7 @@ export default function markdownItDiffHighlight(
     tokens: Token[],
     idx: number,
     options: MarkdownIt.Options,
-    env: any,
+    env: unknown,
     self: Renderer,
   ) => {
     const token = tokens[idx];
@@ -24,9 +24,9 @@ export default function markdownItDiffHighlight(
       return `<pre class="mermaid">${escapeHtml(code)}</pre>`;
     }
 
-    // diff highlight
+    // diff highlight plugin
     if (
-      token.tag === "code" && token.info !== "mermaid" && token.content.length
+      token.tag === "code" && lang.startsWith("diff-") && token.content.length
     ) {
       token.attrJoin("class", "diff-highlight");
     }

@@ -27,36 +27,30 @@ jobs:
           role-session-name: image-push-session
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Set up Node.js environment
-        uses: actions/setup-node@v4
+      - name: Set up Deno environment
+        uses: denoland/setup-deno@v2
         with:
-          node-version: '20'
-          cache: npm
-          cache-dependency-path: scripts/package-lock.json
+          deno-version: v2.x
 
-      - name: Install
-        run: cd ${GITHUB_WORKSPACE}/scripts && npm ci
-
-      - name: Update page for GPT generated column
+      - name: Generate and add new column
         id: update-for-gpt-column
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SLACK_CHANNEL_ID: ${{ vars.MAIN_SLACK_CHANNEL_ID }}
         run: |
-          set -eu
           cd ${GITHUB_WORKSPACE}/scripts
-          npm run generate:column
+          deno task generate:column
           git add ${GITHUB_WORKSPACE}/src/_data
 
       - name: Commit and Create Pull request
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: "chore: Add GPT generated column"
+          commit-message: "chore: Add column by AI"
           author: "mameka <mameka-bot@mamezou.com>"
           branch: daily-mameka-column
           delete-branch: true
-          title: "[auto-review] Update GPT column by github-actions"
-          body: "Check the GPT generated column."
+          title: "[auto-review] Automatically update Mameka's column"
+          body: "review the generated content and verify its accuracy."
           reviewers: kudoh
           labels: bot

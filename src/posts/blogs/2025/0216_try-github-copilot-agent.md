@@ -84,7 +84,7 @@ Continue をクリックすると実際にコマンドが実行されます。�
 
 ![waiting for executing CLI](https://i.gyazo.com/927d1c92faeeeb7c5b6e188d98eaba5c.png)
 
-ターミナルで Nuxt プロジェクトの生成が開始され、パッケージインストールとプロジェクト生成を行います(間がパッケージマネージャの選択などを行います)。
+ターミナルで Nuxt プロジェクトの生成が開始され、パッケージインストールとプロジェクト生成を行います(nuxi の実行では通常通り人間がパッケージマネージャの選択などを行います)。
 
 ![npx nuxi](https://i.gyazo.com/336031d7f102eec7e0a8c858179c3d03.png)
 
@@ -92,7 +92,7 @@ Continue をクリックすると実際にコマンドが実行されます。�
 
 ![Install SQLite](https://i.gyazo.com/f535f239760b72fe5f7a086821d2558c.png)
 
-ターミナルでは、SQLite3 や Dizzle などのパッケージがインストールされていきます。
+ターミナルでは、パッケージがインストールされていきます。
 
 ![Install npm packages](https://i.gyazo.com/64f52741c0eed17a47df4cb175f05a7b.png)
 
@@ -112,7 +112,7 @@ Continue をクリックすると実際にコマンドが実行されます。�
 
 ![ready to use](https://i.gyazo.com/fbb4a889597bd696e8f60ef61de7e369.png)
 
-言われるがままに localhost:3000 に接続するとアプリが表示されました。
+localhost:3000 に接続するとアプリが表示されました。
 
 ![Open App](https://i.gyazo.com/d7a5e0ce31dfdabc60b0786a697eccbe.png)
 
@@ -125,7 +125,7 @@ Continue をクリックすると実際にコマンドが実行されます。�
 ![Error message](https://i.gyazo.com/5c82ac17a3f55dc2385d0a1ae48d97ce.png)
 
 ## 実行エラーを修正する
-さて、怒涛の勢いでアプリが出来ましたが、うまく動作しませんでした。そこで、Terminal のエラーメッセージをコピーして、プロンプトに貼り付けてみました。Dizzle ORM のマイグレーションでテーブルを作成するそうです。
+さて、怒涛の勢いでアプリが出来ましたが、うまく動作しませんでした。そこでターミナルのエラーメッセージをコピーし、プロンプトに貼り付けてみました。Dizzle ORM のマイグレーションでテーブルを作成するそうです。
 
 ![recover from error](https://i.gyazo.com/0b44b3217e4e5a99a31d4d030a41969f.png)
 

@@ -53,20 +53,24 @@ Chat UI 側では、ファイルを生成するためのステップの計画と
 
 ## VS Code で Copilot Edits が GA に
 
-VS Code でも View and Iterate できればいいのにと思っていたら、先日 GitHub Copilot Agent の発表時に Copilot Edits という機能が GA になりました[^1]。
+VS Code でも View and Iterate できればいいのにと思っていたら、先日 GitHub Copilot Agent の発表時に Copilot Edits という機能が GA になりました。
 
 @[og](https://github.blog/news-insights/product-news/github-copilot-the-agent-awakens/)
 
 Copilot Edits では、対象のファイルを VS Code で開いた状態でインタラクティブにプロンプトを発行し、ファイルを修正できます。
 
-[^1]: Agent については別の記事で取り上げたいと思います。
-
 VS Code のドキュメントでは以下のページに説明があります。
 
 @[og](https://code.visualstudio.com/docs/copilot/copilot-edits)
 
+:::info
+GitHub Copilot エージェントモードの記事も書きました。
+
+@[og](/blogs/2025/02/16/try-github-copilot-agent/)
+:::
+
 ## Copilot Edits の利用開始
-Copilot Edits を使うには、VS Code で GitHub Copilot 拡張をインストールして、GitHub Copilot のサブスクリプションが有効な GitHub アカウントでログインしておく必要があります。左下のプロフイールアイコンのメニューが以下のようになっていれば OK です。
+Copilot Edits を使うには、VS Code で GitHub Copilot 拡張をインストールして、GitHub Copilot のサブスクリプションが有効な GitHub アカウントでログインしておく必要があります。左下のプロフィールアイコンのメニューが以下のようになっていれば OK です。
 
 ![Sign in](https://i.gyazo.com/3a2aeeac8f7e01b43d81f79f11381ff2.png)
 
@@ -81,9 +85,9 @@ Copilot Edit は従来の Copilot Chat の画面とあまり変わりません�
 ## Copilot Edits でリファクタリング作業を行う
 コードリファクタリングでは、複数のファイルを同時に編集しますし、結果的に新しいファイルが生まれたりします。これを従来の Chat UI でやっていると、ファイルの操作やコピペ操作が多発してかなり面倒です。
 
-Java で書かれた、あまりよろしくないコードを Copilot Edit でリファクタリングしてみます。[^2]
+Java で書かれた、あまりよろしくないコードを Copilot Edit でリファクタリングしてみます。[^1]
 
-[^2]: このよろしくないコードは GitHub サイトの Copilot に View and Iterate モードで書いてもらいました。
+[^1]: このよろしくないコードは GitHub サイトの Copilot に View and Iterate モードで書いてもらいました。
 
 対象のファイルを開くと作業セットに追加されます。
 

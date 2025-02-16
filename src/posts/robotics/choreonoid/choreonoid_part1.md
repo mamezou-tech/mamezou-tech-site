@@ -40,8 +40,8 @@ Choreonoid[^1]は、産業技術総合研究所（AIST）が開発したオー�
 
 
 ## GitHubリンク
-本記事で実装するコードは[こちら](https://github.com/hayat0-ota/choreonoid-simple-controllers/tree/Chapter1)[^3]で共有しています。必要に応じてご覧ください。
-[^3]: [本記事のGitHubリポジトリ](https://github.com/hayat0-ota/choreonoid-simple-controllers/tree/Chapter1)
+本記事で実装するコードは[こちら](https://github.com/hayat0-ota/choreonoid-controller-samples/tree/Chapter1)[^3]で共有しています。必要に応じてご覧ください。
+[^3]: [本記事のGitHubリポジトリ](https://github.com/hayat0-ota/choreonoid-controller-samples/tree/Chapter1)
 
 
 # 1. 開発環境構築

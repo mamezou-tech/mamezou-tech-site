@@ -51,7 +51,7 @@ On the Chat UI side, the plan for generating the file and its execution results 
 
 Since the title was in Japanese while the body was in English—resulting in an inconsistent feel—issuing an extra prompt saying, “Please have the body in Japanese as well,” rewrote the same file.
 
-![View and Iterate 2](https://i.gyazo.com/1be02f320116a2cdc9be2b606a56fcb4.png)
+![View and Iterate 2](https://i.gyazo.com/1be02f320116a2cdc9be2b606a56bcb4.png)
 
 As described above, on Copilot Chat on GitHub.com, you can directly edit generated files using prompts.
 

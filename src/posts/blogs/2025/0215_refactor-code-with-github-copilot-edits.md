@@ -70,7 +70,7 @@ GitHub Copilot エージェントモードの記事も書きました。
 :::
 
 ## Copilot Edits の利用開始
-Copilot Edits を使うには、VS Code で GitHub Copilot 拡張をインストールして、GitHub Copilot のサブスクリプションが有効な GitHub アカウントでログインしておく必要があります。左下のプロフイールアイコンのメニューが以下のようになっていれば OK です。
+Copilot Edits を使うには、VS Code で GitHub Copilot 拡張をインストールして、GitHub Copilot のサブスクリプションが有効な GitHub アカウントでログインしておく必要があります。左下のプロフィールアイコンのメニューが以下のようになっていれば OK です。
 
 ![Sign in](https://i.gyazo.com/3a2aeeac8f7e01b43d81f79f11381ff2.png)
 

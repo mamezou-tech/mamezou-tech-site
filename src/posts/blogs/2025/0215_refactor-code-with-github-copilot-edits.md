@@ -53,17 +53,21 @@ Chat UI 側では、ファイルを生成するためのステップの計画と
 
 ## VS Code で Copilot Edits が GA に
 
-VS Code でも View and Iterate できればいいのにと思っていたら、先日 GitHub Copilot Agent の発表時に Copilot Edits という機能が GA になりました[^1]。
+VS Code でも View and Iterate できればいいのにと思っていたら、先日 GitHub Copilot Agent の発表時に Copilot Edits という機能が GA になりました。
 
 @[og](https://github.blog/news-insights/product-news/github-copilot-the-agent-awakens/)
 
 Copilot Edits では、対象のファイルを VS Code で開いた状態でインタラクティブにプロンプトを発行し、ファイルを修正できます。
 
-[^1]: Agent については別の記事で取り上げたいと思います。
-
 VS Code のドキュメントでは以下のページに説明があります。
 
 @[og](https://code.visualstudio.com/docs/copilot/copilot-edits)
+
+:::info
+GitHub Copilot エージェントモードの記事も書きました。
+
+@[og](/blogs/2025/02/16/try-github-copilot-agent/)
+:::
 
 ## Copilot Edits の利用開始
 Copilot Edits を使うには、VS Code で GitHub Copilot 拡張をインストールして、GitHub Copilot のサブスクリプションが有効な GitHub アカウントでログインしておく必要があります。左下のプロフイールアイコンのメニューが以下のようになっていれば OK です。

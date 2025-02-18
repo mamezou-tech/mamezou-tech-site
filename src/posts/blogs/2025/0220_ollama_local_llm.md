@@ -2,7 +2,7 @@
 title: Ollamaを使ってオープンソースLLMをローカルホストしてみよう
 author: kotaro-miura
 date: 2025-02-20
-tags:  [LLM,Ollama,DeepSeek]
+tags:  [LLM,生成AI,AI,Ollama,DeepSeek]
 image: true
 ---
 

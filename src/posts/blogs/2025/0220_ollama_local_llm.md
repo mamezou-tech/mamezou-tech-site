@@ -41,7 +41,7 @@ ollama version is 0.5.7
 
 # LLMの起動
 
-それではオープンLLMを起動しましょう。
+それではLLMを起動してみます。
 
 実行コマンドは `ollama run`に続けてモデル名を指定するだけです。
 起動できるモデルは[ollama.com](https://ollama.com/search)から探すことができます。[^models]
@@ -79,7 +79,7 @@ success
 
 ちょっと怪しい日本語がありますが概ね自然な返答が出力されました。
 
-続けてプログラミングに関する簡単な質問もしてみましょう。
+続けてプログラミングに関する簡単な質問もしてみます。
 
 <pre style="height: 500px;">
 <code>>>> Javaのサンプルコードを出力してください
@@ -217,11 +217,11 @@ $ curl.exe http://localhost:11434/v1/chat/completions `
 
 <br>
 
-ここまででモデルの起動やプロンプト入力の方法が分かってきたところで、Llama3.2以外のモデルも試してみましょう。
+ここまででモデルの起動やプロンプト入力の方法が分かってきたところで、Llama3.2以外のモデルも試していきたいと思います。
 
 # 推論モデル(DeepSeek-R1)
 
-最近話題の[DeepSeek-R1](https://github.com/deepseek-ai/DeepSeek-R1)を使ってみましょう。このモデルは推論機能が備わっていて、OpenAI社のo1モデルのように回答する前に回答内容の妥当性を検証してより精度の高い回答を出力してくれるものとなっております。
+最近話題の[DeepSeek-R1](https://github.com/deepseek-ai/DeepSeek-R1)を使ってみます。このモデルは推論機能を備えていて、OpenAI社のo1モデルのように回答する前に回答内容の妥当性を検証してより精度の高い回答を出力してくれるものとなっております。
 
 このモデルもOllamaから簡単に起動できます。([モデルリンク](https://ollama.com/library/deepseek-r1))
 
@@ -231,7 +231,7 @@ $ curl.exe http://localhost:11434/v1/chat/completions `
 $ ollama run deepseek-r1
 ```
 
-挨拶やプログラミングについての質問をしてみます。
+最初に挨拶をしてみます。
 
 ```
 >>> こんにちは
@@ -254,6 +254,11 @@ I should make sure my response is clear and friendly in Japanese, just like the 
 
 こんにちは！
 ```
+
+最初の「こんにちは」という入力には日本語では答えが返ってきませんでした。日本語で答えてと指定すると日本語に切り替えてくれましたが推論部分が英語で出力されました。
+また、 推論モデルということもあってその推論過程を`<think>`というブロックに挟んで出力するようです。
+
+次に簡単なプログラミングについての質問をしてみます。
 
 <pre style="height: 500px;">
 <code>>>> Javaのサンプルコードを1つ教えてください。
@@ -321,19 +326,16 @@ Thank you! Your age is: 5
 ```
 </code></pre>
 
-推論モデルということもあってその推論過程を`<think>`というブロックに挟んで出力してくれました。
-短い挨拶程度の内容でも深く考えてくれています。
-
-また、そのままでは日本語で答えてくれないようですね。日本語で答えてと指定すると日本語に切り替えてくれましたが不自然な日本語もあります。ですがパラメタ数7Bという小さいモデルとしてはなかなか良い精度で回答出力されている印象です。また、よりパラメタ数の大きいモデル(最大で671B)のモデルもあるので(マシンスペックが足りれば)かなり精度のいい回答を得られることが期待できます。[ollama.com#deepseek-r1のタグ一覧](https://ollama.com/library/deepseek-r1/tags)
+途中で不自然な日本語がありますが、パラメタ数7Bという小さいモデルとしてはなかなか詳しくて自然な回答出力されている印象です。よりパラメタ数の大きいモデル(最大で671B)のモデルもあるので(マシンスペックが足りれば)かなり精度のいい回答を得られることが期待できます。[ollama.com#deepseek-r1のタグ一覧](https://ollama.com/library/deepseek-r1/tags)
 
 ## 日本語チューニング済モデル
 
-上記の回答では日本語の回答に少し難がありました。DeepSeekモデルを日本語用にチューニングしたモデルが公開されていますのでそちらも使ってみましょう。(元モデルから別の人がカスタマイズしたモデルが作られていくということもオープンソースLLMの良い点ですね。)
+上記の回答では日本語の回答に少し難がありました。DeepSeekモデルを日本語用にチューニングしたモデルが公開されていますのでそちらも使ってみます。(元モデルから別の人がカスタマイズしたモデルが作られていくということもオープンソースLLMの良い点ですね。)
 
-探してみたところ以下の各パラメタについてモデルが公開されていました。
+探してみたところ以下の各パラメタ数についてモデルが公開されていました。
 
 7Bモデル：[lightblue/DeepSeek-R1-Distill-Qwen-7B-Japanese](https://huggingface.co/lightblue/DeepSeek-R1-Distill-Qwen-7B-Japanese)
-14Bモデル[cyberagent/DeepSeek-R1-Distill-Qwen-14B-Japanese](https://huggingface.co/cyberagent/DeepSeek-R1-Distill-Qwen-14B-Japanese)
+14Bモデル：[cyberagent/DeepSeek-R1-Distill-Qwen-14B-Japanese](https://huggingface.co/cyberagent/DeepSeek-R1-Distill-Qwen-14B-Japanese)
 32Bモデル：[cyberagent/DeepSeek-R1-Distill-Qwen-32B-Japanese](https://huggingface.co/cyberagent/DeepSeek-R1-Distill-Qwen-32B-Japanese)
 
 Ollamaでは起動できるモデルのファイル形式はGGUF形式である必要があるので、上記のモデルから更にGGUF形式に変換にされたものを使います。
@@ -341,7 +343,7 @@ Ollamaでは起動できるモデルのファイル形式はGGUF形式である�
 以下のように各パラメタ数のGGUF版モデルが公開されています。（作成していただいた方、大変ありがとうございます。🙇‍♂️）
 
 7Bモデル：[mmnga/lightblue-DeepSeek-R1-Distill-Qwen-7B-Japanese-gguf](https://huggingface.co/mmnga/lightblue-DeepSeek-R1-Distill-Qwen-7B-Japanese-gguf)
-14Bモデル[mmnga/cyberagent-DeepSeek-R1-Distill-Qwen-14B-Japanese-gguf](https://huggingface.co/mmnga/cyberagent-DeepSeek-R1-Distill-Qwen-14B-Japanese-gguf)
+14Bモデル：[mmnga/cyberagent-DeepSeek-R1-Distill-Qwen-14B-Japanese-gguf](https://huggingface.co/mmnga/cyberagent-DeepSeek-R1-Distill-Qwen-14B-Japanese-gguf)
 32Bモデル：[mmnga/cyberagent-DeepSeek-R1-Distill-Qwen-32B-Japanese-gguf](https://huggingface.co/mmnga/cyberagent-DeepSeek-R1-Distill-Qwen-32B-Japanese-gguf)
 
 上記リンクでモデルファイルを公開しているサービスのHuggingFaceではOllamaでの起動コマンドを表示してくれる機能があります。
@@ -357,7 +359,7 @@ Ollamaでは起動できるモデルのファイル形式はGGUF形式である�
 今回のモデルだと、FuggingFaceのページで「[Files and versions](https://huggingface.co/mmnga/cyberagent-DeepSeek-R1-Distill-Qwen-14B-Japanese-gguf/tree/main)」タブから各量子化したモデルのファイルサイズが確認できるので参考にできると思います。
 :::
 
-では以下コマンドを実行して日本語版DeepSeekを起動しましょう。今回は量子化方式がIQ2_Sのものを選びます。
+では以下コマンドを実行して日本語版DeepSeekを起動します。今回は量子化方式がIQ2_Sのものを選びます。
 
 ```sh:PowerShell
 $ ollama run hf.co/mmnga/cyberagent-DeepSeek-R1-Distill-Qwen-14B-Japanese-gguf:IQ2_S
@@ -471,7 +473,7 @@ rustc 5.0以降で`cargo build --release`などで実行可能。
 
 # Visionモデル(Llava-Phi3)
 
-次はVisionモデルを使って画像と一緒にプロンプト入力して質問してみましょう。
+次はVisionモデルを使って画像と一緒にプロンプト入力して質問してみます。
 
 今回は[Llava-Phi3](https://ollama.com/library/llava-phi3)というモデルを使ってみます。
 
@@ -505,7 +507,7 @@ Added image 'C:\develop\ollama\book_gijutsusyo_it_set_small.png'
 一方でDeepSeek-R1 14Bモデルくらいになると遅く感じてきまして、ストリーム出力で回答開始するまでに約10秒かかり、トークン出力も約1~2トークン毎秒くらいだったので最後まで出力し切るまでにかなり待つ印象でした。
 
 LLMの回答はGPUを使うと高速化すると言われているので、どれだけ早くなるのか気になったので以下のスペックのマシンでDeepSeek-R1 32Bモデルを実行してみました。
-そうすると案の定めちゃくちゃ早くなりました。詳細な検証までしていないですが体感で10トークン毎秒以上は出ていたように思います。
+そうすると期待してい通りとても速くなりました。詳細な検証記録までしていないですが体感で10トークン毎秒以上は出ていたように思います。
 
 :::info:GPU搭載マシンスペック
 - OS：Windows 11
@@ -521,5 +523,5 @@ OllamaとNVIDIAドライバをインストールするだけで他に設定要�
 # おわりに
 
 今回はOllamaを使ってオープンソースLLMをローカルホストする方法を試してみました。
-起動するのは簡単でしたし、パラメタ数の小さなモデルでもそれなりに自然な回答を出力してくれたの、何かソフトウェアに組み込むことにも気軽に使えそうだなと思いました。
+起動するのは簡単でしたし、パラメタ数が小さくても自然な回答を出力してくれるモデルも存在していたので、何かソフトウェアに組み込むことにも気軽に使えそうだなと思いました。
 GPUの利用に関しても、NVIDIA製であれば手間も少なくすぐに使えることが分かりましたが、Intel製GPUを使う場合は少し手順が必要なのでこちらもいつか試したいなと思いました。

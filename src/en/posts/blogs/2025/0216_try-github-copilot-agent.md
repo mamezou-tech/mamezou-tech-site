@@ -26,7 +26,7 @@ I’d like to try out GitHub Copilot’s agent to see what it’s like.
 :::info
 It was predicted that the agent would arrive in 2025, as mentioned in last year’s Adkare article.
 
-@[og](/blogs/2024/12/04/openai-swarm-multi-agent-intro/)
+@[og](/en/blogs/2024/12/04/openai-swarm-multi-agent-intro/)
 :::
 
 ## Getting Started
@@ -57,7 +57,7 @@ For an agent mode that works autonomously, rather than a conventional Chat UI, C
 :::info
 For more on Copilot Edits, please refer to the following article.
 
-@[og](/blogs/2025/02/15/refactor-code-with-github-copilot-edits/)
+@[og](/en/blogs/2025/02/15/refactor-code-with-github-copilot-edits/)
 :::
 
 Switch from Edit to Agent using the options located beneath the prompt input box.

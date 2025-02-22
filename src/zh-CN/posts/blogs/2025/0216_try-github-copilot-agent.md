@@ -25,7 +25,7 @@ translate: true
 
 :::info
 在去年的 Adkale 文章中也预言过，今年 2025 年会出现代理。
-@[og](/blogs/2024/12/04/openai-swarm-multi-agent-intro/)
+@[og](/zh-cn/blogs/2024/12/04/openai-swarm-multi-agent-intro/)
 :::
 
 ## 使用准备
@@ -56,7 +56,7 @@ translate: true
 :::info
 关于 Copilot Edits，请参阅以下文章。
 
-@[og](/blogs/2025/02/15/refactor-code-with-github-copilot-edits/)
+@[og](/zh-cn/blogs/2025/02/15/refactor-code-with-github-copilot-edits/)
 :::
 
 在提示输入框下方的选项中，将模式从 Edit 切换到 Agent。

@@ -1,5 +1,5 @@
 ---
-title: LangMemの長期記憶の概要と使い方を整理する
+title: LangMemの長期記憶の概要と使い方を理解する
 author: noboru-kudo
 date: 2025-02-26
 tags: [長期記憶, LangMem, LangChain, 生成AI, LLM, Python]

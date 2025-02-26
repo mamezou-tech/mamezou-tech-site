@@ -372,8 +372,8 @@ def app(params: dict):
         {
             "role": "system",
             "content": system_msg,
-        }, *messages]
-    )
+        }, *messages
+    ])
 
     user_id = params["user_id"]
     # 3. 対話を長期記憶に反映

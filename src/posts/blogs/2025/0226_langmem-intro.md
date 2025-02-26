@@ -139,7 +139,7 @@ Memory Managerは副作用のないAPIなので、更新結果は戻り値とし
 
 ```
 ### conversation:1
-# 新規追加
+# 追加
 ExtractedMemory(id='1b7abda8-ad7e-41a1-a485-fd2eb26f2303', 
   content=UserFoodPreference(food_name='ラーメン', 
     cuisine='和食', preference=100, description='ラーメンが大好き')

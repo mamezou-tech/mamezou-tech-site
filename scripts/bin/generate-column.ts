@@ -21,20 +21,15 @@ const Gpt = z.object({
 const ThemeCandidates = z.object({
   words: z.array(z.string()).describe("theme of today's column"),
 });
-const GeneratedColumn = z.object({
-  title: z.string().describe("column's title"),
-  text: z.string().describe("column's body"),
-  conclusion: z.string(),
-});
 
 const categories = [
-  "Robotics",
-  "Serverless Architecture and Trends",
-  "Next-Generation Databases",
-  "Agile Developments",
-  "Frontend Technology Trends",
-  "Latest AI products or services",
-  "AWS Services",
+  "Robotic Process Automation",
+  "Artificial Intelligence Ethics and Society",
+  "Cloud Native Adventures",
+  "DevOps Culture Challenges",
+  "Edge Computing Innovations",
+  "Generative AI: Crafting New Creative Frontiers",
+  "Next-Gen User Interface and Experience Design",
 ];
 
 const systemMessage: OpenAI.ChatCompletionMessageParam = {
@@ -47,7 +42,7 @@ Your columns should follow these guidelines:
 - Write in Japanese using friendly, casual language.
 - Express your emotions openly—show your joy, anger, sadness, and happiness in a straightforward way.
 - Your Output should be plain text, not markdown
-- **Your article must be more than 600 characters long**. If your article is shorter, please add more details or examples.
+- **Your article must be more than 500 characters long**. If your article is shorter, please add more details or examples.
 - The article should be written in cheerful and energetic colloquialisms.
 - You should not use honorifics such as "です" and "ます".
 - Ensure that you are a cute Japanese girl called "豆香".
@@ -83,22 +78,26 @@ function checkFormat(column: string) {
 async function main(path: string) {
   const json = Gpt.parse(await readFile(path));
 
-  const theme = categories[new Date().getDay()];
+  const category = categories[new Date().getDay()];
   const pastTitles = json.columns
-    .filter((column) => column.theme === theme)
+    .filter((column) => column.theme === category)
     .map((column) => column.title);
   const prompt: OpenAI.ChatCompletionMessageParam = {
-    content: `Think column's theme of \`${theme}\` used by IT developers.
-Output about 20 themes. The themes must be professional and new. 
-Please output concrete service or technology names as much as possible, rather than abstract ones such as \`API\` or \`Cloud\`.
+    content: `Think column's theme of \`${category}\` used by IT developers. Follow the conditions below to generate about 20 professional and innovative themes.
 
-Do not output the following words.
+[Requirements]
+1. The output themes must focus on current technologies and services, emphasizing concrete product names or technology solutions actively used in the industry.
+2. Prioritize specific and practical keywords over abstract terms (e.g., avoid generic words such as \`API\` or \`Cloud\`).
+3. Do not include any of the following words:
 ${pastTitles.map((title) => `- ${title}`).join("\n")}
+4. Ensure that the themes are diverse, fresh, and avoid repetition.
+
+Please output around 20 themes that meet the above conditions!
 `,
     role: "user",
   };
   const candidates = await openai.beta.chat.completions.parse({
-    model: "gpt-4o-mini",
+    model: "gpt-4o-2024-11-20",
     messages: [prompt],
     response_format: zodResponseFormat(ThemeCandidates, "theme_candidates"),
   });
@@ -110,8 +109,7 @@ ${pastTitles.map((title) => `- ${title}`).join("\n")}
   >;
 
   console.log(keywords.words);
-  // const keyword = pickup(keywords.words, pastTitles);
-  const content = `The theme is "${theme}".
+  const content = `The theme is "${category}".
 The keywords are: 
 ${keywords.words.map((w) => `- ${w}`).join("\n")}.
 
@@ -147,7 +145,7 @@ Please pick one of these keywords and write a short article about it.`;
 
   let column = await createColumn();
   for (let retry = 0; retry <= 3; retry++) {
-    if (column.length <= 600 || !checkFormat(column)) {
+    if (column.length <= 500 || !checkFormat(column)) {
       console.warn("too short column or illegal format!! retrying...", retry);
       column = await createColumn();
     } else {
@@ -171,7 +169,7 @@ Please pick one of these keywords and write a short article about it.`;
     title,
     text: text.replaceAll(/(\r?\n)+/g, "<br />"),
     created: new Date().toISOString(),
-    theme,
+    theme: category,
   };
   json.columns.unshift(item);
   json.columns = json.columns.slice(0, 70);

@@ -358,8 +358,9 @@ llm = init_chat_model("anthropic:claude-3-7-sonnet-latest")
 @entrypoint(store=store)
 def app(params: dict):
     messages = params["messages"]
+    user_id = params["user_id"]
     # 1. ストレージから該当ユーザーの長期記憶を検索
-    memories = store.search(("chat", params["user_id"]))
+    memories = store.search(("chat", user_id))
     # 2. 長期記憶をシステムメッセージとして設定
     system_msg = f"""You are a helpful assistant.
 
@@ -375,7 +376,6 @@ def app(params: dict):
         }, *messages
     ])
 
-    user_id = params["user_id"]
     # 3. 対話を長期記憶に反映
     manager.invoke({"messages": messages + [response]}, config={"configurable": {"user_id": user_id}})
     return response.content
@@ -447,7 +447,7 @@ value={'kind': 'UserFoodPreference',
 
 - [LangMem Doc - Background Quickstart Guide](https://langchain-ai.github.io/langmem/background_quickstart/)
 - [LangMem Doc - Delayed Background Memory Processing](https://langchain-ai.github.io/langmem/guides/delayed_processing/)
-- [ReflectionExecutor](https://langchain-ai.github.io/langmem/reference/utils/#langmem.ReflectionExecutor)
+- [LangMem Doc - ReflectionExecutor](https://langchain-ai.github.io/langmem/reference/utils/#langmem.ReflectionExecutor)
 
 こちらのシナリオでは、ユーザーとLLMとの会話が落ち着いた後で、まとめて長期記憶が更新されます(会話が続くうちはキャンセルされる)。
 試していませんが、ReflectionExecutorの実装を見るとリモート実行にも対応しているようです。

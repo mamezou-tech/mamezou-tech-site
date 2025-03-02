@@ -120,8 +120,8 @@ def print_memory(num: int, memories: list):
 
 # 添加
 conversation = [
-    {"role": "user", "content": "ラーメンが大好きです!!"},
-    {"role": "user", "content": "パスタも好きです"}
+    {"role": "user", "content": "我非常喜欢拉面!!"},
+    {"role": "user", "content": "我也喜欢意面"},
 ]
 # 长期记忆反映
 memories = manager.invoke({"messages": conversation})
@@ -129,8 +129,8 @@ print_memory(1, memories)
 
 # 更新 or 删除
 conversation = [
-    {"role": "user", "content": "ラーメンは味噌ラーメンが好き"},
-    {"role": "user", "content": "パスタは嫌いになりました"},
+    {"role": "user", "content": "我喜欢味噌拉面"},
+    {"role": "user", "content": "我不喜欢意面了"},
 ]
 # 长期记忆反映（更新/删除现有长期记忆）
 memories = manager.invoke({"messages": conversation, "existing": memories})
@@ -146,22 +146,22 @@ print_memory(2, memories)
 
 ```
 ### conversation:1
-# 追加
+# 添加
 ExtractedMemory(id='1b7abda8-ad7e-41a1-a485-fd2eb26f2303', 
-  content=UserFoodPreference(food_name='ラーメン', 
-    cuisine='和食', preference=100, description='ラーメンが大好き')
+  content=UserFoodPreference(food_name='拉面',
+    cuisine='和食', preference=100, description='非常喜欢拉面')
 )
 ExtractedMemory(id='3b841c9a-ca87-466d-927f-525f5314fd01', 
-  content=UserFoodPreference(food_name='パスタ', 
-    cuisine='洋食', preference=80, description='パスタも好き')
+  content=UserFoodPreference(food_name='意面',
+    cuisine='洋食', preference=80, description='也喜欢意面')
 )
 ### conversation:2
 # 更新
 ExtractedMemory(id='1b7abda8-ad7e-41a1-a485-fd2eb26f2303', 
-  content=UserFoodPreference(food_name='ラーメン', 
-    cuisine='和食', preference=100, description='味噌ラーメンが大好き')
+  content=UserFoodPreference(food_name='拉面',
+    cuisine='和食', preference=100, description='非常喜欢味噌拉面')
 )
-# 削除(RemoveDoc)
+# 删除(RemoveDoc)
 ExtractedMemory(id='3b841c9a-ca87-466d-927f-525f5314fd01', 
   content=RemoveDoc(json_doc_id='3b841c9a-ca87-466d-927f-525f5314fd01')
 )
@@ -250,8 +250,8 @@ def app(params: dict):
 
 # 添加
 conversation = [
-    {"role": "user", "content": "ラーメンが大好きです!!"},
-    {"role": "user", "content": "パスタも好きです"}
+    {"role": "user", "content": "我非常喜欢拉面!!"},
+    {"role": "user", "content": "我也喜欢意面"},
 ]
 # 长期记忆反映
 app.invoke({"messages": conversation, "user_id": "MZ0001"})
@@ -260,8 +260,8 @@ print_memory(1, memories)
 
 # 更新 or 删除
 conversation = [
-    {"role": "user", "content": "ラーメンは味噌ラーメンが好き"},
-    {"role": "user", "content": "パスタは嫌いになりました"},
+    {"role": "user", "content": "我喜欢味噌拉面"},
+    {"role": "user", "content": "我不喜欢意面了"},
 ]
 # 长期记忆反映（更新/删除现有长期记忆）
 app.invoke({"messages": conversation, "user_id": "MZ0001"})
@@ -276,25 +276,25 @@ print_memory(2, memories)
 
 ```
 ### conversation:1
-# 追加
+# 添加
 Item(namespace=['chat', 'MZ0001'], key='69240f7f-3b19-4b96-b51d-9e4da7270eec', 
-  value={'kind': 'UserFoodPreference', 
-    'content': {'food_name': 'ラーメン', 'cuisine': '和食', 'preference': 100, 'description': '大好き'}}, 
-      created_at='2025-02-26T01:58:08.175579+00:00', updated_at='2025-02-26T01:58:08.175582+00:00', score=None
+     value={'kind': 'UserFoodPreference',
+            'content': {'food_name': '拉面', 'cuisine': '日式料理', 'preference': 100, 'description': '非常喜欢'}},
+     created_at='2025-02-26T01:58:08.175579+00:00', updated_at='2025-02-26T01:58:08.175582+00:00', score=None
 )
 Item(namespace=['chat', 'MZ0001'], key='d94790e4-8ee5-467b-b1fa-65b56a140b62', 
-  value={'kind': 'UserFoodPreference', 
-    'content': {'food_name': 'パスタ', 'cuisine': '洋食', 'preference': 80, 'description': '好き'}},
-      created_at='2025-02-26T01:58:09.338439+00:00', updated_at='2025-02-26T01:58:09.338453+00:00', score=None
+     value={'kind': 'UserFoodPreference',
+            'content': {'food_name': '意面', 'cuisine': '西式料理', 'preference': 80, 'description': '喜欢'}},
+     created_at='2025-02-26T01:58:09.338439+00:00', updated_at='2025-02-26T01:58:09.338453+00:00', score=None
 )
 ### conversation:2
 # 更新
 Item(namespace=['chat', 'MZ0001'], key='69240f7f-3b19-4b96-b51d-9e4da7270eec', 
-  value={'kind': 'UserFoodPreference', 
-    'content': {'food_name': 'ラーメン', 'cuisine': '和食', 'preference': 100, 'description': '味噌ラーメンが好き'}}, 
-      created_at='2025-02-26T01:58:15.138250+00:00', updated_at='2025-02-26T01:58:15.138261+00:00', score=None
+     value={'kind': 'UserFoodPreference',
+            'content': {'food_name': '拉面', 'cuisine': '日式料理', 'preference': 100, 'description': '喜欢味噌拉面'}},
+     created_at='2025-02-26T01:58:15.138250+00:00', updated_at='2025-02-26T01:58:15.138261+00:00', score=None
 )
-# 削除 -> 物理削除(パスタ)
+# 删除 -> 物理删除(意面)
 ```
 
 虽然是内存存储，但可以看到长期记忆已经被更新。不同于Memory Manager，此处删除是物理删除。
@@ -354,7 +354,7 @@ manager = create_memory_store_manager(
     "anthropic:claude-3-7-sonnet-latest",
     namespace=("chat", "{user_id}"),
     schemas=[UserFoodPreference],
-    instructions="ユーザーの好みを詳細に抽出してください",
+    instructions = "请详细抽取用户的偏好",
     enable_inserts=True,
     enable_deletes=False,
 )
@@ -402,13 +402,13 @@ def app(params: dict):
 ```python
 # ---- 更新长期记忆 ----
 conversation = [
-    {"role": "user", "content": "醤油ラーメンが大好きです!!"},
+    {"role": "user", "content": "我非常喜欢酱油拉面!!"},
 ]
 app.invoke({"messages": conversation, "user_id": "MZ0001"})
 
 # ---- 参考长期记忆 ----
 conversation = [
-    {"role": "user", "content": "今日のランチは何を食べようかな？"},
+    {"role": "user", "content": "今天的午餐该吃什么呢？"},
 ]
 message = app.invoke({"messages": conversation, "user_id": "MZ0001"})
 print("### LLM:\n", message)
@@ -421,26 +421,29 @@ print("### Memories:\n", [m for m in memories])
 结果如下（部分格式化）。
 
 ```
-### LLM: こんにちは！ランチのお悩みですね。
+### LLM: 
+你好！你关于午餐的问题来了。
 
-以前、醤油ラーメンがお好きとのことでしたね。今日のランチにいかがでしょうか？
-あの深い醤油の風味と香りは、ランチタイムにぴったりだと思います。
+之前听说你喜欢酱油拉面。今天的午餐如何呢？
+那浓郁的酱油风味和香气，非常适合午餐时间。
 
-他にも気分に合わせていくつか提案させていただきますと：
+如果你还想要一些其他建议，这里有几个选择：
 
-1. 他の和食系なら、うどんやそばなどの麺類
-2. 軽めがご希望なら、おにぎりと味噌汁の組み合わせ
-3. がっつり食べたい気分なら、天丼や親子丼などの丼物
+1. 其他日式料理，例如乌冬面或荞麦面等面条
+2. 如果你想吃得清淡，可以选择饭团搭配味噌汤
+3. 如果你想吃得丰盛一些，可以考虑天妇罗盖饭或鸡蛋盖饭等盖饭
 
-今日はどのような気分でしょうか？
+今天你的心情如何呢？
+
 ### Memories:
-[Item(namespace=['chat', 'MZ0001'], key='66846bc7-7335-4e3c-b77a-1a65f03b9be4', 
-value={'kind': 'UserFoodPreference', 
-  'content': {
-    'food_name': '醤油ラーメン', 'cuisine': '和食', 'preference': 90, 
-    'description': '「大好き」と表現されているラーメンの一種'
-  }
-}, created_at='2025-02-26T06:05:47.887150+00:00', updated_at='2025-02-26T06:05:47.887153+00:00', score=None)]
+[Item(namespace=['chat', 'MZ0001'], key='66846bc7-7335-4e3c-b77a-1a65f03b9be4',
+      value={'kind': 'UserFoodPreference',
+             'content': {
+                 'food_name': '酱油拉面', 'cuisine': '日式料理', 'preference': 90,
+                 'description': '被描述为「非常喜欢」的拉面一种'
+             }
+             }, created_at='2025-02-26T06:05:47.887150+00:00', updated_at='2025-02-26T06:05:47.887153+00:00',
+      score=None)]
 ```
 
 通过利用长期记忆，LLM返回了很好地反映了用户偏好的响应。

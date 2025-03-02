@@ -215,7 +215,7 @@ manager = create_memory_store_manager(
     "openai:gpt-4o-2024-11-20",  # 用于记忆提取和更新的模型
     namespace=("chat", "{user_id}"),  # 按UserId进行记忆管理
     schemas=[UserFoodPreference],
-    instructions="ユーザーの好みを詳細に抽出してください。好みの`preference`を0に更新する場合は記憶から削除(RemoveDoc)してください",
+    instructions="请详细提取用户的偏好。如果将偏好中的`preference`更新为0，则从记忆中删除(RemoveDoc)",
     enable_inserts=True,  # 默认True
     enable_deletes=True,  # 默认False（不删除）
 )

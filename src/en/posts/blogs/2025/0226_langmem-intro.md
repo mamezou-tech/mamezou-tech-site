@@ -37,9 +37,9 @@ The LangMem SDK offered by LangChain provides APIs to efficiently manage long-te
 :::column: Long-Term Memory Categories
 LangMem categorizes long-term memory into the following three types.
 
-1. Semantic (意味記憶)
-2. Episodic (経験記憶)
-3. Procedural (手続き記憶)
+1. Semantic
+2. Episodic
+3. Procedural
 
 When using LangMem, it is important to clearly define which type of long-term memory is required. For more details on these, please refer to the official documentation below.
 
@@ -112,8 +112,8 @@ def print_memory(num: int, memories: list):
 
 # Addition
 conversation = [
-    {"role": "user", "content": "ラーメンが大好きです!!"},
-    {"role": "user", "content": "パスタも好きです"}
+    {"role": "user", "content": "I love ramen!!"},
+    {"role": "user", "content": "I also like pasta"}
 ]
 # Apply long-term memory
 memories = manager.invoke({"messages": conversation})
@@ -121,8 +121,8 @@ print_memory(1, memories)
 
 # Update or delete
 conversation = [
-    {"role": "user", "content": "ラーメンは味噌ラーメンが好き"},
-    {"role": "user", "content": "パスタは嫌いになりました"},
+    {"role": "user", "content": "I like miso ramen"},
+    {"role": "user", "content": "I have grown to dislike pasta"},
 ]
 # Apply long-term memory (update/delete existing memory)
 memories = manager.invoke({"messages": conversation, "existing": memories})
@@ -135,24 +135,25 @@ Below is the output of the above code (formatted and with comments added).
 
 ```
 ### conversation:1
-# 追加
-ExtractedMemory(id='1b7abda8-ad7e-41a1-a485-fd2eb26f2303', 
-  content=UserFoodPreference(food_name='ラーメン', 
-    cuisine='和食', preference=100, description='ラーメンが大好き')
+### conversation:1
+# Addition
+ExtractedMemory(id='1b7abda8-ad7e-41a1-a485-fd2eb26f2303',
+  content=UserFoodPreference(food_name='Ramen',
+    cuisine='Japanese cuisine', preference=100, description='I love ramen')
 )
-ExtractedMemory(id='3b841c9a-ca87-466d-927f-525f5314fd01', 
-  content=UserFoodPreference(food_name='パスタ', 
-    cuisine='洋食', preference=80, description='パスタも好き')
+ExtractedMemory(id='3b841c9a-ca87-466d-927f-525f5314fd01',
+  content=UserFoodPreference(food_name='Pasta',
+  cuisine='Western cuisine', preference=80, description='I also like pasta')
 )
 ### conversation:2
-# 更新
-ExtractedMemory(id='1b7abda8-ad7e-41a1-a485-fd2eb26f2303', 
-  content=UserFoodPreference(food_name='ラーメン', 
-    cuisine='和食', preference=100, description='味噌ラーメンが大好き')
+# Update
+ExtractedMemory(id='1b7abda8-ad7e-41a1-a485-fd2eb26f2303',
+  content=UserFoodPreference(food_name='Ramen',
+    cuisine='Japanese cuisine', preference=100, description='I love miso ramen')
 )
-# 削除(RemoveDoc)
-ExtractedMemory(id='3b841c9a-ca87-466d-927f-525f5314fd01', 
-  content=RemoveDoc(json_doc_id='3b841c9a-ca87-466d-927f-525f5314fd01')
+# Delete (RemoveDoc)
+ExtractedMemory(id='3b841c9a-ca87-466d-927f-525f5314fd01',
+ content=RemoveDoc(json_doc_id='3b841c9a-ca87-466d-927f-525f5314fd01')
 )
 ```
 
@@ -235,8 +236,8 @@ def app(params: dict):
 
 # Addition
 conversation = [
-    {"role": "user", "content": "ラーメンが大好きです!!"},
-    {"role": "user", "content": "パスタも好きです"}
+    {"role": "user", "content": "I love ramen!!"},
+    {"role": "user", "content": "I also like pasta"}
 ]
 # Apply long-term memory
 app.invoke({"messages": conversation, "user_id": "MZ0001"})
@@ -245,8 +246,8 @@ print_memory(1, memories)
 
 # Update or delete
 conversation = [
-    {"role": "user", "content": "ラーメンは味噌ラーメンが好き"},
-    {"role": "user", "content": "パスタは嫌いになりました"},
+    {"role": "user", "content": "I like miso ramen"},
+    {"role": "user", "content": "I have grown to dislike pasta"},
 ]
 # Apply long-term memory (update/delete existing memory)
 app.invoke({"messages": conversation, "user_id": "MZ0001"})
@@ -260,25 +261,25 @@ Below is the output of the above code (formatted and with comments added).
 
 ```
 ### conversation:1
-# 追加
-Item(namespace=['chat', 'MZ0001'], key='69240f7f-3b19-4b96-b51d-9e4da7270eec', 
-  value={'kind': 'UserFoodPreference', 
-    'content': {'food_name': 'ラーメン', 'cuisine': '和食', 'preference': 100, 'description': '大好き'}}, 
-      created_at='2025-02-26T01:58:08.175579+00:00', updated_at='2025-02-26T01:58:08.175582+00:00', score=None
+# Addition
+Item(namespace=['chat', 'MZ0001'], key='69240f7f-3b19-4b96-b51d-9e4da7270eec',
+    value={'kind': 'UserFoodPreference',
+          'content': {'food_name': 'Ramen', 'cuisine': 'Japanese cuisine', 'preference': 100, 'description': 'love it'}},
+     created_at='2025-02-26T01:58:08.175579+00:00', updated_at='2025-02-26T01:58:08.175582+00:00', score=None
 )
-Item(namespace=['chat', 'MZ0001'], key='d94790e4-8ee5-467b-b1fa-65b56a140b62', 
-  value={'kind': 'UserFoodPreference', 
-    'content': {'food_name': 'パスタ', 'cuisine': '洋食', 'preference': 80, 'description': '好き'}},
-      created_at='2025-02-26T01:58:09.338439+00:00', updated_at='2025-02-26T01:58:09.338453+00:00', score=None
+Item(namespace=['chat', 'MZ0001'], key='d94790e4-8ee5-467b-b1fa-65b56a140b62',
+     value={'kind': 'UserFoodPreference',
+            'content': {'food_name': 'Pasta', 'cuisine': 'Western cuisine', 'preference': 80, 'description': 'like'}},
+     created_at='2025-02-26T01:58:09.338439+00:00', updated_at='2025-02-26T01:58:09.338453+00:00', score=None
 )
 ### conversation:2
-# 更新
-Item(namespace=['chat', 'MZ0001'], key='69240f7f-3b19-4b96-b51d-9e4da7270eec', 
-  value={'kind': 'UserFoodPreference', 
-    'content': {'food_name': 'ラーメン', 'cuisine': '和食', 'preference': 100, 'description': '味噌ラーメンが好き'}}, 
-      created_at='2025-02-26T01:58:15.138250+00:00', updated_at='2025-02-26T01:58:15.138261+00:00', score=None
+# Update
+Item(namespace=['chat', 'MZ0001'], key='69240f7f-3b19-4b96-b51d-9e4da7270eec',
+     value={'kind': 'UserFoodPreference',
+            'content': {'food_name': 'Ramen', 'cuisine': 'Japanese cuisine', 'preference': 100, 'description': 'like miso ramen'}},
+     created_at='2025-02-26T01:58:15.138250+00:00', updated_at='2025-02-26T01:58:15.138261+00:00', score=None
 )
-# 削除 -> 物理削除(パスタ)
+# Delete -> Physical deletion (Pasta)
 ```
 
 Even though it is in-memory, you can observe that the long-term memory is being updated. Unlike with the Memory Manager, here the deletion actually physically removes the memory.
@@ -332,7 +333,7 @@ manager = create_memory_store_manager(
     "anthropic:claude-3-7-sonnet-latest",
     namespace=("chat", "{user_id}"),
     schemas=[UserFoodPreference],
-    instructions="ユーザーの好みを詳細に抽出してください",
+    instructions="Please extract the user's preferences in detail",
     enable_inserts=True,
     enable_deletes=False,
 )
@@ -380,13 +381,13 @@ The following code demonstrates this execution.
 ```python
 # ---- Update Long-Term Memory ----
 conversation = [
-    {"role": "user", "content": "醤油ラーメンが大好きです!!"},
+    {"role": "user", "content": "I love soy sauce ramen!!"},
 ]
 app.invoke({"messages": conversation, "user_id": "MZ0001"})
 
 # ---- Retrieve Long-Term Memory ----
 conversation = [
-    {"role": "user", "content": "今日のランチは何を食べようかな？"},
+    {"role": "user", "content": "What should I eat for lunch today?"},
 ]
 message = app.invoke({"messages": conversation, "user_id": "MZ0001"})
 print("### LLM:\n", message)
@@ -398,26 +399,23 @@ print("### Memories:\n", [m for m in memories])
 To verify long-term memory, purposely, conversation history (short-term memory) is not carried over between the two LLM invocations. The results are as follows (formatted partially).
 
 ```
-### LLM: こんにちは！ランチのお悩みですね。
+### LLM: 
+Hello! It seems you're having a lunch dilemma.
+Previously, you mentioned that you like soy sauce ramen. How about trying it for today's lunch? That deep soy sauce flavor and aroma is perfect for lunchtime, in my opinion.
+I can also suggest a few other options depending on your mood:
+1. If you prefer other Japanese-style dishes, maybe noodles like udon or soba.
+2. If you're in the mood for something lighter, perhaps a combination of a rice ball and miso soup.
+3. If you're really hungry, options like a tempura bowl or oyakodon might be suitable.
 
-以前、醤油ラーメンがお好きとのことでしたね。今日のランチにいかがでしょうか？
-あの深い醤油の風味と香りは、ランチタイムにぴったりだと思います。
+How are you feeling today?
 
-他にも気分に合わせていくつか提案させていただきますと：
-
-1. 他の和食系なら、うどんやそばなどの麺類
-2. 軽めがご希望なら、おにぎりと味噌汁の組み合わせ
-3. がっつり食べたい気分なら、天丼や親子丼などの丼物
-
-今日はどのような気分でしょうか?
 ### Memories:
-[Item(namespace=['chat', 'MZ0001'], key='66846bc7-7335-4e3c-b77a-1a65f03b9be4', 
-value={'kind': 'UserFoodPreference', 
-  'content': {
-    'food_name': '醤油ラーメン', 'cuisine': '和食', 'preference': 90, 
-    'description': '「大好き」と表現されているラーメンの一種'
-  }
-}, created_at='2025-02-26T06:05:47.887150+00:00', updated_at='2025-02-26T06:05:47.887153+00:00', score=None)]
+Item(namespace=['chat', 'MZ0001'], key='66846bc7-7335-4e3c-b77a-1a65f03b9be4',
+  value={'kind': 'UserFoodPreference',
+         'content': { 'food_name': 'Soy Sauce Ramen', 'cuisine': 'Japanese cuisine', 'preference': 90,
+                      'description': "A type of ramen described as 'love it'" }
+  }, created_at='2025-02-26T06:05:47.887150+00:00', updated_at='2025-02-26T06:05:47.887153+00:00', score=None
+)
 ```
 
 Utilizing long-term memory yields a nice response that reflects the user's preferences, doesn't it?

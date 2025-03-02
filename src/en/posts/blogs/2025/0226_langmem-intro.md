@@ -135,7 +135,6 @@ Below is the output of the above code (formatted and with comments added).
 
 ```
 ### conversation:1
-### conversation:1
 # Addition
 ExtractedMemory(id='1b7abda8-ad7e-41a1-a485-fd2eb26f2303',
   content=UserFoodPreference(food_name='Ramen',

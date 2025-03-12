@@ -1,5 +1,5 @@
 ---
-title: ClickHouse入門 ~分析データベースをRAGインデックスとして使ってみる~ 
+title: ClickHouse入門 ～分析データベースをRAGインデックスとして使ってみる～
 author: shohei-yamashita
 date: 2025-03-13
 tags: [clickhouse, sql, bentoml, RAG, LLM, Python]

@@ -183,9 +183,16 @@ Prompt Optimizerを使うことで、この最適化プロセスをLLM自体に�
 Core APIは記憶の変換機能を提供しますが、実際に運用するには、記憶を長期間保持できるストレージの永続化機能が必要です。
 これを実現するために、LangMemはLangGraphの永続化機能([BaseStore](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.base.BaseStore))をストレージバックエンドとして利用し、長期記憶を永続化するためのAPIを提供しています。
 
-本記事では簡単に検証できるよう、BaseStoreのインメモリ実装であるInMemoryStoreを利用します[^1]。
+本記事では簡単に検証できるよう、BaseStoreのインメモリ実装であるInMemoryStoreを利用します。
 
-[^1]: 現時点での公式ドキュメントでは、実運用する場合はPostgreSQLベースの[AsyncPostgresStore](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.postgres.AsyncPostgresStore)が推奨されています。
+
+:::info
+現時点での公式ドキュメントでは、実運用する場合はPostgreSQLベースの[AsyncPostgresStore](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.postgres.AsyncPostgresStore)が推奨されています。
+
+これについては以下記事をご参照ください。
+
+@[og](/blogs/2025/03/12/langmem-aurora-pgvector/)
+:::
 
 #### Store Manager
 
@@ -303,9 +310,9 @@ Store Managerは明示的にinvoke/ainvokeを使って長期記憶を更新し�
 - [create_manage_memory_tool](https://langchain-ai.github.io/langmem/reference/tools/#langmem.create_manage_memory_tool): 長期記憶の追加・更新・削除
 - [create_search_memory_tool](https://langchain-ai.github.io/langmem/reference/tools/#langmem.create_search_memory_tool): 長期記憶の検索
 
-なお、各ベンダー向けのツールコールフォーマット変換は別途必要ですが、LangGraphのワークフロー以外からでも利用可能です[^2]。
+なお、各ベンダー向けのツールコールフォーマット変換は別途必要ですが、LangGraphのワークフロー以外からでも利用可能です[^1]。
 
-[^2]: <https://langchain-ai.github.io/langmem/guides/use_tools_in_custom_agent/>
+[^1]: <https://langchain-ai.github.io/langmem/guides/use_tools_in_custom_agent/>
 
 ## LLMと長期記憶を組み合わせる
 

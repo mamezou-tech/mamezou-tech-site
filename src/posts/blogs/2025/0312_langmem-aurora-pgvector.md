@@ -33,7 +33,7 @@ LangMemと合わせて[langgraph-checkpoint-postgres](https://pypi.org/project/l
 pip install langmem langgraph-checkpoint-postgres psycopg[binary]
 ```
 
-今回の検証では、LangMemのバージョンは最新の0.0.15を使用しています。
+今回の検証では、LangMemのバージョンは現時点で最新の0.0.15を使用しています。
 
 ## Lambda関数
 
@@ -58,7 +58,7 @@ class UserTechInterest(BaseModel):
 ```
 ユーザーの技術的な嗜好をスキーマ化し、長期記憶として保存します。
 
-続いてAuroraの接続URLを作成します。
+続いてPostgreSQLの接続URLを作成します。
 
 ```python
 def create_conn_url():
@@ -92,6 +92,13 @@ client = OpenAI()
 ```
 
 Store Managerには先ほどのPydanticのスキーマ(UserTechInterest)を設定して、長期記憶のスキーマを強制します。
+
+:::info
+Store ManagerはLangMemのStorage APIの1つです。
+LLMを活用して長期記憶の抽出や既存情報の更新を行い、LangGraphの永続化機能を通して実ストレージに反映します。
+
+詳細は[前回記事](/blogs/2025/02/26/langmem-intro/)をご参照ください。
+:::
 
 続いて、Lambdaのイベントハンドラを実装します。
 まずは、PostgreSQLへの接続を確立します。

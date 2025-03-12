@@ -187,9 +187,8 @@ Core APIは記憶の変換機能を提供しますが、実際に運用するに
 
 
 :::info
-現時点での公式ドキュメントでは、実運用する場合はPostgreSQLベースの[AsyncPostgresStore](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.postgres.AsyncPostgresStore)が推奨されています。
-
-これについては以下記事をご参照ください。
+公式ドキュメントでは、実運用する場合はPostgreSQLベースのストアが推奨されています。
+これについては、以下記事をご参照ください。
 
 @[og](/blogs/2025/03/12/langmem-aurora-pgvector/)
 :::

@@ -19,7 +19,7 @@ translate: true
 
 In our previous article, we explained an overview and usage of LangMem, which efficiently manages the AI's long-term memory.
 
-@[og](/blogs/2025/02/26/langmem-intro/)
+@[og](/en/blogs/2025/02/26/langmem-intro/)
 
 In that article, we used an in-memory store for long-term memory, but LangMem also supports a PostgreSQL (pgvector extension) based store.
 This time, we will explore a more practical utilization of long-term memory using the PostgreSQL-based store.
@@ -94,7 +94,7 @@ manager = create_memory_store_manager(
     "openai:gpt-4o-2024-11-20",
     namespace=("chat", "{user_id}"),
     schemas=[UserTechInterest],
-    instructions="ユーザーの興味や技術的背景を詳細に抽出してください",
+    instructions="Extract the user's interests and technical background in detail",
     enable_inserts=True,
     enable_deletes=False,
 )
@@ -109,7 +109,7 @@ We configure the Store Manager with the previously defined Pydantic schema (User
 The Store Manager is one of LangMem's Storage APIs.
 It leverages LLMs to extract long-term memory and update existing information, ultimately reflecting changes to actual storage through LangGraph's persistence functionality.
 
-For more details, please refer to the [previous article](/blogs/2025/02/26/langmem-intro/).
+For more details, please refer to the [previous article](/en/blogs/2025/02/26/langmem-intro/).
 :::
 
 Next, we implement the Lambda event handler.
@@ -293,7 +293,7 @@ LAMBDA_URL=$(aws lambda get-function-url-config --function-name LongTermMemHandl
 curl -H 'Content-Type: application/json' "$LAMBDA_URL" -d @- <<'EOF'
 {
   "user_id": "MZ0001",
-  "prompt": "クラウドサービス全般に興味があり、特にAWS、Azureの基本的な知識を徐々に深めていきたいと思っています"
+  "prompt": "I am interested in cloud services in general, and I specifically want to gradually deepen my basic knowledge of AWS and Azure"
 }
 EOF
 ```
@@ -307,7 +307,7 @@ Next, let's add some additional interest information.
 curl -H 'Content-Type: application/json' "$LAMBDA_URL" -d @- <<'EOF'
 {
   "user_id": "MZ0001",
-  "prompt": "新しく気になる技術として、AIエージェントを活用した取り組みにも強い興味を持つようになりました"
+  "prompt": "I have recently developed a strong interest in initiatives that leverage AI agents as an emerging technology that has caught my attention."
 }
 EOF
 ```
@@ -330,7 +330,7 @@ Without providing the user's previous remarks, we ask for general technology top
 curl -H 'Content-Type: application/json' "$LAMBDA_URL" -d @- <<'EOF'
 {
   "user_id": "MZ0001",
-  "prompt": "おすすめの技術トピックを3つ挙げて簡潔にまとめて！"
+  "prompt": "Please list three recommended technology topics and summarize them concisely!"
 }
 EOF
 ```

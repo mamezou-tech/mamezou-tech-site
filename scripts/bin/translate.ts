@@ -5,8 +5,8 @@ import { dirname } from "@std/path";
 import { existsSync } from "@std/fs";
 import { writeFile } from "@opensrc/jsonfile";
 import { APIError } from "@openai/openai";
-import openai from "../util/openai-client.ts";
 
+const openai = new OpenAI();
 const English = {
   language: "English",
   dir: "en",
@@ -73,7 +73,6 @@ function updateMd(translated: string, originalFrontMatter: string) {
   frontMatterYaml.translate = true;
   console.log(translatedFrontMatter);
   const translatedYaml = yaml.load(translatedFrontMatter) as any;
-  console.log(translatedYaml);
   frontMatterYaml.title = translatedYaml.title;
   const finalFrontMatter = yaml.dump(frontMatterYaml);
 
@@ -86,29 +85,26 @@ ${payload}
 
 type Request = {
   userId?: string;
-  messages: OpenAI.ChatCompletionMessageParam[];
+  messages: string | {role: any, content: string}[]
   temperature?: number;
   maxTokens?: number;
   responseFormat?: "text" | "json_object";
   model?: string;
-  reasoningEffort?: "high" | "medium" | "low";
+  reasoningEffort?: OpenAI.ReasoningEffort;
 };
 const debug = !!Deno.env.get("DEBUG");
 export async function requestTranslate(
   request: Request,
-): Promise<OpenAI.ChatCompletion> {
+) {
   try {
     console.time("Chat API");
     if (debug) console.log("sending...", request.messages);
-    const resp = await openai.chat.completions.create({
+    const resp = await openai.responses.create({
       model: request.model ?? "gpt-4o-mini",
       user: request.userId,
-      messages: request.messages,
-      reasoning_effort: request.reasoningEffort,
-      // max_tokens: request.maxTokens,
-      // temperature: request.temperature ?? 0.7,
-      response_format: {
-        type: request.responseFormat ?? "text",
+      input: request.messages,
+      reasoning: {
+        effort: request.reasoningEffort ?? "medium",
       },
     });
     if (debug) console.log("result", resp);
@@ -124,7 +120,7 @@ export async function requestTranslate(
 }
 async function chat(text: string, option: { language: string; dir: string }) {
   async function continueTranslation(
-    prevMessage: OpenAI.ChatCompletionMessageParam,
+    prevMessage: any,
     times = 0,
   ) {
     console.info("retrying...", times);
@@ -135,9 +131,9 @@ async function chat(text: string, option: { language: string; dir: string }) {
         prevMessage,
       ],
     });
-    replies.push(retryResp.choices[0].message.content);
-    if (retryResp.choices[0].finish_reason === "length") {
-      return await continueTranslation(retryResp.choices[0].message, times + 1);
+    replies.push(retryResp.output_text);
+    if (response.incomplete_details?.reason === "max_output_tokens") {
+      return await continueTranslation(retryResp.output, times + 1);
     }
     return;
   }
@@ -147,9 +143,6 @@ async function chat(text: string, option: { language: string; dir: string }) {
       role: "user",
       content: makeMessage(text, option.language),
     }],
-    // temperature: 0,
-    // maxTokens: 8192 * 3,
-    // model: "gpt-4o-2024-11-20",
     reasoningEffort: "high",
     model: "o3-mini",
     // model: "gpt-4o-mini", // for testing
@@ -157,13 +150,13 @@ async function chat(text: string, option: { language: string; dir: string }) {
 
   const response = await requestTranslate(request);
   console.log(
-    "finish_reason",
-    response.choices[0].finish_reason,
+    "incomplete_details",
+    response.incomplete_details,
     response.usage,
   );
-  replies.push(response.choices[0].message.content);
-  if (response.choices[0].finish_reason === "length") {
-    await continueTranslation(response.choices[0].message, 1);
+  replies.push(response.output_text);
+  if (response.incomplete_details?.reason === "max_output_tokens") {
+    await continueTranslation(response.output, 1);
   }
   return replies.join();
 }

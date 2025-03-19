@@ -65,8 +65,8 @@ from openai import OpenAI
 client = OpenAI()
 
 vector_store = client.vector_stores.create(
-    name="Tech Blog Articles",
-    expires_after={"anchor": "last_active_at", "days": 1}
+    name='Tech Blog Articles',
+    expires_after={'anchor': 'last_active_at', 'days': 1}
 )
 ```
 
@@ -79,12 +79,12 @@ Vector Storeに登録するファイルのチャンク化に関する設定を�
 
 ```python
 vector_store = client.vector_stores.create(
-    name="Tech Blog Articles",
+    name='Tech Blog Articles',
     chunking_strategy={
-        "type": "static",
-        "static": {
-            "max_chunk_size_tokens": 1600, # デフォルトは800
-            "chunk_overlap_tokens": 800 # デフォルトは400
+        'type': 'static',
+        'static': {
+            'max_chunk_size_tokens': 1600, # デフォルトは800
+            'chunk_overlap_tokens': 800 # デフォルトは400
         }
     }
 )
@@ -96,9 +96,9 @@ Vector Storeは最初の1GBは無料ですが、それ以降はサイズに対�
 
 ```python
 vector_store = client.vector_stores.create(
-    name="Tech Blog Articles",
+    name='Tech Blog Articles',
     # 1日未使用だったら有効期限切れ
-    expires_after={"anchor": "last_active_at", "days": 1}
+    expires_after={'anchor': 'last_active_at', 'days': 1}
 )
 ```
 
@@ -121,18 +121,18 @@ file_names = [name for name in os.listdir(article_dir) if name.endswith('.md')]
 
 for file_name in file_names:
     file_path = os.path.join(article_dir, file_name)
-    with open(file_path, 'r', encoding="utf-8") as f:
+    with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
         # マークダウンに含まれるメタデータを取得
         metadata = {line.split(': ')[0]: line.split(': ')[1] for line in content.split('\n') if ': ' in line}
         author = metadata.get('author', 'Unknown')
         title = metadata.get('title', 'Untitled')
         date = int(datetime.strptime(metadata['date'], '%Y-%m-%d').timestamp())
-        attributes = {"title": title, "author": author, "date": date}
+        attributes = {'title': title, 'author': author, 'date': date}
         # Fileオブジェクト作成
         file = client.files.create(
-            file=(file_name, content, "text/markdown"),
-            purpose="assistants"
+            file=(file_name, content, 'text/markdown'),
+            purpose='assistants'
         )
         # VectorStoreにFileを登録(チャンク化)
         client.vector_stores.files.create(
@@ -163,12 +163,12 @@ OpenAIのSDKの中には、複数のファイルに対してFileとVector Store�
 ```python
 for file_name in file_names:
     file_path = os.path.join(article_dir, file_name)
-    with open(file_path, 'r', encoding="utf-8") as f:
+    with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
         files.append((
             file_name,
             content,
-            "text/markdown"
+            'text/markdown'
         ))
 # File作成とVector Store登録をまとめて実施
 client.vector_stores.file_batches.upload_and_poll(
@@ -190,17 +190,17 @@ import json
 # ファイル検索実行
 response = client.vector_stores.search(
     vector_store.id,
-    query="PostgreSQL",   # 検索クエリ
+    query='PostgreSQL',   # 検索クエリ
     max_num_results=3 # 最大検索結果数
 )
 # ベクトル検索結果出力
 for data in response.data:
     print((
-        "-" * 30 + "\n"
-        f"file_id:{data.file_id}, filename:{data.filename}\n"
-        f"score:{data.score}\n"
-        f"attributes:{json.dumps(data.attributes, indent=2, ensure_ascii=False)}\n"
-        f"content:{"".join(content.text for content in data.content)[:100]}...(省略)"
+        '-' * 30 + '\n'
+        f'file_id:{data.file_id}, filename:{data.filename}\n'
+        f'score:{data.score}\n'
+        f'attributes:{json.dumps(data.attributes, indent=2, ensure_ascii=False)}\n'
+        f'content:{''.join(content.text for content in data.content)[:100]}...(省略)'
     ))
 ```
 
@@ -260,12 +260,12 @@ WITH RECURSIVE recursive_table AS (
 ```python
 response = client.vector_stores.search(
     vector_store.id,
-    query="PostgreSQL LangMem",
+    query='PostgreSQL LangMem',
     max_num_results=3,
     # ランキングオプションの設定
     ranking_options={
-        "ranker": "auto",
-        "score_threshold": 0.8
+        'ranker': 'auto',
+        'score_threshold': 0.8
     },
 )
 ```
@@ -282,32 +282,32 @@ one_month_ago = datetime.now() - timedelta(days=30)
 unix_time = int(one_month_ago.timestamp())
 response = client.vector_stores.search(
     vector_store.id,
-    query="PostgreSQL",
+    query='PostgreSQL',
     max_num_results=3,
     # メタデータフィルタリング条件
     filters={
-        "type": "and",
-        "filters": [
+        'type': 'and',
+        'filters': [
             {
-                "type": "gte",
-                "key": "date",
-                "value": unix_time
+                'type': 'gte',
+                'key': 'date',
+                'value': unix_time
 
             },
             {
-                "type": "eq",
-                "key": "author",
-                "value": "noboru-kudo"
+                'type': 'eq',
+                'key': 'author',
+                'value': 'noboru-kudo'
             }
         ]
     })
 for data in response.data:
     print((
-        "-" * 30 + "\n"
-        f"file_id:{data.file_id}, filename:{data.filename}\n"
-        f"score:{data.score}\n"
-        f"attributes:{json.dumps(data.attributes, indent=2, ensure_ascii=False)}\n"
-        f"content:{"".join(content.text for content in data.content)[:100]}...(省略)"
+        '-' * 30 + '\n'
+        f'file_id:{data.file_id}, filename:{data.filename}\n'
+        f'score:{data.score}\n'
+        f'attributes:{json.dumps(data.attributes, indent=2, ensure_ascii=False)}\n'
+        f'content:{''.join(content.text for content in data.content)[:100]}...(省略)'
     ))
 ```
 
@@ -388,20 +388,20 @@ Vector Store APIの使い方を理解したところで、File Searchツール�
 
 ```python
 response = client.responses.create(
-    model="gpt-4o-2024-11-20",
-    input="GitHubの記事を簡単に紹介して",
-    instructions="You are an excellent tech leader.",
+    model='gpt-4o-2024-11-20',
+    input='GitHubの記事を簡単に紹介して',
+    instructions='You are an excellent tech leader.',
     tools=[{
-        "type": "file_search",
-        "vector_store_ids": [vector_store.id],
-        "max_num_results": 3, # 使用する検索結果数(任意)
+        'type': 'file_search',
+        'vector_store_ids': [vector_store.id],
+        'max_num_results': 3, # 使用する検索結果数(任意)
     }]
 )
 # レスポンスメッセージ
 print(response.output_text)
-print("-" * 30)
+print('-' * 30)
 # ファイル検索結果
-if hasattr(response.output[1], "content") and response.output[1].content:
+if hasattr(response.output[1], 'content') and response.output[1].content:
     for annotation in response.output[1].content[0].annotations:
         print(annotation)
 ```
@@ -446,34 +446,34 @@ Responses APIで使用する場合は、以下のように指定します。
 one_month_ago = datetime.now() - timedelta(days=30)
 unix_time = int(one_month_ago.timestamp())
 response = client.responses.create(
-    model="gpt-4o-2024-11-20",
-    input="AI関連の記事を簡単に紹介して",
-    instructions="You are an excellent tech leader.",
+    model='gpt-4o-2024-11-20',
+    input='AI関連の記事を簡単に紹介して',
+    instructions='You are an excellent tech leader.',
     tools=[{
-        "type": "file_search",
-        "vector_store_ids": [vector_store.id],
+        'type': 'file_search',
+        'vector_store_ids': [vector_store.id],
         # メタデータフィルタリング条件
-        "filters": {
-            "type": "and",
-            "filters": [
+        'filters': {
+            'type': 'and',
+            'filters': [
                 {
-                    "type": "gte",
-                    "key": "date",
-                    "value": unix_time
+                    'type': 'gte',
+                    'key': 'date',
+                    'value': unix_time
                 },
                 {
-                    "type": "eq",
-                    "key": "author",
-                    "value": "noboru-kudo"
+                    'type': 'eq',
+                    'key': 'author',
+                    'value': 'noboru-kudo'
                 }
             ]
         },
-        "max_num_results": 3,
+        'max_num_results': 3,
     }]
 )
 print(response.output_text)
-print("-" * 30)
-if hasattr(response.output[1], "content") and response.output[1].content:
+print('-' * 30)
+if hasattr(response.output[1], 'content') and response.output[1].content:
     for annotation in response.output[1].content[0].annotations:
         print(annotation)
 ```
@@ -521,25 +521,25 @@ AnnotationFileCitation(file_id='file-L1RAexWnvr419K7PC9qgMe', index=860, type='f
 
 ```python
 response = client.responses.create(
-    model="gpt-4o-2024-11-20",
-    input="GitHubの記事を簡単に紹介して",
-    instructions="You are an excellent tech leader.",
+    model='gpt-4o-2024-11-20',
+    input='GitHubの記事を簡単に紹介して',
+    instructions='You are an excellent tech leader.',
     # 検索結果を含める
-    include=["output[*].file_search_call.search_results"],
+    include=['output[*].file_search_call.search_results'],
     tools=[{
-        "type": "file_search",
-        "vector_store_ids": [vector_store.id],
-        "max_num_results": 3,
+        'type': 'file_search',
+        'vector_store_ids': [vector_store.id],
+        'max_num_results': 3,
     }]
 )
-if hasattr(response.output[0], "results") and response.output[0].results:
+if hasattr(response.output[0], 'results') and response.output[0].results:
     for result in response.output[0].results:
         print((
-            "-" * 30 + "\n"
-            f"file_id:{result.file_id}, filename:{result.filename}\n"
-            f"score:{result.score}\n"
-            f"attributes:{json.dumps(result.attributes, indent=2, ensure_ascii=False)}\n"
-            f"content:\n{result.text[:100]}...(省略)"
+            '-' * 30 + '\n'
+            f'file_id:{result.file_id}, filename:{result.filename}\n'
+            f'score:{result.score}\n'
+            f'attributes:{json.dumps(result.attributes, indent=2, ensure_ascii=False)}\n'
+            f'content:\n{result.text[:100]}...(省略)'
         ))
 ```
 

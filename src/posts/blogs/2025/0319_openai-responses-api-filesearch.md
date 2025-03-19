@@ -190,8 +190,8 @@ import json
 # ファイル検索実行
 response = client.vector_stores.search(
     vector_store.id,
-    query='PostgreSQL',   # 検索クエリ
-    max_num_results=3 # 最大検索結果数
+    query='PostgreSQL', # 検索クエリ
+    max_num_results=3   # 最大検索結果数
 )
 # ベクトル検索結果出力
 for data in response.data:
@@ -264,8 +264,8 @@ response = client.vector_stores.search(
     max_num_results=3,
     # ランキングオプションの設定
     ranking_options={
-        'ranker': 'auto',
-        'score_threshold': 0.8
+        'ranker': 'auto', # 現時点で選択できるものはautoまたはdefault-2024-11-15のみ
+        'score_threshold': 0.8 # 0.8未満は検索結果より除外
     },
 )
 ```

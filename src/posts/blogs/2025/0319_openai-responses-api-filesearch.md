@@ -17,7 +17,7 @@ File Search自体は従来、Assistants APIでのみ利用可能なベータ版�
 今回、新たにResponses APIの導入とともに、File Searchがビルトインツールとして利用可能になりました（ただし、Chat Completion APIのツールとしては依然として利用できません）。
 機能面でも、メタデータフィルタリングの追加により、従来のFile Searchより強化されています。
 
-File Searchツールを使った実際の流れは以下のようになります。
+File Searchツールを使ったフローは以下のようになります。
 
 ```mermaid
 sequenceDiagram

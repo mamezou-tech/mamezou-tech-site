@@ -37,11 +37,12 @@ Perplexity的传统API一直处于测试版状态，而此次随着新Sonar模�
 它们都专注于在线搜索，并设计成能够顺畅地获得搜索结果。
 
 :::info
-2025年1月29日新增了“sonar-reasoning”模型。  
-该模型是基于热门的DeepSeek Reasoning模型的在线搜索（单次搜索）模型。  
-根据Perplexity的官方声明，这一模型部署于美国的数据中心，因此未受到审查的影响。
+自本文章发布以来，已添加了许多模型，包括基于 DeepSeek R1 的模型等。  
+此外，定价体系也已更改，为适应 high/medium/low 搜索模式的计费体系。
 
-感兴趣的话不妨试试。
+- [Perplexity Blog - Improved Sonar Models: Industry Leading Performance at Lower Costs](https://www.perplexity.ai/ja/hub/blog/new-sonar-search-modes-outperform-openai-in-cost-and-performance)
+
+请参阅官方文档以获取最新信息。
 
 @[og](https://x.com/perplexity_ai/status/1884409454675759211)
 :::

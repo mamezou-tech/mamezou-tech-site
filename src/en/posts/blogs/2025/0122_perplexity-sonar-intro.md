@@ -37,10 +37,12 @@ There are currently only two models available in Sonar: "sonar" and "sonar-pro".
 Both are specialized for online search and are designed to retrieve search results smoothly.
 
 :::info
-On January 29, 2025, a new feature called "sonar-reasoning" was introduced.
-This model is an online search model (with one search per query) based on the trending DeepSeek Reasoning model. According to Perplexity's announcement, this model is deployed in data centers in the United States and is not subject to censorship.
+Since the publication of this article, many models—including those based on DeepSeek R1—have been added.  
+Furthermore, the pricing structure has been changed to a billing system that corresponds to the high/medium/low search modes.
 
-If you're interested, be sure to give it a try!
+- [Perplexity Blog - Improved Sonar Models: Industry Leading Performance at Lower Costs](https://www.perplexity.ai/ja/hub/blog/new-sonar-search-modes-outperform-openai-in-cost-and-performance)
+
+For the latest information, please check the official documentation.
 
 @[og](https://x.com/perplexity_ai/status/1884409454675759211)
 :::

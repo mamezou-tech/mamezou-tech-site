@@ -91,7 +91,7 @@ vector_store = client.vector_stores.create(
 ```
 
 :::column:Vector Storeの課金に注意
-Vector Storeは最初の1GBは無料ですが、それ以降はサイズに対して日単位で課金されます。
+Vector Storeは最初の1GBは無料ですが、それ以降はサイズに対して日単位で課金(現時点では$0.1/1GB)されます。
 検証目的等で使う場合は、検証後に削除するか、作成時に有効期限を指定しておくことをお勧めします。
 
 ```python
@@ -380,6 +380,13 @@ Vector Store APIの使い方を理解したところで、File Searchツール�
 - [OpenAI Docs - Built-in Tools - File search](https://platform.openai.com/docs/guides/tools-file-search)
 
 基本的な使い方はAssistants APIの時と同じですが、Vector Store APIに追加されたメタデータフィルタリングも利用可能になっています。
+
+:::alert
+Assistants APIとは違い、File Searchツールは、ストレージ料金($0.1/1GB/1日)に加えて呼出回数に応じた課金が発生します。
+現時点では $2.5/1000回 が適用されます。最新の料金は公式ガイドを参照してください。
+
+- [OpenAI Doc - Pricing - Built-in tools](https://platform.openai.com/docs/pricing#built-in-tools)
+:::
 
 ### File Searchの基本的な使い方
 

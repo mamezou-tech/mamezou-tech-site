@@ -26,22 +26,22 @@ File Search 本来在之前仅作为 Assistants API 中的 beta 版本提供，�
 
 ```mermaid
 sequenceDiagram
-    participant C as クライアント
+    participant C as 客户端
     participant R as Responses API
-    participant FT as File Search<br>(OpenAI built-in)
-    participant VS as Vector Store
+    participant FT as 文件搜索<br>(OpenAI内置)
+    participant VS as 向量存储
     participant LLM as LLM
-    C ->> R: レスポンス生成
-    R ->> LLM: レスポンス生成
-    LLM -->> R: ツール実行要求<br>file_search_call
-    R ->> FT: ツール実行
-    FT ->> VS: ファイル検索
-    VS ->> VS: セマンティック検索/ランキング
-    VS -->> FT: 検索結果
-    FT -->> R: 検索結果
-    R ->> LLM: レスポンス生成(検索結果付き)
-    LLM -->> R: レスポンス
-    R -->> C: レスポンス
+    C ->> R: 响应生成
+    R ->> LLM: 响应生成
+    LLM -->> R: 工具执行请求<br>file_search_call
+    R ->> FT: 执行工具
+    FT ->> VS: 文件搜索
+    VS ->> VS: 语义搜索/排序
+    VS -->> FT: 搜索结果
+    FT -->> R: 搜索结果
+    R ->> LLM: 生成响应（附带搜索结果）
+    LLM -->> R: 响应
+    R -->> C: 响应
 ```
 
 :::info
@@ -351,7 +351,7 @@ attributes:{
   "date": 1741705200.0
 }
 content:
-### 2. **量子コンピューティング**
+### 2. **量子计算**
 - 当前计算机难以快速解决的问题，可借助下一代技术实现高速计算。  
 - 在密码破解、分子模拟、金融最优化等特定领域，有望引发巨大变革。  
 -...(省略)
@@ -404,7 +404,7 @@ content:
 ```python
 response = client.responses.create(
     model='gpt-4o-2024-11-20',
-    input='GitHubの記事を簡単に紹介して',
+    input = '简要介绍一下 GitHub 的文章',
     instructions='You are an excellent tech leader.',
     tools=[{
         'type': 'file_search',
@@ -463,7 +463,7 @@ one_month_ago = datetime.now() - timedelta(days=30)
 unix_time = int(one_month_ago.timestamp())
 response = client.responses.create(
     model='gpt-4o-2024-11-20',
-    input='AI関連の記事を簡単に紹介して',
+    input='简要介绍一下与 AI 相关的文章',
     instructions='You are an excellent tech leader.',
     tools=[{
         'type': 'file_search',
@@ -538,7 +538,7 @@ AnnotationFileCitation(file_id='file-L1RAexWnvr419K7PC9qgMe', index=860, type='f
 ```python
 response = client.responses.create(
     model='gpt-4o-2024-11-20',
-    input='GitHubの記事を簡単に紹介して',
+    input = '简要介绍一下 GitHub 的文章',
     instructions='You are an excellent tech leader.',
     # 包含搜索结果
     include=['output[*].file_search_call.search_results'],
@@ -569,13 +569,13 @@ if hasattr(response.output[0], 'results') and response.output[0].results:
 file_id:file-SBuL8BmxQZ2PUp3MxorgJZ, filename:0122_github-issues-sub-issue-progress.md
 score:0.6980376676922656
 attributes:{
-  "title": "GitHub Issues で Sub-issues による進捗状況把握ができます",
+  "title": "在 GitHub Issues 中，可以通过子问题掌握进展情况",
   "author": "masahiro-kondo",
   "date": 1737471600.0
 }
 content:
 ---
-title: GitHub Issues で Sub-issues による進捗状況把握ができます
+title: 在 GitHub Issues 中，可以通过子问题掌握进展情况
 author: masahiro-kondo
 date: 2025-01-22
 tags: [...(省略)
@@ -583,13 +583,13 @@ tags: [...(省略)
 file_id:file-1BTgs1Cu5Y8NmPNc337kSZ, filename:0216_try-github-copilot-agent.md
 score:0.6593310562728306
 attributes:{
-  "title": "GitHub Copilot のエージェントモード(パブリックプレビュー)を試す",
+  "title": "试用 GitHub Copilot 的代理模式（公开预览）", 
   "author": "masahiro-kondo",
   "date": 1739631600.0
 }
 content:
 ---
-title: GitHub Copilot のエージェントモード(パブリックプレビュー)を試す
+title: 试用 GitHub Copilot 的代理模式（公开预览）
 author: masahiro-kondo
 date: 2025-02-16
 tags: [A...(省略)

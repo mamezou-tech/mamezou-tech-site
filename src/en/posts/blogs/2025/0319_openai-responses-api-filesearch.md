@@ -26,22 +26,22 @@ The flow using the File Search tool is as follows.
 
 ```mermaid
 sequenceDiagram
-    participant C as クライアント
+    participant C as Client
     participant R as Responses API
     participant FT as File Search<br>(OpenAI built-in)
     participant VS as Vector Store
     participant LLM as LLM
-    C ->> R: レスポンス生成
-    R ->> LLM: レスポンス生成
-    LLM -->> R: ツール実行要求<br>file_search_call
-    R ->> FT: ツール実行
-    FT ->> VS: ファイル検索
-    VS ->> VS: セマンティック検索/ランキング
-    VS -->> FT: 検索結果
-    FT -->> R: 検索結果
-    R ->> LLM: レスポンス生成(検索結果付き)
-    LLM -->> R: レスポンス
-    R -->> C: レスポンス
+    C ->> R: Generate Response
+    R ->> LLM: Generate Response
+    LLM -->> R: Tool Execution Request<br>file_search_call
+    R ->> FT: Execute Tool
+    FT ->> VS: File Search
+    VS ->> VS: Semantic Search/Ranking
+    VS -->> FT: Search Results
+    FT -->> R: Search Results
+    R ->> LLM: Generate Response (with search results)
+    LLM -->> R: Response
+    R -->> C: Response
 ```
 
 :::info
@@ -194,7 +194,7 @@ for data in response.data:
         f'file_id:{data.file_id}, filename:{data.filename}\n'
         f'score:{data.score}\n'
         f'attributes:{json.dumps(data.attributes, indent=2, ensure_ascii=False)}\n'
-        f'content:{''.join(content.text for content in data.content)[:100]}...(省略)'
+        f'content:{''.join(content.text for content in data.content)[:100]}...(omitted)'
     ))
 ```
 
@@ -214,7 +214,7 @@ content:
 title: Safe Recursive Query in PostgreSQL! A Thorough Guide to Using the CYCLE Clause
 author: shohei-yamashita
 date: 2025-01-17
-tags: [Postg...(省略)
+tags: [Postg...(omitted)
 ------------------------------
 file_id:file-L1RAexWnvr419K7PC9qgMe, filename:0312_langmem-aurora-pgvector.md
 score:0.807569386941522
@@ -228,7 +228,7 @@ content:
 title: Persisting LangMem's Long-Term Memory in PostgreSQL (pgvector)
 author: noboru-kudo
 date: 2025-03-12
-tags: [Long-Term Memory,...(省略)
+tags: [Long-Term Memory,...(omitted)
 ------------------------------
 file_id:file-7EpzUrFMAKQfF1wRHTrTo1, filename:0117_cycle-postgres.md
 score:0.7830848428325007
@@ -242,7 +242,7 @@ The concrete syntax is as follows:
 ```sql
 WITH RECURSIVE recursive_table AS (
     -- Non-recursive term
-    SELECT columns FROM table...(省略)
+    SELECT columns FROM table...(omitted)
 ```
 
 It can be confirmed that the search results include attributes and confidence scores (score).
@@ -301,7 +301,7 @@ for data in response.data:
         f'file_id:{data.file_id}, filename:{data.filename}\n'
         f'score:{data.score}\n'
         f'attributes:{json.dumps(data.attributes, indent=2, ensure_ascii=False)}\n'
-        f'content:{''.join(content.text for content in data.content)[:100]}...(省略)'
+        f'content:{''.join(content.text for content in data.content)[:100]}...(omitted)'
     ))
 ```
 
@@ -327,7 +327,7 @@ content:
 title: Persisting LangMem's Long-Term Memory in PostgreSQL (pgvector)
 author: noboru-kudo
 date: 2025-03-12
-tags: [Long-Term Memory,...(省略)
+tags: [Long-Term Memory,...(omitted)
 ------------------------------
 file_id:file-L1RAexWnvr419K7PC9qgMe, filename:0312_langmem-aurora-pgvector.md
 score:0.6644617795244542
@@ -340,7 +340,7 @@ content:
 ### 2. **Quantum Computing**
 - A next-generation technology capable of solving problems that are challenging for current computers at high speeds.  
 - Expected to revolutionize fields such as cryptography, molecular simulation, and financial optimization.  
--...(省略)
+-...(omitted)
 ------------------------------
 file_id:file-L1RAexWnvr419K7PC9qgMe, filename:0312_langmem-aurora-pgvector.md
 score:0.6606991798904742
@@ -353,7 +353,7 @@ content:
 ```python
     # 3. LangGraph Functional API Workflow
     @entrypoint(store=store)
-    def ...(省略)
+    def ...(omitted)
 ```
 
 Metadata filtering shows that only files with specific attributes are targeted in the search.
@@ -543,7 +543,7 @@ if hasattr(response.output[0], 'results') and response.output[0].results:
             f'file_id:{result.file_id}, filename:{result.filename}\n'
             f'score:{result.score}\n'
             f'attributes:{json.dumps(result.attributes, indent=2, ensure_ascii=False)}\n'
-            f'content:\n{result.text[:100]}...(省略)'
+            f'content:\n{result.text[:100]}...(omitted)'
         ))
 ```
 

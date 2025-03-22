@@ -438,7 +438,7 @@ Below is an overview of AI-related articles extracted from the uploaded files.
 File Search passes the search results from the Vector Store to the LLM, and messages are generated based on those results.
 Additionally, by checking the 'annotations', you can see which file the LLM used to generate its message.[^2]
 
-[^2]: The Assistants API could obtain the source of a citation by matching annotation markers (for example, marks like " ") in the quoted text, but it seems that the Responses API now determines it by index.
+[^2]: The Assistants API could obtain the source of a citation by matching annotation markers (for example, marks like "【4:10†foo】") in the quoted text, but it seems that the Responses API now determines it by index.
 
 ### Using Metadata Filtering
 

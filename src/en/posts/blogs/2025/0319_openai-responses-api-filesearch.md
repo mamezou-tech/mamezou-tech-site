@@ -357,7 +357,6 @@ content:
 ```
 
 Metadata filtering shows that only files with specific attributes are targeted in the search.
-```
 
 :::column:Using Vector Store with the Chat Completion API
 While the traditional Chat Completion API does not support File Search as a tool, by combining it with this search functionality, you can build a RAG system using OpenAI's Vector Store.

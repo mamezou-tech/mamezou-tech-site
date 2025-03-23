@@ -78,7 +78,7 @@ if __name__ == '__main__':
     asyncio.run(main())
 ```
 
-Agents SDKが提供するRunnerクラスのrunスタティックメソッドを使用して、最初に実行するエージェントや入力テキストを指定します。
+Agents SDKが提供するRunnerクラスのrunメソッドを使用して、最初に実行するエージェントや入力テキストを指定します。
 
 このrunメソッドによりエージェントが実行されます。エージェントはレスポンスが取得できるまでLLMとのやり取りやツール実行を繰り返し、必要に応じてタスクを他のエージェントへ引き継ぎ（Handoff）します（デフォルトでは最大10回ループします）。
 今回の例ではツールやHandoffを指定していないため、ループは1回のみ実行されます。
@@ -403,10 +403,10 @@ agent = Agent(
 ```
 
 入力ガードレールは@input_guardrailでデコレートしたPython関数です。
-ガードレール関数は引数として実行コンテキスト(context)、対象エージェント(agent)、ユーザーの入力値(user_input)を受け取り、[GuardrailFunctionOutput](https://openai.github.io/openai-agents-python/ref/guardrail/#agents.guardrail.GuardrailFunctionOutput)を返却します。
-このとき、tripwire_triggeredにTrueを指定すると、Agents SDKはワークフロー内でエラーを発生させます。
 
-後は、この入力ガードレールをエージェント作成時のinput_guardrailsパラメータに指定するだけです。
+ガードレール関数は引数として実行コンテキスト(context)、対象エージェント(agent)、ユーザーの入力値(user_input)を受け取り、[GuardrailFunctionOutput](https://openai.github.io/openai-agents-python/ref/guardrail/#agents.guardrail.GuardrailFunctionOutput)を返却します。このとき、tripwire_triggeredにTrueを指定すると、Agents SDKはワークフロー内でエラーを発生させます。
+
+その後に、この関数をエージェント作成時のinput_guardrailsパラメータに指定します。
 
 今回は以下のように実行して、意図的にガードレールによるエラーを発生させます。
 
@@ -489,6 +489,8 @@ if __name__ == '__main__':
 
 出力ガードレールの違反時に発生するエラーは[OutputGuardrailTripwireTriggered](https://openai.github.io/openai-agents-python/ref/exceptions/#agents.exceptions.OutputGuardrailTripwireTriggered)です。ここでは、入力に加えてこのエラーも捕捉して出力するようにしています。
 
+ここでの実行は以下のようになります(読みやすく整形してます)。
+
 ```
 GuardrailFunctionOutput(
   output_info='予算オーバーだよ！もう少し手頃なプランをお願い！ 予算:300000', 
@@ -496,12 +498,12 @@ GuardrailFunctionOutput(
 )
 ```
 
-出力ガードレールのチェックが動作していることが分かります。
+出力ガードレールのチェックが正常に動作していることが分かります。
 
 なお、複数エージェントに跨るワークフローの場合は、全てのエージェントのガードレールが実行される訳ではありません。
 入力ガードレールは最初のエージェント、出力ガードレールは最後のエージェントにのみ適用されます。
 
-## Handoffを使ったマルチエージェント
+## Handoffを使ったマルチエージェント構成
 
 ここでは、Handoffを利用したAgents SDKのマルチエージェントの仕組みについて確認します。
 
@@ -525,8 +527,8 @@ flowchart LR
     TaskB --> End
 ```
 
-このように、エージェントはタスクの遂行に他のエージェントが適していると判断した場合、対象エージェントにタスクを引き継ぎ（Handoff）ます。
-Handoffを連鎖させることで、スケール可能なマルチエージェントワークフローが構築可能です。
+このように、エージェントはタスクの遂行に他のエージェントが適していると判断した場合、対象エージェントにタスクを引き継ぎます（Handoff）。
+このHandoffを連鎖させることで、スケール可能なマルチエージェントワークフローが構築可能です。
 
 ここでは、題材としてホテル予約を行うワークフローをHandoffを使って書いてみます。
 
@@ -555,12 +557,12 @@ class Customer(BaseModel):
 ### 各エージェントの実装
 
 以下は、ホテル予約ワークフローを構成する各エージェントです。
-各エージェントは、担当するタスクに対応するツール（Function calling）を持ち、必要に応じて次のエージェントへ引き継ぎ（Handoff）を行います。
+各エージェントは、担当するタスクに対応するツール（Function calling）を持ち、必要に応じて次のエージェントへ引き継ぎを行います。
 
 #### 1. 支払い処理エージェント
 
 支払い処理を行うエージェントでは、make_payment関数をカスタムツールとして定義し、実行コンテキストの顧客情報を利用して支払いを完了させます。
-また、payment_instructions関数を利用して、実行時に動的な指示文を生成しています。
+また、payment_instructions関数を利用して、動的にinstructionsを生成しています。
 
 ```python
 from agents import Agent, RunContextWrapper, Runner, function_tool
@@ -568,7 +570,7 @@ from agents.extensions.handoff_prompt import prompt_with_handoff_instructions
 
 @function_tool
 def make_payment(ctx: RunContextWrapper[Customer], payment_info: str) -> str:
-    print('[Payment agent]: make_payment')
+    print('[Payment Processing agent]: make_payment')
     return json.dumps({
         'payment': 'ok',
         'details': payment_info,
@@ -584,7 +586,7 @@ def payment_instructions(ctx: RunContextWrapper[Customer], agent: Agent) -> str:
     ))
 
 payment_agent = Agent(
-    name='Payment',
+    name='Payment Processing',
     # 実行コンテキストを使った動的なinstructions生成(関数も指定可能)
     instructions=payment_instructions,
     tools=[make_payment]
@@ -594,12 +596,12 @@ payment_agent = Agent(
 #### 2. 予約処理エージェント 
 
 予約処理エージェントは、make_booking関数をツールとしてホテルの予約を実行します。
-このエージェントは、支払い処理エージェントへのHandoffを行うため、handoffsパラメータにpayment_agentを指定しています。
+このエージェントは、支払い処理エージェントへの引き継ぎを行うため、handoffsパラメータにpayment_agentを指定しています。
 
 ```python
 @function_tool
 def make_booking(ctx: RunContextWrapper[Customer], booking_info: str) -> str:
-    print('[Booking agent]: make_booking')
+    print('[Booking Processing agent]: make_booking')
     return json.dumps({
         'booking': 'ok',
         'hotel': booking_info,
@@ -607,7 +609,7 @@ def make_booking(ctx: RunContextWrapper[Customer], booking_info: str) -> str:
     })
 
 booking_agent = Agent(
-    name='Booking',
+    name='Booking Processing',
     instructions=prompt_with_handoff_instructions(
         '提供されたユーザー情報を使用してホテルの予約を行ってください。'),
     tools=[make_booking],
@@ -618,19 +620,19 @@ booking_agent = Agent(
 #### 3. 空室確認エージェント
 
 空室確認エージェントは、check_availability関数を用いてホテルの空室状況を確認します。
-このエージェントは、予約処理エージェントへのHandoffを行うため、handoffsパラメータにbooking_agentを指定しています。
+このエージェントは、予約処理エージェントへの引き継ぎを行うため、handoffsパラメータにbooking_agentを指定しています。
 
 ```python
 @function_tool
 def check_availability(ctx: RunContextWrapper[Customer], user_input: str) -> str:
-    print('[Availability agent]: check_availability')
+    print('[Availability Check agent]: check_availability')
     return json.dumps({
         'availability': 'ok',
         'details': user_input
     })
 
 availability_agent = Agent(
-    name='Availability',
+    name='Availability Check',
     instructions=prompt_with_handoff_instructions(
         'ユーザーのリクエストに基づいてホテルの空室状況を確認してください。'),
     tools=[check_availability],
@@ -647,7 +649,7 @@ availability_agent = Agent(
 
 ```json
   {
-    "name": "transfer_to_booking_agent",
+    "name": "transfer_to_booking_processing_agent",
     "parameters": {
       "additionalProperties": false,
       "type": "object",
@@ -656,18 +658,19 @@ availability_agent = Agent(
     },
     "strict": true,
     "type": "function",
-    "description": "Handoff to the Booking agent to handle the request. "
+    "description": "Handoff to the Booking Processing agent to handle the request. "
   }
 ```
 
-これにより、LLMはタスクの引き継ぎが必要かどうかを判断し、必要に応じてこのツールを実行して対象エージェントにワークフローを委譲します。
-また、各エージェントのinstructionsでは、[prompt_with_handoff_instructions](https://openai.github.io/openai-agents-python/ref/extensions/handoff_prompt/#agents.extensions.handoff_prompt.prompt_with_handoff_instructions)を利用して、Handoffに関する推奨プロンプトを自動挿入しています。
+これにより、LLMはタスクの引き継ぎが必要かどうかを判断し、必要に応じてこのツールを実行要求して対象エージェントにワークフローを委譲します。
+
+また、各エージェントのinstructionsでは、[prompt_with_handoff_instructions](https://openai.github.io/openai-agents-python/ref/extensions/handoff_prompt/#agents.extensions.handoff_prompt.prompt_with_handoff_instructions)を利用して、Handoffが適切に処理されるようにする推奨プロンプトを自動挿入しています。
 
 なお、ここではhandoffsパラメータに直接エージェントを指定していますが、Agents SDKが提供するhandoffs関数を使用することで、ツール名や説明、Handoff発生時のイベントフック、入力履歴のフィルタリング、入力スキーマ定義など、より詳細な設定も可能です。
 詳細は以下の公式ドキュメントやAPIリファレンスを参照してください。
 
 - [OpenAI Agents SDK - Doc - Handoffs - Customizing handoffs via the handoff() function](https://openai.github.io/openai-agents-python/handoffs/#customizing-handoffs-via-the-handoff-function)
-- [OpenAI Agents SDK - API Reference - FunctionTool](https://openai.github.io/openai-agents-python/ref/handoffs/#agents.handoffs.handoff)
+- [OpenAI Agents SDK - API Reference - Handoffs](https://openai.github.io/openai-agents-python/ref/handoffs/#agents.handoffs.handoff)
 
 ### ワークフローを実行する
 
@@ -698,9 +701,9 @@ if __name__ == '__main__':
 実行結果例は以下の通りです。
 
 ```
-[Availability agent]: check_availability
-[Booking agent]: make_booking
-[Payment agent]: make_payment
+[Availability Check agent]: check_availability
+[Booking Processing agent]: make_booking
+[Payment Processing agent]: make_payment
 RunResult:
 - Last agent: Agent(name="Payment", ...)
 - Final output (str):
@@ -747,7 +750,7 @@ RunResult:
 デフォルトではOpenAIのダッシュボードのトレース機能が利用可能です。
 例えば、先ほどのHandoffを利用したマルチエージェントの例では、以下のようなトレーシングの様子が確認できます。
 
-![OpenAI Dashboard - Tracing](https://i.gyazo.com/c1db0328907d11444284fe36fbee8c6e.png)
+![OpenAI Dashboard - Tracing](https://i.gyazo.com/50e2a167682cff79967a1f124691c511.png)
 
 このダッシュボードでは、LLMやツールコールのリクエスト・レスポンスの詳細、さらにHandoffによるエージェントの引き継ぎ等、必要十分なトレース情報が確認できます。
 何も追加設定を行わなくても、このような情報が自動的に取得できるのは大きな魅力ですね。
@@ -785,7 +788,7 @@ async def main():
 trace関数はwith句とともに使用することで、そのブロック内の処理を自動的にトレース情報として記録します。
 実行すると、1つのトレース情報に複数のエージェントワークフローが集約され、以下のようにダッシュボード上に表示されます。
 
-![OpenAI Dashboard - custom tracing](https://i.gyazo.com/dc19278022c0c74b3b084e6d94195754.png)
+![OpenAI Dashboard - custom tracing](https://i.gyazo.com/c010a3c43a10c364035d29d9d8e076ad.png)
 
 :::info
 トレース情報に加え、`span_`から始まるAPIを使用することで、内部のセグメント（スパン）をカスタムで取得することも可能です。
@@ -795,7 +798,7 @@ trace関数はwith句とともに使用することで、そのブロック内�
 :::
 
 Agents SDKのトレーシング機能は、OpenAI以外のサードパーティが提供するプラットフォームにも連携可能になっています。
-Agents SDKのドキュメントを見ると、既に多くのプロバイダの対応が進んでいるのが分かります。
+以下公式ドキュメントを見ると、既に多くのプロバイダでAgents SDKの対応が進んでいるのが分かります。
 
 - [OpenAI Agents SDK - Doc - Tracing - External tracing processors list](https://openai.github.io/openai-agents-python/tracing/#external-tracing-processors-list)
 

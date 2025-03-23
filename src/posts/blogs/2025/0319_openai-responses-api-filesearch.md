@@ -178,8 +178,8 @@ client.vector_stores.file_batches.upload_and_poll(
 ただし、現時点のSDKではファイル単位でのメタデータ(attributes)の登録ができないようです。
 :::
 
-### ファイルの検索(Search)
-正式バージョンとなったVector Searchは、単独でベクトル検索機能を提供します
+### Vector Store内のファイル検索
+正式バージョンとなったVector Searchは、単独でベクトル検索機能を提供します。
 この機能は、従来のベータ版のVector Search APIには存在しませんでした。
 
 まず、シンプルに検索を実行します。

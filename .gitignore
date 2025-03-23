@@ -32,3 +32,4 @@ netlify/generated
 
 test.tsx
 author.tsv
+articles.jsonl

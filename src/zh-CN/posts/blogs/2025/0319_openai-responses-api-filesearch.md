@@ -369,7 +369,6 @@ content:
     @entrypoint(store=store)
     def ...(省略)
 ```
-```
 
 可以看出，通过元数据过滤，只有具有特定属性的文件被纳入搜索范围。
 

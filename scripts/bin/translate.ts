@@ -42,6 +42,7 @@ Here are specific translation rules:
 - **Translate the entire article without summarizing or skipping any sections.** Do not output phrases like "The rest of the article continues" or "Summary of the remaining content."
 - If the article is long, **continue outputting all content until the very end.** If the translation does not fit in one output, split the translation into multiple parts and automatically continue until the entire article is translated. Do not truncate or omit any part of the article.
 - **Your response must be the full translated content as is**, including all text, code comments, and other elements present in the article.
+- Ensure that you translate heading(like \`## heading\`) and code blocks.
 
 Please translate the following article:
 

@@ -80,3 +80,4 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 - [東洋哲学とスクラム](https://developer.mamezou-tech.com/blogs/2024/02/01/eastern-philosophy-scrum/)
 - [スクラム入門の勉強会を開催しました](https://developer.mamezou-tech.com/blogs/2024/04/18/introduction-to-scrum/)
 - [スクラムガイドから読み取る「スプリントの中止」](https://developer.mamezou-tech.com/blogs/2024/04/26/cancelling-a-sprint/)
+- [スクラムマスターにおれはなる！](https://developer.mamezou-tech.com/blogs/2025/03/27/scrum-books)

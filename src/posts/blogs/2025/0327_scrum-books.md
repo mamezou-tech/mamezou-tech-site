@@ -1,5 +1,5 @@
 ---
-title: スクラムマスターにおれはなる！
+title: 書籍紹介「スクラムマスターにおれはなる！」となった一冊
 author: akihiro-ishida
 date: 2025-03-27
 tags: [スクラム]

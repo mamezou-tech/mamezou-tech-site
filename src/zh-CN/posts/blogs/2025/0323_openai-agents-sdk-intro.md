@@ -534,7 +534,7 @@ flowchart LR
     A[用户输入] --> B[空房确认<br>代理]
     B -->|Handoff| C[预订处理<br>代理]
     C -->|Handoff| D[支付处理<br>代理]
-    D -->|Handoff| E[输出结果]
+    D --> E[输出结果]
 ```
 
 ### 执行上下文的定义

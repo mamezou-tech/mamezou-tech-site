@@ -521,7 +521,7 @@ flowchart LR
     A[User Input] --> B[Room Availability Check<br>Agent]
     B -->|Handoff| C[Reservation Processing<br>Agent]
     C -->|Handoff| D[Payment Processing<br>Agent]
-    D -->|Handoff| E[Output Result]
+    D --> E[Output Result]
 ```
 
 ### Defining the Execution Context

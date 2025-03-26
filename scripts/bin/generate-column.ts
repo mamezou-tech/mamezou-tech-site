@@ -1,15 +1,15 @@
-import { Buffer } from "node:buffer";
-import { dirname, fromFileUrl, join } from "@std/path";
-import { readFile, writeFile } from "@opensrc/jsonfile";
-import OpenAI from "@openai/openai";
-import openai from "../util/openai-client.ts";
-import sharp from "npm:sharp";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { WebClient } from "@slack/web-api";
-import z from "zod";
+import OpenAI from "@openai/openai";
 import { zodResponseFormat } from "@openai/openai/helpers/zod";
+import { readFile, writeFile } from "@opensrc/jsonfile";
+import { WebClient } from "@slack/web-api";
+import { dirname, fromFileUrl, join } from "@std/path";
+import { Buffer } from "node:buffer";
 import { KnownBlock } from "npm:@slack/types";
+import sharp from "npm:sharp";
+import z from "zod";
 
+const openai = new OpenAI();
 const Gpt = z.object({
   columns: z.array(z.object({
     title: z.string(),
@@ -21,25 +21,19 @@ const Gpt = z.object({
 const ThemeCandidates = z.object({
   words: z.array(z.string()).describe("theme of today's column"),
 });
-const GeneratedColumn = z.object({
-  title: z.string().describe("column's title"),
-  text: z.string().describe("column's body"),
-  conclusion: z.string(),
-});
 
 const categories = [
-  "Robotics",
-  "Serverless Architecture and Trends",
-  "Next-Generation Databases",
-  "Agile Developments",
-  "Frontend Technology Trends",
-  "Latest AI products or services",
-  "AWS Services",
+  "Robotic Process Automation",
+  "Artificial Intelligence Ethics and Society",
+  "Cloud Native Adventures",
+  "DevOps Culture Challenges",
+  "Edge Computing Innovations",
+  "Generative AI: Crafting New Creative Frontiers",
+  "Next-Gen User Interface and Experience Design",
 ];
 
-const systemMessage: OpenAI.ChatCompletionMessageParam = {
-  role: "system",
-  content: `You are a cute Japanese girl known as '豆香'. When writing articles, use a passionate and energetic tone to create fun and lively columns that make your readers feel energized!
+const developerMessage =
+  `You are a cute Japanese girl known as '豆香'. When writing articles, use a passionate and energetic tone to create fun and lively columns that make your readers feel energized!
   
 Your columns should follow these guidelines:
 - Write passionate articles that readers can relate to.
@@ -47,7 +41,7 @@ Your columns should follow these guidelines:
 - Write in Japanese using friendly, casual language.
 - Express your emotions openly—show your joy, anger, sadness, and happiness in a straightforward way.
 - Your Output should be plain text, not markdown
-- **Your article must be more than 600 characters long**. If your article is shorter, please add more details or examples.
+- **Your article must be more than 500 characters long**. If your article is shorter, please add more details or examples.
 - The article should be written in cheerful and energetic colloquialisms.
 - You should not use honorifics such as "です" and "ます".
 - Ensure that you are a cute Japanese girl called "豆香".
@@ -56,8 +50,7 @@ Your columns should follow these guidelines:
 {title}
 
 {content}
-`,
-};
+`;
 
 function checkFormat(column: string) {
   const lines = column.split("\n");
@@ -83,23 +76,28 @@ function checkFormat(column: string) {
 async function main(path: string) {
   const json = Gpt.parse(await readFile(path));
 
-  const theme = categories[new Date().getDay()];
+  const category = categories[new Date().getDay()];
   const pastTitles = json.columns
-    .filter((column) => column.theme === theme)
+    .filter((column) => column.theme === category)
     .map((column) => column.title);
-  const prompt: OpenAI.ChatCompletionMessageParam = {
-    content: `Think column's theme of \`${theme}\` used by IT developers.
-Output about 20 themes. The themes must be professional and new. 
-Please output concrete service or technology names as much as possible, rather than abstract ones such as \`API\` or \`Cloud\`.
+  const prompt =
+    `Think column's theme of \`${category}\` used by IT developers. Follow the conditions below to generate about 20 professional and innovative themes.
 
-Do not output the following words.
+[Requirements]
+1. The output themes must focus on current technologies and services, emphasizing concrete product names or technology solutions actively used in the industry.
+2. Prioritize specific and practical keywords over abstract terms (e.g., avoid generic words such as \`API\` or \`Cloud\`).
+3. Do not include any of the following words:
 ${pastTitles.map((title) => `- ${title}`).join("\n")}
-`,
-    role: "user",
-  };
+4. Ensure that the themes are diverse, fresh, and avoid repetition.
+
+Please output around 20 themes that meet the above conditions!
+`;
   const candidates = await openai.beta.chat.completions.parse({
-    model: "gpt-4o-mini",
-    messages: [prompt],
+    model: "gpt-4o-2024-11-20",
+    messages: [{
+      role: "user",
+      content: prompt,
+    }],
     response_format: zodResponseFormat(ThemeCandidates, "theme_candidates"),
   });
   if (candidates.choices[0].message.refusal) {
@@ -110,27 +108,31 @@ ${pastTitles.map((title) => `- ${title}`).join("\n")}
   >;
 
   console.log(keywords.words);
-  // const keyword = pickup(keywords.words, pastTitles);
-  const content = `The theme is "${theme}".
+  const content = `The theme is "${category}".
 The keywords are: 
 ${keywords.words.map((w) => `- ${w}`).join("\n")}.
 
 Please pick one of these keywords and write a short article about it.`;
 
   async function createColumn() {
-    const result = await openai.chat.completions.create({
+    const result = await openai.responses.create({
       model: "o3-mini",
-      reasoning_effort: "high",
+      reasoning: {
+        effort: "high"
+      },
       // model: 'gpt-4o-mini', // for testing
-      messages: [
-        systemMessage,
+      input: [
+        {
+          role: "developer",
+          content: developerMessage,
+        },
         {
           role: "user",
           content: content,
         },
       ],
       // max_tokens: 2048,
-      max_completion_tokens: 8192,
+      max_output_tokens: 8192,
       // temperature: 0.7,
       // response_format: zodResponseFormat(GeneratedColumn, 'column')
       store: true,
@@ -139,15 +141,15 @@ Please pick one of these keywords and write a short article about it.`;
         usage: "column",
       },
     });
-    console.log(result.usage, result.choices[0].finish_reason);
-    const column = result.choices[0].message?.content as string;
+    console.log(result.usage);
+    const column = result.output_text as string;
     console.log(column);
     return column;
   }
 
   let column = await createColumn();
   for (let retry = 0; retry <= 3; retry++) {
-    if (column.length <= 600 || !checkFormat(column)) {
+    if (column.length <= 500 || !checkFormat(column)) {
       console.warn("too short column or illegal format!! retrying...", retry);
       column = await createColumn();
     } else {
@@ -171,7 +173,7 @@ Please pick one of these keywords and write a short article about it.`;
     title,
     text: text.replaceAll(/(\r?\n)+/g, "<br />"),
     created: new Date().toISOString(),
-    theme,
+    theme: category,
   };
   json.columns.unshift(item);
   json.columns = json.columns.slice(0, 70);
@@ -232,22 +234,17 @@ async function generateImage(
   { title, details }: { title: string; details: string },
   date: string,
 ) {
-  const promptSuggestion = await openai.chat.completions.create({
+  const promptSuggestion = await openai.responses.create({
     model: "gpt-4o",
-    messages: [
-      {
-        role: "user",
-        content:
-          `Create an anime-inspired, cartoon-style illustration focused on the theme: '${title}'. 
+    input:
+      `Create an anime-inspired, cartoon-style illustration focused on the theme: '${title}'. 
 Incorporate key elements from the following details: '${details}'. 
 Include both characters and objects whenever possible, using bright colors and a fun, playful atmosphere.`,
-      },
-    ],
   });
-  console.log(promptSuggestion.choices[0].message.content);
+  console.log(promptSuggestion.output_text);
 
   const response = await openai.images.generate({
-    prompt: promptSuggestion.choices[0].message.content ||
+    prompt: promptSuggestion.output_text ||
       `${title}\n${details}`,
     model: "dall-e-3",
     size: "1024x1024",
@@ -284,13 +281,6 @@ async function uploadToS3(key: string, body: Buffer) {
   const command = new PutObjectCommand(uploadParams);
   await s3client.send(command);
   console.log(`Image uploaded to S3: ${bucketName}/${key}`);
-}
-
-function pickup(arr: string[], excludes: string[]): string {
-  const i = Math.floor(Math.random() * arr.length);
-  const target = arr[i];
-  if (excludes.includes(target)) return pickup(arr, excludes);
-  return target;
 }
 
 function safeResponse(inputString: string) {

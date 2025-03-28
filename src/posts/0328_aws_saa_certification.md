@@ -1,7 +1,7 @@
 ---
 title: 3年ぶりにAWS認定資格SAAに挑戦してみた
 author: takahiro-maeda
-date: 2025-03-30
+date: 2025-03-28
 tags: [AWS認定, 学び]
 image: true
 ---
@@ -86,7 +86,7 @@ Notionを利用している理由は以下の通りです。
 そのため、Markdownに対応し、モバイル端末でも見やすいNotionはおすすめです。
 
 筆者が作成したNotionのiPhone16上での画面です。テーブル画面の「開く」を押すことで、紐づけたMarkownが閲覧できます。
-![筆者作成の簡単なNotionでの学習テーブルとMarkdownノート](/img/blogs/2025/0330_aws_saa_certification/iphone_notion_screenshot.png)
+![筆者作成の簡単なNotionでの学習テーブルとMarkdownノート](/img/blogs/2025/0328_aws_saa_certification/iphone_notion_screenshot.png)
 
 
 ### 学習時間

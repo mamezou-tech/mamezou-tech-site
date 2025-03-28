@@ -2,7 +2,7 @@
 title: 3年ぶりにAWS認定資格SAAに挑戦してみた
 author: takahiro-maeda
 date: 2025-03-30
-tags: [学び, AWS認定資格]
+tags: [AWS認定, 学び]
 image: true
 ---
 

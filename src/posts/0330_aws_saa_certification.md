@@ -3,6 +3,7 @@ title: 3年ぶりにAWS認定資格SAAに挑戦してみた
 author: takahiro-maeda
 date: 2025-03-30
 tags: [学び, AWS認定資格]
+image: true
 ---
 
 ## はじめに
@@ -15,7 +16,7 @@ tags: [学び, AWS認定資格]
 
 ## 資格受験までの道
 
-3年前に「Developer Associate」を取得していましたが、
+筆者は、3年前に「Developer Associate」を取得していましたが、
 様々なライフイベントや業務の優先により、有効期限が切れてしまいました。
 
 その後、SaaS関連の開発やAzureなどAWS以外の技術に携わっていましたが、
@@ -84,9 +85,9 @@ Notionを利用している理由は以下の通りです。
 通常の学習やノート作成はPCで行い、屋外や空き時間にはiPhoneやiPad miniのNotionアプリを活用しました。
 そのため、Markdownに対応し、モバイル端末でも見やすいNotionはおすすめです。
 
-私が作成したNotionのiPhone16上での画面です。テーブル画面の「開く」を押すことで、紐づけたMarkownが閲覧できます。
-<img alt="iPhone上のNotion表示(テーブル)" src="/img/blogs/2025/0330_aws_saa_certification/iphone_notion_screen1.jpg" width=50%>
-<img alt="iPhone上のNotion表示(Markdown)" src="/img/blogs/2025/0330_aws_saa_certification/iphone_notion_screen2.jpg" width=50%>
+筆者が作成したNotionのiPhone16上での画面です。テーブル画面の「開く」を押すことで、紐づけたMarkownが閲覧できます。
+[筆者作成の簡単なNotionでの学習テーブルとMarkdownノート](/img/blogs/2025/0330_aws_saa_certification/iphone_notion_screenshot.png)
+
 
 ### 学習時間
 約1か月間、1日平均1.5時間学習に取り組みました。

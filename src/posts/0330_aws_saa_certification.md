@@ -86,7 +86,7 @@ Notionを利用している理由は以下の通りです。
 そのため、Markdownに対応し、モバイル端末でも見やすいNotionはおすすめです。
 
 筆者が作成したNotionのiPhone16上での画面です。テーブル画面の「開く」を押すことで、紐づけたMarkownが閲覧できます。
-[筆者作成の簡単なNotionでの学習テーブルとMarkdownノート](/img/blogs/2025/0330_aws_saa_certification/iphone_notion_screenshot.png)
+![筆者作成の簡単なNotionでの学習テーブルとMarkdownノート](/img/blogs/2025/0330_aws_saa_certification/iphone_notion_screenshot.png)
 
 
 ### 学習時間
@@ -109,7 +109,7 @@ Skill Builderや公式ドキュメントを活用し、イメージがつきづ�
 13:00 AWS認定試験の受験。
 14:45 試験終了しテストセンターから退出。
 15:00-20:00 買い物・友人と遊ぶ。
-20:00 メールで試験結果が届く。
+20:00ごろ メールで試験結果が届く。
 ```
 
 ### 過ごし方で大事なこと

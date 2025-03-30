@@ -17,7 +17,7 @@ translate: true
 
 ![](/img/blogs/2025/0328_ir-remote-control-with-attiny13a/image10.png)
 
-The previous article is here [【Development Edition】](../ir-remote-control-with-attiny13a_epi2/)
+The previous article is here [【Development Edition】](/en/blogs/2025/03/28/ir-remote-control-with-attiny13a_epi2/)
 
 # Case Selection
 

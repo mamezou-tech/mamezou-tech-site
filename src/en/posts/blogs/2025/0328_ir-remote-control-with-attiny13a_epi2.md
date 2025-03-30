@@ -17,7 +17,7 @@ translate: true
 
 ![](/img/blogs/2025/0328_ir-remote-control-with-attiny13a/ir_remocon_breadboard.png)
 
-The previous article is here [【準備編】](../ir-remote-control-with-attiny13a_epi1/)
+The previous article is here [【準備編】](/en/blogs/2025/03/28/ir-remote-control-with-attiny13a_epi1/)
 
 Up until now, the preliminary preparations have finally been completed. From here on, we move on to the main circuit design and program development.
 
@@ -31,7 +31,7 @@ The goals were set as follows:
 
 # Remote Control Operation Button Specifications
 
-As a result of analyzing the infrared transmission data in [【準備編】](../ir-remote-control-with-attiny13a_epi1/#%E8%B5%A4%E5%A4%96%E7%B7%9A%E9%80%81%E4%BF%A1%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E8%A7%A3%E6%9E%90), the transmission data (commands) for the buttons turned out as follows.
+As a result of analyzing the infrared transmission data in [【準備編】](/en/blogs/2025/03/28/ir-remote-control-with-attiny13a_epi1/#%E8%B5%A4%E5%A4%96%E7%B7%9A%E9%80%81%E4%BF%A1%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E8%A7%A3%E6%9E%90), the transmission data (commands) for the buttons turned out as follows.
 
 | Command Array   |      ch1       |      ch2       |      ch3       | Long Press |
 |:---------------:|:--------------:|:--------------:|:--------------:|:----------:|
@@ -569,7 +569,7 @@ From this, to wait for 1T (450µs), `_delay_loop_2(135)` is used. The loop_count
 # Conclusion
 
 After some trial and error, I believe I was able to fully utilize the microcontroller’s capabilities to achieve low power consumption and low cost, while keeping the loop() function simple. There is one minor regret in that the “Sleep 30 minutes” command hasn’t been implemented, but I hope to tackle that in another opportunity.  
-Next up is [【基板・ケース作成編】](../ir-remote-control-with-attiny13a_epi3/).
+Next up is [【基板・ケース作成編】](/en/blogs/2025/03/28/ir-remote-control-with-attiny13a_epi3/).
 
 [^1]: Simultaneous pressing of multiple switches was not taken into account.
 [^2]: [SN74HC148N Datasheet](https://www.ti.com/lit/ds/symlink/sn74hc148.pdf). It is very inexpensive, priced at 30 yen at Akizuki Denshi.

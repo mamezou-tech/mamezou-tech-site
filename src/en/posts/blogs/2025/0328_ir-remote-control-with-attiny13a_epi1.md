@@ -300,7 +300,7 @@ void OutDEC(uint16_t d) {
 
 # Summary
 After spending a considerable amount of time researching, gathering parts, and building test circuits and programs, I’ve now acquired almost all the know-how needed to build the remote control. Although nothing tangible yet, I’ve gained the feeling that it can be done.
-Next time, I’ll move on to the [Development Edition](../ir-remote-control-with-attiny13a_epi2/).
+Next time, I’ll move on to the [Development Edition](/en/blogs/2025/03/28/ir-remote-control-with-attiny13a_epi2/).
 
 [^b]: Atmel was acquired by Microchip Technology in 2016.
 [^c]: [ATtiny13A Datasheet](https://ww1.microchip.com/downloads/en/DeviceDoc/ATtiny13A-Data-Sheet-DS40002307A.pdf)

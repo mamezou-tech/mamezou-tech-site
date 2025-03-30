@@ -9,12 +9,20 @@
       "url": "/blogs/2022/12/08/jwt-auth/"
     },
     {
-      "title": "2024年版！VS Code で Java 開発環境を構築する",
-      "url": "/blogs/2024/07/18/write-java-with-vscode-2024/"
+      "title": "Ollamaを使ってオープンソースLLMをローカルホストしてみよう",
+      "url": "/blogs/2025/02/20/ollama_local_llm/"
+    },
+    {
+      "title": "VS Code の Copilot Edits で効率的にリファクタリングを行う",
+      "url": "/blogs/2025/02/15/refactor-code-with-github-copilot-edits/"
     },
     {
       "title": "【devcontainer完全ガイド】DockerとWSLで最強のイマドキ開発環境を手に入れよう！",
       "url": "/blogs/2024/10/11/devcontainer/"
+    },
+    {
+      "title": "2024年版！VS Code で Java 開発環境を構築する",
+      "url": "/blogs/2024/07/18/write-java-with-vscode-2024/"
     },
     {
       "title": "手書き風ドローツール Excalidraw のススメ",
@@ -25,20 +33,12 @@
       "url": "/blogs/2024/06/16/moji-code1/"
     },
     {
-      "title": "Ollamaを使ってオープンソースLLMをローカルホストしてみよう",
-      "url": "/blogs/2025/02/20/ollama_local_llm/"
+      "title": "OpenAI Agents SDKを使ったAIエージェント開発の概要と使い方を理解する",
+      "url": "/blogs/2025/03/23/openai-agents-sdk-intro/"
     },
     {
       "title": "IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）",
       "url": "/iot/internet-of-things-15/"
-    },
-    {
-      "title": "Windows Terminal で Git Bash を快適に使う",
-      "url": "/blogs/2023/09/08/windows-terminal-with-git-bash/"
-    },
-    {
-      "title": "VS Code の Copilot Edits で効率的にリファクタリングを行う",
-      "url": "/blogs/2025/02/15/refactor-code-with-github-copilot-edits/"
     }
   ]
 }

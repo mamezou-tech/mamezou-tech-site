@@ -195,7 +195,6 @@ RunResult:
 
 ```python
 from dataclasses import dataclass, asdict
-import json
 from agents import Agent, RunContextWrapper, Runner, function_tool
 import asyncio
 
@@ -211,7 +210,8 @@ class Customer:
 
 @function_tool
 def fetch_customer(ctx: RunContextWrapper[LoginUser], customer_id: str) -> str:
-    """获取客户信息。
+    """
+    获取客户信息。
 
     Args:
         customer_id (str): 要获取的客户ID。
@@ -224,7 +224,7 @@ def fetch_customer(ctx: RunContextWrapper[LoginUser], customer_id: str) -> str:
         location='東京都新宿区西新宿二丁目1番1号 新宿三井ビルディング34階',
         name='株式会社豆蔵'
     )
-    return json.dumps(asdict(user), ensure_ascii=False)
+    return asdict(user)
 ```
 
 这是一个普通的Python函数，但是通过使用@function_tool进行装饰，Agents SDK能够从函数签名和docstring自动生成Function calling的schema。
@@ -382,7 +382,7 @@ from agents import Agent, RunContextWrapper, input_guardrail, GuardrailFunctionO
 
 @input_guardrail
 def validate_trip_input(context: RunContextWrapper[None], agent: Agent, user_input: str):
-    '''输入护栏'''
+    """输入护栏"""
     days_match = re.search(r'天数[:：]\s*(\d+)', user_input)
 
     if not days_match:
@@ -447,7 +447,7 @@ from agents import Agent, InputGuardrailTripwireTriggered, OutputGuardrailTripwi
 
 @output_guardrail
 def validate_trip_output(context: RunContextWrapper[None], agent: Agent, agent_output: TripPlan):
-    '''输出护栏'''
+    """输出护栏"""
     if agent_output.budget > 200000:
         return GuardrailFunctionOutput(
             tripwire_triggered=True,
@@ -546,7 +546,7 @@ flowchart LR
 from pydantic import BaseModel
 
 class Customer(BaseModel):
-    '''虚拟的客户信息（执行上下文）'''
+    """虚拟的客户信息（执行上下文）"""
     id: str
     name: str
 ```
@@ -566,13 +566,13 @@ from agents import Agent, RunContextWrapper, Runner, function_tool
 from agents.extensions.handoff_prompt import prompt_with_handoff_instructions
 
 @function_tool
-def make_payment(ctx: RunContextWrapper[Customer], payment_info: str) -> str:
+def make_payment(ctx: RunContextWrapper[Customer], payment_info: str):
     print('[Payment Processing agent]: make_payment')
-    return json.dumps({
+    return {
         'payment': 'ok',
         'details': payment_info,
         'name': ctx.context.name
-    })
+    }
 
 def payment_instructions(ctx: RunContextWrapper[Customer], agent: Agent) -> str:
     return prompt_with_handoff_instructions((
@@ -597,13 +597,13 @@ payment_agent = Agent(
 
 ```python
 @function_tool
-def make_booking(ctx: RunContextWrapper[Customer], booking_info: str) -> str:
+def make_booking(ctx: RunContextWrapper[Customer], booking_info: str):
     print('[Booking Processing agent]: make_booking')
-    return json.dumps({
+    return {
         'booking': 'ok',
         'hotel': booking_info,
         'customer_id': ctx.context.id
-    })
+    }
 
 booking_agent = Agent(
     name='Booking Processing',
@@ -621,12 +621,12 @@ booking_agent = Agent(
 
 ```python
 @function_tool
-def check_availability(ctx: RunContextWrapper[Customer], user_input: str) -> str:
+def check_availability(ctx: RunContextWrapper[Customer], user_input: str):
     print('[Availability Check agent]: check_availability')
-    return json.dumps({
+    return {
         'availability': 'ok',
         'details': user_input
-    })
+    }
 
 availability_agent = Agent(
     name='Availability Check',

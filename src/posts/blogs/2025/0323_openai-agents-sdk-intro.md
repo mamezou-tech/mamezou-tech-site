@@ -196,7 +196,6 @@ Vector Storeに保存された記事が検索されている様子が確認で�
 
 ```python
 from dataclasses import dataclass, asdict
-import json
 from agents import Agent, RunContextWrapper, Runner, function_tool
 import asyncio
 
@@ -212,7 +211,8 @@ class Customer:
 
 @function_tool
 def fetch_customer(ctx: RunContextWrapper[LoginUser], customer_id: str) -> str:
-    """顧客情報を取得します。
+    """
+    顧客情報を取得します。
 
     Args:
         customer_id (str): 取得する顧客のID。
@@ -225,7 +225,7 @@ def fetch_customer(ctx: RunContextWrapper[LoginUser], customer_id: str) -> str:
         location='東京都新宿区西新宿二丁目1番1号 新宿三井ビルディング34階',
         name='株式会社豆蔵'
     )
-    return json.dumps(asdict(user), ensure_ascii=False)
+    return asdict(user)
 ```
 
 通常のPython関数ですが、@function_toolでデコレートすることで、Agents SDKが関数シグニチャやdocstringからFunction callingのスキーマを自動的に生成します。
@@ -446,7 +446,7 @@ from agents import Agent, InputGuardrailTripwireTriggered, OutputGuardrailTripwi
 
 @output_guardrail
 def validate_trip_output(context: RunContextWrapper[None], agent: Agent, agent_output: TripPlan):
-    '''出力ガードレール'''
+    """出力ガードレール"""
     if agent_output.budget > 200000:
         return GuardrailFunctionOutput(
             tripwire_triggered=True,
@@ -549,7 +549,7 @@ flowchart LR
 from pydantic import BaseModel
 
 class Customer(BaseModel):
-    '''仮想の顧客情報(実行コンテキスト)'''
+    """仮想の顧客情報(実行コンテキスト)"""
     id: str
     name: str
 ```
@@ -569,13 +569,13 @@ from agents import Agent, RunContextWrapper, Runner, function_tool
 from agents.extensions.handoff_prompt import prompt_with_handoff_instructions
 
 @function_tool
-def make_payment(ctx: RunContextWrapper[Customer], payment_info: str) -> str:
+def make_payment(ctx: RunContextWrapper[Customer], payment_info: str):
     print('[Payment Processing agent]: make_payment')
-    return json.dumps({
+    return {
         'payment': 'ok',
         'details': payment_info,
         'name': ctx.context.name
-    })
+    }
 
 def payment_instructions(ctx: RunContextWrapper[Customer], agent: Agent) -> str:
     return prompt_with_handoff_instructions((
@@ -600,13 +600,13 @@ payment_agent = Agent(
 
 ```python
 @function_tool
-def make_booking(ctx: RunContextWrapper[Customer], booking_info: str) -> str:
+def make_booking(ctx: RunContextWrapper[Customer], booking_info: str):
     print('[Booking Processing agent]: make_booking')
-    return json.dumps({
+    return {
         'booking': 'ok',
         'hotel': booking_info,
         'customer_id': ctx.context.id
-    })
+    }
 
 booking_agent = Agent(
     name='Booking Processing',
@@ -624,12 +624,12 @@ booking_agent = Agent(
 
 ```python
 @function_tool
-def check_availability(ctx: RunContextWrapper[Customer], user_input: str) -> str:
+def check_availability(ctx: RunContextWrapper[Customer], user_input: str):
     print('[Availability Check agent]: check_availability')
-    return json.dumps({
+    return {
         'availability': 'ok',
         'details': user_input
-    })
+    }
 
 availability_agent = Agent(
     name='Availability Check',

@@ -191,7 +191,6 @@ Next, let’s create a custom tool by way of an example function that fetches cu
 
 ```python
 from dataclasses import dataclass, asdict
-import json
 from agents import Agent, RunContextWrapper, Runner, function_tool
 import asyncio
 
@@ -206,8 +205,9 @@ class Customer:
     name: str
 
 @function_tool
-def fetch_customer(ctx: RunContextWrapper[LoginUser], customer_id: str) -> str:
-    """Fetch customer information.
+def fetch_customer(ctx: RunContextWrapper[LoginUser], customer_id: str):
+    """
+    Fetch customer information.
 
     Args:
         customer_id (str): The ID of the customer to fetch.
@@ -220,7 +220,7 @@ def fetch_customer(ctx: RunContextWrapper[LoginUser], customer_id: str) -> str:
         location = '34th Floor, Shinjuku Mitsui Building, 2-1-1 Nishishinjuku, Shinjuku-ku, Tokyo',
         name = 'Mamezo Co., Ltd.'
     )
-    return json.dumps(asdict(user), ensure_ascii=False)
+    return asdict(user)
 ```
 
 This is a normal Python function, but by decorating it with @function_tool, the Agents SDK automatically generates a Function calling schema from the function signature and docstring. For this function, the following schema was generated.
@@ -370,7 +370,7 @@ from agents import Agent, RunContextWrapper, input_guardrail, GuardrailFunctionO
 
 @input_guardrail
 def validate_trip_input(context: RunContextWrapper[None], agent: Agent, user_input: str):
-    '''Input guardrail'''
+    """Input guardrail"""
     days_match = re.search(r'Days[:：]\s*(\d+)', user_input)
 
     if not days_match:
@@ -435,7 +435,7 @@ from agents import Agent, InputGuardrailTripwireTriggered, OutputGuardrailTripwi
 
 @output_guardrail
 def validate_trip_output(context: RunContextWrapper[None], agent: Agent, agent_output: TripPlan):
-    '''Output guardrail'''
+    """Output guardrail"""
     if agent_output.budget > 200000:
         return GuardrailFunctionOutput(
             tripwire_triggered=True,
@@ -532,7 +532,7 @@ First, define the customer information required for hotel booking as the executi
 from pydantic import BaseModel
 
 class Customer(BaseModel):
-    '''Virtual customer information (execution context)'''
+    """Virtual customer information (execution context)"""
     id: str
     name: str
 ```
@@ -550,13 +550,13 @@ from agents import Agent, RunContextWrapper, Runner, function_tool
 from agents.extensions.handoff_prompt import prompt_with_handoff_instructions
 
 @function_tool
-def make_payment(ctx: RunContextWrapper[Customer], payment_info: str) -> str:
+def make_payment(ctx: RunContextWrapper[Customer], payment_info: str):
     print('[Payment Processing agent]: make_payment')
-    return json.dumps({
+    return {
         'payment': 'ok',
         'details': payment_info,
         'name': ctx.context.name
-    })
+    }
 
 def payment_instructions(ctx: RunContextWrapper[Customer], agent: Agent) -> str:
     return prompt_with_handoff_instructions((
@@ -580,13 +580,13 @@ The booking processing agent executes the hotel booking using the make_booking f
 
 ```python
 @function_tool
-def make_booking(ctx: RunContextWrapper[Customer], booking_info: str) -> str:
+def make_booking(ctx: RunContextWrapper[Customer], booking_info: str):
     print('[Booking Processing agent]: make_booking')
-    return json.dumps({
+    return {
         'booking': 'ok',
         'hotel': booking_info,
         'customer_id': ctx.context.id
-    })
+    }
 
 booking_agent = Agent(
     name='Booking Processing',
@@ -605,12 +605,12 @@ The availability check agent checks the hotel’s vacancy status using the check
 
 ```python
 @function_tool
-def check_availability(ctx: RunContextWrapper[Customer], user_input: str) -> str:
+def check_availability(ctx: RunContextWrapper[Customer], user_input: str):
     print('[Availability Check agent]: check_availability')
-    return json.dumps({
+    return {
         'availability': 'ok',
         'details': user_input
-    })
+    }
 
 availability_agent = Agent(
     name='Availability Check',

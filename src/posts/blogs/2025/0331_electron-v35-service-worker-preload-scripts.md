@@ -7,25 +7,24 @@ image: true
 ---
 
 ## はじめに
-早いもので、もう3月も終わりですね。
 今月初めに Electron 35.0.0 がリリースされました。
 
 - [Electron 35.0.0 | Electron](https://www.electronjs.org/blog/electron-35-0)
 
-このリリースで Service Worker に Preload スクリプトをアタッチできる機能が追加されました。
+このリリースで Service Worker に Preload スクリプトをアタッチできる機能が追加されました。従来の Renderer プロセスの Preload スクリプトが、Web ページと Main プロセス(Node.js) の環境をブリッジする役割を果たしていたのと同様、Service Worker の Preload スクリプトは、Service Woker と Main プロセスのブリッジ機能を提供します。
 
 :::info
-Chrome の Manifest V3 拡張機能では Chrome 拡張のパフォーマンスを低下させる可能性があるコードがメインスレッドではなく Service Worker で実行されるようになっており、Manifest V3 への移行が促進されています。
+Chrome 88 以降でサポートされる Manifest V3 拡張機能では Chrome 拡張のパフォーマンスを低下させる可能性があるコードがメインスレッドではなく Service Worker で実行されるようになっており、Manifest V3 への移行が促進されています。
 
 [Manifest V3 に移行する  |  Chrome Extensions  |  Chrome for Developers](https://developer.chrome.com/docs/extensions/develop/migrate?hl=ja)
 
-Service Worker Preload Scripts の追加は Electron アプリで Chrome 拡張サポートをしやすくする狙いがあるようです。
+Service Worker Preload Scripts の追加は Electron アプリで Manifest V3 に移行した Chrome 拡張のサポートをしやすくする狙いがあるようです。
 :::
 
 ## Service Worker Preload Scripts の意義
-Service Worker に Preload スクリプトをアタッチできることは、Chrome と Electron アプリ両方で動作する拡張機能を書く開発者への恩恵が大きいと思いますが、さらに Electron のプログラミングパラダイムを変革する可能性を秘めていると筆者は感じました。
+Service Worker に Preload スクリプトをアタッチできることは、Chrome と Electron アプリ両方で動作する拡張を書く開発者への恩恵が大きいのだろうと思います。ただ、それにとどまらず Electron のプログラミングパラダイムを変革する可能性を秘めていると筆者は感じました。
 
-Preload スクリプトは Web ページを実行する分離された Renderer プロセスにブリッジを提供し、Node.js 環境である Main プロセスへの通信を可能にしています。Preload 領域はこれまで Renderer プロセスにのみ提供されてきました。
+従来の Preload スクリプトは Web ページを実行する Renderer プロセスにブリッジを提供し、Node.js 環境である Main プロセスとの通信を可能にしています。
 
 ```mermaid
 flowchart LR
@@ -34,7 +33,7 @@ flowchart LR
   end
   RP --> M[Main Process]
 ```
-Service Worker Preload Scripts がサポートされたことで、Service Worker でも Renderer プロセスと同様の方法で Main プロセスへの通信を実装できるようになります。
+Service Worker Preload Scripts がサポートされたことで、Service Worker でも Renderer プロセスと同様の方法で Main プロセスとの通信を実装できるようになります。
 
 ```mermaid
 flowchart LR
@@ -43,14 +42,14 @@ flowchart LR
   end
   M[Main Process]
   RP --> M
-  subgraph S[ServiceWorker]
+  subgraph S[Service Worker]
     SP[Preload Realm]
   end
   SP --> M
   R -.-> S
 ```
 
-Service Worker を登場させることで、肥大しがちな Main Process の責務分離をしたり、UI 操作を妨げるような重い処理を Service Worker にオフロードすることができるようになりそうです。
+Service Worker を登場させることで、肥大しがちな Main プロセスの責務を分割したり、UI 操作を妨げるような重い処理を Service Worker にオフロードすることが可能です。
 
 :::info
 35.0.0 のリリースノートには、Service Worker 間、Preload Scripts 間の IPC 通信も可能ということが記載されています。目的別の Service Worker を立て、Service Worker 同士を連携させるようなマイクロサービス的なアーキテクチャも考えられます。
@@ -72,17 +71,20 @@ Electron のプログラミングモデルに関しては以下の記事もご�
 
 ## Service Worker Preload Scripts による Hello World
 
-今回は、以下のようなメッセージパイプラインの構築を目指しました。
-- Electron アプリの起動時に、Renderer プロセスから ServiceWorker を登録
+今回は、以下のようなメッセージパイプラインの構築を目指しました[^1]。
+- Electron アプリの起動時に、Renderer プロセスから Service Worker を登録
 - Renderer プロセスから Service Worker への呼び出しも実装
-- ServiceWorker では外部の REST API を呼び出し結果を保持
+- Service Worker では外部の REST API を呼び出し結果を保持
   - REST API の呼び出しはメッセージ受信時、定期的の2つのトリガーで実行
   - REST API の呼び出し結果が前回結果と異なる場合は Preload の contextBridge 経由で Main プロセスに変更通知
 - Main プロセスでは変更通知を受けて Notification をデスクトップに表示
 
+[^1]: 従来 Renderer プロセスや Main プロセスで実行されていた外部サービスへのポーリング処理を Service Worker にオフロードするようなシナリオを想定しています。
+
+
 ```mermaid
 flowchart TD
-  R[Renderer Process]--登録-->S[Service Worker:<br>外部 REST API の手動および定期的呼び出し] --変更通知--> SP[ServiceWorker preload:<br>contextBridge] --変更通知--> C[Main Process:<br>Notification 表示]
+  R[Renderer Process]--登録-->S[Service Worker:<br>外部 REST API の手動および定期的呼び出し] --変更通知--> SP[Service Worker preload:<br>contextBridge] --変更通知--> C[Main Process:<br>Notification 表示]
   R--リクエスト-->S
 ```
 
@@ -100,7 +102,7 @@ flowchart TD
 ```
 
 :::alert
-Service Worker Preload Scripts の RFC で提示されているコードは疑似コードであり、現状公式のドキュメントやサンプルもほぼない状態なので、VS Code で JSDoc をホバーさせたりして API を確認しながら構築を進めました。そのため、本記事のサンプルは API の使い方など適切でない可能性がありますのでご注意ください。
+Service Worker Preload Scripts の RFC で提示されているサンプルコードで使われている API は提案時のものであり、v35 で実装されているものとは異なります。現状、公式のドキュメントやサンプルもほぼない状態なので、VS Code で JSDoc をホバーさせたりして API を確認しながら構築を進めました。そのため、本記事のコードスニペットは API の使い方などが適切でない可能性がありますのでご注意ください。
 :::
 
 なお、今回作成したソースコードの全量は以下のリポジトリにあります。
@@ -118,7 +120,7 @@ onload = () => {
 }
 ```
 
-### Service Worker 用 preload スクリプトの登録(Main プロセス)
+### Service Worker Preload スクリプトの登録 (Main プロセス)
 Session クラスの registerPreloadScript メソッドを利用して、Preload スクリプトを登録します。35.0.0 で `type` に `service-worker` が追加されましたのでこれを指定します。
 
 ```javascript
@@ -149,16 +151,15 @@ function exposeApi() {
     },
   };
 
-  // Expose our API in the main JS context of the worker thread.
   contextBridge.exposeInMainWorld("myElectronApi", api);
 }
 
 ```
 
 ### Service Worker の実装
-外部の REST API を呼び出して、結果を Preload で定義した myElectronApi を用いて送信します。10秒間隔でこの処理を実行します。[^1]
+外部の REST API を呼び出して、結果を Preload で定義した myElectronApi を用いて送信します。10秒間隔でこの処理を実行します[^2]。
 
-[^1]: setInterval を Service Worker で使用するのは不具合の原因になりがちですが、ここでは簡易的な実装としました。
+[^2]: setInterval を Service Worker で使用するのは不具合の原因になりがちですが、ここでは簡易的な実装としました。
 
 ```javascript:service-worker.js
 let lastStatus = null;
@@ -179,7 +180,7 @@ checkStatus();
 setInterval(checkStatus, 10000); // Check every 10 seconds
 ```
 
-### Main プロセスでのハンドリング
+### Main プロセスでの Service Worker IPC ハンドリング
 Service Worker からの IPC リクエストは、Renderer からの IPC リクエストと違って、ipcMain によるハンドリングはできません。ServiceWorker クラスの ipc プロパティ (IpcMainServiceWorker クラス) の handle メソッドにより処理する必要があります。Service Worker Preload Scripts を登録したのと同じ、app.whenReady() コンテキストで session オブジェクトの API を使います。
 
 ```javascript
@@ -220,9 +221,9 @@ Service Worker での  console.log 出力は `console-message` イベントを�
 :::
 
 ### Renderer プロセスから Service Worker 呼びだし
-ここまで、ServiceWorker → Main プロセスへの通信は実現できましたが、UI (Renderer プロセス) から Service Worker を呼び出すのはやっていませんでした。
+ここまで、Service Worker → Main プロセスへの通信は実現できましたが、UI (Renderer プロセス) から Service Worker を呼び出すのはやっていませんでした。
 
-UI 側にボタンを追加します。
+UI 側に Service Worker を呼び出すためのボタンを追加します。
 
 ```html:index.html
 <!DOCTYPE html>
@@ -233,6 +234,7 @@ UI 側にボタンを追加します。
     <title>Hello World!</title>
   </head>
   <body>
+    <!-- ボタンを追加 -->
     <p>
       <button id="service-worker">Call Service Worker</button>
     </p>
@@ -241,7 +243,7 @@ UI 側にボタンを追加します。
 </html>
 ```
 
-Web 標準である navigator.serviceWorker の API を使用することで Service Worker にメッセージを送信できます。ボタンの EventListener を追加して、ServiceWorker 呼び出しを実装します。
+Web 標準の ServiceWorkerContainer の API を使用することで、Renderer プロセスから Service Worker にメッセージを送信できます。ボタンの EventListener を追加して、Service Worker 呼び出しを実装します。
 
 ```javascript:renderer.js
 document.querySelector("#service-worker").addEventListener("click", () => {
@@ -265,7 +267,7 @@ globalThis.addEventListener('message', (event) => {
 ```
 
 ### 実行の様子
-ここまで実装してきたのを DevTools 表示付きで実行してみました。
+ここまで実装してきたアプリを DevTools 表示付きで実行してみました。
 
 ![Hello World App](https://i.gyazo.com/e572c061583a98c9649e325c6e4377c8.png)
 
@@ -280,4 +282,4 @@ macOS の場合、Electron アプリ開発時にデスクトップ通知を有�
 :::
 
 ## さいごに
-以上、Electron 35.0.0 で導入された Service Worker Preload Scripts を試してみました。公式からいろいろ情報が出てくるのを待って、また有用なユースケースを発見できたら記事にしたいと思います。
+以上、Electron 35.0.0 で導入された Service Worker Preload Scripts を試してみました。公式からさらなる情報が出てくるのを待ち、有用なユースケースを発見できたらまた記事にしたいと思います。

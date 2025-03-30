@@ -15,7 +15,7 @@ translate: true
 
 ![](/img/blogs/2025/0328_ir-remote-control-with-attiny13a/ir_remocon_breadboard.png)
 
-上一篇的文章请看[【準備編】](../ir-remote-control-with-attiny13a_epi1/)
+上一篇的文章请看[【準備編】](/zh-cn/blogs/2025/03/28/ir-remote-control-with-attiny13a_epi1/)
 
 到目前为止，前期准备终于完成。从这里开始进入正题，进行电路设计和程序开发。
 
@@ -29,7 +29,7 @@ translate: true
 
 # 遥控器操作按钮规格
 
-根据[【準備編】中对红外线发送数据的解析](../ir-remote-control-with-attiny13a_epi1/#%E8%B5%A4%E5%A4%96%E7%B7%9A%E9%80%81%E4%BF%A1%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E8%A7%A3%E6%9E%90)得到，按钮对应的发送数据（命令）如下：
+根据[【準備編】中对红外线发送数据的解析](/zh-cn/blogs/2025/03/28/ir-remote-control-with-attiny13a_epi1/#%E8%B5%A4%E5%A4%96%E7%B7%9A%E9%80%81%E4%BF%A1%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E8%A7%A3%E6%9E%90)得到，按钮对应的发送数据（命令）如下：
 
 | 命令数组       |      ch1       |      ch2       |      ch3       | 长按 |
 |:---------------|:--------------:|:--------------:|:--------------:|:----:|
@@ -572,7 +572,7 @@ __红外线发送__
 # 总结
 
 经过反复试验，实现了目标所要求的充分利用单片机功能、省电且低成本的设计，并使得loop()函数编写得异常简洁。唯一遗憾的是“晚安30分钟”命令尚未能调用，计划在未来的机会中挑战此功能。  
-下一篇将是[【基板・ケース作成編】](../ir-remote-control-with-attiny13a_epi3/)。
+下一篇将是[【基板・ケース作成編】](/zh-cn/blogs/2025/03/28/ir-remote-control-with-attiny13a_epi3/)。
 
 [^1]: 未考虑多个开关同时按下的情况  
 [^2]: [SN74HC148N的数据手册](https://www.ti.com/lit/ds/symlink/sn74hc148.pdf)。在秋月电子售价仅30日元，非常便宜  

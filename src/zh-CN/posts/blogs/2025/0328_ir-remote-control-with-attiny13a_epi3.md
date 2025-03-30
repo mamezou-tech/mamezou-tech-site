@@ -14,7 +14,7 @@ translate: true
 ---
 ![](/img/blogs/2025/0328_ir-remote-control-with-attiny13a/image10.png)
 
-上一篇文章请见[【开发篇】](../ir-remote-control-with-attiny13a_epi2/)
+上一篇文章请见[【开发篇】](/zh-cn/blogs/2025/03/28/ir-remote-control-with-attiny13a_epi2/)
 
 # 外壳选择
 【开发篇】中使用面包板制作了遥控器。

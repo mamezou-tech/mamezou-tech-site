@@ -82,7 +82,7 @@ Electron のプログラミングモデルに関しては以下の記事もご�
 
 ```mermaid
 flowchart TD
-  R[Renderer Process]--登録-->S[Service Woerker:<br>外部 REST API の手動および定期的呼び出し] --変更通知--> SP[ServiceWorker preload:<br>contextBridge] --変更通知--> C[Main Process:<br>Notification 表示]
+  R[Renderer Process]--登録-->S[Service Worker:<br>外部 REST API の手動および定期的呼び出し] --変更通知--> SP[ServiceWorker preload:<br>contextBridge] --変更通知--> C[Main Process:<br>Notification 表示]
   R--リクエスト-->S
 ```
 

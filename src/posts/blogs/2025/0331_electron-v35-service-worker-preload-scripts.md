@@ -134,8 +134,8 @@ app.whenReady().then( async () => {
 }
 ```
 
-### Service Worker preload での API 定義
-従来の Renderer プロセスの Preload スクリプト同様、contextBridge と ipcRenderer を使用して Main プロセスへの通信 API を実装します。この例では、`NOTIFY_TEXT` という識別しで Main プロセスにテキスト情報を送信しています。
+### Service Worker Preload での API 定義
+従来の Renderer プロセスの Preload スクリプト同様、contextBridge と ipcRenderer を使用して Main プロセスへの通信 API を実装します。この例では、`NOTIFY_TEXT` という識別子で Main プロセスにテキスト情報を送信する API を実装、Service Worker に公開しています。
 
 ```javascript:preload-sw.js
 const { contextBridge, ipcRenderer } = require('electron');
@@ -181,7 +181,7 @@ setInterval(checkStatus, 10000); // Check every 10 seconds
 ```
 
 ### Main プロセスでの Service Worker IPC ハンドリング
-Service Worker からの IPC リクエストは、Renderer からの IPC リクエストと違って、ipcMain によるハンドリングはできません。ServiceWorker クラスの ipc プロパティ (IpcMainServiceWorker クラス) の handle メソッドにより処理する必要があります。Service Worker Preload Scripts を登録したのと同じ、app.whenReady() コンテキストで session オブジェクトの API を使います。
+Service Worker からの IPC リクエストは、Renderer からの IPC リクエストと違って ipcMain によるハンドリングはできません。ServiceWorker クラスの ipc プロパティ (IpcMainServiceWorker クラス) の handle メソッドにより処理する必要があります。Service Worker Preload Scripts を登録したのと同じ app.whenReady() コンテキストで session オブジェクトの API を使ってハンドリングを実装します。
 
 ```javascript
 app.whenReady().then( async () => {
@@ -204,7 +204,7 @@ app.whenReady().then( async () => {
   // Window 作成処理
 }
 ```
-Service Worker のライフサイクルイベント `running-status-changed` の受信時に、Service Worker の runningStatus を判定し `running` の場合は、getWorkerFromVersionID メソッドで ServiceWorker インスタンスを取得し、ipc.handle メソッドでイベント処理を行います。ここでは、Notification API を使って IPC リクエストで送られてきたテキストを表示しています。
+Service Worker のライフサイクルイベント `running-status-changed` の受信時に、Service Worker の runningStatus を判定し `running` の場合は、getWorkerFromVersionID メソッドで ServiceWorker インスタンスを取得し、ipc.handle メソッドでイベント処理を行います。ここでは、Notification API を使って IPC リクエストで送られてきたテキストをデスクトップ通知で表示しています。
 
 :::info
 Service Worker での  console.log 出力は `console-message` イベントをハンドリングすることにより、Main プロセス側でキャプチャーすることができます。Service Worker との通信処理のデバッグで役立ちます。

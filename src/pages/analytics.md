@@ -48,4 +48,4 @@ enTitle: Analytics
 - [ベイズ推定を学ぶ ～２項推定～](/blogs/2022/06/28/bayesian-inference-by-jasp/)
 
 ## 番外
-- [猫を飼うべきこれだけの理由](/blogs/2022/10/09/cat-and-productivity/) <span style="color: red;">★NEW★</span>
+- [猫を飼うべきこれだけの理由](/blogs/2022/10/09/cat-and-productivity/)

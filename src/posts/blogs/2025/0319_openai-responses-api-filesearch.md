@@ -442,7 +442,7 @@ AnnotationFileCitation(file_id='file-QFb3gSHt6mvmTUc1FVKYgR', index=587, type='f
 File SearchがVector Storeから検索した結果をLLMに連携し、それに基づいてメッセージが生成されていることが分かります。
 また、`annotations`を確認することで、LLMがどのファイルに基づいてメッセージを生成したのかを把握できます[^2]。
 
-[^2]: Assistants APIは引用先のテキスト内の注釈マーク(`【4:10†foo】`というようなマーク)に対応する形で引用元を取得できたのですが、Responses APIはindexで判断するように変わったようです。
+[^2]: Assistants APIは引用先のテキスト内の注釈マーク(`【4:10†foo】`というようなマーク)に対応する形で引用元を取得できたのですが、Responses APIでは取得できないようです。
 
 ### メタデータフィルタリングの利用
 

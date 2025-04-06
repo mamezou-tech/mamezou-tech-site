@@ -450,7 +450,7 @@ AnnotationFileCitation(file_id='file-QFb3gSHt6mvmTUc1FVKYgR', index=587, type='f
 File Search 将从 Vector Store 搜索到的结果传递给 LLM，并基于此生成消息。
 此外，通过检查 `annotations` 可以了解到 LLM 是依据哪个文件生成的消息[^2].
 
-[^2]: Assistants API 能够根据被引用文本中的注释标记（例如 ` ` 这类标记）来获取引用来源，而 Responses API 则改为通过索引判断。
+[^2]: Assistants API 可以根据引用文本中的注释标记（例如 `【4:10†foo】` 这样的标记）获取引用来源，但似乎 Responses API 无法获取这些标记。
 
 ### 使用元数据过滤
 

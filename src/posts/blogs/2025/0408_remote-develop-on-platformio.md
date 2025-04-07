@@ -1,5 +1,5 @@
 ---
-title: みんな大好き！VSCodeと組み込みソフトウェア開発環境PlatformIOでリモート開発をしてみる（Arduino編）
+title: みんな大好きVSCodeと組み込みソフトウェア開発環境PlatformIOでリモート開発をしてみる（Arduino編）
 author: shuichi-takatsu
 date: 2025-04-08
 tags: [arduino, remote, platformio]

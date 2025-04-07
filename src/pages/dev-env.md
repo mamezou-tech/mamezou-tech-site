@@ -47,6 +47,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [GitHub Codespaces の Prebuilding で開発環境をカスタマイズして共有する](/blogs/2022/07/30/prebuilding-github-codespaces/)
 - [全ユーザーに公開された GitHub Codespaces で Codespace Templates を使ってみる](/blogs/2022/11/11/github-codespce-templates/)
 - [GitHub CodespacesによるJavaのチーム開発環境の作り方](/blogs/2023/06/26/codespaces-for-java/)
+- [みんな大好きVSCodeと組み込みソフトウェア開発環境PlatformIOでリモート開発をしてみる（Arduino編）](/blogs/2025/04/08/remote-develop-on-platformio/)
 
 ## VCS(バージョン管理)の機能を活用する
 

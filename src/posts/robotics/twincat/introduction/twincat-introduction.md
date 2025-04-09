@@ -34,12 +34,16 @@ PLCプログラムの開発では，IEC61131-3で規定された5つの言語に
     - ただし一部制約あり
 
 ## TwinCATとOSの関係
-一般的なアプリケーションとは違い，TwinCAT（正確にはTwinCATの実行環境）はOSよりも下位のレイヤで動作するソフトウェアです。
-つまり，下図左側のような構成ではなく，右側のような「TwinCATがOSを所有している」構造となっています。（ほぼカーネルと呼んでも差し支えないと思われます）
+一般的なアプリケーションとは違い，TwinCAT（正確にはTwinCATの実行環境）はより深い階層で動作するアプリケーションです。
+TwinCAT独自のリアルタイムカーネルがOSから独立した形で動作します。作成したプログラムはカーネルモードで動作されます。
 
 ![twincat-and-windows](../../../../img/robotics/twincat/introduction/twincat-and-windows.png)
+（上図は[こちら](https://sites.google.com/site/twincathowto/cc/%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AD%98%E3%81%AE%E7%BF%92%E5%BE%97%E6%BA%96%E5%82%99/twincat-3-cc-%E3%81%AE%E5%9F%BA%E7%A4%8E)より抜粋）
 
-この構造のため，TwinCATのインストールには細心の注意を払う必要があります。
+:::info: TwinCAT設計に関するドキュメント
+TwinCATの設計思想は下記リンク先から確認できます。
+https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_overview/4275768971.html&id=
+:::
 
 ## 開発環境（XAE）と実行環境（XAR）
 TwinCATは主に2つのソフトウェアに大別できます。
@@ -86,10 +90,10 @@ TwinCATは主に2つのソフトウェアに大別できます。
 1. Beckhoffアカウントを作成する
 2. 開発PCにTwinCAT Package Managerをインストールする
 3. 開発PCにXAE（開発環境）をインストールする
-4. 開発PCでXAEとXAR（実行環境）のパッケージをダウンロードする
+4. 開発PCでXAR（実行環境）のパッケージをダウンロードする
 5. 開発PCから実行PCにパッケージを転送する
 6. 実行PCにTwinCAT Package Managerをインストールする
-7. 実行PCにXAEとXARをインストールする
+7. 実行PCにXARをインストールする
 
 少し長いですが，お付き合いください。
 
@@ -98,7 +102,7 @@ TwinCATは主に2つのソフトウェアに大別できます。
 本記事で構築するシステム構成を下図に示します。
 
 - 開発PC = 開発環境のみが動くPC。インターネットに接続しているとする。
-- 実行PC = 実行環境が動くPC。インターネットに接続されていないとする。
+- 実行PC = 実行環境のみが動くPC。インターネットに接続されていないとする。
 
 :::alert
 本記事ならびに関連記事ではBeckhoff製の産業用PCは使用せず，一般的なノートPCを使用しています。
@@ -406,6 +410,7 @@ XARがインストールされたPCが検出されます。IPアドレス等を�
 接続対象がBeckhoff社製のPCの場合は、ユーザ名とパスワードは下記になります。 
 User = Administrator 
 Password = 1 
+https://infosys.beckhoff.com/english.php?content=../content/1033/sw_os/2019206411.html&id=
 :::
 
 接続に成功すると、「Connected」の部分に鍵のアイコンが表示されます。 

@@ -83,10 +83,10 @@ Service A のコード。ポート3001で起動し、Service B を呼び出し�
 
 ```typescript:service_a.ts
 Deno.serve({ port: 3001 }, async (req) => {
-  console.log("Service A Recieved request for", req.url);
+  console.log("Service A Received request for", req.url);
   const res = await fetch("http://localhost:9000");
   const text = await res.text();
-  console.log("Service A Recieved response from Service B", text);
+  console.log("Service A Received response from Service B", text);
   return new Response(`Service A got: ${text}`);
 });
 ```
@@ -95,7 +95,7 @@ Service B のコード。ポート9000で起動し、クライアント(この�
 
 ```typescript:service_b.ts
 Deno.serve({ port: 9000 }, (req) => {
-  console.log("Service B Recieved request for", req.url);
+  console.log("Service B Received request for", req.url);
   return new Response("Hello world");
 });
 ```
@@ -161,7 +161,7 @@ Deno.serve({ port: 9000}, (req) => {
   for (const [key, value] of req.headers.entries()) {
     console.log(key, value);
   }
-  console.log("Service B Recieved request for", req.url);
+  console.log("Service B Received request for", req.url);
   return new Response("Hello world");
 });
 ```

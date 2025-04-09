@@ -1,5 +1,5 @@
 ---
-title: 組み込み開発環境をWSLに入れてしまおう！（VSCode＋PlatformIO＋WSL編)
+title: VSCode & PlatformIOで始める！WSL×組み込み開発環境構築の完全ガイド
 author: shuichi-takatsu
 date: 2025-04-10
 tags: [arduino, platformio, wsl, vscode]

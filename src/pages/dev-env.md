@@ -39,6 +39,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatform IOを使ってデバッグする](/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/)
 - [STM32マイコンボード（STM32F103C8T6）をST-Link V2互換品とPlatform IOを使ってデバッグする](/blogs/2024/01/29/stm32-debug-by-st-link/)
 - [2024年版！VS Code で Java 開発環境を構築する](/blogs/2024/07/18/write-java-with-vscode-2024/)
+- [VSCode & PlatformIOで始める！WSL×組み込み開発環境構築の完全ガイド](/blogs/2025/04/10/develop-on-vscode-platformio-and-wsl/)
 
 ### リモート環境
 

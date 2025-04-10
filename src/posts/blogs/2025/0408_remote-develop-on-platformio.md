@@ -8,6 +8,7 @@ image: true
 
 組み込みソフトウェア開発をするなら [PlatformIO](https://platformio.org/) が大変便利です。
 これまでも、以下の記事で PlatformIOを紹介してきました。
+- [IoT を使ってみる（その１４：有機ELディスプレイ(OLED)SSD1306編）](/iot/internet-of-things-14/)
 - [ESP32開発ボードをESP-PROGとPlatformIOを使ってデバッグする](/blogs/2024/01/03/esp32-debug-by-esp-prog/)
 - [Raspberry Pi PicoをRaspberry Pi デバッグプローブとPlatformIOを使ってデバッグする](/blogs/2024/01/07/raspberry-pi-pico-debug-by-debug-probe/)
 - [STM32マイコンボード（STM32F103C8T6）をST-Link V2互換品とPlatformIOを使ってデバッグする](/blogs/2024/01/29/stm32-debug-by-st-link/)

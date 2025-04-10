@@ -42,7 +42,7 @@ TwinCAT独自のリアルタイムカーネルがOSから独立した形で動�
 
 :::info: TwinCAT設計に関するドキュメント
 TwinCATの設計思想は下記リンク先から確認できます。
-https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_overview/4275768971.html&id=
+[TwinCAT3 Product Overview - Philosophy](https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_overview/4275768971.html&id=)
 :::
 
 ## 開発環境（XAE）と実行環境（XAR）
@@ -229,7 +229,7 @@ tcpkg list -t workload
 :::column: tcpkgコマンド
 tcpkgはTwinCAT Packageの略です。
 詳細なコマンドは下記リンク先をご覧ください。
-https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_installation/15698626059.html&id=
+[TwinCAT3 - Working with the command line](https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_installation/15698626059.html&id=)
 :::
 
 確認したら，下記のコマンドを1行ずつ入力して必要なパッケージ群（実態はNuPkgファイル）をダウンロードします。
@@ -410,7 +410,7 @@ XARがインストールされたPCが検出されます。IPアドレス等を�
 接続対象がBeckhoff社製のPCの場合は、ユーザ名とパスワードは下記になります。 
 User = Administrator 
 Password = 1 
-https://infosys.beckhoff.com/english.php?content=../content/1033/sw_os/2019206411.html&id=
+[Windows Operating Systems - General Information](https://infosys.beckhoff.com/english.php?content=../content/1033/sw_os/2019206411.html&id=)
 :::
 
 接続に成功すると、「Connected」の部分に鍵のアイコンが表示されます。 

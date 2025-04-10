@@ -6,17 +6,18 @@ date: 2025-04-10
 ---
 
 # 0. はじめに
-TwinCATはEtherCATの開発元で有名なドイツの企業Beckhoff Automation GmbH[^1]（以下，Beckhoffと記載）が提供する産業用オートメーションシステム向けのプラットフォームです。いわゆるソフトウェアPLCであり，同じソフトウェアPLCアプリケーションとして知名度の高いCODESYSをOEM採用しています。
+TwinCATはEtherCATの開発元で有名なドイツの企業Beckhoff Automation GmbH[^1]（以下，Beckhoffと記載）が提供する産業用オートメーションシステム向けのプラットフォームです。
+いわゆるソフトウェアPLCであり，同じソフトウェアPLCアプリケーションとして知名度の高いCODESYSをOEM採用しています。
 
 本記事並びに関連記事では，TwinCATによるソフトウェアPLCの開発手順について共有したいと思います。
 
 なお，記事で使用するTwinCATバージョンは「TwinCAT 3.1 Build 4026」[^3]とします。
 
-# 1. TwinCATとは？
+# 1. TwinCATとは
 ## TwinCATの概要
 TwinCATを一言で表すと，「PCをPLC化するアプリケーション」です。
 
-一般的なWindowsOSはリアルタイム性に欠けるため、タイムクリティカルな処理が求められる産業用途には適さないことがあります。TwinCATを導入することで、PCベースのWindowsシステムにリアルタイム制御機能を追加することができます。
+一般的なWindowsOSはリアルタイム性に欠けるため、タイムクリティカルな処理が求められる産業用途には適さないことがあります。TwinCATを導入することで、PCベースのWindowsシステムにリアルタイム制御機能を追加できます。
 
 :::info
 現時点で主にサポートしているOSはWindowsのみですが，実はFreeBSDに対応したTwinCAT/BSD[^4]も存在します。
@@ -79,7 +80,7 @@ TwinCATは主に2つのソフトウェアに大別できます。
 :::
 
 :::info: パターンAとパターンBのハイブリッド
-もう一つのパターンとして，開発PCにはXAEのみを，実行PCにはXAEとXARの両方をインストールすることも可能です。
+もう1つのパターンとして，開発PCにはXAEのみを，実行PCにはXAEとXARの両方をインストール可能です。
 しかし，環境が冗長なため本記事では詳しく紹介しません。
 :::
 
@@ -112,7 +113,8 @@ TwinCATは主に2つのソフトウェアに大別できます。
 <img src="../../../../img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
 
 ## Beckhoffアカウントの作成
-[Beckhoff公式サイト](https://www.beckhoff.com/ja-jp/)に移動し，画面上部の「サインイン」をクリックします。表示される部分の「登録」ボタンを押下して表示される画面からアカウント登録を行ってください。
+[Beckhoff公式サイト](https://www.beckhoff.com/ja-jp/)に移動し，画面上部の「サインイン」をクリックします。
+表示される部分の「登録」ボタンを押下して表示される画面からアカウント登録してください。
 
 ![register-beckoff-account](../../../../img/robotics/twincat/introduction/register-beckoff-account.png)
 
@@ -195,8 +197,8 @@ TwinCAT Package Managerのセットアップは以上で完了です。
 TwinCAT Package Managerの画面から，「TwinCAT Standard」の部分のチェックボックスをチェックします。
 ![tcpkg-select-twincat-standard-package](../../../../img/robotics/twincat/introduction/tcpkg-select-twincat-standard-package.png)
 
-画面右側に`TwinCAT Standard-Engineering`と`TwinCAT Standard-Runtime`の2つが表示されますが
-開発PCに実行環境はインストールしないため，×ボタンを押して削除します。
+画面右側に`TwinCAT Standard-Engineering`と`TwinCAT Standard-Runtime`の2つが表示されます。
+開発PCに実行環境（Runtime）はインストールしないため，×ボタンを押して削除してください。
 
 ![tcpkg-delete-runtime-selection](../../../../img/robotics/twincat/introduction/tcpkg-delete-runtime-selection.png)
 
@@ -275,9 +277,9 @@ Feed URLの部分にXARインストールパッケージを配置したディレ
 
 
 # 3. ファイアウォール設定
-本章では，開発PCと実行PC間で通信を行うための設定を行います。
+本章では，開発PCと実行PC間での通信設定を行います。
 両デバイス間ではADS通信(Automation Device Specification)というプロトコルが使用されます。
-デフォルトの状態ではファイアウォールによりADS設定が行えません。設定で下表のポートでの通信を許可する必要があります。
+デフォルトの状態ではファイアウォールによりADS通信が行えません。設定で下表のポートでの通信を許可する必要があります。
 開発PCと実行PCの両方で、ポートでの通信を許可してあげましょう。
 
 | プロトコル | ポート番号 | 方向 | 用途 |
@@ -330,7 +332,10 @@ Feed URLの部分にXARインストールパッケージを配置したディレ
 ![select-reception-rule-name](../../../../img/robotics/twincat/introduction/select-reception-rule-name.png)
 
 :::stop
-「TCPの48898番ポート」「UDPの48899番ポート」「TCPの8016番ポート」の全てに対して設定を行ってください。
+下記の全てに対して設定してください。
+- TCP, 48898番ポート
+- UDP, 48899番ポート
+- TCP, 8016番ポート
 :::
 
 設定が完了したら，受信規則一覧は下図のようになるはずです。
@@ -401,7 +406,7 @@ XARがインストールされたPCが検出されます。IPアドレス等を�
 
 ![ads-select-and-add-route](../../../../img/robotics/twincat/introduction/ads-select-and-add-route.png)
 
-「SecureADS」画面が表示されるため、リモート接続するために必要な設定を行います。 
+「SecureADS」画面が表示されるため、リモート接続するための設定をします。 
 「Remote User Credentials」欄に接続対象である実行PCのユーザ名とパスワードを入力します。 
 
 ![ads-enter-remote-user-credentials](../../../../img/robotics/twincat/introduction/ads-enter-remote-user-credentials.png)
@@ -431,7 +436,7 @@ Password = 1
 次回の記事では実際にPLCプログラムを作成し，TwinCAT上で動かしてみます。
 
 【追記】
-本記事作成中にBeckhoff公式から開発環境構築手順を説明した動画が公開されていました。
+本記事作成中にBeckhoff公式から開発環境構築の手順が説明されている動画が公開されていました。
 こちらも合わせてご覧ください。
 
 [TwinCAT Howto - V.3.1.4026以降のインストール方法](https://sites.google.com/site/twincathowto/insutoruto-ji-ben-she-ding/v-3-1-4026%E4%BB%A5%E9%99%8D%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E6%96%B9%E6%B3%95?authuser=0)

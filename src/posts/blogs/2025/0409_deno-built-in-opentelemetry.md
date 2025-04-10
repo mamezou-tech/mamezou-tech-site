@@ -37,7 +37,7 @@ Otel Collector が収集したデータが Prometheus Metric / Tempo Trace / Lok
 
 ```mermaid
 flowchart LR
-  OC[Otl Collector]
+  OC[Otel Collector]
   PM[Prometheus Metric<br>Database]
   TT[Tempo<br>Trace Database]
   LL[Loki<br>Logs Database]
@@ -100,7 +100,7 @@ Deno.serve({ port: 9000 }, (req) => {
 });
 ```
 
-Service A の起動。環境変数 `OTEL_DENO` に true を設定することで、OTel が有効化されます。`OTEL_SERVICE_NAME` でサービス名をつけて起動することで、トレースの結果が見やすくなります。ここでは、`svs-a` というサービス名をつけました。
+Service A の起動。環境変数 `OTEL_DENO` に true を設定することで、Otel が有効化されます。`OTEL_SERVICE_NAME` でサービス名をつけて起動することで、トレースの結果が見やすくなります。ここでは、`svs-a` というサービス名をつけました。
 
 
 ```shell
@@ -222,3 +222,9 @@ V8 JS engine runtime metrics 仕様は以下にあります。
 以上、Deno 2.2 で実装された OpenTelemetry インテグレーションを簡単なコードで試してみました。Kubernetes 環境で利用する場合もサイドカーコンテナを立てたりが不要で、環境変数を指定するだけなので楽ですね。Deno 以外の言語・ランタイムが混在する環境での分散トレーシングも可能になっていくことでしょう。
 
 最後は Grafana の画面紹介みたいになってしまいましたが、アラートやクエリを使って実運用に活かせるダッシュボードを作れると需要ありそうです。
+
+:::info:2025.04.10追記
+公式からも Otel のブログが出ました。
+
+[Zero-config Debugging with Deno and OpenTelemetry](https://deno.com/blog/zero-config-debugging-deno-opentelemetry)
+:::

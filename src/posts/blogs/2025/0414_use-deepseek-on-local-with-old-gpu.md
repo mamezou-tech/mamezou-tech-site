@@ -10,6 +10,7 @@ image: true
 
 ただ、DeepSeekネタは 豆蔵デベロッパーサイトの記事として既に以下の記事が公開されています。  
 - [Ollamaを使ってオープンソースLLMをローカルホストしてみよう](/blogs/2025/02/20/ollama_local_llm/)
+
 また、今回使用を予定している「llama」についてはPython版が既に以下の記事で公開されています。  
 - [ローカルLLMを使ったボイドシミュレーション（llama.cpp、llama-cpp-python）](/blogs/2024/12/19/ai_boid_simulation/)
 

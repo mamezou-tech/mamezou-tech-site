@@ -38,7 +38,7 @@ PLCプログラムの開発では，IEC61131-3で規定された5つの言語に
 一般的なアプリケーションとは違い，TwinCAT（正確にはTwinCATの実行環境）はより深い階層で動作するアプリケーションです。
 TwinCAT独自のリアルタイムカーネルがOSから独立した形で動作します。作成したプログラムはカーネルモードで動作されます。
 
-![twincat-and-windows](../../../../img/robotics/twincat/introduction/twincat-and-windows.png)
+![twincat-and-windows](/img/robotics/twincat/introduction/twincat-and-windows.png)
 （上図は[こちら](https://sites.google.com/site/twincathowto/cc/%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AD%98%E3%81%AE%E7%BF%92%E5%BE%97%E6%BA%96%E5%82%99/twincat-3-cc-%E3%81%AE%E5%9F%BA%E7%A4%8E)より抜粋）
 
 :::info: TwinCAT設計に関するドキュメント
@@ -63,14 +63,14 @@ TwinCATは主に2つのソフトウェアに大別できます。
   - 最もミニマムな構成
   - 例：単一PCで実現したい場合など
 
-<img src="../../../../img/robotics/twincat/introduction/twincat-xae-xar-same-pc.png" width="600">
+<img src="/img/robotics/twincat/introduction/twincat-xae-xar-same-pc.png" width="600">
 
 - パターンB：XAEは開発PCに，XARは実行PCに存在する
   - システムの規模は広がるが，複数人での開発や開発PCに実行環境をインストールしたくない場合に有用
   - XAEとXAR間では，ADS（Automation Device Specification）という独自のプロトコルで通信が行われます
   - 例：実行PCは現場に存在，事務所のPCで開発したい場合など
 
-<img src="../../../../img/robotics/twincat/introduction/twincat-xae-xar-diff-pc.png" width="700">
+<img src="/img/robotics/twincat/introduction/twincat-xae-xar-diff-pc.png" width="700">
 
 本記事ではパターンB（XAEとXARは別PC）の構成を前提に話を進めます。
 
@@ -110,38 +110,38 @@ TwinCATは主に2つのソフトウェアに大別できます。
 リアルタイム処理のパフォーマンスを重視する場合は，産業用PCを使用することを検討してください。
 :::
 
-<img src="../../../../img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
+<img src="/img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
 
 ## Beckhoffアカウントの作成
 [Beckhoff公式サイト](https://www.beckhoff.com/ja-jp/)に移動し，画面上部の「サインイン」をクリックします。
 表示される部分の「登録」ボタンを押下して表示される画面からアカウント登録してください。
 
-![register-beckoff-account](../../../../img/robotics/twincat/introduction/register-beckoff-account.png)
+![register-beckoff-account](/img/robotics/twincat/introduction/register-beckoff-account.png)
 
 ## TwinCAT Package Managerのインストール
 TwinCATに関連するソフトウェアは TwinCAT Package Manager（コマンドなどでは`tcpkg`と略される）を使用してインストールします。
 
 [TwinCAT Package Manager ダウンロードページ](https://www.beckhoff.com/ja-jp/products/automation/twincat/twincat-3-build-4026/)に移動して，`Download TwinCAT Package Manager`をクリックします。
 
-![beckhoff-download-tpkg-button](../../../../img/robotics/twincat/introduction/beckhoff-download-tpkg-button.png)
+![beckhoff-download-tpkg-button](/img/robotics/twincat/introduction/beckhoff-download-tpkg-button.png)
 
 ダウンロード画面が開きますが，その前にログインする必要があります。
 下部の`Log in`ボタンからログインしてください。
 
 ログイン後，`EXE`ボタンを押下することでインストーラがダウンロードされます。
 
-![tcpkg-download](../../../../img/robotics/twincat/introduction/tcpkg-download.png)
+![tcpkg-download](/img/robotics/twincat/introduction/tcpkg-download.png)
 
 ダウンロードしたexeファイルを実行してTwinCAT Package Managerをインストールします。
 
-![tcpkg-installer](../../../../img/robotics/twincat/introduction/tcpkg-installer.png)
+![tcpkg-installer](/img/robotics/twincat/introduction/tcpkg-installer.png)
 
 インストールが完了したら，再起動を求められるのでPCを再起動してください。
 
 ## TwinCAT Package Managerのセットアップ
 デスクトップ上のショートカットからTwinCAT Package Managerを起動します。
 
-![twincat-package-manager-icon](../../../../img/robotics/twincat/introduction/twincat-package-manager-icon.png)
+![twincat-package-manager-icon](/img/robotics/twincat/introduction/twincat-package-manager-icon.png)
 
 :::info
 ショートカットファイルのリンク先は`C:\Program Files(x86)\Beckhoff\TcPkgUi\bin`です。
@@ -153,7 +153,7 @@ TwinCATに関連するソフトウェアは TwinCAT Package Manager（コマン�
 Usernameにはアカウントのメールアドレスを、Passwordにはパスワードを入力します。 
 入力したらSaveボタンをクリックします。 
 
-![tcpkg-feed-configuration](../../../../img/robotics/twincat/introduction/tcpkg-feed-configuration.png)
+![tcpkg-feed-configuration](/img/robotics/twincat/introduction/tcpkg-feed-configuration.png)
 
 Saveボタン押下後にPowerShellの実行権限を求められるため「OK」を選択します。 
 
@@ -166,7 +166,7 @@ TwinCAT Package Managerの画面で操作した内容はバックグラウンド
 次に，「Startup configuration」画面にて、TwinCAT Package Managerの初期設定を行います。 
 下記のように設定します。
 
-![tcpkg-startup-configuration](../../../../img/robotics/twincat/introduction/tcpkg-startup-configuration.png)
+![tcpkg-startup-configuration](/img/robotics/twincat/introduction/tcpkg-startup-configuration.png)
 
 各設定項目の詳細を以下に記します。
 
@@ -187,7 +187,7 @@ TwinCAT内でC++プログラムを構築する場合は統合が必須となり�
 設定に問題が無ければ，画面下部のNextを選択します。
 その後，下図のようにインストール可能なパッケージ一覧が表示されることを確認してください。
 
-![tcpkg-top-screen](../../../../img/robotics/twincat/introduction/tcpkg-top-screen.png)
+![tcpkg-top-screen](/img/robotics/twincat/introduction/tcpkg-top-screen.png)
 
 TwinCAT Package Managerのセットアップは以上で完了です。
 
@@ -195,16 +195,16 @@ TwinCAT Package Managerのセットアップは以上で完了です。
 次に，開発環境をインストールします。
 
 TwinCAT Package Managerの画面から，「TwinCAT Standard」の部分のチェックボックスをチェックします。
-![tcpkg-select-twincat-standard-package](../../../../img/robotics/twincat/introduction/tcpkg-select-twincat-standard-package.png)
+![tcpkg-select-twincat-standard-package](/img/robotics/twincat/introduction/tcpkg-select-twincat-standard-package.png)
 
 画面右側に`TwinCAT Standard-Engineering`と`TwinCAT Standard-Runtime`の2つが表示されます。
 開発PCに実行環境（Runtime）はインストールしないため，×ボタンを押して削除してください。
 
-![tcpkg-delete-runtime-selection](../../../../img/robotics/twincat/introduction/tcpkg-delete-runtime-selection.png)
+![tcpkg-delete-runtime-selection](/img/robotics/twincat/introduction/tcpkg-delete-runtime-selection.png)
 
 Engineeringのみを選択状態として，Installボタンを押下してインストールします。
 
-![tcpkg-press-install-button](../../../../img/robotics/twincat/introduction/tcpkg-press-install-button.png)
+![tcpkg-press-install-button](/img/robotics/twincat/introduction/tcpkg-press-install-button.png)
 
 これでXAEのインストールは完了です。
 念のために開発PCを再起動しておきましょう。
@@ -226,7 +226,7 @@ tcpkg list -t workload
 これを実行すると，インストール可能なパッケージの一覧が表示されます。
 「TwinCAT.Standard.XAE」と「TwinCAT.Standard.XAR」が最下部にあることを確認してください。
 
-![tcpkg-list](../../../../img/robotics/twincat/introduction/tcpkg-list.png)
+![tcpkg-list](/img/robotics/twincat/introduction/tcpkg-list.png)
 
 :::column: tcpkgコマンド
 tcpkgはTwinCAT Packageの略です。
@@ -256,7 +256,7 @@ USBメモリなどを使用して，下記の2つを実行PCに転送します�
 
 今回は`C:\TwincatOfflineInstaller\`内に配置しました。
 
-![twincat-installers](../../../../img/robotics/twincat/introduction/twincat-installers.png)
+![twincat-installers](/img/robotics/twincat/introduction/twincat-installers.png)
 
 ## 実行PCにインストールする
 対象のファイルを実行PCに移動させたら，まずは先程と同様にTwinCAT Package Managerをインストールしましょう。
@@ -268,7 +268,7 @@ Feed URLの部分にXARインストールパッケージを配置したディレ
 
 ユーザ名やパスワードは空欄のままとし，OKボタンを押下します。
 
-![tcpkg-feed-configuration-offline](../../../../img/robotics/twincat/introduction/tcpkg-feed-configuration-offline.png)
+![tcpkg-feed-configuration-offline](/img/robotics/twincat/introduction/tcpkg-feed-configuration-offline.png)
 
 その後，トップ画面で「TwinCAT Standard」が表示されることを確認してください。
 この画面にて「TwinCAT Standard」を選択し，実行PCにXARの両方をインストールしてください。
@@ -295,21 +295,21 @@ Feed URLの部分にXARインストールパッケージを配置したディレ
 ## ファイアウォール設定画面を開く
 画面左下のWindowsマークを右クリックし、「検索」を選択します。 
 
-![click-start-search](../../../../img/robotics/twincat/introduction/click-start-search.PNG)
+![click-start-search](/img/robotics/twincat/introduction/click-start-search.PNG)
 
 検索欄を使って「セキュリティが強化された Windows Defender ファイアウォール」をクリックします。 
 
-![open-firewall-settings-dialog](../../../../img/robotics/twincat/introduction/open-firewall-settings-dialog.png)
+![open-firewall-settings-dialog](/img/robotics/twincat/introduction/open-firewall-settings-dialog.png)
 
 このダイアログからADS通信に必要な設定を追加します。
 
-![firewall-settings-dialog](../../../../img/robotics/twincat/introduction/firewall-settings-dialog.png)
+![firewall-settings-dialog](/img/robotics/twincat/introduction/firewall-settings-dialog.png)
 
 
 ## 受信の規則を追加する
 画面左側にある「受信の規則」を右クリックし、「新しい規則」をクリックします。 
 
-![click-new-reception-rule](../../../../img/robotics/twincat/introduction/click-new-reception-rule.png)
+![click-new-reception-rule](/img/robotics/twincat/introduction/click-new-reception-rule.png)
 
 上記の表に記した3つのポートの全てに対して規則を追加しましょう。
 例えば「TCPの48898番ポート」の場合は下記のようになります。
@@ -325,11 +325,11 @@ Feed URLの部分にXARインストールパッケージを配置したディレ
 - 名前
   - 設定の名前と説明を記入する
 
-![select-reception-rule-type](../../../../img/robotics/twincat/introduction/select-reception-rule-type.png)
-![select-reception-rule-port](../../../../img/robotics/twincat/introduction/select-reception-rule-port.png)
-![select-reception-rule-manipulation](../../../../img/robotics/twincat/introduction/select-reception-rule-manipulation.png)
-![select-reception-rule-profile](../../../../img/robotics/twincat/introduction/select-reception-rule-profile.png)
-![select-reception-rule-name](../../../../img/robotics/twincat/introduction/select-reception-rule-name.png)
+![select-reception-rule-type](/img/robotics/twincat/introduction/select-reception-rule-type.png)
+![select-reception-rule-port](/img/robotics/twincat/introduction/select-reception-rule-port.png)
+![select-reception-rule-manipulation](/img/robotics/twincat/introduction/select-reception-rule-manipulation.png)
+![select-reception-rule-profile](/img/robotics/twincat/introduction/select-reception-rule-profile.png)
+![select-reception-rule-name](/img/robotics/twincat/introduction/select-reception-rule-name.png)
 
 :::stop
 下記の全てに対して設定してください。
@@ -341,7 +341,7 @@ Feed URLの部分にXARインストールパッケージを配置したディレ
 設定が完了したら，受信規則一覧は下図のようになるはずです。
 （名前は適宜読み替えてください）
 
-![reception-rule-added](../../../../img/robotics/twincat/introduction/reception-rules-added.png)
+![reception-rule-added](/img/robotics/twincat/introduction/reception-rules-added.png)
 
 受信規則の設定は以上です。
 
@@ -353,12 +353,12 @@ Feed URLの部分にXARインストールパッケージを配置したディレ
 :::alert:送信規則ウィザード内の「操作」画面
 デフォルト値は「接続をブロックする」が選択されている点に注意してください。
 
-![send-rule-manipulation](../../../../img/robotics/twincat/introduction/send-rule-manipulation.png)
+![send-rule-manipulation](/img/robotics/twincat/introduction/send-rule-manipulation.png)
 :::
 
 設定が完了したら，送信規則一覧は下図のようになるはずです。（名前は適宜読み替えてください）
 
-![send-rule-added](../../../../img/robotics/twincat/introduction/send-rule-added.png)
+![send-rule-added](/img/robotics/twincat/introduction/send-rule-added.png)
 
 送信規則の設定は以上です。
 
@@ -373,43 +373,43 @@ Feed URLの部分にXARインストールパッケージを配置したディレ
 
 :::info: 本章の内容を行う前に
 本章の内容を行う前に，開発PCと実行PCをLANケーブルで接続し，お互いが同一ネットワーク上にあるように設定してください。
-<img src="../../../../img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
+<img src="/img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
 :::
 
 開発PCの画面右下のシステムトレイを開き、紫色の歯車のアイコンを右クリックして「Router」 → 「Edit Routes」を選択します。
 
-![open-ads-edit-routes](../../../../img/robotics/twincat/introduction/open-ads-edit-routes.png)
+![open-ads-edit-routes](/img/robotics/twincat/introduction/open-ads-edit-routes.png)
 
 「TwinCAT Static Routes」画面が表示されるので、左下の「Add」ボタンを選択します。 
 
-![click-add-route-button](../../../../img/robotics/twincat/introduction/click-add-route-button.png)
+![click-add-route-button](/img/robotics/twincat/introduction/click-add-route-button.png)
 
 「Add Route Dialog」画面が表示されるので、画面左下の「Advanced Settings」にチェックを入れます。 
 
-![ads-enable-advanced-settings](../../../../img/robotics/twincat/introduction/ads-enable-advanced-settings.png)
+![ads-enable-advanced-settings](/img/robotics/twincat/introduction/ads-enable-advanced-settings.png)
 
 チェックを入れると、画面下部に詳細な設定項目が表示されます。 
 「Address Info」の選択欄で「IP Address」を選択します。
 
-![ads-change-address-info](../../../../img/robotics/twincat/introduction/ads-change-address-info.png)
+![ads-change-address-info](/img/robotics/twincat/introduction/ads-change-address-info.png)
 
 画面右上の「Broadcast Search」ボタンをクリックし、同一ネットワーク内に存在するXARがインストールされたPCを探索します。 
 
-![ads-click-broadcast-search](../../../../img/robotics/twincat/introduction/ads-click-broadcast-search.png)
+![ads-click-broadcast-search](/img/robotics/twincat/introduction/ads-click-broadcast-search.png)
 
 開発PCに複数のイーサネットアダプタ（USBアダプタも含む）が登録されている場合、どのアダプタに対して検索するかを選択する「Select Adapters」画面が表示されます。
 意図しない機器との接続を防ぐため、XARがインストールされたPCと接続しているアダプタのみにチェックを入れてください。 
 
-![ads-select-adapter](../../../../img/robotics/twincat/introduction/ads-select-adapter.png)
+![ads-select-adapter](/img/robotics/twincat/introduction/ads-select-adapter.png)
 
 XARがインストールされたPCが検出されます。IPアドレス等を確認し、問題がなければ「Add Route」をクリックします。 
 
-![ads-select-and-add-route](../../../../img/robotics/twincat/introduction/ads-select-and-add-route.png)
+![ads-select-and-add-route](/img/robotics/twincat/introduction/ads-select-and-add-route.png)
 
 「SecureADS」画面が表示されるため、リモート接続するための設定をします。 
 「Remote User Credentials」欄に接続対象である実行PCのユーザ名とパスワードを入力します。 
 
-![ads-enter-remote-user-credentials](../../../../img/robotics/twincat/introduction/ads-enter-remote-user-credentials.png)
+![ads-enter-remote-user-credentials](/img/robotics/twincat/introduction/ads-enter-remote-user-credentials.png)
 
 :::info: Beckhoff社製のPCが実行PCの場合
 接続対象がBeckhoff社製のPCの場合は、ユーザ名とパスワードは下記になります。 
@@ -421,12 +421,12 @@ Password = 1
 接続に成功すると、「Connected」の部分に鍵のアイコンが表示されます。 
 確認したら、右下の「Close」ボタンを押して「Add Route Dialog」を閉じます。
 
-![ads-check-connected](../../../../img/robotics/twincat/introduction/ads-check-connected.png)
+![ads-check-connected](/img/robotics/twincat/introduction/ads-check-connected.png)
 
 「TwinCAT Static Route」画面にて、先ほど追加したルート設定が表示され、緑色に塗りつぶされていることを確認します。 
 緑色が表示されない場合，開発PCと実行PCが接続されているかを再度確認してください。
 
-![after-route-added](../../../../img/robotics/twincat/introduction/ads-after-route-added.png)
+![after-route-added](/img/robotics/twincat/introduction/ads-after-route-added.png)
 
 これでADS通信の設定は完了です。
 

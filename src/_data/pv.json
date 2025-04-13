@@ -9,20 +9,24 @@
       "url": "/blogs/2022/12/08/jwt-auth/"
     },
     {
+      "title": "【devcontainer完全ガイド】DockerとWSLで最強のイマドキ開発環境を手に入れよう！",
+      "url": "/blogs/2024/10/11/devcontainer/"
+    },
+    {
       "title": "2024年版！VS Code で Java 開発環境を構築する",
       "url": "/blogs/2024/07/18/write-java-with-vscode-2024/"
     },
     {
-      "title": "【devcontainer完全ガイド】DockerとWSLで最強のイマドキ開発環境を手に入れよう！",
-      "url": "/blogs/2024/10/11/devcontainer/"
+      "title": "VS Code の Copilot Edits で効率的にリファクタリングを行う",
+      "url": "/blogs/2025/02/15/refactor-code-with-github-copilot-edits/"
     },
     {
       "title": "Ollamaを使ってオープンソースLLMをローカルホストしてみよう",
       "url": "/blogs/2025/02/20/ollama_local_llm/"
     },
     {
-      "title": "VS Code の Copilot Edits で効率的にリファクタリングを行う",
-      "url": "/blogs/2025/02/15/refactor-code-with-github-copilot-edits/"
+      "title": "GitHub Copilot のエージェントモード(パブリックプレビュー)を試す",
+      "url": "/blogs/2025/02/16/try-github-copilot-agent/"
     },
     {
       "title": "手書き風ドローツール Excalidraw のススメ",
@@ -33,12 +37,8 @@
       "url": "/blogs/2024/06/16/moji-code1/"
     },
     {
-      "title": "UMTP認定 L1～L3まで受験したのでまとめます",
-      "url": "/blogs/2023/12/11/umtp_l3_challenge/"
-    },
-    {
-      "title": "Google Test を使ってみる（その５：GoogleMock編）",
-      "url": "/blogs/2023/10/08/google-test-05/"
+      "title": "Blazor入門：ASP.NET Coreで始める最新Web開発",
+      "url": "/blogs/2024/12/20/asp-dotnet-core-blazor/"
     }
   ]
 }

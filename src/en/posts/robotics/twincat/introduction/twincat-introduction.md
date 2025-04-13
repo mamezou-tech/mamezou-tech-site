@@ -41,7 +41,7 @@ In PLC programming, in addition to the five languages defined by IEC61131-3, C++
 ## The Relationship Between TwinCAT and the OS
 Unlike typical applications, TwinCAT (more precisely, the TwinCAT runtime environment) runs at a deeper level. TwinCAT’s proprietary real-time kernel operates independently of the OS, and the programs you create run in kernel mode.
 
-![twincat-and-windows](../../../../img/robotics/twincat/introduction/twincat-and-windows.png)
+![twincat-and-windows](/img/robotics/twincat/introduction/twincat-and-windows.png)
 (The above image is excerpted from [this source](https://sites.google.com/site/twincathowto/cc/%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AD%98%E3%81%AE%E7%BF%92%E5%BE%97%E6%BA%96%E5%82%99/twincat-3-cc-%E3%81%AE%E5%9F%BA%E7%A4%8E))
 
 :::info: TwinCAT Design Documentation
@@ -65,14 +65,14 @@ These two software packages do not have to be installed on the same PC; they can
   - The most minimal configuration.
   - Example: When you want to implement everything on a single PC.
   
-<img src="../../../../img/robotics/twincat/introduction/twincat-xae-xar-same-pc.png" width="600">
+<img src="/img/robotics/twincat/introduction/twincat-xae-xar-same-pc.png" width="600">
 
 - Pattern B: XAE is on the development PC, and XAR is on a separate runtime PC
   - The system scale increases, which is useful for multi-person development or if you do not wish to install the runtime environment on the development PC.
   - Communication between XAE and XAR is carried out by a proprietary protocol called ADS (Automation Device Specification).
   - Example: The runtime PC is on-site while you develop on an office PC.
   
-<img src="../../../../img/robotics/twincat/introduction/twincat-xae-xar-diff-pc.png" width="700">
+<img src="/img/robotics/twincat/introduction/twincat-xae-xar-diff-pc.png" width="700">
 
 In this article, we will proceed assuming Pattern B (XAE and XAR on separate PCs).
 
@@ -107,43 +107,43 @@ The system configuration to be built in this article is shown in the diagram bel
 In this article and related posts, we use a standard laptop rather than an industrial PC from Beckhoff. If real-time processing performance is a priority, consider using an industrial PC.
 :::
 
-<img src="../../../../img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
+<img src="/img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
 
 ## Creating a Beckhoff Account
 Go to the [Beckhoff official website](https://www.beckhoff.com/ja-jp/) and click "Sign In" at the top of the page. Then, click the "Register" button in the area that appears and register for an account from the ensuing screen.
 
-![register-beckoff-account](../../../../img/robotics/twincat/introduction/register-beckoff-account.png)
+![register-beckoff-account](/img/robotics/twincat/introduction/register-beckoff-account.png)
 
 ## Installing the TwinCAT Package Manager
 Software related to TwinCAT is installed using the TwinCAT Package Manager (abbreviated as tcpkg in commands).
 
 Go to the [TwinCAT Package Manager download page](https://www.beckhoff.com/ja-jp/products/automation/twincat/twincat-3-build-4026/) and click "Download TwinCAT Package Manager".
 
-![beckhoff-download-tpkg-button](../../../../img/robotics/twincat/introduction/beckhoff-download-tpkg-button.png)
+![beckhoff-download-tpkg-button](/img/robotics/twincat/introduction/beckhoff-download-tpkg-button.png)
 
 The download screen will open, but you will need to log in first.
 Click the "Log in" button at the bottom and log in.
 
 After logging in, clicking the "EXE" button will download the installer.
 
-![tcpkg-download](../../../../img/robotics/twincat/introduction/tcpkg-download.png)
+![tcpkg-download](/img/robotics/twincat/introduction/tcpkg-download.png)
 
 Run the downloaded exe file and install the TwinCAT Package Manager.
 
-![tcpkg-installer](../../../../img/robotics/twincat/introduction/tcpkg-installer.png)
+![tcpkg-installer](/img/robotics/twincat/introduction/tcpkg-installer.png)
 
 Once the installation is complete, you will be prompted to restart, so please restart the PC.
 
 ## Setting Up the TwinCAT Package Manager
 Launch the TwinCAT Package Manager using the desktop shortcut.
 
-![twincat-package-manager-icon](../../../../img/robotics/twincat/introduction/twincat-package-manager-icon.png)
+![twincat-package-manager-icon](/img/robotics/twincat/introduction/twincat-package-manager-icon.png)
 
 On the initially displayed "Feed Configuration" screen, specify the package source. Since obtaining packages from the internet requires an account, enter your account information.
 
 Enter your account’s email address in the Username field and your password in the Password field. Once entered, click the Save button.
 
-![tcpkg-feed-configuration](../../../../img/robotics/twincat/introduction/tcpkg-feed-configuration.png)
+![tcpkg-feed-configuration](/img/robotics/twincat/introduction/tcpkg-feed-configuration.png)
 
 After clicking the Save button, you will be prompted by PowerShell for execution rights, so select "OK."
 
@@ -153,7 +153,7 @@ The actions you perform in the TwinCAT Package Manager are executed by a PowerSh
 
 Next, on the "Startup Configuration" screen, configure the initial settings for the TwinCAT Package Manager as shown below.
 
-![tcpkg-startup-configuration](../../../../img/robotics/twincat/introduction/tcpkg-startup-configuration.png)
+![tcpkg-startup-configuration](/img/robotics/twincat/introduction/tcpkg-startup-configuration.png)
 
 The details of each setting are described below.
 
@@ -170,7 +170,7 @@ This option appears only if Visual Studio is installed on the PC. It specifies w
 
 If the settings are correct, click "Next" at the bottom of the screen. Then, verify that a list of installable packages appears as shown below.
 
-![tcpkg-top-screen](../../../../img/robotics/twincat/introduction/tcpkg-top-screen.png)
+![tcpkg-top-screen](/img/robotics/twincat/introduction/tcpkg-top-screen.png)
 
 The setup of the TwinCAT Package Manager is now complete.
 
@@ -178,15 +178,15 @@ The setup of the TwinCAT Package Manager is now complete.
 Next, install the development environment.
 
 From the TwinCAT Package Manager screen, check the checkbox for "TwinCAT Standard."
-![tcpkg-select-twincat-standard-package](../../../../img/robotics/twincat/introduction/tcpkg-select-twincat-standard-package.png)
+![tcpkg-select-twincat-standard-package](/img/robotics/twincat/introduction/tcpkg-select-twincat-standard-package.png)
 
 On the right side of the screen, you'll see "TwinCAT Standard-Engineering" and "TwinCAT Standard-Runtime." Since the runtime environment (Runtime) should not be installed on the development PC, click the × button to remove it.
 
-![tcpkg-delete-runtime-selection](../../../../img/robotics/twincat/introduction/tcpkg-delete-runtime-selection.png)
+![tcpkg-delete-runtime-selection](/img/robotics/twincat/introduction/tcpkg-delete-runtime-selection.png)
 
 With only Engineering selected, click the Install button to proceed with installation.
 
-![tcpkg-press-install-button](../../../../img/robotics/twincat/introduction/tcpkg-press-install-button.png)
+![tcpkg-press-install-button](/img/robotics/twincat/introduction/tcpkg-press-install-button.png)
 
 The installation of XAE is now complete.
 For safety, please restart the development PC.
@@ -206,7 +206,7 @@ tcpkg list -t workload
 
 Executing this will display a list of installable packages. Confirm that "TwinCAT.Standard.XAE" and "TwinCAT.Standard.XAR" are listed at the bottom.
 
-![tcpkg-list](../../../../img/robotics/twincat/introduction/tcpkg-list.png)
+![tcpkg-list](/img/robotics/twincat/introduction/tcpkg-list.png)
 
 Once confirmed, enter the following command line by line to download the necessary package files (which are actually NuPkg files). (Adjust the output destination as needed.)
 
@@ -226,7 +226,7 @@ Using a USB drive or similar, transfer the following two items to the runtime PC
 
 In this example, they have been placed in the `C:\TwincatOfflineInstaller\` directory.
 
-![twincat-installers](../../../../img/robotics/twincat/introduction/twincat-installers.png)
+![twincat-installers](/img/robotics/twincat/introduction/twincat-installers.png)
 
 ## Installing on the Runtime PC
 Once the necessary files have been transferred to the runtime PC, first install the TwinCAT Package Manager as before. Once installed, launch the TwinCAT Package Manager.
@@ -235,7 +235,7 @@ Upon launching, on the Feed Configuration screen, specify the package source. Wh
 
 Leave the username and password fields blank and click "OK."
 
-![tcpkg-feed-configuration-offline](../../../../img/robotics/twincat/introduction/tcpkg-feed-configuration-offline.png)
+![tcpkg-feed-configuration-offline](/img/robotics/twincat/introduction/tcpkg-feed-configuration-offline.png)
 
 Then, verify that "TwinCAT Standard" is displayed on the main screen. From this screen, select "TwinCAT Standard" and install both instances of XAR on the runtime PC.
 
@@ -257,20 +257,20 @@ If the development PC and runtime PC are the same device, you do not need to per
 ## Opening the Firewall Settings Screen
 Right-click the Windows icon in the bottom left of the screen and select "Search."
 
-![click-start-search](../../../../img/robotics/twincat/introduction/click-start-search.PNG)
+![click-start-search](/img/robotics/twincat/introduction/click-start-search.PNG)
 
 Use the search bar to find and click "Windows Defender Firewall with Advanced Security."
 
-![open-firewall-settings-dialog](../../../../img/robotics/twincat/introduction/open-firewall-settings-dialog.png)
+![open-firewall-settings-dialog](/img/robotics/twincat/introduction/open-firewall-settings-dialog.png)
 
 From this dialog, add the settings required for ADS communication.
 
-![firewall-settings-dialog](../../../../img/robotics/twincat/introduction/firewall-settings-dialog.png)
+![firewall-settings-dialog](/img/robotics/twincat/introduction/firewall-settings-dialog.png)
 
 ## Adding an Inbound Rule
 Right-click "Inbound Rules" on the left side of the screen and click "New Rule."
 
-![click-new-reception-rule](../../../../img/robotics/twincat/introduction/click-new-reception-rule.png)
+![click-new-reception-rule](/img/robotics/twincat/introduction/click-new-reception-rule.png)
 
 Add a rule for each of the three ports listed in the table above. For example, for "TCP port 48898," proceed as follows:
 
@@ -285,11 +285,11 @@ Add a rule for each of the three ports listed in the table above. For example, f
 - Name  
   - Enter a name and description for the rule.
 
-![select-reception-rule-type](../../../../img/robotics/twincat/introduction/select-reception-rule-type.png)
-![select-reception-rule-port](../../../../img/robotics/twincat/introduction/select-reception-rule-port.png)
-![select-reception-rule-manipulation](../../../../img/robotics/twincat/introduction/select-reception-rule-manipulation.png)
-![select-reception-rule-profile](../../../../img/robotics/twincat/introduction/select-reception-rule-profile.png)
-![select-reception-rule-name](../../../../img/robotics/twincat/introduction/select-reception-rule-name.png)
+![select-reception-rule-type](/img/robotics/twincat/introduction/select-reception-rule-type.png)
+![select-reception-rule-port](/img/robotics/twincat/introduction/select-reception-rule-port.png)
+![select-reception-rule-manipulation](/img/robotics/twincat/introduction/select-reception-rule-manipulation.png)
+![select-reception-rule-profile](/img/robotics/twincat/introduction/select-reception-rule-profile.png)
+![select-reception-rule-name](/img/robotics/twincat/introduction/select-reception-rule-name.png)
 
 :::stop
 Apply this configuration for all of the following:
@@ -300,7 +300,7 @@ Apply this configuration for all of the following:
 
 Once complete, the list of inbound rules should appear as shown in the image below (adjust the names as needed).
 
-![reception-rule-added](../../../../img/robotics/twincat/introduction/reception-rules-added.png)
+![reception-rule-added](/img/robotics/twincat/introduction/reception-rules-added.png)
 
 This concludes the inbound rule configuration.
 
@@ -310,12 +310,12 @@ Next, add an outbound rule. (The process is nearly identical to adding an inboun
 :::alert: In the "Action" screen within the Outbound Rule Wizard
 Note that the default selection is "Block the connection."
   
-![send-rule-manipulation](../../../../img/robotics/twincat/introduction/send-rule-manipulation.png)
+![send-rule-manipulation](/img/robotics/twincat/introduction/send-rule-manipulation.png)
 :::
 
 Once complete, the outbound rules list should appear as shown below (adjust the names as needed).
 
-![send-rule-added](../../../../img/robotics/twincat/introduction/send-rule-added.png)
+![send-rule-added](/img/robotics/twincat/introduction/send-rule-added.png)
 
 This concludes the outbound rule configuration.
 
@@ -327,40 +327,40 @@ Now, after a lengthy setup of the development environment, we are almost finishe
 
 :::info: Before Proceeding with This Section
 Before executing the steps in this section, connect the development PC and the runtime PC with an Ethernet cable, and configure them so they are on the same network.
-<img src="../../../../img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
+<img src="/img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
 :::
 
 On the development PC, open the system tray in the bottom right, right-click the purple gear icon, and select "Router" → "Edit Routes."
 
-![open-ads-edit-routes](../../../../img/robotics/twincat/introduction/open-ads-edit-routes.png)
+![open-ads-edit-routes](/img/robotics/twincat/introduction/open-ads-edit-routes.png)
 
 The "TwinCAT Static Routes" screen appears. Click the "Add" button at the bottom left.
 
-![click-add-route-button](../../../../img/robotics/twincat/introduction/click-add-route-button.png)
+![click-add-route-button](/img/robotics/twincat/introduction/click-add-route-button.png)
 
 The "Add Route Dialog" screen appears. Check the "Advanced Settings" box at the bottom left.
 
-![ads-enable-advanced-settings](../../../../img/robotics/twincat/introduction/ads-enable-advanced-settings.png)
+![ads-enable-advanced-settings](/img/robotics/twincat/introduction/ads-enable-advanced-settings.png)
 
 Once checked, detailed settings appear at the bottom of the screen. In the "Address Info" dropdown, select "IP Address."
 
-![ads-change-address-info](../../../../img/robotics/twincat/introduction/ads-change-address-info.png)
+![ads-change-address-info](/img/robotics/twincat/introduction/ads-change-address-info.png)
 
 Click the "Broadcast Search" button at the top right of the screen to search for the PC within the same network that has XAR installed.
 
-![ads-click-broadcast-search](../../../../img/robotics/twincat/introduction/ads-click-broadcast-search.png)
+![ads-click-broadcast-search](/img/robotics/twincat/introduction/ads-click-broadcast-search.png)
 
 If the development PC has multiple Ethernet adapters (including USB adapters), the "Select Adapters" screen will appear asking which adapter to search. To avoid connecting with unintended devices, check only the adapter that is connected to the PC with XAR installed.
 
-![ads-select-adapter](../../../../img/robotics/twincat/introduction/ads-select-adapter.png)
+![ads-select-adapter](/img/robotics/twincat/introduction/ads-select-adapter.png)
 
 The PC with XAR installed will be detected. Verify the IP address and other details, and if everything is in order, click "Add Route."
 
-![ads-select-and-add-route](../../../../img/robotics/twincat/introduction/ads-select-and-add-route.png)
+![ads-select-and-add-route](/img/robotics/twincat/introduction/ads-select-and-add-route.png)
 
 The "SecureADS" screen will then appear, prompting you to configure the settings for remote connection. Enter the username and password of the runtime PC (the target) in the "Remote User Credentials" field.
 
-![ads-enter-remote-user-credentials](../../../../img/robotics/twincat/introduction/ads-enter-remote-user-credentials.png)
+![ads-enter-remote-user-credentials](/img/robotics/twincat/introduction/ads-enter-remote-user-credentials.png)
 
 :::info: If the runtime PC is a Beckhoff manufactured PC
 For Beckhoff PCs, the credentials are as follows:  
@@ -371,11 +371,11 @@ Password = 1
 
 If the connection is successful, a lock icon will appear in the "Connected" section. Once confirmed, click the "Close" button at the bottom right to exit the "Add Route Dialog."
 
-![ads-check-connected](../../../../img/robotics/twincat/introduction/ads-check-connected.png)
+![ads-check-connected](/img/robotics/twincat/introduction/ads-check-connected.png)
 
 On the "TwinCAT Static Route" screen, verify that the route you just added is displayed and highlighted in green. If it is not green, please recheck the connection between the development PC and the runtime PC.
 
-![after-route-added](../../../../img/robotics/twincat/introduction/ads-after-route-added.png)
+![after-route-added](/img/robotics/twincat/introduction/ads-after-route-added.png)
 
 This completes the ADS communication configuration.
 

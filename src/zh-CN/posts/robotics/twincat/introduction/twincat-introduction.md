@@ -42,7 +42,7 @@ TwinCAT 是由以开发 EtherCAT 著称的德国企业 Beckhoff Automation GmbH[
 与一般应用程序不同，TwinCAT（确切地说是 TwinCAT 的运行环境）在更深层次上运行。  
 TwinCAT 独有的实时内核独立于操作系统运行。创建的程序将在内核模式下执行。
 
-![twincat-and-windows](../../../../img/robotics/twincat/introduction/twincat-and-windows.png)  
+![twincat-and-windows](/img/robotics/twincat/introduction/twincat-and-windows.png)  
 （上图摘自[此处](https://sites.google.com/site/twincathowto/cc/%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AD%98%E3%81%AE%E7%BF%92%E5%BE%97%E6%BA%96%E5%82%99/twincat-3-cc-%E3%81%AE%E5%9F%BA%E7%A4%8E)）
 
 :::info: 关于 TwinCAT 设计的文档
@@ -67,14 +67,14 @@ TwinCAT 主要可以分为两种软件。
   - 这是最简约的配置  
   - 例如：当希望仅用一台 PC 实现时
 
-<img src="../../../../img/robotics/twincat/introduction/twincat-xae-xar-same-pc.png" width="600">
+<img src="/img/robotics/twincat/introduction/twincat-xae-xar-same-pc.png" width="600">
 
 - 模式B：XAE 安装在开发 PC 上，XAR 安装在运行 PC 上  
   - 虽然系统规模扩大，但在多人开发或不希望在开发 PC 上安装运行环境时非常有用  
   - XAE 和 XAR 之间通过一种称为 ADS（Automation Device Specification）的专用协议进行通信  
   - 例如：运行 PC 在现场，而希望在办公室 PC 上开发
 
-<img src="../../../../img/robotics/twincat/introduction/twincat-xae-xar-diff-pc.png" width="700">
+<img src="/img/robotics/twincat/introduction/twincat-xae-xar-diff-pc.png" width="700">
 
 本文将以模式B（XAE 和 XAR 分别安装在不同 PC 上）的配置为前提进行说明。
 
@@ -113,37 +113,37 @@ TwinCAT 主要可以分为两种软件。
 如果注重实时处理性能，请考虑使用工业PC。
 :::
 
-<img src="../../../../img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
+<img src="/img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
 
 ## 创建 Beckhoff 账号
 请访问 [Beckhoff 官方网站](https://www.beckhoff.com/ja-jp/) ，然后点击页面顶部的 “サインイン（登录）”。  
 点击显示处的 “登録（注册）” 按钮，并按照出现的页面注册账号。
 
-![register-beckoff-account](../../../../img/robotics/twincat/introduction/register-beckoff-account.png)
+![register-beckoff-account](/img/robotics/twincat/introduction/register-beckoff-account.png)
 
 ## 安装 TwinCAT Package Manager
 与 TwinCAT 相关的软件均使用 TwinCAT Package Manager（在命令中简写为 `tcpkg`）进行安装。
 
 请前往[TwinCAT Package Manager 下载页面](https://www.beckhoff.com/ja-jp/products/automation/twincat/twincat-3-build-4026/)，点击 `Download TwinCAT Package Manager`。
 
-![beckhoff-download-tpkg-button](../../../../img/robotics/twincat/introduction/beckhoff-download-tpkg-button.png)
+![beckhoff-download-tpkg-button](/img/robotics/twincat/introduction/beckhoff-download-tpkg-button.png)
 
 虽然下载页面会打开，但需要先登录。请点击页面底部的 `Log in` 按钮进行登录。
 
 登录后，点击 `EXE` 按钮即可下载安装程序。
 
-![tcpkg-download](../../../../img/robotics/twincat/introduction/tcpkg-download.png)
+![tcpkg-download](/img/robotics/twincat/introduction/tcpkg-download.png)
 
 运行下载的 exe 文件以安装 TwinCAT Package Manager。
 
-![tcpkg-installer](../../../../img/robotics/twincat/introduction/tcpkg-installer.png)
+![tcpkg-installer](/img/robotics/twincat/introduction/tcpkg-installer.png)
 
 安装完成后会提示重启，请重启电脑。
 
 ## TwinCAT Package Manager 的设置
 从桌面快捷方式启动 TwinCAT Package Manager。
 
-![twincat-package-manager-icon](../../../../img/robotics/twincat/introduction/twincat-package-manager-icon.png)
+![twincat-package-manager-icon](/img/robotics/twincat/introduction/twincat-package-manager-icon.png)
 
 :::info
 快捷方式文件的链接地址为 `C:\Program Files(x86)\Beckhoff\TcPkgUi\bin`。
@@ -153,7 +153,7 @@ TwinCAT 主要可以分为两种软件。
 
 在 Username 中输入账号的邮箱地址，在 Password 中输入密码。输入完毕后点击 Save 按钮。
 
-![tcpkg-feed-configuration](../../../../img/robotics/twincat/introduction/tcpkg-feed-configuration.png)
+![tcpkg-feed-configuration](/img/robotics/twincat/introduction/tcpkg-feed-configuration.png)
 
 点击 Save 按钮后会提示 PowerShell 的执行权限，请选择 “OK”。
 
@@ -164,7 +164,7 @@ TwinCAT 主要可以分为两种软件。
 
 接下来，在 “Startup configuration” 页面中进行 TwinCAT Package Manager 的初始设置。按如下方式进行设置。
 
-![tcpkg-startup-configuration](../../../../img/robotics/twincat/introduction/tcpkg-startup-configuration.png)
+![tcpkg-startup-configuration](/img/robotics/twincat/introduction/tcpkg-startup-configuration.png)
 
 以下是各设置项的详细说明。
 
@@ -182,7 +182,7 @@ TwinCAT 主要可以分为两种软件。
 
 设置无误后，选择页面下部的 Next。之后，请确认显示出类似下图的可安装软件包列表。
 
-![tcpkg-top-screen](../../../../img/robotics/twincat/introduction/tcpkg-top-screen.png)
+![tcpkg-top-screen](/img/robotics/twincat/introduction/tcpkg-top-screen.png)
 
 TwinCAT Package Manager 的设置至此完成。
 
@@ -191,16 +191,16 @@ TwinCAT Package Manager 的设置至此完成。
 
 在 TwinCAT Package Manager 界面中，勾选 “TwinCAT Standard” 部分的复选框。
 
-![tcpkg-select-twincat-standard-package](../../../../img/robotics/twincat/introduction/tcpkg-select-twincat-standard-package.png)
+![tcpkg-select-twincat-standard-package](/img/robotics/twincat/introduction/tcpkg-select-twincat-standard-package.png)
 
 在屏幕右侧会显示 `TwinCAT Standard-Engineering` 和 `TwinCAT Standard-Runtime` 两项。  
 由于开发 PC 上不安装运行环境（Runtime），请点击 × 按钮将其删除。
 
-![tcpkg-delete-runtime-selection](../../../../img/robotics/twincat/introduction/tcpkg-delete-runtime-selection.png)
+![tcpkg-delete-runtime-selection](/img/robotics/twincat/introduction/tcpkg-delete-runtime-selection.png)
 
 只保留 Engineering 选项，点击 Install 按钮进行安装。
 
-![tcpkg-press-install-button](../../../../img/robotics/twincat/introduction/tcpkg-press-install-button.png)
+![tcpkg-press-install-button](/img/robotics/twincat/introduction/tcpkg-press-install-button.png)
 
 至此，XAE 的安装完成。为了保险起见，请重启开发 PC。
 
@@ -220,7 +220,7 @@ tcpkg list -t workload
 
 执行后，将显示可安装软件包列表。请确认在列表底部有 “TwinCAT.Standard.XAE” 和 “TwinCAT.Standard.XAR”。
 
-![tcpkg-list](../../../../img/robotics/twincat/introduction/tcpkg-list.png)
+![tcpkg-list](/img/robotics/twincat/introduction/tcpkg-list.png)
 
 :::column: tcpkg 命令
 tcpkg 是 TwinCAT Package 的缩写。详细的命令请参阅下列链接。  
@@ -246,7 +246,7 @@ tcpkg download TwinCAT.Standard.XAR -o "C:\TwincatOfflineInstaller\XAR"
 
 本次放置在 `C:\TwincatOfflineInstaller\` 内。
 
-![twincat-installers](../../../../img/robotics/twincat/introduction/twincat-installers.png)
+![twincat-installers](/img/robotics/twincat/introduction/twincat-installers.png)
 
 ## 在运行 PC 上进行安装
 将目标文件转移到运行 PC 后，首先同之前一样安装 TwinCAT Package Manager。安装完成后，启动 TwinCAT Package Manager。  
@@ -257,7 +257,7 @@ tcpkg download TwinCAT.Standard.XAR -o "C:\TwincatOfflineInstaller\XAR"
 
 用户名和密码保持空白，点击 OK 按钮。
 
-![tcpkg-feed-configuration-offline](../../../../img/robotics/twincat/introduction/tcpkg-feed-configuration-offline.png)
+![tcpkg-feed-configuration-offline](/img/robotics/twincat/introduction/tcpkg-feed-configuration-offline.png)
 
 之后，请确认在主界面中显示了 “TwinCAT Standard”。在此界面中选择 “TwinCAT Standard”，并在运行 PC 上同时安装 XAR 的两部分。
 
@@ -281,20 +281,20 @@ tcpkg download TwinCAT.Standard.XAR -o "C:\TwincatOfflineInstaller\XAR"
 ## 打开防火墙设置界面
 右击屏幕左下角的 Windows 图标，选择 “検索（搜索）”。
 
-![click-start-search](../../../../img/robotics/twincat/introduction/click-start-search.PNG)
+![click-start-search](/img/robotics/twincat/introduction/click-start-search.PNG)
 
 在搜索栏中输入并点击 “セキュリティが強化された Windows Defender ファイアウォール（增强安全性的 Windows Defender 防火墙）”。
 
-![open-firewall-settings-dialog](../../../../img/robotics/twincat/introduction/open-firewall-settings-dialog.png)
+![open-firewall-settings-dialog](/img/robotics/twincat/introduction/open-firewall-settings-dialog.png)
 
 在该对话框中添加 ADS 通信所需要的设置。
 
-![firewall-settings-dialog](../../../../img/robotics/twincat/introduction/firewall-settings-dialog.png)
+![firewall-settings-dialog](/img/robotics/twincat/introduction/firewall-settings-dialog.png)
 
 ## 添加接收规则
 在屏幕左侧的 “受信の規則（接收规则）” 上右击，然后点击 “新しい規則（新建规则）”。
 
-![click-new-reception-rule](../../../../img/robotics/twincat/introduction/click-new-reception-rule.png)
+![click-new-reception-rule](/img/robotics/twincat/introduction/click-new-reception-rule.png)
 
 请为上述表格中列出的所有三个端口添加规则。  
 例如，对于 “TCP 的 48898 端口”，步骤如下：
@@ -310,11 +310,11 @@ tcpkg download TwinCAT.Standard.XAR -o "C:\TwincatOfflineInstaller\XAR"
 - 名称  
   - 填写规则的名称和描述
 
-![select-reception-rule-type](../../../../img/robotics/twincat/introduction/select-reception-rule-type.png)
-![select-reception-rule-port](../../../../img/robotics/twincat/introduction/select-reception-rule-port.png)
-![select-reception-rule-manipulation](../../../../img/robotics/twincat/introduction/select-reception-rule-manipulation.png)
-![select-reception-rule-profile](../../../../img/robotics/twincat/introduction/select-reception-rule-profile.png)
-![select-reception-rule-name](../../../../img/robotics/twincat/introduction/select-reception-rule-name.png)
+![select-reception-rule-type](/img/robotics/twincat/introduction/select-reception-rule-type.png)
+![select-reception-rule-port](/img/robotics/twincat/introduction/select-reception-rule-port.png)
+![select-reception-rule-manipulation](/img/robotics/twincat/introduction/select-reception-rule-manipulation.png)
+![select-reception-rule-profile](/img/robotics/twincat/introduction/select-reception-rule-profile.png)
+![select-reception-rule-name](/img/robotics/twincat/introduction/select-reception-rule-name.png)
 
 :::stop
 请对以下所有端口进行设置：
@@ -325,7 +325,7 @@ tcpkg download TwinCAT.Standard.XAR -o "C:\TwincatOfflineInstaller\XAR"
 
 设置完成后，接收规则列表应如下图所示。（名称可根据情况自行调整）
 
-![reception-rule-added](../../../../img/robotics/twincat/introduction/reception-rules-added.png)
+![reception-rule-added](/img/robotics/twincat/introduction/reception-rules-added.png)
 
 接收规则设置至此完成。
 
@@ -337,11 +337,11 @@ tcpkg download TwinCAT.Standard.XAR -o "C:\TwincatOfflineInstaller\XAR"
 请注意，默认值为 “接続をブロックする（阻止连接）”。
 :::
 
-![send-rule-manipulation](../../../../img/robotics/twincat/introduction/send-rule-manipulation.png)
+![send-rule-manipulation](/img/robotics/twincat/introduction/send-rule-manipulation.png)
 
 设置完成后，发送规则列表应如下图所示。（名称可根据情况自行调整）
 
-![send-rule-added](../../../../img/robotics/twincat/introduction/send-rule-added.png)
+![send-rule-added](/img/robotics/twincat/introduction/send-rule-added.png)
 
 发送规则设置至此完成。
 
@@ -355,42 +355,42 @@ tcpkg download TwinCAT.Standard.XAR -o "C:\TwincatOfflineInstaller\XAR"
 
 :::info: 执行本章内容前  
 在执行本章内容前，请使用网线将开发 PC 和运行 PC 连接，并确保它们处于同一网络中。  
-<img src="../../../../img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
+<img src="/img/robotics/twincat/introduction/tobe-system-configuration.png" width="600">
 :::
 
 在开发 PC 屏幕右下的系统托盘中，右击紫色齿轮图标，并选择 “Router” → “Edit Routes”。
 
-![open-ads-edit-routes](../../../../img/robotics/twincat/introduction/open-ads-edit-routes.png)
+![open-ads-edit-routes](/img/robotics/twincat/introduction/open-ads-edit-routes.png)
 
 随后会显示 “TwinCAT Static Routes” 界面，请点击左下的 “Add” 按钮。
 
-![click-add-route-button](../../../../img/robotics/twincat/introduction/click-add-route-button.png)
+![click-add-route-button](/img/robotics/twincat/introduction/click-add-route-button.png)
 
 显示 “Add Route Dialog” 界面后，请在左下角勾选 “Advanced Settings”。
 
-![ads-enable-advanced-settings](../../../../img/robotics/twincat/introduction/ads-enable-advanced-settings.png)
+![ads-enable-advanced-settings](/img/robotics/twincat/introduction/ads-enable-advanced-settings.png)
 
 勾选后，屏幕下部会显示详细的设置项。在 “Address Info” 的选项中选择 “IP Address”。
 
-![ads-change-address-info](../../../../img/robotics/twincat/introduction/ads-change-address-info.png)
+![ads-change-address-info](/img/robotics/twincat/introduction/ads-change-address-info.png)
 
 点击屏幕右上方的 “Broadcast Search” 按钮，搜索处于同一网络且安装有 XAR 的 PC。
 
-![ads-click-broadcast-search](../../../../img/robotics/twincat/introduction/ads-click-broadcast-search.png)
+![ads-click-broadcast-search](/img/robotics/twincat/introduction/ads-click-broadcast-search.png)
 
 如果开发 PC 注册了多个以太网适配器（包括 USB 适配器），将会显示 “Select Adapters” 界面来选择要搜索的适配器。  
 为防止与非目标设备连接，请仅选择与安装有 XAR 的 PC 相连接的适配器。
 
-![ads-select-adapter](../../../../img/robotics/twincat/introduction/ads-select-adapter.png)
+![ads-select-adapter](/img/robotics/twincat/introduction/ads-select-adapter.png)
 
 当检测到安装有 XAR 的 PC 后，请确认其 IP 地址等信息，若无问题则点击 “Add Route”。
 
-![ads-select-and-add-route](../../../../img/robotics/twincat/introduction/ads-select-and-add-route.png)
+![ads-select-and-add-route](/img/robotics/twincat/introduction/ads-select-and-add-route.png)
 
 随后会显示 “SecureADS” 界面，请进行远程连接设置。  
 在 “Remote User Credentials” 栏中输入目标运行 PC 的用户名和密码。
 
-![ads-enter-remote-user-credentials](../../../../img/robotics/twincat/introduction/ads-enter-remote-user-credentials.png)
+![ads-enter-remote-user-credentials](/img/robotics/twincat/introduction/ads-enter-remote-user-credentials.png)
 
 :::info: 如果目标运行 PC 是 Beckhoff 制造的 PC  
 对于 Beckhoff 制造的 PC，用户名和密码如下：  
@@ -402,11 +402,11 @@ Password = 1
 连接成功后，在 “Connected” 部分会显示一个锁形图标。  
 确认无误后，点击右下的 “Close” 按钮关闭 “Add Route Dialog”。
 
-![ads-check-connected](../../../../img/robotics/twincat/introduction/ads-check-connected.png)
+![ads-check-connected](/img/robotics/twincat/introduction/ads-check-connected.png)
 
 在 “TwinCAT Static Route” 界面中，请确认刚刚添加的路由设置显示出并呈绿色。如果未显示绿色，请再次确认开发 PC 和运行 PC 是否已连接。
 
-![after-route-added](../../../../img/robotics/twincat/introduction/ads-after-route-added.png)
+![after-route-added](/img/robotics/twincat/introduction/ads-after-route-added.png)
 
 至此，ADS 通信设置完成。
 

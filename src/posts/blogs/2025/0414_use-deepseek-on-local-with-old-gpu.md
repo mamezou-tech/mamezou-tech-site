@@ -79,8 +79,8 @@ DeepSeekの、特に「量子化済み（GGUF形式）」のモデルであれ�
 ### ハマりポイント その１
 
 慣れた人なら最初から分かっていたことですが、CUDA Toolkit、cuDNN、CMake、MSBuild のそれぞれの間で「バージョン整合」が重要です。  
-私は、本PCで LLM＋CUDA開発環境を作る前に Pytorch＋CUDA開発環境を作っており、CUDA Toolkit、cuDNNは「CUDA Toolkit 11.3＋cuDNN 8.2.1」の組み合わせの環境を構築していました。  
-（この組み合わせで構築するときも、CUDA版Pytorchと Pythonのバージョンの問題で、色々とありました）  
+私は、本PCで LLM＋CUDA開発環境を作る前に PyTorch＋CUDA開発環境を作っており、CUDA Toolkit、cuDNNは「CUDA Toolkit 11.3＋cuDNN 8.2.1」の組み合わせの環境を構築していました。  
+（この組み合わせで構築するときも、CUDA版PyTorchと Pythonのバージョンの問題で、色々とありました）  
 
 CUDA Toolkit、cuDNNを上記の環境ままで構築を進めると、あちこちでエラーが噴出しました。  
 エラーの内容を調べ、ほぼ丸一日かけて「Cmake＋MSBuild環境ではCUDAは12.4以上が必要」ってことがわかり、結局以下の構成で進めることにしました。（2025-04-12 時点）  
@@ -95,7 +95,7 @@ CUDA開発環境を構築する人は、CUDAのバージョンには注意した
 １）使いたい LLM ライブラリが対応する CUDA バージョンを確認し、インストールする。  
 　今のところ CUDAには大きく 11.ｘ系、12.ｘ系が存在します。  
 　今回使用する llama.cpp は CUDA 12.x系でも動くらしいです。（[ここ](https://github.com/ggml-org/llama.cpp/releases)を見ると12.4が推奨なのかもしれない）
-　ただし、Pytorchなどを利用する場合は 11.x系を推奨する場合もあるようです。  
+　ただし、PyTorchなどを利用する場合は 11.x系を推奨する場合もあるようです。  
 
 ２）上記で選択した CUDA に対応した cuDNN を [NVIDIA公式](https://docs.nvidia.com/deeplearning/cudnn/backend/latest/reference/support-matrix.html#abstract) から探してインストールする。  
 　CUDAのバージョンが 12.8 なら cuDNNのバージョンは 9.8 って感じです。

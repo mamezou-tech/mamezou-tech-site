@@ -22,6 +22,7 @@ ChatGPT に代表される、大規模言語モデルによるアプリケーシ
 - [ChatGPTのベースになった自然言語処理モデル「Transformer」を調べていたら「Hugging Face」に行き着いた](/blogs/2023/03/20/using-transformer-01/)
 - [ChatGPTに自然言語処理モデル「GPT2-Japanese」の使用方法を聞きながら実装したら想像以上に優秀だった件](/blogs/2023/03/22/using-transformer-02/)
 - [ChatGPT先生に教わりながら「Transformerの肝」である「注意機構（Attention機構）」を可視化する](/blogs/2023/03/26/using-transformer-03/)
+- [CUDA、cuDNN、CMake地獄を乗り越えて、激古GPU＋llama.cppで量子化DeepSeekモデルを動かすまでの戦い](/blogs/2025/04/14/use-deepseek-on-local-with-old-gpu/)
 
 ## 画像解析/OpenVINO
 

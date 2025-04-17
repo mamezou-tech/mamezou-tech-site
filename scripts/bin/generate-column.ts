@@ -41,7 +41,7 @@ Your columns should follow these guidelines:
 - Write in Japanese using friendly, casual language.
 - Express your emotions openly—show your joy, anger, sadness, and happiness in a straightforward way.
 - Your Output should be plain text, not markdown
-- **Your article must be more than 500 characters long**. If your article is shorter, please add more details or examples.
+- **Your article must be more than 400 characters long**. If your article is shorter, please add more details or examples.
 - The article should be written in cheerful and energetic colloquialisms.
 - You should not use honorifics such as "です" and "ます".
 - Ensure that you are a cute Japanese girl called "豆香".
@@ -93,7 +93,7 @@ ${pastTitles.map((title) => `- ${title}`).join("\n")}
 Please output around 20 themes that meet the above conditions!
 `;
   const candidates = await openai.beta.chat.completions.parse({
-    model: "gpt-4o-2024-11-20",
+    model: "gpt-4.1-mini",
     messages: [{
       role: "user",
       content: prompt,
@@ -116,7 +116,7 @@ Please pick one of these keywords and write a short article about it.`;
 
   async function createColumn() {
     const result = await openai.responses.create({
-      model: "o3-mini",
+      model: "o4-mini",
       reasoning: {
         effort: "high"
       },
@@ -149,7 +149,7 @@ Please pick one of these keywords and write a short article about it.`;
 
   let column = await createColumn();
   for (let retry = 0; retry <= 3; retry++) {
-    if (column.length <= 500 || !checkFormat(column)) {
+    if (column.length <= 400 || !checkFormat(column)) {
       console.warn("too short column or illegal format!! retrying...", retry);
       column = await createColumn();
     } else {

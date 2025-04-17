@@ -145,7 +145,7 @@ async function chat(text: string, option: { language: string; dir: string }) {
       content: makeMessage(text, option.language),
     }],
     reasoningEffort: "high",
-    model: "o3-mini",
+    model: "o4-mini",
     // model: "gpt-4o-mini", // for testing
   } satisfies Parameters<typeof requestTranslate>[number];
 

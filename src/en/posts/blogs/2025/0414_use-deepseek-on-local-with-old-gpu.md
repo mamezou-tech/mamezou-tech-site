@@ -16,10 +16,10 @@ translate: true
 This time, it's a challenge report on running the trending large language model "DeepSeek" series locally, even on a budget, second-hand PC equipped with an outdated GPU.
 
 However, DeepSeek content has already been published on the Mamezou Developer Site in the following article.
-- [Let's host an open-source LLM locally using Ollama](/blogs/2025/02/20/ollama_local_llm/)
+- [Let's host an open-source LLM locally using Ollama](/en/blogs/2025/02/20/ollama_local_llm/)
 
 Additionally, the Python-based version of "llama", which we plan to use this time, has already been published in the following article.
-- [Void simulation using a local LLM (llama.cpp, llama-cpp-python)](/blogs/2024/12/19/ai_boid_simulation/)
+- [Void simulation using a local LLM (llama.cpp, llama-cpp-python)](/en/blogs/2024/12/19/ai_boid_simulation/)
 
 Doing the same thing wouldn't be interesting. So I want to try building through a slightly different route: a C++-based LLM framework.  
 (Well, choosing a route like this usually means you get stuck somewhere.)
@@ -76,7 +76,7 @@ In other words, "**to run an LLM on a super old GPU, quantized models are essent
 
 There are LLM frameworks like LangChain, LlamaIndex, and OpenLLM, but this time I want to try the lightweight LLM framework llama.cpp.  
 llama.cpp is a tool well-suited to using quantized models.  
-There are also other options like LM Studio and Ollama. (For Ollama, check out [this article](/blogs/2025/02/20/ollama_local_llm/).)
+There are also other options like LM Studio and Ollama. (For Ollama, check out [this article](/en/blogs/2025/02/20/ollama_local_llm/).)
 
 llama.cpp is the original local LLM framework, written in C++ and open source.  
 I believe it's a good match for DeepSeek's quantized (GGUF format) models.
@@ -335,7 +335,7 @@ The "battle" part might be somewhat correct. (He’s supposed to fight demons, b
 At this point, I'm getting more interested in the content than the environment setup.  
 (It also didn't help that it was past 2 AM when I was testing.)
 
-Let's do a comparison using Ollama, referring to [this article](/blogs/2025/02/20/ollama_local_llm/) on the Mamezou Developer Site.  
+Let's do a comparison using Ollama, referring to [this article](/en/blogs/2025/02/20/ollama_local_llm/) on the Mamezou Developer Site.  
 (I'll omit the Ollama installation steps.)
 
 Run the llama3.2 model and ask the same question:

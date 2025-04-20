@@ -10,7 +10,6 @@ tags:
   - 新人向け
 image: true
 translate: true
-
 ---
 
 I believe many teams still use Eclipse for newcomer training. Knowing a few handy settings can greatly affect your daily development efficiency and stress levels. In this article, we'll summarize the basic Eclipse settings that are useful for Java development. We've organized the key points you should grasp as a newcomer as compactly as possible. Understanding where each setting is and what it means will help you take the first step toward setting up your environment.

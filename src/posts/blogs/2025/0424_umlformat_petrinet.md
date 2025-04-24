@@ -1,7 +1,7 @@
 ---
 title: UMLで表現しきれない“動き”を、ペトリネットで可視化する
 author: kotaro-yaehata
-date: 2025-04-23
+date: 2025-04-24
 tags: [UML, petrinet]
 image: true
 ---

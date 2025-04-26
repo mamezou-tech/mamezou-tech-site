@@ -235,7 +235,7 @@ async function generateImage(
   date: string,
 ) {
   const promptSuggestion = await openai.responses.create({
-    model: "gpt-4o",
+    model: "gpt-4.1-mini",
     input:
       `Create an anime-inspired, cartoon-style illustration focused on the theme: '${title}'. 
 Incorporate key elements from the following details: '${details}'. 

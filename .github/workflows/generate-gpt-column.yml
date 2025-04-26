@@ -23,7 +23,7 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.MZ_SITE_ROLE_ARN }}
+          role-to-assume: ${{ vars.MZ_SITE_ROLE_ARN }}
           role-session-name: image-push-session
           aws-region: ${{ env.AWS_REGION }}
 

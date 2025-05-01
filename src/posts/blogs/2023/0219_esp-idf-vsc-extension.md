@@ -2,7 +2,7 @@
 title: VSCodeのESP-IDF拡張機能「Espressif IDF」を使ってみる
 author: shuichi-takatsu
 date: 2023-02-19
-tags: [vscode, esp32]
+tags: [vscode, esp32, esp-idf]
 ---
 
 以前のIoT記事にて[Arduino IDE](/iot/internet-of-things-03/)を紹介しましたが、いつも使用しているVSCode(Visual Studio Code)でESP32のプログラムを作成できたら便利だなと思っていました。  

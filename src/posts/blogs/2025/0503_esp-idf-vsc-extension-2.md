@@ -3,6 +3,7 @@ title: ESP-IDFプロジェクトの構成とCMakeの仕組みを徹底解説！�
 author: shuichi-takatsu
 date: 2025-05-03
 tags: [vscode, esp32, esp-idf, cmake, sdkconfig, kconfig]
+image: true
 ---
 
 ## はじめに

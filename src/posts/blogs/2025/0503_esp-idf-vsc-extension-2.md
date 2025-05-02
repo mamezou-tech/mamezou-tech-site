@@ -102,7 +102,7 @@ sdkconfig には以下のように書かれていますので、手動での変�
 #
 ```
 
-以下の menuconfig サブコマンドで設定すると、内容が sdkconfig 反映されます。（idf.pyコマンドについては後述します）
+以下の menuconfig サブコマンドで設定すると、内容が sdkconfig に反映されます。（idf.pyコマンドについては後述します）
 ```bash
 idf.py menuconfig 
 ```

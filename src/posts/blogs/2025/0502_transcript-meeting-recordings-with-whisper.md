@@ -59,7 +59,7 @@ $ source whisper-env/bin/activate
 以下は、この whisper-env で作業します。必要に応じて pip をインストールします。
 
 ```shell
-dev pip install -U pip
+pip install -U pip
 ```
 
 Whisper をインストールします。

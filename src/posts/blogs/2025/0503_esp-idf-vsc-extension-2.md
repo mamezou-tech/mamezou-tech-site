@@ -234,7 +234,7 @@ CONFIG_MY_LED_GPIO=5
 # end of Component config
 ```
 
-### Kconfig と Kconfig.projbuild の違い
+### Kconfig と Kconfig.projbuild
 
 Kconfig ファイルには「Kconfig」「Kconfig.projbuild」の2種類があります。
 
@@ -277,8 +277,9 @@ endmenu
 
 Kconfig や Kconfig.projbuild に「USE_XXXX」と定義したとき、sdkconfig には「CONFIG_USE_XXXX」と登録されます。（sdkconfig 展開時に自動的に「CONFIG_」という接頭語が付加されます）  
 
-### Kconfig と Kconfig.projbuild の挙動の違い
+### Kconfig と Kconfig.projbuild の挙動の違いと配置
 
+Kconfig と Kconfig.projbuild の挙動の違いを一覧で示します。  
 | 特徴                        | `Kconfig`                          | `Kconfig.projbuild`                            |
 |-----------------------------|------------------------------------|------------------------------------------------|
 | 読み込み元                  | 各コンポーネントの `CMakeLists.txt` | `main` ディレクトリ配下の自動読み込み対象       |
@@ -287,10 +288,7 @@ Kconfig や Kconfig.projbuild に「USE_XXXX」と定義したとき、sdkconfig
 | menuconfig 表示   | 自動で表示（コンポーネントが使われていれば） | 自動で表示（`main/` にあるだけでOK）        |
 | 対象スコープ      | コンポーネント単位                    | プロジェクト全体、またはアプリケーション層     |
 
-使い分けは以下のようにします。  
-- ライブラリ・再利用可能な部品 ： Kconfig
-- プロジェクト固有の設定 ： Kconfig.projbuild
-
+Kconfig と Kconfig.projbuild の配置は以下のようにします。
 ```makefile
 my_project/
 ├── main/

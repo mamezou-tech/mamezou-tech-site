@@ -41,6 +41,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [2024年版！VS Code で Java 開発環境を構築する](/blogs/2024/07/18/write-java-with-vscode-2024/)
 - [VSCode & PlatformIOで始める！WSL×組み込み開発環境構築の完全ガイド](/blogs/2025/04/10/develop-on-vscode-platformio-and-wsl/)
 - [ESP-IDFプロジェクトの構成とCMakeの仕組みを徹底解説！（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/03/esp-idf-vsc-extension-2/)
+- [IDF Component ManagerとKconfig設定でハマった話（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/06/esp-idf-vsc-extension-3/)
 
 ### リモート環境
 

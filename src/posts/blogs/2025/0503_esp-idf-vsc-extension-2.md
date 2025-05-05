@@ -528,3 +528,6 @@ ESP-IDFプロジェクトは、CMakeLists.txt や sdkconfig を中心に構成�
 PlatformIO に比べて ESP-IDF は一見とっつきにくい印象がありますが、各ファイルやツールの意味を理解すれば、自信をもって開発に取り組めると思います。  
 
 IoT開発の助けになれば幸いです。
+
+★追記：ESP-IDF関連記事を別記事でアップしました。
+- [IDF Component ManagerとKconfig設定でハマった話（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/06/esp-idf-vsc-extension-3/)

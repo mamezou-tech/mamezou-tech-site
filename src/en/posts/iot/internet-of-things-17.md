@@ -13,7 +13,7 @@ translate: true
 
 ---
 
-[Previous](/iot/internet-of-things-16/) we tried "OTA (Over The Air)" with ESP32.  
+[Previous](/en/iot/internet-of-things-16/) we tried "OTA (Over The Air)" with ESP32.  
 Although the order was reversed, this time we’ll take a detailed look at the basic mechanism of OTA.
 
 ## Introduction
@@ -150,7 +150,7 @@ However, the following conditions must be met:
 
 #### Sample Program
 
-In the program we created in [the previous article](/iot/internet-of-things-16/), I integrated `esp_ota_mark_app_valid_cancel_rollback()`. The added source code is the following two points:
+In the program we created in [the previous article](/en/iot/internet-of-things-16/), I integrated `esp_ota_mark_app_valid_cancel_rollback()`. The added source code is the following two points:
 
 ```cpp
 #include "esp_ota_ops.h"

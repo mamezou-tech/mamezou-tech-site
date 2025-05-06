@@ -172,3 +172,4 @@ ESP32+Rustの開発環境が構築できたらご報告したいと思います�
 
 ★追記：ESP-IDF関連記事を別記事でアップしました。
 - [ESP-IDFプロジェクトの構成とCMakeの仕組みを徹底解説！（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/03/esp-idf-vsc-extension-2/)
+- [IDF Component ManagerとKconfig設定でハマった話（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/06/esp-idf-vsc-extension-3/)

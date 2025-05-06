@@ -13,7 +13,8 @@ image: true
 
 開発環境は以下の通りです。
 - OS: Ubuntu 24.04 (WSL2)
-- IDE: VSCode + ESP-IDF拡張機能「Espressif IDF」
+- IDE: VSCode
+- ESP-IDF拡張機能「Espressif IDF」: 1.9.1
 - ESP-IDF バージョン: **v5.4.1**
 - ターゲット: ESP32-WROVER-E開発ボード（PSRAMあり）
 

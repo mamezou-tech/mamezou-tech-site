@@ -29,6 +29,7 @@ Ninja は超高速なビルドシステムです。CMakeなどのビルド生成
 - CMake: 3.28.3
 - Ninja: 1.11.1
 - OS: Ubuntu 24.04 (on WSL2)
+- VSCode ESP-IDF拡張機能： 1.9.1
 
 ## 対象読者
 

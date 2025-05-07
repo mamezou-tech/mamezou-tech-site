@@ -124,6 +124,8 @@ DynamoDBをデータソースとして利用するには、Event API 専用の�
 
 ここでは、指定した名前空間のチャネルに発行されたイベントをDynamoDBに保存し、その書き込み結果を加工してクライアントへ配信するハンドラーを実装します。
 
+![](https://i.gyazo.com/1ba7c8238fb15957fe3eed89fe8f44f5.png)
+
 ### リソース構成(CDK)
 
 まず、DynamoDBテーブルを作成し、Event APIのデータソースとして登録します。
@@ -246,6 +248,8 @@ DynamoDBの場合と異なり、Lambda関数そのものをAppSyncのイベン�
 AppSync独自のJavaScriptランタイム環境では様々な制約[^1]がありますが、NodeベースのLambda関数を利用することで、これらの制限なく自由度の高いコードを実装できます。
 
 [^1]: <https://docs.aws.amazon.com/appsync/latest/eventapi/runtime-supported-features.html>
+
+![](https://i.gyazo.com/5a8613ec2bc31812f3f5f69a8f3c6ab8.png)
 
 ここでは、この直接統合を使ってみます。
 

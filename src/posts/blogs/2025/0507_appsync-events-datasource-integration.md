@@ -227,7 +227,7 @@ DynamoDBテーブルがデータソースとして追加され、sample-dynamodb
 
 **2. イベント発行(Publishセクション)**
 同名前空間のチャネルに対してイベントを発行します。
-![DynamoDB - Publish](https://i.gyazo.com/8675cc24757d89fe1c5973767923ff65.png)
+![DynamoDB - Publish](https://i.gyazo.com/757e04122b73effd2c1f8daccfc82591.png)
 
 **3. イベント配信結果確認(Subscribeセクション)**
 イベントハンドラのresponse関数で記述したとおり、プレフィックス(`DynamoDB:`)付きでイベントが配信されています。

@@ -243,7 +243,7 @@ DynamoDBテーブルがデータソースとして追加され、sample-dynamodb
 
 次はLambdaをデータソースとして利用します。
 DynamoDBの場合と異なり、Lambda関数そのものをAppSyncのイベントハンドラーとして呼び出す直接統合が可能です。
-AppSyncのイベントハンドラーは独自のJavaScriptランタイムで制約[^1]が多いですが、NodeベースのLambdaのJavaScriptランタイムであればその制限はありません。
+AppSync独自のJavaScriptランタイム環境では様々な制約[^1]がありますが、NodeベースのLambda関数を利用することで、これらの制限なく自由度の高いコードを実装できます。
 
 [^1]: <https://docs.aws.amazon.com/appsync/latest/eventapi/runtime-supported-features.html>
 

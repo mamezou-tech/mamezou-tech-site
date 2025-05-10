@@ -50,6 +50,7 @@ IoTデバイスに接続して使用するセンサモジュールなどにつ�
 IoTデバイスを省電力で駆動させるときのTipsについて紹介します。
 
 - [IoT を使ってみる（その１５：ESP32のディープスリープで長時間バッテリー駆動に挑戦）](/iot/internet-of-things-15/)
+- [IoT を使ってみる（その１９：ESP32の LightSleep 機能で省電力運転に挑戦する）](/iot/internet-of-things-19/)
 
 ## OTA編
 

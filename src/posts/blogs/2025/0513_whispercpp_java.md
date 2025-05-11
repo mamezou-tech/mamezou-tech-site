@@ -26,7 +26,7 @@ image: true
 
 # whisper.cppのCLIで試す
 
-**（WhisperJNIの実装をすぐに見たいという方はこのセクションは読み飛ばしてください）**
+**（WhisperJNIの実装をすぐに見たいという方はこのセクションは読み飛ばしてもらって大丈夫です）**
 
 WhisperJNIを使う前に、音声書き起こしの動作確認としてwhisper.cppを直接使ってみます。
 whisper.cppで用意されている `whisper-cli` を用いてコマンドラインから音声書き起こしを実行してみます。

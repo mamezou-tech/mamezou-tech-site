@@ -1,14 +1,14 @@
 ---
-title: JavaでもWhisperを使って音声データ書き起こしをしたい
+title: Javaでもローカル環境でWhisperを使って音声データ書き起こしをしたい
 author: kotaro-miura
-date: 2025-05-00
+date: 2025-05-13
 tags: [whisper, whisper, OpenBLAS, java, JNI]
 image: true
 ---
 
 # はじめに
 
-音声データを文字起こししたいというニーズは多くの場面で存在します。OpenAIがOSSで提供する [Whisper](https://github.com/openai/whisper) は高精度な音声認識モデルとして注目を集めており、Python環境では比較的手軽に利用することができます。しかし、業務や既存システムの都合でJava環境からWhisperを使いたいというケースもあるのではないでしょうか。
+音声データを文字起こししたいというニーズは多くの場面で存在します。OpenAIがOSSで提供する [Whisper](https://github.com/openai/whisper) は高精度な音声認識モデルとして注目を集めており、Python環境では比較的手軽に利用できます。しかし、業務や既存システムの都合でJava環境からWhisperを使いたいというケースもあるのではないでしょうか。
 
 私自身、Javaベースのプロジェクトで音声データの書き起こしを行いたい場面があり、WhisperをなんとかJavaから使えないかと模索しました。調査を進める中で、C++で実装された軽量なWhisperの実装「[whisper.cpp](https://github.com/ggml-org/whisper.cpp)」と、それをJavaから呼び出すためのJNI（Java Native Interface）ラッパーライブラリの[WhisperJNI](https://github.com/GiviMAD/whisper-jni) の存在を知り、実際に試してみることにしました。
 また、whisper.cppは線形代数演算ライブラリである [OpenBLAS](http://www.openmathlib.org/OpenBLAS/) を用いたエンコードに対応しているため、CPUしか使えない環境でもこのライブライリを用いて高速化できるか検証もしてみました。
@@ -25,6 +25,8 @@ image: true
 :::
 
 # whisper.cppのCLIで試す
+
+**（WhisperJNIの実装をすぐに見たいという方はこのセクションは読み飛ばしてください）**
 
 WhisperJNIを使う前に、音声書き起こしの動作確認としてwhisper.cppを直接使ってみます。
 whisper.cppで用意されている `whisper-cli` を用いてコマンドラインから音声書き起こしを実行してみます。
@@ -54,7 +56,7 @@ Whisperモデルデータはwhisper.cppではggml形式にして読み込む必�
 
 :::info
 上記サイトに`ggml-large-v3-turbo-q5_0.bin`、`ggml-base.en-q5_1.bin`など量子化して軽量化したモデルデータなどもありますので環境のメモリ容量に合わせて適切なものをお選びください。
-量子化モデルは自分でも作成することができて、whisper.cppが提供している `build/bin/quantize.exe` コマンドを用いて作成できます。（参考[Quantization](https://github.com/ggml-org/whisper.cpp?tab=readme-ov-file#quantization)）
+量子化モデルは自分でも作成できて、whisper.cppが提供している `build/bin/quantize.exe` コマンドを用いて作成できます。（参考[Quantization](https://github.com/ggml-org/whisper.cpp?tab=readme-ov-file#quantization)）
 :::
 
 ## 実行結果
@@ -68,12 +70,10 @@ Whisperモデルデータはwhisper.cppではggml形式にして読み込む必�
 
 G-08番の音声を使ってみます。
 
-<audio controls src="https://pro-video.jp/voice/announce/mp3/g_08.mp3"></audio>
-
-最初は `large-v3-turbo` を使って実行してみます。
+最初は `large-v3-turbo` を使って実行してみます。オプションでスレッド数を今の実行環境で同時に実行できる最大の8に指定します。
 
 ```sh
-$ .\build\bin\Release\whisper-cli.exe -m c:\Path\to\ggml-large-v3-turbo.bin -f c:\Path\to\g_08.mp3
+$ .\build\bin\Release\whisper-cli.exe -m c:\Path\to\ggml-large-v3-turbo.bin -f c:\Path\to\g_08.mp3 -t 8
 
 出力途中省略...
 
@@ -83,24 +83,23 @@ $ .\build\bin\Release\whisper-cli.exe -m c:\Path\to\ggml-large-v3-turbo.bin -f c
 [00:00:32.340 --> 00:00:39.740]  見える化することにより材料の無駄をなくし環境保全に優れた効果を発揮します
 
 
-whisper_print_timings:     load time =  2739.11 ms
+whisper_print_timings:     load time =  2288.43 ms
 whisper_print_timings:     fallbacks =   0 p /   0 h
-whisper_print_timings:      mel time =    51.74 ms
-whisper_print_timings:   sample time =   862.24 ms /   816 runs (     1.06 ms per run)
-whisper_print_timings:   encode time = 105302.51 ms /     2 runs ( 52651.25 ms per run)
-whisper_print_timings:   decode time =     0.00 ms /     1 runs (     0.00 ms per run)
-whisper_print_timings:   batchd time =  6588.13 ms /   809 runs (     8.14 ms per run)
-whisper_print_timings:   prompt time =   560.27 ms /    73 runs (     7.67 ms per run)
-whisper_print_timings:    total time = 116173.80 ms
+whisper_print_timings:      mel time =    75.10 ms
+whisper_print_timings:   sample time =  1114.81 ms /   858 runs (     1.30 ms per run)
+whisper_print_timings:   encode time = 87389.90 ms /     2 runs ( 43694.95 ms per run)
+whisper_print_timings:   decode time =    66.43 ms /     6 runs (    11.07 ms per run)
+whisper_print_timings:   batchd time =  6460.72 ms /   845 runs (     7.65 ms per run)
+whisper_print_timings:   prompt time =   611.46 ms /    79 runs (     7.74 ms per run)
+whisper_print_timings:    total time = 98183.85 ms
 ```
 
-上位モデルを使っているのもあって書き起こしの精度はとても良いと思います。しかし43秒の音声データに対して書き起こし処理に約116秒かかるというのは遅いなという印象です。
-タスクマネージャを確認していましたが8スレッドすべて使っていたので並列性をこれ以上上げて高速化するなどは難しそうです。
+上位モデルを使っているのもあって書き起こしの精度はとても良いと思います。しかし43秒の音声データに対して書き起こし処理に約98秒かかるというのは遅いなという印象です。
 
 次に軽いモデルの`base`モデルを使ってみます。
 
 ```sh
-$ .\build\bin\Release\whisper-cli.exe -m c:\Path\to\ggml-base.bin -f c:\Path\to\g_08.mp3
+$ .\build\bin\Release\whisper-cli.exe -m c:\Path\to\ggml-base.bin -f c:\Path\to\g_08.mp3 -t 8
 
 出力途中省略...
 
@@ -121,13 +120,13 @@ whisper_print_timings:   prompt time =   416.69 ms /   114 runs (     3.66 ms pe
 whisper_print_timings:    total time = 19184.52 ms
 ```
 
-処理時間は19秒とかなり短くなりましたが、書き起こし結果がなぜか英語に翻訳されたものになってしまいました。
+処理時間は19秒とかなり短くなりましたが、書き起こし結果がなぜか英語翻訳されたものになってしまいました。
 言語の自動判別が上手くいかないようです。
 
-オプションで手動で言語指定ができるので日本語を指定して実行してみます。
+オプションで言語指定ができるので日本語を指定して実行してみます。
 
 ```sh
-$ .\build\bin\Release\whisper-cli.exe -m c:\Path\to\ggml-base.bin -f c:\Path\to\g_08.mp3 -l ja
+$ .\build\bin\Release\whisper-cli.exe -m c:\Path\to\ggml-base.bin -f c:\Path\to\g_08.mp3 -l ja -t 8
 
 出力途中省略...
 
@@ -159,10 +158,8 @@ whisper_print_timings:    total time =  9940.29 ms
 英語音声データでも試してみたいので以下で公開されているサンプル音声の「AUDIO SAMPLE 1」を使います。
 [Audio Samples](https://global.oup.com/us/companion.websites/9780195300505/audio/audio_samples/)
 
-<audio controls src="https://d38nvwmjovqyq6.cloudfront.net/va90web25003/companions/ws_smith/1%20Comparison%20Of%20Vernacular%20And%20Refined%20Speech.mp3"></audio>
-
 ```sh
-$ .\build\bin\Release\whisper-cli.exe -m c:\Path\to\ggml-large-v3-turbo.bin -f c:\Path\to\EnglishSample.mp3
+$ .\build\bin\Release\whisper-cli.exe -m c:\Path\to\ggml-large-v3-turbo.bin -f c:\Path\to\EnglishSample.mp3 -t 8
 
 出力途中省略...
 
@@ -177,18 +174,18 @@ $ .\build\bin\Release\whisper-cli.exe -m c:\Path\to\ggml-large-v3-turbo.bin -f c
 [00:00:55.800 --> 00:01:25.780]   Thank you.
 
 
-whisper_print_timings:     load time =  1904.40 ms
+whisper_print_timings:     load time =  2132.47 ms
 whisper_print_timings:     fallbacks =   0 p /   0 h
-whisper_print_timings:      mel time =    81.84 ms
-whisper_print_timings:   sample time =  1075.68 ms /   980 runs (     1.10 ms per run)
-whisper_print_timings:   encode time = 172665.14 ms /     3 runs ( 57555.05 ms per run)
-whisper_print_timings:   decode time =    41.00 ms /     3 runs (    13.67 ms per run)
-whisper_print_timings:   batchd time =  8511.53 ms /   968 runs (     8.79 ms per run)
-whisper_print_timings:   prompt time =  1090.00 ms /    99 runs (    11.01 ms per run)
-whisper_print_timings:    total time = 185442.77 ms
+whisper_print_timings:      mel time =    94.88 ms
+whisper_print_timings:   sample time =  1050.25 ms /   979 runs (     1.07 ms per run)
+whisper_print_timings:   encode time = 118303.53 ms /     3 runs ( 39434.51 ms per run)
+whisper_print_timings:   decode time =    51.89 ms /     4 runs (    12.97 ms per run)
+whisper_print_timings:   batchd time =  7149.02 ms /   966 runs (     7.40 ms per run)
+whisper_print_timings:   prompt time =   603.97 ms /    99 runs (     6.10 ms per run)
+whisper_print_timings:    total time = 129573.25 ms
 ```
 
-こちらも高い精度の結果が得られたと思います。57秒の音声データに対して書き起こし処理に約185秒かかりました。
+こちらも高い精度の結果が得られたと思います。57秒の音声データに対して書き起こし処理に約130秒かかりました。
 
 次に軽いモデルの`base`モデルを使ってみます。
 
@@ -255,7 +252,7 @@ C++側の関数単位でのインターフェースとなっていてるので�
 
 `modelPath` 変数にwhisperモデルファイルへのパス、`audioPath` 変数に音声ファイルへのパスを指定しています。
 
-上記CLIの検証で利用した音声データはmp3形式でしたが、現状のWhisperJNIは対応している音声ファイル形式はサンプルビット数が16bitのwav形式のみだったで以下のように`ffmpeg`コマンドを使って変換します。
+上記CLIの検証で利用した音声データはmp3形式でしたが、現状のWhisperJNIは対応している音声ファイル形式はサンプルビット数が16bitのwav形式のみだったので以下のように`ffmpeg`コマンドを使って変換します。
 
 ```sh
 ffmpeg -i g_08.mp3 -ar 16000 -ac 1 -c:a pcm_s16le g_08.wav
@@ -357,7 +354,7 @@ CO2削減などが叫ばれていますが
 ```
 
 1行ごとに1つのセグメントを出力しています。
-最後のセグメントに実際の音声とは関係のない単語が出力されていますね。何度実行しても同じ結果となるので確率的な結果のブレとかは少ないみたいなのですが、音声ファイルの内容的に最後の数秒間BGMだけが流れて声が入っていない部分があるので、その部分を影響があるのなと思いました。
+最後のセグメントに実際の音声とは関係のない単語が出力されていますね。何度実行しても同じ結果となるので確率的な結果のブレとかは少ないみたいなのですが、音声ファイルの内容的に最後の数秒間BGMだけが流れて声が入っていない部分があるので、その部分の影響があるのなと思いました。
 
 英語音声ファイルの場合でも実行した結果が以下です。
 
@@ -388,11 +385,11 @@ CO2削減などが叫ばれていますが
 
 こちらのファイルでも最後の数秒が音声の入っていない無音だったためか書き起こし結果にも関係のない文章が出力されてしまいました。
 
-上記結果はCLI実行した結果と違っていますがバージョンも違っていて単純な比較ができないのでとりあえずこんなものなのかというところで調査は留めておきます。
+上記出力結果はCLI実行した結果と違っていますがバージョンも違っていて単純な比較ができないのでとりあえずこんなものなのかというところで調査は留めておきます。
 
 # OpenBLASによる高速化検証
 
-Javaによる実行速度はCLI実行の場合と変わりありませんでした。CLI実行結果でも述べましたが`large-v3-turbo`モデルは精度が良い反面処理時間が長いなという印象です。
+Javaによる実行速度はCLI実行の場合と大きくは変わりありませんでした。CLI実行結果でも述べたように`large-v3-turbo`モデルは精度が良い反面処理時間が長いなという印象です。
 
 whisper.cppのドキュメントを見てみると、線形代数演算ライブラリの[OpenBLAS](http://www.openmathlib.org/OpenBLAS/)を用いてエンコードするための手順が書いてあったので試してみたいと思います。
 （参考 [BLAS CPU support via OpenBLAS](https://github.com/ggml-org/whisper.cpp/tree/master?tab=readme-ov-file#blas-cpu-support-via-openblas)）
@@ -419,18 +416,18 @@ Javaプログラム実行した処理時間を以下にまとめます。今回�
 
 | モデル | OpenBLASなし | OpenBLASあり | 短縮率 |
 | --- | --- | --- | --- |
-| large-v3-turbo | 169秒 | 93秒 | 45% |
-| medium | 85秒 | 68秒 | 20% |
+| large-v3-turbo | 107秒 | 74秒 | 30% |
+| medium | 85秒 | 63秒 | 20% |
 | base | 10秒 | 8秒 | 20% |
 
-`mediau`と`base`は20%程の短縮にとどまったのに比べて、`large-v3-turbo` モデルでは効果がより顕著に表れて処理時間がおおよそ半減しました。ですがそれでも43秒の音声データに対して2倍以上の時間がかかってしまうのはこの環境とモデルでは実用に厳しいなと思いました。
+OpenBLASを有効化した場合におおよそ20～30%処理時間が短縮される結果が得られました。劇的に速くなったとは言えないかもですが大きなモデル程短縮される時間が増えるのでこの効果でも嬉しいですね。
 
 # おわりに
 
 本記事では、Java環境でWhisperを使って音声データの書き起こしを行うために、WhisperJNIを用いた検証の過程をご紹介しました。Python以外の環境、とりわけJavaのような業務システムで多く使われる言語でWhisperを活用できる手段として、whisper.cppとそのJNIラッパーは有力な選択肢となり得ます。
 
 また、OpenBLASを用いた高速化の検証を通じて、推論処理のパフォーマンスを向上させる手法についても簡単に触れました。実運用を見据えた際には、こうした最適化が特に重要になってくる場面も多いと思われます。
-whisper.cppはNVIDIA GPUを用いた推論処理にも対応しているのでより高速化できるのかも気になるところです。
+whisper.cppはNVIDIA GPUを用いた推論処理にも対応しているのでより高速化できるのかどうかも気になるところです。
 
 Whisperのような高精度な音声認識技術を、Javaからでも扱えるようにすることで、より多くの場面での活用が期待できます。今後も新しいライブラリの登場や機能改善が進んでいくと思われるので、引き続きウォッチしていきたいところです。
 

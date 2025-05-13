@@ -58,3 +58,9 @@ IoTデバイスのOTA機能について紹介します。
 
 - [IoT を使ってみる（その１６：OTAを使ってESP32のファームウェアを無線で楽々アップデート！）](/iot/internet-of-things-16/)
 - [IoT を使ってみる（その１７：ESP32 OTAの基本を徹底解説：フラッシュメモリ構成から動作の仕組みまで）](/iot/internet-of-things-17/)
+
+## MicroPython編
+
+MicroPython を使ったIoTデバイス開発について紹介します。
+
+- [IoT を使ってみる（その２０：MicroPythonで始めるESP32プログラミング「超」入門）](/iot/internet-of-things-20/)

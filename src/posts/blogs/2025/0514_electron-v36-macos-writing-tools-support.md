@@ -1,5 +1,5 @@
 ---
-title: Electron アプリから macOS の Apple Intelligence を利用する
+title: Electron アプリから macOS Apple Intelligence の Writing Tools を使う
 author: masahiro-kondo
 date: 2025-05-14
 tags: [electron, 生成AI]
@@ -54,7 +54,7 @@ Electron v36 でリリースされた機能は、OS レベルのメニュー項�
 - [webFrameMain | Electron](https://www.electronjs.org/docs/latest/api/web-frame-main)
 
 :::info
-記事の冒頭に記載した通り、Apple Intelligence が有効になっていれば、既存の Electron アプリでも特に手を入れることなく、メニューバーから Writing Tools を利用できます。今回サポートされたのは TextArea などでコンテキストメニューから Writing Tools を利用したいというユースケースです。
+記事の冒頭に記載した通り、Apple Intelligence が有効になっていれば、既存の Electron アプリでも特に手を入れることなく、メニューバーから Writing Tools を利用できます。今回サポートされたのは TextArea などで選択されたテキストに対してコンテキストメニューから Writing Tools を利用したいというユースケースです。
 
 ![Writing tools added in app menu](https://i.gyazo.com/b2abbbe106c4ac1aa7da37b7189ea104.png)
 :::

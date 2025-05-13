@@ -63,4 +63,4 @@ IoTデバイスのOTA機能について紹介します。
 
 MicroPython を使ったIoTデバイス開発について紹介します。
 
-- [IoT を使ってみる（その２０：MicroPythonで始めるESP32プログラミング”超”入門）](/iot/internet-of-things-20/)
+- [IoT を使ってみる（その２０：MicroPythonで始めるESP32プログラミング「超」入門）](/iot/internet-of-things-20/)

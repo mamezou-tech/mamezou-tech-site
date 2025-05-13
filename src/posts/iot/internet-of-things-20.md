@@ -1,5 +1,5 @@
 ---
-title: IoT を使ってみる（その２０：MicroPythonで始めるESP32プログラミング”超”入門）
+title: IoT を使ってみる（その２０：MicroPythonで始めるESP32プログラミング「超」入門）
 author: shuichi-takatsu
 date: 2025-05-14
 tags: [vscode, esp32, micropython, pymakr]

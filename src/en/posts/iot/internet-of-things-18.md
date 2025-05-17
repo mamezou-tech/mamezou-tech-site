@@ -12,7 +12,7 @@ translate: true
 
 ---
 
-[Last time](/iot/internet-of-things-17/), we explained the basics of ESP32 OTA.  
+[Last time](/en/iot/internet-of-things-17/), we explained the basics of ESP32 OTA.  
 This time, we'll try implementing real-time streaming of JPEG images over Wi-Fi using the ESP32-WROVER-E development board and an OV2640 camera module.  
 (This is not the main topic, but we'll also implement OTA functionality.)
 
@@ -23,7 +23,7 @@ This time, we'll use the `esp32-camera` driver in a PlatformIO + Arduino framewo
 Although this driver was originally developed for ESP-IDF, it can also be used with the Arduino framework.
 
 In this article, we'll focus on **setting up the PlatformIO.ini file and creating the JPEG streaming program**.  
-For instructions on installing VSCode, adding the PlatformIO extension, and creating a project, refer to [another article](/iot/internet-of-things-14/#開発環境「platform-io」).
+For instructions on installing VSCode, adding the PlatformIO extension, and creating a project, refer to [another article](/en/iot/internet-of-things-14/#開発環境「platform-io」).
 
 ## Required Items
 
@@ -73,7 +73,7 @@ build_flags =
     -mfix-esp32-psram-cache-issue
 ```
 
-The OTA settings are explained in [a previous article](/iot/internet-of-things-16/), so we won't go into detail here.
+The OTA settings are explained in [a previous article](/en/iot/internet-of-things-16/), so we won't go into detail here.
 
 The `esp32-camera` library is included in "Arduino for ESP32", so no additional settings are required in platformio.ini.  
 Simply add `#include "esp_camera.h"` in your main program, and the compiled header will be found in the default include path as part of the framework.
@@ -305,7 +305,7 @@ void loop() {
 
 ## Program Explanation
 
-Because the OTA update part was introduced in [a previous article](/iot/internet-of-things-16/), we'll explain only the following two points here:
+Because the OTA update part was introduced in [a previous article](/en/iot/internet-of-things-16/), we'll explain only the following two points here:
 * The camera initialization part in the setup() function
 * The handleJPGStream() function
 

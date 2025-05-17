@@ -13,7 +13,7 @@ translate: true
 
 Last year (2024), I introduced AWS AppSync’s Event API in the following article.
 
-@[og](/blogs/2024/11/13/aws-appsync-events/)
+@[og](/en/blogs/2024/11/13/aws-appsync-events/)
 
 AppSync is famous for GraphQL, but with the introduction of the WebSocket-based Event API, real-time communication has become even simpler. About half a year has passed since then, and the Event API has continued to gain new features.
 

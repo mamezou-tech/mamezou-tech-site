@@ -16,7 +16,7 @@ translate: true
 
 ---
 
-Last time, I wrote an article titled "[A Thorough Explanation of ESP-IDF Project Structure and CMake Mechanisms! (VSCode + ESP-IDF Extension)](/blogs/2025/05/03/esp-idf-vsc-extension-2/). Since then, feeling encouraged and trying out various things, I attempted to build a camera server using the **esp32-camera** component and got thoroughly stuck, so I've summarized that experience here.
+Last time, I wrote an article titled "[A Thorough Explanation of ESP-IDF Project Structure and CMake Mechanisms! (VSCode + ESP-IDF Extension)](/en/blogs/2025/05/03/esp-idf-vsc-extension-2/). Since then, feeling encouraged and trying out various things, I attempted to build a camera server using the **esp32-camera** component and got thoroughly stuck, so I've summarized that experience here.
 
 ## Development Environment
 
@@ -254,7 +254,7 @@ esp32_wrover_e_camera/
 └── ...
 ```
 
-Details about the development board (ESP32-WROVER-E), the camera module (OV2640), and the streaming setup can be found in [another article (VSCode + PlatformIO + Arduino Framework)](/iot/internet-of-things-18/), so we'll skip the detailed explanation here. (In the Arduino framework PSRAM was limited to 4MB, but under ESP-IDF it properly recognizes all 8MB.)
+Details about the development board (ESP32-WROVER-E), the camera module (OV2640), and the streaming setup can be found in [another article (VSCode + PlatformIO + Arduino Framework)](/en/iot/internet-of-things-18/), so we'll skip the detailed explanation here. (In the Arduino framework PSRAM was limited to 4MB, but under ESP-IDF it properly recognizes all 8MB.)
 
 ### Usage
 

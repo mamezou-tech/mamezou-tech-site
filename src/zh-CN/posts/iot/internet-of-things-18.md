@@ -12,7 +12,7 @@ translate: true
 
 ---
 
-[上一篇](/iot/internet-of-things-17/)介绍了ESP32 OTA的基本内容。  
+[上一篇](/zh-cn/iot/internet-of-things-17/)介绍了ESP32 OTA的基本内容。  
 这次我们将使用ESP32-WROVER-E开发板和OV2640摄像头模块，通过Wi-Fi实时流式传输JPEG图像。  
 （虽然不是本篇重点，但也会一起实现OTA功能）
 
@@ -73,7 +73,7 @@ build_flags =
     -mfix-esp32-psram-cache-issue
 ```
 
-关于OTA配置，请参阅[上一篇](/iot/internet-of-things-16/)，此处省略详细说明。  
+关于OTA配置，请参阅[上一篇](/zh-cn/iot/internet-of-things-16/)，此处省略详细说明。  
 
 `esp32-camera`库已包含在“Arduino for ESP32”中，因此无需在platformio.ini中进行额外配置。  
 在主程序中添加`#include "esp_camera.h"`后，作为框架一部分编译的头文件即可在默认搜索路径中被找到。  

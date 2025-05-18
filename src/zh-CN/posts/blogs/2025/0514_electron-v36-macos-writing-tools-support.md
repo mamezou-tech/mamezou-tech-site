@@ -71,7 +71,7 @@ Apple Intelligence 是 Apple 设备上提供的 AI 平台，在 iOS 18.1、iPadO
 :::info
 关于在 Electron 应用中显示上下文菜单的方法，请参阅以下文章。
 
-@[og](/blogs/2025/01/07/build-context-menu-in-electron-app/)
+@[og](/zh-cn/blogs/2025/01/07/build-context-menu-in-electron-app/)
 :::
 
 所做的工作，就是在正常显示上下文菜单时，获取 WebContents 的 focusedFrame 属性（WebFrameMain 的实例），并将其作为 frame 选项传递给 contextMenu.popup。详情请参阅代码中的注释。

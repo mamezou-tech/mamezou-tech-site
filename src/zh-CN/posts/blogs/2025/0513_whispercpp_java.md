@@ -4,7 +4,6 @@ author: kotaro-miura
 date: 2025-05-13T00:00:00.000Z
 tags:
   - whisper
-  - whisper
   - OpenBLAS
   - java
   - JNI

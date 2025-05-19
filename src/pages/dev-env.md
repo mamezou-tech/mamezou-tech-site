@@ -42,6 +42,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [VSCode & PlatformIOで始める！WSL×組み込み開発環境構築の完全ガイド](/blogs/2025/04/10/develop-on-vscode-platformio-and-wsl/)
 - [ESP-IDFプロジェクトの構成とCMakeの仕組みを徹底解説！（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/03/esp-idf-vsc-extension-2/)
 - [IDF Component ManagerとKconfig設定でハマった話（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/06/esp-idf-vsc-extension-3/)
+- [「Rust × ESP32」で始める組み込み開発：Lチカまでの完全セットアップガイド](/blogs/2025/05/19/using-rust-02/)
 
 ### リモート環境
 

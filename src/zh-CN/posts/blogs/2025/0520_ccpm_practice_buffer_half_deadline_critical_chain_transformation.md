@@ -13,7 +13,7 @@ translate: true
 
 # 前言
 
-在上一篇文章「[CCPM理论篇](https://developer.mamezou-tech.com/blogs/2025/05/09/ccpm_theory_bottleneck_is_why_learn_toc/)」中，我们介绍了作为CCPM（关键链项目管理）基础的TOC（制约理论）。  
+在上一篇文章「[CCPM理论篇](https://developer.mamezou-tech.com/zh-cn/blogs/2025/05/09/ccpm_theory_bottleneck_is_why_learn_toc/)」中，我们介绍了作为CCPM（关键链项目管理）基础的TOC（制约理论）。  
 CCPM是一种项目管理方法，它将各任务的缓冲汇总统一管理，并通过最大限度地利用制约资源，旨在缩短项目交期并提高吞吐量。  
 通过可视化各个任务中潜在的“隐藏缓冲”，并在项目整体范围内进行最优利用，可以制定更贴合实际且更可靠的进度计划。  
 本篇文章将介绍如何将CCPM应用于项目进度编制，以及如何实现标题中所述的 **“缓冲减半也能严守交期！”** 这一目标和 **“关键链改变现场”** 这一效果。

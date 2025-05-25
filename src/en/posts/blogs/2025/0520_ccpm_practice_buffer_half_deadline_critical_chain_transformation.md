@@ -15,7 +15,7 @@ translate: true
 
 # Introduction
 
-In the previous article “[CCPM Theoretical Edition](https://developer.mamezou-tech.com/blogs/2025/05/09/ccpm_theory_bottleneck_is_why_learn_toc/)”, we explained TOC (Theory of Constraints), which forms the foundation of CCPM (Critical Chain Project Management). CCPM is a project management method that aims to shorten project deadlines and improve throughput by aggregating task buffers for overall management and maximizing the utilization of constraint resources. By visualizing the “hidden buffers” within individual tasks and optimally using them across the entire project, it enables the creation of more realistic and reliable schedules. This time, we’ll introduce how to apply CCPM to project schedule creation, and how the goals of “Meeting Deadlines Even with Half Buffers!” and the effects of “Transforming the Workplace with the Critical Chain” are realized.
+In the previous article “[CCPM Theoretical Edition](https://developer.mamezou-tech.com/en/blogs/2025/05/09/ccpm_theory_bottleneck_is_why_learn_toc/)”, we explained TOC (Theory of Constraints), which forms the foundation of CCPM (Critical Chain Project Management). CCPM is a project management method that aims to shorten project deadlines and improve throughput by aggregating task buffers for overall management and maximizing the utilization of constraint resources. By visualizing the “hidden buffers” within individual tasks and optimally using them across the entire project, it enables the creation of more realistic and reliable schedules. This time, we’ll introduce how to apply CCPM to project schedule creation, and how the goals of “Meeting Deadlines Even with Half Buffers!” and the effects of “Transforming the Workplace with the Critical Chain” are realized.
 
 CCPM is not just a technique for creating a schedule. It is an approach that combines both a way of thinking and a system to achieve the “shortest route” and “certain execution” necessary to fulfill project objectives. CCPM offers insights for structurally solving common project management challenges such as “missing deadlines” and “spending too much time on progress reports without moving forward.”
 
@@ -48,7 +48,7 @@ When alternating between two tasks versus completing them one by one:
 Even if we understand this, in reality, multi-project or multi-task scenarios are often unavoidable. Tasks that only a particular person can do tend to concentrate on that person.
 
 :::info:For reference
-If you want to delve deeper into the adverse effects of multitasking on work and strategies to counter them, please also see the previous article “[No More Overtime! Escaping the Multitasking Trap and Delivering Results at Lightning Speed](https://developer.mamezou-tech.com/blogs/2025/04/14/no_more_overtime_escape_multitasking_trap/)”.
+If you want to delve deeper into the adverse effects of multitasking on work and strategies to counter them, please also see the previous article “[No More Overtime! Escaping the Multitasking Trap and Delivering Results at Lightning Speed](https://developer.mamezou-tech.com/en/blogs/2025/04/14/no_more_overtime_escape_multitasking_trap/)”.
 :::
 
 ## Prioritizing and Focusing on Projects

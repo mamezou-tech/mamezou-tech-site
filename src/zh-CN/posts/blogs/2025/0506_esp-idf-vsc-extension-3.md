@@ -14,7 +14,7 @@ translate: true
 
 ---
 
-上次我写了「[ESP-IDF项目的结构与CMake机制彻底解读！（VSCode＋ESP-IDF 扩展功能）](/blogs/2025/05/03/esp-idf-vsc-extension-2/)」一文。  
+上次我写了「[ESP-IDF项目的结构与CMake机制彻底解读！（VSCode＋ESP-IDF 扩展功能）](/zh-cn/blogs/2025/05/03/esp-idf-vsc-extension-2/)」一文。  
 之后，心情不错，一边尝试各种方法，一边想用 **esp32-camera** 组件搭建摄像头服务器，结果大大踩了坑，特此总结下这次的经历。
 
 ## 开发环境
@@ -271,7 +271,7 @@ esp32_wrover_e_camera/
 └── ...
 ```
 
-开发板（ESP32-WROVER-E）和摄像头模组（OV2640）、以及流媒体设置方法等在[另一篇文章（VSCode＋PlatformIO＋Arduino 框架）](/iot/internet-of-things-18/)中有介绍，此处不再赘述。  
+开发板（ESP32-WROVER-E）和摄像头模组（OV2640）、以及流媒体设置方法等在[另一篇文章（VSCode＋PlatformIO＋Arduino 框架）](/zh-cn/iot/internet-of-things-18/)中有介绍，此处不再赘述。  
 （在 Arduino 框架中 PSRAM 最多只能使用 4MB，但在 ESP-IDF 中似乎能正常识别并使用到 8MB）
 
 ### 使用方法

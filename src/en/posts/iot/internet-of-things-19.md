@@ -16,7 +16,7 @@ translate: true
 
 ## Introduction
 
-In [the previous article](/iot/internet-of-things-15/), we introduced how to achieve long-term battery operation by utilizing the ESP32 DeepSleep feature.  
+In [the previous article](/en/iot/internet-of-things-15/), we introduced how to achieve long-term battery operation by utilizing the ESP32 DeepSleep feature.  
 This time, as a development of that, we will take on the **LightSleep** feature.
 
 ---
@@ -63,7 +63,7 @@ This eliminates the need to run the full startup sequence as in Deep Sleep, enab
 
 ## Comparison with DeepSleep
 
-The comparison table with [DeepSleep](/iot/internet-of-things-15/) used previously is as follows.  
+The comparison table with [DeepSleep](/en/iot/internet-of-things-15/) used previously is as follows.  
 
 | Mode        | Power Consumption         | Wake-up Speed                 | Memory Retention | External Interrupt Support |
 |-------------|---------------------------|-------------------------------|------------------|----------------------------|
@@ -137,7 +137,7 @@ CONFIG_PM_LIGHTSLEEP_RTC_OSC_CAL_INTERVAL=1
 - `DFS_INIT_AUTO`: Automatically initialize frequency scaling.  
 - `RTC_OSC_CAL_INTERVAL`: Sets the RTC clock calibration interval (every 1 second).
 
-Regarding CMakeLists.txt, only the contents are shown here; a detailed explanation is provided [here](/blogs/2025/05/03/esp-idf-vsc-extension-2/), so it is omitted here.
+Regarding CMakeLists.txt, only the contents are shown here; a detailed explanation is provided [here](/en/blogs/2025/05/03/esp-idf-vsc-extension-2/), so it is omitted here.
 
 `CMakeLists.txt`
 ```cmake

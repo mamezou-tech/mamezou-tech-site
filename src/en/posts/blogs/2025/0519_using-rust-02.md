@@ -582,7 +582,7 @@ channel = "esp"
 #### `sdkconfig.defaults`
 
 `sdkconfig.defaults` is a file where you specify various settings for ESP-IDF (the C framework), such as FreeRTOS settings, stack sizes, enabling/disabling Wi-Fi, etc.  
-For detailed information on its content, see [this article](https://developer.mamezou-tech.com/blogs/2025/05/03/esp-idf-vsc-extension-2/#sdkconfigdefaults-%E3%81%AE%E6%A6%82%E8%A6%81); we’ll skip a detailed explanation here.
+For detailed information on its content, see [this article](https://developer.mamezou-tech.com/en/blogs/2025/05/03/esp-idf-vsc-extension-2/#sdkconfigdefaults-%E3%81%AE%E6%A6%82%E8%A6%81); we’ll skip a detailed explanation here.
 
 #### `build.rs`
 

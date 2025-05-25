@@ -71,7 +71,7 @@ Here’s a sample showing how to enable Writing Tools in the context menu of a b
 :::info
 For information on how to display a context menu in an Electron app, see the following article:
 
-@[og](/blogs/2025/01/07/build-context-menu-in-electron-app/)
+@[og](/en/blogs/2025/01/07/build-context-menu-in-electron-app/)
 :::
 
 What you do is, in the normal context menu display, get the focusedFrame property (an instance of WebFrameMain) from WebContents, and specify it in the frame option of contextMenu.popup. See the comments in the code for details.

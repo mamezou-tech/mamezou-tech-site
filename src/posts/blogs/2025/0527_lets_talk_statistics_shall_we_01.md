@@ -1,8 +1,8 @@
 ---
-title: 統計の話をしようじゃないか（統計って何？ なぜ必要？）
+title: 統計の話をしようじゃないか（統計って何？ ソフトウェア品質になぜ必要？）
 author: shuichi-takatsu
 date: 2025-05-27
-tags: [Analytics, 新人向け]
+tags: [Analytics, ソフトウェア, 品質, 新人向け]
 image: true
 ---
 

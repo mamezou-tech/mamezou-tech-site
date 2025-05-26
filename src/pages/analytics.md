@@ -10,6 +10,9 @@ enTitle: Analytics
 近年では機械学習やAIの普及に伴い、それ以外の分野でも幅広く活用されるようになり、統計解析の知識が必要不可欠な時代になってきました。
 ここでは、そんな統計解析に焦点を当てた記事を紹介していきます。
 
+## 統計マニアのつぶやき
+- [統計の話をしようじゃないか（統計って何？ なぜ必要？）](/blogs/2025/05/27/lets_talk_statistics_shall_we_01/)
+
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)
 - [ベイズ統計をお手軽に、統計解析ツールJASPの紹介](/blogs/2022/06/23/statistical-analysis-tool-jasp/)

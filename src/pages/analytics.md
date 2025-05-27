@@ -12,6 +12,7 @@ enTitle: Analytics
 
 ## 統計マニアのつぶやき
 - [統計の話をしようじゃないか（統計って何？ なぜ必要？）](/blogs/2025/05/27/lets_talk_statistics_shall_we_01/)
+- [統計の話をしようじゃないか（データとの正しい向き合い方）](/blogs/2025/05/28/lets_talk_statistics_shall_we_02/)
 
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)

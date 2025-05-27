@@ -2,7 +2,7 @@
 title: 統計の話をしようじゃないか（データとの正しい向き合い方）
 author: shuichi-takatsu
 date: 2025-05-28
-tags: [Analytics, ソフトウェア, 品質]
+tags: [Analytics, ソフトウェア, 品質, 新人向け]
 image: true
 ---
 

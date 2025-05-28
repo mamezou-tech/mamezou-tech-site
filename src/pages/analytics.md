@@ -11,8 +11,8 @@ enTitle: Analytics
 ここでは、そんな統計解析に焦点を当てた記事を紹介していきます。
 
 ## 統計マニアのつぶやき
-- [統計の話をしようじゃないか（統計って何？ なぜ必要？）](/blogs/2025/05/27/lets_talk_statistics_shall_we_01/)
-- [統計の話をしようじゃないか（データとの正しい向き合い方）](/blogs/2025/05/28/lets_talk_statistics_shall_we_02/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.1 統計って何？ ソフトウェア品質になぜ必要？）](/blogs/2025/05/27/lets_talk_statistics_shall_we_01/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.2 データとの正しい向き合い方）](/blogs/2025/05/28/lets_talk_statistics_shall_we_02/)
 
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)

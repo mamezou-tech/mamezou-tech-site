@@ -8,6 +8,7 @@ tags: [IaC, AWS, terraform, data-source, sss]
 # はじめに
 
 豆蔵社内で開発・運用している[営業支援システム(Sales Support System)](/in-house-project/sss/intro/)（以下、SSS）の開発の IaC 実装で利用した Terraform データソース[^1]について紹介します。
+また、Terraform の`import`でに既存リソースを IaC 化するのはハードルが高いですが、データソースを使って既存リソース情報を Terraform で使えるようにし、徐々に IaC 化を進めるポイントをご紹介します。
 
 [^1]: `data`で始まる要素。詳細は Terraform のドキュメントの[Data sources](https://developer.hashicorp.com/terraform/plugin/framework/data-sources)を参照。
 
@@ -53,11 +54,14 @@ SSS では SecretsManager は管理コンソールで定義しており、数少
 
 余談ですが、AWS のリソースやデータソースの API のドキュメントは[HashiCorp](https://www.hashicorp.com/)や[Terraform](https://www.terraform.io/)からだとたどりにくいです。そもそも AWS のリソースは AWS Provider の要素なので、[Terraform Registry](https://registry.terraform.io/)にあります。
 
-前置きが長くなりましたが、以降では SSS でも利用した主なデータソースを紹介していきます。定義そのもの例と参照の例として`output`を示します。
+以降では SSS でも利用した主なデータソースを紹介していきます。定義そのもの例と参照の例として`output`を示します。
 
 # カレント
 
-Terraform を実行する AWS アカウントとリージョンに関連したデータソースについて紹介します。
+Terraform を実行しているユーザー、カレント[^10]に関連したデータソースについて紹介します。
+主なものとして ARN などにも含まれる AWS アカウントとリージョンを取り上げます。
+
+[^10]: ここでは現在の状態などのこと。
 
 ## AWS アカウント ID
 
@@ -99,7 +103,7 @@ output "region_name" {
 
 以下は自作の Terraform モジュールを参照するためのデータソース定義[^21][^22]と利用例になります。
 
-データソース名にあるように、これは<strong><font color="red">リモートで Terraform の状態を管理している場合にのみ利用可能</font></strong>です。
+データソース名（`terraform_remote_state`）にあるように、これは<strong><font color="red">「リモート」で Terraform の状態を管理している場合にのみ利用可能</font></strong>です。
 
 ここでは SSS でも利用している S3 で共有する場合の例になります。
 
@@ -140,9 +144,9 @@ output "some_resource_id" {
 
 AWS アカウント作成時に存在しているデフォルトの VPC および`Name`タグを使った絞り込みの場合のデータソース定義[^31]です。
 
-特定のデータソースを指定する際には良く名称を指定しますが、VPC そのものには名称がないため、名称の指定ができません。VPC やセキュリティグループなどのようにリソース自体に名付けできない場合、よくある方法としてタグの`Name`キーを追加して、値にヒューマンリーダブルな名称を設定[^32]します。データソースではそのタグの値を`tags`で指定して絞り込みます。
+特定のデータソースを指定する際にはよく名称を指定しますが、VPC そのものには名称がないため、名称の指定ができません。VPC やセキュリティグループなどのようにリソース自体に名付けできない場合、よくある方法としてタグの`Name`キーを追加して、値にヒューマンリーダブルな名称を設定[^32]します。データソースではそのタグの値を`tags`で指定して絞り込みます。
 
-データ参照では VPC ID の例を示していますが、API リファレンスを参照するか、リソースオブジェクト全体（`data.aws_vpc.default`など）を出力することでも確認出来ます。なお、オブジェクト全体を出力すると API リファレンスにはない項目が出てくることがありますが、その項目を利用する際には自己責任でお願いします。
+データ参照では VPC ID の例を示していますが、API リファレンスを参照するか、リソースオブジェクト全体（`data.aws_vpc.default`など）を出力することでも確認出来ます。
 
 ```hcl
 # default
@@ -177,11 +181,8 @@ output "vpc_id" {
 
 複数のサブネットを扱う例はプライベートサブネットの抽出ですが、パブリックかプライベートかはサブネットそのものではわからないため、ここでもタグを利用しています。`filter`要素で対象となるサブネットが含まれる VPC として先程のデフォルトでない VPC を指定（`vpc_id`の値に指定）、更に、`Name`タグにワイルドカードで部分一致を指定して取得しています。`filter`については AWS CLI の`--filter`オプションの引数値[^35]と同等となっています。
 
-単一のサブネットのみを扱う例は複数の例に加えて特定のアベイラビリティゾーンを条件に指定しています。単一の場合、VPC ID は独自のパラメタを利用しています。
-
-なお、単一のリソースを扱うデータソースは絞り込みが不十分で複数のリソースが選択されるとエラーとなります。また、データソース名については要素名のところが単数形と複数形となることがほとんどなので探すのは容易かと思います。
-
 ```hcl
+# for multiple resources
 data "aws_subnets" "private" {
   filter {
     name   = "vpc-id"
@@ -192,8 +193,15 @@ data "aws_subnets" "private" {
     Name = "*private*"
   }
 }
+```
 
-data "aws_subnet" "by_az" { // MUST select only one element
+単一のサブネットのみを扱う例は複数の例に加えて特定のアベイラビリティゾーンを条件に指定しています。単一の場合、VPC ID は独自のパラメタを利用しています。
+
+なお、単一のリソースを扱うデータソースは絞り込みが不十分で複数のリソースが選択されるとエラーとなります。また、データソース名については要素名のところが単数形と複数形となることがほとんどなので探すのは容易かと思います。
+
+```hcl
+# for single resource(MUST select only one element)
+data "aws_subnet" "by_az" {
   vpc_id            = data.aws_vpc.this.id
   availability_zone = "ap-northeast-1c"
   tags = {
@@ -220,10 +228,6 @@ output "subnet_by_az_id" {
 
 以下はセキュリティグループに関するデータソース定義[^36][^37]と利用例になります。
 
-これも複数リソースと単一リソースの例となりますが、どちらもデフォルトでない VPC 内で`Name`タグ値が`"ecs"`のセキュリティグループを指定しています。
-複数リソース版では 2 つの`filter`ブロックを指定していますが、論理積（AND）条件となります。逆に、`filter`の`values`に複数指定した場合は論理和（OR）条件となります。
-同じ条件で、単一リソースでもエラーにならない条件のため、どちらも一つのリソースですが、複数の場合は結果がリストになります。そのため、利用例の 2 つ目と 3 つ目は同じ値となります。
-
 ```hcl
 data "aws_security_groups" "ecs" {
   filter {
@@ -242,6 +246,10 @@ data "aws_security_group" "ecs" {
   name   = "ecs"
 }
 ```
+
+これも複数リソースと単一リソースの例となりますが、どちらもデフォルトでない VPC 内で`Name`タグ値が`"ecs"`のセキュリティグループを指定しています。
+複数リソース版では 2 つの`filter`ブロックを指定していますが、論理積（AND）条件となります。逆に、`filter`の`values`に複数指定した場合は論理和（OR）条件となります。
+同じ条件で、単一リソースでもエラーにならない条件のため、どちらも一つのリソースですが、複数の場合は結果がリストになります。そのため、利用例の 2 つ目と 3 つ目は同じ値となります。
 
 ```hcl
 output "ecs_security_group_ids" {
@@ -367,7 +375,7 @@ output "rds_secret_value_dbClusterIdentifier" {
 [^40]: [`aws_secretsmanager_sercret`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_sercret)
 [^41]: [`aws_secretsmanager_sercret_version`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_sercret_version)
 
-# インクリメンタル IaC 化
+# データソースを活用してインクリメンタルに IaC 化していく
 
 Terraform に関して以下の「学び」があります[^51]。
 
@@ -378,9 +386,9 @@ Terraform に関して以下の「学び」があります[^51]。
 これは既に多くの AWS リソースを用い、様々な細かい設定しているプロジェクトではかなり大変な作業になります。しかし、開発も運用保守も時間やコストは有限です。
 
 :::check:完全な記述
-例えば、`aws_iam_role`のインポートだけでは、アタッチされていた AWS 管理ポリシーは Terraform の管理にはなりません。そのため、対象の IAM ロールを正しく IaC 化するには、`aws_iam_role_policy_attachment`リソース定義も追加しなければなりません。
+例えば、`aws_iam_role`の`import`だけでは、アタッチされていた AWS 管理ポリシーは Terraform の管理にはなりません。そのため、対象の IAM ロールを正しく IaC 化するには、`aws_iam_role_policy_attachment`リソース定義も追加しなければなりません。
 
-なお、`aws_iam_role_policy_attachment`をインポートせず`plan`を実行すると「管理ポリシーをデタッチする計画（差分）」が表示されます。出てきた差分をすべて解消すると正しく取り込まれることになりますが、Terraform に慣れていないとどのリソースを使い、各引数には何を設定するのか、といったことを次々と追いかけて行くことになります。そして、インフラ的に分離されているところまで IaC 化しなければならなくなります。
+なお、`aws_iam_role_policy_attachment`を`import`せず`plan`を実行すると「管理ポリシーをデタッチする計画（差分）」が表示されます。出てきた差分をすべて解消すると正しく取り込まれることになりますが、Terraform に慣れていないとどのリソースを使い、各引数には何を設定するのか、といったことを次々と追いかけて行くことになります。そして、インフラ的に分離されているところまで IaC 化しなければならなくなります。
 :::
 
 では、IaC 化されていない既存のシステムにアサインされてしまったら、IaC 化は諦めるしかないのでしょうか。
@@ -470,7 +478,7 @@ data "aws_security_groups" "ecs" {
 
    この値は管理コンソールで 各 ECS タスク定義のリビジョンの概要の画面で確認出来ます[^61][^62]。
 
-   `aws_ecs_task_definition`の場合は ECS タスク定義の ARN でしたが、後述する`aws_ecs_cluster`ならクラスター名など、指定する対象はリソースによって異なります。各リソースのリファレンスページにはインポートで指定する値についての記載があります。
+   `aws_ecs_task_definition`の場合は ECS タスク定義の ARN でしたが、後述する`aws_ecs_cluster`ならクラスター名など、指定する対象はリソースによって異なります。各リソースのリファレンスページには`import`で指定する値についての記載があります。
 
 1. 以下のコマンドを実行して`import`ブロックで指定した ECS タスク定義の IaC を生成
 
@@ -548,7 +556,7 @@ data "aws_security_groups" "ecs" {
     aws ecs list-task-definitions --family-prefix <task_family> --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text
     ```
 
-[^62]: あるいは前の段階で`output`としてインポートに必要となる情報を出力しておくと良いかもしれません。
+[^62]: あるいは前の段階で`output`として`import`に必要となる情報を出力しておくと良いかもしれません。
 
 ## 既存の ECS クラスターを IaC 化
 
@@ -602,8 +610,8 @@ data "aws_security_groups" "ecs" {
 ここで取り上げたデータソースはほんの一部だけになります。
 Terraform では各種 AWS リソースに対応したデータソースが用意されています。
 
-インクリメンタルな IaC 化では既存リソースに対してデータソースのみで定義しましたが、インポートと併用してはいけないわけではありません。
-定義が簡単なものは最初からリソースを定義してインポート、面倒なものはデータソースで定義というのももちろん可能です。
+インクリメンタルな IaC 化では既存リソースに対してデータソースのみで定義しましたが、`import`と併用してはいけないわけではありません。
+定義が簡単なものは最初からリソースを定義して`import`、面倒なものはデータソースで定義というのももちろん可能です。
 また、IaC 化も徐々に広げていく方法を紹介しましたが、IaC 化されているリソースがひとかたまりであるという制限はないので、自由にやりたいところから IaC 化していくことも出来ます。
 ただし、あまりまだらに IaC 化してしまうと、どこが管理コンソールで変更してよいのかわかりにくくなるかと思います。
 タグを付ける方法などもありますが、上から下、メインからサブ（あるいはその逆）といったように広げていくのが良いでしょう。

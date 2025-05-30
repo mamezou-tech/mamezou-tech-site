@@ -161,6 +161,8 @@ resultSheet.getRange(1, 1, output.length, output[0].length).setValues(output);
 こうして徐々に導入範囲を広げることで、 **形だけではない“活きたCCPM”** が根付いていきます。
 
 # ６. スクリプトサンプル
+作成したスクリプトの全量を掲載します。
+
 ```javascript
 function scheduleCCPM() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();

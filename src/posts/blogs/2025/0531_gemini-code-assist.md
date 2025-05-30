@@ -2,7 +2,7 @@
 title: Gemini Code Assistで15パズルを作ろう
 author: akihiro-ishida
 date: 2025-05-31
-tags: [生成AI, AI, Gemini]
+tags: [Gemini, 生成AI, AI]
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2024/
 image: true
 ---

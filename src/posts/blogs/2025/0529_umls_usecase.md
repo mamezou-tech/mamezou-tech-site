@@ -1,6 +1,6 @@
 ---
 title: UMLspecification ver.2.5.1に基づくUseCaseの概念的理解
-author: kotaro yaehata
+author: kotaro-yaehata
 date: 2025-05-29
 tags: [UML, MBSE, USECASE, モデリング]
 ---

@@ -1,6 +1,6 @@
 ---
 title: Conceptual Understanding of UseCase Based on UMLspecification ver.2.5.1
-author: kotaro yaehata
+author: kotaro-yaehata
 date: 2025-05-29T00:00:00.000Z
 tags:
   - UML

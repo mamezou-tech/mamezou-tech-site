@@ -9,32 +9,32 @@
       "url": "/blogs/2022/12/08/jwt-auth/"
     },
     {
+      "title": "手書き風ドローツール Excalidraw のススメ",
+      "url": "/blogs/2023/03/22/use-excalidraw/"
+    },
+    {
       "title": "【devcontainer完全ガイド】DockerとWSLで最強のイマドキ開発環境を手に入れよう！",
       "url": "/blogs/2024/10/11/devcontainer/"
     },
     {
-      "title": "Ollamaを使ってオープンソースLLMをローカルホストしてみよう",
-      "url": "/blogs/2025/02/20/ollama_local_llm/"
-    },
-    {
-      "title": "手書き風ドローツール Excalidraw のススメ",
-      "url": "/blogs/2023/03/22/use-excalidraw/"
+      "title": "統計学で避けて通れない自由度の話",
+      "url": "/blogs/2022/06/20/degrees-of-freedom/"
     },
     {
       "title": "文字コード これだけは覚えておこう ～シフトJIS編～",
       "url": "/blogs/2024/06/16/moji-code1/"
     },
     {
+      "title": "Ollamaを使ってオープンソースLLMをローカルホストしてみよう",
+      "url": "/blogs/2025/02/20/ollama_local_llm/"
+    },
+    {
       "title": "2024年版！VS Code で Java 開発環境を構築する",
       "url": "/blogs/2024/07/18/write-java-with-vscode-2024/"
     },
     {
-      "title": "VSCodeのESP-IDF拡張機能「Espressif IDF」を使ってみる",
-      "url": "/blogs/2023/02/19/esp-idf-vsc-extension/"
-    },
-    {
-      "title": "VS Code の Copilot Edits で効率的にリファクタリングを行う",
-      "url": "/blogs/2025/02/15/refactor-code-with-github-copilot-edits/"
+      "title": "Blazor入門：ASP.NET Coreで始める最新Web開発",
+      "url": "/blogs/2024/12/20/asp-dotnet-core-blazor/"
     },
     {
       "title": "【新人さん向け】Java開発で最初に確認しておきたいEclipse便利設定ガイド",

@@ -12,7 +12,7 @@ translate: true
 ---
 
 # 前言
-在上一篇文章「[CCPM实战篇](https://developer.mamezou-tech.com/blogs/2025/05/20/ccpm_practice_buffer_half_deadline_critical_chain_transformation/)」中，介绍了通过CCPM进行现场变革的效果。这次将结合工具，介绍如何制作现实可行的CCPM计划。
+在上一篇文章「[CCPM实战篇](https://developer.mamezou-tech.com/zh-cn/blogs/2025/05/20/ccpm_practice_buffer_half_deadline_critical_chain_transformation/)」中，介绍了通过CCPM进行现场变革的效果。这次将结合工具，介绍如何制作现实可行的CCPM计划。
 
 # 1. 背景：为什么不是专用工具，而是电子表格+GAS？
 支持CCPM的商业工具确实很强大，但在尝试导入到现场时会碰到以下障碍：

@@ -1,6 +1,6 @@
 ---
 title: 基于UML规范 ver.2.5.1的用例概念理解
-author: kotaro yaehata
+author: kotaro-yaehata
 date: 2025-05-29T00:00:00.000Z
 tags:
   - UML

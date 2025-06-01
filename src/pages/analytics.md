@@ -15,6 +15,7 @@ enTitle: Analytics
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.2 データとの正しい向き合い方）](/blogs/2025/05/28/lets_talk_statistics_shall_we_02/)
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.3 代表値の使い分け：平均・中央値・最頻値）](/blogs/2025/05/29/lets_talk_statistics_shall_we_03/)
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.4 ばらつきの把握：分散・標準偏差・レンジ）](/blogs/2025/05/30/lets_talk_statistics_shall_we_04/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.5 形状を知る：歪度・尖度と分布のクセ）](/blogs/2025/06/02/lets_talk_statistics_shall_we_05/)
 
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)

@@ -6,10 +6,8 @@ tags:
   - Gemini
   - 生成AI
   - AI
-adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2024/
 image: true
 translate: true
-
 ---
 
 ## 引言

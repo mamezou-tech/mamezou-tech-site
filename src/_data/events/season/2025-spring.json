@@ -48,6 +48,13 @@
       "githubUser": "shuichi-takatsu",
       "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.4 ばらつきの把握：分散・標準偏差・レンジ）",
       "url": "/blogs/2025/05/30/lets_talk_statistics_shall_we_04/"
+    },
+    {
+      "date": "6月2日(月)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.5 形状を知る：歪度・尖度と分布のクセ）",
+      "url": "/blogs/2025/06/02/lets_talk_statistics_shall_we_05/"
     }
   ]
 }

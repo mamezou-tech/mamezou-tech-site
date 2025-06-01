@@ -10,11 +10,10 @@ tags:
   - CCPM
   - TOC
 translate: true
-
 ---
 
 # Introduction
-In the previous article "[CCPM Practical Edition](https://developer.mamezou-tech.com/blogs/2025/05/20/ccpm_practice_buffer_half_deadline_critical_chain_transformation/)", we presented the effects of on-site transformation through CCPM.  
+In the previous article "[CCPM Practical Edition](https://developer.mamezou-tech.com/en/blogs/2025/05/20/ccpm_practice_buffer_half_deadline_critical_chain_transformation/)", we presented the effects of on-site transformation through CCPM.  
 This time, we'll cover what's happening behind the scenes—how to create a realistic CCPM schedule with the help of tools.
 
 # 1. Background: Why Spreadsheets + GAS Instead of a Dedicated Tool?

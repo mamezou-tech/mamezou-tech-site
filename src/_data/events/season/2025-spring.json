@@ -76,6 +76,20 @@
       "githubUser": "shuichi-takatsu",
       "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.8 確率の直感と計算：「偶然」の正体を知る）",
       "url": "/blogs/2025/06/05/lets_talk_statistics_shall_we_08/"
+    },
+    {
+      "date": "6月6日(金)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.9 正規分布とその周辺：3σルールの意味と限界）",
+      "url": "/blogs/2025/06/06/lets_talk_statistics_shall_we_09/"
+    },
+    {
+      "date": "6月6日(金)",
+      "author": "makoto-takahashi",
+      "githubUser": "Makoto1994",
+      "title": "「問題」と「課題」の違いから始めよう ― 新人プロジェクトマネージャー向け：はじめての課題管理ガイド",
+      "url": "/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/"
     }
   ]
 }

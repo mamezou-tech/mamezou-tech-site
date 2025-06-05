@@ -19,6 +19,7 @@ enTitle: Analytics
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.6 実務に効くグラフの正しい使い分け）](/blogs/2025/06/03/lets_talk_statistics_shall_we_06/)
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.7 PythonとExcelで描く統計グラフ入門）](/blogs/2025/06/04/lets_talk_statistics_shall_we_07/)
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.8 確率の直感と計算：「偶然」の正体を知る）](/blogs/2025/06/05/lets_talk_statistics_shall_we_08/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.9 正規分布とその周辺：3σルールの意味と限界）](/blogs/2025/06/06/lets_talk_statistics_shall_we_09/)
 
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)

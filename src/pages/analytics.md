@@ -18,6 +18,7 @@ enTitle: Analytics
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.5 形状を知る：歪度・尖度と分布のクセ）](/blogs/2025/06/02/lets_talk_statistics_shall_we_05/)
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.6 実務に効くグラフの正しい使い分け）](/blogs/2025/06/03/lets_talk_statistics_shall_we_06/)
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.7 PythonとExcelで描く統計グラフ入門）](/blogs/2025/06/04/lets_talk_statistics_shall_we_07/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.8 確率の直感と計算：「偶然」の正体を知る）](/blogs/2025/06/05/lets_talk_statistics_shall_we_08/)
 
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)

@@ -189,11 +189,10 @@ client = OpenAI()
 response = client.responses.create(
     model='gpt-4.1-mini',
     input=(
-        '豆蔵デベロッパーイベント「Mamezou Tech Fest 2025」の告知バナーを作成してください。\n'
-        '- 明るく楽しい雰囲気\n'
-        '- 豆のキャラクターたちが集まっている様子\n'
-        '- イベント名と日付「2025年7月20日」入り\n'
-        '- アニメスタイル、カラフルな配色\n'
+        'Please create a cheerful and fun announcement banner for the "Mamezou Tech Fest 2025" developer event!\n'
+        '- Show the Bean characters gathering together, smiling and happy!\n'
+        '- Include the event name and the date: "July 20, 2025"\n'
+        '- Make it anime-style with colorful, vibrant colors!\n'
     ),
     # Specify image generation tool
     tools=[{
@@ -252,7 +251,7 @@ response = client.responses.create(
         'role': 'user',
         'content': [{
             'type': 'input_text',
-            'text': '笑顔で歌っているように編集してください'
+            'text': 'Please edit it so that it looks like someone is singing with a smile.'
         },
         # Image to edit
         {
@@ -330,7 +329,7 @@ response = client.responses.create(
         'role': 'user',
         'content': [{
             'type': 'input_text',
-            'text': 'カテゴリ別の売上構成比（円グラフ）を作成してください。フォントはNoto Sans JPを適用してください。'
+            'text': 'Create a pie chart showing the sales composition ratio by category. Please apply the Noto Sans JP font.'
         }],
     }],
     # Specify code interpreter tool

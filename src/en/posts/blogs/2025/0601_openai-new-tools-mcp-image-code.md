@@ -42,7 +42,7 @@ client = OpenAI()
 
 response = client.responses.create(
     model='gpt-4.1-mini',
-    input='システム要件と利用手順をマークダウンで200文字程度でまとめて。 GitHub Repository: openai/codex',
+e   input='Summarize the system requirements and usage instructions in about 200 characters in markdown format. GitHub Repository: openai/codex',
     # Specify MCP tool
     tools=[{
         'type': 'mcp',
@@ -97,39 +97,39 @@ In this test, I implemented it to output the tool details and auto-approve them.
 When I ran this code, I got the following result:
 
 ```
-********** 実行ツール **********
-リクエストID: mcpr_6836d85f88108191af93f624edf62e83032c59875e6c1154
-ツール: read_wiki_structure
-引数: {"repoName":"openai/codex"}
-ラベル: deepwiki
+********** Executing Tool **********
+Request ID: mcpr_6836d85f88108191af93f624edf62e83032c59875e6c1154
+Tool: read_wiki_structure
+Arguments: {"repoName":"openai/codex"}
+Label: deepwiki
 
-********** 実行ツール **********
-リクエストID: mcpr_6836d86e63d0819180d4b1ca6b839828032c59875e6c1154
-ツール: read_wiki_contents
-引数: {"repoName":"openai/codex"}
-ラベル: deepwiki
+********** Executing Tool **********
+Request ID: mcpr_6836d86e63d0819180d4b1ca6b839828032c59875e6c1154
+Tool: read_wiki_contents
+Arguments: {"repoName":"openai/codex"}
+Label: deepwiki
 
-********** 最終実行結果 **********
-以下はOpenAI Codex CLIのシステム要件と利用手順の概要です。
-
----
-
-## システム要件
-- 対応OS: macOS 12以上、Ubuntu 20.04以上、Debian 10以上、Windows 11（WSL2経由）
-- Node.js 22以上（LTS推奨）
-- Git 2.23以上（PRヘルパー利用時）
-- メモリ: 最低4GB（推奨8GB）
-
-## 利用手順
-1. Codex CLIをインストールし、OpenAI APIキーを設定
-2. ターミナルで `codex` コマンドを実行し自然言語で操作
-3. コードの解析・修正、コマンド実行は承認モードに従い動作
-4. モードは「Suggest（提案）」「Auto Edit（自動編集）」「Full Auto（完全自動）」から選択可能
-5. セキュリティのためコマンドはsandbox環境で実行される（macOSはApple Seatbelt等）
+********** Final Execution Result **********
+The following is an overview of the system requirements and usage instructions for OpenAI Codex CLI.
 
 ---
 
-必要に応じてAPIキー設定やコンフィグファイルを用いて詳細設定も可能です。
+## System Requirements
+- Supported OS: macOS 12 or later, Ubuntu 20.04 or later, Debian 10 or later, Windows 11 (via WSL2)
+- Node.js 22 or later (LTS recommended)
+- Git 2.23 or later (when using PR helper)
+- Memory: Minimum 4GB (8GB recommended)
+
+## Usage Instructions
+1. Install Codex CLI and configure OpenAI API key
+2. Run `codex` command in terminal and operate with natural language
+3. Code analysis/modification and command execution operate according to approval mode
+4. Modes available: "Suggest", "Auto Edit", "Full Auto"
+5. Commands are executed in sandbox environment for security (macOS uses Apple Seatbelt, etc.)
+
+---
+
+API key configuration and detailed settings using config files are available as needed.
 ```
 
 The MCP tool was executed twice (`read_wiki_structure` and `read_wiki_contents`), and the response was generated based on each result. You can clearly see how the LLM autonomously decides which tools to use and executes them.
@@ -142,24 +142,24 @@ sequenceDiagram
     participant R as OpenAI<br>Responses API
     participant S as MCP Server
     participant LLM
-    C ->> R: 実行 (with MCPツール)
-    R ->> S: 利用可能ツール取得
-    R ->> R: 出力生成(mcp_list_tools)
-    R ->> LLM: テキスト生成(with MCP利用可能ツール)
-    LLM -->> R: MCP利用ツール名・引数
-    R -->> C: ツール承認依頼(mcp_approval_request)
-    loop 承認リクエスト(mcp_approval_request)が存在する
-        C ->> C: 承認プロセス
-        C ->> R: 承認(mcp_approval_response)
-        R ->> S: MCPツール実行(HTTP)
-        R ->> LLM: テキスト生成(with MCPツール実行結果)
-        LLM ->> LLM: MCPツール実行判断
-        alt MCPツール実行要
-            LLM -->> R: MCP利用ツール名・引数
-            R -->> C: ツール承認依頼(mcp_approval_request)
+    C ->> R: Execute (with MCP tools)
+    R ->> S: Get available tools
+    R ->> R: Generate output (mcp_list_tools)
+    R ->> LLM: Text generation (with MCP available tools)
+    LLM -->> R: MCP tool name & arguments
+    R -->> C: Tool approval request (mcp_approval_request)
+    loop Approval request (mcp_approval_request) exists
+        C ->> C: Approval process
+        C ->> R: Approval (mcp_approval_response)
+        R ->> S: Execute MCP tool (HTTP)
+        R ->> LLM: Text generation (with MCP tool execution result)
+        LLM ->> LLM: MCP tool execution decision
+        alt MCP tool execution required
+            LLM -->> R: MCP tool name & arguments
+            R -->> C: Tool approval request (mcp_approval_request)
         else
-            LLM -->> R: テキスト
-            R -->> C: 最終結果
+            LLM -->> R: Text
+            R -->> C: Final result
         end
     end
 ```

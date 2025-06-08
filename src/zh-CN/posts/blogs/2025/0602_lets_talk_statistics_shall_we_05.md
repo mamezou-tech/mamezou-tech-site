@@ -31,7 +31,7 @@ translate: true
 
 正态分布是**大部分数据集中在平均值附近，呈现左右对称的山形**的分布。  
 数学上定义为以均值 μ 为中心，标准差 σ 为参数的连续概率分布。  
-(关于均值，可参见[第3篇](/blogs/2025/05/29/lets_talk_statistics_shall_we_03/)，关于标准差，可参见[第4篇](/blogs/2025/05/30/lets_talk_statistics_shall_we_04/))  
+(关于均值，可参见[第3篇](/zh-cn/blogs/2025/05/29/lets_talk_statistics_shall_we_03/)，关于标准差，可参见[第4篇](/zh-cn/blogs/2025/05/30/lets_talk_statistics_shall_we_04/))  
 这是在自然界和商业中许多现象中观察到的非常基础且重要的分布。
 
 **正态分布的主要特征：**  
@@ -222,7 +222,7 @@ $g_1 = \frac{n}{(n - 1)(n - 2)} \sum \left( \frac{x_i - \bar{x}}{s} \right)^3$
 
 ### ● 通过可视化识别：直方图和箱线图
 
-直方图和箱线图在[第4篇](/blogs/2025/05/30/lets_talk_statistics_shall_we_04/)中也使用过。  
+直方图和箱线图在[第4篇](/zh-cn/blogs/2025/05/30/lets_talk_statistics_shall_we_04/)中也使用过。  
 可以一目看出偏斜或峰形的尖锐程度。  
 在Python或Excel中也可轻松绘制，推荐在分析时使用。  
 

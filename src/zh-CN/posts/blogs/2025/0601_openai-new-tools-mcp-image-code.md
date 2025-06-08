@@ -8,7 +8,6 @@ tags:
   - 生成AI
 image: true
 translate: true
-
 ---
 
 就在上个月，OpenAI 宣布在其 API 中新增了内置工具。
@@ -19,9 +18,9 @@ translate: true
 
 在这里，我将介绍包括 MCP 在内的新添加各工具的使用方法。
 
-- [远程MCP](#リモートmcp)
-- [图像生成](#イメージ生成)
-- [代码解释器](#コードインタープリター)
+- [远程MCP](#远程mcp)
+- [图像生成](#图像生成)
+- [代码解释器](#代码解释器)
 
 ## 远程MCP
 
@@ -40,7 +39,7 @@ client = OpenAI()
 
 response = client.responses.create(
     model='gpt-4.1-mini',
-    input='システム要件と利用手順をマークダウンで200文字程度でまとめて。 GitHub Repository: openai/codex',
+    input='用markdown格式总结系统要求和使用步骤，大约200字。 GitHub Repository: openai/codex',
     # 指定 MCP 工具
     tools=[{
         'type': 'mcp',
@@ -57,11 +56,11 @@ while any(entity.type == 'mcp_approval_request' for entity in response.output):
     for entity in response.output:
         if entity.type == 'mcp_approval_request':
             print((
-                '*' * 10 + ' 実行ツール ' + '*' * 10 + '\n'
-                f'リクエストID: {entity.id}\n'
-                f'ツール: {entity.name}\n'
-                f'引数: {entity.arguments}\n'
-                f'ラベル: {entity.server_label}\n'
+                '*' * 10 + ' 执行工具 ' + '*' * 10 + '\n'
+                f'请求ID: {entity.id}\n'
+                f'工具: {entity.name}\n'
+                f'参数: {entity.arguments}\n'
+                f'标签: {entity.server_label}\n'
             ))
             approval_inputs.append({
                 'type': 'mcp_approval_response',
@@ -80,7 +79,7 @@ while any(entity.type == 'mcp_approval_request' for entity in response.output):
         input=approval_inputs
     )
 
-print('*' * 10 + ' 最終実行結果 ' + '*' * 10)
+print('*' * 10 + ' 最终执行结果 ' + '*' * 10)
 print(response.output_text)
 ```
 
@@ -187,12 +186,11 @@ client = OpenAI()
 response = client.responses.create(
     model='gpt-4.1-mini',
     input=(
-        '豆蔵デベロッパーイベント「Mamezou Tech Fest 2025」の告知バナーを作成してください。\n'
-        '- 明るく楽しい雰囲気\n'
-        '- 豆のキャラクターたちが集まっている様子\n'
-        '- イベント名と日付「2025年7月20日」入り\n'
-        '- アニメスタイル、カラフルな配色\n'
-    ),
+        '请为豆藏开发者活动"Mamezou Tech Fest 2025"制作宣传横幅。\n'
+        '- 明亮愉快的氛围\n'
+        '- 豆子角色们聚集在一起的场景\n'
+        '- 包含活动名称和日期"2025年7月20日"\n'
+        '- 动漫风格，色彩丰富的配色\n'    ),
     # 指定图像生成工具
     tools=[{
         'type': 'image_generation',
@@ -250,7 +248,7 @@ response = client.responses.create(
         'role': 'user',
         'content': [{
             'type': 'input_text',
-            'text': '笑顔で歌っているように編集してください'
+            'text': '请编辑成笑着唱歌的样子'
         },
         # 待编辑图像
         {
@@ -328,8 +326,8 @@ response = client.responses.create(
         'role': 'user',
         'content': [{
             'type': 'input_text',
-            'text': 'カテゴリ別の売上構成比（円グラフ）を作成してください。フォントはNoto Sans JPを適用してください。'
-        }],
+            'text': '请创建按类别的销售额构成比（饼图）。请应用Noto Sans JP字体。'
+        }]
     }],
     # 指定代码解释器工具
     tools=[{

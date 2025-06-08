@@ -12,7 +12,6 @@ tags:
   - 新人向け
 image: true
 translate: true
-
 ---
 
 ## Introduction
@@ -31,7 +30,7 @@ In quality management, many statistical controls and decisions assume a **normal
 **What Is a Normal Distribution:**  
 We’ve mentioned the “normal distribution” several times. We’ll explain it in detail in the section on “Probability and Distributions”, but rather than keep saying “details in a later installment”, here’s an intuitive overview:
 
-A normal distribution is a bell-shaped distribution in which **most data concentrate around the mean in a symmetric fashion**. Mathematically, it’s defined as a continuous probability distribution centered at mean μ with standard deviation σ. (We introduced the mean in [Part 3](/blogs/2025/05/29/lets_talk_statistics_shall_we_03/) and standard deviation in [Part 4](/blogs/2025/05/30/lets_talk_statistics_shall_we_04/).)
+A normal distribution is a bell-shaped distribution in which **most data concentrate around the mean in a symmetric fashion**. Mathematically, it’s defined as a continuous probability distribution centered at mean μ with standard deviation σ. (We introduced the mean in [Part 3](/en/blogs/2025/05/29/lets_talk_statistics_shall_we_03/) and standard deviation in [Part 4](/en/blogs/2025/05/30/lets_talk_statistics_shall_we_04/).)
 
 It’s a fundamental distribution observed in many natural and business phenomena.
 
@@ -215,7 +214,7 @@ For non-normal data, using shape metrics like skewness and kurtosis helps ensure
 
 ### ● Detecting with Visualization: Histograms and Box Plots
 
-We used histograms and box plots in [Part 4](/blogs/2025/05/30/lets_talk_statistics_shall_we_04/). They clearly show skewness and peakedness. You can easily generate them in Python or Excel, so we recommend using them in your analysis.
+We used histograms and box plots in [Part 4](/en/blogs/2025/05/30/lets_talk_statistics_shall_we_04/). They clearly show skewness and peakedness. You can easily generate them in Python or Excel, so we recommend using them in your analysis.
 
 - **Histograms:** Visually inspect skewness and peakedness  
 - **Box plots:** Check asymmetry and presence of outliers

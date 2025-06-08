@@ -261,7 +261,7 @@ Managing process variability directly relates to quality stability. Cp and Cpk a
 - **Not all data follow a normal distribution**  
   - Examples: Test times, incident response times, number of review comments often **skew right (long right tail)**  
   - This may indicate an asymmetric distribution with high “skewness” or “kurtosis”  
-    (For skewness and kurtosis, see [here](/blogs/2025/06/02/lets_talk_statistics_shall_we_05/))
+    (For skewness and kurtosis, see [here](/en/blogs/2025/06/02/lets_talk_statistics_shall_we_05/))
 
 - **If you forcibly apply the 3σ rule to non-normal distributions…**  
   - You are likely to **miss anomalies**  

@@ -104,6 +104,13 @@
       "githubUser": "shuichi-takatsu",
       "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.11 信頼区間と誤差：この結果、どこまで信じていい？）",
       "url": "/blogs/2025/06/10/lets_talk_statistics_shall_we_11/"
+    },
+    {
+      "date": "6月11日(水)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.12 仮説検定：有意差って本当に意味あるの？）",
+      "url": "/blogs/2025/06/11/lets_talk_statistics_shall_we_12/"
     }
   ]
 }

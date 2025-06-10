@@ -97,6 +97,13 @@
       "githubUser": "shuichi-takatsu",
       "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.10 母集団と標本：中心極限定理、大数の法則）",
       "url": "/blogs/2025/06/09/lets_talk_statistics_shall_we_10/"
+    },
+    {
+      "date": "6月10日(火)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.11 信頼区間と誤差：この結果、どこまで信じていい？）",
+      "url": "/blogs/2025/06/10/lets_talk_statistics_shall_we_11/"
     }
   ]
 }

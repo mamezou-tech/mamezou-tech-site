@@ -22,6 +22,7 @@ enTitle: Analytics
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.9 正規分布とその周辺：3σルールの意味と限界）](/blogs/2025/06/06/lets_talk_statistics_shall_we_09/)
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.10 母集団と標本：中心極限定理、大数の法則）](/blogs/2025/06/09/lets_talk_statistics_shall_we_10/)
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.11 信頼区間と誤差：この結果、どこまで信じていい？）](/blogs/2025/06/10/lets_talk_statistics_shall_we_11/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.12 仮説検定：有意差って本当に意味あるの？）](/blogs/2025/06/11/lets_talk_statistics_shall_we_12/)
 
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)

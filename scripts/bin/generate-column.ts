@@ -116,7 +116,7 @@ Please pick one of these keywords and write a short article about it.`;
 
   async function createColumn() {
     const result = await openai.responses.create({
-      model: "o4-mini",
+      model: "o3",
       reasoning: {
         effort: "high"
       },
@@ -252,7 +252,7 @@ Include both characters and objects whenever possible, using bright colors and a
     quality: "standard",
   });
 
-  const image = response.data[0];
+  const image = response.data![0];
   const base64Image = image.b64_json?.split(";base64,").pop();
   if (!base64Image) {
     throw new Error("illegal image format");

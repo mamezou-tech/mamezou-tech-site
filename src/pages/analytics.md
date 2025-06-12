@@ -24,6 +24,7 @@ enTitle: Analytics
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.11 信頼区間と誤差：この結果、どこまで信じていい？）](/blogs/2025/06/10/lets_talk_statistics_shall_we_11/)
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.12 仮説検定：有意差って本当に意味あるの？）](/blogs/2025/06/11/lets_talk_statistics_shall_we_12/)
 - [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.13 相関と因果：散布図と相関係数の落とし穴）](/blogs/2025/06/12/lets_talk_statistics_shall_we_13/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.14 予測：回帰分析で品質を読み解く）](/blogs/2025/06/13/lets_talk_statistics_shall_we_14/)
 
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)

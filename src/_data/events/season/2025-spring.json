@@ -118,6 +118,27 @@
       "githubUser": "shuichi-takatsu",
       "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.13 相関と因果：散布図と相関係数の落とし穴）",
       "url": "/blogs/2025/06/12/lets_talk_statistics_shall_we_13/"
+    },
+    {
+      "date": "6月13日(金)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.14 予測：回帰分析で品質を読み解く）",
+      "url": "/blogs/2025/06/13/lets_talk_statistics_shall_we_14/"
+    },
+    {
+      "date": "6月13日(金)",
+      "author": "makoto-takahashi",
+      "githubUser": "Makoto1994",
+      "title": "「事実はひとつ、真実は人の数だけ？」─ 新人プロジェクトマネージャーがコナンに学ぶ“探偵型マネジメント”思考法",
+      "url": "/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/"
+    },
+    {
+      "date": "6月13日(金)",
+      "author": "yoshifumi-moriya",
+      "githubUser": "morya-530",
+      "title": "文字コード これだけは覚えておこう ～UTF-8編～",
+      "url": "/blogs/2025/06/13/moji-code2/"
     }
   ]
 }

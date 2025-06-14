@@ -12,7 +12,6 @@ tags:
   - 新人向け
 image: true
 translate: true
-
 ---
 
 ## Introduction
@@ -80,7 +79,7 @@ These guidelines are only for reference; in practice, it's important to interpre
   If longer review times correspond to fewer missed fixes, this may show a negative correlation (negative r value).
 
 The correlation coefficient is an indicator of the "strength of the tendency," and in practice, using it **in conjunction with p-values** allows you to confirm both "statistical significance" and "practical effect size."  
-(For an explanation of correlation coefficients using tools, please refer to this article [here](/blogs/2022/05/26/correlation-matrix/).)
+(For an explanation of correlation coefficients using tools, please refer to this article [here](/en/blogs/2022/05/26/correlation-matrix/).)
 
 ---
 
@@ -204,6 +203,9 @@ For example, correlation analysis is useful for answering questions such as:
 However, the prerequisites for conducting correlation analysis include that the data are **continuous variables** and **approximately normally distributed**. If these conditions are not met, you need to consider nonparametric methods such as Spearman's rank correlation.
 
 ---
+
+
+
 
 ## What Is 'Partial Correlation'?
 

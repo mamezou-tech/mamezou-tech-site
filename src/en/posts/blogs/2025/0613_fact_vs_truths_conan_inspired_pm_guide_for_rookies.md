@@ -9,8 +9,8 @@ tags:
   - プロジェクト管理
   - 新人向け
 translate: true
-
 ---
+
 # Introduction
 New project managers (PMs), you sometimes struggle with “misalignments in understanding” with your members and the difficulty of communication, right?
 
@@ -125,7 +125,7 @@ As a PM, you are expected to proceed with your work while keeping their faces in
 
 ## 1. First, thoroughly commit to fact-based management
 The PM is responsible for making plans and managing progress based on objective “facts.”  
-This is the fundamental premise for accurately grasping “issues” and taking countermeasures, as discussed in [a previous article](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/).  
+This is the fundamental premise for accurately grasping “issues” and taking countermeasures, as discussed in [a previous article](https://developer.mamezou-tech.com/en/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/).  
 “Issue” here refers to the “gap between the current state and the desired state.”
 
 These “facts” are the vital signs indicating the health of your project.  

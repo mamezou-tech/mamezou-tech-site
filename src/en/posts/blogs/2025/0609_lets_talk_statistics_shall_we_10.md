@@ -181,7 +181,7 @@ This is the power of "samples" in statistics.
 
 ## What Is Inferential Statistics?
 
-In [Part 1 of "Let's Talk About Statistics"](/2025/05/27/lets_talk_statistics_shall_we_01/), we explained an overview of descriptive and inferential statistics. Up through Part 9, we mainly introduced methods based on descriptive statistics for "looking at" the characteristics of data as they are. From here, we will cover methods for **"estimating the whole (population) from a part (sample),"** i.e., **Inferential Statistics**.
+In [Part 1 of "Let's Talk About Statistics"](/en/2025/05/27/lets_talk_statistics_shall_we_01/), we explained an overview of descriptive and inferential statistics. Up through Part 9, we mainly introduced methods based on descriptive statistics for "looking at" the characteristics of data as they are. From here, we will cover methods for **"estimating the whole (population) from a part (sample),"** i.e., **Inferential Statistics**.
 
 ### ● Descriptive Statistics vs Inferential Statistics (Review)
 

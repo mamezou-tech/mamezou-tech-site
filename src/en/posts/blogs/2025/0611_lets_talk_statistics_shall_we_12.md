@@ -11,7 +11,6 @@ tags:
   - 新人向け
 image: true
 translate: true
-
 ---
 
 ## Introduction
@@ -208,7 +207,7 @@ Tests whether there is a difference between two means measured under different c
 
 :::info
 What is **degrees of freedom**?  
-We touched on this briefly in [Part 4](/blogs/2025/05/30/lets_talk_statistics_shall_we_04/), but the term **degrees of freedom** appeared in the graph above.  
+We touched on this briefly in [Part 4](/en/blogs/2025/05/30/lets_talk_statistics_shall_we_04/), but the term **degrees of freedom** appeared in the graph above.  
 **Degrees of freedom** is the number of values that are free to vary when calculating a statistic.
 
 For example, when the mean of three data points is fixed, if you choose any two values freely, the third value is automatically determined.  

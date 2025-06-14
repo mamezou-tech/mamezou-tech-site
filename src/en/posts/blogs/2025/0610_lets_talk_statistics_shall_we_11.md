@@ -11,7 +11,6 @@ tags:
   - 新人向け
 image: true
 translate: true
-
 ---
 
 ## Introduction
@@ -24,7 +23,7 @@ In software quality contexts, **quantifying uncertainty with confidence interval
 
 ## The Difference Between Probability Theory and Statistical Inference: Grasp the Basics
 
-As mentioned in [the 8th installment](/blogs/2025/06/05/lets_talk_statistics_shall_we_08/), let’s review briefly.  
+As mentioned in [the 8th installment](/en/blogs/2025/06/05/lets_talk_statistics_shall_we_08/), let’s review briefly.  
 Understanding the difference between “probability theory” and “statistical inference” is crucial for grasping “confidence intervals” and “estimation.”
 
 | Comparison Item   | Probability Theory                                | Statistical Inference                             |

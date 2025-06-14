@@ -9,7 +9,6 @@ tags:
   - 新人向け
 image: true
 translate: true
-
 ---
 
 ## 引言
@@ -22,7 +21,7 @@ translate: true
 
 ## 概率论与统计推断的区别：先打好基础
 
-虽然我们在[第8回](/blogs/2025/06/05/lets_talk_statistics_shall_we_08/)中也有提到，作为复习这里再写一遍。  
+虽然我们在[第8回](/zh-cn/blogs/2025/06/05/lets_talk_statistics_shall_we_08/)中也有提到，作为复习这里再写一遍。  
 要理解“置信区间”和“估计”，关键在于弄清“概率论”和“统计推断”之间的区别。
 
 | 比较项目      | 概率论                                | 统计推断                                 |

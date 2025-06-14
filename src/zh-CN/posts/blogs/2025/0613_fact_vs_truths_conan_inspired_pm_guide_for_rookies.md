@@ -7,7 +7,6 @@ tags:
   - プロジェクト管理
   - 新人向け
 translate: true
-
 ---
 
 # 引言
@@ -117,7 +116,7 @@ translate: true
 
 ## 1. 首先贯彻基于“事实”的管理
 PM 有责任根据客观“事实”制定计划并管理进度。  
-这是准确把握并制定对策前提条件，即在[之前的文章](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)中提到的“问题”。  
+这是准确把握并制定对策前提条件，即在[之前的文章](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)中提到的“问题”。  
 “问题” 是指“理想状态与现状之间的差距”。
 
 这些“事实”就像项目健康状况的生命体征。  

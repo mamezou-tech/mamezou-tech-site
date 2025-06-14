@@ -9,7 +9,6 @@ tags:
   - 新人向け
 image: true
 translate: true
-
 ---
 
 ## 引言
@@ -195,7 +194,7 @@ translate: true
 
 :::info
 ● 什么是自由度？  
-在[第4回](/blogs/2025/05/30/lets_talk_statistics_shall_we_04/)中稍有提及，上图中出现了“**自由度**”一词。**自由度（degree of freedom）**是指**在计算统计量时“可以自由变化的数值个数”**。
+在[第4回](/zh-cn/blogs/2025/05/30/lets_talk_statistics_shall_we_04/)中稍有提及，上图中出现了“**自由度**”一词。**自由度（degree of freedom）**是指**在计算统计量时“可以自由变化的数值个数”**。
 
 例如，当三个数据的平均值已确定时，只要自由选择其中两个值，最后一个值就自动确定。  
 如此，**当存在约束（如平均或总和）时，可自由移动的数据个数就会减少**。

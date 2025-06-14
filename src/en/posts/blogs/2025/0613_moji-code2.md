@@ -7,7 +7,6 @@ tags:
   - 文字コード
   - 新人向け
 translate: true
-
 ---
 
 ## Introduction
@@ -16,7 +15,7 @@ In this article aimed at newcomers, I want to discuss the issue of "character en
 
 "Character encoding" has a very long history; it's a product of the pains and trial-and-error accumulated by engineers of the time under various constraints. Therefore, you can't simply criticize its current form as "not great" or "hard to understand" just by looking at it. Nevertheless, we cannot avoid this issue. In this article, I will explain the properties of character encoding and the pitfalls you are likely to encounter, along with their respective solutions.
 
-Following [the previous post](/blogs/2024/06/16/moji-code1/) on Shift JIS, this time I'll explain the key points you should know about Unicode's "UTF-8".
+Following [the previous post](/en/blogs/2024/06/16/moji-code1/) on Shift JIS, this time I'll explain the key points you should know about Unicode's "UTF-8".
 
 ## Key Points of This Article
 

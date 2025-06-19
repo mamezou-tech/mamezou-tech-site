@@ -146,6 +146,13 @@
       "githubUser": "shuichi-takatsu",
       "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.15 統計的品質管理(SQC)の実践事例紹介）",
       "url": "/blogs/2025/06/16/lets_talk_statistics_shall_we_15/"
+    },
+    {
+      "date": "6月20日(金)",
+      "author": "makoto-takahashi",
+      "githubUser": "Makoto1994",
+      "title": "「問題」と「リスク」の違いから始める ― 新人プロジェクトマネージャー向け：はじめてのリスク管理ガイド",
+      "url": "/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/"
     }
   ]
 }

@@ -8,12 +8,11 @@ tags:
   - リスク管理
   - 新人向け
 translate: true
-
 ---
 
 # 引言
 
-[之前的文章](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)中，我们从“问题”和“课题”的区别出发，讲解了课题管理的推进方式。这次作为续篇，将以“风险”和“问题”的区别为主线，清晰地解说**风险管理的第一步**。
+[之前的文章](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)中，我们从“问题”和“课题”的区别出发，讲解了课题管理的推进方式。这次作为续篇，将以“风险”和“问题”的区别为主线，清晰地解说**风险管理的第一步**。
 
 有没有这样的烦恼？
 
@@ -32,11 +31,11 @@ translate: true
 :::info
 **本文是面向新人项目经理系列文章的一部分**
 
-1. [第1回：从“问题”和“课题”的区别开始（课题管理入门）](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)
-2. [第2回：侦探式管理 ― 如何洞察真相？（思维方法·观察篇）](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)
+1. [第1回：从“问题”和“课题”的区别开始（课题管理入门）](https://developer.mamezou-tech.com/zn-ch/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)
+2. [第2回：侦探式管理 ― 如何洞察真相？（思维方法·观察篇）](https://developer.mamezou-tech.com/zn-ch/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)
 3. 第3回：从“问题”和“风险”的区别开始（风险管理指南）
 
-👉 初次阅读者建议 [从第1回开始阅读](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)。
+👉 初次阅读者建议 [从第1回开始阅读](https://developer.mamezou-tech.com/zn-ch/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)。
 :::
 
 # 先来做个思维实验！哪个是“风险”？

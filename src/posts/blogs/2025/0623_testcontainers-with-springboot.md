@@ -2,7 +2,7 @@
 title: Springの小話 - Testcontainersの連携機能を理解する
 author: toshio-ogiwara
 date: 2025-06-23
-tags: [java, spring, spring-boot, testcontainers, Springの小話]
+tags: [testcontainers, Springの小話, spring-boot, spring, java]
 image: true
 ---
 ネット上のサンプルを見ていると、@Testcontainersアノテーションが付いていたり付いていなかったり、コンテナインスタンスのアノテーションが @Container だったり@Beanだったりと、どうやってTestcontainersを使うのが正解なのか迷うことが多いのではないでしょうか。どこまでがTestcontainers本来の機能で、どこからSpring Bootの連携機能（spring-boot-testcontainers）なのか、初見では分かりにくいですよね。

@@ -93,13 +93,13 @@ std_dev = np.std(past_defect_densities, ddof=1)  # 按样本而非总体计算
 threshold = mean + 3 * std_dev
 
 # 判定
-print(f"過去平均: {mean:.2f}, 標準偏差: {std_dev:.2f}, しきい値: {threshold:.2f}")
-print(f"現在プロジェクトの不具合密度: {current_density:.2f}")
+print(f"过去平均: {mean:.2f}, 标准偏差: {std_dev:.2f}, 阈值: {threshold:.2f}")
+print(f"当前项目的缺陷密度: {current_density:.2f}")
 
 if current_density > threshold:
-    print("△：品質リスクあり：追加レビューを検討してください。")
+    print("△：存在质量风险：请考虑进行追加评审。")
 else:
-    print("〇：品質リスクは低いと判断されます。")
+    print("○：质量风险较低，判断合格。")
 ```
 
 结果如下。  
@@ -178,9 +178,9 @@ with np.errstate(divide='ignore', invalid='ignore'):
 # 通过柱状图可视化
 plt.figure(figsize=(8, 5))
 bars = plt.bar(modules, review_rates, color='skyblue')
-plt.ylabel('レビュー指摘率')
+plt.ylabel('评审指摘率')
 plt.ylim(0, 1.0)
-plt.title('モジュール別レビュー指摘率')
+plt.title('各模块评审指摘率')
 
 # 在柱状图上方显示数值
 for bar, rate in zip(bars, review_rates):
@@ -249,7 +249,7 @@ import numpy as np
 plt.rcParams['font.family'] = 'Meiryo'
 
 # 缺陷类别及其件数（示例）
-categories = ['仕様漏れ', '設計ミス', 'コーディングミス', 'レビュー不足', 'テスト漏れ']
+categories = ['规格遗漏', '设计错误', '编码错误', '评审不足', '测试遗漏']
 counts = np.array([35, 25, 20, 10, 5])
 
 # 按件数降序排序
@@ -264,16 +264,16 @@ cumulative_percent = cumulative / cumulative[-1] * 100
 # 绘制图表
 fig, ax1 = plt.subplots()
 
-ax1.bar(sorted_categories, sorted_counts, color='skyblue', label='不具合件数')
-ax1.set_ylabel('不具合件数')
+ax1.bar(sorted_categories, sorted_counts, color='skyblue', label='缺陷件数')
+ax1.set_ylabel('缺陷件数')
 ax1.set_ylim(0, max(sorted_counts)*1.2)
 
 ax2 = ax1.twinx()
-ax2.plot(sorted_categories, cumulative_percent, color='red', marker='o', label='累積比率（%）')
-ax2.set_ylabel('累積比率（%）')
+ax2.plot(sorted_categories, cumulative_percent, color='red', marker='o', label='累积比率（%）')
+ax2.set_ylabel('累积比率（%）')
 ax2.set_ylim(0, 110)
 
-plt.title('不具合カテゴリ別 パレート図')
+plt.title('按缺陷类别分类的帕累托图')
 fig.tight_layout()
 plt.grid(True, axis='y', linestyle='--', alpha=0.6)
 plt.show()
@@ -347,9 +347,9 @@ print(f"p値: {p_value:.4f}")
 # 结果判定
 alpha = 0.05
 if p_value < alpha:
-    print("〇 有意差あり：施策は統計的に効果があったと判断されます。")
+    print("○ 存在显著差异：判定该措施在统计上有效。")
 else:
-    print("△ 有意差なし：施策の効果は統計的には確認できません。")
+    print("△ 无显著差异：该措施的效果在统计上无法确认。")
 ```
 
 结果如下。  
@@ -420,17 +420,17 @@ model.fit(x, y)
 # 回归系数与截距
 a = model.coef_[0]
 b = model.intercept_
-print(f"回帰式：指摘件数 = {a:.2f} × 行数 + {b:.2f}")
+print(f"回归方程：指摘件数 = {a:.2f} × 行数 + {b:.2f}")
 
 # 可视化
 x_pred = np.linspace(50, 600, 100).reshape(-1, 1)
 y_pred = model.predict(x_pred)
 
-plt.scatter(x, y, color='blue', label='実測データ')
-plt.plot(x_pred, y_pred, color='red', label='回帰直線')
-plt.xlabel('レビュー対象行数（SLOC）')
+plt.scatter(x, y, color='blue', label='实测数据')
+plt.plot(x_pred, y_pred, color='red', label='回归直线')
+plt.xlabel('评审对象行数（SLOC）')
 plt.ylabel('指摘件数')
-plt.title('レビュー規模と指摘件数の関係')
+plt.title('评审规模与指摘件数的关系')
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
@@ -476,7 +476,7 @@ model.fit(x, y)
 # 预测与决定系数
 y_pred = model.predict(x)
 r2 = r2_score(y, y_pred)
-print(f"決定係数 R^2 = {r2:.3f}")
+print(f"决定系数 R^2 = {r2:.3f}")
 
 # 计算残差
 residuals = y - y_pred
@@ -485,9 +485,9 @@ residuals = y - y_pred
 plt.figure(figsize=(6, 4))
 plt.scatter(y_pred, residuals, color='purple')
 plt.axhline(0, color='red', linestyle='--')
-plt.xlabel('予測値（指摘件数）')
-plt.ylabel('残差（実測値 - 予測値）')
-plt.title('残差プロット（レビュー行数と指摘件数）')
+plt.xlabel('预测值（指摘件数）')
+plt.ylabel('残差（实测值 - 预测值）')
+plt.title('残差图（评审行数与指摘件数）')
 plt.grid(True)
 plt.tight_layout()
 plt.show()

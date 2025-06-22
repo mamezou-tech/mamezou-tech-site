@@ -16,20 +16,20 @@ image: true
 ## 最初にまとめ
 時間がない方のために、まずはポイントだけ先にまとめます。
 
-### @Testcontainers
+#### @Testcontainers
 - これは（Spring Bootではなく）**Testcontainers**のアノテーション
 -  `@Container`をつけたコンテナインスタンスの**ライフサイクルを自動で管理**してくれる
 
-### @Container
+#### @Container
 - これも**Testcontainers**のアノテーション
 - テストクラスに`@Testcontainers`を付けることで、`@Container`がついたフィールドのコンテナインスタンスに対し**Testcontainersが自動的にstart()/stop()してくれる**
 - テストメソッドごと、クラスごと（staticならクラス単位、非staticならメソッド単位）のスコープで管理が可能
 
-### @Bean
+#### @Bean
 - SpringのDIコンテナに**コンテナインスタンスをBeanとして登録**すると、**Spring Bootの連携機能**（spring-boot-testcontainers）がコンテナのライフサイクルを**Spring側で管理**するようになる
 - この場合、コンテナインスタンスの検出とライフサイクル管理はSpring Bootが自動で行ってくれるため`@Testcontainers`と`@Container`は不要
 
-### @ServiceConnection
+#### @ServiceConnection
 - TestcontainersのコンテナをSpring Bootのアプリケーションサービス（DataSourceなど）と自動的に接続してくれるアノテーション
 - 従来のようなプロパティ設定や`@DynamicPropertySource`などの操作を省略できシンプルにテスト環境を構築できる
 

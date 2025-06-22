@@ -102,14 +102,14 @@ Problems that have already surfaced are handled through issue management, while 
 ```mermaid
 graph TD
     A[Event or Situation Under Consideration] --> Q1{1 Could this event or situation potentially impact project objectives?};
-    Q1 -- No --> NNotRisk1[<u>Not a Risk</u><br>(or minimal impact)];
-    Q1 -- Yes --> Q2{2 Is this event or situation something that has not yet occurred [future]?};
+    Q1 -- No --> NNotRisk1[<u>Not a Risk</u><br>or minimal impact];
+    Q1 -- Yes --> Q2{2 Is this event or situation something that has not yet occurred - future?};
     Q2 -- No --> Issue[<u>Not a Risk</u><br>If it has already occurred, it's a problem, so handle it through issue management.];
-    Q2 -- Yes --> Q3{3 Is it [uncertain] whether this event or situation will actually occur?<br>(Is it neither 100% nor 0%?)};
+    Q2 -- Yes --> Q3{3 Is it uncertain whether this event or situation will actually occur?<br>Is it neither 100% nor 0%?};
     Q3 -- Yes --> IsRisk[<b>✅<u>This is a Risk</u></b><br>Register it in the risk management table and consider countermeasures!];
     Q3 -- No --> Q4{4 Can you say it will definitely occur with 100% certainty?};
     Q4 -- Yes --> Certainty[<u>Not a Risk</u><br>This may be an event caused by incorrect assumptions or inadequate work planning.];
-    Q4 -- No --> NotCertainty[<u>Not a Risk</u><br>(when you are confident it will not occur)];
+    Q4 -- No --> NotCertainty[<u>Not a Risk</u><br>when you are confident it will not occur];
 ```
 
 # Three Reasons Why Risk Management Is Important: “Slack (Buffer)” Is the Key to Success

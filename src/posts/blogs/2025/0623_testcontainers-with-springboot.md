@@ -5,7 +5,7 @@ date: 2025-06-23
 tags: [java, spring, spring-boot, testcontainers, Springの小話]
 image: true
 ---
-ネット上のサンプルを見ていると、@Testcontainers アノテーションが付いていたり付いていなかったり、コンテナインスタンスのアノテーションが @Container だったり @Bean だったりと、どうやってTestcontainersを使うのが正解なのか迷うことが多いのではないでしょうか。どこまでがTestcontainers本来の機能で、どこからSpring Bootの連携機能（spring-boot-testcontainers）なのか、初見では分かりにくいですよね。
+ネット上のサンプルを見ていると、@Testcontainersアノテーションが付いていたり付いていなかったり、コンテナインスタンスのアノテーションが @Container だったり@Beanだったりと、どうやってTestcontainersを使うのが正解なのか迷うことが多いのではないでしょうか。どこまでがTestcontainers本来の機能で、どこからSpring Bootの連携機能（spring-boot-testcontainers）なのか、初見では分かりにくいですよね。
 
 そこで今回は「素のTestcontainersの使い方」から「Testcontainersの便利機能」さらに「Spring Boot連携による進化」と段階的に洗練させていきながら、それぞれの役割や便利ポイントを理解できるようサンプルプログラムをもとに紹介していきます。
 
@@ -18,7 +18,7 @@ image: true
 
 ### @Testcontainers
 - これは（Spring Bootではなく）**Testcontainers**のアノテーション
--  `@Container` をつけたコンテナインスタンスの**ライフサイクルを自動で管理**してくれる
+-  `@Container`をつけたコンテナインスタンスの**ライフサイクルを自動で管理**してくれる
 
 ### @Container
 - これも**Testcontainers**のアノテーション
@@ -34,7 +34,7 @@ image: true
 - 従来のようなプロパティ設定や`@DynamicPropertySource`などの操作を省略できシンプルにテスト環境を構築できる
 
 
-## Step1: 一番シンプルなTestcontainersの使い方
+## Step1: Testcontainers を素で使う
 
 まずはTestcontainersのアノテーションを何も使わない素のTestcontainersの例を次のコードをもとに説明します。
 
@@ -64,7 +64,7 @@ public class PersonRepositoryStep1Test {
 
 最初なので少し丁寧にコードの意味を説明すると次のようになります。
 
-- (1) で`postgres:16-alpine`のコンテナを司る`PostgreSQLContainer`のインスタンスが生成されます。ただし、この時点ではコンテナは開始されていません
+- (1) で`postgres:16-alpine`のコンテナを司る`PostgreSQLContainer`のインスタンスが生成されますが、この時点ではコンテナは開始されていません
 - (2) はコンテナに接続するために必要な情報をコンテナインスタンスから取得し、その値を`@DynamicPropertySource`で動的に設定しています
 - コンテナは生成されただけで誰にも開始されていないため、JUnit5のライフサイクルメソッドを使って自分でコンテナの開始と終了を行っています
 
@@ -78,7 +78,7 @@ Testcontainersのアノテーションを使わない今回の例のような場
 ```
 
 :::column:接続先って決まってるんじゃないの？
-Postgresをコンテナでなにも指定せずデフォルトで起動したら接続先ホストはlocalhost、ポートはPostgresのデフォルトの5432、データベース名は`postgres`のはずなのでワザワザ`@DynamicPropertySource`で動的に設定せず、設定ファイルに`spring.datasource.url=jdbc:postgresql://localhost:5432/postgres`って最初から書いておけばいいじゃないの？と思ったりしませんか？私はそう思いましたが、実はそうじゃないのですよね。
+Postgresをコンテナでなにも指定せずデフォルトで起動した場合、接続ホストはlocalhost、ポートはPostgresのデフォルトの5432、データベース名は`postgres`のはずなのでワザワザ`@DynamicPropertySource`で動的に設定せず、設定ファイルに`spring.datasource.url=jdbc:postgresql://localhost:5432/postgres`って最初から書いておけばいいのでは？と思ったりしませんか？私はそう思いましたが、実はそうではないのです。
 
 Testcontainersのコンテナクラスはインスタンス生成時にコンテナが持つ設定を変えることができます。`PostgreSQLContainer`であればそのコンテナ定義として次のように実装されています。
 
@@ -100,7 +100,7 @@ static GenericContainer<?> postgres = new GenericContainer<>("postgres")
 
 
 ## Step2: @Testcontainers と @Container を使ってみる
-今度はTestcontainersがもつ `@Testcontainers` と `@Container` を利用したパターンを説明します。Step1をこの2つのアノテーションで書き換えると次のようになります。
+今度はTestcontainersがもつ`@Testcontainers`と`@Container`を利用したパターンを説明します。Step1をこの2つのアノテーションで書き換えると次のようになります。
 
 ```java
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
@@ -135,7 +135,7 @@ Step1との大きな違いは `@BeforeAll`と`@AfterAll`でやっていたコン
 </dependency>
 ```
 
-## Step3: @Testcontainersを使わずSpring Bootの連携機能を使ってみる
+## Step3: @Testcontainers を使わずSpring Bootの連携機能を使ってみる
 Step2の例はSpring Bootの連携機能を使うことでTestcontainersのアノテーションを使わずに実現できるようになります。Step2の例をSpring Bootの連携機能を使って書き換えると次のようになります。
 
 ```java
@@ -179,7 +179,7 @@ Spring Bootの連携機能となる次のdependencyが含まれている場合�
 Spring Bootの連携機能を使う場合、TestcontainersがやってくれていたことをSpring Bootがやってくれるようになるため、`@Testcontainers`と`@Container`は使う必要はなくなります。
 
 
-## Step4: @ServiceConnectionを使ってみる（Spring Boot 3.1以降）
+## Step4: Spring Boot 3.1 以降の @ServiceConnection を使う
 最後はSpring Boot 3.1で導入された`@ServiceConnection`を使った例です。他の例と同じようにStep3の例を`@ServiceConnection`を使って書き換えると次のようになります。
 
 ```java
@@ -214,4 +214,4 @@ Step3ではEnvironmentのプロパティ値を取得し、その値を`Propertie
 
 
 ## さいごに
-TestcontainersとSpring Boot連携のそれぞれの役割を理解できたでしょうか？このあたりが分かれば、シチュエーションごとに最適な構成が選べるようになるかと思います。
+TestcontainersとSpring Boot連携のそれぞれの役割を理解できたでしょうか。このあたりが分かれば、シチュエーションごとに最適な構成が選べるようになるかと思います。

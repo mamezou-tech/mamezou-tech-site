@@ -15,7 +15,7 @@ translate: true
 
 # Introduction
 
-[In a previous article](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/), we discussed the difference between "problems" and "issues" and how to proceed with issue management. As a continuation, this time we will clearly explain the first step of risk management, centered on the difference between "risks" and "problems".
+[In a previous article](https://developer.mamezou-tech.com/en/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/), we discussed the difference between "problems" and "issues" and how to proceed with issue management. As a continuation, this time we will clearly explain the first step of risk management, centered on the difference between "risks" and "problems".
 
 Are you grappling with any of these concerns?
 
@@ -34,11 +34,11 @@ Let’s develop the skill to turn “vague anxieties” into “concrete actions
 :::info
 **This article is part of a series for new project managers**
 
-1. [Part 1: Starting with the Difference between "Problems" and "Issues" (Introduction to Issue Management)](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)
-2. [Part 2: Detective-Style Management — How to Uncover the Truth? (Thinking & Observation)](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)
+1. [Part 1: Starting with the Difference between "Problems" and "Issues" (Introduction to Issue Management)](https://developer.mamezou-tech.com/en/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)
+2. [Part 2: Detective-Style Management — How to Uncover the Truth? (Thinking & Observation)](https://developer.mamezou-tech.com/en/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)
 3. Part 3: Starting with the Difference between "Problems" and "Risks" (Risk Management Guide)
 
-👉 If you’re reading for the first time, we recommend [starting from Part 1](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/).
+👉 If you’re reading for the first time, we recommend [starting from Part 1](https://developer.mamezou-tech.com/en/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/).
 :::
 
 # First, a Thought Experiment! Which One Is a 'Risk'?
@@ -101,15 +101,15 @@ Problems that have already surfaced are handled through issue management, while 
 
 ```mermaid
 graph TD
-    A[検討中の事象・状況] --> Q1{1．その事象・状況はプロジェクトの目標に影響を与える可能性がありますか？};
-    Q1 -- いいえ --> NNotRisk1[<u>リスクではありません</u><br>（または影響軽微）];
-    Q1 -- はい --> Q2{2．その事象・状況はまだ発生していない【未来】の話ですか？};
-    Q2 -- いいえ --> Issue[<u>リスクではありません</u><br>既に発生しているなら問題のため、課題管理で対応しましょう。];
-    Q2 -- はい --> Q3{3．その事象・状況が実際に発生するかは【不確か】ですか？<br>（100%でも0%でもないですか。）};
-    Q3 -- はい --> IsRisk[<b>✅<u>リスクです</u></b><br>リスク管理表に登録し、対策を検討しましょう！];
-    Q3 -- いいえ --> Q4{4．100%確実に発生すると言えますか？};
-    Q4 -- はい --> Certainty[<u>リスクではありません</u><br>それは前提条件の誤りや作業計画の不備による事象の可能性があります。];
-    Q4 -- いいえ --> NotCertainty[<u>リスクではありません</u><br>（発生しないと確信できる場合）];
+    A[Event or Situation Under Consideration] --> Q1{1 Could this event or situation potentially impact project objectives?};
+    Q1 -- No --> NNotRisk1[<u>Not a Risk</u><br>(or minimal impact)];
+    Q1 -- Yes --> Q2{2 Is this event or situation something that has not yet occurred [future]?};
+    Q2 -- No --> Issue[<u>Not a Risk</u><br>If it has already occurred, it's a problem, so handle it through issue management.];
+    Q2 -- Yes --> Q3{3 Is it [uncertain] whether this event or situation will actually occur?<br>(Is it neither 100% nor 0%?)};
+    Q3 -- Yes --> IsRisk[<b>✅<u>This is a Risk</u></b><br>Register it in the risk management table and consider countermeasures!];
+    Q3 -- No --> Q4{4 Can you say it will definitely occur with 100% certainty?};
+    Q4 -- Yes --> Certainty[<u>Not a Risk</u><br>This may be an event caused by incorrect assumptions or inadequate work planning.];
+    Q4 -- No --> NotCertainty[<u>Not a Risk</u><br>(when you are confident it will not occur)];
 ```
 
 # Three Reasons Why Risk Management Is Important: “Slack (Buffer)” Is the Key to Success

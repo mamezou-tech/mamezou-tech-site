@@ -28,7 +28,6 @@ Please follow these instructions:
   - **Do not wrap the front matter in code blocks or add any additional formatting. Output it exactly as \`---\`, followed by the YAML content, and ending with \`---\`.**
 - In the main body of the article:
   - Translate all Japanese text into ${language}.
-  - Do not translate source code (but do translate comments within the code).
   - Do not translate names of books mentioned in the article.
   - Do not translate HTML tags like \`<video>\` or \`<script>\`; output them as they are.
   - Do not translate image links or URLs.

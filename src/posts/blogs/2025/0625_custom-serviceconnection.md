@@ -20,7 +20,7 @@ Testcontainersについては説明はしませんので、そこから理解し
 ## ServiceConnection対応前
 まずはオレオレServiceConnection対応前のアプリですが、これは次のようになっています。記事ではこの例をもとにServiceConnection対応の方法を説明してきます。
 
-- ServiceConnection対応前
+#### ＜ServiceConnection対応前＞
 ```java
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class ContainerClientStep5Test {

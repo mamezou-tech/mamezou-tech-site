@@ -5,9 +5,9 @@ date: 2025-06-25
 tags: [testcontainers, Springの小話, spring-boot, spring, java]
 image: true
 ---
-Spring Boot 3.1からTestcontainersとの連携がしやすくなるServiceConnection機能が導入されました。使ってみると「これは便利だ！」と感じたのですが、対応しているのはPostgreSQLなど一部のミドルウェアに限られています。Postgresなどのミドルウェアをコンテナで利用することは確かに多いですが、それと同じくらい対向のRESTアプリをコンテナ化し、スタブとして利用するケースも多いですが、独自コンテナに対してServiceConnectionはそのままでは使えません。
+Spring Boot 3.1からTestcontainersとの連携がしやすくなるServiceConnection機能が導入されました。使ってみると「これは便利だ！」と感じたのですが、対応しているのはPostgreSQLなど一部のミドルウェアに限られています。PostgreSQLなどのミドルウェアをコンテナで利用することは確かに多いですが、それと同じくらい対向のRESTアプリをコンテナ化し、スタブとして利用するケースも多いですが、独自コンテナに対してServiceConnectionはそのままでは使えません。
 
-そこで今回は独自にコンテナ化したRESTアプリを独自に（＝オレオレで）ServiceConnection対応させ`＠ServiceConnection`で接続できるようにする方法を紹介します。
+そこで今回はコンテナ化したRESTアプリを独自に（＝オレオレで）ServiceConnection対応させ`＠ServiceConnection`で接続できるようにする方法を紹介します。
 
 Testcontainersについては説明はしませんので、そこから理解したいという方は下のブログも参考にしてもらえればと思います。
 

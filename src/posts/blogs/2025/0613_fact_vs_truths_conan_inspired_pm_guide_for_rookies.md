@@ -23,10 +23,11 @@ tags: [ProjectManagement, プロジェクト管理, 新人向け]
 そういった状況を乗り越えるヒントが、この記事にはあります。
 
 :::info
-**この記事は新人プロジェクトマネージャー向けシリーズ記事の一部です**
+この記事は新人プロジェクトマネージャー向けシリーズ記事の一部です。
 
 1. [第1回：「問題」と「課題」の違いから始めよう（課題管理入門）](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)
-2. [第2回：探偵型マネジメント ― 真実をどう見抜くか？（思考法・観察編）](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)
+2. **第2回：探偵型マネジメント ― 真実をどう見抜くか？（思考法・観察編）**
+3. [第3回：「問題」と「リスク」の違いから始める（リスク管理入門）](https://developer.mamezou-tech.com/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/)
 
 👉 初めて読む方は [第1回から読む](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/) のがおすすめです。
 :::

@@ -31,6 +31,7 @@ tags: [ProjectManagement, プロジェクト管理, 課題管理, 新人向け]
 1. **第1回：「問題」と「課題」の違いから始めよう（課題管理入門）**
 2. [第2回：探偵型マネジメント ― 真実をどう見抜くか？（思考法・観察編）](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)
 3. [第3回：「問題」と「リスク」の違いから始める（リスク管理入門）](https://developer.mamezou-tech.com/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/)
+4. [第4回：「問題」をSOAPで診て「課題」を処方する（問題解決編）](https://developer.mamezou-tech.com/blogs/2025/06/27/soap_based_project_problem_diagnosis_for_rookie/)
 
 :::
 

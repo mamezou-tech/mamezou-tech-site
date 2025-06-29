@@ -10,7 +10,6 @@ tags:
   - java
 image: true
 translate: true
-
 ---
 
 Spring Boot 3.1 introduced the ServiceConnection feature to simplify integration with Testcontainers. When I tried it, I thought “This is great!”, but it only supports certain middleware like PostgreSQL. While using middleware such as PostgreSQL in containers is indeed common, it’s just as common to containerize a counterpart REST application and use it as a stub—and ServiceConnection doesn’t work out of the box for custom containers.
@@ -19,7 +18,7 @@ So in this article, I’ll show you how to make a containerized REST application
 
 I won’t explain Testcontainers here, so if you’d like to get up to speed from scratch, please refer to the blog below.
 
-@[og](https://developer.mamezou-tech.com/blogs/2025/06/23/testcontainers-with-springboot/)
+@[og](https://developer.mamezou-tech.com/en/blogs/2025/06/23/testcontainers-with-springboot/)
 
 :::info
 This article has been tested with Spring Boot 3.5.3. Also, all of the code shown here is uploaded to GitHub [here](https://github.com/extact-io/testcontainer-sample).

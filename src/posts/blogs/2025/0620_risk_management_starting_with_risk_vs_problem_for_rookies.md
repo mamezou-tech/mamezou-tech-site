@@ -30,6 +30,7 @@ tags: [ProjectManagement, プロジェクト管理, リスク管理, 新人向�
 1. [第1回：「問題」と「課題」の違いから始めよう（課題管理入門）](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)
 2. [第2回：探偵型マネジメント ― 真実をどう見抜くか？（思考法・観察編）](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)
 3. **第3回：「問題」と「リスク」の違いから始める（リスク管理入門）**
+4. [第4回：「問題」をSOAPで診て「課題」を処方する（問題解決編）](https://developer.mamezou-tech.com/blogs/2025/06/27/soap_based_project_problem_diagnosis_for_rookie/)
 
 👉 初めて読む方は [第1回から読む](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/) のがおすすめです。
 :::
@@ -55,7 +56,7 @@ tags: [ProjectManagement, プロジェクト管理, リスク管理, 新人向�
 答えは **【B】** です。
 
 リスクとは、「結果がどうなるかわからない」という **不確実性** を伴う事象のことです。  
-ここでのポイントは、「起こるかどうか」だけでなく、**「起きたときにどうなるのか」も確定していない**という点です。
+ここでのポイントは、「起こるかどうか」だけでなく、**「起きたときにどうなるか」も確定していない**という点です。
 
 【A】は、 **ほぼ確実に「卵が割れる」** と予想できるため、不確実性がありません。  
 したがって、これは「既知の危険」や「問題」に近く、リスクとは言えません。

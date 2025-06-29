@@ -8,7 +8,6 @@ tags:
   - 課題管理
   - 新人向け
 translate: true
-
 ---
 
 # 引言
@@ -24,12 +23,12 @@ translate: true
 :::info
 本文是面向新人项目经理的系列文章之一。
 
-1. [第1回：从「问题」与「课题」的区别开始（课题管理入门）](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)  
-2. [第2回：侦探型管理 ― 如何看透真相？（思考方法·观察篇）](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)  
-3. [第3回：从「问题」与「风险」的区别开始（风险管理入门）](https://developer.mamezou-tech.com/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/)  
+1. [第1回：从「问题」与「课题」的区别开始（课题管理入门）](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)  
+2. [第2回：侦探型管理 ― 如何看透真相？（思考方法·观察篇）](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)  
+3. [第3回：从「问题」与「风险」的区别开始（风险管理入门）](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/)  
 4. **第4回：使用SOAP诊断「问题」并开出处方「课题」（问题解决篇）**
 
-👉 推荐初次阅读者[从第1回开始阅读](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)。  
+👉 推荐初次阅读者[从第1回开始阅读](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)。  
 :::
 
 # 项目异常类似“疾病”：向医生的“诊察流程”学习
@@ -137,7 +136,7 @@ SOAP虽然是医疗现场的记录“格式”，本质上是一种“系统化�
 
 ### P：计划（Plan） - 治疗方针（课题化）
 基于“A：评估与诊断”中明确的根本原因，制定具体行动计划。  
-这里的行动需要作为在[第1回](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)中学到的“课题”明确定义。
+这里的行动需要作为在[第1回](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)中学到的“课题”明确定义。
 
 * **课题**：通过审视设计评审流程，减少返工工时和质量下降。  
     * **行动1**：试行设计文档直接评审  

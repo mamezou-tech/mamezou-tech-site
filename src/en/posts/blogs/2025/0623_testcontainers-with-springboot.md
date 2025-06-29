@@ -10,8 +10,8 @@ tags:
   - java
 image: true
 translate: true
-
 ---
+
 When browsing online samples, you might see the @Testcontainers annotation sometimes present and sometimes absent, or container instances annotated with @Container or @Bean, leaving you wondering what the proper way to use Testcontainers is. It's not obvious at first glance which features are native to Testcontainers and which come from Spring Boot integration (spring-boot-testcontainers).
 
 Therefore, this time, we'll introduce, using sample programs, a step-by-step refinement from “plain Testcontainers usage” to “Testcontainers handy features” and finally to “evolution through Spring Boot integration,” so you can understand the role and benefits of each.
@@ -215,7 +215,7 @@ In Step 3, AutoConfiguration retrieves property values from the Environment and 
 
 With `@ServiceConnection`, however, information obtained from the container instance is bound directly to the configuration detail object, eliminating the need to go through configuration files (property values). When a container instance is annotated with `@ServiceConnection`, Spring introduces a bean that generates the corresponding connection detail object from the container instance, thereby handling the retrieval and binding process in step ①. If you're interested in learning more about this mechanism, be sure to check out the article below!
 
-@[og](https://developer.mamezou-tech.com/blogs/2025/06/25/custom-serviceconnection/)
+@[og](https://developer.mamezou-tech.com/en/blogs/2025/06/25/custom-serviceconnection/)
 
 ## Conclusion
 Have you understood the respective roles of Testcontainers and Spring Boot integration? With this knowledge, you should be able to choose the optimal configuration for each situation.

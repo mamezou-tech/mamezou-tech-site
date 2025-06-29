@@ -26,7 +26,7 @@ We will introduce the way of thinking and the “framework” for diagnosing pro
 This article is part of a series for rookie project managers.
 
 1. [Part 1: Starting with the Difference Between “Problem” and “Task” (Introduction to Issue Management)](https://developer.mamezou-tech.com/en/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)  
-2. [Part 2: Detective-Style Management — How to Uncover the Truth (Thinking & Observation Edition)](https://developer.mamezou-tech.com/blogs/en/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)  
+2. [Part 2: Detective-Style Management — How to Uncover the Truth (Thinking & Observation Edition)](https://developer.mamezou-tech.com/en/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)  
 3. [Part 3: Starting with the Difference Between “Problem” and “Risk” (Introduction to Risk Management)](https://developer.mamezou-tech.com/en/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/)  
 4. **Part 4: Diagnosing “Problems” with SOAP and Prescribing “Tasks” (Problem-Solving Edition)**
 

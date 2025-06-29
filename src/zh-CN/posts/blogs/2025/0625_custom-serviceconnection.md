@@ -10,15 +10,15 @@ tags:
   - java
 image: true
 translate: true
-
 ---
+
 从 Spring Boot 3.1 起，引入了与 Testcontainers 更易集成的 ServiceConnection 功能。使用后我觉得“这真方便！”，但它只支持 PostgreSQL 等一部分中间件。虽然容器化 PostgreSQL 等中间件的场景确实很多，但同时也有大量将对端 REST 应用容器化并作为存根使用的场景，而 ServiceConnection 默认无法用于自定义容器。
 
 因此，这次将介绍如何对容器化的 REST 应用进行自定义的 ServiceConnection 支持，并通过 `@ServiceConnection` 来连接。
 
 本文不做 Testcontainers 的说明，如果想从头了解的读者，可以参考下面的博客。
 
-@[og](https://developer.mamezou-tech.com/blogs/2025/06/23/testcontainers-with-springboot/)
+@[og](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/23/testcontainers-with-springboot/)
 
 :::info
 本文已在 Spring Boot 3.5.3 上确认可用。此外，文章中说明的代码已全部上传至 GitHub 的 [此处](https://github.com/extact-io/testcontainer-sample)。

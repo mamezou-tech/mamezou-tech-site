@@ -10,7 +10,6 @@ tags:
   - java
 image: true
 translate: true
-
 ---
 
 在网上查看示例时，你可能会看到有的示例使用了@Testcontainers注解，有的示例没有；有的示例在容器实例上使用@Container注解，有的示例使用@Bean注解……对于如何正确使用Testcontainers，你可能会感到困惑。到底哪些是Testcontainers本身的功能，哪些是Spring Boot的集成功能（spring-boot-testcontainers），初次接触时很难区分，对吧？
@@ -220,7 +219,7 @@ public class PersonRepositoryStep3Test {
 
 而在 `@ServiceConnection` 中，从容器实例获取的信息会被直接绑定到设置信息对象上，因此无需再经过配置文件（属性值），这是一个重要特点。当容器实例添加了 `@ServiceConnection` 注解时，Spring 会插入一个 Bean 来根据容器实例生成相应的连接详情对象，从而实现了之前步骤中①的获取与绑定操作。如果对这方面的机制更感兴趣，欢迎查看以下文章！
 
-@[og](https://developer.mamezou-tech.com/blogs/2025/06/25/custom-serviceconnection/)
+@[og](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/25/custom-serviceconnection/)
 
 ## 最后
 大家是否已经能够理解 Testcontainers 与 Spring Boot 集成各自的作用了？如果掌握了这些，就可以根据不同的场景选择最合适的配置了。

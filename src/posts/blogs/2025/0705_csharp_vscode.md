@@ -1,9 +1,9 @@
 ---
- title: 【2025年度版】VS CodeでC#の開発環境を構築する手順を解説
- author: yoshihiro-tamori
- date: 2025-07-05
- tags: [vscode, dotnet, csharp, 開発環境]
- image: true
+title: VS Codeで始める！わかる＆できるC#開発環境の構築【2025年版マニュアル】
+author: yoshihiro-tamori
+date: 2025-07-05
+tags: [vscode, dotnet, csharp, 開発環境]
+image: true
 ---
 
 みなさん、C#の開発には何を使っていますか。仕事ではおそらくVisual Studio Professional、プライベートではVisual Studio Communityが定番ですよね。
@@ -69,6 +69,10 @@ VS Codeをインストールしたら次は拡張機能のインストールで�
 
 `dotnet new console -o C:\Development\SampleProject`
 
+上記はWindowsの場合ですので、Macの場合は以下のようなコマンドを打ってください（ディレクトリやプロジェクト名は適宜変えてください）。
+
+`dotnet new console -o /dev/SampleProject`
+
 ![プロジェクト作成を確認](/img/dotnet/csharp_vscode/csharp_vscode9.png)
 
 
@@ -103,6 +107,10 @@ Hello, Worldが表示されました。
 ターミナルで以下のコマンドを打ちます（newの後ろに指定する文字がプロジェクトの種類です）。ディレクトリやプロジェクト名は適宜変えてください。
 
 `dotnet new web -o C:\Development\SampleWeb`
+
+上記はWindowsの場合ですので、Macの場合は以下のようなコマンドを打ってください（ディレクトリやプロジェクト名は適宜変えてください）。
+
+`dotnet new web -o /dev/SampleWeb`
 
 ![Wプロジェクト作成を確認](/img/dotnet/csharp_vscode/csharp_vscode18.png)
 

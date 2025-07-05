@@ -13,7 +13,7 @@ translate: true
 
 # 前言
 
-在 [之前的文章](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/) 中，我们学习了识别“事实”与“真相”的重要性。  
+在 [之前的文章](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/) 中，我们学习了识别“事实”与“真相”的重要性。  
 在推进项目的过程中，有时会感到迷茫吗。
 
 “应该应对眼前的问题吗？”  
@@ -27,13 +27,13 @@ translate: true
 :::info
 **本文是面向新人项目经理的系列文章之一**
 
-1. [第1回：从“问题”和“课题”的区别开始（课题管理入门）](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)  
-2. [第2回：侦探式管理 — 如何识破真相？（思考方法·观察篇）](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)  
-3. [第3回：从“问题”和“风险”的区别开始（风险管理入门）](https://developer.mamezou-tech.com/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/)  
-4. [第4回：用 SOAP 诊断“问题”并对“课题”进行处方（问题解决篇）](https://developer.mamezou-tech.com/blogs/2025/06/27/soap_based_project_problem_diagnosis_for_rookie/)  
+1. [第1回：从“问题”和“课题”的区别开始（课题管理入门）](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)  
+2. [第2回：侦探式管理 — 如何识破真相？（思考方法·观察篇）](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)  
+3. [第3回：从“问题”和“风险”的区别开始（风险管理入门）](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/)  
+4. [第4回：用 SOAP 诊断“问题”并对“课题”进行处方（问题解决篇）](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/27/soap_based_project_problem_diagnosis_for_rookie/)  
 5. 第5回：**切换“问题解决型”和“课题达成型”的思考方法（思考切换篇）**  
 
-👉 初次阅读者推荐从 [第1回开始](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/) 阅读。  
+👉 初次阅读者推荐从 [第1回开始](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/) 阅读。  
 :::
 
 # “问题解决”与“课题达成”：区分使用两种方法的判断标准

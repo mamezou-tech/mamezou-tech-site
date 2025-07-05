@@ -10,12 +10,11 @@ tags:
   - 課題管理
   - 新人向け
 translate: true
-
 ---
 
 # Introduction
 
-[In a previous article](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/) we learned the importance of distinguishing “facts” from “truths.” Have you ever found yourself at a crossroads while driving a project forward?
+[In a previous article](https://developer.mamezou-tech.com/en/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/) we learned the importance of distinguishing “facts” from “truths.” Have you ever found yourself at a crossroads while driving a project forward?
 
 “Should I address the problem in front of me?”  
 “Or should I aim for a higher goal?”
@@ -27,13 +26,13 @@ They are the **Problem Solving** approach and the **Task Achievement** approach.
 :::info
 **This article is part of a series for new project managers**
 
-1. [Part 1: Starting with the Difference Between “Problems” and “Tasks” (Introduction to Issue Management)](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)  
-2. [Part 2: Detective-Style Management – How to Discern the Truth? (Thinking & Observation Edition)](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)  
-3. [Part 3: Starting with the Difference Between “Problems” and “Risks” (Introduction to Risk Management)](https://developer.mamezou-tech.com/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/)  
-4. [Part 4: Diagnosing “Problems” with SOAP and Prescribing “Tasks” (Problem Solving Edition)](https://developer.mamezou-tech.com/blogs/2025/06/27/soap_based_project_problem_diagnosis_for_rookie/)  
+1. [Part 1: Starting with the Difference Between “Problems” and “Tasks” (Introduction to Issue Management)](https://developer.mamezou-tech.com/en/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)  
+2. [Part 2: Detective-Style Management – How to Discern the Truth? (Thinking & Observation Edition)](https://developer.mamezou-tech.com/en/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)  
+3. [Part 3: Starting with the Difference Between “Problems” and “Risks” (Introduction to Risk Management)](https://developer.mamezou-tech.com/en/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/)  
+4. [Part 4: Diagnosing “Problems” with SOAP and Prescribing “Tasks” (Problem Solving Edition)](https://developer.mamezou-tech.com/en/blogs/2025/06/27/soap_based_project_problem_diagnosis_for_rookie/)  
 5. Part 5: **Mindset Switching Between “Problem Solving” and “Task Achievement” (Thinking Switch Edition)**
 
-👉 If you’re new to this series, [we recommend starting with Part 1](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/).
+👉 If you’re new to this series, [we recommend starting with Part 1](https://developer.mamezou-tech.com/en/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/).
 :::
 
 # "Problem Solving" vs "Task Achievement": Criteria for Distinguishing the Two Approaches

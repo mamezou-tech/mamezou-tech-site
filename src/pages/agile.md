@@ -49,6 +49,7 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 
 - [プロダクトオーナーの煩悩： スクラムの価値基準](/agile/agile-po-complaints_01/)
 - [プロダクトオーナーの煩悩： サラリーマンPOの目から見たインセプションデッキのおもいで](/agile/agile-po-complaints_02/)
+- [プロダクトオーナーの煩悩： 「自分の頭だけで考えるな」〜試行錯誤の末たどり着いた、アジャイルな教訓〜](/agile/agile-po-complaints_03/)
 
 ## 業務システムにおけるアジャイル開発
 

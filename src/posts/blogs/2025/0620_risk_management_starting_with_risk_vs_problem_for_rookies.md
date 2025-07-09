@@ -31,6 +31,7 @@ tags: [ProjectManagement, プロジェクト管理, リスク管理, 新人向�
 2. [第2回：探偵型マネジメント ― 真実をどう見抜くか？（思考法・観察編）](https://developer.mamezou-tech.com/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/)
 3. **第3回：「問題」と「リスク」の違いから始める（リスク管理入門）**
 4. [第4回：「問題」をSOAPで診て「課題」を処方する（問題解決編）](https://developer.mamezou-tech.com/blogs/2025/06/27/soap_based_project_problem_diagnosis_for_rookie/)
+5. [第5回：「問題解決型」と「課題達成型」を切り替える思考法（思考スイッチ編）](https://developer.mamezou-tech.com/blogs/2025/06/30/problem_solving_vs_task_achieving_pm_thinking_for_rookies/)
 
 👉 初めて読む方は [第1回から読む](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/) のがおすすめです。
 :::

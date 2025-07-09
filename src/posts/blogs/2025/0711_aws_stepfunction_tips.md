@@ -2,7 +2,7 @@
 title: AWS Step Functionsでつまずいたポイントを“実際に使って”まとめてみた
 author: hirokazu-niwa
 # 公開日として設定されますので、それを考慮した日付にするようにしてください
-date: 20250711
+date: 2025-07-11
 # 以下のタグは任意です。つけるものあれば追加してください。まず既存タグ(トップページにあります)に使えるものがあるかを確認してください。なければ新規に作成してもらって大丈夫です
 tags: [mamezou, AWS, AWS認定, step-functions]
 image: true

@@ -1,26 +1,10 @@
 ---
 title: AWS Step Functionsでつまずいたポイントを“実際に使って”まとめてみた
 author: hirokazu-niwa
-# 公開日として設定されますので、それを考慮した日付にするようにしてください
 date: 2025-07-11
-# 以下のタグは任意です。つけるものあれば追加してください。まず既存タグ(トップページにあります)に使えるものがあるかを確認してください。なければ新規に作成してもらって大丈夫です
-tags: [mamezou, AWS, AWS認定, step-functions]
+tags: [step-functions, AWS]
 image: true
 ---
-<details>
-<summary>目次</summary>
-
-- [概要](#概要)
-- [AWS Step Functionsとは](#aws-step-functionsとは)
-- [概念や使い方の理解](#概念や使い方の理解)
-  - [1. ワークフロー(ステートマシンと同義)設定の仕方は２種類](#1-ワークフローステートマシンと同義設定の仕方は２種類)
-  - [2. ワークフローの実行がリアルタイムでグラフィカルに確認できる](#2-ワークフローの実行がリアルタイムでグラフィカルに確認できる)
-  - [3. タスクの種類](#3-タスクの種類)
-  - [4. サービスの統合について](#4-サービスの統合について)
-- [所感](#所感)
-- [おわりに](#おわりに)
-
-</details>
 
 ## 概要
 AWS DVAを受験するにあたり関連する内容を知識のみでなく実際に手を動かしながら理解を深めていこうと思い立ち、その際に躓いたところだったりわかりにくかった概念などを備忘録としてまとめておき、後から見返せるよう残しておきたいと思います。  
@@ -56,21 +40,21 @@ Step Functionsでワークフローを定義する方法は2パターンあり�
 特にこだわりがなければWorkflow StudioでGUIベースで設定していけば問題ないと思います。  
 GUIベースで設定したとしても平行してASLでの定義もされているので、後から別の環境やメンバーに同じ設定を共有、なんてこともできますね。  
   
-![Work flow studio GUI](/src/img/blogs/2025/0711_aws_stepfunction_tips/image-2.png)  
+![Work flow studio GUI](/img/blogs/2025/0711_aws_stepfunction_tips/image-2.png)  
   
-![ASL image](/src/img/blogs/2025/0711_aws_stepfunction_tips/image-3.png)  
+![ASL image](/img/blogs/2025/0711_aws_stepfunction_tips/image-3.png)  
   
 ワークフローの大枠をGUIでちゃちゃっと定義しておいて、細かい部分をASLで作りこむ、みたいなやり方も使いやすそうかなと思いました。
 （特に[Choice](https://docs.aws.amazon.com/ja_jp/step-functions/latest/dg/state-choice.html)や[Map](https://docs.aws.amazon.com/ja_jp/step-functions/latest/dg/state-map.html)フローをASLで最初から定義しようとするとぱっと見わかりにくいと感じたので）  
   
 ### 2. ワークフローの実行がリアルタイムでグラフィカルに確認できる
-![Work flow state image](/src/img/blogs/2025/0711_aws_stepfunction_tips/image.png)  
+![Work flow state image](/img/blogs/2025/0711_aws_stepfunction_tips/image.png)  
 各ステート（ワークフロー内のステップのこと）が成功・失敗しているかが一目でわかり、ステートへの入出力や定義内容も見えるのでどういう失敗が起きてて、どこの定義が間違っているのかが見つけやすい仕組みになっていると感じました。  
   
 ここで少しわかりにくいと感じたのが「イベント」という概念です。  
 これは、ステート（「イベントビューワー」の中だと「Step」カラムに表記されている）の中で行われている詳細なタスク内容にあたると理解しました。  
 この内容を「イベントビューワー」で見ることができます。  
-![event viewer image](/src/img/blogs/2025/0711_aws_stepfunction_tips/image-1.png)  
+![event viewer image](/img/blogs/2025/0711_aws_stepfunction_tips/image-1.png)  
   
 ### 3. タスクの種類  
 [タスクタイプ](https://docs.aws.amazon.com/ja_jp/step-functions/latest/dg/state-task.html#task-types)で記載がある通り、4種類のタスクタイプが存在しているようです。
@@ -78,7 +62,7 @@ GUIベースで設定したとしても平行してASLでの定義もされて�
 HTTP APIを利用してStripeやSalesforceなどのサードパーティーSaaSアプリケーションもワークフローに組み込めるので、この点もメリットになりそうですね。  
   
 若干ややこしいのが、Typeフィールドでこの種類を使い分けるのではなく、Resourceフィールドに指定するARNの書き方で使い分けているようです。  
-![task type set position](/src/img/blogs/2025/0711_aws_stepfunction_tips/image-6.png)  
+![task type set position](/img/blogs/2025/0711_aws_stepfunction_tips/image-6.png)  
   
 ### 4. サービスの統合について  
 タスクタイプとして[サポートされたサービスのAPIアクション](https://docs.aws.amazon.com/ja_jp/step-functions/latest/dg/state-task.html#state-task-connector)を選択した場合の話になります。  
@@ -98,7 +82,7 @@ HTTP APIを利用してStripeやSalesforceなどのサードパーティーSaaS�
 の3パターンの挙動が存在しています。  
 これをまとめている表が公式のページに記載されている内容になってます。  
   
-![service integration table view](/src/img/blogs/2025/0711_aws_stepfunction_tips/image-4.png)  
+![service integration table view](/img/blogs/2025/0711_aws_stepfunction_tips/image-4.png)  
   
 見てもらえればわかりますが、各種類の中でもサポートしていないパターンがあったりするので、使う際には確認が必要になると思います。  
 また、簡単に「AWS SDK 統合」「最適化された統合」の違いを述べておくと、  

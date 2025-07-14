@@ -1,10 +1,9 @@
- ---
- title: よりよい方法を見つけだそうとし続けている： 自由があればよりよく進化する  
- author: daisuke-kishimoto  
- date: 2025-07-15  
- tags: [アジャイル開発]  
- ---
-
+---
+title: よりよい方法を見つけだそうとし続けている： 自由があればよりよく進化する  
+author: daisuke-kishimoto  
+date: 2025-07-15  
+tags: [アジャイル開発]  
+---
 
 # はじめに
 

@@ -3,6 +3,7 @@ title: 形骸化しない定例会議の進め方｜デキるPMの7つの改善�
 author: makoto-takahashi  
 date: 2025-07-18
 tags: [ProjectManagement, プロジェクト管理]  
+image: true
 ---
 
 # はじめに

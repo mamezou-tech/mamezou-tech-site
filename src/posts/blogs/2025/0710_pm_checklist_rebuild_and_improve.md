@@ -3,6 +3,7 @@ title: チェックリストの形骸化を防ぐ！デキるPMの再構築術�
 author: makoto-takahashi  
 date: 2025-07-10
 tags: [ProjectManagement, プロジェクト管理]  
+image: true
 ---
 
 # はじめに

@@ -210,7 +210,7 @@ async function main() {
       }
     }
     await writeFile(
-      "translated.json",
+      "./translated.json",
       { succeeded, failed },
       { spaces: 2 },
     );

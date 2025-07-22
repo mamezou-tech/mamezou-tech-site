@@ -1,5 +1,5 @@
 ---
-title: rclone - CLI で クラウドストレージのファイルを同期する
+title: rclone - CLI で クラウドストレージのファイルを同期する (Google Drive 編)
 author: masahiro-kondo
 date: 2025-07-23
 tags: [rclone, tools]

@@ -25,7 +25,7 @@ translate: true
 
 # 常见的任务管理陷阱及对策【基础篇】
 
-在之前的文章「[【問題】と【課題】の違いから始める─新人プロジェクトマネージャー向けはじめての課題管理ガイド](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)」中，也介绍了一些注意点。  
+在之前的文章「从「问题」与「课题」的区别开始 — 面向新人项目经理：课题管理入门指南](https://developer.mamezou-tech.com/zh-cn/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)」中，也介绍了一些注意点。  
 这次，将介绍常见的七个陷阱及具体对策。
 
 ## 1. “任务”并非可执行的行动

@@ -25,7 +25,7 @@ However, if issues are left unaddressed or become mere formalities, organization
 In this article, we introduce seven common pitfalls and five improvement techniques you can use starting tomorrow. Reconstruct your issues into a "digestible issue list" and propel your project forward.
 
 # Common Pitfalls in Issue Management and How to Address Them [Basic Edition]
-We touched on some points in the previous article "[Starting with the Difference between 'Problems' and 'Issues' — A Beginner's Guide to Issue Management for New Project Managers](https://developer.mamezou-tech.com/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)". This time, we present seven common pitfalls and concrete countermeasures.
+We touched on some points in the previous article "[Starting with the Difference between 'Problems' and 'Issues' — A Beginner's Guide to Issue Management for New Project Managers](https://developer.mamezou-tech.com/en/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/)". This time, we present seven common pitfalls and concrete countermeasures.
 
 ## 1. Issues Are Not Defined as Actions
 "'Revenue did not meet the target' or 'There are concerns about quality' are just 'problems.'  

@@ -1,5 +1,5 @@
 ---
-title: これなら分かる！C#のLINQをサンプルコード付きで徹底攻略
+title: 現場で迷わない！C#のLINQをサンプルコード付きで徹底攻略
 author: yoshihiro-tamori
 date: 2025-07-28
 tags: [dotnet, csharp]

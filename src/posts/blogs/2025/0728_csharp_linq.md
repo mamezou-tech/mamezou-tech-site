@@ -82,14 +82,14 @@ sales_id,customer_id,product_id,sales_date,quantity
 
 上記3つのCSVファイルの内容は、以下のようにListにして読み込んだ前提で話を進めていきます。CSVファイルの1行分のモデルクラスを作り（Customer、Product、Sales）、各カラムはモデルクラスにプロパティで持つことにします。
 
-~~~
+```cs
 CsvReader csvReader = new CsvReader();
 IList<Customer> customerList = csvReader.ReadCustomer();
 IList<Product> productList = csvReader.ReadProduct();
 IList<Sales> salesList = csvReader.ReadSales();
-~~~
+```
 
-CSVファイルの読み込みについては他の記事を参照してください。
+CSVファイルの読み込みについては本記事では説明を割愛します。
 
 ### LINQのクエリ構文
 
@@ -97,7 +97,7 @@ LINQの基本的な構文はFROMから始まり、WHERE、SELECTという順に�
 
 例えばサンプルデータを使って価格が300円以上の商品を選択してみましょう。
 
-~~~
+```cs
 var result = from p in productList
              where p.Price >= 300
              select p;
@@ -107,7 +107,7 @@ foreach (var one in result)
     Console.WriteLine(string.Format("商品ID:{0}, 商品名:{1}, 価格:{2}円",
         one.ProductId, one.ProductName, one.Price));
 }
-~~~
+```
 
 ~~~
 商品ID:3, 商品名:食パン, 価格:400円
@@ -133,7 +133,7 @@ LINQにはクエリ構文に対してメソッド構文と呼ばれるラムダ�
 
 先ほどのクエリ構文をメソッド構文にすると、次のようになります。
 
-~~~
+```cs
 // LINQのメソッド構文
 var result = productList.Where(p => p.Price >= 300);
 
@@ -142,7 +142,7 @@ foreach (var one in result)
     Console.WriteLine(string.Format("商品ID:{0}, 商品名:{1}, 価格:{2}円",
         one.ProductId, one.ProductName, one.Price));
 }
-~~~
+```
 
 ~~~
 商品ID:3, 商品名:食パン, 価格:400円
@@ -166,7 +166,7 @@ LINQを使う上で避けて通れないものが匿名型です。これはや�
 
 最初に上げたサンプルコードを再掲しますが、このように商品という1種類のデータだけselect句で指定する場合は不要です。
 
-~~~
+```cs
     // LINQのクエリ構文
     var result = from p in productList
                  where p.Price >= 300
@@ -177,11 +177,11 @@ LINQを使う上で避けて通れないものが匿名型です。これはや�
         Console.WriteLine(string.Format("商品ID:{0}, 商品名:{1}, 価格:{2}円",
             one.ProductId, one.ProductName, one.Price));
     }
-~~~
+```
 
 複数のデータを結合して、それぞれのデータをselect句に指定したい場合には匿名型を使います。new { aaa, bbb, ccc }のように書きます。
 
-~~~
+```cs
 var result = from sales in salesList
              join customer in customerList on sales.CustomerId equals customer.CustomerId
              join product in productList on sales.ProductId equals product.ProductId
@@ -191,27 +191,27 @@ var result = from sales in salesList
                  Customer = customer,
                  Product = product
              };
-~~~
+```
 
 余談ですがselect句に匿名型を使う場合、左辺にはvarが隠れているようなものだと思ってください。上記のサンプルコードなら、select句は以下のようになっているようなものです。
 
-~~~
+```cs
 var Sales = sales;
 var Customer = customer;
 var Product = product;
-~~~
+```
 
 また結合条件に複数カラムを使いたい場合も匿名型で複数カラムを指定します。次のサンプルコードですと、key1とkey2という2つのカラムを指定しています。
 
-~~~
+```cs
 new { a.key1, a.key2 } equals new { b.key1, b.key2 }
-~~~
+```
 
 その他GROUP BYやORDER BYをやる際に複数カラムを指定したいときにも使えます。
 
-~~~
+```cs
 group new { sales, product } by sales.SalesDate into g
-~~~
+```
 
 ## LINQの主要な操作の例
 
@@ -223,7 +223,7 @@ INNER JOINの例として売上データ、商品データ、顧客データを�
 
 INNER JOINすなわち内部結合をしたい場合は、以下のようにjoin、on、equalsを使います。
 
-~~~
+```cs
 // LINQでのINNER JOINのやり方
 var result = from sales in salesList
              join customer in customerList on sales.CustomerId equals customer.CustomerId
@@ -242,7 +242,7 @@ foreach (var one in result)
         one.Sales.SalesDate, one.Customer.CustomerName,
         one.Product.ProductName, one.Product.Price));
 }
-~~~
+```
 
 ~~~
 販売日:2025/02/06 0:00:00, 顧客名:サンプル　太郎, 商品名:猫パン, 価格:250
@@ -256,13 +256,13 @@ foreach (var one in result)
 ~~~
 
 この例では結合条件となるカラムは1つだけです。もし結合条件に複数のカラムを指定する場合は、次のサンプルコードのように匿名型を使用してください。
-~~~
+```cs
 new { a.key1, a.key2 } equals new { b.key1, b.key2 }
-~~~
+```
 
 実は私は最初、INNER JOINのやり方が分からず試行錯誤を何度も繰り返しました。そして以下のようにWhereメソッドを使ってやっていました。これでもできるにはできますが、joinを使った方がスマートです。
 
-~~~
+```cs
 var result = from sales in salesList
              from customer in customerList.Where(customer => customer.CustomerId == sales.CustomerId)
              from product in productList.Where(product => product.ProductId == sales.ProductId)
@@ -272,7 +272,7 @@ var result = from sales in salesList
                  Customer = customer,
                  Product = product
              };
-~~~
+```
 
 ### LEFT OUTER JOINのやり方
 
@@ -284,7 +284,7 @@ LEFT OUTER JOINのやり方はINNER JOINにintoが加わるだけです。into�
 
 LEFT OUTER JOINでも結合先にキーが一致するデータがなかったら値はnullになりますよね。それと同様です。
 
-~~~
+```cs
 // LINQでのLEFT OUTER JOINのやり方
 var result = from sales in salesList
              join customer in customerList on sales.CustomerId equals customer.CustomerId into cg
@@ -305,7 +305,7 @@ foreach (var one in result)
         one.Sales.SalesDate, one.Customer.CustomerName,
         one.Product.ProductName, one.Product.Price));
 }
-~~~
+```
 
 ~~~
 販売日:2025/02/06 0:00:00, 顧客名:サンプル　太郎, 商品名:猫パン, 価格:250
@@ -322,7 +322,7 @@ foreach (var one in result)
 
 続いてSQLでもおなじみの集計関数の使い方を見ていきましょう。
 
-~~~
+```cs
 // 平均
 var average = salesList.Average(x => x.Quantity);
 Console.WriteLine(string.Format("平均販売個数:{0}", average.ToString()));
@@ -342,7 +342,7 @@ Console.WriteLine(string.Format("最安値:{0}", min));
 // 件数
 var count = productList.Count(x => x.Price > 200);
 Console.WriteLine(string.Format("200円超の商品の個数:{0}", count.ToString()));
-~~~
+```
 
 ~~~
 平均販売個数:1.625
@@ -360,7 +360,7 @@ GROUP BYの例として日別売上を集計してみましょう。
 
 GROUP BYをやりたい場合は、group、by、intoを使います。ちょっと面倒なので落ち着いてサンプルコードを読んでください。
 
-~~~
+```cs
 // GROUP BY
 var groupList = from sales in salesList
             join product in productList on sales.ProductId equals product.ProductId
@@ -376,7 +376,7 @@ foreach (var group in groupList)
 {
     Console.WriteLine(string.Format("日付:{0}, 販売額合計:{1}", group.SalesDate, group.TotalSales));
 }
-~~~
+```
 
 ~~~
 日別売上
@@ -398,7 +398,7 @@ foreach (var group in groupList)
 
 ORDER BYをやりたい場合、orderbyを使います。SQL同様にデフォルトで昇順となっており、降順にしたい場合はdescendingと記述します。
 
-~~~
+```cs
 // ORDER BY ASC
 var orderAsc = from product in productList
                 orderby product.Price
@@ -420,7 +420,7 @@ foreach (var one in orderDesc)
 {
     Console.WriteLine(string.Format("商品ID:{0}, 商品名:{1}", one.ProductId, one.ProductName));
 }
-~~~
+```
 
 ~~~
 価格が安い順
@@ -451,11 +451,11 @@ foreach (var one in orderDesc)
 
 最初の1件を取得する場合はFirst()またはFirstOrDefault()を使います。結果が0件だった場合を考慮する必要があるならFirstOrDefault()を使いましょう。もちろんnullの扱いには気を付けてくださいね。
 
-~~~
+```cs
 var firstOne = productList.FirstOrDefault();
 Console.WriteLine("最初の1個");
 Console.WriteLine(string.Format("商品ID:{0}, 商品名:{1}", firstOne.ProductId, firstOne.ProductName));
-~~~
+```
 
 ~~~
 最初の1個
@@ -464,11 +464,11 @@ Console.WriteLine(string.Format("商品ID:{0}, 商品名:{1}", firstOne.ProductI
 
 最後の1件を取得する場合はLast()またはLastOrDefault()を使います。こちらも最初の1件同様に結果が0件の場合を考慮する必要があるならLastOrDefault()を使い、nullの扱いには気を付けてください。
 
-~~~
+```cs
 var lastOne = productList.LastOrDefault();
 Console.WriteLine("最後の1個");
 Console.WriteLine(string.Format("商品ID:{0}, 商品名:{1}", lastOne.ProductId, lastOne.ProductName));
-~~~
+```
 
 ~~~
 最後の1個

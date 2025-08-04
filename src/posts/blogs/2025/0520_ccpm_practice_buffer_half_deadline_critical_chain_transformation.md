@@ -3,6 +3,7 @@ title: CCPM実践編：バッファ半減でも納期厳守！クリティカル
 author: makoto-takahashi
 date: 2025-05-20
 tags: [ProjectManagement, プロジェクト管理, CCPM, TOC]
+image: true
 ---
 
 # はじめに
@@ -15,6 +16,16 @@ CCPMは、タスクごとのバッファを集約して全体で管理し、制�
 CCPMは、単なるスケジュール表作成のテクニックではありません。
 これは、プロジェクトの目的を達成するために必要な「最短ルート」と「確実な実行」を実現するための、思考法と仕組みを兼ね備えたアプローチです。
 「納期を守れない」「進捗報告ばかりでなかなか前に進まない」といったプロジェクト運営にありがちな課題を、構造的に解決するためのヒントがCCPMにはあります。
+
+:::info
+**この記事はクリティカルチェーンプロジェクトマネジメントシリーズ記事の一部です**
+
+1. [CCPM理論編：CCPM基礎のTOCを学ぶ](https://developer.mamezou-tech.com/blogs/2025/05/09/ccpm_theory_bottleneck_is_why_learn_toc/)
+2. CCPM実践編：クリティカルチェーンで現場が変える
+3. [CCPMツール編：ツールでCCPMを回す方法](https://developer.mamezou-tech.com/blogs/2025/05/30/ccpm_google_spread_sheet_apps_script/)
+
+👉 初めて読む方は [CCPM理論編から読む](https://developer.mamezou-tech.com/blogs/2025/05/09/ccpm_theory_bottleneck_is_why_learn_toc/) のがおすすめです。
+:::
 
 # なぜスケジュールは守られないのか？
 プロジェクト遅延の原因となる典型的な行動パターンが存在します。

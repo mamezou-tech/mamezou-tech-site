@@ -134,3 +134,9 @@ ToDo、備忘録、WBSタスクが混在していると、重要課題が埋も�
 
 できるところから少しずつ始め、プロジェクトを前進させるよう課題を管理していきましょう。
 あなたのプロジェクトの課題リストが「動く仕組み」になりますように、一歩でも前に進むことを願っています。
+
+:::info
+**この記事は「デキるPMシリーズ」の一部です**
+👉 [チェックリスト運用](https://developer.mamezou-tech.com/blogs/2025/07/10/pm_checklist_rebuild_and_improve/)
+👉 [定例会議改善](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
+:::

@@ -3,6 +3,7 @@ title: いまさら聞けない　プロジェクトマネジメント　って�
 author: makoto-takahashi
 date: 2025-03-24
 tags: [ProjectManagement, プロジェクト管理]
+image: true
 ---
 
 # はじめに

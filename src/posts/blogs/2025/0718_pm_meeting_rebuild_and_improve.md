@@ -186,3 +186,9 @@ image: true
 
 「形骸化しているかも」と感じたら、今日からひとつでも改善を。  
 あなたの定例会議が“動き出す”きっかけになることを願っています。
+
+:::info
+**この記事は「デキるPMシリーズ」の一部です**
+👉 [チェックリスト運用](https://developer.mamezou-tech.com/blogs/2025/07/10/pm_checklist_rebuild_and_improve/)
+👉 [課題管理](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
+:::

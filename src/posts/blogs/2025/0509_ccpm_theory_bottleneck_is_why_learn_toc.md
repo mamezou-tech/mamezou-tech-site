@@ -3,6 +3,7 @@ title: CCPM理論編：優秀なチームでも失敗？原因は「ボトルネ
 author: makoto-takahashi
 date: 2025-05-09
 tags: [ProjectManagement, プロジェクト管理, CCPM, TOC]
+image: true
 ---
 
 # はじめに
@@ -24,6 +25,15 @@ PMBOK、Scrum、ITIL、CMMI、A-SPICEなど、プロジェクトマネジメン�
 CCPMは、TOC（制約理論）を基盤にしたプロジェクトマネジメント手法です。  
 TOCが「制約に集中して全体最適を目指す」アプローチであるのに対し、CCPMはそれをプロジェクトのスケジュール管理に応用しています。  
 今回はその前提となるTOC、特にプロジェクトの成否を分ける **「制約」** の考え方についてお話ししていきます。
+
+:::info
+**この記事はクリティカルチェーンプロジェクトマネジメントシリーズ記事の一部です**
+
+1. CCPM理論編：CCPM基礎のTOCを学ぶ
+2. [CCPM実践編：クリティカルチェーンで現場が変える](https://developer.mamezou-tech.com/blogs/2025/05/20/ccpm_practice_buffer_half_deadline_critical_chain_transformation/)
+3. [CCPMツール編：ツールでCCPMを回す方法](https://developer.mamezou-tech.com/blogs/2025/05/30/ccpm_google_spread_sheet_apps_script/)
+:::
+
 
 # TOCとは
 

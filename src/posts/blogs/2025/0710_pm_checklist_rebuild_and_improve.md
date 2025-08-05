@@ -228,3 +228,9 @@ Planに戻らずCheck & Actだけが回るため、PDCAのバランスが崩れ�
 3. **定期見直しサイクルを設定する**：形骸化を未然に防ぐ運用を設計
 
 この3つから始めるだけで、チェックリスト運用は劇的に変わります。
+
+:::info
+**この記事は「デキるPMシリーズ」の一部です**
+👉 [定例会議改善](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
+👉 [課題管理](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
+:::

@@ -189,6 +189,7 @@ image: true
 
 :::info
 **この記事は「デキるPMシリーズ」の一部です**
-👉 [チェックリスト運用](https://developer.mamezou-tech.com/blogs/2025/07/10/pm_checklist_rebuild_and_improve/)
-👉 [課題管理](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
+👉 [チェックリストの形骸化を防ぐ！デキるPMの再構築術と7つの改善策](https://developer.mamezou-tech.com/blogs/2025/07/10/pm_checklist_rebuild_and_improve/)
+👉 [課題が消化されるリスト運用｜デキるPMの脱・形骸化テクニック12選](https://developer.mamezou-tech.com/blogs/2025/07/24/issue_list_rebuilding_and_practical_tips_for_pms/)
+👉 [因果関係図を活用した問題解決手法｜現場改善に効くデキるPMの実践ステップの手法](https://developer.mamezou-tech.com/blogs/2025/08/05/problem_solving_with_cause_effect_diagram/)
 :::

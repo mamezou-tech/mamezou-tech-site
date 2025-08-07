@@ -2,7 +2,7 @@
 title: プロセス改善の実践ステップ｜デキるPMが使うIDEALモデルと成功の秘訣
 author: makoto-takahashi
 date: 2025-08-08
-tags:  [ProjectManagement, プロジェクト管理, プロセス改善] 
+tags: [プロセス改善, ProjectManagement, プロジェクト管理]
 image: true
 ---
 

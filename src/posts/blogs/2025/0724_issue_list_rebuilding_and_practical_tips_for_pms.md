@@ -137,6 +137,7 @@ ToDo、備忘録、WBSタスクが混在していると、重要課題が埋も�
 
 :::info
 **この記事は「デキるPMシリーズ」の一部です**
-👉 [チェックリスト運用](https://developer.mamezou-tech.com/blogs/2025/07/10/pm_checklist_rebuild_and_improve/)
-👉 [定例会議改善](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
+👉 [チェックリストの形骸化を防ぐ！デキるPMの再構築術と7つの改善策](https://developer.mamezou-tech.com/blogs/2025/07/10/pm_checklist_rebuild_and_improve/)
+👉 [形骸化しない定例会議の進め方｜デキるPMの7つの改善ステップ](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
+👉 [因果関係図を活用した問題解決手法｜現場改善に効くデキるPMの実践ステップの手法](https://developer.mamezou-tech.com/blogs/2025/08/05/problem_solving_with_cause_effect_diagram/)
 :::

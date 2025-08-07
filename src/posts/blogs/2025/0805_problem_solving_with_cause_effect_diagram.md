@@ -237,7 +237,7 @@ graph TD
 
 :::info
 **この記事は「デキるPMシリーズ」の一部です**
-👉 [チェックリスト運用](https://developer.mamezou-tech.com/blogs/2025/07/10/pm_checklist_rebuild_and_improve/)
-👉 [定例会議改善](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
-👉 [課題管理](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
+👉 [チェックリストの形骸化を防ぐ！デキるPMの再構築術と7つの改善策](https://developer.mamezou-tech.com/blogs/2025/07/10/pm_checklist_rebuild_and_improve/)
+👉 [形骸化しない定例会議の進め方｜デキるPMの7つの改善ステップ](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
+👉 [課題が消化されるリスト運用｜デキるPMの脱・形骸化テクニック12選](https://developer.mamezou-tech.com/blogs/2025/07/24/issue_list_rebuilding_and_practical_tips_for_pms/)
 :::

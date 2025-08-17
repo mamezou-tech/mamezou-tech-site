@@ -56,6 +56,10 @@ Created requirements.md
 
 [要件定義書(requirements.md)](https://github.com/NoriyukiYagi/kiro-album-app/blob/v0.0.1/.kiro/specs/album-app/requirements.md)が作成されました。
 
+一部抜粋したものを下図に示します。
+
+![要件定義書(requirements.md)](/img/blogs/2025/0819_kiro-album-app-1/img-v0.0.1-requirements.png)  
+
 アルバムアプリというキーワードから一般的なユーザーストーリーを出力し、それに必要な機能をリスト化してくれました。
 
 受け入れ基準もあり、これはそのまま受け入れテストとして使用できそうです。
@@ -98,7 +102,13 @@ Accepted edits to requirements.md
 要件定義書の内容は適切でしょうか？修正が必要な箇所があれば教えてください。問題なければ、設計フェーズに進みます。
 ```
 
-[要件定義書(requirements.md)](https://github.com/NoriyukiYagi/kiro-album-app/blob/v0.0.2/.kiro/specs/album-app/requirements.md)の内容ががらりと変わりましたが、特に問題がないように見えます。
+[要件定義書(requirements.md)](https://github.com/NoriyukiYagi/kiro-album-app/blob/v0.0.2/.kiro/specs/album-app/requirements.md)が修正されました。
+
+一部抜粋したものを下図に示します。
+
+![要件定義書(requirements.md)](/img/blogs/2025/0819_kiro-album-app-1/img-v0.0.2-requirements.png)  
+
+内容ががらりと変わりましたが、特に問題がないように見えます。
 
 設計へ進んでみましょう。
 
@@ -143,7 +153,11 @@ Created design.md
 
 [設計文書(design.md)](https://github.com/NoriyukiYagi/kiro-album-app/blob/v0.1.0/.kiro/specs/album-app/design.md)が作成されました。
 
-Mermaid記法で記述されたシステム構成図がエラーになっていたので手直ししました。→[修正した設計文書(design.md)](https://github.com/NoriyukiYagi/kiro-album-app/blob/v0.1.1/.kiro/specs/album-app/design.md)
+Mermaid記法で記述されたシステム構成図が文法エラーになっていたので手直ししました。→[修正した設計文書(design.md)](https://github.com/NoriyukiYagi/kiro-album-app/blob/v0.1.1/.kiro/specs/album-app/design.md)
+
+一部抜粋したものを下図に示します。
+
+![設計文書(design.md)](/img/blogs/2025/0819_kiro-album-app-1/img-v0.1.1-design.png)  
 
 技術調査してから要件をベースに設計しています。
 人間が設計するのと変わらないステップを踏んでいるところが面白いと思いました。
@@ -224,7 +238,7 @@ Accepted edits to design.md
 
 [設計文書(design.md)](https://github.com/NoriyukiYagi/kiro-album-app/blob/v0.1.2/.kiro/specs/album-app/design.md)が修正されました。
 
-本番環境のシステム構成図がエラーとなっていたため手直ししました。→[修正した設計文書(design.md)](https://github.com/NoriyukiYagi/kiro-album-app/blob/v0.1.3/.kiro/specs/album-app/design.md)
+本番環境のシステム構成図が文法エラーとなっていたため手直ししました。→[修正した設計文書(design.md)](https://github.com/NoriyukiYagi/kiro-album-app/blob/v0.1.3/.kiro/specs/album-app/design.md)
 
 『File Storage Service』、『Thumbnail Service』の件に関しても直して欲しいので、Kiroに指摘しました。
 
@@ -367,6 +381,10 @@ Created tasks.md
 ```
 
 [実装タスク(task.md)](https://github.com/NoriyukiYagi/kiro-album-app/blob/v0.2.0/.kiro/specs/album-app/tasks.md)が作成されました。
+
+一部抜粋したものを下図に示します。
+
+![実装タスク(task.md)](/img/blogs/2025/0819_kiro-album-app-1/img-v0.2.0-task.png)  
 
 問題無さそうなので、プロンプトの『Finalize task list』ボタンを押します。
 

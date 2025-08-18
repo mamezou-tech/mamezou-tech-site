@@ -2,7 +2,7 @@
 title: KiroでAI開発革命!? アルバムアプリをゼロから作ってみた【その1:要件定義・設計・実装計画】
 author: noriyuki-yagi
 date: 2025-08-19
-tags: [AIエージェント, Kiro]
+tags: [Kiro, AIエージェント]
 image: true
 ---
 

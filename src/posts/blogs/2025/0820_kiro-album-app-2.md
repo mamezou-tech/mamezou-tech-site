@@ -481,6 +481,7 @@ Command .\test-postgresql.ps1
 
 文字エンコーディングの問題が続いています。シンプルなテストコマンドを直接実行しましょう：
 Command Write-Host "=== PostgreSQL Connection Test ===" -ForegroundColor Green
+Command podman exec album-app-postgres-dev psql -U albumuser -d albumapp -c "SELECT 'Connection Success' as status, current_timestamp;"
 
 素晴らしい！PostgreSQLデータベースへの接続が正常に動作しています。
 

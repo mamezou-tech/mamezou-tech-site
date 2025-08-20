@@ -2,7 +2,7 @@
 title: AWSで自分だけのLLM環境を！EC2 GPUインスタンスとOllamaでAIを動かす実践ガイド
 author: kotaro-miura
 date: 2025-08-21
-tags: [AWS,EC2,Ollama,gpu,NVIDIA]
+tags: [Ollama, NVIDIA, gpu, EC2,AWS]
 image: true
 ---
 

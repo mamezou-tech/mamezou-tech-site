@@ -587,6 +587,10 @@ namespace RazorSample.Pages
 }
 ```
 
+画面を表示して「非同期処理のテスト」ボタンを押下すると以下のようになります。
+
+![RazorでAjaxを使って非同期処理を実行するサンプル](/img/dotnet/csharp_razor/JSSample2.png)
+
 ## 終わりに
 
 C#のRazorについて、私が気に入っている理由と苦戦した個所なども含め、使い方を解説しました。

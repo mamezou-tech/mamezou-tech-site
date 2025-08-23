@@ -149,9 +149,9 @@ ASP.NET Core WebアプリなどRazorページを含むプロジェクトを作�
 
 ### Razor構文
 
-Razorを記述するには`@`と`{}`を使います。`@`の後ろにC#コードを書いても、`@{}`の中にC#コードを書いてもよいです。
+Razorを記述するには@と{}を使います。@の後ろにC#コードを書いても、@{}の中にC#コードを書いてもよいです。
 
-またモデルの指定やC#コードで使いたいクラス・ライブラリなどのusingはRazorページの冒頭に`@`を使って記述すればよいです。
+またモデルの指定やC#コードで使いたいクラス・ライブラリなどのusingはRazorページの冒頭に@を使って記述すればよいです。
 
 ちなみにRazor構文とRazor式という言葉がありますが、前者はRazorの文法、後者はRazorでのC#の式1つ1つと思ってください。
 
@@ -289,7 +289,7 @@ namespace RazorSample.Pages
         public string Description { get; set; }
         public BasicSampleModel()
         {
-            // 実は値がnullの項目をcshtmlで使ってNullReferenceExceptionが出る場合、初期化する。
+            // 値がnullの項目をcshtmlで使ってNullReferenceExceptionが出る場合、初期化する。
             Name = "";
             Category = "";
             Region = "";
@@ -410,9 +410,9 @@ namespace RazorSample.Pages
 
 私は昔、こういう項目をサブミットしたときにサーバ側で上手く受け取れなくて苦戦したことがあります。だからあえてこの記事にこのような例を書いています。
 
-こういう項目は`foreach文`ではなく`for文`を使ってください。モデル内の一覧のうち、何番目かを指定しないと、コードビハインドで正しく受け取れません。
+こういう項目はforeach文ではなくfor文を使ってください。モデル内の一覧のうち、何番目かを指定しないと、コードビハインドで正しく受け取れません。
 
-理由を説明しておきます。Razorはモデルの項目名をHTMLのid属性とname属性に設定します。そして`foreach文`で作った一覧をブラウザの開発者ツールで見ると、以下のようなHTMLになっています。
+理由を説明しておきます。Razorはモデルの項目名をHTMLのid属性とname属性に設定します。そしてforeach文で作った一覧をブラウザの開発者ツールで見ると、以下のようなHTMLになっています。
 
 ![Razorでforeachを使って一覧を表示するサンプル](/img/dotnet/csharp_razor/MenuEditForeach.png)
 
@@ -422,7 +422,7 @@ namespace RazorSample.Pages
 
 この例ではリクエストパラメータとしてメニューIDを受け取ったら、該当するメニューのデータをCSVファイルから取得し、画面に表示しています。それが`OnGet`メソッドです。
 
-そして画面に入力された値を`OnPost`メソッドで受け取っています。
+そして画面でサブミットされたら`OnPost`メソッドが呼ばれます。
 
 フォームに入力した値をコードビハインドで受け取るためには、入力した値を保持するプロパティに`BindProperty`アノテーションを付けてください。するとPOST時にはフォームに入力した値が自動的にセットされます。
 
@@ -474,7 +474,7 @@ namespace RazorSample.Pages
 }
 ```
 
-URLに`?id=3`を付けてこの画面にアクセスしてみましょう。そして次のように値を書き換えてサブミットします。
+URLに`?id=3`を付けてこの画面にアクセスしてみましょう。そして次のように値を書き換えて登録ボタンを押下します。
 
 ![Razorでフォームの値をサブミットするサンプル](/img/dotnet/csharp_razor/MenuEditResult.png)
 

@@ -234,13 +234,14 @@ graph TD
 まずは小さな問題から試し、経験を積むことで、現場改善が着実に進みます。ぜひ挑戦してみてください。
 
 次回は、この未来実現ツリーを活用し、目標設定から計画立案へとつなげる手法を解説しました。
-詳細は、続編記事「[中間目標で現場を動かす！未来実現ツリー活用のデキるPMの改善術](https://developer.mamezou-tech.com/blogs/2025/08/14/improvement_plan_with_future_reality_tree/)」をご覧ください。
+詳細は、続編記事「[未来実現ツリー活用の中間目標で現場を動かす｜デキるPMの改善計画術](https://developer.mamezou-tech.com/blogs/2025/08/14/improvement_plan_with_future_reality_tree/)」をご覧ください。
 
 :::info
 **この記事は「デキるPMシリーズ」の一部です**
-👉 [チェックリストの形骸化を防ぐ！デキるPMの再構築術と7つの改善策](https://developer.mamezou-tech.com/blogs/2025/07/10/pm_checklist_rebuild_and_improve/)
+👉 [チェックリストの形骸化を防ぐ｜デキるPMの再構築術と7つの改善策](https://developer.mamezou-tech.com/blogs/2025/07/10/pm_checklist_rebuild_and_improve/)
 👉 [形骸化しない定例会議の進め方｜デキるPMの7つの改善ステップ](https://developer.mamezou-tech.com/blogs/2025/07/18/pm_meeting_rebuild_and_improve/)
 👉 [課題が消化されるリスト運用｜デキるPMの脱・形骸化テクニック12選](https://developer.mamezou-tech.com/blogs/2025/07/24/issue_list_rebuilding_and_practical_tips_for_pms/)
-👉 [中間目標で現場を動かす！未来実現ツリー活用のデキるPMの改善術](https://developer.mamezou-tech.com/blogs/2025/08/14/improvement_plan_with_future_reality_tree/)
+👉 [未来実現ツリー活用の中間目標で現場を動かす｜デキるPMの改善計画術](https://developer.mamezou-tech.com/blogs/2025/08/14/improvement_plan_with_future_reality_tree/)
 👉 [プロセス改善の実践ステップ｜デキるPMが使うIDEALモデルと成功の秘訣](https://developer.mamezou-tech.com/blogs/2025/08/08/pm_process_improvement_ideal_model_and_practical_steps/)
+👉 [変更管理の成功ガイド｜デキるPMが実践する要件管理・構成管理・トレーサビリティ活用法](https://developer.mamezou-tech.com/blogs/2025/08/20/pm_change_management_with_rm_cm_and_traceability/)
 :::

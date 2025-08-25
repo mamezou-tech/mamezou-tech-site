@@ -418,6 +418,8 @@ namespace RazorSample.Pages
 
 なんとinputタグのid属性、name属性ともに一覧内のインデックスがなく、項目名だけなのです。これでは一覧の何番目かが分かりませんよね。だからサーバ側で一覧の値を正しく受け取れません。
 
+よってリスト項目でモデルに正しくマップさせたい時はforが必須です。ただ表示のためにループするならforeachでOKです。
+
 続いてコードビハインドに移りましょう。
 
 この例ではリクエストパラメータとしてメニューIDを受け取ったら、該当するメニューのデータをCSVファイルから取得し、画面に表示しています。それが`OnGet`メソッドです。
@@ -519,11 +521,11 @@ RazorでJavaScriptを使うには、スクリプト用のセクションを記�
 
 ![RazorでJavaScriptを実行するサンプル](/img/dotnet/csharp_razor/JSSample1.png)
 
-### Ajaxを使った非同期処理の実装方法
+### JavaScriptを使った非同期処理の実装方法
 
-RazorでAjaxを使って非同期処理を実装する方法についても解説しておきます。
+RazorでJavaScriptを使って非同期処理を実装する方法についても解説しておきます。
 
-先ほどのJavaScriptの実行と同様にスクリプト用のセクションを作成し、Ajaxの処理を記述するだけです。
+先ほどのJavaScriptの実行と同様にスクリプト用のセクションを作成し、非同期処理を記述するだけです。
 
 ```cs:JSSample.cshtml
 @page
@@ -541,29 +543,26 @@ RazorでAjaxを使って非同期処理を実装する方法についても解�
         });
 
         function getMessage() {
-            $.ajax({
-                url: '/JSSample?handler=Message',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
+            fetch('/JSSample?handler=Message')
+                .then((response) => response.json())
+                .then((data) => {
                     $('#sample-message').text(data.message);
-                },
-                error: function () {
+                })
+                .catch((error) => {
                     $('#sample-message').text('取得に失敗しました。');
-                }
-            });
+                });
         }
     </script>
 }
 ```
 
-上記のコードの`url`の個所に気を付けてください。RazorのコードビハインドでAjaxを受け付けるには、ページ名とハンドラーを指定します。
+上記のコードの`fecth`の引数として渡しているURLに気を付けてください。RazorのコードビハインドでJavaScriptの非同期処理を受け付けるには、ページ名とハンドラーを指定します。
 
 ページ名はcshtmlファイルの名前です。このサンプルだとページファイルの名前がJSSample.cshtmlですので、ページ名はJSSampleになります。
 
-そして`OnGetXxx`メソッドのXxxの部分をAjaxの`url`の`handler`に指定します。
+そして`OnGetXxx`メソッドのXxxの部分を`handler`に指定します。
 
-この例だと`OnGetMessage`メソッドを呼び出すために、Ajaxで`url`に`/JSSample?handler=Message`と指定しています。
+この例だと`OnGetMessage`メソッドを呼び出すために、URLを`/JSSample?handler=Message`としています。
 
 コードビハインドでは単純なメッセージをJSONで返します。匿名型を使ってキー・バリュー形式にして`JsonResult`の引数に渡せば、JSONオブジェクトを作成できます。
 
@@ -589,7 +588,7 @@ namespace RazorSample.Pages
 
 画面を表示して「非同期処理のテスト」ボタンを押下すると以下のようになります。
 
-![RazorでAjaxを使って非同期処理を実行するサンプル](/img/dotnet/csharp_razor/JSSample2.png)
+![RazorでJavaScriptを使って非同期処理を実行するサンプル](/img/dotnet/csharp_razor/JSSample2.png)
 
 ## 終わりに
 
@@ -597,6 +596,6 @@ C#のRazorについて、私が気に入っている理由と苦戦した個所�
 
 Razorは文法の学習がいくらか必要ですが、慣れればとても効率的にWeb開発ができます。ぜひ使いこなしてくださいね。
 
-また最近はBlazorというフロントエンド用のフレームワークも登場しています。豆蔵デベロッパーサイトでも解説記事を書いていますので、ぜひ読んでください。
+また最近はBlazorというフロントエンド用のフレームワークも登場しています。豆蔵デベロッパーサイトでも解説記事が公開されていますので、ぜひ読んでください。
 
 [Blazor入門：ASP.NET Coreで始める最新Web開発](https://developer.mamezou-tech.com/blogs/2024/12/20/asp-dotnet-core-blazor/)

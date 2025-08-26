@@ -390,7 +390,7 @@ tasks.mdを見ると、『Error implementing task』と表示され、タスク�
 
 ![Error implementing task](/img/blogs/2025/0827_kiro-album-app-4/img-error-implementing-task.png)  
 
-### 13.2, project-context.mdの修正
+### 13.2. 『Session Too Long』問題への対応
 
 『Session Too Long』が発生した件について、コマンド実行時のコンソール出力がセッションに含まれることが原因ではないかと推測しました。
 

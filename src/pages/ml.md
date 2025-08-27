@@ -22,21 +22,7 @@ ChatGPT に代表される、大規模言語モデルによるアプリケーシ
 - [ChatGPTのベースになった自然言語処理モデル「Transformer」を調べていたら「Hugging Face」に行き着いた](/blogs/2023/03/20/using-transformer-01/)
 - [ChatGPTに自然言語処理モデル「GPT2-Japanese」の使用方法を聞きながら実装したら想像以上に優秀だった件](/blogs/2023/03/22/using-transformer-02/)
 - [ChatGPT先生に教わりながら「Transformerの肝」である「注意機構（Attention機構）」を可視化する](/blogs/2023/03/26/using-transformer-03/)
-
-## ローカルで LLM を動かす
-サービスとしてではなく、ローカルで LLM を動かすことはハイスペックなマシンが必要ですが、課金やセキュリティを気にすることなく LLM を利用できるという利点があります。
-
 - [CUDA、cuDNN、CMake地獄を乗り越えて、激古GPU＋llama.cppで量子化DeepSeekモデルを動かすまでの戦い](/blogs/2025/04/14/use-deepseek-on-local-with-old-gpu/)
-- [Ollamaを使ってオープンソースLLMをローカルホストしてみよう](/blogs/2025/02/20/ollama_local_llm/)
-- [AWSで自分だけのLLM環境を！EC2 GPUインスタンスとOllamaでAIを動かす実践ガイド](/blogs/2025/08/21/ec2-gpu-demo/)
-
-## LLM をソフトウェア開発に活用する
-生成 AI がソフトウェア開発で当たり前につける時代が到来しました。
-
-### KiroでAI開発革命!?
-- [KiroでAI開発革命!? アルバムアプリをゼロから作ってみた【その1:要件定義・設計・実装計画】](/blogs/2025/08/19/kiro-album-app-1/)
-- [KiroでAI開発革命!? アルバムアプリをゼロから作ってみた【その2:プロジェクト構造の作成】](/blogs/2025/08/20/kiro-album-app-2/)
-- [KiroでAI開発革命!? アルバムアプリをゼロから作ってみた【その3:バックエンドの実装-前編+Steering機能】](/blogs/2025/08/22/kiro-album-app-3/)
 
 ## 画像解析/OpenVINO
 

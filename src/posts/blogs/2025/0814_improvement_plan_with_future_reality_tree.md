@@ -139,4 +139,5 @@ image: true
 👉 [因果関係図を活用した問題解決手法｜現場改善に効くデキるPMの実践ステップの手法](https://developer.mamezou-tech.com/blogs/2025/08/05/problem_solving_with_cause_effect_diagram/)
 👉 [プロセス改善の実践ステップ｜デキるPMが使うIDEALモデルと成功の秘訣](https://developer.mamezou-tech.com/blogs/2025/08/08/pm_process_improvement_ideal_model_and_practical_steps/)
 👉 [変更管理の成功ガイド｜デキるPMが実践する要件管理・構成管理・トレーサビリティ活用法](https://developer.mamezou-tech.com/blogs/2025/08/20/pm_change_management_with_rm_cm_and_traceability/)
+👉 [品質定量化と信頼度成長モデル｜デキるPMのソフトウェア信頼性評価と品質保証の進め方](http://localhost:8080/blogs/2025/08/26/pm_quality_quantification_and_reliability_growth_model/)
 :::

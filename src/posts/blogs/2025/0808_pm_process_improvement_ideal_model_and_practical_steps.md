@@ -185,4 +185,5 @@ PM・プロジェクト管理の視点で継続的改善を推進し、組織文
 👉 [因果関係図を活用した問題解決手法｜現場改善に効くデキるPMの実践ステップの手法](https://developer.mamezou-tech.com/blogs/2025/08/05/problem_solving_with_cause_effect_diagram/)
 👉 [未来実現ツリー活用の中間目標で現場を動かす｜デキるPMの改善計画術](https://developer.mamezou-tech.com/blogs/2025/08/14/improvement_plan_with_future_reality_tree/)
 👉 [変更管理の成功ガイド｜デキるPMが実践する要件管理・構成管理・トレーサビリティ活用法](https://developer.mamezou-tech.com/blogs/2025/08/20/pm_change_management_with_rm_cm_and_traceability/)
+👉 [品質定量化と信頼度成長モデル｜デキるPMのソフトウェア信頼性評価と品質保証の進め方](http://localhost:8080/blogs/2025/08/26/pm_quality_quantification_and_reliability_growth_model/)
 :::

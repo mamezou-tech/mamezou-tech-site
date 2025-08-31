@@ -3,7 +3,7 @@ title: 超簡単！OpenSearch MCPでClaude Codeの検索性を拡張する
 author: kohei-tsukano
 date: 2025-09-02
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2025-summer/
-tags: [生成AI, Claude, Claude Code, MCP, summer2025]
+tags: [MCP, OpenSearch, FESS, Claude Code, Claude, 生成AI, summer2025]
 image: true
 ---
 ## はじめに
@@ -23,9 +23,10 @@ Claude CodeをはじめとするAgentic AIは、指定したファイルやフ�
 こうしたAgentic AIが直接アクセスできない情報へのアクセスを可能にし、検索性を大きく拡張させる方法として本記事ではOpenSearch MCPをおすすめしたいと思います。
 
 ![Image from Gyazo](https://i.gyazo.com/91bc8d34e80ed284c204c07ae9f73636.png)
-[OpenSearch公式ドキュメント](https://opensearch.org/blog/introducing-mcp-in-opensearch/)より抜粋、改変。MCPは統一的プラットフォームとしてよくUSB-Cに例えられます。
+上のイラストは、[OpenSearch公式ドキュメント](https://opensearch.org/blog/introducing-mcp-in-opensearch/)より抜粋、改変しています。
+MCPは統一的プラットフォームとしてよくUSB-Cに例えられます。
 
-MCPとはMachine Commons Platformの略で、Claude CodeをはじめとするAgentic AIが外部のサービスと連携するためのプラットフォームです。MCPを利用することで、Agentic AIは外部のサービスを操作でき、より高度なタスクを実行することが可能になります。
+MCPとはModel Context Protocol の略で、Claude CodeをはじめとするAgentic AIが外部のサービスと連携するためのプラットフォームです。MCPを利用することで、Agentic AIは外部のサービスを操作でき、より高度なタスクを実行することが可能になります。
 OpenSearchは、オープンソースの分散型検索および分析エンジンであり、高速な全文検索、ログ分析、リアルタイムのデータ可視化など、多様なユースケースに対応しています。また、version 2.11.0以降ではk-NN（k-Nearest Neighbors）及び近似k-NNを用いたベクトル検索をサポートしています。
 
 このOpenSearchですが、version 3.0.0からネイティブにMCPをサポートするようになりました。ローカルMCPサーバーが内蔵されており、設定でMCPサーバーを有効にするだけでOpenSearchインスタンスをそのままローカルMCPサーバーとして利用できます。
@@ -115,7 +116,7 @@ http://localhost:8080/
 
 ## Claude CodeのMCPサーバー設定
 
-Claude Codeは利用可能なMCPサーバーを設定ファイルで管理しています。設定するファイルによってスコープが変わります([MCPインストールスコープ-Anthropic](https://docs.anthropic.com/ja/docs/claude-code/mcp#mcp%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97))。
+Claude Codeは利用可能なMCPサーバーを設定ファイルで管理しています。設定するファイルによってスコープが変わります([MCPインストールスコープ - Anthropic](https://docs.anthropic.com/ja/docs/claude-code/mcp#mcp%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97))。
 今回はプロジェクトスコープで設定します。この設定の場合、作成する設定ファイルは他のAgentic AIでも共通で利用可能です。
 プロジェクト直下に`.mcp.json`を作成し、以下の内容を記述します。
 
@@ -138,7 +139,7 @@ Claude Codeは利用可能なMCPサーバーを設定ファイルで管理して
 これを有効化する場合、`.mcp.json`に認証情報を追加する必要があります。詳しくは[こちら](https://opensearch.org/blog/introducing-mcp-in-opensearch/#:~:text=Authentication%20methods)のドキュメントを参照してください。
 また、`args`には任意の文字列を入れます。
 
-MCPサーバーの起動にはuvxを使います。uvxがインストールされていない場合は、以下のコマンドでpythonのパッケージ管理ソフトであるuvをインストールしてください。
+MCPサーバーの起動にはuvxを使います。uvxがインストールされていない場合は、以下のコマンドでPythonのパッケージ管理ソフトであるuvをインストールしてください。
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -338,8 +339,10 @@ FESSでregexp:プレフィックスを実装するには、以下のクラスを
 
 具体的な検索キーワードを出さずとも、Claude Codeの方でクエリを考えて検索を行ってくれたようです。
 
-また、検索処理には**Taskツール**を使っていました。これはユーザーからのプロンプトを受けたメインのエージェントとは別に専用エージェントを起動して、複雑なタスクを自律的かつ並列的に実行させるツールです。
+また、検索処理には**Taskツール**を使っていました。
+これはClaude Codeの機能の一つで、ユーザーからのプロンプトを受けたメインのエージェントとは別に専用エージェントを起動して、複雑なタスクを自律的かつ並列的に実行させることができます。([What is the Task Tool in Claude Code - ClaudeLog](https://claudelog.com/faqs/what-is-task-tool-in-claude-code/))
 これによって得られた情報を、メインエージェントが統合し、回答を生成します。
+
 今回作成された専用エージェントは目的の回答にたどり着くまで探索的に検索を何度も繰り返していました。
 また、さらに詳しく調べたところ、キーワード検索だけでなく必要があればファイルの中身も直接参照して回答を生成しているようでした。これは検索結果にリポジトリ内の実際のファイルパスも含まれるためです。
 

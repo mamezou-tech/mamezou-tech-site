@@ -11,7 +11,7 @@ enTitle: Events
 - [アドベントカレンダー2022](/events/advent-calendar/2022/)
 
 ## その他イベント
-- [夏のリレー連載2025](/events/season/2025-summer/) **Coming Soon!**
+- [夏のリレー連載2025](/events/season/2025-summer/) **只今開催中！！**
 - [春の新人向け連載2025](/events/season/2025-spring/)
 - [夏のリレー連載2024](/events/season/2024-summer/)
 - [春の新人向け連載2024](/events/season/2024-spring/)

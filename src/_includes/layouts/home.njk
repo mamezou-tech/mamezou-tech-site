@@ -20,6 +20,7 @@ layout: layouts/base.njk
   </div>
 </header>
 <main class="tdbc-container home">
+   {{ comp.SummerBanner2025() | safe }}
   <div class="tdbc-section">
     <ul class="tdbc-column-container">
       {%- for page in search.pages('pages exclude!=true') -%}

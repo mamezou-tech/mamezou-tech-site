@@ -3,7 +3,7 @@ title: 「アテンションが全て」ではなかった？GPT2 small(124M)か
 author: hironori-maruoka
 date: 2025-09-03
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2025-summer/
-tags: [ 生成AI, LLM, GPT-2, GPT, summer2025]
+tags: [GPT-2, GPT, LLM, 生成AI, summer2025]
 image: true
 ---
 

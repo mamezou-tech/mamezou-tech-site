@@ -1,5 +1,5 @@
 ---
-title: 
+title: Kiro×AWSアーキテクチャ、どこまでWAできる？生成AIでクラウド設計やってみた！
 author: hirokazu-niwa
 date: 2025-09-04
 tags: [AWS, Kiro, summer2025]

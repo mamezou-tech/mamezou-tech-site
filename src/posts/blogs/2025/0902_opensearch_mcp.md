@@ -23,8 +23,7 @@ Claude CodeをはじめとするAgentic AIは、指定したファイルやフ�
 こうしたAgentic AIが直接アクセスできない情報へのアクセスを可能にし、検索性を大きく拡張させる方法として本記事ではOpenSearch MCPをおすすめしたいと思います。
 
 ![Image from Gyazo](https://i.gyazo.com/91bc8d34e80ed284c204c07ae9f73636.png)
-上のイラストは、[OpenSearch公式ドキュメント](https://opensearch.org/blog/introducing-mcp-in-opensearch/)より抜粋、改変しています。
-MCPは統一的プラットフォームとしてよくUSB-Cに例えられます。
+*[OpenSearch公式ドキュメント](https://opensearch.org/blog/introducing-mcp-in-opensearch/)より抜粋、改変。MCPは統一的プラットフォームとしてよくUSB-Cに例えられます。*
 
 MCPとはModel Context Protocol の略で、Claude CodeをはじめとするAgentic AIが外部のサービスと連携するためのプラットフォームです。MCPを利用することで、Agentic AIは外部のサービスを操作でき、より高度なタスクを実行することが可能になります。
 OpenSearchは、オープンソースの分散型検索および分析エンジンであり、高速な全文検索、ログ分析、リアルタイムのデータ可視化など、多様なユースケースに対応しています。また、version 2.11.0以降ではk-NN（k-Nearest Neighbors）及び近似k-NNを用いたベクトル検索をサポートしています。
@@ -152,13 +151,16 @@ Claude Codeのセットアップに関してここでは触れませんが、VSC
 Claude Codeを起動すると、MCPサーバーが追加された場合以下のようなメッセージが表示されます。
 
 ![Confirmation_of_mcp_server](https://i.gyazo.com/59f14a98f37c577d9c004a0a00f1eaca.png)
+*Claude Code MCPサーバー初回設定時の確認ダイアログ*
 
 `Use this and all future MCP servers in this project`を選択。設定に記述したMCPサーバーがこのプロジェクト内で利用可能になります。
 プロンプトでOpenSearchへの疎通確認をお願いしてみました。
+
 ![Image from Gyazo](https://i.gyazo.com/b710d288549eff1275408bbc9debd27b.png)
+
 ![Image from Gyazo](https://i.gyazo.com/ede990c39f8fb6109eb808c65818c786.png)
 
-get_index_mapやsearch_indexなどのコマンドが利用でき、OpenSearchのMCPサーバーに接続できていることが確認できました。
+`get_index_map`や`search_index`などのコマンドが利用でき、OpenSearchのMCPサーバーに接続できていることが確認できました。
 
 ## インデックスの作成
 

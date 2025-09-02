@@ -18,14 +18,14 @@
       "date": "9月3日(水)",
       "author": "hironori-maruoka",
       "githubUser": "hironori-maruoka",
-      "nonContrib": true,
-      "title": "「アテンションが全て」ではなかった？GPT2 small(124M)から学ぶLLMの仕組み"
+      "title": "「アテンションが全て」ではなかった？GPT2 small(124M)から学ぶLLMの仕組み",
+      "url": "/blogs/2025/09/03/attention/"
     },
     {
       "date": "9月4日(木)",
       "author": "hirokazu-niwa",
       "githubUser": "hirokazu-komaki",
-      "title": "AWSまたはClaude関連で"
+      "title": "Kiro×AWSアーキテクチャ、どこまでWAできる？生成AIでクラウド設計やってみた！"
     },
     {
       "date": "9月5日(金)",

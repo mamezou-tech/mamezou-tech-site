@@ -2,7 +2,7 @@
 title: 
 author: hirokazu-niwa
 date: 2025-09-04
-tags: [AWS, Kiro]
+tags: [AWS, Kiro, summer2025]
 image: true
 ---
 ## 1. はじめに

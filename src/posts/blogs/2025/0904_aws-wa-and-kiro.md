@@ -60,7 +60,7 @@ WAには、クラウド上で高品質なアーキテクチャを設計するた
   1. 持続可能性: 環境への影響を最小限に抑える、長期的な視点での設計です。
 
 3.1 と 3.2 をイメージでまとめるとこんな感じだと思います。  
-![WAのイメージ図](/src/img/blogs/2025/0904_learn-wa-arch-kiro/wa-image.png)
+![WAのイメージ図](/img/blogs/2025/0904_learn-wa-arch-kiro/wa-image.png)
   
 また、これらの6つの柱のそれぞれにいくつかの「ベストプラクティス」が存在しています。  
 詳細については[【公式ドキュメント】AWS Well-Architected フレームワーク](https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/welcome.html)をご覧ください。  
@@ -72,15 +72,15 @@ WAには、クラウド上で高品質なアーキテクチャを設計するた
 以下の図で簡単ですが触ってみた際のポイントのみ紹介しておきます。  
   
 **【柱のベストプラクティスを満たすためのチェック】**  
-![WA Toolの様子](/src/img/blogs/2025/0904_learn-wa-arch-kiro/wa-tool-image.png)  
+![WA Toolの様子](/img/blogs/2025/0904_learn-wa-arch-kiro/wa-tool-image.png)  
   
 **【柱のベストプラクティスを満たすための改善提案】**  
-![WA Tool改善画面](/src/img/blogs/2025/0904_learn-wa-arch-kiro/wa-fix-screen.png)  
+![WA Tool改善画面](/img/blogs/2025/0904_learn-wa-arch-kiro/wa-fix-screen.png)  
   
 **【柱のベストプラクティスを満たすための改善の仕方】**  
-![改善ステップ](/src/img/blogs/2025/0904_learn-wa-arch-kiro/wa-fix-step.png)  
+![改善ステップ](/img/blogs/2025/0904_learn-wa-arch-kiro/wa-fix-step.png)  
   
-このToolの使い方の流れとしては乗ずの順番のように、  
+このToolの使い方の流れとしては上図の順番のように、  
 - 6つの柱のそれぞれに用意されているベストプラクティスを満たすための質問（選択肢）から、構築したアーキテクチャがそれらを満たしているかを選ぶ
 - 改善すべき項目をリストアップしてくれる
 - 「推奨される改善項目」から必要と感じる改善項目のリンクに飛ぶ
@@ -127,7 +127,7 @@ AWSの公式ブログ「[Introducing Kiro](https://aws.amazon.com/jp/blogs/news/
   
 ### 6.1 出来上がったAWSアーキテクチャ
 Kiroとの対話を通じて、以下の図に示すAWSアーキテクチャがCloudFormationテンプレート形式でできあがりました。  
-![AWS構成図](/src/img/blogs/2025/0904_learn-wa-arch-kiro/aws-architecture-diagram.drawio.svg)  
+![AWS構成図](/img/blogs/2025/0904_learn-wa-arch-kiro/aws-architecture-diagram.drawio.svg)  
   
 簡単にCloudformationテンプレートに定義されたリソースと構成について説明をすると、  
 **【使用したリソース】**  

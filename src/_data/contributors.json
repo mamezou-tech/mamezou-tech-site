@@ -158,7 +158,7 @@
     },
     {
       "name": "kohei-tsukano",
-      "github": "KoheiTsukano"
+      "github": "kohei-tsukano"
     },
     {
       "name": "tadashi-nakamura",
@@ -270,6 +270,14 @@
     {
       "name": "hirokazu-niwa",
       "github": "hirokazu-komaki"
+    },
+    {
+      "name": "daisuke-kishimoto",
+      "github": "KishimotoD"
+    },
+    {
+      "name": "kenta-kirihara",
+      "github": "k-kirihara-mame"
     }
   ]
 }

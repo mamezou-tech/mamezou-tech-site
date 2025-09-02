@@ -119,7 +119,13 @@ Slack の画面に戻って `Enter code` をクリックします。
 
 [^1]: 全てのイベントは [https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#available-events](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#available-events) に記述されています。
 
-通常は PR 作成がトリガーになるため、フィルターはワークフロー名の指定だけで十分でしょう。README には書かれていませんでしたが、ワークフローを複数指定したい場合は、カンマ区切りで可能です。
+大抵の場合、フィルターはワークフロー名の指定だけで十分でしょう。
+
+:::info:2025/08/14追記
+`name` でワークフロー名を登録すれば、`pull_request` だけでなく、対象のワークフローがトリガーされる他のイベント(`schedule`、`workflow_dispatch` など)でも通知が来ます。
+:::
+
+README には書かれていませんでしたが、ワークフローを複数指定したい場合は、カンマ区切りで可能です。
 
 ```shell
 /github subscribe owner/repo workflows:{name: "workflow-1,workflow2"}

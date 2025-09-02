@@ -3,11 +3,22 @@ title: CCPMツール編：現場で動く！スプレッドシート×Apps Scrip
 author: makoto-takahashi
 date: 2025-05-30
 tags: [ProjectManagement, プロジェクト管理, CCPM, TOC]
+image: true
 ---
 
 # はじめに
 前回の記事「[CCPM実践編](https://developer.mamezou-tech.com/blogs/2025/05/20/ccpm_practice_buffer_half_deadline_critical_chain_transformation/)」では、CCPMによる現場変革の効果を紹介しました。
 今回はその裏側、どうやって現実的なCCPMスケジュールを作のかについてツールを交えて紹介します。
+
+:::info
+**この記事はクリティカルチェーンプロジェクトマネジメントシリーズ記事の一部です**
+
+1. [CCPM理論編：CCPM基礎のTOCを学ぶ](https://developer.mamezou-tech.com/blogs/2025/05/09/ccpm_theory_bottleneck_is_why_learn_toc/)
+2. [CCPM実践編：クリティカルチェーンで現場が変える](https://developer.mamezou-tech.com/blogs/2025/05/20/ccpm_practice_buffer_half_deadline_critical_chain_transformation/)
+3. CCPMツール編：ツールでCCPMを回す方法
+
+👉 初めて読む方は [CCPM理論編から読む](https://developer.mamezou-tech.com/blogs/2025/05/09/ccpm_theory_bottleneck_is_why_learn_toc/) のがおすすめです。
+:::
 
 # 1. 背景：なぜ専用ツールではなく、スプレッドシート＋GASなのか？
 CCPM対応の商用ツールは、たしかに強力ですが、現場に導入しようとすると以下のような壁にぶつかります。

@@ -52,5 +52,5 @@ jobs:
           delete-branch: true
           title: "[auto-review] Automatically update Mameka's column"
           body: "review the generated content and verify its accuracy."
-          reviewers: kudoh
+          reviewers: kondoumh
           labels: bot

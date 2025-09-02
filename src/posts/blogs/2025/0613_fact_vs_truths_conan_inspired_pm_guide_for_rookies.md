@@ -3,6 +3,7 @@ title:  「事実はひとつ、真実は人の数だけ？」─ 新人プロ�
 author: makoto-takahashi
 date: 2025-06-13
 tags: [ProjectManagement, プロジェクト管理, 新人向け]
+image: true
 ---
 # はじめに
 新人プロジェクトマネージャー（PM）の皆さん。

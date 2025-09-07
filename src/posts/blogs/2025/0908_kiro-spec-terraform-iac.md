@@ -1,5 +1,5 @@
 ---
-title: Kiroで実現する仕様駆動IaC開発
+title: Kiroで実現する仕様駆動IaC開発を試してみた
 author: takahiro-maeda
 date: 2025-09-08
 tags: [Kiro, AIエージェント, terraform]

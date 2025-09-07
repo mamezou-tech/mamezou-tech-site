@@ -227,7 +227,7 @@ dependencies {
 }
 ```
 
-`build.gradle`にはこのとおり、プロジェクト作成時点で記述されていなかったSpring MVCやSpring Data JPAなどのライブラリが依存関係に追加されています。
+`build.gradle`はこのとおり、プロジェクト作成時点で記述されていなかったSpring MVCやSpring Data JPAなどのライブラリが依存関係に追加されています。
 
 ```yaml:application.yaml
 spring:

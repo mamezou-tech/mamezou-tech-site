@@ -227,8 +227,7 @@ dependencies {
 }
 ```
 
-プロジェクト作成時点でのアプリケーションプロパティは`application.properties`でしたが、筆者の好みで`application.yaml`に変更させていただきました。
-これもJunieを使って変更しています。
+`build.gradle`にはこのとおり、プロジェクト作成時点で記述されていなかったSpring MVCやSpring Data JPAなどのライブラリが依存関係に追加されています。
 
 ```yaml:application.yaml
 spring:
@@ -248,17 +247,21 @@ spring:
       path: /h2-console
 ```
 
+また、プロジェクト作成時点でのアプリケーションプロパティは`application.properties`でしたが、筆者の好みで`application.yaml`に変更させていただきました。
+これもJunieを使って変更しています。
+
 ## Junieによるテストの追加
 
-先述の「[Junieを使ってみる](#junieを使ってみる)」の時点ではテストクラスは実装されていなかったので、Junieのプロンプトに`単体テストを実装してください。`と入力してみました。
+先述の「[Junieを使ってみる](#junieを使ってみる)」の時点では、テストクラスが実装されていませんでした。
+そこで、テストクラスを追加するため、Junieのプロンプトに`単体テストを実装してください。`と入力してみました。
 
 ![Test-01](https://i.gyazo.com/cc9178c2319330331526041ab4f1d4f3.png)
 
-はい、このとおり`EmployeeController`クラスに対するテストクラスが実装されました。
+はい、このとおり`EmployeeController`クラスのテストクラス、つまり`EmployeeControllerTest`クラスが追加されました。
 
 ![Test-02](https://i.gyazo.com/2c7ee2e4ee78db8fd76c925275053c4f.png)
 
-なお、エンティティクラスとリポジトリインタフェースは振る舞いを持たないため、これらのテストクラスは生成されなかったものと思われます。
+`EmployeeController`クラスのREST API（ハンドラメソッド）に対するテストメソッドが実装されていることも確認できます。
 
 ```java:EmployeeControllerTest.java
 @WebMvcTest(EmployeeController.class)
@@ -291,10 +294,27 @@ class EmployeeControllerTest {
         .andExpect(jsonPath("$.email").value("taro@example.com"));
   }
 
+  // ---------- ＜中略＞ ---------- //
+
+  @Test
+  @DisplayName("GET /employees/{id} - returns employee or 404")
+  void get_by_id() throws Exception {
+    when(repository.findById(1L)).thenReturn(Optional.of(sample(1L)));
+    when(repository.findById(99L)).thenReturn(Optional.empty());
+
+    mockMvc
+        .perform(get("/employees/1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(1));
+    mockMvc.perform(get("/employees/99")).andExpect(status().isNotFound());
+  }
+
   // ---------- ＜後略＞ ---------- //
 
 }
 ```
+
+なお、エンティティクラスとリポジトリインタフェースは振る舞いを持たないため、これらのテストクラスは生成されなかったものと思われます。
 
 Junieによって、テストクラスが生成された時点ですべてのテストが成功することは確認されています。
 念のため、改めてテストを流してみましたが、このとおりすべてのテストが成功していますね。
@@ -311,13 +331,13 @@ Junieによって、テストクラスが生成された時点ですべてのテ
 JetBrainsのJunieに関して、ここまでいかがでしたでしょうか。
 
 筆者はまだJunieの一部の機能しか利用していませんが、とても便利に感じております。
-普段の開発活動においてIntelliJ IDEAを利用している方もぜひ、Junieを導入してみて体感いただきたいと思います。
+普段の開発活動においてIntelliJ IDEAを利用している方はぜひ、Junieを導入してみて体感いただければと思います。
 個人ライセンスでしたら月額 1,540円から利用できますので、お小遣いへの負担も少なくてすみますしね。
 
 @[og](https://www.jetbrains.com/ja-jp/ai-ides/buy/?section=personal&billing=monthly)
 
 今回は、JunieのCodeモードによるコード生成を試してみました。今後は、Askモードとの組み合わせや、Braveモードなども試していきたいと思います。
-また、プロジェクトルートに`.junie/guidelines.md`を配置し、コーディング規約等を記述することで、これに準拠したコード生成も可能なようです。
+また、プロジェクトルートに`.junie/guidelines.md`を配置し、コーディング規約等を記述することで、これに準拠したコードの生成や編集も可能なようです。
 
 これらにつきましても次回以降の記事で、投稿していきたいと考えています。
 

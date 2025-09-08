@@ -30,6 +30,12 @@ kvs-node-localstorage
 # for now, disable netlify edge functions
 netlify/generated
 
+# Test files
 test.tsx
+
+# Datafiles for reporting
 author.tsv
 articles.jsonl
+
+# Windows Zone.Identifier files
+*.Identifier

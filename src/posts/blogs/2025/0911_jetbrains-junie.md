@@ -77,8 +77,8 @@ dependencies {
 
 ## Junieを使用する前に
 
-Intellij IDEAから先ほどのプロジェクトを開いてみます。
-すると、Intellij IDEAの右サイドバーにこのようなJunieのアイコンがあるので、それをクリックするとJunieのツールウィンドウが表示されるはずです。
+IntelliJ IDEAから先ほどのプロジェクトを開いてみます。
+すると、IntelliJ IDEAの右サイドバーにこのようなJunieのアイコンがあるので、それをクリックするとJunieのツールウィンドウが表示されるはずです。
 
 ![Junieツールウィンドウ](https://i.gyazo.com/0dbbf4ef39c19d869a2b89c15f2b1808.png)
 

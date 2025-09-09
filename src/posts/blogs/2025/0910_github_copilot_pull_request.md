@@ -2,7 +2,7 @@
 title: Copilotのプルリクレビューのすすめ — カスタム命令と日本語化の実践
 author: kenta-ishihara
 date: 2025-09-10
-tags: [生成AI, GitHub Copilot, summer2025]
+tags: [GitHub Copilot, 生成AI, summer2025]
 image: true
 ---
 
@@ -42,7 +42,7 @@ GitHub では「カスタム命令」という仕組みがあり、マークダ�
 ```
 
 また今回は上記に合わせて、以下コーディング規約的な要素を追記してみます。
-以下は[ES2015(ES6)](https://qiita.com/soarflat/items/b251caf9cb59b72beb9b)の `let` / `const` に関するルール例です。
+以下は[ES2015(ES6)](https://262.ecma-international.org/)の `let` / `const` に関するルール例です。
 ```markdown
 # JavaScript
 ---

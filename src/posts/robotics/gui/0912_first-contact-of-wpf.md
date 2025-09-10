@@ -108,13 +108,13 @@ MVVMは、UIとビジネスロジックを分離するための設計パター�
 :::check
 **`MVVMToolkit`の導入**
 
-CommunityToolkit.MvvmはMicrosoft公式のMVVM補助ライブラリ。
-`INotifyPropertyChanged`や`ICommand`実装を自動生成してくれます。
+CommunityToolkit.MvvmはMicrosoft公式のMVVM補助ライブラリです。
+`INotifyPropertyChanged`や`ICommand`実装を自動生成してくれます。  
 手書きでは冗長になる`OnPropertyChanged`呼び出しや`RelayCommand`の実装になります。
   
 `NuGet`から`CommunityToolkit.Mvvm`を追加してください
 
-![](/img/robotics/gui/communitytoolkit-mvvm.png)
+![](/img/robotics/gui/communitytoolkit-mvvm-nuget.png)
 
 :::
 
@@ -144,6 +144,7 @@ CommunityToolkit.MvvmはMicrosoft公式のMVVM補助ライブラリ。
     </Grid>
 </Window>
 ```
+=> MVVMではClickイベントやx:Nameが不要になり、代わりにBindingを使います。
 
 ```csharp:MainWindow.xaml.cs
 using System.Windows;
@@ -180,11 +181,12 @@ namespace CounterSample
     }
 }
 ```
-MVVMではClickイベントやx:Nameが不要になり、代わりにBindingを使います。
 UI（View）とロジック（ViewModel）が分離されるので再利用性があがり、テストがしやすくなります。
 
 あれ、Modelは?  
 単なるカウントアップを保持するだけのシンプルなサンプルだと、Modelをわざわざ分ける必要はありません。  
+
+### サンプルVer2
 
 カウントアップに追加して、リセットを追加してみましょう。  
 カウンターの値をセーブ、ロードするサービスも作ってみます。  
@@ -198,7 +200,6 @@ namespace CounterSample.Models
     {
         public int Value { get; private set; } = initialValue;
         public void Increment() => Value++;
-        public void Decrement() => Value--;
         public void Reset() => Value = 0;
         public void SetValue(int value) => Value = value;
     }
@@ -326,175 +327,115 @@ namespace CounterSample
 }
 ```
 
-TODO:DIの話
+少しそれっぽい感じになりました。  
+![](https://gyazo.com/04f7ac799522f8baecbcdd285f7a3fb0.gif)
+
+
+## DI（Dependency Injection）
+ちょうど良さそうなサンプルになったのでDI（Dependency Injection）を使ってみたいです。  
+
+:::check
+**`DependencyInjection`の導入**
+
+WPFでMVVMを活用するなら、Microsoft.Extensions.DependencyInjectionを使ったDependency Injection（DI）が便利です。  
+DIを導入すると、ViewModelやサービスを必要な場所で簡単に受け渡すことができ、テストや保守がしやすくなります。
+
+`ServiceCollection`にサービスやViewModelを登録し、`ServiceProvider`から取得するだけで依存関係を解決できます。
+Viewや他のViewModelから直接newする必要がなくなり、テストも容易になります。
+
+![](/img/robotics/gui/communitytoolkit-mvvm-nuget.png)
+
+:::
+
+### サンプルVer3
+
+サンプルVer2を元にDIを導入したサンプルを作ってみます。
+
+`CounterStorageService`と`CounterViewModel`をサービス登録します。
+StartupUriでApp.xamlとコード上から2つウィンドウを起動してみます。  
+```csharp:App.xaml.cs
+using CommunityToolkit.Mvvm.DependencyInjection;
+using CounterSample.Services;
+using CounterSample.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
+
+namespace CounterSample
+{
+    public partial class App : Application
+    {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            // ServiceCollection でサービスを登録
+            ServiceCollection services = new();
+            services.AddSingleton<CounterStorageService>();
+            services.AddTransient<CounterViewModel>();
+
+            // Ioc.Default に登録
+            Ioc.Default.ConfigureServices(services.BuildServiceProvider());
+
+            // 2つWindowを起動
+            MainWindow window = new();
+            window.Show();
+        }
+    }
+}
+```
+
+登録したサービスを取得します。
+`CounterViewModel`のインスタンスを要求すると、コンストラクタで`CounterStorageService`が要求されるのでDIコンテナからインスタンスを持ってきてくれます。  
+```csharp:MainWindow.xaml.cs
+using CommunityToolkit.Mvvm.DependencyInjection;
+using CounterSample.ViewModels;
+using System.Windows;
+
+namespace CounterSample
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+            DataContext = Ioc.Default.GetRequiredService<CounterViewModel>();
+        }
+    }
+}
+```
+```csharp:サンプルVer2(抜粋)
+private readonly CounterStorageService _service = new();
+public MainWindow()
+{
+    InitializeComponent();
+    DataContext = new CounterViewModel(_service);
+}
+```
+
+実行するとこんな感じです。  
+![](https://gyazo.com/0d7a7e3f1ef370b201f04ff2f6b62edd.gif)
+
+あれ、別の画面なのに最後に`Save`したやつが別画面で`Load`されるぞ
+その秘密はサービス登録時のコードにあります。
+`services.AddSingleton<CounterStorageService>();`
+
+呼び出すメソッドによってライフサイクルが異なります。  
+
+|メソッド|ライフサイクル|
+| --- | --- |
+| AddSingleton | アプリケーションで1つのインスタンス |
+| AddScoped | 1つの要求の間で1つのインスタンス |
+| AddTransient | 都度新しいインスタンス |
+
+AddSingletonで登録されていたのでサービスのインスタンスが1つだったので、同じ内部の保持値を見ていたわけです
+AddTransientに変えると以下の動作になります。  
+![](https://gyazo.com/5933393f12aaaf675b99049c56a832d1.gif)
 
 
 第2部: 現場で役立つC#開発Tips備忘録
 ここからは、日々のWPF/C#開発、特に3Dアプリケーション開発において役立つTipsをいくつかご紹介します。
 …
 
-1.【重要】IEnumerableの罠 - 遅延評価を理解する
-LINQは非常に強力ですが、その遅延評価 (Deferred Execution) という特性を理解していないと、思わぬバグやパフォーマンス問題を引き起こします。
-
-// 3D空間上の点(Point3D)のリストがあるとします
-List<Point3D> allPoints = GetVeryLargeListOfPoints(); 
-
-// Y座標が0より大きい点だけをフィルタリングするクエリ
-// ★この時点では、フィルタリングはまだ実行されていない！
-var positiveYPointsQuery = allPoints.Where(p => p.Y > 0);
-
-// ... 何か他の処理 ...
-
-// allPointsリストから一部の点を削除する
-RemoveSomePoints(allPoints);
-
-// ★ここで初めてクエリが実行される！
-// しかし、この時点のallPointsは中身が変わってしまっている
-foreach (var point in positiveYPointsQuery)
-{
-    // 意図しない結果になる可能性がある
-    Console.WriteLine(point);
-}
-
-IEnumerable<T>を返すLINQメソッド（Where, Selectなど）は、foreachで列挙されたり、ToList()のようなメソッドが呼ばれたりするまで実行されません。
-
-対策: クエリの結果を特定の時点で確定させたい場合は、ToList()やToArray()を使って即時実行し、結果を新しいコレクションに格納しましょう。
-
-// ToList()を呼んだ時点でクエリが実行され、結果が新しいリストに格納される
-List<Point3D> positiveYPoints = allPoints.Where(p => p.Y > 0).ToList();
-
-// この後で元のallPointsが変更されても、positiveYPointsには影響しない
-RemoveSomePoints(allPoints); 
-
-1. よく使うLINQ逆引きリファレンス
-毎回調べてしまいがちな基本的なLINQメソッドをまとめました。
-
-やりたいこと
-
-メソッド
-
-例
-
-フィルタリング
-
-Where
-
-points.Where(p => p.Z > 10.0)
-
-変換・射影
-
-Select
-
-points.Select(p => p.X) (X座標のリストに変換)
-
-ソート
-
-OrderBy, OrderByDescending, ThenBy
-
-points.OrderBy(p => p.X).ThenBy(p => p.Y)
-
-最初の要素取得
-
-First, FirstOrDefault
-
-points.FirstOrDefault(p => p.Name == "Origin")
-
-存在確認
-
-Any
-
-points.Any(p => p.IsSelected)
-
-グループ化
-
-GroupBy
-
-points.GroupBy(p => p.LayerName)
-
-平坦化
-
-SelectMany
-
-layers.SelectMany(l => l.Points) (全レイヤーの点を一つのリストに)
-
-3. NuGetパッケージ管理のヒント：これだけは入れておきたい！
-NuGetは.NET開発に不可欠です。特に以下のライブラリはWPF/MVVM開発の効率を劇的に向上させます。
-
-CommunityToolkit.Mvvm (旧称: MVVM Toolkit)
-
-Microsoft公式がメンテナンスしているMVVMライブラリ。
-
-INotifyPropertyChangedやICommandの実装を属性ベースで自動化してくれます。
-
-もう手動でOnPropertyChangedを実装する必要はありません。
-
-導入前 (Before):
-
-public class MyViewModel : INotifyPropertyChanged
-{
-    private string _name;
-    public string Name
-    {
-        get => _name;
-        set
-        {
-            _name = value;
-            OnPropertyChanged(nameof(Name));
-        }
-    }
-    // ICommandやINotifyPropertyChangedの実装が別途必要...
-}
-
-導入後 (After):
-
-// CommunityToolkit.Mvvm.ComponentModelをインポート
-public partial class MyViewModel : ObservableObject
-{
-    [ObservableProperty]
-    private string _name;
-
-    [RelayCommand]
-    private void DoSomething()
-    {
-        // ...
-    }
-}
-
-コード量が劇的に減り、本質的なロジックに集中できます。
-
-Serilog / NLog
-
-高機能なロギングライブラリ。ファイルやコンソール、外部サービスなど、様々な場所に出力をカスタマイズできます。3Dアプリケーションの複雑な状態変化を追跡するのに必須です。
-
-FluentAssertions
-
-ユニットテストの結果を検証するためのライブラリ。「期待値はこうあるべきだ (Should().Be())」という自然言語に近い形で記述でき、テストコードの可読性が向上します。
-
-4. HelixToolkitでの小さなつまづきポイント
-UIスレッド外からのモデル操作
-
-バックグラウンドスレッドで重い計算（例: メッシュ生成）を行い、その結果を3Dシーンに追加しようとすると、InvalidOperationExceptionが発生します。HelixToolkitのモデルコレクションはUIスレッドでしか操作できないためです。
-
-対策: Dispatcherを使ってUIスレッドに処理を委譲します。
-
-// バックグラウンドスレッド内
-var newModel = CreateComplex3DModel();
-
-// UIスレッドでモデルを追加する
-Application.Current.Dispatcher.Invoke(() =>
-{
-    Viewport3D.Children.Add(newModel);
-});
-
-座標変換
-
-マウスでクリックした2Dスクリーン座標を、3D空間上の座標に変換する、といった処理は頻出します。HelixToolkitはこれを簡単にするユーティリティメソッドを提供しています。
-
-Viewport3DHelper.FindNearestPoint や HitTest メソッドを調べてみましょう。
-
-まとめ
-WPFによるデスクトップアプリケーション開発、特に3Dを扱う領域は非常に奥が深く、挑戦的です。堅牢なアーキテクチャとしてMVVMを採用し、C#のモダンな機能や便利なライブラリを使いこなすことで、複雑さに立ち向かうことができます。
-
-この記事で紹介したMVVMの考え方やC#のTipsが、これからWPF開発を始める方や、現在開発で奮闘している方々の助けになれば幸いです。
+### まとめ
 
 以上、お疲れ様でした。 

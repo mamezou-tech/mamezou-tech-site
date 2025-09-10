@@ -1,5 +1,5 @@
 ---
-title: WPFに学ぶMVVM
+title: WPFとMVVM「はじめの一歩」から現場Tipsまで！ 〜C#デスクトップ開発の実践メモ〜
 author: kazuki-ogawa 
 date: 2025-09-12 
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2025-summer/

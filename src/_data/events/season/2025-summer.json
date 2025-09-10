@@ -60,13 +60,14 @@
       "date": "9月11日(木)",
       "author": "yasunori-shiota",
       "githubUser": "shiota",
-      "title": "JetBrainsのJunieを使ってみた（導入編）"
+      "title": "JetBrainsのJunieを使ってみた（導入編）",
+      "url": "/blogs/2025/09/11/jetbrains-junie/"
     },
     {
       "date": "9月12日(金)",
       "author": "kazuki-ogawa",
       "githubUser": "kazuki-ogawa",
-      "title": "WPF,MVVM,C#LINQ開発備忘録"
+      "title": "WPFに学ぶMVVM"
     }
   ]
 }

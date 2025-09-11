@@ -1,7 +1,8 @@
 ---
-title: WPFとMVVM「はじめの一歩」から現場Tipsまで！ 〜C#デスクトップ開発の実践メモ〜
+title: 【C#】WPFとMVVM「はじめの一歩」から現場Tipsまで！ 〜デスクトップアプリ開発の実践メモ〜
 author: kazuki-ogawa 
 date: 2025-09-12 
+image: true
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2025-summer/
 tags: [gui, csharp, wpf, mvvm, 画面開発, summer2025]
 ---
@@ -12,8 +13,8 @@ tags: [gui, csharp, wpf, mvvm, 画面開発, summer2025]
 
 最近開発でWPFを扱ったので初学者の開発Tips的なものを備忘録感覚で記していきたいと思います。
 
-`WPF（Windows Presentation Foundation）`はWindowsデスクトップアプリ開発の選択肢として候補に挙がるものです。  
-まずはUIのロジックを作る主要な方法としての`コードビハインド`と`MVVM（Model-View-ViewModel）`についてベタに触れていきます。  
+`WPF(Windows Presentation Foundation)`はWindowsデスクトップアプリ開発の選択肢として候補に挙がるものです。  
+まずはUIのロジックを作る主要な方法としての`コードビハインド`と`MVVM(Model-View-ViewModel)`についてベタに触れていきます。  
 `DI(Dependency Injection)`を導入して少しわかった気になりながら、C#の便利な機能や罠など備忘録をまとめていければと思います。  
 
 # コードビハインドとMVVM
@@ -26,8 +27,8 @@ WPFを理解する第一歩として、まずコードビハインドを知る�
 ## コードビハインド
 
 ### 概要
-コードビハインドは`UIレイアウト`をXAML（\*.xaml）で記述し、その`動作ロジック`をC#（\*.xaml.cs）で記述します。  
-XAMLの裏側にあるコードという意味でCode-Behind（コードビハインド）と呼ばれます。
+コードビハインドは`UIレイアウト`をXAML(\*.xaml)で記述し、その`動作ロジック`をC#(\*.xaml.cs)で記述します。  
+XAMLの裏側にあるコードという意味でCode-Behind(コードビハインド)と呼ばれます。
 
 ### サンプル
 簡単なカウントアップアプリを実装してみます。
@@ -76,10 +77,10 @@ namespace CounterSample
 }
 ```
 
-UI要素（`x:Name="CounterTextBlock`）を名前で直接参照して操作しているのが特徴です。
+UI要素(`x:Name="CounterTextBlock"`)を名前で直接参照して操作しているのが特徴です。
 
 :::column:なぜpartial(部分)なのか
-WPF のコードビハインドは`public partial class MainWindow `のように`partial`が付いています。
+WPF のコードビハインドは`public partial class MainWindow`のように`partial`が付いています。
 これは`XAML`から自動生成されるコードと、開発者が書くコードをひとつのクラスにまとめるためです。
 
 実際、ビルドすると`MainWindow.g.i.cs`というファイルが生成され、`XAML`の要素定義や`InitializeComponent`が自動的に追加されます。
@@ -111,7 +112,7 @@ MVVMは、UIとビジネスロジックを分離するための設計パター�
 
 CommunityToolkit.MvvmはMicrosoft公式のMVVM補助ライブラリです。
 `INotifyPropertyChanged`や`ICommand`実装を自動生成してくれます。  
-手書きでは冗長になる`OnPropertyChanged`呼び出しや`RelayCommand`の実装になります。
+手書きでは冗長になりがちな、`OnPropertyChanged`の呼び出しや`RelayCommand`の実装を省略できます。  
 「MVVMで実装するとコードの量が多くなりますね」というありがちな説明を記事的にも回避できます。  
   
 `NuGet`から`CommunityToolkit.Mvvm`を追加してください。
@@ -183,9 +184,9 @@ namespace CounterSample
 }
 ```
 MVVMではClickイベントやx:Nameが不要になり、代わりにBindingを使います。
-UI（View）とロジック（ViewModel）が分離されるので再利用性があがり、テストがしやすくなります。
+UI(View)とロジック(ViewModel)が分離されるので再利用性が上がり、テストがしやすくなります。
 
-View（XAML）とViewModel（C#）がどのように連携しているのか補足します。  
+View(XAML)とViewModel(C#)がどのように連携しているのか補足します。  
 ```xml
 <TextBlock Text="{Binding Count}" />
 <Button Command="{Binding CountUpCommand}" />
@@ -199,13 +200,13 @@ private void CountUp()
     Count++;
 }
 ```
-この連携は`CommunityToolkit.Mvvm`が提供するアトリビュート（[ ]で囲まれた部分）によるコードの自動生成です。
+この連携は`CommunityToolkit.Mvvm`が提供するアトリビュート([ ]で囲まれた部分)によるコードの自動生成です。
 
-- データ（Count）の連携
+- データ(Count)の連携
 XAMLの`{Binding Count}`は「Countという名前の公開プロパティの値を表示して」という指示です。  
 ViewModelの`[ObservableProperty]`は、`private int count`フィールドを元に、`public int Count`というプロパティをコンパイル時に自動で生成します。値が変更されたらUIに通知する機能も込みです。  
 
-- 操作（CountUp）の連携
+- 操作(CountUp)の連携
 XAMLの`{Binding CountUpCommand}`は、「CountUpCommandという名前のコマンドを実行して」という指示です。  
 ViewModelの[RelayCommand]は、`private void CountUp()`メソッドを元に、`public ICommand CountUpCommand`というコマンドを自動で生成します。  
 
@@ -359,13 +360,13 @@ namespace CounterSample
 ![](https://gyazo.com/04f7ac799522f8baecbcdd285f7a3fb0.gif)
 
 
-## DI（Dependency Injection）
-ちょうど良さそうなサンプルになったのでDI（Dependency Injection）を使ってみます。  
+## DI(Dependency Injection)
+ちょうど良さそうなサンプルになったのでDI(Dependency Injection)を使ってみます。  
 
 :::check
 **`DependencyInjection`の導入**
 
-WPFでMVVMを活用するなら、`Microsoft.Extensions.DependencyInjection`を使ったDependency Injection（DI）が便利です。  
+WPFでMVVMを活用するなら、`Microsoft.Extensions.DependencyInjection`を使ったDependency Injection(DI)が便利です。  
 DIを導入すると、ViewModelやサービスを必要な場所で簡単に受け渡すことができ、テストや保守がしやすくなります。  
 
 `ServiceCollection`にサービスやViewModelを登録し、`ServiceProvider`から取得するだけで依存関係を解決できます。
@@ -456,11 +457,11 @@ public MainWindow()
 | AddScoped | 1つの要求の間で1つのインスタンス |
 | AddTransient | 都度新しいインスタンス |
 
-`AddSingleton`で登録されていたのでサービスのインスタンスが1つだったので、同じ内部の保持値を見ていたわけです。  
+`AddSingleton`で登録していたため、サービスのインスタンスがアプリケーション内で唯一となり、同じ内部の保持値を見ていたわけです。  
 `AddTransient`に変えると以下の動作になります。  
 ![](https://gyazo.com/5933393f12aaaf675b99049c56a832d1.gif)
 
-`AddScope`は例えば以下のようなときに同じインスタンスになります。  
+`AddScoped`は例えば以下のようなときに同じインスタンスになります。  
 
 ```csharp
 // コンストラクタでServiceとFugaを要求
@@ -548,7 +549,7 @@ bool allPositive = numbers.All(n => n > 0); // true
 
 ## IEnumerableの遅延評価
 LINQつながりで、陥った罠を紹介します。  
-LINQは基本「遅延評価」なので、ToList()やToArray()で確定しないと期待結果と異なります。
+LINQは基本「遅延評価」なので、ToList()やToArray()で確定しないと、意図しない結果になることがあります。
 
 ```csharp
 var numbers = new List<int> { 1, 2, 3 };
@@ -563,8 +564,9 @@ Console.WriteLine(string.Join(",", query)); // 2,3,4
 
 ## WPFのDispatcher
 
-InvokeとBeginInvokeの違いで更新されているはずのUI表示がされていないことがありました。  
-必要な同期なInvoleをなるべく使うようにしつつ、重い処理はUIが固まるので渡さないようにしました。  
+`Invoke`と`BeginInvoke`の違いで更新されているはずのUIが更新されないことがありました。  
+同期的に処理したい場合は`Invoke`を使い、重い処理はUIが固まるので渡さないようにしました。  
+
 ```csharp
 // Invoke: 完了するまで呼び出し元が止まる
 Dispatcher.Invoke(() =>

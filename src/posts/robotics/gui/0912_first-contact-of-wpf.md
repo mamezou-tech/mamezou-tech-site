@@ -437,7 +437,8 @@ public MainWindow()
 ![](https://gyazo.com/5933393f12aaaf675b99049c56a832d1.gif)
 
 `AddScope`は例えば以下のようなときに同じインスタンスになります。  
-```csharp:
+
+```csharp
 // コンストラクタでServiceとFugaを要求
 Hoge(Service service, Fuga fuga)
 // コンストラクタでServiceを要求

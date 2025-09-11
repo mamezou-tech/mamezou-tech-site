@@ -116,7 +116,7 @@ CommunityToolkit.MvvmはMicrosoft公式のMVVM補助ライブラリです。
   
 `NuGet`から`CommunityToolkit.Mvvm`を追加してください。
 
-![](/img/robotics/gui/communitytoolkit-mvvm-nuget.png)
+![](/img/blogs/2025/0912_first-contact-of-wpf/communitytoolkit-mvvm-nuget.png)
 
 :::
 
@@ -348,7 +348,7 @@ DIを導入すると、ViewModelやサービスを必要な場所で簡単に受
 Viewや他のViewModelから直接newする必要がなくなります。
 
 `NuGet`から`Microsoft.Extensions.DependencyInjection`を追加してください。
-![](/img/robotics/gui/communitytoolkit-mvvm-nuget.png)
+![](/img/blogs/2025/0912_first-contact-of-wpf/dependency-injection-nuget.png)
 
 :::
 

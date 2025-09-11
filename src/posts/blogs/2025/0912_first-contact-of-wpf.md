@@ -27,8 +27,8 @@ WPFを理解する第一歩として、まずコードビハインドを知る�
 ## コードビハインド
 
 ### 概要
-コードビハインドは`UIレイアウト`をXAML(\*.xaml)で記述し、その`動作ロジック`をC#(\*.xaml.cs)で記述します。  
-XAMLの裏側にあるコードという意味でCode-Behind(コードビハインド)と呼ばれます。
+コードビハインドはUIレイアウトをXAML(\*.xaml)で記述し、その動作ロジックをC#(\*.xaml.cs)で記述します。  
+XAMLの裏側にあるコードという意味でコードビハインド(Code-Behind)と呼ばれます。
 
 ### サンプル
 簡単なカウントアップアプリを実装してみます。
@@ -208,7 +208,7 @@ ViewModelの`[ObservableProperty]`は、`private int count`フィールドを元
 
 - 操作(CountUp)の連携
 XAMLの`{Binding CountUpCommand}`は、「CountUpCommandという名前のコマンドを実行して」という指示です。  
-ViewModelの[RelayCommand]は、`private void CountUp()`メソッドを元に、`public ICommand CountUpCommand`というコマンドを自動で生成します。  
+ViewModelの`[RelayCommand]`は、`private void CountUp()`メソッドを元に、`public ICommand CountUpCommand`というコマンドを自動で生成します。  
 
 あれ、そういえばサンプルコードにModelがないのでは？  
 単なるカウントアップを保持するだけのシンプルなサンプルだと、Modelをわざわざ分ける必要はありません。  
@@ -217,7 +217,7 @@ ViewModelの[RelayCommand]は、`private void CountUp()`メソッドを元に、
 
 ### サンプルVer2
 
-カウントアップにリセットを追加してみましょう。  
+カウントアップアプリにリセットを追加してみましょう。  
 カウンターの値をセーブ、ロードするサービスも作ってみます。  
 
 - Model
@@ -360,17 +360,17 @@ namespace CounterSample
 ![](https://gyazo.com/04f7ac799522f8baecbcdd285f7a3fb0.gif)
 
 
-## DI(Dependency Injection)
+## DI
 ちょうど良さそうなサンプルになったのでDI(Dependency Injection)を使ってみます。  
 
 :::check
 **`DependencyInjection`の導入**
 
-WPFでMVVMを活用するなら、`Microsoft.Extensions.DependencyInjection`を使ったDependency Injection(DI)が便利です。  
+WPFでMVVMを活用するなら、`Microsoft.Extensions.DependencyInjection`を使ったDIが便利です。  
 DIを導入すると、ViewModelやサービスを必要な場所で簡単に受け渡すことができ、テストや保守がしやすくなります。  
 
 `ServiceCollection`にサービスやViewModelを登録し、`ServiceProvider`から取得するだけで依存関係を解決できます。
-Viewや他のViewModelから直接newする必要がなくなります。
+Viewや他のViewModelから直接newする必要がなくなります。  
 
 `NuGet`から`Microsoft.Extensions.DependencyInjection`を追加してください。
 ![](/img/blogs/2025/0912_first-contact-of-wpf/dependency-injection-nuget.png)
@@ -406,7 +406,7 @@ namespace CounterSample
             // Ioc.Default に登録
             Ioc.Default.ConfigureServices(services.BuildServiceProvider());
 
-            // 2つWindowを起動
+            // もう1つWindowを起動
             MainWindow window = new();
             window.Show();
         }
@@ -496,7 +496,10 @@ var hoge = provider.GetRequiredService<Hoge>();
 ## LINQ
 当方SQLが嫌いなので、最初はかなり読みづらかったです。  
 LINQについてはデベロッパーサイト内に詳しい記事がありますので以下ご参照ください。  
-[現場で迷わない！C#のLINQをサンプルコード付きで徹底攻略](https://developer.mamezou-tech.com/blogs/2025/07/28/csharp_linq/)
+[現場で迷わない！C#のLINQをサンプルコード付きで徹底攻略](https://developer.mamezou-tech.com/blogs/2025/07/28/csharp_linq/)  
+
+よく使うものを簡単に紹介します。  
+勝手に苦手意識がありますが、割とメソッド名通りの動きです。  
 
 ### Where
 

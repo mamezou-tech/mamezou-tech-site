@@ -453,6 +453,12 @@ var provider = services.BuildServiceProvider();
 var hoge = provider.GetRequiredService<Hoge>();
 ```
 
+:::alert
+`Ioc.Default`は静的なコンテナでアプリケーション全体が単一のルートスコープ内で実行されます。  
+そのため`Ioc.Default`からインスタンスを取得する場合、`AddScoped`は`AddSingleton`と全く同じように動作します。  
+:::
+
+
 という感じでサンプルと向き合う時間は終わりです。  
 サンプルなのでインターフェースに切るなどはやってません。  
 テストコードも入れて有用なことを示したいですが、長くなるので断念しました。    

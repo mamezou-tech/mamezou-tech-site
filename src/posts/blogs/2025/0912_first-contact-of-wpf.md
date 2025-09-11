@@ -113,7 +113,6 @@ MVVMは、UIとビジネスロジックを分離するための設計パター�
 CommunityToolkit.MvvmはMicrosoft公式のMVVM補助ライブラリです。
 `INotifyPropertyChanged`や`ICommand`実装を自動生成してくれます。  
 手書きでは冗長になりがちな、`OnPropertyChanged`の呼び出しや`RelayCommand`の実装を省略できます。  
-「MVVMで実装するとコードの量が多くなりますね」というありがちな説明を記事的にも回避できます。  
   
 `NuGet`から`CommunityToolkit.Mvvm`を追加してください。
 

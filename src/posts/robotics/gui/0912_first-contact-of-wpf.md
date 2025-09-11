@@ -209,7 +209,7 @@ namespace CounterSample.Models
 ```
 
 - Service
-```csharp:CounterService.cs
+```csharp:CounterStorageService.cs
 using CounterSample.Models;
 
 namespace CounterSample.Services
@@ -469,7 +469,6 @@ var hoge = provider.GetRequiredService<Hoge>();
 ## LINQ
 当方SQLが嫌いなので、最初はかなり読みづらかったです。
 
-★よく使うLINQと対のサンプルコードを書いてほしいです
 ### Where
 
 ```csharp

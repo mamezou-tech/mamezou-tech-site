@@ -6,7 +6,7 @@ summerRelayUrl: https://developer.mamezou-tech.com/events/season/2025-summer/
 tags: [gui, csharp, wpf, mvvm, 画面開発, summer2025]
 ---
 
-この記事は夏のリレー連載2025 10日目の記事です。
+この記事は夏のリレー連載2025 12日目の記事です。
 
 お久しぶりです。小川です。
 

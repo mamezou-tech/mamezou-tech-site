@@ -78,7 +78,7 @@ namespace CounterSample
 
 UI要素（`x:Name="CounterTextBlock`）を名前で直接参照して操作しているのが特徴です。
 
-:::column:なぜ`partial`(部分)なのか
+:::column:なぜpartial(部分)なのか
 WPF のコードビハインドは`public partial class MainWindow `のように`partial`が付いています。
 これは`XAML`から自動生成されるコードと、開発者が書くコードをひとつのクラスにまとめるためです。
 
@@ -185,7 +185,31 @@ namespace CounterSample
 MVVMではClickイベントやx:Nameが不要になり、代わりにBindingを使います。
 UI（View）とロジック（ViewModel）が分離されるので再利用性があがり、テストがしやすくなります。
 
-あれ、Modelは?  
+View（XAML）とViewModel（C#）がどのように連携しているのか補足します。  
+```xml
+<TextBlock Text="{Binding Count}" />
+<Button Command="{Binding CountUpCommand}" />
+```
+```csharp
+[ObservableProperty]
+private int count = 0;
+[RelayCommand]
+private void CountUp()
+{
+    Count++;
+}
+```
+この連携は`CommunityToolkit.Mvvm`が提供するアトリビュート（[ ]で囲まれた部分）によるコードの自動生成です。
+
+- データ（Count）の連携
+XAMLの`{Binding Count}`は「Countという名前の公開プロパティの値を表示して」という指示です。  
+ViewModelの`[ObservableProperty]`は、`private int count`フィールドを元に、`public int Count`というプロパティをコンパイル時に自動で生成します。値が変更されたらUIに通知する機能も込みです。  
+
+- 操作（CountUp）の連携
+XAMLの`{Binding CountUpCommand}`は、「CountUpCommandという名前のコマンドを実行して」という指示です。  
+ViewModelの[RelayCommand]は、`private void CountUp()`メソッドを元に、`public ICommand CountUpCommand`というコマンドを自動で生成します。  
+
+あれ、そういえばサンプルコードにModelがないのでは？  
 単なるカウントアップを保持するだけのシンプルなサンプルだと、Modelをわざわざ分ける必要はありません。  
 しかし、Modelに書くべきコードをViewModelに書いてしまうのはよくある間違いなので注意が必要です。    
 あくまでViewとModelの橋渡し役なのでViewModelをゴリゴリ書き始めたときは責務を疑ってみます。  

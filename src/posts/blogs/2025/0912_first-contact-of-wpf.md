@@ -4,7 +4,7 @@ author: kazuki-ogawa
 date: 2025-09-12 
 image: true
 summerRelayUrl: https://developer.mamezou-tech.com/events/season/2025-summer/
-tags: [gui, csharp, wpf, mvvm, 画面開発, summer2025]
+tags: [wpf, mvvm, csharp, gui, 画面開発, summer2025]
 ---
 
 この記事は夏のリレー連載2025 12日目の記事です。

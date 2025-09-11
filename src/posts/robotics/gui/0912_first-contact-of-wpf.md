@@ -103,7 +103,8 @@ MVVMは、UIとビジネスロジックを分離するための設計パター�
 
 ### サンプル
 
-同様のカウントアップアプリを実装してみます。
+同様のカウントアップアプリを実装してみます。  
+サンプルコードを記述する前の準備手順としてCommunityToolkit.Mvvmを導入します。  
 
 :::check
 **`MVVMToolkit`の導入**
@@ -111,7 +112,7 @@ MVVMは、UIとビジネスロジックを分離するための設計パター�
 CommunityToolkit.MvvmはMicrosoft公式のMVVM補助ライブラリです。
 `INotifyPropertyChanged`や`ICommand`実装を自動生成してくれます。  
 手書きでは冗長になる`OnPropertyChanged`呼び出しや`RelayCommand`の実装になります。
-MVVMで実装するとコードの量が多くなりますねを記事的にも回避できます。  
+「MVVMで実装するとコードの量が多くなりますね」というありがちな説明を記事的にも回避できます。  
   
 `NuGet`から`CommunityToolkit.Mvvm`を追加してください。
 
@@ -467,8 +468,8 @@ var hoge = provider.GetRequiredService<Hoge>();
 以降はただの備忘録なので、参考になるかもしれないし、ならないかもしれません。  
 
 ## LINQ
-当方SQLが嫌いなので、最初はかなり読みづらかったです。
-LINQについてはデベロッパーサイト内に詳しい記事がありますので以下ご参照ください。
+当方SQLが嫌いなので、最初はかなり読みづらかったです。  
+LINQについてはデベロッパーサイト内に詳しい記事がありますので以下ご参照ください。  
 [現場で迷わない！C#のLINQをサンプルコード付きで徹底攻略](https://developer.mamezou-tech.com/blogs/2025/07/28/csharp_linq/)
 
 ### Where

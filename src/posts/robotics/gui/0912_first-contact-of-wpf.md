@@ -468,6 +468,8 @@ var hoge = provider.GetRequiredService<Hoge>();
 
 ## LINQ
 当方SQLが嫌いなので、最初はかなり読みづらかったです。
+LINQについてはデベロッパーサイト内に詳しい記事がありますので以下ご参照ください。
+[現場で迷わない！C#のLINQをサンプルコード付きで徹底攻略](https://developer.mamezou-tech.com/blogs/2025/07/28/csharp_linq/)
 
 ### Where
 

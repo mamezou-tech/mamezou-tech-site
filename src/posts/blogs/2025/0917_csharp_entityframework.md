@@ -14,15 +14,13 @@ C#で開発する場合、ORマッパーはEntity Frameworkが定番です。Ent
 
 そんなわけでEntity Frameworkのセットアップから使い方まで、サンプルコードとともに解説します。
 
-Entity Frameworkを使い方を知りたい方はもちろん、開発プロジェクトにEntity Frameworkの導入を検討している方にも参考になれば幸いです。
+Entity Frameworkの使い方を知りたい方はもちろん、開発プロジェクトにEntity Frameworkの導入を検討している方にも参考になれば幸いです。
 
-## Entity Frameworkとは
+## Entity Frameworkの概要と環境構築
 
 Entity FrameworkはORマッパーです。C#を使用してSQL ServerやSQLite、MySQL、PostgreSQL、Azure Cosmos DBなどにアクセスできます。
 
 一般的なORマッパー同様に、DBのテーブルに対応するモデルクラスを作成し、Entity Frameworkが用意しているSelectやInsertなどのメソッドを使用してDBを操作します。
-
-## 開発環境の構築
 
 ### Entity Frameworkのインストール
 
@@ -48,7 +46,7 @@ dotnetコマンドが見つからないなど、VSCodeでC#の開発環境がで
 
 [VS Codeで始める！わかる＆できるC#開発環境の構築【2025年版マニュアル】](https://developer.mamezou-tech.com/blogs/2025/07/05/csharp_vscode/)
 
-### DBのインストール
+### SQL Server Expressのインストール
 
 今回のサンプルではSQL Server Expressを使用します。SQL Serverをインストールしていない方はインストールしてください。Microsoftのダウンロードサイトはこちらです。
 
@@ -279,15 +277,37 @@ namespace EntityFrameworkSample.Models
 }
 ```
 
-ここで1つ補足します。DBのテーブル名とモデル名が同じ場合、例えばテーブル名が`menu`でモデル名が`Menu`の場合は、Entity Frameworkが自動的にマッピングしてくれます。
+ここで1つ注意点を解説しておきます。
 
-しかしテーブル名にアンダースコアを含む場合は注意が必要です。
+実はEntity FrameworkがDBのテーブルとモデルをマッピングするとき、モデルのクラス名ではなくDbコンテキストに書かれたプロパティ名でマッピングしています。
 
-今回のサンプルで言うと、`menu_item`テーブルをモデルと自動的にマッピングたい場合は、モデル名を`MenuItem`にしても`Menu_Item`にしても、マッピングされませんでした。どちらも「オブジェクト名'MenuItem'が無効です」という実行時例外が出てしまいました。
+サンプルコードで解説すると以下のようになります。
+
+```cs:SampleContext.csを一部抜粋
+// これはmenuという名前のテーブルとマッピングされる
+public DbSet<Menu> Menu { get; set; }
+// これはmenuitemという名前のテーブルとマッピングされる
+public DbSet<MenuItem> MenuItem { get; set; }
+// これはmenu_itemという名前のテーブルとマッピングされる（本当はプロパティにアンダースコアを入れることはNG）
+public DbSet<MenuItem> Menu_Item { get; set; }
+```
+
+テーブル名にアンダースコアを含まない場合、例えばテーブル名が`menu`でモデル名が`Menu`の場合は、プロパティ名も`Menu`にするでしょうから問題になりにくいです。
+
+しかし`menu_item`テーブルのように、名前にアンダースコアを含むテーブルは注意が必要です。プロパティ名を`MenuItem`にしてしまうと「オブジェクト名'MenuItem'が無効です」のような実行時例外が出ます。
+
+Entity Frameworkが`menuitem`という名前のテーブルを探してしまうのです。
 
 ![モデル名とEntity Frameworkによるマッピング](/img/dotnet/csharp_entityframework/ModelMappingError.png)
 
-そこで`Table`アノテーションを使って、テーブル名を`menu_item`だと指定してあげると、例外が発生しなくなりました。
+プロパティ名にアンダースコアを入れて`Menu_Item`にすれば、例外は発生しなくなります。
+
+しかしC#の命名規則ではプロパティ名にアンダースコアを入れることがNGですので、`Table`アノテーションを使って、テーブル名を指定する必要があります。
+
+```cs:Tableアノテーションを使う例
+[Table("menu_item")]
+internal class MenuItem
+```
 
 ## 基本的な操作
 
@@ -342,7 +362,7 @@ using EntityFrameworkSample.Repositories;
 MenuRepository menuRepository = new MenuRepository();
 
 // Selectのサンプル
-var menus = menuRepository.SelectMenus();
+var menus = MenuRepository.SelectMenus();
 foreach (var menu in menus)
 {
     Console.WriteLine($"メニュー名: {menu.MenuName}, 価格: {menu.Price}円");
@@ -437,7 +457,7 @@ var newMenu = new Menu
        new MenuItem { MenuId = 6, MenuItemId = 3, MenuItemName = "漬物" }
     }
 };
-menuRepository.InsertMenu(newMenu);
+MenuRepository.InsertMenu(newMenu);
 ```
 
 Management StudioからDBを確認し、以下のように3件追加されていればOKです。
@@ -494,15 +514,15 @@ MenuRepository menuRepository = new MenuRepository();
 
 // Updateのサンプル
 // 唐揚げ定食を取得
-var targetMenu = menuRepository.SelectMenuById(2);
+var targetMenu = MenuRepository.SelectMenuById(2);
 if (targetMenu != null)
 {
-   // みそ汁を豚汁に変える代わりに50円値上げする
+   // みそ汁を豚汁に変える代わりに50円値上げする（900円→950円）
    targetMenu.Price = 950;
    targetMenu.MenuItemList.Where(item => item.MenuItemName == "みそ汁")
        .ToList()
        .ForEach(item => item.MenuItemName = "豚汁");
-   menuRepository.UpdateMenu(targetMenu);
+   MenuRepository.UpdateMenu(targetMenu);
 }
 ```
 
@@ -557,7 +577,7 @@ MenuRepository menuRepository = new MenuRepository();
 
 // Deleteのサンプル
 // 天丼を削除する
-menuRepository.DeleteMenu(6);
+MenuRepository.DeleteMenu(6);
 ```
 
 Management StudioからDBを確認し、以下のように天丼が取得できなければOKです。
@@ -652,7 +672,7 @@ var newMenuList = new List<Menu>
        }
    }
 };
-menuRepository.InsertManyMenus(newMenuList);
+MenuRepository.InsertManyMenus(newMenuList);
 ```
 
 Management StudioからDBを確認し、以下のように3件の定食が取得できればOKです。
@@ -710,7 +730,7 @@ using EntityFrameworkSample.Repositories;
 MenuRepository menuRepository = new MenuRepository();
 
 // UpdateManyのサンプル
-var targetList = menuRepository.SelectMenus();
+var targetList = MenuRepository.SelectMenus();
 foreach (var menu in targetList)
 {
    switch (menu.MenuId)
@@ -732,7 +752,7 @@ foreach (var menu in targetList)
            break;
    }
 }
-menuRepository.UpdateManyMenus(targetList);
+MenuRepository.UpdateManyMenus(targetList);
 ```
 
 Management StudioからDBを確認し、以下のように価格が変更されていればOKです。
@@ -838,7 +858,7 @@ MenuSearchCriteria criteria = new MenuSearchCriteria
    Price = 1200,
    MenuItemName = "サラダ"
 };
-var searchResultList = menuRepository.SearchMenus(criteria);
+var searchResultList = MenuRepository.SearchMenus(criteria);
 foreach (var menu in searchResultList)
 {
    Console.WriteLine($"メニュー名: {menu.MenuName}, 価格: {menu.Price}円");
@@ -918,7 +938,7 @@ using EntityFrameworkSample.Repositories;
 MenuRepository menuRepository = new MenuRepository();
 
 // 非同期処理での取得
-var asyncResultList = menuRepository.SelectMenusAsync();
+var asyncResultList = MenuRepository.SelectMenusAsync();
 foreach (var menu in asyncResultList.Result)
 {
    Console.WriteLine($"メニュー名: {menu.MenuName}, 価格: {menu.Price}円");
@@ -981,7 +1001,7 @@ using EntityFrameworkSample.Repositories;
 MenuRepository menuRepository = new MenuRepository();
 
 // 追跡なしでの取得
-var noTrackingResultList = menuRepository.SelectMenusAsNoTracking();
+var noTrackingResultList = MenuRepository.SelectMenusAsNoTracking();
 foreach (var menu in noTrackingResultList)
 {
     Console.WriteLine($"メニュー名: {menu.MenuName}, 価格: {menu.Price}円");
@@ -994,7 +1014,7 @@ foreach (var menu in noTrackingResultList)
 
 件数が多い、あるいは容量が大きいデータ（音声や動画など）を読み取り専用で使う場合は、変更の追跡をOffにすることも検討してみてください。
 
-### 終わりに
+## 終わりに
 
 久々に（それこそ前回仕事でやったのは7年くらい前）Entity Frameworkをやって、そのときにやった環境構築手順や書いて動かしてみたコードを解説してみました。
 

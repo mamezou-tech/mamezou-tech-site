@@ -143,7 +143,7 @@ Here is how Kiro addresses traditional issues:
 
 ```mermaid
 flowchart LR
-  subgraph KADAI_41[Traditional Challenges (4.1)]
+  subgraph KADAI_41["Traditional Challenges (4.1)"]
     A[Drawbacks of Code-First Approach]
     B[Discrepancy Between Documentation and Code]
     C[Manual Changes and Drift]
@@ -151,7 +151,7 @@ flowchart LR
     E[Delay in Decision-Making]
   end
 
-  subgraph SOL_42[Kiro-Based Solutions (4.2)]
+  subgraph SOL_42["Kiro-Based Solutions (4.2)"]
     S1[Visualization of Design Process]
     S2[Continuous Documentation Management]
     S3[Efficiency in Team Development]

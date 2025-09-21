@@ -2,7 +2,7 @@
 title: クラウドに頼らないAI体験：LM Studioで始めるローカルLLM入門（Gemma 3）
 author: shuichi-takatsu
 date: 2025-09-21
-tags: [lmstudio, gemma]
+tags: [lmstudio, gemma, LLM, 生成AI]
 image: true
 ---
 

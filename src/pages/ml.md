@@ -107,4 +107,4 @@ IDE 上のコード補完から始まった生成AI活用ですが、Agentic Cod
 - [機械学習モデル可視化ツール「Netron」を使ってみる](/blogs/2023/02/06/ml-model-visualizer-netron/)
 
 ### その他
-- [機械学習と倫理の話](/2024/12/25/machine-learning-and-ethics/)
+- [機械学習と倫理の話](/blogs/2024/12/25/machine-learning-and-ethics/)

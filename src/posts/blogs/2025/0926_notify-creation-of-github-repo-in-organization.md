@@ -18,15 +18,15 @@ image: true
 開発者の自発的活動を阻害してしまうことにも繋がるため、個人的にはあまりこのような制約はかけたくはありませんが。
 :::
 
-## GitHub のイベント通知を Slack の Incomming Webhook で受ける(ダメ)
+## GitHub のイベント通知を Slack の Incoming Webhook で受ける(ダメ)
 
-Slack には Incomming Webhook というアプリで Webhook 経由の通知を受け取る汎用的な仕組みがあります。
+Slack には Incoming Webhook というアプリで Webhook 経由の通知を受け取る汎用的な仕組みがあります。
 
-![Incomming Webhook](https://i.gyazo.com/a995b0a95192c72ed6ecddc5fce06e17.png)
+![Incoming Webhook](https://i.gyazo.com/a995b0a95192c72ed6ecddc5fce06e17.png)
 
-最初 GitHub から Incomming Webgook でイベント通知すればいいのでと考えました。そこで、通知したい Slack チャンネルに Incomming Webhook を導入。
+最初 GitHub から Incoming Webgook でイベント通知すればいいのでと考えました。そこで、通知したい Slack チャンネルに Incoming Webhook を導入。
 
-![Install incomming webhook](https://i.gyazo.com/99c9ee1df1e03b23a7fef81a1957582c.png)
+![Install incoming webhook](https://i.gyazo.com/99c9ee1df1e03b23a7fef81a1957582c.png)
 
 GitHub の オーガニゼーションの Settings で Webhooks > Add webhook で設定します。
 
@@ -38,7 +38,7 @@ GitHub の オーガニゼーションの Settings で Webhooks > Add webhook �
 
 ![Select events](https://i.gyazo.com/e49e8e29261139bcf75bb25f013c21ba.png)
 
-Slack の Incomming Webhook の URL を指定して、設定を完了しました。
+Slack の Incoming Webhook の URL を指定して、設定を完了しました。
 
 この設定をしてからしばらくして、同僚の人がリポジトリを作ったことを知りましたが、チャンネルには通知が来ていませんでした。
 
@@ -50,7 +50,7 @@ Response には `missing_text_orfallback_or_attachments` というメッセー�
 
 ![Response](https://i.gyazo.com/d13a0366d469ecf66317d2bdb05d394d.png)
 
-リクエストを見ると確かに text などのフィールドはありません。Incomming Webhook 用のメッセージに変換する中継サービスがないとダメそうです。ということで、GitHub の通知と Slack の Incomming Webhook を直接繋ぐのは無理でした。
+リクエストを見ると確かに text などのフィールドはありません。Incoming Webhook 用のメッセージに変換する中継サービスがないとダメそうです。ということで、GitHub の通知と Slack の Incoming Webhook を直接繋ぐのは無理でした。
 
 ## GitHub の Slack アプリはどうか(ダメ)
 Slack には GitHub 公式のアプリもあるので、これが使えないかと考えました。
@@ -121,7 +121,7 @@ jobs:
 2. Bun 環境をセットアップ
 3. bun install で octokit/graphql をインストール
 4. オーガニゼーションの参照権限を付与した PAT をシークレットから設定
-5. Slack チャンネルの Incomming Webhook の URL をシークレットから設定
+5. Slack チャンネルの Incoming Webhook の URL をシークレットから設定
 6. オーガニゼーション名を設定
 7. Bun スクリプトを実行
 
@@ -219,7 +219,7 @@ try {
 
 以下のような感じで、リポジトリ作成通知がチャンネルに届きます(手動実行したため、時刻は午前10時30分ごろになっています)。
 
-![notification by incomming-webhook](https://i.gyazo.com/e8df068ac5572c819f965bf71be75b7a.png)
+![notification by incoming-webhook](https://i.gyazo.com/e8df068ac5572c819f965bf71be75b7a.png)
 
 ## さいごに
 以上、オーガニゼーション内のリポジトリ作成を検知するために実施した方法の紹介でした。

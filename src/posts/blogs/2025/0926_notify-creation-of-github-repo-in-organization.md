@@ -154,7 +154,7 @@ const query = `
 `;
 ```
 
-Octkit を使って GraphQL でリポジトリのリストを取得する処理です。
+Octokit を使って GraphQL でリポジトリのリストを取得する処理です。
 
 ```typescript
 let repos: { name: string; url: string; createdAt: string; visibility: string }[] = [];

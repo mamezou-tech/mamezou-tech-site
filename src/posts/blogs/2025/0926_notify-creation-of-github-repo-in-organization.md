@@ -2,7 +2,7 @@
 title: GitHub オーガニゼーションのリポジトリ作成を通知する GitHub Actions ワークフローを作る
 author: masahiro-kondo
 date: 2025-09-26
-tags: [CI/CD, GitHub]
+tags: [GitHub, CI/CD]
 image: true
 ---
 

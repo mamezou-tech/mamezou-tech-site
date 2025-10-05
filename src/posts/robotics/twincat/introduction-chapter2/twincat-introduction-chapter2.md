@@ -2,7 +2,7 @@
 title: TwinCATで始めるソフトウェアPLC開発（その2：ST言語でのプログラミング（1/2））
 author: hayato-ota
 tags: [PLC, TwinCAT]
-date: 2025-09-30
+date: 2025-10-08
 image: true
 ---
 

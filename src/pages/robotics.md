@@ -80,4 +80,4 @@ enTitle: Robotics
 
 ## PLC
 - [TwinCATで始めるソフトウェアPLC開発（その1：開発環境構築編）](/robotics/twincat/introduction/twincat-introduction/)
-- [TwinCATで始めるソフトウェアPLC開発（その2：ST言語でのプログラミング）](/robotics/twincat/introduction-chapter2/twincat-introduction-chapter2/)
+- [TwinCATで始めるソフトウェアPLC開発（その2：ST言語でのプログラミング（1/2））](/robotics/twincat/introduction-chapter2/twincat-introduction-chapter2/)

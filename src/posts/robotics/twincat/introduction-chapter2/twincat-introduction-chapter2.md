@@ -328,7 +328,7 @@ MainProgramData := GVL_Var.SharedData;
 MAIN2プログラムのMainProgramData変数に，MAINプログラムのCycleCount変数の値が格納されていることが確認できます。
 
 
-# 7. おわりに
+# 6. おわりに
 今回はST言語による基本的なPLCプログラムを作成してみました。
 タスク・プログラムの使用方法が理解できたと思います。  
 ここまでのプロジェクトを[こちら](https://github.com/hayat0-ota/TwinCAT-Tutorial/tree/Chapter2)で共有しています。補助資料としてご活用ください。

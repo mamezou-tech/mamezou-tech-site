@@ -7,8 +7,8 @@ image: true
 ---
 
 # 0. はじめに
-[前回](https://developer.mamezou-tech.com/robotics/twincat/introduction/twincat-introduction/)はTwinCATの開発環境（XAE）・実行環境（XAR）の構築方法について説明しました。
-今回はPLCプログラムをST言語で実装して動作を確認し，基本的な実装方法を確認します。
+[前回](https://developer.mamezou-tech.com/robotics/twincat/introduction/twincat-introduction/)はTwinCATの開発環境（XAE）・実行環境（XAR）の構築方法について説明しました。  
+今回は基本的なPLCプログラムの実装方法についてご紹介します。
 
 # 1. ST言語とは？
 IEC61131-3規格で定められた5種類のプログラム言語のうちの1つです。  
@@ -25,7 +25,7 @@ END_FOR
 # 2. PLCプログラムの作成・実装
 開発環境を起動し，ST言語でのPLCプログラムを実装していきます。
 
-## ソリューション作成
+## 2.1 ソリューション作成
 Visual Studio もしくは XAE Shellを開きます。  
 （今回はVisual Studioを選択しました）
 
@@ -40,7 +40,7 @@ Visual Studio もしくは XAE Shellを開きます。
 プロジェクト名・ソリューション名は「TwinCAT-Tutorial」とします。
 ![image](../../../../img/robotics/twincat/twincat-introduction-chapter2/create-twincat-solution-3.png)
 
-## PLCプロジェクト作成
+## 2.2 PLCプロジェクト作成
 ソリューションエクスプローラーにて「PLC」を右クリックして，「新しい項目の追加」をクリックします。
 ![image](../../../../img/robotics/twincat/twincat-introduction-chapter2/create-plc-project-1.png)
 
@@ -55,7 +55,7 @@ XAEShellもしくはVisualStudioの画面左側にソリューションエクス
 ![image](../../../../img/robotics/twincat/twincat-introduction-chapter2/create-plc-project-2.png)
 
 
-## MAINプログラムを編集してみる
+## 2.3 MAINプログラムを編集してみる
 PLCプログラムを新規作成すると，ソリューションエクスプローラー内の「PLC」配下に項目が追加されます。  
 「POUs」フォルダ内にある「MAIN(PRG)」をクリックして編集画面を開きます。
 
@@ -102,7 +102,8 @@ IDE下部に表示される「出力」タブ内で，失敗の数が0となっ�
 ![image](../../../../img/robotics/twincat/twincat-introduction-chapter2/create-plc-project-5.png)
 
 
-## プロジェクトのデプロイ
+# 3. プロジェクトの実行と動作確認
+## 3.1 デプロイ前の確認事項
 プログラムを書き込むために，まずはXAR環境（＝実行環境）にアクセスできるかを確認します。
 
 システムトレイに表示されている歯車アイコンを右クリックして  
@@ -121,6 +122,7 @@ IDE下部に表示される「出力」タブ内で，失敗の数が0となっ�
 ![image](../../../../img/robotics/twincat/twincat-introduction-chapter2/configure-ams-routing-3.png)
 
 
+## 3.2 プロジェクトのデプロイ
 XARとの通信が確立していることを確認したら，IDEからターゲットを指定します。
 
 IDEを開き，「表示」タブ>「ツールバー」>「TwinCAT XAE Base」をクリックしてチェックを入れます。
@@ -164,7 +166,7 @@ IDEの右下に表示されている歯車アイコンが下図のように緑�
 ![image](../../../../img/robotics/twincat/twincat-introduction-chapter2/deploy-to-xar-10.gif)
 
 
-## ログインによる動作確認
+## 3.3 ログインによる動作確認
 TwinCATでは，XARにログインすることで変数の値をリアルタイムで確認することができます。  
 このログイン機能を使用して，先ほど書き込んだプログラムが正常に動作しているかを確認してみます。  
 
@@ -174,11 +176,12 @@ TwinCATでは，XARにログインすることで変数の値をリアルタイ�
 
 ログインした状態でMAINプログラムを開くと，CycleCount変数の値がリアルタイムで確認できます。  
 1秒間におよそ100だけ加算されていく様子が確認できます。
+これは，TwinCATプロジェクトを作成したときに生成されるタスクの実行周期が10msであるためです。
 ![image](../../../../img/robotics/twincat/twincat-introduction-chapter2/login-and-check-program-2.png)
 
-これは，TwinCATプロジェクトを作成したときに生成されるタスクの実行周期は10msであるためです。
 
-## タスクの実行周期を変えてみる
+
+# 3. タスクの実行周期を変えてみる
 デフォルトで生成されるタスクの周期は10msですが，これを変更してみましょう。
 プロジェクト生成時に自動で追加されたタスクを消してみます。
 ![image](../../../../img/robotics/twincat/twincat-introduction-chapter2/create-new-task-1.png)
@@ -213,13 +216,17 @@ https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_system/5210
 ![image](../../../../img/robotics/twincat/twincat-introduction-chapter2/create-new-task-8.png)
 
 先程と同様に，ログインして変数の様子を見てみましょう。  
-1秒間に10だけ値が増えていくことが確認できると思います。これは，先ほど作成したタスクがMAINプログラムを100msごとに呼び出しているからです。
+1秒間に10だけ値が増えていくことが確認できると思います。  
+これは，先ほど作成したタスクがMAINプログラムを100msごとに呼び出しているからです。
 
 
-# 3. 同一タスクに複数のプログラムを登録する
+# 4. 同一タスクに複数のプログラムを登録する
 1つのタスクには複数個のプログラムを登録できます。
 例えば実行周期を10msに設定したタスクにプログラムAとプログラムBの2つを登録した場合，10msごとにプログラムAとプログラムBが実施されます。
 ただし，プログラムAとBは並列で実行されるのではなく，**どちらかのプログラムが完了した後にもう一方のプログラムが実施される**点に注意してください。
+
+概念構造を下図に示します。
+![image](../../../../img/robotics/twincat/twincat-introduction-chapter2/relation-between-task-and-program.png)
 
 :::stop
 両プログラムの処理時間の合計がタスク実行周期を上回る（タスクオーバーラン）と，システムがハングする可能性があります。  
@@ -260,7 +267,7 @@ MainTask参照アイテムの子要素に「MAIN」と「MAIN2」の両方があ
 MAIN2プログラムはMAINプログラムと同じ周期（100ms）で実行され，CycleDoubleCount変数値が1秒間で20だけ値が増えることが確認できます。
 
 
-# 4. プログラム間でデータを共有する
+# 5. プログラム間でデータを共有する
 あるプログラムで計算した値を別のプログラムで使用したい場合が多々あります。
 このような場合は，プログラムもしくはタスク間で共通のデータ（グローバル変数）を定義します。
 グローバル変数はすべてのタスクが参照できる共有リソースとして定義されるため，これを用いることでタスクを跨いだデータ共有が可能です。
@@ -321,7 +328,7 @@ MainProgramData := GVL_Var.SharedData;
 MAIN2プログラムのMainProgramData変数に，MAINプログラムのCycleCount変数の値が格納されていることが確認できます。
 
 
-# 5. おわりに
+# 7. おわりに
 今回はST言語による基本的なPLCプログラムを作成してみました。
 タスク・プログラムの使用方法が理解できたと思います。  
 ここまでのプロジェクトを[こちら](https://github.com/hayat0-ota/TwinCAT-Tutorial/tree/Chapter2)で共有しています。補助資料としてご活用ください。

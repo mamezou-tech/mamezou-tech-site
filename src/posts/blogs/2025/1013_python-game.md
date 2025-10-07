@@ -8,7 +8,7 @@ image: true
 
 ## はじめに
 
-![](/img/blogs/2025/1013_python-game/python-game-playing-top.gif)
+![](/img/blogs/2025/1013_python-game/python-game-top.gif)
 
 私は普段は業務アプリの開発に従事しており、事件・事故の証拠映像管理システムや、畜産用の動物の頭数管理システム、飲食店のPOSシステムの開発を行ってきました。
 いずれも開発言語はほぼJavaであり、Spring Framework/Spring Bootを使用することが多かったです。

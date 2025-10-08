@@ -116,6 +116,6 @@ CSVファイルのハイライト表示をします。
 ## さいごに
 
 Extension Pack for Java Auto Configによって、これ1つインストールするだけで、Javaアプリ/SpringBootアプリの開発環境が整うのは便利になったと思います。
-ElipseやIntelliJ IDEAなどの統合環境に比べると機能面で劣るところもあります。一方、VS Codeは無料で動作が軽く、しかもAI対応が統合環境よりも早いことを考えると、Java開発環境としてVS Codeを使うのもありだろうと思います。
+EclipseやIntelliJ IDEAなどの統合環境に比べると機能面で劣るところもあります。一方、VS Codeは無料で動作が軽く、しかもAI対応が統合環境よりも早いことを考えると、Java開発環境としてVS Codeを使うのもありだろうと思います。
 
 

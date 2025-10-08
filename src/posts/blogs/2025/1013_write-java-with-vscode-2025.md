@@ -1,7 +1,7 @@
 ---
 title: 2025年版！VS Code で Java 開発環境を構築する
 author: yasuhiro-endo
-date: 2025-10-07
+date: 2025-10-13
 tags: [vscode, java]
 image: true
 ---
@@ -50,7 +50,7 @@ JDK18以降のデフォルトの文字コードはUTF-8です。一方でター�
 - 値の名前：Autorun
 - 値のデータ：chcp 65001 > nul
 
-![regedit](/img/blogs/2025/1007_write-java-with-vscode-2025/regedit.png)
+![regedit](/img/blogs/2025/1013_write-java-with-vscode-2025/regedit.png)
 
 最後の部分は「null」ではなく「nul」であることに気を付けてください。
 
@@ -61,7 +61,7 @@ JDK18以降のデフォルトの文字コードはUTF-8です。一方でター�
 
 JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
 
-![environment](/img/blogs/2025/1007_write-java-with-vscode-2025/environment.png)
+![environment](/img/blogs/2025/1013_write-java-with-vscode-2025/environment.png)
 
 
 ## 追加の拡張
@@ -71,42 +71,42 @@ Extension Pack for Java Auto Configが追加するその他の拡張について
 ### [XML - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
 
 XMLの入力支援をしてくれます。例えば、タグの上にマウスカーソルをホバーさせるとスキーマにかかれたドキュメンテーションを表示するなどの機能があります。
-![maven_parent](/img/blogs/2025/1007_write-java-with-vscode-2025/maven_parent.png)
+![maven_parent](/img/blogs/2025/1013_write-java-with-vscode-2025/maven_parent.png)
 
 ### [Code Spell Checker - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 
 コードやコメントのスペルチェックをしてくれます。
-![spell_checker](/img/blogs/2025/1007_write-java-with-vscode-2025/spell_checker.png)
+![spell_checker](/img/blogs/2025/1013_write-java-with-vscode-2025/spell_checker.png)
 
 
 ### [TODO Tree - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree)
 
 ソースコード中のTODOやFIXMEを一覧表示してくれます。
-![todo_tree](/img/blogs/2025/1007_write-java-with-vscode-2025/todo_tree.png)
+![todo_tree](/img/blogs/2025/1013_write-java-with-vscode-2025/todo_tree.png)
 
 ### [Live Server - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
 
 HTMLやCSSなどの確認に便利な簡易サーバーです。
 HTMLファイルを開いた状態で、画面右下の「Go Live」を押すと、ブラウザでHTMLを表示してくれます。
 Live Reload機能によりHTMLを書き換えるとリロードなしでブラウザに修正が繁栄されます。
-![live_server](/img/blogs/2025/1007_write-java-with-vscode-2025/live_server.png)
+![live_server](/img/blogs/2025/1013_write-java-with-vscode-2025/live_server.png)
 
 
 ### [Trailing Spaces - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=shardulm94.trailing-spaces)
 
 末尾空白のハイライト表示と削除をしてくれます。
-![trailing_spaces](/img/blogs/2025/1007_write-java-with-vscode-2025/trailing_spaces.png)
+![trailing_spaces](/img/blogs/2025/1013_write-java-with-vscode-2025/trailing_spaces.png)
 
 
 ### [indent-rainbow - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow)
 
 インデントのハイライト表示をします。
-![indent_colored](/img/blogs/2025/1007_write-java-with-vscode-2025/indent_colored.png)
+![indent_colored](/img/blogs/2025/1013_write-java-with-vscode-2025/indent_colored.png)
 
 ### [Rainbow CSV - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv)
 
 CSVファイルのハイライト表示をします。
-![csv_colored](/img/blogs/2025/1007_write-java-with-vscode-2025/csv_colored.png)
+![csv_colored](/img/blogs/2025/1013_write-java-with-vscode-2025/csv_colored.png)
 
 
 

@@ -2,7 +2,7 @@
 title: 業務アプリの開発者が趣味でPythonを使ってゲーム開発してみた　～tkinter編～
 author: ryo-nakagaito
 date: 2025-10-13
-tags: [ゲーム開発, Python, tkinter]
+tags: [tkinter, ゲーム開発, Python]
 image: true
 ---
 

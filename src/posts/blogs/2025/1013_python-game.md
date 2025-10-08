@@ -2,16 +2,15 @@
 title: 業務アプリの開発者が趣味でPythonを使ってゲーム開発してみた　～tkinter編～
 author: ryo-nakagaito
 date: 2025-10-13
-tags: [GitHub, CI/CD]
+tags: [ゲーム開発, Python, tkinter]
 image: true
 ---
 
-## はじめに
-
 ![](/img/blogs/2025/1013_python-game/python-game-top.gif)
 
-私は普段は業務アプリの開発に従事しており、事件・事故の証拠映像管理システムや、畜産用の動物の頭数管理システム、飲食店のPOSシステムの開発を行ってきました。
-いずれも開発言語はほぼJavaであり、Spring Framework/Spring Bootを使用することが多かったです。
+## はじめに
+
+私は普段は業務アプリの開発に従事しております。開発言語はほぼJavaであり、Spring Framework/Spring Bootを使用することが多いです。
 
 業務以外でプログラムを書く機会や趣味はほとんどなかったのですが、最近インディー系の2Dアクションゲームにハマっており（ホロウナイト、カップヘッド、オリシリーズなどが好きです。）自分でも簡単なもので良いからミニゲーム開発をしてみたい！と思い立ってやってみることにしました。
 
@@ -43,10 +42,11 @@ ChatGPTに聞いてみたところ、以下のようなライブラリとのこ�
 - ヘビは画面内をランダムな方向に移動する
 - ウサギはプレイヤーが操作し、マウスのカーソルに追従して移動する
 
-初心者なのでまずはこれくらいで良いでしょう。
+ゲーム開発に関しては初心者なのでまずはこれくらいで良いでしょう。
 
 ## tkinterの基本
 本を読みながらコードを書いてゆきます。tkinterのミニゲームアプリは以下のコードが必須だそうです。
+
 ```Python
 # メインウィンドウとキャンバスの設定
 root = tkinter.Tk()
@@ -87,44 +87,42 @@ root.mainloop()
 
 ## 当たり判定のロジック
 本では「円同士の当たり判定」と「長方形同士の当たり判定」の2種類が紹介されていました。等身の高いキャラクターなんかは長方形の方が適していそうですが、今回は円同士の当たり判定を実装してみました。
-ウサギの中心の座標が(x1, y1)、円の半径の長さがr1、ヘビの中心の座標が(x2, y2)、円の半径の長さがr2です。以下のようなコードで、ウサギの中心とヘビの中心の距離が半径の合計以下になっているかを判定しています。
+
+ウサギとヘビそれぞれのx、y座標の値と半径の長さrを使用して計算します。座標同士の距離を求め、それが半径の合計以下の長さになっているかを判定しています。
 
 ```Python
-def hit_check():
-        dis = math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
-    if dis <= r1 + r2:
-        return True
-    return False
+def hit_check(self):
+    dis = math.sqrt((self.rabbit.x - self.snake.x) ** 2 + (self.rabbit.y - self.snake.y) ** 2)
+    return dis <= self.rabbit.r + self.snake.r
 ```
 
 マウスムーブ時に実行する処理の中でhit_checkメソッドを呼び、Trueが返されたときはゲームオーバー画面を表示するようにしています。
 
 ## 改善点
-一応形にはなりましたが改善したい部分も出てきました。ヘビは0.05秒間隔でランダムな方向に一定距離移動するように実装していたのですが、目で見ると動きがかなりぎこちないです。ChatGPTに相談しつつ、ゆっくりとウサギの位置に追従するような動きになるよう処理内容を修正してみます。以下が修正後のヘビ移動用メソッドです。
+一応形にはなりましたが改善したい部分も出てきました。ヘビは0.05秒間隔でランダムな方向に一定距離移動するように実装していたのですが、目で見ると動きがかなりぎこちないです。ChatGPTに相談しつつ、ゆっくりとウサギの位置に追従するような動きになるよう処理内容を修正してみます。
+
+以下が、ヘビを管理するSnakeクラスに実装した修正後のヘビ移動メソッドです。target_x、target_yはウサギの座標を受け取り、on_move_doneはこの移動処理を繰り返し呼ぶためのコールバックです。
 
 ```Python
-def move_snake():
-    global x2, y2, snake_job
-    # ウサギの位置に向かって動く
-    dx = x1 - x2
-    dy = y1 - y2
+def move_toward(self, target_x, target_y, on_move_done):
+    # ウサギに向かって移動
+    dx = target_x - self.x
+    dy = target_y - self.y
     dist = math.sqrt(dx**2 + dy**2)
     # 距離が0でないときだけ移動方向を正規化
     if dist != 0:
         dx /= dist
         dy /= dist
-    # 速度（ピクセル / フレーム）
-    speed = 5
-    new_x2 = x2 + dx * speed
-    new_y2 = y2 + dy * speed
-    # 画面範囲チェック
-    if 0 < new_x2 < 1200 and 0 < new_y2 < 676:
-        x2, y2 = new_x2, new_y2
-    # 以前のヘビを削除し再描画
-    canvas.delete("SNAKE")
-    canvas.create_image(x2, y2, image=snake_img, tag="SNAKE")
+    new_x = self.x + dx * self.speed
+    new_y = self.y + dy * self.speed
 
-    snake_job = root.after(50, move_snake)
+    # 画面範囲チェック 範囲内なら更新
+    if 0 < new_x < 1200 and 0 < new_y < 676:
+        self.x, self.y = new_x, new_y
+        self.draw()
+
+    # 50msごとに再実行
+    self.job = self.canvas.after(50, on_move_done)
 ```
 
 修正後の動きがこんな感じになりました。

@@ -1,7 +1,7 @@
 ---
 title: 【C# DIコンテナ入門】Microsoft.Extensions.DependencyInjectionの基本と使い方
 author: yoshihiro-tamori
-date: 2025-10-22
+date: 2025-10-16
 tags: [dotnet, csharp]
 image: true
 ---

@@ -31,6 +31,12 @@ Ninjectのページ
 
 DI（Dependency Injection）コンテナはオブジェクトの生成、ライフサイクルの管理、依存関係の注入を自動化するライブラリです。コードを疎結合化し、修正やテストをしやすくします。
 
+DIコンテナを使うメリット。
+
+- 仕様変更などが発生しても、修正の手間を減らせる。
+- テスト時にはテスト用のクラス（モックと呼ばれる）に差し替えることで、テストをしやすくできる。
+- どの部品が他のどの部品を必要としているかが分かりやすいため、システムの構造が見通しやすい。
+
 例えば以下のサンプルコードのように、オブジェクトの生成がハードコードされているとします。
 
 ```cs
@@ -447,6 +453,8 @@ public SampleProcEnumerable(IEnumerable<IMessageCreator> messageCreators)
 
 ### Webアプリ
 
+#### WebアプリのDI設定
+
 今度はWebアプリで試してみましょう。やっぱり現実的にはWebアプリのプロジェクトが多いでしょうから、Webアプリでの使い方を知っておきたいところです。
 
 この記事ではRazorページを使って解説していきます。Razorとは何かについてはこちらの記事を参照してください。
@@ -527,9 +535,14 @@ app.MapRazorPages();
 app.Run();
 ```
 
-Webアプリの場合は確認用の画面を作る必要もあります。`Index`を修正し、`SampleProc`と`SampleProcEnumerable`というRazorページを作ってください。サンプルコードを掲載します。
+#### Webアプリの動作確認
 
-まずは`Index.cshtml`に以下のようにアンカータグを2ページ分追加します。
+Webアプリの場合は確認用の画面を作る必要もあります。`Index`を修正し、`SampleProc`と`SampleProcEnumerable`というRazorページを作ってください。ページ遷移のイメージはこの画像のようになります。
+
+![Webアプリのサンプルのページ遷移](/img/dotnet/csharp_di/SamplePageStructure.png)
+*Webアプリのサンプルのページ遷移*
+
+サンプルコードを掲載します。まずは`Index.cshtml`に以下のようにアンカータグを2ページ分追加します。
 
 ```cs:Index.cshtml
 <div class="text-center">
@@ -620,8 +633,9 @@ namespace DIWebApp.Pages
 }
 ```
 
-先ほどのコンソールアプリ同様に、後勝ちであることや`IEnumerable`について実行して確認してみてください。
+デバッグ起動すると最初にIndex画面が表示されます。
 
+そしたら`SampleProc`と`SampleProcEnumerable`にアクセスして、先ほどのコンソールアプリ同様に、後勝ちであることや`IEnumerable`について実行して確認してみてください。
 
 ## おわりに
 

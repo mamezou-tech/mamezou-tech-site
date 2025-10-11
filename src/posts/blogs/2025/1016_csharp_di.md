@@ -31,7 +31,7 @@ Ninjectのページ
 
 DI（Dependency Injection）コンテナはオブジェクトの生成、ライフサイクルの管理、依存関係の注入を自動化するライブラリです。コードを疎結合化し、修正やテストをしやすくします。
 
-DIコンテナを使うメリット。
+DIコンテナを使うメリットは主に以下です。
 
 - 仕様変更などが発生しても、修正の手間を減らせる。
 - テスト時にはテスト用のクラス（モックと呼ばれる）に差し替えることで、テストをしやすくできる。
@@ -647,4 +647,4 @@ namespace DIWebApp.Pages
 
 それと比べるとMicrosoft.Extensions.DependencyInjectionは書くべき個所が明確ですし、書き方も簡単ですね。これなら導入のハードルは低いです。
 
-もしC#で開発する際のDIコンテナに迷っているようでしたら、Microsoft.Extensions.DependencyInjectionを使ってみてはいかがでしょうか。その際にこの記事が参考にされば幸いです。
+もしC#で開発する際のDIコンテナに迷っているようでしたら、Microsoft.Extensions.DependencyInjectionを使ってみてはいかがでしょうか。その際にこの記事が参考になれば幸いです。

@@ -22,6 +22,16 @@ gh-copilot のドキュメントは以下にあります。
 
 [GitHub Copilot in the CLI について - GitHub Docs](https://docs.github.com/ja/copilot/github-copilot-in-the-cli/about-github-copilot-in-the-cli)
 
+
+:::alert:2025.10.01 追記
+GitHub Copilot CLI がパブリックプレビューになったため、GitHub CLI の拡張機能としての gh-copilot は deprecatd になっており、今後は Copilot CLI に置き換えられます。
+
+[GitHub Copilot CLI is now in public preview - GitHub Changelog](https://github.blog/changelog/2025-09-25-github-copilot-cli-is-now-in-public-preview/)
+
+[Sunset notice: GitHub App-based Copilot Extensions - GitHub Changelog](https://github.blog/changelog/2025-09-24-deprecate-github-copilot-extensions-github-apps/)
+
+:::
+
 :::info
 gh-copilot は記事執筆時点ではパブリックベータです。利用するには、GitHub Copilot Individual サブスクリプションが必要です。筆者は Individual サブスクリプションを利用しています。
 所属しているオーガニゼーションが GitHub Copilot Business サブスクリプションを持ち、かつ gh-copilot を有効化している場合も利用可能です。

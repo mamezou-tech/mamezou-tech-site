@@ -32,6 +32,7 @@ LLM をローカル環境で動かすにはマシンパワーが必要ですが�
 - [Ollamaを使ってオープンソースLLMをローカルホストしてみよう](/blogs/2025/02/20/ollama_local_llm/)
 - [AWSで自分だけのLLM環境を！EC2 GPUインスタンスとOllamaでAIを動かす実践ガイド](/blogs/2025/08/21/ec2-gpu-demo/)
 - [クラウドに頼らないAI体験：LM Studioで始めるローカルLLM入門（Gemma 3）](/blogs/2025/09/21/gemma_on_lm_studio/)
+- [クラウドに頼らないAI体験：LM Studio＋LangChain＋StreamlitでつくるローカルRAG環境](/blogs/2025/10/14/local_rag_on_lm_studio/)
 
 ### 生成AIをソフトウェア開発に適用する
 IDE 上のコード補完から始まった生成AI活用ですが、Agentic Coding / Vibe Coding が流行し、要件定義や設計の領域に関しても適用が始まっています。

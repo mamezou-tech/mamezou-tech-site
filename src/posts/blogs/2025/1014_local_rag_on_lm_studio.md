@@ -2,7 +2,7 @@
 title: クラウドに頼らないAI体験：LM Studio＋LangChain＋StreamlitでつくるローカルRAG環境
 author: shuichi-takatsu
 date: 2025-10-14
-tags: [lmstudio, gemma, LLM, 生成AI, RAG, Streamlit, LangChain]
+tags: [lmstudio, LangChain, Streamlit, gemma, LLM, 生成AI, RAG]
 image: true
 ---
 

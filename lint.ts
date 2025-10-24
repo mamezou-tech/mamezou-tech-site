@@ -1,13 +1,13 @@
-import { createLinter, loadLinterFormatter } from "npm:textlint@15.2.2";
+import { createLinter, loadLinterFormatter } from "npm:textlint@15.2.3";
 import {
   TextlintKernelDescriptor,
   TextlintResult,
-} from "npm:@textlint/kernel@15.2.2";
-import { moduleInterop } from "npm:@textlint/module-interop@15.2.2";
+} from "npm:@textlint/kernel@15.2.3";
+import { moduleInterop } from "npm:@textlint/module-interop@15.2.3";
 import * as jpPreset from "npm:textlint-rule-preset-ja-technical-writing@12.0.2";
 import * as proofdict from "npm:@proofdict/textlint-rule-proofdict@^3.1.2";
 import * as aws from "npm:textlint-rule-aws-spellcheck@^1.3.0";
-import * as markdownProcessor from "npm:@textlint/textlint-plugin-markdown@15.2.2";
+import * as markdownProcessor from "npm:@textlint/textlint-plugin-markdown@15.2.3";
 import * as allowlistFilter from "npm:textlint-filter-rule-allowlist";
 
 /**
@@ -21,25 +21,25 @@ import * as allowlistFilter from "npm:textlint-filter-rule-allowlist";
 const excludes = [
   // "sentence-length",
   // "max-comma",
-  "max-ten",
+  // "max-ten",
   // "max-kanji-continuous-len",
   // "arabic-kanji-numbers",
-  "no-mix-dearu-desumasu",
+  // "no-mix-dearu-desumasu",
   // "ja-no-mixed-period",
-  "no-double-negative-ja",
-  "no-dropping-the-ra",
-  "no-doubled-conjunctive-particle-ga",
-  "no-doubled-conjunction",
-  "no-doubled-joshi",
+  // "no-double-negative-ja",
+  // "no-dropping-the-ra",
+  // "no-doubled-conjunctive-particle-ga",
+  // "no-doubled-conjunction",
+  // "no-doubled-joshi",
   // "no-nfd",
   // "no-invalid-control-character",
   // "no-zero-width-spaces",
   // "no-exclamation-question-mark",
   // "no-hankaku-kana",
   "ja-no-weak-phrase", // allow weak phrases
-  "ja-no-successive-word",
-  "ja-no-abusage",
-  "ja-no-redundant-expression",
+  // "ja-no-successive-word",
+  // "ja-no-abusage",
+  // "ja-no-redundant-expression",
   // "ja-unnatural-alphabet",
   // "no-unmatched-pair",
 ];

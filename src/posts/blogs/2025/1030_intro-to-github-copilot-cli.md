@@ -7,14 +7,13 @@ image: true
 ---
 
 ## はじめに
-
-先月 GitHub Copilot CLI がパブリックプレビューになりました。
+ちょっと時間が経ってしまいましたが、先月末 GitHub Copilot CLI がパブリックプレビューになりました。
 
 @[og](https://github.blog/changelog/2025-09-25-github-copilot-cli-is-now-in-public-preview/)
 
 VS Code の拡張から始まった GitHub Copilot も Claude Code や Gemini と同様 CLI としても動作するようになりました。CLI として提供されることで、
 - IDE 縛りがなくなる
-- パイプを使って 他の CLI ツールとの連携が可能
+- パイプを使って他の CLI ツールとの連携が可能
 
 という強みが追加されます。ターミナルだけで作業が完結できるという点にも魅力を感じる人は多いでしょう。
 
@@ -92,7 +91,7 @@ copilot
 
 ![explain in japanese](https://i.gyazo.com/1e9e556c84d1a93264a46b1f9006557a.png)
 
-対話モードを抜けると、利用実績やコードの変更行数などが表示されます。
+対話モードを抜けると利用実績やコードの変更行数などが表示されます。
 
 ```
  Total usage est:       2 Premium requests
@@ -106,7 +105,7 @@ copilot
 ```
 
 ### プログラムモード
-Copilot CLI に引数やパイプでプロンプトで指示を出し直接実行するモードです。
+Copilot CLI に引数やパイプでプロンプトを与えて直接実行するモードです。
 
 ```
 copilot -p "explain src/favs.js"
@@ -159,8 +158,11 @@ Fix No cleanup problem
 
 ![Fix code](https://i.gyazo.com/5ac5afa32e800e409e8bc69ec68a1390.png)
 
-`beforeUnmount` のフックメソッドと Listener 削除のコードが追加されました。`on` で追加したリスナーを `off` で削除というのは、対照性があり美しい API ですが、この API は存在しないため完全に間違っており受け入れる変更ではありません。ですが、今は Copilot CLI の機能を試しているため、他のファイルにも横展開をお願いしてみました。ファイルごとに変更していいか聞かれます。
+`beforeUnmount` のフックメソッドと Listener 削除のコードが追加されました。リスナーを `off` で削除する API は存在しないため受け入れる変更ではありません。ですが、今は Copilot CLI の機能を試しているため、他のファイルにも同様に適用をお願いしてみました。ファイルごとに変更していいか聞かれます。
 
+```
+Apply this fix to other files too
+```
 ![Apply to other files](https://i.gyazo.com/ee1029b82a463ec3f84b6d041f833c7e.png)
 
 全てのファイルに適用が終わりました。
@@ -179,7 +181,7 @@ list my open issues
 ![list issues](https://i.gyazo.com/6dd6ffdf93f9deb5bb7356014be84029.png)
 
 ### GitHub タスク(PR 作成)
-先ほど試した Electron アプリへの Listener 削除の変更が手元にあるのでそこから PR を作ってもらいます。
+先ほど試した Electron アプリへのリスナー削除の変更が手元にあるので、そこから PR を作ってもらいます。
 
 ```shell
 create a pull request from this changes

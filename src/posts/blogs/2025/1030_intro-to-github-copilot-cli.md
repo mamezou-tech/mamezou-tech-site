@@ -169,7 +169,7 @@ Fix No cleanup problem
 この例では使用しませんでしたが、ローカルタスクにおいて sed とか chmod などの外部コマンドを使用する場合は、使用許可を聞いてきます。`--allow-tool` で実行時に予め許可を与えることもできます。
 :::
 
-### GitHub タスク
+### GitHub タスク(issue 一覧取得)
 GitHub の操作に関するタスクも実行できます。手始めにリポジトリの issue 一覧を表示させてみました。
 
 ```shell
@@ -178,7 +178,8 @@ list my open issues
 
 ![list issues](https://i.gyazo.com/6dd6ffdf93f9deb5bb7356014be84029.png)
 
-先ほど試した、Electron アプリへの Listener 削除の変更が手元にあるのでそこから PR を作ってもらいます。
+### GitHub タスク(PR 作成)
+先ほど試した Electron アプリへの Listener 削除の変更が手元にあるのでそこから PR を作ってもらいます。
 
 ```shell
 create a pull request from this changes
@@ -196,11 +197,12 @@ Yes を選択すると PR が作成されました。
 
 PR の作者は筆者自身となっています。
 
+### GitHub タスク(Actions ワークフロー実行)
 GitHub タスクでは GitHub Actions ワークフローの操作も可能です。まず、このリポジトリのワークフローを列挙させてみました。
 
 ![list workflows](https://i.gyazo.com/f9a84487aa6642d692e566ed9edd5e96.png)
 
-列挙されたワークフローのうち `OS Matrix` は、クロスプラットフォームで Electron アプリのテストを実行するワークフローです。手動実行時に beta というパラメータを true にして実行すると Electron の最新ベータ版をインストールしてテストします。ワークフローファイルは[こちら](https://github.com/kondoumh/sbe/blob/main/.github/workflows/ci.yml)から参照してください。
+列挙されたワークフローのうち `OS Matrix` は、クロスプラットフォームで Electron アプリのテストを実行するワークフローです。手動実行時に `beta` というパラメータを `true` に設定して実行すると Electron の最新ベータ版をインストールしてテストします。ワークフローファイルは[こちら](https://github.com/kondoumh/sbe/blob/main/.github/workflows/ci.yml)から参照してください。
 
 このワークフローの実行を指示してみました。
 

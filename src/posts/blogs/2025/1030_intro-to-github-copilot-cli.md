@@ -159,7 +159,7 @@ Fix No cleanup problem
 
 ![Fix code](https://i.gyazo.com/5ac5afa32e800e409e8bc69ec68a1390.png)
 
-`beforUnmount` のフックメソッドと Listener 削除のコードが追加されました。`on` で追加したリスナーを `off` で削除というのは、対照性があり美しい API ですが、この API は存在しないため完全に間違っており受け入れる変更ではありません。ですが、今は Copilot CLI の機能を試しているため、他のファイルにも横展開をお願いしてみました。ファイルごとに変更していいか聞かれます。
+`beforeUnmount` のフックメソッドと Listener 削除のコードが追加されました。`on` で追加したリスナーを `off` で削除というのは、対照性があり美しい API ですが、この API は存在しないため完全に間違っており受け入れる変更ではありません。ですが、今は Copilot CLI の機能を試しているため、他のファイルにも横展開をお願いしてみました。ファイルごとに変更していいか聞かれます。
 
 ![Apply to other files](https://i.gyazo.com/ee1029b82a463ec3f84b6d041f833c7e.png)
 

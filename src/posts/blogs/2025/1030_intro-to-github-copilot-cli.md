@@ -196,11 +196,11 @@ Yes を選択すると PR が作成されました。
 
 PR の作者は筆者自身となっています。
 
-GitHub タスクでは GitHub Actions ワークフローの操作も可能です。まず、このリポジトリの GitHub Actions を列挙させてみました。
+GitHub タスクでは GitHub Actions ワークフローの操作も可能です。まず、このリポジトリのワークフローを列挙させてみました。
 
 ![list workflows](https://i.gyazo.com/f9a84487aa6642d692e566ed9edd5e96.png)
 
-列挙されたワークフローのうち、`OS Matrix` は、クロスプラットフォームで Electron アプリのテストを実行するワークフローです。手動実行時に beta というパラメータを true にして実行すると Electron の最新ベータ版をインストールしてテストします。ワークフローファイルは[こちら](https://github.com/kondoumh/sbe/blob/main/.github/workflows/ci.yml)から参照してください。
+列挙されたワークフローのうち `OS Matrix` は、クロスプラットフォームで Electron アプリのテストを実行するワークフローです。手動実行時に beta というパラメータを true にして実行すると Electron の最新ベータ版をインストールしてテストします。ワークフローファイルは[こちら](https://github.com/kondoumh/sbe/blob/main/.github/workflows/ci.yml)から参照してください。
 
 このワークフローの実行を指示してみました。
 

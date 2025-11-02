@@ -17,28 +17,28 @@
       "url": "/blogs/2023/10/08/google-test-05/"
     },
     {
-      "title": "【devcontainer完全ガイド】DockerとWSLで最強のイマドキ開発環境を手に入れよう！",
-      "url": "/blogs/2024/10/11/devcontainer/"
+      "title": "Whisper を使って会議の音声データを文字起こししてみる",
+      "url": "/blogs/2025/05/02/transcript-meeting-recordings-with-whisper/"
     },
     {
       "title": "手書き風ドローツール Excalidraw のススメ",
       "url": "/blogs/2023/03/22/use-excalidraw/"
     },
     {
-      "title": "クラウドに頼らないAI体験：LM Studio＋LangChain＋StreamlitでつくるローカルRAG環境",
-      "url": "/blogs/2025/10/14/local_rag_on_lm_studio/"
+      "title": "【devcontainer完全ガイド】DockerとWSLで最強のイマドキ開発環境を手に入れよう！",
+      "url": "/blogs/2024/10/11/devcontainer/"
     },
     {
-      "title": "【新人さん向け】Java開発で最初に確認しておきたいEclipse便利設定ガイド",
-      "url": "/blogs/2025/04/13/eclipse-settings-for-newcomer/"
-    },
-    {
-      "title": "Whisper を使って会議の音声データを文字起こししてみる",
-      "url": "/blogs/2025/05/02/transcript-meeting-recordings-with-whisper/"
+      "title": "基本から理解するJWTとJWT認証の仕組み",
+      "url": "/blogs/2022/12/08/jwt-auth/"
     },
     {
       "title": "文字コード これだけは覚えておこう ～シフトJIS編～",
       "url": "/blogs/2024/06/16/moji-code1/"
+    },
+    {
+      "title": "Microsoft Presidio: 個人情報保護に特化したオープンソースツール",
+      "url": "/blogs/2025/01/04/presidio-intro/"
     }
   ]
 }

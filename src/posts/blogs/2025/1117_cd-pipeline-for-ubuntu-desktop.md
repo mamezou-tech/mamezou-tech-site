@@ -1,5 +1,5 @@
 ---
-title: ポート開放いらず！ GitHub Actions でお家 Ubuntu Desktop への CD パイプラインを構築したい！
+title: SSH穴あけ不要！Cloudflare Tunnel でお家 Ubuntu Desktop へのセキュアな CD パイプラインを構築したい！
 author: kosuke-uematsu
 date: 2025-11-17
 tags: [Github Actions, Cloudflare, ssh, CI/CD]

@@ -592,6 +592,14 @@ SSH_PROXY_COMMAND: /tmp/cloudflared/cloudflared access ssh --id ${{ secrets.CLOU
 
 <br>
 
+なぜこのコマンドが必要なのか？
+
+GitHub Actions ランナー(SSH クライアント)は、人間のようにブラウザでログインして ID/パスワードや MFA を入力できません。Cloudflare Access のゲートを通過するためには、プログラマティックな認証メカニズムが必要です。
+
+このコマンドの役割:
+
+このコマンドは、SSH 接続の前に Cloudflare Access による認証を自動的に行い、必要な認証情報を付与する ProxyCommand として機能します。具体的には、Service Token を使用して Cloudflare Access の認証を通過し、Cloudflare Tunnel 経由で自宅サーバーへの SSH 接続を確立します。
+
 SSH プロキシコマンドの動作フロー:
 
 ```mermaid
@@ -610,7 +618,7 @@ sequenceDiagram
     Server->>SSH: SSH セッション確立
 ```
 
-このプロキシコマンドにより、SSH クライアントは Cloudflare Access の認証とトンネルを経由して安全に自宅サーバーに接続できます。
+このプロキシコマンドにより、GitHub Actions ランナー(SSH クライアント)は Cloudflare Access の認証とトンネルを経由して安全に自宅サーバー(SSH サーバー)に接続できます。
 
 <br>
 

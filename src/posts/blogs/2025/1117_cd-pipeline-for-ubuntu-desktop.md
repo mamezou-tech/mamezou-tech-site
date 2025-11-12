@@ -25,6 +25,58 @@ tags: [Github Actions, Cloudflare, ssh, CI/CD]
 
 本記事では、GitHub Actions を用いて自宅 LAN 内の Ubuntu Desktop に対する継続的デプロイメント（CD）パイプラインの構築経験を、具体的な設定手順も併せて解説したいと思います。
 
+## 構築するパイプライン
+
+本記事で構築する CD パイプラインは、以下のような仕組みで動作します。
+
+### 実現される動作フロー
+
+```mermaid
+graph LR
+    A[コード編集] --> B[dev ブランチにコミット]
+    B --> C[GitHub で PR 作成]
+    C --> D[PR を main にマージ]
+    D --> E[GitHub Actions 自動起動]
+    E --> F[自宅サーバーに自動デプロイ]
+    F --> G[本番環境に反映完了]
+
+    style A fill:#e1f5fe
+    style D fill:#fff3e0
+    style G fill:#c8e6c9
+```
+
+手動で行っていた「開発ディレクトリから公開ディレクトリへのコピー&ペースト」が、**プルリクエストのマージをトリガーに完全自動化**されます。
+
+### システム構成
+
+```mermaid
+graph TD
+    A[GitHub Actions Runner] --> B[Cloudflare Edge]
+    B --> C[Cloudflare Tunnel]
+    C --> D[自宅 Ubuntu Desktop]
+    D --> E[Apache Web Server]
+
+    style A fill:#e1f5fe
+    style B fill:#fff3e0
+    style C fill:#fff3e0
+    style D fill:#c8e6c9
+    style E fill:#c8e6c9
+```
+
+| コンポーネント | 役割 |
+|--------------|------|
+| **GitHub Actions** | マージをトリガーにデプロイワークフローを実行 |
+| **Cloudflare Tunnel** | 自宅 IP を公開せずに安全な通信経路を提供 |
+| **Cloudflare Access** | Service Token による自動認証を実現 |
+| **SSH + rsync** | 変更されたファイルのみを効率的に同期 |
+
+### 完成後にできること
+
+- ✅ プルリクエストをマージするだけで本番環境に自動反映
+- ✅ 自宅のパブリック IP アドレスを公開せずに安全に運用
+- ✅ デプロイ履歴が GitHub Actions のログに自動記録
+- ✅ 手動デプロイ作業から完全に解放
+
 ## この記事の前提条件
 
 本記事は以下の知識・環境をお持ちの方を対象としています。

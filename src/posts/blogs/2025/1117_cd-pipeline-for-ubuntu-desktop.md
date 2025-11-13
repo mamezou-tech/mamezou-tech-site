@@ -32,7 +32,7 @@ tags: [Github Actions, Cloudflare, ssh, CI/CD]
 ### 実現される動作フロー
 
 ```mermaid
-graph LR
+graph TD
     A[コード編集] --> B[dev ブランチにコミット]
     B --> C[GitHub で PR 作成]
     C --> D[PR を main にマージ]
@@ -44,6 +44,8 @@ graph LR
     style D fill:#fff3e0
     style G fill:#c8e6c9
 ```
+
+<br>
 
 手動で行っていた「開発ディレクトリから公開ディレクトリへのコピー&ペースト」が、**プルリクエストのマージをトリガーに完全自動化**されます。
 
@@ -63,12 +65,16 @@ graph TD
     style E fill:#c8e6c9
 ```
 
+<br>
+
 | コンポーネント | 役割 |
 |--------------|------|
 | **GitHub Actions** | マージをトリガーにデプロイワークフローを実行 |
 | **Cloudflare Tunnel** | 自宅 IP を公開せずに安全な通信経路を提供 |
 | **Cloudflare Access** | Service Token による自動認証を実現 |
 | **SSH + rsync** | 変更されたファイルのみを効率的に同期 |
+
+<br>
 
 ### 完成後にできること
 

@@ -119,16 +119,15 @@ sbe-Setup-3.8.0.exe      sha256:a4a8d6fe8ddde6e1a2005a29d7e2759511cb537427e4a0ff
 gh release verify-asset RELEASE-TAG ARTIFACT-PATH
 ```
 
-リリースのアセットから Linux 用 AppImage バイナリをダウンロードして検証してみました。
+リリースのアセットから macOS 用ユニバーサルインストーラのバイナリをダウンロードして検証してみました。
 
 ```shell
-$ gh release verify-asset v3.8.0 ~/Downloads/sbe-3.8.0.AppImage 
-
-Calculated digest for sbe-3.8.0.AppImage: sha256:de1797b12152531df71e78519d660e32e1a79dca203bc3201d85b2facfe4b5a9
+$ gh release verify-asset v3.8.0 ~/Downloads/sbe-3.8.0-universal.dmg 
+Calculated digest for sbe-3.8.0-universal.dmg: sha256:ab1c2595601136bf82aa7594d48bc764fe6f226ed1071c52441eb531f34e0252
 Resolved tag v3.8.0 to sha1:1f3f380d33f022230046a3200a67950ea027c8a1
 Loaded attestation from GitHub API
 
-✓ Verification succeeded! sbe-3.8.0.AppImage is present in release v3.8.0
+✓ Verification succeeded! sbe-3.8.0-universal.dmg is present in release v3.8.0
 ```
 
 :::info

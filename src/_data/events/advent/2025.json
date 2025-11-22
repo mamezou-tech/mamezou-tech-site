@@ -1,0 +1,117 @@
+{
+  "entries": [
+    {
+      "dayOfWeek": "Mon."
+    },
+    {
+      "dayOfWeek": "Tue."
+    },
+    {
+      "dayOfWeek": "Wed."
+    },
+    {
+      "dayOfWeek": "Thu."
+    },
+    {
+      "dayOfWeek": "Fri."
+    },
+    {
+      "date": "1",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "Electron アプリを Tauri 2.0 に移植する(仮)"
+    },
+    {
+      "date": "2",
+      "author": "kosuke-uematsu",
+      "githubUser": "kosuke-uematsu",
+      "title": "変化の激しい時代に必要な考え直す力とは - 書籍「Think Again」(仮)"
+    },
+    {
+      "date": "3",
+      "author": "kosuke-uematsu",
+      "githubUser": "kosuke-uematsu",
+      "title": "【Agent Skills】「あの雰囲気」を VSCode に。Markdown プレビューを Anthropic テーマにしたいんだ！"
+    },
+    {
+      "date": "4"
+    },
+    {
+      "date": "5"
+    },
+    {
+      "date": "8"
+    },
+    {
+      "date": "9",
+      "author": "soonki-chang",
+      "githubUser": "Soonki",
+      "nonContrib": true,
+      "title": "美膳のソフトウェアの話を書きたいです"
+    },
+    {
+      "date": "10",
+      "author": "hayato-ota",
+      "githubUser": "hayat0-ota",
+      "title": "最適化計算ライブラリ'Ceres Solver'について執筆予定です"
+    },
+    {
+      "date": "11"
+    },
+    {
+      "date": "12",
+      "author": "kohei-tsukano",
+      "githubUser": "kohei-tsukano",
+      "title": "AWSで読み替えるGoogle Cloud入門（仮）"
+    },
+    {
+      "date": "15"
+    },
+    {
+      "date": "16",
+      "author": "takahiro-maeda",
+      "githubUser": "Deth-True",
+      "title": "クラウド・生成AIをテーマに何か書きたいと考えています(仮)"
+    },
+    {
+      "date": "17",
+      "author": "hironori-maruoka",
+      "githubUser": "hironori-maruoka",
+      "title": "Q DeveloperまたはKiroで何か書きます"
+    },
+    {
+      "date": "18",
+      "author": "daisuke-kishimoto",
+      "githubUser": "KishimotoD",
+      "title": "内容検討中ですが何か書きます"
+    },
+    {
+      "date": "19",
+      "author": "masato-onodera",
+      "githubUser": "MasatoOnodera",
+      "nonContrib": true,
+      "title": "ユーザ部門向け研修関連の小話（システムテストと運用テストの違いあたり）(仮)"
+    },
+    {
+      "date": "22",
+      "author": "hirokazu-niwa",
+      "githubUser": "hirokazu-komaki",
+      "title": "まだ決めていませんが何か書きます。"
+    },
+    {
+      "date": "23",
+      "author": "kazuyuki-shiratani",
+      "githubUser": "k-shiratani",
+      "title": "AWS認定のことで書きます。"
+    },
+    {
+      "date": "24"
+    },
+    {
+      "date": "25",
+      "author": "kenta-ishihara",
+      "githubUser": "kenta-ishihara",
+      "title": "なんか書きます！"
+    }
+  ]
+}

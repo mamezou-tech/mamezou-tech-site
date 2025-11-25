@@ -1,5 +1,5 @@
 ---
-title: 変化の激しい時代に必要な考え直す力とは - 書籍「Think Again」
+title: 変化の波を乗り越えろ！予測不能な時代を生き抜く「考え直す力」とは - 書籍「Think Again」
 author: kosuke-uematsu
 date: 2025-12-02
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/

@@ -40,11 +40,20 @@ sbe の操作イメージのスクリーンショットです。タブ UI が特
 
 作成したコード全体をご紹介すると膨大になってしまうため、リポジトリは記事の終わりに掲載します。記事中のコードスニペットで雰囲気を掴んでいただければと思います。
 
-## プロジェクト構成
+## 使用したソフトウェアのバージョンなど
+今回は、以下のような構成で PoC を行いました。
 
+- Rust 1.19.1
 - Tauri 2.9.3
-- Vite
-- Vue 3
+- Vite 6.0.3
+- Vue 3.5.13
+
+sbe では Vuetify を使っていましたが、シンプルにするため、Vue と CSS だけで作成しました。最初に vanilla テンプレートを使ってプロジェクトを作成し、後から必要なものをインストールしました。
+
+```shell
+mkdir sbe-tauri-poc && cd sbe-tauri-poc
+npm create tauri-app@latest . --template vanilla-ts
+```
 
 ## マルチビュー、タブ UI
 
@@ -270,7 +279,7 @@ Electron がページ内遷移の細やかなイベントを提供してくれ�
 Tauri と WebView は疎結合であるためですが、このおかげで Tauri のアプリは軽量で省メモリになっているとも言えます。
 
 ## Cosense ページ一覧画面のための API 呼び出しと JSON Parse
-Cosense プロジェクトのページ一覧を Vue ので作成しタブ内で表示します。このためには Cosense の API で該当するプロジェクトのページリストを取得する必要があります。sbe では、およそ以下のような感じでメインプロセス側で Cosense API を使用してページ一覧を取得しています。
+Cosense プロジェクトのページ一覧を Vue で作成しタブ内で表示します。このためには Cosense の API で該当するプロジェクトのページリストを取得する必要があります。sbe では、およそ以下のような感じでメインプロセス側で Cosense API を使用してページ一覧を取得しています。
 
 ```javascript:main.mjs
 async function fetchPageInfo(url) {
@@ -587,7 +596,17 @@ Tauri アプリのフットプリントの軽さは魅力的ですね。
 Copilot に README を書いてもらったので表現がやや大袈裟になってしまっている点はご了承ください😅。
 
 ## さいごに
-以上、Electron のアプリを Tauri 2.0 に移植してみる PoC のご紹介でした。今回の題材だと Electron の機能性や利便性が逆に強調される感じでしたが、軽量なバイナリが生成される点や、Rust のエコシステムによる開発体験は魅力ですね。
+以上、Electron のアプリを Tauri 2.0 に移植してみる PoC のご紹介でした。今回の題材だと Electron の機能性や利便性が逆に強調される感じでしたが、軽量なバイナリが生成される点や、Rust/Tauri エコシステムによる開発体験は魅力ですね。
+
+:::info
+Tauri では、.NET の Blazor もサポートされています。
+
+@[og](https://v2.tauri.app/ja/start/create-project/#%E6%96%B0%E3%81%97%E3%81%84%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E6%BA%96%E5%82%99%E3%81%99%E3%82%8B)
+
+Blazor については昨年のアドベントカレンダーで紹介されています。
+
+@[og](/blogs/2024/12/20/asp-dotnet-core-blazor/)
+:::
 
 Tauri 2.0 では OS の WebView を利用していますが、Servo ベースのクロスプラットフォームな WebView を開発するプロジェクト Verso があります。
 

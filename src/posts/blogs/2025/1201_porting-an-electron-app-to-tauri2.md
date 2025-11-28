@@ -135,7 +135,7 @@ const reopenWindow = async (window: RecentWindow) => {
 ## WebView でのナビゲーションの検出と Rust → フロントエンド通知
 sbe では閲覧した Cosense ページの履歴を記録していますが、これは Electron の webContents のイベントを捕捉して実装しています。Cosense サイト内での遷移は `did-navigate-in-page` イベントで捕捉できます。
 
-```javascript:main.mjs(抜粋)
+```javascript:Electron のコード - main.mjs(抜粋)
 function handleLinkEvent(view) {
   view.webContents.on('will-navigate', (e, url) => {
     // リンクを開く処理
@@ -155,7 +155,7 @@ function handleLinkEvent(view) {
 
 Tauri の Rust 用 API では `on_navigation` や `on_page_load`というメソッドがあり、Web ページの取得開始やロード完了を捕捉できます。しかしこのハンドラーでは同一サイト内のページ遷移は検出できないようです。Cosense サイト内でのページ遷移をリアルタイムに捕捉するには、JavaScript を WebView に埋め込んでイベントをトラッキングする必要があります。そのため WebView を起動する際に `initialization_script` でトラッキング用のスクリプトを埋め込みます。
 
-```rust:src-tauri/src/lib.rs(抜粋)
+```rust:Tauri WebView でのスクリプト注入 - src-tauri/src/lib.rs(抜粋)
 #[tauri::command]
 async fn create_webview_window(app: tauri::AppHandle, url: String, label: String) -> Result<(), String> {
     let webview_url = WebviewUrl::External(url.parse().map_err(|e| format!("Invalid URL: {}", e))?);
@@ -177,7 +177,7 @@ async fn create_webview_window(app: tauri::AppHandle, url: String, label: String
 
 短いスクリプトは `initialization_script` の中にインラインで書けますが、可読性や IDE での作業効率化のために別ファイルで作成しロードする方がよいでしょう。このスクリプトでは、trackNavigation 関数で、変更を検出したら Tauri の invoke コマンドを通じて Rust 側に送信しています。`popstate`、`hashchange` を監視しています。
 
-```javascript:navigation-tracker.js
+```javascript:注入するスクリプト - navigation-tracker.js
 let currentUrl = window.location.href;
 let currentTitle = document.title || window.location.hostname || 'Untitled';
 
@@ -220,7 +220,7 @@ window.addEventListener('hashchange', () => trackNavigation('hashchange'));
 
 WebView から invoke された Rust の track_navigation では、Vue 側に `add-to-recent` イベントを発行します。
 
-```rust:lib.rs
+```rust:注入スクリプトから invoke される Tauri コマンド
 #[tauri::command]
 async fn track_navigation(app: tauri::AppHandle, window_label: String, url: String, title: String) -> Result<(), String> {
     println!("Navigation tracked: {} -> {} ({})", window_label, url, title);
@@ -238,7 +238,7 @@ async fn track_navigation(app: tauri::AppHandle, window_label: String, url: Stri
 
 Vue 側では `add-to-recent` イベントを受けてリストを更新し、重複を排除するなどの処理をしてローカルストレージに書き込みます。
 
-```typescript:App.vue
+```typescript:Vue 側の処理
   // Listen for navigation events from WebView windows
   navigationUnlisten = await listen('add-to-recent', (event: any) => {
     const { window_label, url, title } = event.payload;
@@ -281,7 +281,7 @@ Tauri と WebView は疎結合であるためですが、このおかげで Taur
 ## Cosense ページ一覧画面のための API 呼び出しと JSON Parse
 Cosense プロジェクトのページ一覧を Vue で作成しタブ内で表示します。このためには Cosense の API で該当するプロジェクトのページリストを取得する必要があります。sbe では、およそ以下のような感じでメインプロセス側で Cosense API を使用してページ一覧を取得しています。
 
-```javascript:main.mjs
+```javascript:Electron での API 呼び出し - main.mjs
 async function fetchPageInfo(url) {
   const sid = await getSid();
   const res = await fetch(url, { headers: { cookie: sid } });
@@ -300,7 +300,7 @@ Tauri でもデータのフェッチは Rust 側でやるのが推奨です。�
 
 Rust 側で API 呼び出しを実装するので、Electron のメインプロセス(の JavaScript) ではするっと実装できていたレスポンスの処理がやや面倒になります。API のレスポンスを解析して以下のように型情報を定義しました。
 
-```rust
+```rust:Rust でのレスポンス型定義
 // API レスポンス
 #[derive(Serialize, Deserialize)]
 struct ScrapboxPagesResponse {
@@ -332,9 +332,9 @@ struct ScrapboxUser {
 }
 ```
 
-Cosense API を呼び出す fetch_scrapbox_pages コマンドです。`cookies_for_url` メソッドでウィンドウから Cookie を取得し、ヘッダーに埋め込むところは Electron と同様の流れです。上記で定義した ScrapboxPagesResponse に API のレスポンスを格納しています。
+Cosense API を呼び出す fetch_scrapbox_pages コマンドです。Cosense API のページングのためのパラメータを処理しているため少し長ったらしくなっていますが、`cookies_for_url` メソッドでウィンドウから Cookie を取得し、ヘッダーに埋め込むところは Electron と同様の流れです。上記で定義した ScrapboxPagesResponse に API のレスポンスを格納しています。
 
-```rust
+```rust:Rust での Cosense API 呼び出し
 // Command to fetch Scrapbox pages with authentication (supports both public and private projects)
 #[tauri::command]
 async fn fetch_scrapbox_pages(
@@ -391,7 +391,7 @@ async fn fetch_scrapbox_pages(
 
 Vue 側では Rust の `fetch_scrapbox_pages` を invoke して取得したリストを表示します。
 
-```typescript
+```typescript:Vue 側の処理
 // Scrapbox pages functions
 const fetchScrapboxPages = async () => {
   scrapboxLoading.value = true;
@@ -422,7 +422,7 @@ Electron はメインプロセスも JS/TS で書けるのでやはり楽です�
 WebView ウィンドウに表示している Cosense ページをお気に入りに追加するための実装を行います。WebView 上でコンテキストメニューを表示して追加してもらうのが自然でしょう。
 [以前の記事](/blogs/2024/09/22/try-tauri-v2-rc/#tauri-20-のフィーチャー-ネイティブなコンテキストメニューを使ってみる)では、SPA をアプリ化していたので Tauri の JavaScript API で簡単にコンテキストメニューを実装していました。今回のように WebView に Web サイトを表示する場合、コンテキストメニューの処理はやはりスクリプトを注入する必要があります。Tauri API によるコンテキストメニューのコードを注入してもいいのですが、今回は DOM 操作でコンテキストメニューを追加しました。Tauri API で追加するコンテキストメニューは OS ネイティブなものなので、WebView で表示しているサイトのルックアンドフィールに合わせたい場合は、DOM 操作で近い雰囲気のメニューを作るのも選択肢です。
 
-```typescript
+```typescript:WebView に注入するコンテキストメニュー用スクリプト
 function showContextMenu(x, y) {
     // Remove existing context menu if any
     const existingMenu = document.getElementById('tauri-context-menu');
@@ -471,7 +471,7 @@ function showContextMenu(x, y) {
 
 コンテキストメニューのクリックで addToFavorites 関数を呼び出しており、この中で、`add_to_favorites_from_webview` を invoke しています。Rust 側で add_to_favorites_from_webview　コマンドが実行され、Vue 側に add-to-favorites イベントが発行されます。
 
-```rust:lib.rs
+```rust:コンテキストメニューから呼び出される Tauri コマンド - lib.rs
 // Command to add to favorites from WebView
 #[tauri::command]
 async fn add_to_favorites_from_webview(app: tauri::AppHandle, url: String, title: String) -> Result<(), String> {
@@ -487,7 +487,7 @@ async fn add_to_favorites_from_webview(app: tauri::AppHandle, url: String, title
 
 Vue側では、Rust から送信されたイベントを元にお気に入り追加の処理を行います。
 
-```typescript:App.vue
+```typescript:Vue 側の処理
 const addFavoriteFromWebView = async (url: string, title: string) => {
   try {
     // Check if already exists

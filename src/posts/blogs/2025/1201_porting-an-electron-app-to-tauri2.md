@@ -175,7 +175,9 @@ async fn create_webview_window(app: tauri::AppHandle, url: String, label: String
 }
 ```
 
-短いスクリプトは `initialization_script` の中にインラインで書けますが、可読性や IDE での作業効率化のために別ファイルで作成しロードする方がよいでしょう。このスクリプトでは、trackNavigation 関数で、変更を検出したら Tauri の invoke コマンドを通じて Rust 側に送信しています。`popstate`、`hashchange` を監視しています。
+短いスクリプトは `initialization_script` の中にインラインで書けますが、可読性や IDE での作業効率化のために別ファイルで作成しロードする方がよいでしょう。
+
+以下のスクリプトでは、trackNavigation 関数を用意し、変更を検出したら Tauri の invoke コマンドを通じて Rust 側に送信しています。ブラウザの進む・戻るイベントをリッスンして通知。history.pushState / history.replaceState をキャプチャーして SPA のナビゲーションを通知しています。また、MutationObserver を使ってタイトル変更を検知するようにしています。これにより、Cosense のようなモダンな SPA の画面遷移をトラッキングできるようになります。
 
 ```javascript:注入するスクリプト - navigation-tracker.js
 let currentUrl = window.location.href;
@@ -194,7 +196,8 @@ function trackNavigation(source = 'unknown') {
     // Update state
     currentUrl = url;
     currentTitle = title;
-    
+
+    // invoke Tauri command
     if (window.__TAURI__ && window.__TAURI__.core) {
         window.__TAURI__.core.invoke('track_navigation', {
             windowLabel: window.navigationTrackerLabel,
@@ -213,9 +216,30 @@ function trackNavigation(source = 'unknown') {
 // Track initial page load
 trackNavigation('initialization');
 
-// Listen for navigation events
+// Listen for forward/back event
 window.addEventListener('popstate', () => trackNavigation('popstate'));
 window.addEventListener('hashchange', () => trackNavigation('hashchange'));
+
+// Handle SPA navigation
+const originalPushState = history.pushState;
+const originalReplaceState = history.replaceState;
+
+history.pushState = function(...args) {
+    originalPushState.apply(this, args);
+    trackNavigation('pushState');
+};
+
+history.replaceState = function(...args) {
+    originalReplaceState.apply(this, args);
+    trackNavigation('replaceState');
+};
+
+// Monitor title changes (for dynamic title updates)
+let titleObserver;
+if (document.querySelector('title')) {
+    titleObserver = new MutationObserver(() => trackNavigation('titleChange'));
+    titleObserver.observe(document.querySelector('title'), { childList: true });
+}
 ```
 
 WebView から invoke された Rust の track_navigation では、Vue 側に `add-to-recent` イベントを発行します。
@@ -275,8 +299,8 @@ const saveToStorage = () => {
 今回はフロントエンド側で LocalStorage に保存しましたが、Rust 側で JSON ファイルとしてセーブ・ロードするように実装すれば、マシンが変わっても履歴を持っていけるので便利かもしれません。
 :::
 
-Electron がページ内遷移の細やかなイベントを提供してくれていたので、Tauri の方式はかなり面倒に感じる部分でした。Electron が Chrome を内包していることで開発者はきめ細かいイベントの捕捉を簡単にできていましたが、Tauri は OS にインストールされた WebView を使用しているのでそこまで WebView 実装に入り込んだイベントの提供はできないようです。そこで、initialization_script スクリプトを注入するというややハッキーなやり方が必要でした。
-Tauri と WebView は疎結合であるためですが、このおかげで Tauri のアプリは軽量で省メモリになっているとも言えます。
+Electron がページ内遷移の細やかなイベントを提供してくれていたので、Tauri の方式はかなり面倒に感じる部分でした。Electron が Chrome を内包していることで開発者はきめ細かいイベントの捕捉を簡単にできていましたが、Tauri は OS にインストールされた WebView を使用しているのでそこまで WebView 実装に入り込んだイベントの提供はできないようです。そこで、initialization_script スクリプトを注入するという、ややハッキーなやり方が必要でした。
+これは Tauri と WebView が疎結合であるためであり、このおかげで Tauri のアプリは軽量で省メモリになっているとも言えます。
 
 ## Cosense ページ一覧画面のための API 呼び出しと JSON Parse
 Cosense プロジェクトのページ一覧を Vue で作成しタブ内で表示します。このためには Cosense の API で該当するプロジェクトのページリストを取得する必要があります。sbe では、およそ以下のような感じでメインプロセス側で Cosense API を使用してページ一覧を取得しています。
@@ -298,10 +322,10 @@ async function getSid() {
 
 Tauri でもデータのフェッチは Rust 側でやるのが推奨です。特に API キーなどはフロントエンドに晒さない方がよいでしょう。
 
-Rust 側で API 呼び出しを実装するので、Electron のメインプロセス(の JavaScript) ではするっと実装できていたレスポンスの処理がやや面倒になります。API のレスポンスを解析して以下のように型情報を定義しました。
+Rust 側で API 呼び出しを実装するので、Electron のメインプロセス(の JavaScript) ではするっと実装できていたレスポンスの処理はやや面倒になります。API のレスポンスを解析して以下のように型情報を定義しました。
 
 ```rust:Rust でのレスポンス型定義
-// API レスポンス
+// API Response
 #[derive(Serialize, Deserialize)]
 struct ScrapboxPagesResponse {
     #[serde(rename = "projectName")]
@@ -312,20 +336,22 @@ struct ScrapboxPagesResponse {
     pages: Vec<ScrapboxPage>,
 }
 
-// ページ情報
+// Cosense page
 #[derive(Serialize, Deserialize, Clone)]
 struct ScrapboxPage {
     id: String,
     title: String,
     image: Option<String>,
     descriptions: Vec<String>,
+    #[serde(rename = "lastUpdateUser")]
+    last_update_user: Option<ScrapboxUser>,
     // 中略
     #[serde(rename = "charsCount")]
     chars_count: Option<i32>,
     helpfeels: Option<Vec<String>>,
 }
 
-// Cosense のユーザー情報
+// Cosense user
 #[derive(Serialize, Deserialize, Clone)]
 struct ScrapboxUser {
     id: String,
@@ -416,7 +442,7 @@ const fetchScrapboxPages = async () => {
 };
 ```
 
-Electron はメインプロセスも JS/TS で書けるのでやはり楽ですね。特に JSON の型情報の定義は面倒です。ただ、この辺は Rust 向けのジェネレータを利用するのが吉なんだと思います。
+Electron はメインプロセスも JavaScript で書けるので JSON の処理は楽でした。Tauri(Rust) では実行時ではなくコンパイル時のエラー検出など型安全性によるメリットもありますし、TypeScript でも同様です。大規模な開発では、この辺はコードジェネレータの仕事なんだと思います。
 
 ## コンテキストメニューのハンドリング
 WebView ウィンドウに表示している Cosense ページをお気に入りに追加するための実装を行います。WebView 上でコンテキストメニューを表示して追加してもらうのが自然でしょう。
@@ -586,7 +612,7 @@ sbe のインストーラは 100MB 前後、macOS のユニバーサルインス
 
 ![Release assets(sbe)](https://i.gyazo.com/1af88816f507b180b01af99f891a4099.png)
 
-Tauri アプリのフットプリントの軽さは魅力的ですね。
+Tauri アプリのフットプリントの軽さは魅力的ですね。起動が速くてアプリのレスポンスも軽快です。
 
 ## ソースコードのリポジトリ
 今回の PoC の結果は以下のリポジトリに置いています。
@@ -596,7 +622,7 @@ Tauri アプリのフットプリントの軽さは魅力的ですね。
 Copilot に README を書いてもらったので表現がやや大袈裟になってしまっている点はご了承ください😅。
 
 ## さいごに
-以上、Electron のアプリを Tauri 2.0 に移植してみる PoC のご紹介でした。今回の題材だと Electron の機能性や利便性が逆に強調される感じでしたが、軽量なバイナリが生成される点や、Rust/Tauri エコシステムによる開発体験は魅力ですね。
+以上、Electron のアプリを Tauri 2.0 に移植してみる PoC のご紹介でした。今回の題材だと Electron の機能性や利便性が逆に強調される感じでしたが、軽量で高速なバイナリが生成される点や、Rust/Tauri のエコシステム、型安全性による開発体験は魅力ですね。
 
 :::info
 Tauri では、.NET の Blazor もサポートされています。

@@ -19,7 +19,8 @@
       "date": "1",
       "author": "masahiro-kondo",
       "githubUser": "kondoumh",
-      "title": "Electron アプリを Tauri 2.0 に移植する(仮)"
+      "title": "Electron アプリを Tauri 2.0に移植する PoC をやってみた",
+      "url": "/blogs/2025/12/01/porting-an-electron-app-to-tauri2/"
     },
     {
       "date": "2",

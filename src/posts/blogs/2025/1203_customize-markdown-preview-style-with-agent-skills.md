@@ -3,7 +3,7 @@ title: 【Agent Skills】「あの雰囲気」を VSCode に。Markdown プレ�
 author: kosuke-uematsu
 date: 2025-12-03
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/
-tags: [Claude, markdown, advent2025]
+tags: [Claude, markdown, vscode, advent2025]
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2025](/events/advent-calendar/2025/)第 3 日目の記事です！
@@ -42,15 +42,23 @@ Agent Skills は、Claude の機能を拡張するための仕組みで、Claude
 - **Markdown Preview Enhanced との連携方法がわかる**
   - VSCode の拡張機能と Anthropic のブランドガイドラインを組み合わせる手順を理解できます
 
-スタイル適用前後のプレビュー表示は以下のとおりです。
+<br>
 
 ### スタイル適用前
 
+スタイル適用前のプレビュー表示例は以下のとおりです。
+
 ![スタイル適用前](https://i.gyazo.com/75c86ade7e047dcee63fa69749f4d0b2.png)
+*スタイル適用前のプレビュー表示例*
+
+<br>
 
 ### スタイル適用後
 
+スタイル適用後のプレビュー表示例は以下のとおりです。
+
 ![スタイル適用後](https://i.gyazo.com/d21e177791df09ab3c4efa17c80ac335.png)
+*スタイル適用後のプレビュー表示例*
 
 ## 前提条件
 

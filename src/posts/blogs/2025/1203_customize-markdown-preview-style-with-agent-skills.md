@@ -1,5 +1,5 @@
 ---
-title: 【Agent Skills】「あの雰囲気」を VSCode に。Markdown プレビューを Anthropic テーマにしたいんだ！
+title: 【Agent Skills】「あの雰囲気」を VSCode に。Markdown プレビューを Anthropic テーマにしたいんだ！ - brand-guidelines 完全ガイド -
 author: kosuke-uematsu
 date: 2025-12-03
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/

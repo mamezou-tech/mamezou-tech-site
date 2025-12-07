@@ -209,10 +209,10 @@ Spring Boot 4のリリースと併せて、Spring Frameworkから提供される
 というわけでして、簡単ですがSpring Boot 4に標準採用されました「JSpecify」について説明させていただきました。
 さらに詳細な利用方法については、JSpecify公式の[ユーザーガイド](https://jspecify.dev/docs/user-guide/)などを参照いただきたく存じます。
 
-Spring FrameworkやJakartaプロジェクト、JetBrains、Lombokなど、null安全性のアノテーションが乱立する中、JSpecifyプロジェクトによる標準化に向けたの動きそのものは正しい取り組みと感じています。
+Spring FrameworkやJakartaプロジェクト、JetBrains、Lombokなど、null安全性のアノテーションが乱立する中、JSpecifyプロジェクトによる標準化に向けた動きそのものは正しい取り組みと感じています。
 しかし、その一方でSpring Bootを用いたアプリケーション開発において、Spring Frameworkのアノテーションが非推奨となることは予想できなかったですし、冒頭でも述べたとおりJSpecifyが巻き返してくるとは思ってもみませんでした。
 
-Spring Bootのアップデートに伴い、Spring Frameworkにおけるnul安全性のアノテーションが非推奨となっても、アプリケーションの動作に直接影響することはないと思います。
+Spring Bootのアップデートに伴い、Spring Frameworkにおけるnull安全性のアノテーションが非推奨となっても、アプリケーションの動作に直接影響することはないと思います。
 ですが、非推奨のまま利用し続けるのは、ちょっと！ちょっとちょっと！という想いです。
 また、多くの開発プロジェクトでも、非推奨のものを利用するな！が基本原則として定められていることと推察します。
 ですので、これに関してはSpring Bootをアップデートする際、Spring FrameworkのアノテーションをJSpecifyのアノテーションに置き換えるというのが正しい対応と言えるでしょう。

@@ -13,8 +13,6 @@ Spring Boot 4ではnull安全性（Null-Safety）の強化が図られ、**[JSpe
 
 そこで今回は、Spring Boot 4によるJSpecifyについて記事にしたいと思います。
 
-@[og](https://jspecify.dev/)
-
 ## JSpecifyとは
 
 JSpecifyは、Javaにおけるnull安全性を標準化するための仕様と、そのアノテーションを提供するオープンソースプロジェクトです。

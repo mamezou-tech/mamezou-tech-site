@@ -61,7 +61,8 @@
       "date": "9",
       "author": "yasunori-shiota",
       "githubUser": "shiota",
-      "title": "何か書こうと思います。"
+      "title": "Spring Boot 4で標準採用！JSpecifyによるnull安全性",
+      "url": "/blogs/2025/12/09/jspecify/"
     },
     {
       "date": "10",

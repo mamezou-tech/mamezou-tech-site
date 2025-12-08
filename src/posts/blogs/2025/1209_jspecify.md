@@ -1,8 +1,8 @@
 ---
-title: JSpecifyの導入によるnull安全性
+title: Spring Boot 4で標準採用！JSpecifyによるnull安全性
 author: yasunori-shiota
 date: 2025-12-09
-tags: [java, advent2025]
+tags: [java, spring, spring-boot, advent2025]
 image: true
 ---
 

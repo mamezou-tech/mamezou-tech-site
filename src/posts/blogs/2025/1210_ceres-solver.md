@@ -1,5 +1,5 @@
 ---
-title: 最適化ライブラリCeresSolverを使って非線形最適化問題を解いてみよう
+title: 最適化ライブラリCeresSolverを使って非線形最小二乗問題を解いてみよう
 author: hayato-ota
 tags: [advent2025, optimization, C++]
 date: 2025-12-10

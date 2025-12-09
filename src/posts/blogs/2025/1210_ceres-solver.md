@@ -80,14 +80,22 @@ mkdir ~/ceres_solver_ws
 ## CeresSolverライブラリのクローン
 ワークスペースが作成出来たら、CeresSolverのソースをクローンしましょう。
 クローンする場所は任意ですが、今回は`external`ディレクトリ内にクローンしておきます。
-この時、Submoduleについても取得する必要があるため、`--recursive-submodules`オプションを付与する必要がある点に注意してください。
+この時、Submoduleについても再帰的に取得する必要があるため、`--recursive`オプションを付与する必要がある点に注意してください。
 
 ```bash
 cd ~/ceres_solver_ws
 mkdir external
 cd external
-git clone --recurse-submodules https://github.com/ceres-solver/ceres-solver
+git clone --recursive https://github.com/ceres-solver/ceres-solver
 ```
+
+:::info
+サブモジュールも再帰的に取得するコマンドとして、--recurse-submodulesオプションも存在するようです。
+
+```bash
+git clone --recurse-submodules ${repo-url}
+```
+:::
 
 ## CeresSolverライブラリのビルド&インストール
 クローンが出来たら、CMakeを使用してビルドします。
@@ -119,9 +127,9 @@ CMake Error at CMakeLists.txt:33 (project):
 :::
 
 :::info: 並列ビルドによる高速化
-ビルドには少し時間がかかります。
-下記コマンドで並列ジョブを使用して高速化可能です。
-（`$(nproc)`は"システムが利用可能なCPUコア数"を意味します。）
+ビルドには少し時間がかかります。下記コマンドで並列ジョブを使用して高速化可能です。  
+`nproc`コマンドは「システムが利用可能なCPUコア数を取得する」コマンドです。
+この出力結果が`$(nproc)`と置換されます。
 
 ```bash
 cmake --build build -- -j$(nproc)
@@ -626,8 +634,10 @@ ceres_solver_ws/
 /// @brief 順運動学を行う
 /// @tparam T データ型
 /// @param[in] kp 機構パラメータ
-/// @param[in] theta 関節角度
-/// @param[out] Pose 位置・姿勢
+/// @param[in] theta 関節角度ベクトル（配列）
+/// @param[out] x X座標
+/// @param[out] y Y座標
+/// @param[out] phi 先端角度
 template <typename T>
 void compute_forward_kinematics(const KinematicParameters& kp, const T* const theta, T& x, T& y, T& phi)
 {

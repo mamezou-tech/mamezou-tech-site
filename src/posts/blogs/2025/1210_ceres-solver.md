@@ -1,7 +1,7 @@
 ---
 title: 最適化ライブラリCeresSolverを使って非線形最小二乗問題を解いてみよう
 author: hayato-ota
-tags: [optimization, c++, advent2025]
+tags: [optimization, C++, advent2025]
 date: 2025-12-10
 image: true
 ---

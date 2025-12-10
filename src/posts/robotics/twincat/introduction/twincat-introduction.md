@@ -5,6 +5,13 @@ tags: [PLC, TwinCAT]
 date: 2025-04-10
 ---
 
+本記事は、「TwinCATで始めるソフトウェアPLC開発」シリーズの第1回目です。
+他の章も併せてご覧ください。
+
+第1回：環境構築編 （今回）
+[第2回：ST言語でのプログラミング（1/2）](https://developer.mamezou-tech.com/robotics/twincat/introduction-chapter2/twincat-introduction-chapter2/)
+第3回：ST言語でのプログラミング（2/2）← 絶賛作成中！
+
 # 0. はじめに
 TwinCATはEtherCATの開発元で有名なドイツの企業Beckhoff Automation GmbH[^1]（以下，Beckhoffと記載）が提供する産業用オートメーションシステム向けのプラットフォームです。
 いわゆるソフトウェアPLCであり，同じソフトウェアPLCアプリケーションとして知名度の高いCODESYSをOEM採用しています。
@@ -434,6 +441,8 @@ Password = 1
 # 5. 終わりに
 長くなりましたがTwinCATの開発環境構築は以上となります。お疲れ様でした。
 次回の記事では実際にPLCプログラムを作成し，TwinCAT上で動かしてみます。
+
+次の記事：[第2回：ST言語でのプログラミング（1/2）](https://developer.mamezou-tech.com/robotics/twincat/introduction-chapter2/twincat-introduction-chapter2/)
 
 【追記】
 本記事作成中にBeckhoff公式から開発環境構築の手順が説明されている動画が公開されていました。

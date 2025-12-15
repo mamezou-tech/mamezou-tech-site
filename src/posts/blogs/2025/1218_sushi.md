@@ -1,10 +1,10 @@
- ---
- title: よりよい方法を見つけだそうとし続けている： アジャイルに必要な知恵はすべて鮨屋のカウンターでも学んだ  
- author: daisuke-kishimoto  
- date: 2025-12-18  
- adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/
- tags: [アジャイル開発, advent2025]
- ---
+---
+title: よりよい方法を見つけだそうとし続けている： アジャイルに必要な知恵はすべて鮨屋のカウンターでも学んだ  
+author: daisuke-kishimoto  
+date: 2025-12-18  
+adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/
+tags: [アジャイル開発, advent2025]
+---
 
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2025](/events/advent-calendar/2025/)第18日目の記事です。  

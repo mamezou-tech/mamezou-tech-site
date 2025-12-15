@@ -1,7 +1,7 @@
 ---
 title: ロボット開発にもクリーンアーキテクチャを。「美膳」が実現する中食工場の自動化
 author: soonki-chang
-tags: [ロボット, 美膳, Bizen]
+tags: [ロボット, 美膳, Bizen, ソフトウェア設計]
 date: 2025-12-15
 image: true
 ---

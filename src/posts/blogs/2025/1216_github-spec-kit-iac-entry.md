@@ -11,7 +11,7 @@ image: true
 
 ## 1. はじめに
 
-9月に[Kiroを使った仕様駆動開発の記事](http://localhost:8080/blogs/2025/09/08/kiro-spec-Terraform-iac/)を執筆してから、約3か月経ちました。
+9月に[Kiroを使った仕様駆動開発の記事](https://developer.mamezou-tech.com/blogs/2025/09/08/kiro-spec-terraform-iac/)を執筆してから、約3か月経ちました。
 
 その間に、生成AIを取り巻くエコシステムやツールは驚くべき速度で進化を続けています。
 最近話題のGeminiも、リリース当初と比べると、業務利用を視野に入れられるレベルまで急速に成熟していると  感じています。

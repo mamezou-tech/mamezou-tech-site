@@ -4,7 +4,10 @@ author: soonki-chang
 tags: [ロボット, 美膳, Bizen, ソフトウェア設計]
 date: 2025-12-15
 image: true
+adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/
 ---
+
+これは[豆蔵デベロッパーサイトアドベントカレンダー2025](/events/advent-calendar/2025/)第15日目の記事です。
 
 # はじめに
 

@@ -3,7 +3,7 @@ title: GitHub Spec Kit (Gemini) でインフラストラクチャを作成して
 author: takahiro-maeda
 date: 2025-12-16
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/
-tags: [AIエージェント, terraform, advent2025]
+tags: [仕様駆動, AIエージェント, terraform, advent2025]
 image: true
 ---
 
@@ -478,4 +478,4 @@ Kiro は、AI 側がある程度まとめた状態まで一気に進めてから
 本記事が、読者の皆さまが自分たちのプロジェクトで SDD や Spec Kit、そして AI / MCP を試してみるきっかけになれば幸いです。
 
 [^1]: 執筆時点では、Windows上のGitBashでGemini CLIをnpmインストールできるのですが、文字化けを起こしたり色々とトラブルがあります。
-これはWindows環境では、Gemini CLIがPowerShellを利用していることに起因するためです。ターミナルをPowerShellでそれらのトラブルは解消します。
+これはWindows環境では、Gemini CLIが内部的にPowerShellを利用していることに起因するためです。Windows環境ではデフォルトのターミナルをPowerShellにすることで、それらのトラブルは解消します。

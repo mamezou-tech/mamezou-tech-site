@@ -6,7 +6,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 tags: [learning, advent2025]
 ---
 
-これは[豆蔵デベロッパーサイトアドベントカレンダー2025](/events/advent-calendar/2025/)第15日目の記事です。
+これは[豆蔵デベロッパーサイトアドベントカレンダー2025](/events/advent-calendar/2025/)第19日目の記事です。
 
 こんにちは＆はじめまして、教育グループのやさぐれ豆ぱんだこと、おのでらです。
 

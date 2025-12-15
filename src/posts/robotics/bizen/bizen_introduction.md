@@ -141,7 +141,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 :::info
 **GUIAppとControllerAppが何故別々の実行単位なのか**
 
-非機能要件で将来的に操作パネルをAndroidタブレットなど別デバイスに変更する可能性があるため、GUI部分を分離している。
+非機能要件で将来的に操作パネルをタブレット端末など別デバイスに変更する可能性があるため、GUI部分を分離している。
 :::
 
 :::info

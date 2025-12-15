@@ -3,7 +3,7 @@ title: GitHub Spec Kit (Gemini) でインフラストラクチャを作成して
 author: takahiro-maeda
 date: 2025-12-16
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/
-tags: [AIエージェント, Terraform, advent2025]
+tags: [AIエージェント, terraform, advent2025]
 image: true
 ---
 

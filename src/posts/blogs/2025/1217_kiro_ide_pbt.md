@@ -17,7 +17,7 @@ image: true
 
 しかし、2025年11月17日に GA となった **Kiro** では、IDE 機能として **「プロパティベーステストによる仕様の正確性検証」** が導入されました[^5]。この新機能により、PBT 導入のハードルが下がったように見えたため、**実際に手を動かして体験してみることにしました。**
 
-Kiro の PBT 機能については、公式ドキュメント「[Correctness properties](https://kiro.dev/docs/specs/correctness/)」を参照してください。
+Kiro の PBT 機能については、公式ドキュメント「[Correctness with Property-based tests](https://kiro.dev/docs/specs/correctness/)」を参照してください。
 
 ---
 

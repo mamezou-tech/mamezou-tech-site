@@ -2,12 +2,12 @@
 title: ロボット開発にもクリーンアーキテクチャを。美膳®が実現する中食工場の自動化
 author: soonki-chang
 tags: [ロボット, 美膳, Bizen, ソフトウェア設計, advent2025]
-date: 2025-12-15
+date: 2025-12-19
 image: true
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/
 ---
 
-これは[豆蔵デベロッパーサイトアドベントカレンダー2025](/events/advent-calendar/2025/)第15日目の記事です。
+少し公開が遅くなってしまいましたが、これは[豆蔵デベロッパーサイトアドベントカレンダー2025](/events/advent-calendar/2025/)第15日目の記事です。
 
 # はじめに
 

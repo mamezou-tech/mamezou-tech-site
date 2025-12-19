@@ -1,4 +1,11 @@
-# 【脱ブラックボックス】AWS Control Tower Account Factory & AFC の裏側を徹底解剖！
+---
+title: 【脱ブラックボックス】AWS Control Tower Account Factory & AFC の裏側を徹底解剖！
+author: hirokazu-niwa
+date: 2025-12-22
+adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/
+tags: [mamezou, aws, controltower, advent2025]
+---
+これは[豆蔵デベロッパーサイトアドベントカレンダー2025](/events/advent-calendar/2025/)第22目の記事です。
 
 こんにちは！AWSの世界を探求する皆さん。
 突然ですが、**AWS Control Tower** 使っていますか？

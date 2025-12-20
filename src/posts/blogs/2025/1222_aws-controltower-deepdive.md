@@ -3,7 +3,7 @@ title: 【脱ブラックボックス】AWS Control Tower Account Factory & AFC 
 author: hirokazu-niwa
 date: 2025-12-22
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/
-tags: [mamezou, aws-controltower, advent2025]
+tags: [controltower, AWS, advent2025]
 image: true
 ---
 これは[豆蔵デベロッパーサイトアドベントカレンダー2025](/events/advent-calendar/2025/)第22目の記事です。

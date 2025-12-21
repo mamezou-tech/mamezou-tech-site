@@ -43,6 +43,7 @@ Github等のVCSはもちろんのこと、チャットやポータルサイト�
 - [ESP-IDFプロジェクトの構成とCMakeの仕組みを徹底解説！（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/03/esp-idf-vsc-extension-2/)
 - [IDF Component ManagerとKconfig設定でハマった話（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/06/esp-idf-vsc-extension-3/)
 - [「Rust × ESP32」で始める組み込み開発：Lチカまでの完全セットアップガイド](/blogs/2025/05/19/using-rust-02/)
+- [2025年版！VS Code で Java 開発環境を構築する](/blogs/2025/10/13/write-java-with-vscode-2025/)
 
 ### リモート環境
 

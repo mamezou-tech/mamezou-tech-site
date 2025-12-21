@@ -6,8 +6,15 @@ date: 2025-10-08
 image: true
 ---
 
+本記事は、「TwinCATで始めるソフトウェアPLC開発」シリーズの第2回目です。
+他の章も併せてご覧ください。
+
+[第1回：環境構築編](https://developer.mamezou-tech.com/robotics/twincat/introduction/twincat-introduction/)
+第2回：ST言語でのプログラミング（1/2）（今回）
+第3回：ST言語でのプログラミング（2/2）← 絶賛作成中！
+
 # 0. はじめに
-[前回](https://developer.mamezou-tech.com/robotics/twincat/introduction/twincat-introduction/)はTwinCATの開発環境（XAE）・実行環境（XAR）の構築方法について説明しました。  
+[前回の記事](https://developer.mamezou-tech.com/robotics/twincat/introduction/twincat-introduction/)はTwinCATの開発環境（XAE）・実行環境（XAR）の構築方法について説明しました。  
 今回は基本的なPLCプログラムの実装方法についてご紹介します。
 
 # 1. ST言語とは？

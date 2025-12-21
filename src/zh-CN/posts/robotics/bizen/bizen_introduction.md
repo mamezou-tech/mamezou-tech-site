@@ -112,7 +112,7 @@ is 多年来一直提供机器人系统开发的支持和咨询服务。通过�
 
 以下给出系统的物理部署图。
 
-![系统物理部署图](../../../img/robotics/bizen/bizen_physical_layout.png)
+![系统物理部署图](/img/robotics/bizen/bizen_physical_layout.png)
 
 带有<<app>>刻板印记的元素即为软件的执行单元。因此，以下三个为主要的软件执行单元。
 
@@ -159,7 +159,7 @@ is 多年来一直提供机器人系统开发的支持和咨询服务。通过�
 
 下面对美膳®的软件组件设计进行说明。整体设计并非以洁净架构的同心圆形式表示，但基于相同的思想进行设计。与洁净架构的同心圆中依赖于中心方向相似，这里的依赖方向向下展开，底层放置了 Entities、Interactor 等领域逻辑。
 
-![组件构成图](../../../img/robotics/bizen/bizen_component_diagram.png)
+![组件构成图](/img/robotics/bizen/bizen_component_diagram.png)
 
 <table width="100%">
   <colgroup>

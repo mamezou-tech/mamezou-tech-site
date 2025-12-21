@@ -36,7 +36,7 @@ I was mainly involved in the development of Bizen® as a software architect. In 
 
 # Introduction to Bizen®
 
-![](../../../img/robotics/bizen/bizen_main.png)
+![](/img/robotics/bizen/bizen_main.png)
 
 Bizen® is a food plating robot system developed to address the severe labor shortage in the ready-to-eat meal industry. It was born from a joint development that leverages the strengths of both companies: Mamezou handled system design, mechanical and electrical design, and software development including AI, vision, and motion, while Mitsui Chemicals provided high-performance resin materials and developed, manufactured, and sold the robot hand.
 
@@ -115,7 +115,7 @@ In other words, the essence of Clean Architecture is to create a structure where
 
 Below is the physical system layout diagram.
 
-![Physical System Layout Diagram](../../../img/robotics/bizen/bizen_physical_layout.png)
+![Physical System Layout Diagram](/img/robotics/bizen/bizen_physical_layout.png)
 
 Elements stereotyped <<app>> represent software execution units. Therefore, the following three are the main software execution units.
 
@@ -162,7 +162,7 @@ Because a [KEBA](https://www.keba.com/jp/home) controller was used as the robot 
 
 Let's explain the software component design of Bizen®. The overall design is not represented as concentric circles like Clean Architecture, but it is based on the same principles. Just as dependencies in Clean Architecture flow toward the center in concentric circles, here the dependency direction is downward, with domain logic such as Entities and Interactors placed in the lower layers.
 
-![Component Structure Diagram](../../../img/robotics/bizen/bizen_component_diagram.png)
+![Component Structure Diagram](/img/robotics/bizen/bizen_component_diagram.png)
 
 <table width="100%">
   <colgroup>

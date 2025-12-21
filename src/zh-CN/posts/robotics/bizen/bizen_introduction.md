@@ -27,14 +27,14 @@ is 多年来一直提供机器人系统开发的支持和咨询服务。通过�
 ---
 
 <div style="text-align: center; margin: 3em 0;">
-  <img src="../../../img/robotics/bizen/bizen_logo.png" alt="美膳®徽标" style="max-width: 500px; width: 100%;" />
+  <img src="/img/robotics/bizen/bizen_logo.png" alt="美膳®徽标" style="max-width: 500px; width: 100%;" />
 </div>
 
 ---
 
 # 美膳®介绍
 
-![](../../../img/robotics/bizen/bizen_main.png)
+![](/img/robotics/bizen/bizen_main.png)
 
 美膳®是为了解决中食行业日益严重的劳动力不足而开发的食品盛盘机器人系统。is 负责系统设计、机械和电气设计，以及包括 AI、视觉、运动控制在内的软件开发，三井化学则负责提供高性能树脂材料、开发机器人手爪、制造和销售，通过双方优势互补的联合开发诞生了该产品。
 
@@ -42,7 +42,7 @@ is 多年来一直提供机器人系统开发的支持和咨询服务。通过�
 
 如下图所示，中食工厂的许多盛盘作业仍由人力完成，劳动力不足和人力成本攀升成为严重问题。在此背景下，盛盘工序的自动化备受需求。
 
-<img src="../../../img/robotics/bizen/bizen_issue.png" width="500" alt="美膳®要解决的社会课题" />
+<img src="/img/robotics/bizen/bizen_issue.png" width="500" alt="美膳®要解决的社会课题" />
 
 *图片提供：株式会社is*
 

@@ -217,7 +217,7 @@ flowchart LR
 
     subgraph AWS["AWS Infrastructure (built with Terraform)"]
         CF[CloudFront Distribution]
-        S3[S3 Bucket (Static Site)]
+        S3["S3 Bucket (Static Site)"]
         CW[CloudWatch Metrics]
     end
 

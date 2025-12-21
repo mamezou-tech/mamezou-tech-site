@@ -29,7 +29,7 @@ I was mainly involved in the development of Bizen® as a software architect. In 
 ---
 
 <div style="text-align: center; margin: 3em 0;">
-  <img src="../../../img/robotics/bizen/bizen_logo.png" alt="美膳®ロゴ" style="max-width: 500px; width: 100%;" />
+  <img src="/img/robotics/bizen/bizen_logo.png" alt="美膳®ロゴ" style="max-width: 500px; width: 100%;" />
 </div>
 
 ---
@@ -44,7 +44,7 @@ Bizen® is a food plating robot system developed to address the severe labor sho
 
 As shown in the figure below, many plating operations in ready-to-eat meal factories are performed manually, and labor shortages and rising labor costs have become serious issues. Against this backdrop, automation of the plating process is in high demand.
 
-<img src="../../../img/robotics/bizen/bizen_issue.png" width="500" alt="美膳®が解決したい社会課題" />
+<img src="/img/robotics/bizen/bizen_issue.png" width="500" alt="美膳®が解決したい社会課題" />
 
 *Image provided by Mamezou Corporation*
 

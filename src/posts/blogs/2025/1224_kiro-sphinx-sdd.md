@@ -114,7 +114,7 @@ index.rst      # 全体目次
 │  ├ index.rst         # 画面仕様目次
 │  ├ login.rst         # ログイン画面
 │  ├ main.rst          # メイン画面
-│  ├ main.rst          # 編集画面
+│  ├ edit.rst          # 編集画面
 │  └ manage-users.rst  # ユーザ管理画面
 └ changelog/
    └ index.rst         # 改訂履歴

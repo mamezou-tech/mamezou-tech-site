@@ -3,7 +3,7 @@ title: 【Agent Skills】「あの雰囲気」を VSCode に。Markdown プレ�
 author: kosuke-uematsu
 date: 2025-12-03
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2025/
-tags: [Claude, markdown, vscode, advent2025]
+tags: [Agent Skills, Claude Skills, Claude, markdown, vscode, advent2025]
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2025](/events/advent-calendar/2025/)第 3 日目の記事です！

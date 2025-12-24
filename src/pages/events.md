@@ -6,7 +6,7 @@ enTitle: Events
 ---
 
 ## アドベントカレンダー
-- [アドベントカレンダー2025](/events/advent-calendar/2025/) **開催中！！**
+- [アドベントカレンダー2025](/events/advent-calendar/2025/)
 - [アドベントカレンダー2024](/events/advent-calendar/2024/)
 - [アドベントカレンダー2023](/events/advent-calendar/2023/)
 - [アドベントカレンダー2022](/events/advent-calendar/2022/)

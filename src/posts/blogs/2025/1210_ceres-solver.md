@@ -355,7 +355,7 @@ CostFunction* cost_function = new ceres::AutoDiffCostFunction<CostFunctor, 1, 1>
 Problem problem;
 problem.AddResidualBlock(cost_function, nullptr, &x);	// 残差ブロックを追加
 problem.SetParameterLowerBound(&x, 0, 0.0);		// 入力パラメータの下限値設定
-problem.SetParameterUpperBound(&x, 0, 3.0);	// 入力パラメータの上限値設定
+problem.SetParameterUpperBound(&x, 0, 10.0);	// 入力パラメータの上限値設定
 ```
 
 最適化問題を定義します。

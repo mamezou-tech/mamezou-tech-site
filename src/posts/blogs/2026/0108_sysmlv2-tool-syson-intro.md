@@ -54,12 +54,12 @@ Safari、Microsoft Edge、Operaなど他のブラウザを用いる場合は使�
 マニュアルにはインストール方法が４つ記載されていますが、大きく分けるとローカルテスト用と本番用の２タイプです。
 セキュリティを気にしないならばローカルテスト用、セキュリティを考慮すべき環境ならば本番用の方法でインストールしましょう。
 
-本記事は SysML v2を使ってみることを想定していますので、[Basic Local Test Setup](https://doc.mbse-syson.org/syson/v2025.8.0/installation-guide/how-tos/install/local_test.html)のインストールを行います。
+本記事は SysML v2を試しに使ってみることを想定していますので、[Basic Local Test Setup](https://doc.mbse-syson.org/syson/v2025.8.0/installation-guide/how-tos/install/local_test.html)のインストールを行います。
 
 SysONのローカルテスト用インストールには Docker Engineを使用します。
 Docker Desktopは有償ですが、Docker Engineは Apache License 2.0ですので無料で利用できます。
-筆者は Windows11とその WSL2(Debian/Linux)に Docker Engineをインストールしました。
 ここでは Docker Engineのインストール方法は割愛します。
+筆者は Windows11とその WSL2(Debian/Linux)に Docker Engineをインストールしました。
 
 Docker Engineのインストールが完了したら SysONのインストールを開始します。
 

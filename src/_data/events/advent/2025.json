@@ -82,63 +82,71 @@
       "date": "12",
       "author": "kohei-tsukano",
       "githubUser": "kohei-tsukano",
-      "title": "AWSで読み替えるGoogle Cloud入門（仮）"
+      "title": "AWSで読み替えるGoogle Cloud入門",
+      "url": "/blogs/2025/12/12/google_cloud_entry/"
     },
     {
       "date": "15",
       "author": "soonki-chang",
       "githubUser": "Soonki",
-      "nonContrib": true,
-      "title": "美膳のソフトウェアの話を書きたいです"
+      "title": "ロボット開発にもクリーンアーキテクチャを。「美膳」が実現する中食工場の自動化",
+      "url": "/robotics/bizen/bizen_introduction/"
     },
     {
       "date": "16",
       "author": "takahiro-maeda",
-      "githubUser": "Deth-True",
-      "title": "(仮)GitHubSpecKit(Gemini)とAWS Well-Architectedで実現するインフラストラクチャ生成"
+      "githubUser": "Death-True2",
+      "title": "GitHub Spec Kit (Gemini) でインフラストラクチャを作成してみる",
+      "url": "/blogs/2025/12/16/github-spec-kit-iac-entry/"
     },
     {
       "date": "17",
       "author": "hironori-maruoka",
       "githubUser": "hironori-maruoka",
-      "title": "Kiro CLI で何か書きます"
+      "title": "Kiro で始める Property-Based Testing：想定外を炙り出す",
+      "url": "/blogs/2025/12/17/kiro_ide_pbt/"
     },
     {
       "date": "18",
       "author": "daisuke-kishimoto",
       "githubUser": "KishimotoD",
-      "title": "内容検討中ですが何か書きます"
+      "title": "よりよい方法を見つけだそうとし続けている： アジャイルに必要な知恵はすべて鮨屋のカウンターでも学んだ",
+      "url": "/blogs/2025/12/18/sushi/"
     },
     {
       "date": "19",
       "author": "masato-onodera",
       "githubUser": "MasatoOnodera",
-      "nonContrib": true,
-      "title": "ユーザ部門向け研修関連の小話（システムテストと運用テストの違いあたり）(仮)"
+      "title": "ユーザー部門のあなたに送る - 「『情シスはテストしたのに…』と言わせない！クマに学ぶ“ユーザーテスト”のホントの意味」",
+      "url": "/blogs/2025/12/19/edu-user-dept-training-1/"
     },
     {
       "date": "22",
       "author": "hirokazu-niwa",
       "githubUser": "hirokazu-komaki",
-      "title": "まだ決めていませんが何か書きます。"
+      "title": "【脱ブラックボックス】AWS Control Tower Account Factory & AFC の裏側を徹底解剖！",
+      "url": "/blogs/2025/12/22/aws-controltower-deepdive/"
     },
     {
       "date": "23",
       "author": "kazuyuki-shiratani",
       "githubUser": "k-shiratani",
-      "title": "AWS認定のことで書きます。"
+      "title": "AWS認定12冠から3年後 - 更新と新認定区分について",
+      "url": "/blogs/2025/12/23/aws_all_certified_2025/"
     },
     {
       "date": "24",
       "author": "noriyuki-yagi",
       "githubUser": "NoriyukiYagi",
-      "title": "KiroとSphinxを組み合わせた仕様駆動開発プロセス（仮）"
+      "title": "Kiro × Sphinxで効率化するプロジェクト開発手法",
+       "url": "/blogs/2025/12/24/kiro-sphinx-sdd/"
     },
     {
       "date": "25",
       "author": "kenta-ishihara",
       "githubUser": "kenta-ishihara",
-      "title": "なんか書きます！"
+      "title": "ウォーキングのすすめ ～普段リモートワークで運動習慣0の自分が1日1万2000歩歩いた結果～",
+      "url": "/blogs/2025/12/25/vitality/"
     }
   ]
 }

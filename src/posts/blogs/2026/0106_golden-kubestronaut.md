@@ -2,7 +2,7 @@
 title: GOLDEN Kuberstronaut 到達レポート
 author: takashi-sato
 # 公開日として設定されますので、それを考慮した日付にするようにしてください
-date: 2026-01-13
+date: 2026-01-12
 ---
 
 昨年の 2025 年 1 月に Kubestronaut の称号を得たのに続き、同年 12 月に GOLDEN Kubestronaut の称号を得たので、その記録をまとめます。

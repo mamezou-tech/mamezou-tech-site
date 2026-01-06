@@ -1,8 +1,8 @@
 ---
 title: 業務日誌のすゝめ 〜業務日誌を書く意味を考える〜
-author: masao_sato
-date: 2025-12-30
-tags: [mamezou]
+author: masao-sato
+date: 2026-01-06
+tags: [業務日誌]
 image: true
 ---
 

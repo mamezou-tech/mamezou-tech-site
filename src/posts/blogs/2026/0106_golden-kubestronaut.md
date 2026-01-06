@@ -1,5 +1,5 @@
 ---
-title: GOLDEN Kuberstronaut 到達レポート
+title: GOLDEN Kubestronaut 到達レポート
 author: takashi-sato
 # 公開日として設定されますので、それを考慮した日付にするようにしてください
 date: 2026-01-12
@@ -16,19 +16,19 @@ date: 2026-01-12
 - **終えてみて:** GOLDEN Kubestronaut の取得を終えてみての所感を記述
 - **各試験への取り組み:** それぞれの試験ごとに、取り組みや所感を記述
 
-## GOLDEN Kuberstronaut とは
+## GOLDEN Kubestronaut とは
 
-GOLDEN Kuberstronaut とは、すべての CNCF 認定資格と LFCS に合格すると得られる称号です。GOLDEN Kuberstronaut の前段階に Kuberstronaut があり、それはその中の 5 つに合格すると称号が得られます。
+GOLDEN Kubestronaut とは、すべての CNCF 認定資格と LFCS に合格すると得られる称号です。GOLDEN Kubestronaut の前段階に Kubestronaut があり、それはその中の 5 つに合格すると称号が得られます。
 
-以下が、Kuberstronaut の要件と、GOLDEN Kuberstronaut に追加で必要なものです（私が受験した順に記載しています）。
+以下が、Kubestronaut の要件と、GOLDEN Kubestronaut に追加で必要なものです（私が受験した順に記載しています）。
 
-- Kuberstronaut 要件
+- Kubestronaut 要件
   - Certified Kubernetes Application Developer (CKAD-JP)
   - Certified Kubernetes Administrator (CKA-JP)
   - Certified Kubernetes Security Specialist (CKS-JP)
   - Kubernetes and Cloud Native Associate (KCNA-JP)
   - Kubernetes and Cloud Native Security Associate (KCSA)
-- GOLDEN Kuberstronaut 追加要件
+- GOLDEN Kubestronaut 追加要件
   - OpenTelemetry Certified Associate (OTCA)
   - Istio Certified Associate (ICA)
   - Cilium Certified Associate (CCA)
@@ -40,9 +40,9 @@ GOLDEN Kuberstronaut とは、すべての CNCF 認定資格と LFCS に合格�
   - Certified Cloud Native Platform Engineering Associate (CNPA)
   - Linux Foundation Certified System Administrator (LFCS-JP)
 
-この様に、Kuberstronaut だけで 5 個、GOLDEN Kuberstronaut には合計 15 個の認定が必要になります。Kuberstronaut の称号は 5 つの認定のいずれかを失効すると消失するのですが、GOLDEN Kuberstronaut の称号は生涯有効です。
+この様に、Kubestronaut だけで 5 個、GOLDEN Kubestronaut には合計 15 個の認定が必要になります。Kubestronaut の称号は 5 つの認定のいずれかを失効すると消失するのですが、GOLDEN Kubestronaut の称号は生涯有効です。
 
-なお、上記の要件は、CNCF に新たな認定試験が追加になるとアップデートされます。具体的には、2026/03/01 に GOLDEN Kuberstronaut の要件に以下の試験が追加になるとアナウンスされています。ただ、一度 GOLDEN Kuberstronaut に到達すれば、その後に要件が追加されたとしても、それに新たに合格する必要はありません。
+なお、上記の要件は、CNCF に新たな認定試験が追加になるとアップデートされます。具体的には、2026/03/01 に GOLDEN Kubestronaut の要件に以下の試験が追加になるとアナウンスされています。ただ、一度 GOLDEN Kubestronaut に到達すれば、その後に要件が追加されたとしても、それに新たに合格する必要はありません。
 
 - Certified Cloud Native Platform Engineer (CNPE)
 
@@ -50,7 +50,7 @@ GOLDEN Kuberstronaut とは、すべての CNCF 認定資格と LFCS に合格�
 
 ## 本記事のスコープ
 
-本記事では、主に、Kuberstronaut から GOLDEN Kuberstronaut へのステップアップに追加で必要な認定試験について取り上げます。Kuberstronaut までに必要な認定試験については、すでに多くの情報が公開されているので、このレポートの中では割愛します。
+本記事では、主に、Kubestronaut から GOLDEN Kubestronaut へのステップアップに追加で必要な認定試験について取り上げます。Kubestronaut までに必要な認定試験については、すでに多くの情報が公開されているので、このレポートの中では割愛します。
 
 ## 試験の特徴と関係性
 
@@ -145,7 +145,7 @@ Kubestronaut に到達した時は、k8s のスキルはもとより、特に CK
 
 ## 各試験への取り組み
 
-2025 年 1 月に、Kuberstronaut の取得に必要な 5 つの認定資格をクリアしました。その後少しして、GOLDEN Kuberstronaut のプログラムが追加になりました。そこで再び、2025 年 7 月から 12 月までかけて、GOLDEN Kuberstronaut に必要な 10 個の認定資格をクリアしました。
+2025 年 1 月に、Kubestronaut の取得に必要な 5 つの認定資格をクリアしました。その後少しして、GOLDEN Kubestronaut のプログラムが追加になりました。そこで再び、2025 年 7 月から 12 月までかけて、GOLDEN Kubestronaut に必要な 10 個の認定資格をクリアしました。
 
 当初は、2025 年度いっぱいかけてゆっくり取り組むつもりだったのですが、以下の理由により、後半は計画を前倒しして 2025 年の年内に終わらせました。
 

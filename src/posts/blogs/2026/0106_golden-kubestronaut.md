@@ -3,6 +3,7 @@ title: GOLDEN Kubestronaut 到達レポート
 author: takashi-sato
 # 公開日として設定されますので、それを考慮した日付にするようにしてください
 date: 2026-01-12
+tags: [k8s]
 ---
 
 昨年の 2025 年 1 月に Kubestronaut の称号を得たのに続き、同年 12 月に GOLDEN Kubestronaut の称号を得たので、その記録をまとめます。
@@ -82,16 +83,16 @@ GOLDEN Kubestronaut とは、すべての CNCF 認定資格と LFCS に合格す
 
 学習方法は、基本は Kubestronaut 要件の認定資格を受験したときと同じで、以下のパターンでした。
 
-- **e ラーニング:** KodeKloud や Udemy で提供されているそれぞれの試験対策のコースを受講。
+- **e-learning:** KodeKloud や Udemy で提供されているそれぞれの試験対策のコースを受講。
 - **模擬試験:** KodeKloud や Udemy の試験対策コースに付帯されている模擬試験を受けるともに、Udemy で追加の模擬試験コンテンツを購入して実施。
 - **ハンズオン:** 手持ちの Linux PC で k8s 環境を作って試験カリキュラムに含まれる内容を実践。また、一部の試験については、Killercoda でハンズオン環境が提供されているので、そちらも活用。
 - **リファレンス参照:** 試験対象のプロダクトのリファレンスを参照し、試験カリキュラムに含まれる部分をチェック。
 
-### e ラーニング
+### e-learning
 
 基本的に、KodeKloud や Udemy で提供されているそれぞれの試験対策のコースを受講しました。それ以外にも、Linux Foundation や Tetrate Academy の e-learning など、試験に関係しそうな無料コンテンツがあれば見ておきました。
 
-難点として、日本語字幕付きのものはほとんど無かったです。Kubestronaut 要件までの認定資格関連の e ラーニングの中には日本語字幕つきものもありましたが、今回はほぼ英語のみでした。序盤に受けた試験はある程度知っている技術領域のものだったので、受けた e ラーニングの内容の理解も追いつくことができました。しかし徐々に、知識の少ない領域の試験になってきて、学習効率が落ちてきました。
+難点として、日本語字幕付きのものはほとんど無かったです。Kubestronaut 要件までの認定資格関連の e-learning の中には日本語字幕つきものもありましたが、今回はほぼ英語のみでした。序盤に受けた試験はある程度知っている技術領域のものだったので、受けた e-learning の内容の理解も追いつくことができました。しかし徐々に、知識の少ない領域の試験になってきて、学習効率が落ちてきました。
 
 そこで、追加 10 個の半分の 5 つ取ったところで、**動画の音声を文字起こししてまとめる**という学習法をとりました。音声の文字起こしは、Vibe コーディングで作った、Whisper を使った文字起こしアプリを使いました。
 
@@ -239,6 +240,8 @@ CAPA の厄介っどころとしては、「覚えたことがどのプロダク
 
 e-learning 後、ハンズオンは Argo CD と Workflows については killercoda のコンテンツが充実しているので、まずはそれでざっと実施しました。Rollouts と Event については、手元に環境を作ってハンズオンをしました。模擬試験のコンテンツは見当たらなかったので、CAPA でも念の為、自作の模擬試験アプリで心の準備をしました。
 
+なお Argo Workflows については、[こちらの記事](https://developer.mamezou-tech.com/containers/k8s/tutorial/advanced/argo-workflows/)もご覧いただけます。
+
 ### GitOps Certified Associate (CGOA)
 
 - **受験日:** 2025/10/19
@@ -292,6 +295,8 @@ CBA は、Backstage という IDP( Internal Developer Portal)を構築するた�
 Backstage 自体は monorepo 構成の React アプリであり、デザインシステムに Material UI が使われています。そのため、CBA では、IDP の理念や Backstage での IDP 機能とともに、Material UI を使った React アプリの実装に関する知識が問われます。私は Material UI や React アプリの知見があったので、それは問題がなかったです。e-learning に中にもアプリ構築のセッションがあり、他の試験対策講座とはちょっと雰囲気が違ってました。
 
 React アプリの Backstage はローカルでそのまま起動できるので、比較的、実践が容易でした。プラグインの実装やデザインのカスタマイズなどを試して、実装方法を理解しました。
+
+なお Backstage については、[こちらの記事](https://developer.mamezou-tech.com/tags/backstage/)もご覧いただけます。
 
 ### Kyverno Certified Associate (KCA)
 

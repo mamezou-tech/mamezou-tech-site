@@ -81,7 +81,6 @@ export default defineNuxtConfig({
 ```env:.env
 SUPABASE_URL=<Project URL>
 SUPABASE_KEY=<Publishable key>
-SUPABASE_SECRET_KEY=<Secret keys>
 ```
 :::info
 envで設定しているプロパティ名はデフォルトの名称を使用しています。
@@ -97,11 +96,6 @@ export default defineNuxtConfig({
 
 ```
 :::
-ここまで準備できたら、コマンドプロンプトで下記コマンドを実行してSupabaseの初期化とデータベース接続するために認証します。
-```bash
-npx supabase init
-npx supabase login
-```
 これでSupabaseの導入は完了です。それではNuxt.jsでログインページを作成していきましょう。
 
 # メールアドレスによる認証の実装
@@ -500,7 +494,13 @@ pagesディレクトリに色々作成しないといけないので、まずapp
 ```
 今回はSupabaseで作成したarticleテーブルのデータを表示する機能を実装します。そのため、Supabaseクライアントを生成する際に自動生成した型定義ファイルを適用して「Database型」を指定しています。こうすることでテーブル名やカラム名に入力補完が効くようになり、開発効率が格段にアップします。
 :::info
-型定義ファイルは下記コマンドを実行することによって自動生成できます。
+型定義ファイルはSupabase CLIを利用することによって生成できます。
+まず下記コマンドを実行してSupabaseのログインと初期化をします。
+```bash
+npx supabase login
+npx supabase init
+```
+その後、下記コマンドを実行すると、型定義ファイルが生成されます。
 ```bash
 npx supabase gen types typescript --project-id "<project_id>" --schema public > .\app\types\database.types.ts
 ```

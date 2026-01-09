@@ -584,17 +584,17 @@ npx supabase gen types typescript --project-id "<project_id>" --schema public > 
 ```
 ログアウト処理はかなり単純で、ただsupabaseクライアントで`signOut`メソッドを使って実装するだけです。あとはテンプレート部分にログアウトボタンを追加することで、ログアウトできてしまいます。
 メインページと合わせて実際に出来たページがこちらになります。
-![メインページ](/img/blogs/2026/0109_nuxt_supabase_auth\index_page.png)
+![メインページ](/img/blogs/2026/0109_nuxt_supabase_auth/index_page.png)
 
 以上でメールアドレスによる認証が実装できました。
 
 ## メールアドレスによる認証の検証
 それでは実際に画面上で新規登録してみましょう。
 ログインページでメールアドレスとパスワードを入力して新規登録ボタンを押すと、認証メールが届きます。
-![認証メール](/img/blogs/2026/0109_nuxt_supabase_auth\auth_mail.png)
+![認証メール](/img/blogs/2026/0109_nuxt_supabase_auth/auth_mail.png)
 こちらの「Confirm your mail」のリンクを押すと、ユーザー登録が完了し、アプリのメインページにリダイレクトします。
 またユーザ登録が完了しているかは、Supabaseで作成したプロジェクトの「Authentication > Users」で確認できます。データが列として入っている場合は登録が完了しています。まだリンクでの認証が済んでいない場合は、Last Sign Inの列でWaiting for verificationと表示されます。
-![supabase Authentication Users](/img/blogs/2026/0109_nuxt_supabase_auth\user_table.png)
+![supabase Authentication Users](/img/blogs/2026/0109_nuxt_supabase_auth/user_table.png)
 
 # まとめ
 今回はNuxt.jsとSupabaseを組み合わせたauth認証の実装を解説しました。特に意識したところもなく、簡単にサクッと実装できたのが今回の驚きでした。

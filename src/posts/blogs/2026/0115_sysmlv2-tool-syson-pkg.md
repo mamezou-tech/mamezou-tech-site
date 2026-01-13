@@ -3,6 +3,7 @@ title: 無料のOSSツールSysONで始めるSysML v2モデリング（２） �
 author: yasumasa-takahashi
 date: 2026-01-15
 tags: [SysON,SysMLv2,MBSE,モデリング]
+image: true
 ---
 
 前回の記事「無料のOSSツールSysONで始めるSysML v2モデリング（１） 〜 はじめてのSysON」では、SysONをインストールして Webブラウザでホーム画面を表示しました。

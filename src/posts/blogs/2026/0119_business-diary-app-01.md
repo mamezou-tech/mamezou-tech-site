@@ -2,7 +2,7 @@
 title: Slackアプリで始める業務日誌（その１）- 基本操作 -
 author: masao-sato
 date: 2026-01-19
-tags: [businessDiary] [仕様駆動]
+tags: [businessDiary, 仕様駆動]
 image: true
 ---
 

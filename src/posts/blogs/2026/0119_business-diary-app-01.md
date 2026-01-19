@@ -1,14 +1,14 @@
 ---
 title: Slackアプリで始める業務日誌（その１）- 基本操作 -
-author: masao_sato
+author: masao-sato
 date: 2026-01-19
-tags: [businessDiary]
+tags: [businessDiary] [仕様駆動]
 image: true
 ---
 
 ## 1. はじめに
 先日、業務日誌について書いた投稿がこちらになります。
-（ https://developer.mamezou-tech.com/blogs/2026/01/06/businessdiary/ ）
+@[og](/blogs/2026/01/06/businessdiary/)
 ただ、
 - ここは技術ブログなので、記事だけだと片手落ちな気がする。
 - 自分は技術者なんだから、せっかくだから何か作りたい。

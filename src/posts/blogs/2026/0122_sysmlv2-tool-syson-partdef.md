@@ -10,8 +10,10 @@ image: true
 
 @[og](/blogs/2026/01/15/sysmlv2-tool-syson-pkg/)
 
-本記事では、構造定義の要の１つである Part Definitionを作成します。  
-（本記事でも前回同様、SysONは Release 2025.8.0を使用します）
+本記事では、構造定義の要の１つである Part Definitionを作成します。
+
+執筆時点における SysONの安定版は v2025.12.0が最新ですが、本記事では前回同様 v2025.8.0を使用します。
+最新リリースの挙動は一部異なる可能性がありますのでご了承ください。
 
 モデリングの題材は、SysMLv2の仕様書 A Annex: Example Modelから拝借します。
 "Figure 59. Axle and its Subclass FrontA"を作成してみましょう。

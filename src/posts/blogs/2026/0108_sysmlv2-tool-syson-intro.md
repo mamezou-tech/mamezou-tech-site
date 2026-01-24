@@ -1,5 +1,5 @@
 ---
-title: 無料のOSSツールSysONで始めるSysML v2モデリング（１） 〜 はじめてのSysON
+title: 無料のOSSツールSysONで始めるSysMLv2モデリング（１）〜 はじめてのSysON
 author: yasumasa-takahashi
 date: 2026-01-08
 tags: [SysON,SysMLv2,MBSE,モデリング]
@@ -31,7 +31,7 @@ SysONは Webアプリケーションです。
 ユーザーはクライアントPCの Webブラウザで SysONサーバーにアクセスします。
 ユーザーが Webブラウザで行ったモデルに対する操作は SysONサーバーで実行されます。
 
-![SysONの構成](/img/blogs/2026/sysmlv2-tool-syson-intro/system.png)
+![SysONの構成](/img/blogs/2026/0108_sysmlv2-tool-syson-intro/system.png)
 
 複数のユーザーによるモデリングが可能ですし SysML v2仕様には REST APIの要件もありますので、Webアプリケーションは妥当だと思います。
 しかしその一方、ネットワーク環境によっては動作が遅くすぐに表示が更新されないといったデメリットもあるため、モデリングの操作に慣れてくるとストレスを感じることもあるかもしれません。
@@ -137,7 +137,7 @@ Webブラウザを起動し、`http://localhost:8080` にアクセスします�
 
 以下のホーム画面が表示されれば準備完了です。
 
-![SysONの初期画面](/img/blogs/2026/sysmlv2-tool-syson-intro/homepage.png)
+![SysONの初期画面](/img/blogs/2026/0108_sysmlv2-tool-syson-intro/homepage.png)
 
 ちなみにこの画面の Existing Projectsのリストにある "Batmobile"は、あのアメコミヒーローが使っている車を題材にしたサンプルです。
 
@@ -151,7 +151,6 @@ sudo service docker stop
 ```
 
 ## 次回予告
-
 ここまでで SysONを使ってモデリングする準備が整いました。
 
 次回からはいよいよ、SysONを使った SysML v2のモデリング操作をみていきましょう。

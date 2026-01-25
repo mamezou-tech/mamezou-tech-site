@@ -34,13 +34,6 @@ UML を様々なプログラミング言語で実装していくシリーズで�
 - [UMLをプログラミング言語で実装するには？ C言語(超シンプル版)編](/blogs/2024/09/30/uml-x-mapping-c1/)
 - [UMLをプログラミング言語で実装するには？ C言語(インスタンス対応)編](/blogs/2024/09/30/uml-x-mapping-c2/)
 
-## SysML
-SysML は UML を基盤としたシステム工学の向けのモデリング言語です。UML が主にソフトウェアの設計にフォーカスしているのに対し、SysML はハードウェアも含むシステム全体を対象にしています。
-
-### 無料のOSSツールSysONで始めるSysMLv2モデリング
-- [（１） 〜 はじめてのSysON](/blogs/2026/01/08/sysmlv2-tool-syson-intro/)
-- [（２） 〜 Packageの作成](/blogs/2026/01/15/sysmlv2-tool-syson-pkg/)
-
 ## モデリングツール
 ### Enterprise Architect
 老舗のモデリングツール Enterprise Architect に関するノウハウをご紹介します。
@@ -51,6 +44,15 @@ SysML は UML を基盤としたシステム工学の向けのモデリング言
 こちらも老舗 UMLモデリングツール astah* に関するノウハウをご紹介します。
 
 Comming soon!
+
+### SysON
+複雑なシステムをモデリングするための新しい言語である SysML v2。
+この SysML v2モデルを作成・編集するためのグラフィカル・モデリングツール、SysONをご紹介します。
+
+- [無料のOSSツールSysONで始めるSysMLv2モデリング（１）〜 はじめてのSysON](/blogs/2026/01/08/sysmlv2-tool-syson-intro/)
+- [無料のOSSツールSysONで始めるSysMLv2モデリング（２）〜 Packageの作成](/blogs/2026/01/15/sysmlv2-tool-syson-pkg/)
+- [無料のOSSツールSysONで始めるSysMLv2モデリング（３）〜 Part Definitionの作成](/blogs/2026/01/22/sysmlv2-tool-syson-partdef/)
+- [無料のOSSツールSysONで始めるSysMLv2モデリング（４）〜 Part Usageの作成](/blogs/2026/01/29/sysmlv2-tool-syson-partusage/)
 
 ## 資格試験
 ### UMTP L3認定への道

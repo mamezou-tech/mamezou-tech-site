@@ -36,7 +36,7 @@ image: true
 
 MotoPlusの場合は、コントローラ内部で動作するアプリとPC側の通信クライアントをそれぞれ自身で開発する必要があります。そのため、提供されている通信クライアントとしてはMotoComとYMConnectの2択となります。
 
-YMConnectは比較的最近（2024年）に公開されたSDKです。C++17以降や.NET 10以降を使用可能なモダンなプロジェクトならYMConnectが良さそうですが、既存のレガシーシステムではMotoComを使用し続けているケースも多いのではないでしょうか。YMConnectの活用事例はまだほとんど見かけません。しかし、<https://github.com/Yaskawa-Global/YMConnect/discussions> を見ると少しづつ不具合報告も挙がってきているので、徐々に採用実績も増えてくるのではないかと思います。
+YMConnectは比較的最近（2024年）に公開されたSDKです。C++17以降や.NET 10以降を使用可能なモダンなプロジェクトならYMConnectが良さそうですが、既存のレガシーシステムではMotoComを使用し続けているケースも多いのではないでしょうか。YMConnectの活用事例はまだほとんど見かけません。しかし、<https://github.com/Yaskawa-Global/YMConnect/discussions> を見ると少しずつ不具合報告も挙がってきているので、徐々に採用実績も増えてくるのではないかと思います。
 
 一方で安川ロボットのコントローラは `High-Speed Ethernet Server (HSES)` というサーバー機能を提供しており、通信プロトコルも公開されています[^4]。
 
@@ -120,12 +120,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 Agent Skills[^5] は、AIコーディングエージェントに特定のドメイン知識や使用方法を教えるためのフォーマットです。スキルは、SKILL.md（エージェントへの指示）、references/（参考ドキュメント）、scripts/（自動化スクリプト）で構成されます。
 
-今回、moto-hsesを活用するために以下の2つのスキルを作成しました。
+今回、moto-hsesを活用するために以下の3つのスキルを作成しました。
 
 | スキル | 説明 |
 |--------|------|
 | **hses-protocol** | HSESプロトコル仕様。メッセージ構造、コマンドフォーマット、エラーコードなど |
 | **moto-hses-usage** | moto-hsesクレートの使用ガイド。クライアント操作、コマンドリファレンスなど |
+| **hses-packet-analysis** | HSESパケットの解析ガイド。通信障害時のデバッグに活用 |
 
 ### スキルのインストール
 
@@ -133,10 +134,10 @@ Agent Skills[^5] は、AIコーディングエージェントに特定のドメ�
 
 ```bash
 # Cursorの場合
-npx add-skill masayuki-kono/agent-skills --skill hses-protocol --skill moto-hses-usage -a cursor -y
+npx add-skill masayuki-kono/agent-skills --skill hses-protocol --skill moto-hses-usage --skill hses-packet-analysis -a cursor -y
 
 # Claude Codeの場合
-npx add-skill masayuki-kono/agent-skills --skill hses-protocol --skill moto-hses-usage -a claude-code -y
+npx add-skill masayuki-kono/agent-skills --skill hses-protocol --skill moto-hses-usage --skill hses-packet-analysis -a claude-code -y
 ```
 
 インストールすると、プロジェクトに以下のようなディレクトリ構造でスキルが配置されます。
@@ -144,16 +145,14 @@ npx add-skill masayuki-kono/agent-skills --skill hses-protocol --skill moto-hses
 ```
 .agents/
 └── skills
+    ├── hses-packet-analysis
+    │   └── SKILL.md
     ├── hses-protocol
     │   ├── references
     │   │   ├── data-types.md
     │   │   ├── error-codes.md
-    │   │   ├── file-commands.md
     │   │   ├── protocol-overview.md
-    │   │   ├── robot-commands-control.md
-    │   │   ├── robot-commands-status.md
-    │   │   ├── robot-commands-variables.md
-    │   │   └── sequence-diagrams.md
+    │   │   └── ...
     │   └── SKILL.md
     └── moto-hses-usage
         ├── references
@@ -220,11 +219,164 @@ cargo run -- 192.168.0.18 TEST
 
 自作のクライアントライブラリであり、Web上に活用事例がほとんど存在しない状況でも、Agent Skillsによってドメイン知識を補完することで、LLMが適切なコードを生成できることが確認できました。
 
+## Agent Skillsを使ったパケット解析デモ
+
+次に、通信障害時のデバッグにスキルを活用する例を紹介します。
+
+### 障害シナリオの作成
+
+Status Reading（0x72）コマンドの応答パケットをモックサーバー側で意図的に不正なデータに書き換えて返信してみます。
+
+HSESプロトコルでは、Status Readingコマンドの応答ペイロードは以下の2つのデータで構成されます。
+
+- Data 1（4バイト）：動作モード・実行状態
+- Data 2（4バイト）：HOLD状態・アラーム・サーボ状態
+
+期待されるペイロードは8バイトですが、このペイロードを意図的に7バイトで返すようにモックサーバーを設定しました。
+
+先ほど生成したアプリケーションを実行すると、以下のエラーログが出力されます。
+
+```
+[2026-01-27T13:51:41Z INFO  moto_hses_examples] Connecting to robot controller: 192.168.0.18:10040
+[2026-01-27T13:51:41Z INFO  moto_hses_examples] ✓ Successfully connected to controller
+[2026-01-27T13:51:41Z INFO  moto_hses_examples] Reading initial status...
+[2026-01-27T13:51:41Z ERROR moto_hses_examples] ✗ Failed to read status: Protocol error: buffer underflow
+Error: ProtocolError(Underflow)
+```
+
+`buffer underflow`エラーが発生しました。ここで hses-packet-analysis スキルを使ってLLMにパケット解析をしてもらいましょう。
+
+hses-packet-analysis は、tsharkでパケットをキャプチャし、hses-protocol スキルのプロトコル仕様と照合してレポートを出力するスキルです。このようにスキル間で連携することで、複雑な解析タスクにも対応できます。
+
+### 解析プロンプト
+
+以下のプロンプトを入力しました。
+
+> cargo run -- 192.168.0.18 TEST が失敗します。パケット解析してマークダウンに結果を出力して。
+
+### 解析結果
+
+以下の解析レポートが出力されました（一部抜粋）。
+
+---
+
+（中略）
+
+**3. Sequence Diagram**
+
+```mermaid
+sequenceDiagram
+    participant C as Client (192.168.0.18:40037)
+    participant R as Robot Controller (192.168.0.18:10040)
+
+    C->>R: Status Read (0x72) Instance=1
+    R-->>C: Response (Status=0x00, Payload=7 bytes)
+    Note over C: ❌ buffer underflow エラー
+```
+
+**4. Communication Sequence**
+
+| # | Time (sec) | Dir | Command | Instance | Status | Description |
+|---|------------|-----|---------|----------|--------|-------------|
+| 1 | 0.000000 | →  | 0x72 (Status Read) | 1 | - | ステータス読み取りリクエスト |
+| 2 | 0.000120 | ←  | 0x72 (Status Read) | - | 0x00 (Normal) | レスポンス受信、ペイロード7バイト |
+
+（中略）
+
+**6. Packet Details**
+
+**Packet #1 - Request (Client → Controller)**
+
+| Field | Offset | Raw (hex) | Value | Description |
+|-------|--------|-----------|-------|-------------|
+| Magic | 0-3 | 59455243 | "YERC" | プロトコルマジック |
+| Header Size | 4-5 | 2000 | 32 | ヘッダーサイズ (リトルエンディアン) |
+| Payload Size | 6-7 | 0000 | 0 | ペイロードなし |
+| Reserved | 8 | 03 | 0x03 | 予約 |
+| Division | 9 | 01 | Robot (0x01) | ロボット制御 |
+| ACK | 10 | 00 | Request | リクエスト |
+| Request ID | 11 | 01 | 1 | セッションID |
+| Block Number | 12-15 | 00000000 | 0 | リクエストは常に0 |
+| Reserved | 16-23 | 3939393939393939 | "99999999" | 予約領域 |
+| Command ID | 24-25 | 7200 | 0x0072 | Status Reading |
+| Instance | 26-27 | 0100 | 1 | Status Data 1 |
+| Attribute | 28 | 00 | 0 | - |
+| Service | 29 | 01 | Get_Attribute_All | 全属性取得 |
+| Padding | 30-31 | 0000 | - | パディング |
+
+**Raw Data**:
+```
+5945524320000000030100010000000039393939393939397200010000010000
+```
+
+**Packet #2 - Response (Controller → Client)**
+
+| Field | Offset | Raw (hex) | Value | Description |
+|-------|--------|-----------|-------|-------------|
+| Magic | 0-3 | 59455243 | "YERC" | プロトコルマジック |
+| Header Size | 4-5 | 2000 | 32 | ヘッダーサイズ |
+| Payload Size | 6-7 | 0700 | 7 | ペイロード7バイト |
+| Reserved | 8 | 03 | 0x03 | 予約 |
+| Division | 9 | 01 | Robot (0x01) | ロボット制御 |
+| ACK | 10 | 01 | Response | レスポンス |
+| Request ID | 11 | 01 | 1 | セッションID |
+| Block Number | 12-15 | 00000080 | 0x80000000 | 単一レスポンス |
+| Reserved | 16-23 | 3939393939393939 | "99999999" | 予約領域 |
+| Service | 24 | 81 | 0x01 + 0x80 | Get_Attribute_All レスポンス |
+| Status | 25 | 00 | Normal (0x00) | 正常応答 |
+| Added Status Size | 26 | 02 | 2 bytes | 追加ステータスサイズ |
+| Padding | 27 | 00 | - | パディング |
+| Added Status | 28-29 | 0000 | 0x0000 | エラーなし |
+| Padding | 30-31 | 0000 | - | パディング |
+
+**Payload (7 bytes)**:
+```
+00 00 00 00 00 00 00
+```
+
+**Raw Data**:
+```
+594552432000070003010101000000803939393939393939810002000000000000000000000000
+```
+
+**7. Root Cause Analysis**
+
+**問題の特定**
+
+**エラー**: `Protocol error: buffer underflow`
+
+**原因**
+
+Status Reading (Command 0x72, Instance 1) のレスポンスに問題があります。
+
+1. **期待されるペイロード**: Status Data 1 は通常 **4バイト** (32ビット) のステータスフラグを返す
+2. **実際のペイロード**: **7バイト** (すべてゼロ)
+
+ペイロードの内容はすべてゼロです。
+
+```
+Expected: [status_data_1: 4 bytes]
+Actual:   [00 00 00 00 00 00 00] (7 bytes of zeros)
+```
+
+**考えられる原因**
+
+1. **シミュレーター/モック環境**: `192.168.0.18` はこのマシン自体のIPアドレスである。実際のロボットコントローラーではなく、シミュレーターまたはモックサーバーが応答している
+2. **モックサーバーの不完全な実装**: シミュレーターがStatus Data 1のペイロードを正しく構築していない可能性がある
+3. **クライアントのパース処理**: クライアントは `Added Status Size = 2` を見て追加の2バイトを読もうとするため、ペイロード構造との不一致の可能性がある
+
+---
+
+シンプルなプロンプトから、パケットのバイナリデータをプロトコル仕様と照合してくれました。Data 1が本来4バイトなのに7バイトなのか、Data 2が本来4バイトなのに3バイトなのかは分かりませんが、Data 1かData 2の構築方法がサーバー側と合っていないことが分かります。このように、Agent Skillsを活用することで通信障害のデバッグ作業もLLMに任せることができます。
+
 ## まとめ
 
-本記事では、安川ロボットコントローラのHSES通信クライアント（moto-hses）とAgent Skillsを組み合わせた取り組みを紹介しました。LLMによるコントローラ通信コードの自動生成を実現しています。
+本記事では、安川ロボットコントローラのHSES通信クライアント（moto-hses）とAgent Skillsを組み合わせた取り組みを紹介しました。
 
-産業用ロボットのプロトコル仕様はPDFとして配布されていたり、ドメイン知識が必要だったりとLLMには扱いにくい情報ですが、Agent Skillsの形式に整備すればこの課題を解決できます。
+- **コード生成**: moto-hses-usage スキルにより、LLMがmoto-hsesを使った適切な通信コードを自動生成
+- **パケット解析**: hses-packet-analysis スキルにより、通信障害時のデバッグをLLMに委任
+
+産業用ロボットのプロトコル仕様はPDFとして配布されていたり、ドメイン知識が必要だったりとLLMには扱いにくい情報ですが、Agent Skillsの形式に整備すればこの課題を解決できます。コード生成から保守・デバッグまで、一貫してLLMに任せられる環境が整いつつあります。
 
 ## 今後の展望
 

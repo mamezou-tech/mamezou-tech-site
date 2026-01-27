@@ -1,7 +1,7 @@
 ---
 title: LLMでロボット通信コードを書く - 安川HSES向けAgent Skillsの紹介
 author: masayuki-kono
-date: 2026-01-27
+date: 2026-01-28
 tags: [Robot, Yaskawa, Cursor, "Agent Skills"]
 image: true
 ---

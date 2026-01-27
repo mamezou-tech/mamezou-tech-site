@@ -134,10 +134,10 @@ Agent Skills[^5] は、AIコーディングエージェントに特定のドメ�
 
 ```bash
 # Cursorの場合
-npx add-skill masayuki-kono/agent-skills --skill hses-protocol --skill moto-hses-usage --skill hses-packet-analysis -a cursor -y
+npx add-skill masayuki-kono/agent-skills -s hses-protocol moto-hses-usage hses-packet-analysis -a cursor -y
 
 # Claude Codeの場合
-npx add-skill masayuki-kono/agent-skills --skill hses-protocol --skill moto-hses-usage --skill hses-packet-analysis -a claude-code -y
+npx add-skill masayuki-kono/agent-skills -s hses-protocol moto-hses-usage hses-packet-analysis -a claude-code -y
 ```
 
 インストールすると、プロジェクトに以下のようなディレクトリ構造でスキルが配置されます。

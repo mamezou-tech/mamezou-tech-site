@@ -142,17 +142,28 @@ npx add-skill masayuki-kono/agent-skills --skill hses-protocol --skill moto-hses
 インストールすると、プロジェクトに以下のようなディレクトリ構造でスキルが配置されます。
 
 ```
-.agents/skills/
-├── hses-protocol/
-│   ├── SKILL.md
-│   └── references/
-│       └── hses-protocol.md
-└── moto-hses-usage/
-    ├── SKILL.md
-    └── references/
-        ├── protocol-commands.md
-        └── examples/
-            └── *.rs
+.agents/
+└── skills
+    ├── hses-protocol
+    │   ├── references
+    │   │   ├── data-types.md
+    │   │   ├── error-codes.md
+    │   │   ├── file-commands.md
+    │   │   ├── protocol-overview.md
+    │   │   ├── robot-commands-control.md
+    │   │   ├── robot-commands-status.md
+    │   │   ├── robot-commands-variables.md
+    │   │   └── sequence-diagrams.md
+    │   └── SKILL.md
+    └── moto-hses-usage
+        ├── references
+        │   ├── examples
+        │   │   ├── alarm_operations.rs
+        │   │   ├── job_start.rs
+        │   │   ├── read_status.rs
+        │   │   └── ...
+        │   └── protocol-commands.md
+        └── SKILL.md
 ```
 
 Cursorの場合は `.cursor/skills/` 配下にシンボリックリンクが作成され、AIエージェントがスキルを参照できるようになります。add-skillの詳しい使い方については公式リポジトリ[^6]を参照してください。

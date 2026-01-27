@@ -221,32 +221,51 @@ cargo run -- 192.168.0.18 TEST
 
 ## Agent Skillsを使ったパケット解析デモ
 
-次に、通信障害時のデバッグにスキルを活用する例を紹介します。
+次に、通信障害時のデバッグにスキルを活用する例を紹介します。hses-packet-analysis スキルは、tsharkでパケットをキャプチャし、hses-protocol スキルのプロトコル仕様と照合してレポートを出力します。このようにスキル間で連携することで、複雑な解析タスクにも対応できます。
 
 ### 障害シナリオの作成
 
-Status Reading（0x72）コマンドの応答パケットをモックサーバー側で意図的に不正なデータに書き換えて返信してみます。
+検証のため、Status Reading（0x72）コマンドの応答パケットをモックサーバー側で意図的に不正なデータに書き換えて返信してみます。
 
-HSESプロトコルでは、Status Readingコマンドの応答ペイロードは以下の2つのデータで構成されます。
+Status Reading の Data 1 フィールドは 4バイト（32ビット）ですが、有効なステータスビットは下位8ビットのみ使用されます。
 
-- Data 1（4バイト）：動作モード・実行状態
-- Data 2（4バイト）：HOLD状態・アラーム・サーボ状態
+| ビット | 内容 |
+|--------|------|
+| Bit 0 | Step モード |
+| Bit 1 | One Cycle モード |
+| Bit 2 | Continuous モード |
+| Bit 3 | Running（動作中） |
+| Bit 4 | Speed Limited |
+| Bit 5 | Teach モード |
+| Bit 6 | Play モード |
+| Bit 7 | Remote モード |
+| Bit 8-31 | 未使用（常に0であるべき） |
 
-期待されるペイロードは8バイトですが、このペイロードを意図的に7バイトで返すようにモックサーバーを設定しました。
+#### 仕様違反の内容
 
-先ほど生成したアプリケーションを実行すると、以下のエラーログが出力されます。
+Data 1 の上位バイト（Bit 16-23）に値 `0x01` を設定し、定義された値域を超過させます。
 
 ```
-[2026-01-27T13:51:41Z INFO  moto_hses_examples] Connecting to robot controller: 192.168.0.18:10040
-[2026-01-27T13:51:41Z INFO  moto_hses_examples] ✓ Successfully connected to controller
-[2026-01-27T13:51:41Z INFO  moto_hses_examples] Reading initial status...
-[2026-01-27T13:51:41Z ERROR moto_hses_examples] ✗ Failed to read status: Protocol error: buffer underflow
-Error: ProtocolError(Underflow)
+期待値: [0x00][0x00][0x00][0x00]  （上位3バイトは常に0）
+実際:   [0x00][0x00][0x01][0x00]  （3バイト目に0x01）
+         ↓    ↓    ↓    ↓
+        Bit  Bit  Bit  Bit
+        0-7  8-15 16-23 24-31
+                   ↑
+              不正な値
 ```
 
-`buffer underflow`エラーが発生しました。ここで hses-packet-analysis スキルを使ってLLMにパケット解析をしてもらいましょう。
+この状態で先ほど生成したアプリケーションを実行すると、以下のエラーログが出力されます。
 
-hses-packet-analysis は、tsharkでパケットをキャプチャし、hses-protocol スキルのプロトコル仕様と照合してレポートを出力するスキルです。このようにスキル間で連携することで、複雑な解析タスクにも対応できます。
+```
+[2026-01-27T21:18:54Z INFO  moto_hses_examples] Connecting to robot controller: 192.168.0.18:10040
+[2026-01-27T21:18:54Z INFO  moto_hses_examples] ✓ Successfully connected to controller
+[2026-01-27T21:18:54Z INFO  moto_hses_examples] Reading initial status...
+[2026-01-27T21:18:54Z ERROR moto_hses_examples] ✗ Failed to read status: Protocol error: deserialization error: Invalid status word value
+Error: ProtocolError(Deserialization("Invalid status word value"))
+```
+
+`Invalid status word value`エラーが発生しました。ここで hses-packet-analysis スキルを使ってLLMにパケット解析をしてもらいましょう。
 
 ### 解析プロンプト
 
@@ -256,118 +275,203 @@ hses-packet-analysis は、tsharkでパケットをキャプチャし、hses-pro
 
 ### 解析結果
 
-以下の解析レポートが出力されました（一部抜粋）。
+以下の解析レポートが出力されました。スキルはパケットキャプチャを実行し、プロトコル仕様と照合して問題箇所を特定しています。
+
+:::info: レポートの構成
+出力されるレポートには、プロトコル検証結果、シーケンス図、パケット詳細（バイナリ解析）、推奨対応を含みます。今回は Status Data 1 の bit 16 に不正な値がセットされているという仕様違反を原因として特定しました。
+:::
 
 ---
 
-（中略）
+# HSES Protocol Analysis Report
 
-**3. Sequence Diagram**
+**Generated:** 2026-01-28 06:19:36  
+**Capture File:** hses_capture_20260128_061936.pcap  
+**Export File:** hses_export_20260128_061936.txt
+
+## 1. Summary
+
+| Metric | Value |
+|--------|-------|
+| Total Packets | 2 |
+| Requests | 1 |
+| Responses | 1 |
+| Errors | 0 (protocol level) |
+| Duration | 0.000136 sec |
+
+**Issue Detected:** Application error "Invalid status word value" - the robot controller returned a status value with an unexpected bit set (bit 16) that is not defined in the protocol specification.
+
+## 2. Protocol Validation
+
+| Check | Result | Details |
+|-------|--------|---------|
+| Magic bytes | ✅ Pass | Both packets start with "YERC" (0x59455243) |
+| Header size | ✅ Pass | All headers are 32 bytes (0x0020) |
+| Reserved (byte 8) | ✅ Pass | Value is 0x03 |
+| Reserved (bytes 16-23) | ✅ Pass | Value is "99999999" |
+| Division | ✅ Pass | 0x01 (Robot) |
+| ACK field | ✅ Pass | Request=0x00, Response=0x01 |
+| Block number | ✅ Pass | Request=0, Response=0x80000000 (single) |
+| Request/Response pairs | ✅ Pass | 1 request matched with 1 response |
+| Service code match | ✅ Pass | Response service (0x81) = Request service (0x01) + 0x80 |
+| Command ID | ✅ Pass | 0x72 (Status reading) is valid |
+| Response status | ✅ Pass | 0x00 (Normal reply) |
+| **Payload validity** | ⚠️ Warning | Status word contains undefined bit 16 |
+
+### Payload Analysis Issue
+
+The response payload contains status data with an unexpected value:
+
+- **Expected:** Status Data 1 should only use bits 0-7 (bits 8-15 are reserved)
+- **Received:** `0x00010000` (bit 16 is set)
+- **Consequence:** `moto-hses` library rejects this value as "Invalid status word value"
+
+## 3. Sequence Diagram
 
 ```mermaid
 sequenceDiagram
-    participant C as Client (192.168.0.18:40037)
-    participant R as Robot Controller (192.168.0.18:10040)
+    participant C as Client
+    participant R as Robot Controller
 
-    C->>R: Status Read (0x72) Instance=1
-    R-->>C: Response (Status=0x00, Payload=7 bytes)
-    Note over C: ❌ buffer underflow エラー
+    C->>R: Status Reading (0x72) Instance=1
+    R-->>C: Status=0x00 (OK), Data=0x00010000
+    Note over C: Deserialization failed:<br/>Invalid status word value
 ```
 
-**4. Communication Sequence**
+## 4. Communication Sequence
 
-| # | Time (sec) | Dir | Command | Instance | Status | Description |
-|---|------------|-----|---------|----------|--------|-------------|
-| 1 | 0.000000 | →  | 0x72 (Status Read) | 1 | - | ステータス読み取りリクエスト |
-| 2 | 0.000120 | ←  | 0x72 (Status Read) | - | 0x00 (Normal) | レスポンス受信、ペイロード7バイト |
+| # | Time (sec) | Direction | Command | Instance | Status | Description |
+|---|------------|-----------|---------|----------|--------|-------------|
+| 1 | 0.000000 | Request | Status Reading (0x72) | 1 | - | Read Status Data 1 |
+| 2 | 0.000136 | Response | Status Reading | - | 0x00 (OK) | Returned status=0x00010000 |
 
-（中略）
+## 5. Protocol Errors
 
-**6. Packet Details**
+No protocol-level errors detected. However, an application-level deserialization error occurred.
 
-**Packet #1 - Request (Client → Controller)**
+| # | Time | Command | Issue | Meaning |
+|---|------|---------|-------|---------|
+| 2 | 0.000136 | Status Reading | Status word bit 16 set | Robot returned status data with undefined bit, causing deserialization failure |
 
-| Field | Offset | Raw (hex) | Value | Description |
-|-------|--------|-----------|-------|-------------|
-| Magic | 0-3 | 59455243 | "YERC" | プロトコルマジック |
-| Header Size | 4-5 | 2000 | 32 | ヘッダーサイズ (リトルエンディアン) |
-| Payload Size | 6-7 | 0000 | 0 | ペイロードなし |
-| Reserved | 8 | 03 | 0x03 | 予約 |
-| Division | 9 | 01 | Robot (0x01) | ロボット制御 |
-| ACK | 10 | 00 | Request | リクエスト |
-| Request ID | 11 | 01 | 1 | セッションID |
-| Block Number | 12-15 | 00000000 | 0 | リクエストは常に0 |
-| Reserved | 16-23 | 3939393939393939 | "99999999" | 予約領域 |
-| Command ID | 24-25 | 7200 | 0x0072 | Status Reading |
-| Instance | 26-27 | 0100 | 1 | Status Data 1 |
-| Attribute | 28 | 00 | 0 | - |
-| Service | 29 | 01 | Get_Attribute_All | 全属性取得 |
-| Padding | 30-31 | 0000 | - | パディング |
+### Root Cause Analysis
 
-**Raw Data**:
+The robot controller returned Status Data 1 with value `0x00010000`, which has bit 16 set. According to the HSES protocol specification:
+
+**Status Data 1 (Command 0x72, Instance 1) bit definitions:**
+
+| Bit | Meaning |
+|-----|---------|
+| 0 | Step mode |
+| 1 | One-cycle mode |
+| 2 | Continuous mode |
+| 3 | Running |
+| 4 | Speed limited |
+| 5 | Teach mode |
+| 6 | Play mode |
+| 7 | Remote mode |
+| 8-15 | Reserved |
+
+Bit 16 is not defined in the specification. The `moto-hses` library strictly validates status values and rejects undefined bits.
+
+**Possible causes:**
+1. Newer firmware version with extended status bits not yet documented
+2. Controller-specific extension to the protocol
+3. Memory/data corruption on the controller
+
+## 6. Packet Details
+
+### Packet 1 - Request
+
+| Field | Value | Description |
+|-------|-------|-------------|
+| Time | 0.000000 | Start of capture |
+| Type | Request | ACK=0x00 |
+| Magic | YERC | 0x59455243 |
+| Header Size | 32 | 0x0020 |
+| Payload Size | 0 | No payload |
+| Division | Robot | 0x01 |
+| Request ID | 1 | Session ID |
+| Block Number | 0 | Request block |
+| Command ID | 0x0072 | Status reading |
+| Instance | 1 | Status Data 1 |
+| Attribute | 0 | Default |
+| Service | 0x01 | Get_Attribute_All |
+
+**Raw Hex:**
 ```
-5945524320000000030100010000000039393939393939397200010000010000
-```
-
-**Packet #2 - Response (Controller → Client)**
-
-| Field | Offset | Raw (hex) | Value | Description |
-|-------|--------|-----------|-------|-------------|
-| Magic | 0-3 | 59455243 | "YERC" | プロトコルマジック |
-| Header Size | 4-5 | 2000 | 32 | ヘッダーサイズ |
-| Payload Size | 6-7 | 0700 | 7 | ペイロード7バイト |
-| Reserved | 8 | 03 | 0x03 | 予約 |
-| Division | 9 | 01 | Robot (0x01) | ロボット制御 |
-| ACK | 10 | 01 | Response | レスポンス |
-| Request ID | 11 | 01 | 1 | セッションID |
-| Block Number | 12-15 | 00000080 | 0x80000000 | 単一レスポンス |
-| Reserved | 16-23 | 3939393939393939 | "99999999" | 予約領域 |
-| Service | 24 | 81 | 0x01 + 0x80 | Get_Attribute_All レスポンス |
-| Status | 25 | 00 | Normal (0x00) | 正常応答 |
-| Added Status Size | 26 | 02 | 2 bytes | 追加ステータスサイズ |
-| Padding | 27 | 00 | - | パディング |
-| Added Status | 28-29 | 0000 | 0x0000 | エラーなし |
-| Padding | 30-31 | 0000 | - | パディング |
-
-**Payload (7 bytes)**:
-```
-00 00 00 00 00 00 00
-```
-
-**Raw Data**:
-```
-594552432000070003010101000000803939393939393939810002000000000000000000000000
-```
-
-**7. Root Cause Analysis**
-
-**問題の特定**
-
-**エラー**: `Protocol error: buffer underflow`
-
-**原因**
-
-Status Reading (Command 0x72, Instance 1) のレスポンスに問題があります。
-
-1. **期待されるペイロード**: Status Data 1 は通常 **4バイト** (32ビット) のステータスフラグを返す
-2. **実際のペイロード**: **7バイト** (すべてゼロ)
-
-ペイロードの内容はすべてゼロです。
-
-```
-Expected: [status_data_1: 4 bytes]
-Actual:   [00 00 00 00 00 00 00] (7 bytes of zeros)
+59455243 2000 0000 03 01 00 01 00000000 3939393939393939 7200 0100 00 01 0000
+│        │    │    │  │  │  │  │        │                │    │    │  │  │
+│        │    │    │  │  │  │  │        │                │    │    │  │  └─ Padding
+│        │    │    │  │  │  │  │        │                │    │    │  └─ Service (Get_Attribute_All)
+│        │    │    │  │  │  │  │        │                │    │    └─ Attribute
+│        │    │    │  │  │  │  │        │                │    └─ Instance (1)
+│        │    │    │  │  │  │  │        │                └─ Command ID (Status reading)
+│        │    │    │  │  │  │  │        └─ Reserved "99999999"
+│        │    │    │  │  │  │  └─ Block Number (0)
+│        │    │    │  │  │  └─ Request ID (1)
+│        │    │    │  │  └─ ACK (Request)
+│        │    │    │  └─ Division (Robot)
+│        │    │    └─ Reserved (0x03)
+│        │    └─ Payload Size (0)
+│        └─ Header Size (32)
+└─ Magic "YERC"
 ```
 
-**考えられる原因**
+### Packet 2 - Response
 
-1. **シミュレーター/モック環境**: `192.168.0.18` はこのマシン自体のIPアドレスである。実際のロボットコントローラーではなく、シミュレーターまたはモックサーバーが応答している
-2. **モックサーバーの不完全な実装**: シミュレーターがStatus Data 1のペイロードを正しく構築していない可能性がある
-3. **クライアントのパース処理**: クライアントは `Added Status Size = 2` を見て追加の2バイトを読もうとするため、ペイロード構造との不一致の可能性がある
+| Field | Value | Description |
+|-------|-------|-------------|
+| Time | 0.000136 | 136μs after request |
+| Type | Response | ACK=0x01 |
+| Magic | YERC | 0x59455243 |
+| Header Size | 32 | 0x0020 |
+| Payload Size | 8 | Status data |
+| Division | Robot | 0x01 |
+| Request ID | 1 | Matches request |
+| Block Number | 0x80000000 | Single response |
+| Service | 0x81 | Get_Attribute_All + 0x80 |
+| Status | 0x00 | Normal reply |
+| Added Status Size | 2 | |
+| Added Status | 0x0000 | No error |
+
+**Payload Data:**
+```
+00000100 00000000
+│        └─ Status Data 1 part 2: 0x00000000
+└─ Status Data 1 part 1: 0x00010000 (bit 16 set - UNEXPECTED)
+```
+
+**Raw Hex:**
+```
+59455243 2000 0800 03 01 01 01 00000080 3939393939393939 81 00 02 00 0000 0000 | 00000100 00000000
+│        │    │    │  │  │  │  │        │                │  │  │  │  │    │      │
+│        │    │    │  │  │  │  │        │                │  │  │  │  │    │      └─ Payload (8 bytes)
+│        │    │    │  │  │  │  │        │                │  │  │  │  │    └─ Padding
+│        │    │    │  │  │  │  │        │                │  │  │  │  └─ Added Status (0x0000)
+│        │    │    │  │  │  │  │        │                │  │  │  └─ Padding
+│        │    │    │  │  │  │  │        │                │  │  └─ Added Status Size (2)
+│        │    │    │  │  │  │  │        │                │  └─ Status (0x00 = OK)
+│        │    │    │  │  │  │  │        │                └─ Service (0x81 = 0x01 + 0x80)
+│        │    │    │  │  │  │  │        └─ Reserved "99999999"
+│        │    │    │  │  │  │  └─ Block Number (0x80000000 = single)
+│        │    │    │  │  │  └─ Request ID (1)
+│        │    │    │  │  └─ ACK (Response)
+│        │    │    │  └─ Division (Robot)
+│        │    │    └─ Reserved (0x03)
+│        │    └─ Payload Size (8)
+│        └─ Header Size (32)
+└─ Magic "YERC"
+```
+
+## 7. Recommendations
+
+1. **Investigate controller firmware** - Check if the robot controller has a newer firmware that uses extended status bits
+2. **Update moto-hses library** - Consider relaxing status validation to ignore unknown bits (mask with `0x00FF` for Status Data 1)
+3. **Contact Yaskawa** - If the issue persists, consult Yaskawa support about the meaning of bit 16 in Status Data 1
 
 ---
 
-シンプルなプロンプトから、パケットのバイナリデータをプロトコル仕様と照合してくれました。Data 1が本来4バイトなのに7バイトなのか、Data 2が本来4バイトなのに3バイトなのかは分かりませんが、Data 1かData 2の構築方法がサーバー側と合っていないことが分かります。このように、Agent Skillsを活用することで通信障害のデバッグ作業もLLMに任せることができます。
+シンプルなプロンプトから、パケットのバイナリデータをプロトコル仕様と照合し、原因を特定してくれました。このように、Agent Skillsを活用することで通信障害のデバッグ作業もLLMに任せることができます。
 
 ## まとめ
 

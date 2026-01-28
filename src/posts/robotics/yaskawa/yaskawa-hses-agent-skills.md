@@ -12,9 +12,9 @@ image: true
 
 一方で、産業用ロボットコントローラのプロトコル仕様はPDFで配布されていることが多く、LLMへの入力にはマークダウン化が必要です。マークダウン化しても理解にはドメイン知識を要したり、Webに活用事例のような情報が少なくLLMの学習データが不足していたりと、別途コンテキストの入力が必要なケースも多いです。
 
-そこで今回、コントローラ通信プロトコルとクライアントの使用方法を**Agent Skills**として整備し、LLMにコントローラ通信コードを書かせる取り組みを行いました[^2]。
+そこで今回、コントローラ通信プロトコルとクライアントの使用方法を**Agent Skills**として整備し、LLMにコントローラ通信コードを書かせる取り組みを行いました。
 
-今回は安川ロボットのHSES（High-Speed Ethernet Server）プロトコル向けにスキルを作成し、Rust製クライアント moto-hses[^1] と組み合わせて検証しました。
+今回は安川ロボットのHSES（High-Speed Ethernet Server）プロトコル向けにスキルを作成し、Rust製クライアント [moto-hses](https://github.com/masayuki-kono/moto-hses) と組み合わせて検証しました。
 
 通信仕様やクライアントの使用方法をAgent Skillsの形式で提供することで、Webに活用事例がなくてもLLMが適切なコードを生成してくれます。まだまだ内容は成熟していませんが、スキルを活用・改善してゆくことでコントローラとの通信コードはLLMが自動で実装してくれつつあります。また、通信の障害が発生した際にパケットデータと通信プロトコルを照合してデバッグするといった使い方も可能であり、コード生成から保守までLLMへ任せられるようになってきました。
 
@@ -32,20 +32,20 @@ image: true
 | **主な用途**     | 監視・I/O制御・ジョブ起動など外部制御                                  | 高速制御・カスタム動作・外部通信タスク                    | 監視・I/O制御・ジョブ起動など外部制御                                                             |
 | **有償 / 無償**  | **有償（USBドングルによるHWライセンス。実行環境ごとに必要）**                                       | **有償（開発ライセンスのみ。実行環境は不要）**                   | **無償（Apache License 2.0）**                                                       |
 | **特徴**       | Windows専用、歴史が長く安定だが新機能は更新停止傾向。                        | 最も自由度が高く、リアルタイム処理・外部通信も可能。             | マルチプラットフォーム・モダンAPI設計。                                                            |
-| **配布元**      | Yaskawa Electric（販売契約が必要）                               | Yaskawa Electric（契約した開発者のみ）              | [GitHub - Yaskawa-Global/YMConnect](https://github.com/Yaskawa-Global/YMConnect) |
+| **配布元**      | Yaskawa Electric（販売契約が必要）                               | Yaskawa Electric（契約した開発者のみ）              | [GitHub](https://github.com/Yaskawa-Global/YMConnect) |
 
 MotoPlusの場合は、コントローラ内部で動作するアプリとPC側の通信クライアントをそれぞれ自身で開発する必要があります。そのため、提供されている通信クライアントとしてはMotoComとYMConnectの2択となります。
 
-YMConnectは比較的最近（2024年）に公開されたSDKです。C++17以降や.NET 10以降を使用可能なモダンなプロジェクトならYMConnectが良さそうですが、既存のレガシーシステムではMotoComを使用し続けているケースも多いのではないでしょうか。YMConnectの活用事例はまだほとんど見かけません。しかし、<https://github.com/Yaskawa-Global/YMConnect/discussions> を見ると少しずつ不具合報告も挙がってきているので、徐々に採用実績も増えてくるのではないかと思います。
+YMConnectは比較的最近（2024年）に公開されたSDKです。C++17以降や.NET 10以降を使用可能なモダンなプロジェクトならYMConnectが良さそうですが、既存のレガシーシステムではMotoComを使用し続けているケースも多いのではないでしょうか。YMConnectの活用事例はまだほとんど見かけません。しかし、[YMConnectのDiscussions](https://github.com/Yaskawa-Global/YMConnect/discussions) を見ると少しずつ不具合報告も挙がってきているので、徐々に採用実績も増えてくるのではないかと思います。
 
-一方で安川ロボットのコントローラは `High-Speed Ethernet Server (HSES)` というサーバー機能を提供しており、通信プロトコルも公開されています[^4]。
+一方で安川ロボットのコントローラは `High-Speed Ethernet Server (HSES)` というサーバー機能を提供しており、通信プロトコルも公開されています（[FS100 HSES Manual (PDF)](https://www.motoman.com/getmedia/16B5CD92-BD0B-4DE0-9DC9-B71D0B6FE264/160766-1CD.pdf.aspx?ext=.pdf)）。
 
 MotoCom（恐らくYMConnectも）はHSESの通信クライアントとして安川から提供されたSDKであり、同等のクライアントは内製することができます。
 今回は上位アプリケーションがRustであったこと、レガシーシステムでも使用したいこと、LLM駆動の開発に必要なモックサーバー機能が欲しかったことから、自作したRustクライアントを使用しています。
 
 ## moto-hses: Rust製HSESクライアント
 
-moto-hses[^1] は、安川ロボットコントローラのHSES (High-Speed Ethernet Server) プロトコルに対応したRust製の非同期通信クライアントライブラリです。
+[moto-hses](https://github.com/masayuki-kono/moto-hses) は、安川ロボットコントローラのHSES (High-Speed Ethernet Server) プロトコルに対応したRust製の非同期通信クライアントライブラリです。
 
 :::info: moto-hses自体もLLMで開発
 実はこのクライアント自体もLLMで開発しました。プロトコル仕様PDFをマークダウン化したドキュメントと、リファレンスとなる別言語のクライアントコードをコンテキストとして入力しています。LLMに対するガードレールや自動フィードバックの仕組みを整備しながら開発を進めました。同様のアプローチでC#向けクライアントなども作成できそうです。この開発プロセスについては、機会があれば別の記事で紹介したいと思います。
@@ -118,7 +118,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ## Agent Skills によるLLM支援
 
-Agent Skills[^5] は、AIコーディングエージェントに特定のドメイン知識や使用方法を教えるためのフォーマットです。スキルは、SKILL.md（エージェントへの指示）、references/（参考ドキュメント）、scripts/（自動化スクリプト）で構成されます。
+[Agent Skills](https://agentskills.io/) は、AIコーディングエージェントに特定のドメイン知識や使用方法を教えるためのフォーマットです。スキルは、SKILL.md（エージェントへの指示）、references/（参考ドキュメント）、scripts/（自動化スクリプト）で構成されます。
 
 今回、moto-hsesを活用するために以下の3つのスキルを作成しました。
 
@@ -130,7 +130,7 @@ Agent Skills[^5] は、AIコーディングエージェントに特定のドメ�
 
 ### スキルのインストール
 
-作成したスキルはGitHubリポジトリ[^2]で公開しています。Vercelが提供するスキルインストーラー add-skill[^6] を使用して、プロジェクトにスキルを導入できます。
+作成したスキルは[GitHubリポジトリ](https://github.com/masayuki-kono/agent-skills)で公開しています。Vercelが提供するスキルインストーラー [add-skill](https://github.com/vercel-labs/add-skill) を使用して、プロジェクトにスキルを導入できます。
 
 ```bash
 # Cursorの場合
@@ -165,13 +165,13 @@ npx add-skill masayuki-kono/agent-skills -s hses-protocol moto-hses-usage hses-p
         └── SKILL.md
 ```
 
-Cursorの場合は `.cursor/skills/` 配下にシンボリックリンクが作成され、AIエージェントがスキルを参照できるようになります。add-skillの詳しい使い方については公式リポジトリ[^6]を参照してください。
+Cursorの場合は `.cursor/skills/` 配下にシンボリックリンクが作成され、AIエージェントがスキルを参照できるようになります。add-skillの詳しい使い方については[公式リポジトリ](https://github.com/vercel-labs/add-skill)を参照してください。
 
 スキルをインストールすると、AIエージェントがHSESプロトコルを理解し、moto-hsesを使った適切なコードを生成できるようになります。
 
 ## Agent Skillsを使ったコード生成デモ
 
-スキルの効果を検証するため、Cursor Agentにコードを生成させました。生成したコードはmoto-hses-examples[^3] リポジトリで公開しています。
+スキルの効果を検証するため、Cursor Agentにコードを生成させました。生成したコードは[moto-hses-examples](https://github.com/masayuki-kono/moto-hses-examples) リポジトリで公開しています。
 
 ### 生成プロンプト
 
@@ -487,10 +487,3 @@ Bit 16 is not defined in the specification. The `moto-hses` library strictly val
 各社ロボットコントローラがROS2のようなフレームワークに対応し、共通I/Fで利用できるようになる未来も想定されますが、コントローラ側の歩み寄りが必要であり現実的には難しいと考えています。また、各社ロボットには様々な独自仕様（溶接のような用途別の機能など）があり、共通I/Fでは吸収しきれない部分も存在します。
 
 コントローラのI/Fが異なっていてもスキルが提供されれば、必要とするアプリケーションの開発をLLMが行うことは可能です。各社ロボットコントローラに対する様々なスキルを作成してゆき、ロボットシステム開発においてLLMが担える部位を増やしてゆきたいと考えています。
-
-[^1]: [moto-hses - GitHub](https://github.com/masayuki-kono/moto-hses)
-[^2]: [agent-skills - GitHub](https://github.com/masayuki-kono/agent-skills)
-[^3]: [moto-hses-examples - GitHub](https://github.com/masayuki-kono/moto-hses-examples)
-[^4]: [FS100 HSES Manual (PDF)](https://www.motoman.com/getmedia/16B5CD92-BD0B-4DE0-9DC9-B71D0B6FE264/160766-1CD.pdf.aspx?ext=.pdf)
-[^5]: [Agent Skills](https://agentskills.io/)
-[^6]: [add-skill - GitHub](https://github.com/vercel-labs/add-skill)

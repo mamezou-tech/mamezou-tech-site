@@ -47,6 +47,10 @@ enTitle: Robotics
 - [UR のシミュレータ環境を Docker で構築する](/robotics/ur/ursim-docker/)
 - [「Universal Robots」の UR+で URCap 開発](/blogs/2023/04/11/urcap-dev/)
 
+## 安川ロボット
+
+- [LLMでロボット通信コードを書く - 安川HSES向けAgent Skillsの紹介](/robotics/yaskawa/yaskawa-hses-agent-skills/)
+
 ## 産業用ネットワーク・通信
 
 - [Open62541 を使用した OPC-UA サーバ開発](/robotics/opcua/opcua_open62541_server/)

@@ -38,9 +38,9 @@ GitHub Copilotが認識できるよう、下記のように配置します。
     * `xxx.agent.md`: 特定の分野（ロールなど）に合わせて定義するエージェントファイル（e.g. backend, frontend, test）
   * `copilot-instructions.md`: 全体に適用されるルールや制約を定義するファイル
   * `instructions/`
-    * `xxx.instructions.md`: 特定の分野（テクノロジーなど）に合わせて定義するファイル。（e.g. typescript, python, react）※フォルダーで分類したくなりますが、フォルダーわけすると読み込まれません。
+    * `xxx.instructions.md`: 特定の分野（テクノロジーなど）に合わせて定義するファイル。（e.g. typescript, python, react）※サブフォルダーで分類したくなりますが、フォルダー分けすると読み込まれません。  
 
-:::warning
+:::alert
 **AGENTS.mdについて**
 
 `.github/AGENTS.md`（ディレクトリ直下）は**GitHub CLI用**のファイルです。

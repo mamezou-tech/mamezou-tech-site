@@ -8,7 +8,7 @@ image: true
 
 ## はじめに
 
-AIエージェントによる自律開発は魅力的ですが、長時間の処理でコンテキストの劣化により精度が落ちる問題があります。この課題に対するアプローチとして注目されているのは**Ralphループ**です。本記事では、Kiro CLIを使ったRalphループの検証結果と、実践で得た教訓を共有します。
+AIエージェントによる自律開発は魅力的ですが、長時間の処理でコンテキストの劣化により精度が落ちる問題があります。この課題に対するアプローチとして注目されているのは**Ralphループ**（コンテキストを都度破棄して新しいセッションで処理を継続する自律開発手法）です。本記事では、Kiro CLI[^4]（AIエージェントによる自律開発を支援するCLIツール）を使ったRalphループの検証結果と、実践で得た教訓を共有します。
 
 ## 背景：コンテキスト管理の課題とRalphループ
 
@@ -16,7 +16,7 @@ AIエージェントによる自律開発は魅力的ですが、長時間の処
 
 Ralphループの核となる原則は**コンテキスト腐敗の回避**です[^2]。1つのタスクが終わるごとにコンテキストを破棄し、新しいセッションで次のタスクを開始するというループ構造を回します。一見シンプルなテクニックですが、これにより精度を安定させながら長時間のタスク実行が可能になると考えられます。
 
-今回の検証では、定番構成のClaude Code + PRD.mdではなく、**kiro IDEの仕様成果物3種（requirements.md、design.md、tasks.md）に置き換え**ました。構造化された指示により精度向上を狙っています。
+今回の検証では、定番構成のClaude Code + PRD.md（Product Requirements Document: 製品要求仕様書）ではなく、**Kiro IDE[^5]（仕様作成からタスク管理まで対話的に支援するIDE）の仕様成果物3種（requirements.md、design.md、tasks.md）に置き換え**ました。構造化された指示により精度向上を狙っています。
 
 ## 検証題材：スプレッドシートアプリ
 
@@ -47,7 +47,7 @@ Ralphループの核となる原則は**コンテキスト腐敗の回避**で�
 
 - **テストケース総数**: 126テスト
 - **ユニットテスト**: 101テスト
-- **プロパティベーステスト**: 25テスト
+- **プロパティベーステスト**（ランダム入力により仕様の性質を検証するテスト手法）: 25テスト
 
 Kiro CLIはテスト駆動開発のアプローチに従い、プロパティベーステストによるランダム入力検証を含むテストスイートを自律構築しました。人間では予測困難な入力パターンに対しても、循環参照検知や数式評価の正確性を効率的に検証するテストが生成され、品質確保に寄与しています。
 
@@ -56,7 +56,7 @@ Kiro CLIはテスト駆動開発のアプローチに従い、プロパティベ
 
 Ralphループの実装は、以下の2ステップで進めました。
 
-## ステップ1：kiro IDEによる準備フェーズ
+## ステップ1：Kiro IDEによる準備フェーズ
 
 ### プロジェクト構成
 
@@ -75,15 +75,15 @@ project/
 
 ### 1-1. 仕様成果物の作成
 
-kiro IDEを使ってスプレッドシートアプリの仕様を定義します。
+Kiro IDEを使ってスプレッドシートアプリの仕様を定義します。
 
 Specモードで、`.kiro/specs/spreadsheet-sample/`ディレクトリに以下3つの仕様成果物を生成します。
 
-* **requirements.md**: EARS記法による要件定義。受入基準が明確に記述される
+* **requirements.md**: EARS記法（要件定義の構文ルール）による要件定義。受入基準が明確に記述される
 * **design.md**: システム設計書。アーキテクチャやコンポーネント設計が含まれる
 * **tasks.md**: 実装タスクリスト。Kiro CLIがこれを読み取り、未完了タスクを実装する
 
-kiro IDEとの対話を通じて、アプリケーションの要件を伝え、これらの仕様成果物を完成させます。この段階では、まだコードは生成されません。
+Kiro IDEとの対話を通じて、アプリケーションの要件を伝え、これらの仕様成果物を完成させます。この段階では、まだコードは生成されません。
 
 ### 1-2. シェルスクリプトの作成
 
@@ -164,7 +164,7 @@ PROMPT
 
 ## ステップ2：Kiro CLIでRalphループの実行
 
-devcontainer環境でシェルスクリプトを実行し、Ralphループを開始します。
+devcontainer（VS Codeのコンテナベース開発）環境でシェルスクリプトを実行し、Ralphループを開始します。
 
 ```bash
 $ ./afk-ralph.sh 10
@@ -223,3 +223,5 @@ All tasks verified complete after 7 iterations.
 [^1]: 16x Engineer. [LLM Context Management Guide: Performance degrades with more context](https://eval.16x.engineer/blog/llm-context-management-guide#performance-degrades-with-more-content).
 [^2]: The Ralph Wiggum Loop from 1st principles (by the creator of Ralph). [YouTube](https://www.youtube.com/watch?v=4Nna09dG_c0).
 [^3]: AIHero.dev. [Getting Started with Ralph: Create your script](https://www.aihero.dev/getting-started-with-ralph).
+[^4]: AWS. [Kiro CLI の紹介](https://aws.amazon.com/jp/blogs/news/introducing-kiro-cli/).
+[^5]: AWS. [Kiro の紹介](https://aws.amazon.com/jp/blogs/news/introducing-kiro/).

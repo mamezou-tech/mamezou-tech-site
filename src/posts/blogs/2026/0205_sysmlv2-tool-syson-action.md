@@ -3,6 +3,7 @@ title: 無料のOSSツールSysONで始めるSysMLv2モデリング（５）〜 
 author: yasumasa-takahashi
 date: 2026-02-05
 tags: [SysON,SysMLv2,MBSE,モデリング]
+image: true
 ---
 
 これまでの記事では、Part Definitionと Part Usage、Packageの作成をご紹介しました。

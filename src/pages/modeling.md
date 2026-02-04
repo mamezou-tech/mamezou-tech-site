@@ -53,6 +53,7 @@ Comming soon!
 - [無料のOSSツールSysONで始めるSysMLv2モデリング（２）〜 Packageの作成](/blogs/2026/01/15/sysmlv2-tool-syson-pkg/)
 - [無料のOSSツールSysONで始めるSysMLv2モデリング（３）〜 Part Definitionの作成](/blogs/2026/01/22/sysmlv2-tool-syson-partdef/)
 - [無料のOSSツールSysONで始めるSysMLv2モデリング（４）〜 Part Usageの作成](/blogs/2026/01/29/sysmlv2-tool-syson-partusage/)
+- [無料のOSSツールSysONで始めるSysMLv2モデリング（５）〜 Actionの作成](/blogs/2026/02/05/sysmlv2-tool-syson-action/)
 
 ## 資格試験
 ### UMTP L3認定への道

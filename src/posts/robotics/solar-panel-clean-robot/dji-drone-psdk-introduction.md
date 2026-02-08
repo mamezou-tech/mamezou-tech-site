@@ -2,7 +2,7 @@
 title: DJIドローンの Payload SDK の紹介
 author: masayuki-kono
 date: 2026-02-09
-tags: [Robot, Drone, DJI, Payload SDK, 太陽光発電, 清掃ロボット]
+tags: [Robot, Drone, DJI, Payload SDK, 太陽光発電パネル, 清掃ロボット]
 image: true
 ---
 

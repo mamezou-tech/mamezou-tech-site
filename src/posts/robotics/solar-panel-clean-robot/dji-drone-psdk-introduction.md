@@ -113,13 +113,13 @@ OSDK Port は [OSDK Expansion Module](https://dl.djicdn.com/downloads/matrice-30
 | Aircraft | Port Name | Supports App Binding |
 | -------- | ----------- | -------------------- |
 | FlyCart 100 | E-Port Lite | – |
-| M400 | E-Port V2 | ✓ |
+| FlyCart 30 | E-Port Lite | – |
 | Matrice 4D/4TD | E-Port, E-Port Lite | ✓ |
 | Matrice 4E/4T | E-Port, E-Port Lite | ✓ |
 | Matrice 3D/3TD | E-Port, E-Port Lite | – |
-| FlyCart 30 | E-Port Lite | – |
-| Mavic 3E/3T | E-Port | – |
 | Matrice 30/30T | E-Port | – |
+| Mavic 3E/3T | E-Port | – |
+| M400 | E-Port V2 | ✓ |
 | M350 RTK | E-Port | – |
 | M350 RTK | Gimbal Port | ✓ |
 | M300 RTK | OSDK Port | – |

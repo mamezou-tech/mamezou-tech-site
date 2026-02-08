@@ -26,6 +26,12 @@ enTitle: Robotics
 
 - [ロボット開発にもクリーンアーキテクチャを。「美膳」が実現する中食工場の自動化](/robotics/bizen/bizen_introduction/)
 
+## 太陽光発電パネルの清掃ロボットシステム
+
+弊社オリジナルの清掃ロボットシステムに関する記事をまとめてゆきます。
+
+- [DJIドローンの Payload SDK の紹介](/robotics/solar-panel-clean-robot/dji-drone-psdk-introduction/)
+
 ## ロボット工学
 
 主に工場や店舗で使われるロボットマニピュレータ制御の基礎技術をまとめてます。

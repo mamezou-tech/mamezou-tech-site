@@ -49,29 +49,30 @@ image: true
 
 ### ペイロードデバイス
 
-FlyCart 30 に標準で付属している以下の貨物ケースは内寸 573×416×305 mm のため、ロボットを格納できません。そのため、ドローンにロボットを固定するデバイスを内製しています。
+FlyCart 30 に標準で付属している以下の貨物ケースは内寸 573×416×305 mm のため、ロボットを格納できません。そのため、ドローンにロボットを固定するデバイスを開発しています。
 
 ![標準の貨物ケース](/img/robotics/solor-panel-clean-robot/fc-30-standard-payload.png)
 
 ## ペイロードデバイスの構成
 
 本システムにおけるペイロードデバイスの主な役割はロボットをドローンに固定することです。
-ドローンの操作端末の操作でロック機構のサーボを駆動し、ロボットを固定します。
 
-ロック機構の制御や操作端末へのウィジェットの提供はペイロードデバイス内のSBCが担います。
+ドローンの操作端末の操作でロック機構を制御し、ロボットを固定します。
+ロック機構の制御や操作端末へのウィジェットの提供はペイロードデバイス内のSBC（シングルボードコンピュータ）が担います。
 
 DJIはペイロードデバイスの開発用に [Payload SDK](https://developer.dji.com/doc/payload-sdk-tutorial/en/tutorial-map.html) というSDKを提供しています。
 
 FlyCart 30の場合は以下のインターフェイスがペイロードデバイス向けに提供されています。
 
 - [E-Port Lite](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#e-port-lite)
-    - USB Type-C のメンテナンス用ポートで、5 V/2 A の電源供給と USB 2.0 プロトコルをサポートする
-    - [DJI Assistant 2](https://www.dji.com/downloads/softwares/dji-assistant-2-for-delivery-series) がインストールされた PC と USB Type-C ケーブルで直接接続し、機体のファームウェア更新やログ収集が行える
-    - FlyCart 30 のように E-Port を提供していない機体では、E-Port Lite を USB to TTL シリアルモジュールで SBC と接続し、UART 通信が可能である
+    - USB Type-C のメンテナンス用ポート
+    - [DJI Assistant 2](https://www.dji.com/downloads/softwares/dji-assistant-2-for-delivery-series) がインストールされた PC と USB Type-C ケーブルで直接接続し、機体のファームウェア更新やログ収集が可能
+    - FlyCart 30 のように E-Port を提供していない機体では、E-Port Lite と SBC を USB to TTL シリアルモジュールで接続し、UART 通信が可能
 - [Payload Port](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#flycart-30-payload-port-power-supply-port)
-    - ペイロードデバイス向けの電源供給ポートで、定格電圧は 51.2 V である
+    - ペイロードデバイス向けの電源供給ポート
+    - 定格電圧は 51.2 V
 
-本システムのロック機構は現時点では開発中です。例えば CAN のサーボを使用する場合、サーボへの電源供給は Payload Port から行います。SBC が E-Port Lite を介して機体と連携し、サーボを制御する構成になります。
+本システムのロック機構は開発中のため詳細は割愛します。以下は CAN 対応のサーボを使う場合の構成イメージです。この場合、サーボへの電源供給は Payload Port から行い、SBC が E-Port Lite を介して機体と連携し、サーボを制御します。
 
 ![ペイロードデバイスの構成イメージ](/img/robotics/solor-panel-clean-robot/payload-device-structure.png)
 

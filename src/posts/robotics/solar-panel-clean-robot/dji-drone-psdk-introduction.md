@@ -67,7 +67,7 @@ FlyCart 30の場合は以下のインターフェイスがペイロードデバ�
 - [E-Port Lite](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#e-port-lite)
     - USB Type-C のメンテナンス用ポート
     - [DJI Assistant 2](https://www.dji.com/downloads/softwares/dji-assistant-2-for-delivery-series) がインストールされた PC と USB Type-C ケーブルで直接接続し、機体のファームウェア更新やログ収集が可能
-    - FlyCart 30 のように E-Port を提供していない機体では、E-Port Lite と SBC を USB to TTL シリアルモジュールで接続し、UART 通信が可能
+    - FlyCart 30 のように E-Port を提供していない機体では、E-Port Lite と SBC を USB to TTL シリアルモジュールで接続し、拡張ポートとして使用が可能
 - [Payload Port](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#flycart-30-payload-port-power-supply-port)
     - ペイロードデバイス向けの電源供給ポート
     - 定格電圧は 51.2 V
@@ -76,13 +76,13 @@ FlyCart 30の場合は以下のインターフェイスがペイロードデバ�
 
 ![ペイロードデバイスの構成イメージ](/img/robotics/solar-panel-clean-robot/payload-device-structure.png)
 
-## 機体が提供するさまざまなHWポート
+## 機体が提供するさまざまな拡張ポート
 
-前述した構成は FlyCart 30 の例です。機体によっては E-Port Lite 以外のポートを提供しているものもあります。
+前述した構成は FlyCart 30 の例です。機体によっては E-Port Lite 以外の拡張ポートを提供しているものもあります。
 
 ### [E-Port](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#e-port)
 
-新世代機体のメイン拡張ポートで、電源、UART、USB を提供します。[E-Port Development Kit](https://store.dji.com/jp/product/dji-e-port-development-kit) を中継して SBC と接続し、UART や USB の通信が可能になります。
+多くの機体がサポートしている拡張ポートで、電源、UART、USB を提供します。[E-Port Development Kit](https://store.dji.com/jp/product/dji-e-port-development-kit) を中継してカスタムペイロードと接続し、UART や USB の通信が可能になります。
 
 E-Port Lite ではカメラ画像の取得などに制約がありますが、E-Port では Development Kit を中継することで USB が拡張され、多くの機能を利用できます。
 
@@ -90,24 +90,27 @@ E-Port Lite ではカメラ画像の取得などに制約がありますが、E-
 
 ### [E-Port V2](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#e-port-v2-port)
 
-M400（Matrice 400）などで提供される拡張ポートです。[E-Port V2 Development Kit](https://store.dji.com/jp/product/dji-e-port-v2-development-kit) を中継して SBC と接続します。
+M400（Matrice 400）で提供される拡張ポートです（M400 は 2025年6月発表であり、E-Port V2 は比較的、最近登場したポートです）。E-Port が機体あたり 1 ポートであることが多いのに対し、E-Port V2 は M400 の機体下部に 4 ポートを備え、1 ポートあたり 120 W の電源供給が可能です。電源出力は 13.6 V / 17 V / 24 V の 3 段階で調整できます。USB 3.0 をサポートしており、4K ストリームやレーダーポイントクラウドデータなどを同時に取得可能です。[E-Port V2 Development Kit](https://store.dji.com/jp/product/dji-e-port-v2-development-kit) を中継してカスタムペイロードと接続します。
 
 ### [Gimbal Port](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#gimbal-port)
 
-ジンバルペイロードを機体に接続するための標準インターフェースで、PSDK Port とも呼ばれます（M300 RTK・M350 RTK 等のジンバル部に装備）。[Payload SDK Development Board Kit 2.0](https://store.dji.com/product/psdk-development-kit-v2) を中継して SBC と接続します。
+M300 RTK（2020年5月発表）と M350 RTK（2023年5月発表）のジンバル部に装備される標準インターフェースで、PSDK Port とも呼ばれます。Zenmuse シリーズに代表される DJI 製ジンバルペイロード（カメラ・センサー等）を接続するためのインターフェースです。
+
+![Zenmuse H20](/img/robotics/solar-panel-clean-robot/zenmuse-h20.png)
+
+サードパーティ向けには [Payload SDK Development Board Kit 2.0](https://store.dji.com/product/psdk-development-kit-v2) が提供されており、これを中継すればカスタムペイロードと接続できます。
 
 ### [OSDK Port](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#osdk-port)
 
-M300 RTK のみが提供する旧来のインターフェースです。E-Port 登場以前の方式であり、[Onboard SDK (OSDK)](https://developer.dji.com/document/30ac6801-db84-46c2-baf2-8ad8d62bf3ba) を利用しますが、OSDK の最終リリースは `2021-02-02(OSDK 4.1.0)` で、新機能の追加は終了しています。
+現行機体ではM300 RTK のみが提供する旧来のインターフェースです。E-Port 登場以前の方式であり、[Onboard SDK (OSDK)](https://developer.dji.com/document/30ac6801-db84-46c2-baf2-8ad8d62bf3ba) を利用しますが、OSDK の最終リリースは `2021-02-02(OSDK 4.1.0)` で、新機能の追加は終了しています。
 
 OSDK Port は [OSDK Expansion Module](https://dl.djicdn.com/downloads/matrice-300/20200617/OSDK_Expansion_Module_Product_Information.pdf) 以外に `E-Port Development Kit` との接続もサポートしており、Payload SDK（PSDK）を使用できます。[OSDK Version Support Information](https://developer.dji.com/document/30ac6801-db84-46c2-baf2-8ad8d62bf3ba)（2023年5月9日付）では、**OSDK 4.x の機能はすべて [PSDK V3](https://developer.dji.com/doc/payload-sdk-tutorial/en/) へ移行済みである**とされています。新規開発では PSDK V3 への移行が推奨されています。
 
+## 機体別の拡張ポート
 
-## 各機体の提供ポート
+以下は、現行機体が提供している拡張ポートの一覧です。[Standard Hardware Port Introduction](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#standard-hardware-port-introduction) より抜粋。
 
-[Standard Hardware Port Introduction](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#standard-hardware-port-introduction) より抜粋。
-
-| Aircraft | E-Port Name | Supports App Binding |
+| Aircraft | Port Name | Supports App Binding |
 | -------- | ----------- | -------------------- |
 | FlyCart 100 | E-Port Lite | – |
 | M400 | E-Port V2 | ✓ |
@@ -315,7 +318,7 @@ DJI の [Payload-SDK](https://github.com/dji-sdk/Payload-SDK) リポジトリに
 
 ### psdk_lib
 
-プラットフォームごとの静的ライブラリが配置されています。各ツールチェーンについては [Using third-party development platforms](https://developer.dji.com/doc/payload-sdk-tutorial/en/model-instruction/choose-develop-platform.html#using-third-party-development-platforms) を参照してください。Raspberry Pi や Jetson の場合は `aarch64-linux-gnu-gcc/libpayloadsdk.a` を使用します。ここにないツールチェーンを使う場合は、[PSDK platform static library link](https://sdk-forum.dji.net/hc/en-us/community/posts/35228015714073-PSDK-platform-static-library-link-problem-feedback-application) に記載の手順に従い、SDK テクニカルサポート（dev@dji.com）に依頼してください。その場合、そのツールチェーン用の静的ライブラリを用意してもらえることがあります。
+プラットフォームごとの静的ライブラリが配置されています。各ツールチェーンについては [Using third-party development platforms](https://developer.dji.com/doc/payload-sdk-tutorial/en/model-instruction/choose-develop-platform.html#using-third-party-development-platforms) を参照してください。Raspberry Pi や Jetson の場合はこのディレクトリ内の `aarch64-linux-gnu-gcc/libpayloadsdk.a` を使用します。ここにないツールチェーンを使う場合は、SDK テクニカルサポート（dev@dji.com）に依頼すれば、そのツールチェーン用の静的ライブラリを用意してもらえるようです。[PSDK platform static library link](https://sdk-forum.dji.net/hc/en-us/community/posts/35228015714073-PSDK-platform-static-library-link-problem-feedback-application) も参照してください。
 
 ### samples
 

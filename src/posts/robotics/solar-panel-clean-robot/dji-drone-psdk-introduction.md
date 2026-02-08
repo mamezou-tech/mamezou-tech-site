@@ -18,7 +18,7 @@ image: true
 一般家庭用の小規模なパネルであれば手作業での清掃も可能ですが、
 メガソーラーなどの大規模な発電施設では、人力による清掃作業は効率面・コスト面で現実的ではありません。
 
-![メガソーラー発電所のイメージ](/img/robotics/solor-panel-clean-robot/solar-panel.png)
+![メガソーラー発電所のイメージ](/img/robotics/solar-panel-clean-robot/solar-panel.png)
 
 当社では、このような発電施設向けの自律型清掃ロボットを開発しています。
 
@@ -29,7 +29,7 @@ image: true
 
 そのため、本システムではドローンを使用してロボットを搬送する手法を採用しています。
 
-![試作機の搬送シーン](/img/robotics/solor-panel-clean-robot/transport-robot-2025.png)
+![試作機の搬送シーン](/img/robotics/solar-panel-clean-robot/transport-robot-2025.png)
 
 主な構成要素は以下のとおりです。
 
@@ -37,7 +37,7 @@ image: true
 
 太陽光パネル上をブラシで清掃しながら自律走行する自社開発の AMR です。ドローンの搬送対象（ペイロード）であり、総重量がドローンの可搬重量以内になるように設計しています。[2025 国際ロボット展](https://mamezo.tech/n/10850/) でも展示しました。
 
-![展示した清掃ロボット](/img/robotics/solor-panel-clean-robot/irex-2025-robot.png)
+![展示した清掃ロボット](/img/robotics/solar-panel-clean-robot/irex-2025-robot.png)
 
 ### ドローン
 
@@ -45,13 +45,13 @@ image: true
 
 操作端末（送信機）は DJI RC Plus でDJI Pilot 2 というアプリケーションが動作しています。
 
-![DJI RC Plus](/img/robotics/solor-panel-clean-robot/rc_plus.png)
+![DJI RC Plus](/img/robotics/solar-panel-clean-robot/rc_plus.png)
 
 ### ペイロードデバイス
 
 FlyCart 30 に標準で付属している以下の貨物ケースは内寸 573×416×305 mm のため、ロボットを格納できません。そのため、ドローンにロボットを固定するデバイスを開発しています。
 
-![標準の貨物ケース](/img/robotics/solor-panel-clean-robot/fc-30-standard-payload.png)
+![標準の貨物ケース](/img/robotics/solar-panel-clean-robot/fc-30-standard-payload.png)
 
 ## ペイロードデバイスの構成
 
@@ -74,7 +74,7 @@ FlyCart 30の場合は以下のインターフェイスがペイロードデバ�
 
 本システムのロック機構は開発中のため詳細は割愛します。以下は CAN 対応のサーボを使う場合の構成イメージです。この場合、サーボへの電源供給は Payload Port から行い、SBC が E-Port Lite を介して機体と連携し、サーボを制御します。
 
-![ペイロードデバイスの構成イメージ](/img/robotics/solor-panel-clean-robot/payload-device-structure.png)
+![ペイロードデバイスの構成イメージ](/img/robotics/solar-panel-clean-robot/payload-device-structure.png)
 
 ## 機体が提供するさまざまなHWポート
 
@@ -86,7 +86,7 @@ FlyCart 30の場合は以下のインターフェイスがペイロードデバ�
 
 E-Port Lite ではカメラ画像の取得などに制約がありますが、E-Port では Development Kit を中継することで USB が拡張され、多くの機能を利用できます。
 
-![Development Kitで中継した場合の接続イメージ](/img/robotics/solor-panel-clean-robot/e-port-development-kit.png)
+![Development Kitで中継した場合の接続イメージ](/img/robotics/solar-panel-clean-robot/e-port-development-kit.png)
 
 ### [E-Port V2](https://developer.dji.com/doc/payload-sdk-tutorial/en/quick-start/drone-port.html#e-port-v2-port)
 

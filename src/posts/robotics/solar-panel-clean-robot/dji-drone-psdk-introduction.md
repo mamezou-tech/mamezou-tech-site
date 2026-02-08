@@ -43,7 +43,7 @@ image: true
 
 [DJI FlyCart 30](https://www.dji.com/jp/flycart-30) を使用しています。可搬重量は、デュアルバッテリーモードで 30 kg（最大飛行時間 18 分）、シングルバッテリーモードで 40 kg（最大飛行時間 9 分）です。
 
-操作端末（送信機）は DJI RC Plus でDJI Pilot 2 というアプリケーションが動作しています。
+送信機（操作端末）は DJI RC Plus でDJI Pilot 2 というアプリケーションが動作しています。
 
 ![DJI RC Plus](/img/robotics/solar-panel-clean-robot/rc_plus.png)
 
@@ -57,8 +57,8 @@ FlyCart 30 に標準で付属している以下の貨物ケースは内寸 573×
 
 本システムにおけるペイロードデバイスの主な役割はロボットをドローンに固定することです。
 
-ドローンの操作端末の操作でロック機構を制御し、ロボットを固定します。
-ロック機構の制御や操作端末へのウィジェットの提供はペイロードデバイス内のSBC（シングルボードコンピュータ）が担います。
+ドローンの送信機の操作でロック機構を制御し、ロボットを固定します。
+ロック機構の制御や送信機へのウィジェットの提供はペイロードデバイス内のSBC（シングルボードコンピュータ）が担います。
 
 DJIはペイロードデバイスの開発用に [Payload SDK](https://developer.dji.com/doc/payload-sdk-tutorial/en/tutorial-map.html) というSDKを提供しています。
 

@@ -60,7 +60,7 @@ FlyCart 30 に標準で付属している以下の貨物ケースは内寸 573×
 ドローンの送信機の操作でロック機構を制御し、ロボットを固定します。
 ロック機構の制御や送信機へのウィジェットの提供はペイロードデバイス内のSBC（シングルボードコンピュータ）が担います。
 
-DJIはペイロードデバイスの開発用に [Payload SDK](https://developer.dji.com/doc/payload-sdk-tutorial/en/tutorial-map.html) というSDKを提供しています。
+DJIはペイロードデバイスの開発用に [Payload SDK](https://developer.dji.com/doc/payload-sdk-tutorial/en/tutorial-map.html) というSDKを提供しており、ペイロードデバイスではこのSDKを使用して開発したアプリケーションをSBC上で動作させます。
 
 FlyCart 30の場合は以下のインターフェイスがペイロードデバイス向けに提供されています。
 

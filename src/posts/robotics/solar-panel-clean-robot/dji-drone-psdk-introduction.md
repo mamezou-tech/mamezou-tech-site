@@ -328,9 +328,68 @@ SDK が提供する各機能のサンプルコードが配置されています�
 
 #### platform
 
-プラットフォーム（OS・ボード）依存のコードがまとめられています。HAL（ハードウェア抽象化レイヤー）の実装（ネットワーク・UART・USB Bulk・I2C など）は `hal/` に配置されています。OS 抽象化（タスク・ミューテックス・メモリ・時刻・ファイル・ソケットなど）は `common/osal/` に配置されています。
+プラットフォーム依存のコードがまとめられています。`hal/` に配置されているソースコードは、ハードウェア抽象化レイヤー（HAL）の実装（ネットワーク・UART・USB Bulk・I2C など）です。
 
-サンプルアプリのエントリポイントは `application/main.cpp` です。ここから `application/application.cpp` が呼ばれます。HAL ハンドラの登録や `DjiCore_Init` による SDK のセットアップがそこで行われます。UART・Bulk・RNDIS のいずれを使うかは、登録する HAL ハンドラの組み合わせで決まります。ハンドラには UART や USB Bulk などがあります。アプリケーションのレイヤー構成は次のとおりです。
+サンプルアプリケーションのエントリポイントは `application/main.cpp` です。ここから `application/application.cpp` が呼ばれ、HAL ハンドラの登録や `DjiCore_Init` による SDK のセットアップが行われます。UART・Bulk・RNDIS のいずれを使うかは、登録する HAL ハンドラの組み合わせで決まります。
+
+上記の HAL ハンドラ登録部分（`CONFIG_HARDWARE_CONNECTION` による分岐）の抜粋です。
+
+[Payload-SDK/samples/sample_c++/platform/linux/raspberry_pi/application/application.cpp](https://github.com/dji-sdk/Payload-SDK/blob/326b8698dd98d5451fc14cfc952976795d37bd66/samples/sample_c%2B%2B/platform/linux/raspberry_pi/application/application.cpp#L179)
+
+```cpp
+    returnCode = DjiPlatform_RegHalI2cHandler(&i2CHandler);
+    if (returnCode != DJI_ERROR_SYSTEM_MODULE_CODE_SUCCESS) {
+        throw std::runtime_error("register hal i2c handler error");
+    }
+
+#if (CONFIG_HARDWARE_CONNECTION == DJI_USE_UART_AND_USB_BULK_DEVICE)
+    returnCode = DjiPlatform_RegHalUartHandler(&uartHandler);
+    if (returnCode != DJI_ERROR_SYSTEM_MODULE_CODE_SUCCESS) {
+        throw std::runtime_error("Register hal uart handler error.");
+    }
+
+    returnCode = DjiPlatform_RegHalUsbBulkHandler(&usbBulkHandler);
+    if (returnCode != DJI_ERROR_SYSTEM_MODULE_CODE_SUCCESS) {
+        throw std::runtime_error("Register hal usb bulk handler error.");
+    }
+#elif (CONFIG_HARDWARE_CONNECTION == DJI_USE_UART_AND_NETWORK_DEVICE)
+    returnCode = DjiPlatform_RegHalUartHandler(&uartHandler);
+    if (returnCode != DJI_ERROR_SYSTEM_MODULE_CODE_SUCCESS) {
+        throw std::runtime_error("Register hal uart handler error.");
+    }
+
+    returnCode = DjiPlatform_RegHalNetworkHandler(&networkHandler);
+    if (returnCode != DJI_ERROR_SYSTEM_MODULE_CODE_SUCCESS) {
+        throw std::runtime_error("Register hal network handler error");
+    }
+#elif (CONFIG_HARDWARE_CONNECTION == DJI_USE_ONLY_USB_BULK_DEVICE)
+    returnCode = DjiPlatform_RegHalUsbBulkHandler(&usbBulkHandler);
+    if (returnCode != DJI_ERROR_SYSTEM_MODULE_CODE_SUCCESS) {
+        throw std::runtime_error("Register hal usb bulk handler error.");
+    }
+
+#elif (CONFIG_HARDWARE_CONNECTION == DJI_USE_ONLY_NETWORK_DEVICE)
+    returnCode = DjiPlatform_RegHalNetworkHandler(&networkHandler);
+    if (returnCode != DJI_ERROR_SYSTEM_MODULE_CODE_SUCCESS) {
+        throw std::runtime_error("Register hal network handler error");
+    }
+
+    //Attention: if you want to use camera stream view function, please uncomment it.
+    returnCode = DjiPlatform_RegSocketHandler(&socketHandler);
+    if (returnCode != DJI_ERROR_SYSTEM_MODULE_CODE_SUCCESS) {
+        throw std::runtime_error("register osal socket handler error");
+    }
+#elif (CONFIG_HARDWARE_CONNECTION == DJI_USE_ONLY_UART)
+    /*!< Attention: Only use uart hardware connection.
+     */
+    returnCode = DjiPlatform_RegHalUartHandler(&uartHandler);
+    if (returnCode != DJI_ERROR_SYSTEM_MODULE_CODE_SUCCESS) {
+        throw std::runtime_error("Register hal uart handler error.");
+    }
+#endif
+```
+
+以下はアプリケーションのレイヤー構成のイメージです。
 
 ```mermaid
 flowchart LR
@@ -364,7 +423,7 @@ sequenceDiagram
 
 図中の application.cpp と HALハンドラがサンプルコードに含まれており、DjiCore は psdk_lib の静的ライブラリとして提供されています。
 
-初見ではサンプルコードの割にコード量が多く感じられるかもしれませんが、プラットフォーム依存のコードは基本的にそのまま利用できます。ただし、同じプラットフォームでも、最新の OS や付随するライブラリでは動作しない場合があるため、開発者側での適宜の保守が必要です。
+初見ではサンプルコードの割にコード量が多く感じられるかもしれませんが、プラットフォーム依存のコードは基本的にそのまま利用できます。ただし、同じプラットフォームでも、最新の OS や付随するライブラリでは動作しない場合があるため、開発者側での保守が必要です。
 
 ## Payload SDK の検証環境
 

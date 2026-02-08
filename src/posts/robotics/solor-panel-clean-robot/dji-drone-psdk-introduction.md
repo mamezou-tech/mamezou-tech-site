@@ -197,6 +197,10 @@ Bulk のみまたは RNDIS のみで通信できるのは E-Port V2 だけで、
 
 どのポートでも UART のみで通信できるため、開発初期は UART だけを接続し、Payload SDK で開発したアプリケーションの動作検証から始めることを推奨します。
 
+## Payload SDK の API 仕様
+
+[Payload SDK の API リファレンス](https://developer.dji.com/doc/payload-sdk-api-reference/en/)には、SDKのソースコードのヘッダから自動生成されたと思われる API 仕様が掲載されています。ただし説明文はほとんどなく、関数や型の一覧が中心です。そのため、API仕様を理解するには、サンプルコードを参照しつつ実機で動作を確認する必要があります。
+
 ## Payload SDK のサンプルアプリケーション
 
 DJI の [Payload-SDK](https://github.com/dji-sdk/Payload-SDK) リポジトリには、Payload SDK のライブラリとそれを使ったサンプルアプリケーションが公開されています。

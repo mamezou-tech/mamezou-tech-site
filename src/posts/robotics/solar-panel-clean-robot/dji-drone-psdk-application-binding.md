@@ -216,7 +216,7 @@ DJIのデベロッパーセンターで登録したアプリケーション情�
 | USER_APP_LICENSE | DJIのデベロッパーセンターの登録情報の `App Basic License` が対応します | （省略） |
 | USER_DEVELOPER_ACCOUNT | DJIのデベロッパーセンターのアカウント名です | masayuki-kono |
 
-サンプルアプリケーションを実行して以下のログが延々と出力されれば OK です（バインド待ちの状態です）。
+サンプルアプリケーションを起動して以下のログが延々と出力されれば OK です（バインド待ちの状態です）。
 
 ```text
 [Error]	dji_auth_sha256_rsa_verify.c:137  The DJI SDK CC has not binded. Please check the bind state of the DJI SDK CC and bind it.

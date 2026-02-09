@@ -211,9 +211,9 @@ DJIのデベロッパーセンターで登録したアプリケーション情�
 | 定数名 | 説明 | 例 |
 | ------ | ---- | -- |
 | USER_APP_NAME | DJIのデベロッパーセンターの登録情報の `App Name` が対応します | DockingControl |
-| USER_APP_ID | DJIのデベロッパーセンターの登録情報の `App ID` が対応します | - |
-| USER_APP_KEY | DJIのデベロッパーセンターの登録情報の `App Key` が対応します | - |
-| USER_APP_LICENSE | DJIのデベロッパーセンターの登録情報の `App Basic License` が対応します | - |
+| USER_APP_ID | DJIのデベロッパーセンターの登録情報の `App ID` が対応します | （省略） |
+| USER_APP_KEY | DJIのデベロッパーセンターの登録情報の `App Key` が対応します | （省略） |
+| USER_APP_LICENSE | DJIのデベロッパーセンターの登録情報の `App Basic License` が対応します | （省略） |
 | USER_DEVELOPER_ACCOUNT | DJIのデベロッパーセンターのアカウント名です | masayuki-kono |
 
 サンプルアプリケーションを実行して以下のログが延々と出力されれば OK です（バインド待ちの状態です）。

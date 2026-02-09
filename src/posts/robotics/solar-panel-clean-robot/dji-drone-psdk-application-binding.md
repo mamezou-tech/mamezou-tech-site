@@ -244,7 +244,11 @@ Connect DJI SDK CC device failed, errno: 0x30000002
 ![機体とペイロードの接続構成](/img/robotics/solar-panel-clean-robot/dji-sdk-binding-hardware-structure.png)
 
 - [Matrice 4E](https://enterprise.dji.com/matrice-4-series)
-    - Application Binding が必要な機体
+    - Application Binding で使用する機体
+- PC
+    - [DJI Assistant 2](https://www.dji.com/downloads/softwares/assistant-dji-2-for-matrice) の動作環境
+    - DJI Assistant 2 は機体によってバリエーションがあり Matrice 4E の場合は Enterprise Series を使用する
+    - DJI Assistant 2 は DJI のクラウドサービスと通信するためインターネットに接続する必要がある
 - [E-Port Development Kit](https://store.dji.com/product/dji-e-port-development-kit)
     - 機体とペイロードデバイスを接続するためのアダプタボード
 - UART-USB Adapter
@@ -252,10 +256,9 @@ Connect DJI SDK CC device failed, errno: 0x30000002
     - Raspberry Pi のGPIO（UART ピン）へ直接接続する場合は不要
 - Raspberry Pi
     - Payload SDK アプリケーションの動作環境
-- PC
-    - [DJI Assistant 2](https://www.dji.com/downloads/softwares/assistant-dji-2-for-matrice) の動作環境
-    - DJI Assistant 2 は機体によってバリエーションがあり、Matrice 4Eの場合は Enterprise Series を使用する
-    - DJI Assistant 2 は DJI のクラウドサービスと通信するためインターネットに接続する必要がある
+- DFN8 Breakout Adapter
+    - DFN8（2×3 mm）パッケージの表面実装ICを DIP8 互換ピン配置に変換するためのブレークアウトアダプタ
+- SDK Certified Chip
 
 ### E-Port Development Kit
 

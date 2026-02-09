@@ -31,6 +31,7 @@ enTitle: Robotics
 弊社オリジナルの清掃ロボットシステムに関する記事をまとめてゆきます。
 
 - [DJIドローンの Payload SDK の紹介](/robotics/solar-panel-clean-robot/dji-drone-psdk-introduction/)
+- [カスタムペイロードデバイスの Application Binding](/robotics/solar-panel-clean-robot/dji-drone-psdk-application-binding/)
 
 ## ロボット工学
 

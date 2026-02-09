@@ -1,5 +1,5 @@
 ---
-title: カスタムペイロードデバイスの Application Binding
+title: DJIドローン開発Tips：カスタムペイロードデバイスの Application Binding
 author: masayuki-kono
 date: 2026-02-10
 tags: [Robot, Drone, DJI, Payload SDK, 太陽光発電パネル, 清掃ロボット]

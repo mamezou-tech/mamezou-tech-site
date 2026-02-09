@@ -48,14 +48,14 @@ Payload SDK については以下の記事でもご紹介していますので�
 | M300 RTK | OSDK Port | – |
 | M300 RTK | Gimbal Port | ✓ |
 
-`Supports App Binding` にチェックが入っている機体の拡張ポートへペイロードデバイスを接続する場合はバインドが必要です。
+`Supports App Binding` にチェックが入っている機体の拡張ポートに対してペイロードデバイスを接続する場合はバインドが必要です。
 
 E-Port、E-Port V2、Gimbal Portで接続するペイロードデバイスが対象ですが、Matrice 系では
 Matrice 4E/4T 以降のモデルから必要となっています。今後発売される機体では（E-Port Lite を除けば）基本的にはペイロードデバイスに対するバインドが必要になってくるものと思われます。
 
 ## SDK 認証チップ
 
-バインドするカスタムペイロードデバイスには DJI SDK 認証チップ（略称 DJI SDK CC）を取り付ける必要があります。
+バインドするサードパーティ製のペイロードデバイスには DJI SDK 認証チップ（略称 DJI SDK CC）を取り付ける必要があります。
 
 [DJIストア](https://store.dji.com/product/dji-sdk-certified-chip) から50個セットのものを購入できます。
 
@@ -76,7 +76,7 @@ Matrice 4E/4T 以降のモデルから必要となっています。今後発売
 
 ### SDK 認証チップのインターフェイス
 
-認証チップは I2C インターフェースでホスト（ `Raspberry Pi` ）と通信します。
+認証チップは I²C インターフェースでホスト（ `Raspberry Pi` ）と通信します。
 
 下図は認証チップのピン配置です。
 
@@ -85,8 +85,8 @@ Matrice 4E/4T 以降のモデルから必要となっています。今後発売
 - VCC: 電源入力ピン（動作電圧範囲: 1.62 V - 5.5 V）
 - GND: グランドピン
 - NRST: 外部リセットピン
-- I2C_SCL: I²Cバスインターフェースピン（クロック信号の伝送用）
-- I2C_SDA: I²Cバスインターフェースピン（データ転送用）
+- I2C_SCL: I²Cバスインターフェースピン（Serial Clock Line）
+- I2C_SDA: I²Cバスインターフェースピン（Serial Data Line）
 
 チップのパッケージタイプは DFN8 2x3 です。
 外径サイズが 2mm x 3mm と非常に小型であるため、これに直接配線することは困難です。
@@ -118,14 +118,14 @@ Raspberry Pi の [40-pin GPIO header](https://www.raspberrypi.com/documentation/
 
 以下の例だと認証チップに割り当たっているデバイスは `/dev/i2c-1` です。
 
-```
+```bash
 $ ls /dev/i2c-*
 /dev/i2c-1  /dev/i2c-20  /dev/i2c-21
 ```
 
 認証チップの Vcc に 3.3V が給電されただけでは反応しません。
 
-```
+```bash
 $ sudo i2cdetect -y 1
      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
 00:                         -- -- -- -- -- -- -- -- 
@@ -140,7 +140,7 @@ $ sudo i2cdetect -y 1
 
 以下のように GPIO4（認証チップの NRST と接続）を LOW にして HIGH にすると認証チップがリセットされ、I²C アドレス 0x2a が検出されます。
 
-```
+```bash
 $ sudo gpioset gpiochip0 4=0
 $ sudo i2cdetect -y 1
      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
@@ -182,7 +182,7 @@ $ sudo i2cdetect -y 1
 
 ![アクティベーション後](/img/robotics/solar-panel-clean-robot/dji-sdk-activated.png)
 
-ページに記載されている通り、デフォルトでは対象のペイロードデバイスは最大で20台までにしかバインドできません。
+ページに記載されている通り、登録したアプリケーションに対してバインドできるペイロードデバイスは最大で20台までです。
 
 Application Verification のページで会社の説明やペイロードデバイスのテストレポートなど様々な書類を用意して審査が完了すると、台数の制約が解除されます。開発初期にはこの台数の制約は問題になりませんが、ペイロードデバイスを量産するフェーズではテストレポートを用意して申請しましょう。
 
@@ -196,7 +196,7 @@ DJIのデベロッパーセンターで登録したアプリケーション情�
 
 [Payload-SDK/samples/sample_c++/platform/linux/raspberry_pi/application/dji_sdk_app_info.h](https://github.com/dji-sdk/Payload-SDK/blob/326b8698dd98d5451fc14cfc952976795d37bd66/samples/sample_c%2B%2B/platform/linux/raspberry_pi/application/dji_sdk_app_info.h#L35)
 
-```
+```c
 /* Exported constants --------------------------------------------------------*/
 // ATTENTION: User must goto https://developer.dji.com/user/apps/#all to create your own dji sdk application, get dji sdk application
 // information then fill in the application information here.
@@ -218,14 +218,14 @@ DJIのデベロッパーセンターで登録したアプリケーション情�
 
 サンプルアプリケーションを実行して以下のログが延々と出力されれば OK です（バインド待ちの状態です）。
 
-```
+```text
 [Error]	dji_auth_sha256_rsa_verify.c:137  The DJI SDK CC has not binded. Please check the bind state of the DJI SDK CC and bind it.
 ```
 
 :::info
 Raspberry Pi 向けのサンプルコードはメンテナンスされていないようで、そのままでは以下のようなエラーが出力されて認証チップと通信に失敗します。
 
-```
+```text
 Connect DJI SDK CC device failed, errno: 0x30000002
 ```
 
@@ -248,6 +248,7 @@ Connect DJI SDK CC device failed, errno: 0x30000002
 - [E-Port Development Kit](https://store.dji.com/product/dji-e-port-development-kit)
     - 機体とペイロードデバイスを接続するためのアダプタボード
 - UART-USB Adapter
+    - 今回は FTDI のUART-USB変換アダプタを中継
     - Raspberry Pi のGPIO（UART ピン）へ直接接続する場合は不要
 - Raspberry Pi
     - Payload SDK アプリケーションの動作環境
@@ -258,15 +259,17 @@ Connect DJI SDK CC device failed, errno: 0x30000002
 
 ### E-Port Development Kit
 
-Development Kit の基盤上に `E-Port switch` というディップスイッチがあり、これを ON にします。
+Development Kit の基盤上に `E-Port switch` というディップスイッチがあり、これを ON にして UART の出力を有効にします。
 
 `USB ID switch(Device|Host)` のディップスイッチは、USB で RNDIS や Bulk 転送する場合に Host を設定する必要があります。今回は UART のみを使用するため、設定不要（どちらでも良い）です。
+
+![E-Port Development Kit の DIPスイッチ](/img/robotics/solar-panel-clean-robot/e-port-development-kit-dip-switch.png)
 
 E-Port のコネクタはHW的にはリバーシブルですが、機体の E-Port コネクタと Development Kit を接続する際に機体側と開発キット側のコネクタの向きに指定があります。
 
 [Connect Development Board to E-Port](https://developer.dji.com/doc/payload-sdk-tutorial/en/payload-quick-start/device-connect.html#connect-development-board-to-e-port) からの抜粋です。
 
-```
+```text
 Note: The E-Port coaxial USB-C cable doesn't have a foolproof design, allowing A/B side to be reversibly connected.
 Due to pin layout differences in the aircraft's USB-C, if the coaxial cable is reversed, the other end also needs to be flipped correspondingly.
 If not flipped correspondingly, the E-Port Development Kit can not power up and communicate.
@@ -282,7 +285,7 @@ DJI のページの記載では、どの向きが正しいのか判断できな�
 
 Payload SDK アプリケーションから以下のログが延々と出力される状態（バインド待ち）にします。
 
-```
+```text
 [Error]	dji_auth_sha256_rsa_verify.c:137  The DJI SDK CC has not binded. Please check the bind state of the DJI SDK CC and bind it.
 ```
 
@@ -296,7 +299,7 @@ Bind ボタンを押下すると、バインドが完了します。
 
 バインドが完了すると、サンプルアプリケーションの起動時のログは以下のようになります。
 
-```
+```text
 0.016	            core	[Info]	               dji_core.c:113  Payload SDK Version : V3.15.0-beta.0-build.2318 Dec 10 2025 17:27:05
 1.075	         adapter	[Info]	     dji_access_adapter.c:351  Identify mount position type is Extension Port Type
 1.075	         adapter	[Info]	     dji_access_adapter.c:371  Identify aircraft series is Matrice 4 Series
@@ -344,8 +347,6 @@ I²C への読み書きする [hal_i2c.c](https://github.com/masayuki-kono/Paylo
 バインド完了後に、DJIのデベロッパーセンターを開くと `1 Payloads` が表示されカウントが増えていることが確認できるはずです。
 
 ![Bound Payload Device](/img/robotics/solar-panel-clean-robot/dji-sdk-bound-one-payload.png)
-
-![Bound Payload Device - Detailed](/img/robotics/solar-panel-clean-robot/dji-sdk-bound-one-payload-detailed.png)
 
 ## まとめ
 

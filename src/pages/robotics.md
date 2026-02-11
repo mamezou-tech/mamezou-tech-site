@@ -32,6 +32,7 @@ enTitle: Robotics
 
 - [DJIドローンの Payload SDK の紹介](/robotics/solar-panel-clean-robot/dji-drone-psdk-introduction/)
 - [DJIドローン開発Tips - カスタムペイロードデバイスの Application Binding](/robotics/solar-panel-clean-robot/dji-drone-psdk-application-binding/)
+- [DJIドローン開発Tips - カスタムウィジェットの解説](/robotics/solar-panel-clean-robot/dji-drone-psdk-custom-widget/)
 
 ## ロボット工学
 

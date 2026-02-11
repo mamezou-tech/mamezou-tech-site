@@ -77,6 +77,10 @@ enTitle: Robotics
 
 - [RealSense D435f で Disparity Shift を調整した話](/robotics/vision/realsense-d435f-disparity-shift/)
 
+### 3D 再構成
+
+- [3DGaussianSplattingによる3次元再構成ワークフロー](/robotics/3dgs/workflow/)
+
 ## GUI
 
 - [Blockly によるビジュアルプログラミングの紹介](/robotics/gui/visual-programing-with-blockly/)

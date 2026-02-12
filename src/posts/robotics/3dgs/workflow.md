@@ -1,5 +1,5 @@
 ---
-title: 3DGaussianSplattingによる3次元再構成ワークフロー
+title: 初心者も挑戦！3D Gaussian Splattingで作るリアル3Dモデリング入門
 author: Daiki-Yamada
 date: 2026-02-13
 ---

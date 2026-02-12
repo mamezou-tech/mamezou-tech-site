@@ -79,7 +79,7 @@ enTitle: Robotics
 
 ### 3D 再構成
 
-- [3DGaussianSplattingによる3次元再構成ワークフロー](/robotics/3dgs/workflow/)
+- [初心者も挑戦！3D Gaussian Splattingで作るリアル3Dモデリング入門](/robotics/3dgs/workflow/)
 
 ## GUI
 

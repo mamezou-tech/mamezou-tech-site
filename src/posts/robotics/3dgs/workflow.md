@@ -28,7 +28,7 @@ date: 2026-02-13
 弊社はモデリング技術に力を入れている会社です。
 システム設計においては主にUMLを有効活用してシステムをモデル化し、全体を客観的に俯瞰することを得意としています。ここでは、弊社でよく使われている「システム全体を俯瞰する」目的とは異なり、「実世界をデジタル空間にそっくり再現する」ことを目的としたモデル化について解説します。
 
-## 3次元再構成はどこで使われている？
+## 3次元再構成はどこで使われているか
 例としては以下のようなものが挙げられます。
 - 現実世界に忠実なデジタル空間シミュレーション
     - 例：[自動運転](https://tur.ing/turipo/7u4Sl6wN)
@@ -38,7 +38,7 @@ date: 2026-02-13
     - 例：[首里城復元](https://www.our-shurijo.org/)
 
 
-## 3DGaussianSplatting(3DGS) とは？
+## 3DGaussianSplatting(3DGS) とは
 2023年に提案された3次元再構成技術[^1]で、大量の3次元ガウス分布で3Dモデルを構成します。\
 従来の3次元表現方法よりも透明物体や光沢(鏡面反射)のある物体の表現能力が高く、かつ描画が軽量です。この技術における3次元ガウス分布の概要について以下の図に示しています。一言で簡単に説明すると **「視点(どこから見るか)によって色が変わる半透明の楕円体」** です。
 
@@ -104,7 +104,7 @@ Structure from Motion(以下 SfM)という手法を用いて、撮影した画�
     <img src="../../../img/robotics/3dgs/setting_project.png" width="800">
 <br>
 
-5. 左上メニューの"Processing" -> "Feature extraction"から以下の項目(①,②)を実施後、"Extract"(③)で各画像の特徴点抽出を実行する(今回はデフォルト設定でそのまま用いる)
+5. 左上メニューの"Processing" -> "Feature extraction"から以下の項目(①,②)を実施後、"Extract"(③)で各画像の特徴点を抽出する(今回はデフォルト設定)
 
     <img src="../../../img/robotics/3dgs/setting_feature_extraction.png" width="600">
 <br>
@@ -112,7 +112,7 @@ Structure from Motion(以下 SfM)という手法を用いて、撮影した画�
 6. 処理完了("Extracting..."のダイアログが出なくなる)まで待機する
 <br>
 
-7. 左上メニューの"Processing" -> "Feature matching"から設定を実施後、"Run"(②)で画像間の特徴点マッチングを実行する(今回はデフォルト設定でそのまま実行)
+7. 左上メニューの"Processing" -> "Feature matching"から設定を実施後、"Run"(②)で画像間の特徴点マッチングを実行する(今回はデフォルト設定)
 
     <img src="../../../img/robotics/3dgs/setting_feature_matching.png" width="400">
 <br>
@@ -174,7 +174,7 @@ Structure from Motion(以下 SfM)という手法を用いて、撮影した画�
     - Max Gaussians：3次元ガウス分布の最大個数
     - SH Degree：球面調和関数の次数(小さいほどパラメータ数が減る)
 
-    いずれも数値が大きいほど高品質のものができやすいが計算量が多くなるため、その他の設定パラメータも含め、試行錯誤が必要な場合があります。
+    いずれも数値が大きいほど高品質のものができやすい反面計算量が多くなるため、その他の設定パラメータも含め、試行錯誤が必要な場合があります。
 
     <img src="../../../img/robotics/3dgs/lfs_training.png" width="800">
 
@@ -246,7 +246,7 @@ Structure from Motion(以下 SfM)という手法を用いて、撮影した画�
 ## おまけ
 
 本編におけるアプリケーションは今のところすべて無料ですが、環境構築の手間とGPUが必須のため、お手軽かと言われると微妙なところなのが正直なご感想かと思います。そこで他の選択肢も用意しました。
-- 有料でもいいからもっと簡単に作りたいなら...[PostShot](https://www.jawset.com)
+- 有料でもいいからもっと簡単に作りたいなら...[Postshot](https://www.jawset.com)
 - スマホだけでお手軽にササッと作りたいなら...[Scaniverse](https://scaniverse.com)
 
 | |手軽さ|解像度[^3]|パラメータ設定|GPU|備考|
@@ -255,7 +255,7 @@ Structure from Motion(以下 SfM)という手法を用いて、撮影した画�
 |Postshot  | 〇  |〇~◎ |〇   |必須 |有料、高品質な3DGSが簡単に作成可能|
 |Scaniverse| ◎  |△~〇 |△   |不要 |無料、スマホのみで作成可能        |
 
-ただし今回ご紹介したLichtFeldStudioは、本記事を執筆した2026年1月現在開発が盛んに行われており、手軽さや機能が向上することが今後見込まれます。
+ただし今回ご紹介したLichtFeldStudioは、本記事を執筆した2026年1月現在開発が盛んに行われており、手軽さや機能の向上が今後見込まれます。
 
 [^1]:[3D Gaussian Splatting for Real-Time Radiance Field Rendering](https://arxiv.org/pdf/2308.04079)
 

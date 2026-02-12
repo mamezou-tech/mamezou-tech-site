@@ -87,7 +87,8 @@ Structure from Motion(以下 SfM)という手法を用いて、撮影した画�
 
 <img src="../../../img/robotics/3dgs/feature_matching.png" width="600">
 
-#### COLMAPによる点群作成
+<br>
+
 1. [COLMAP](https://github.com/colmap/colmap/releases)の最新版をダウンロードし、解凍(執筆時の最新版は3.13.0)
 <br>
 
@@ -143,7 +144,8 @@ Structure from Motion(以下 SfM)という手法を用いて、撮影した画�
 ### 3. 3DGS作成
 いよいよメイン工程です。COLMAPで作成した3次元点群や歪み補正した画像を用いて3DGSを作成していきます。本工程ではOSSの[LichtFeldStudio](https://github.com/MrNeRF/LichtFeld-Studio/releases)を使用します。LichtFeldStudioについてもCOLMAPと同様、設定可能なパラメータは数多いですが、今回は詳細設定に詳しく触れず、基本的にデフォルト値を用いるものとします。
 
-#### LichtFeldStudio(LFS)による3DGS作成
+<br>
+
 1. [LichtFeldStudio](https://github.com/MrNeRF/LichtFeld-Studio/releases)の最新版をダウンロードし、解凍(執筆時の最新版は0.41)
 <br>
 
@@ -205,6 +207,8 @@ Structure from Motion(以下 SfM)という手法を用いて、撮影した画�
 作成した3DGSをキレイに仕上げていくフェーズです。
 特に手を加えなくても3DGSの品質が十分と判断した場合は省略してもOKです。
 ただ一般的には背景の解像度が低かったり、対象物の周囲などに意図していないモヤのようなもの(フローター)が浮かんでいることが多いため、それらを処理すると3DGSの見栄えがさらに良くなります。また、レンダリング速度の向上やファイルサイズの軽量化にもつながります。このような3DGSの編集に[SuperSplat](https://superspl.at/editor)を使用します。
+
+<br>
 
 1. [SuperSplat](https://superspl.at/editor)にアクセスする
 

@@ -66,7 +66,7 @@ image: true
 3. **3DGS作成**：作成した点群をもとに3DGSを計算する(点群を「骨」とすると「肉付け」のイメージ)
 4. **編集**：作成した3DGSを編集して仕上げる
 
-<img src="../../../img/robotics/3dgs/3dgs_workflow.png" width="800">
+![3dgs_workflow](../../../img/robotics/3dgs/3dgs_workflow.png)
 
 ---
 

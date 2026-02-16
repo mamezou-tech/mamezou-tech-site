@@ -77,7 +77,7 @@ const config: StorybookConfig = {
 export default config;
 ```
 
-Storybook Config オブジェクトの "stories" 要素にストーリファイルのパスを記述します。
+Storybook Config オブジェクトの "stories" 要素にストーリーファイルのパスを記述します。
 ストーリーファイルは `Button.stories.tsx` のように `.stories` を付けて作成します。本記事でのデモプロジェクトでは `components/ui` 配下にコンポーネントファイルと共に作成します。プロジェクトに合わせて記述を変更してください。
 
 Next.js プロジェクトでは tailwind CSS を利用している場合が多いかと思います。Storybookで tailwind CSS を有効化する場合は、`.storybook/preview.ts` で `globals.css` を import します。

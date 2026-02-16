@@ -131,16 +131,19 @@ export const ReplaceIsCalled: Story = {
 
 `parameters.nextjs.navigation` は初期状態の再現に便利ですが、「クリックで `router.push()` が呼ばれた」など、呼び出しの検証をしたいケースでは不足します。
 
-そこで使うのが `@storybook/nextjs-vite/navigation.mock` です。これは `next/navigation` のモック実装に加えて、`useRouter()` 相当のルーターオブジェクトを `getRouter()` で取り出せるため、push、 replace、 back などの呼び出しを テストとして assert できます。[^1]
+そこで使うのが `@storybook/nextjs-vite/navigation.mock` です。これは `next/navigation` のモック実装に加えて、`useRouter()` 相当のルーターオブジェクトを `getRouter()` で取り出せるため、push、 replace、 back などの呼び出しを テストとして assert できます。
 
 このコンポーネントの Story 上で Apply ボタンを押下すると、Actions タブに入力したクエリパラメータが出力され、ルーターオブジェクトがモックできていることが分かります。
 
 `@storybook/nextjs-vite/navigation.mock` 以外のビルトインモックに関してはこちらを参照してください。（[Built-in mocked modules | Storybook docs](https://storybook.js.org/docs/get-started/frameworks/nextjs-vite/?renderer=react#built-in-mocked-modules)）
 
-[^1]:ページ遷移に関わるパッケージとして他に `next/link` パッケージがあります。このパッケージに含まれる Link コンポーネントは pre-fetch 機能を備えた `<a>` タグを拡張したコンポーネントとしてよく使われます。この Link は内部で `next/navigation`、`next/router` のルーターオブジェクトを使用しているため、これらパッケージのモックと同時に Link コンポーネントもモックされるはずです。
+:::info
+ページ遷移に関わるパッケージとして他に `next/link` パッケージがあります。このパッケージに含まれる Link コンポーネントは pre-fetch 機能を備えた `<a>` タグを拡張したコンポーネントとしてよく使われます。この Link は内部で `next/navigation`、`next/router` のルーターオブジェクトを使用しているため、これらパッケージのモックと同時に Link コンポーネントもモックされるはずです。
+
 しかし、Next.js（15以降〜）＋ App Router 設定の Storybook では、Link コンポーネントをクリックしたときに Storybook の iframe が存在しないページへ遷移しようとするケースが報告されています。（[storybookjs/storybook | GitHub](https://github.com/storybookjs/storybook/issues/30390)）
 実際、NavigationDemo 内の「go to Link」ボタンクリックでページ遷移が発生してしまいます（Storybook v10.2.7 執筆時点）。
 修正されるまで、Link コンポーネントは後述するモジュールモックを用いて Storybook 上では `<a>` タグにモックするなどの対策が必要でしょう。
+:::
 
 ## React Server Componentの利用とServer functionsのモック
 

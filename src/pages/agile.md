@@ -43,6 +43,14 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 - [新米スクラムマスターの思考メモ（その５　まとめ）](/blogs/2023/02/21/newcomer-scrum-master-05/)
 - [スクラム『で』教育する～メンバーを育てながら開発を進める～](/blogs/2023/03/22/education_on_scrum/)
 
+## スクラムマスターのAI活用を考える
+
+スクラムの三本柱である「透明性・検査・適応」を、生成AIなどのツールを用いていかに強化していくか、スクラムマスターの視点から実践的なアプローチを紹介する連載です。
+
+- [第1回：導入](/blogs/2025/12/04/scrum-ai-1/)
+- [第2回：透明性](/blogs/2026/01/15/scrum-ai-2/)
+- [第3回：検査・適応](/blogs/2026/02/25/scrum-ai-3/)
+
 ## プロダクトオーナーの煩悩
 
 社内開発でプロダクトオーナーが、開発現場での悩みや気づきなど、わりと赤裸々に書いていきます。
@@ -62,23 +70,24 @@ XP（Extreme Programming：エクストリームプログラミング）はア�
 
 ## アドベントカレンダー
 ### 2022
-- [大規模アジャイル手法を鳥の目で眺める](https://developer.mamezou-tech.com/blogs/2022/12/14/scaling-agile-birdview/)
-- [アジャイルちょっとした疑問解消会](https://developer.mamezou-tech.com/blogs/2022/12/15/agile_solution/)
+- [大規模アジャイル手法を鳥の目で眺める](/blogs/2022/12/14/scaling-agile-birdview/)
+- [アジャイルちょっとした疑問解消会](/blogs/2022/12/15/agile_solution/)
 ### 2023
-- [駆け出しSM Stage1：ファシリテーション](https://developer.mamezou-tech.com/blogs/2023/12/15/fledgling-scrum-master-stage1/)
-- [スクラムマスターとは結局何をする人なのか](https://developer.mamezou-tech.com/blogs/2023/12/19/what-scrum-master/)
+- [駆け出しSM Stage1：ファシリテーション](/blogs/2023/12/15/fledgling-scrum-master-stage1/)
+- [スクラムマスターとは結局何をする人なのか](/blogs/2023/12/19/what-scrum-master/)
 ### 2024
-- [駆け出しスクラムマスター Stage3 スクラムは私生活に通ずる!?](https://developer.mamezou-tech.com/blogs/2024/12/05/fledgling-scrum-master-stage3/)
-- [超入門者向け アジャイルの見積もりとの付き合い方は蒙古タンメンが教えてくれる。](https://developer.mamezou-tech.com/blogs/2024/12/13/agile_estimation/)
-- [謎のイベント「リファインメント」とは何か](https://developer.mamezou-tech.com//blogs/2024/12/16/scrum-refinement/)
+- [駆け出しスクラムマスター Stage3 スクラムは私生活に通ずる!?](/blogs/2024/12/05/fledgling-scrum-master-stage3/)
+- [超入門者向け アジャイルの見積もりとの付き合い方は蒙古タンメンが教えてくれる。](/blogs/2024/12/13/agile_estimation/)
+- [謎のイベント「リファインメント」とは何か](/blogs/2024/12/16/scrum-refinement/)
 
 ## 夏のリレー連載
 ### 2023
-- [駆け出しスクラムマスターのあれこれ相談室](https://developer.mamezou-tech.com/blogs/2023/07/27/consultation-for-fledgling-scrum-masters/)
-- [アジャイル実践者に捧ぐちょっぴり(?)ダークなステークホルダーマネジメント](https://developer.mamezou-tech.com/blogs/2023/07/28/stakeholder/)
+- [駆け出しスクラムマスターのあれこれ相談室](/blogs/2023/07/27/consultation-for-fledgling-scrum-masters/)
+- [アジャイル実践者に捧ぐちょっぴり(?)ダークなステークホルダーマネジメント](/blogs/2023/07/28/stakeholder/)
 
 ## その他ブログ記事
-- [東洋哲学とスクラム](https://developer.mamezou-tech.com/blogs/2024/02/01/eastern-philosophy-scrum/)
-- [スクラム入門の勉強会を開催しました](https://developer.mamezou-tech.com/blogs/2024/04/18/introduction-to-scrum/)
-- [スクラムガイドから読み取る「スプリントの中止」](https://developer.mamezou-tech.com/blogs/2024/04/26/cancelling-a-sprint/)
-- [書籍紹介「スクラムマスターにおれはなる！」となった一冊](https://developer.mamezou-tech.com/blogs/2025/03/27/scrum-books)
+- [東洋哲学とスクラム](/blogs/2024/02/01/eastern-philosophy-scrum/)
+- [スクラム入門の勉強会を開催しました](/blogs/2024/04/18/introduction-to-scrum/)
+- [スクラムガイドから読み取る「スプリントの中止」](/blogs/2024/04/26/cancelling-a-sprint/)
+- [書籍紹介「スクラムマスターにおれはなる！」となった一冊](/blogs/2025/03/27/scrum-books)
+

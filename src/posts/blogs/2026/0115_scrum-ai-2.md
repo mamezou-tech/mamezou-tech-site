@@ -9,7 +9,7 @@ image: true
 ## はじめに
 アジャイルグループの石田です。
 
-[スクラムマスターのAI活用を考える - 導入](https://developer.mamezou-tech.com/blogs/2025/12/04/scrum-ai-1/)の続編です。前回は、[スクラムガイド拡張パック](https://scrumexpansion.org/ja/scrum-guide-expansion-pack/2025.6/)を参考に、AIがスクラムを強化する可能性の一つとして「経験的プロセス制御」の強化について触れました。
+[第1回：導入](/blogs/2025/12/04/scrum-ai-1/)の続編です。前回は、[スクラムガイド拡張パック](https://scrumexpansion.org/ja/scrum-guide-expansion-pack/2025.6/)を参考に、AIがスクラムを強化する可能性の一つとして「経験的プロセス制御」の強化について触れました。
 
 スクラムマスターとして、スクラムというプロセスにAIを活用することで、チームが実践するスクラムの三本柱「透明性・検査・適応」をより強化することができます。
 

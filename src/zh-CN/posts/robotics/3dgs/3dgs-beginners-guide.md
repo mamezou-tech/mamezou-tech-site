@@ -1,6 +1,6 @@
 ---
 title: 连初学者也能挑战！使用 3D Gaussian Splatting 制作真实 3D 建模入门
-author: Daiki-Yamada
+author: daiki-yamada
 date: 2026-02-13T00:00:00.000Z
 tags:
   - 3DGS

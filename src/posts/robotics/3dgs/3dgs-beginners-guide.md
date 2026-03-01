@@ -1,6 +1,6 @@
 ---
 title: 初心者も挑戦！3D Gaussian Splattingで作るリアル3Dモデリング入門
-author: Daiki-Yamada
+author: daiki-yamada
 date: 2026-02-13
 tags: [3DGS, 3D再構成, 3Dモデリング, VR, ComputerVision]
 image: true

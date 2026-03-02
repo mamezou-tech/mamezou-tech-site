@@ -1,11 +1,9 @@
 ---
- title: AWS Firewall Managerのセキュリティポリシーを実際に検証してみた ── Shield AdvancedとWAF、2つのポリシーの挙動を徹底解剖
- author: hirokazu-niwa
- # 公開日として設定されますので、それを考慮した日付にするようにしてください
- date: 2026-03-06
- # 以下のタグは任意です。つけるものあれば追加してください。まず既存タグ(トップページにあります)に使えるものがあるかを確認してください。なければ新規に作成してもらって大丈夫です
- tags: [AWS, Firewall Manager, Shield Advanced, WAF]
- ---
+title: AWS Firewall Managerの2大セキュリティポリシー：初心者でもわかる実践＆運用ポイント
+author: hirokazu-niwa
+date: 2026-03-06
+tags: [AWS, Firewall Manager, Shield Advanced, WAF]
+---
 
 ## 0. はじめに
 

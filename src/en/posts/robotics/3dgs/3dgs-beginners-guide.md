@@ -1,6 +1,6 @@
 ---
 title: A Beginner's Guide to Real 3D Modeling with 3D Gaussian Splatting
-author: Daiki-Yamada
+author: daiki-yamada
 date: 2026-02-13T00:00:00.000Z
 tags:
   - 3DGS

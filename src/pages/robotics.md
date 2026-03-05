@@ -64,6 +64,7 @@ enTitle: Robotics
 - [Open62541 を使用した OPC-UA サーバ開発](/robotics/opcua/opcua_open62541_server/)
 - [Open62541 を使用した OPC-UA クライアント開発](/robotics/opcua/opcua_open62541_client/)
 - [C++でProtocol Buffersを使ってみる](/blogs/2024/03/08/protocol-buffers-cpp/)
+- [C#からTwinCAT ADSを使ってPLCデータと連携する](/robotics/industrial-network/cs-ads-communication/)
 
 ## ロボットビジョン
 

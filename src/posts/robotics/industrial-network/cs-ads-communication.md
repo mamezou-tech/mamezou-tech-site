@@ -336,8 +336,8 @@ public enum EMode : short     // ENUM型 => short
 [StructLayout(LayoutKind.Sequential, Pack = 8)]
 public struct Sample
 {
-    public Status1; // DINT => int
-    public Status2; // DINT => int
+    public int Status1; // DINT => int
+    public int Status2; // DINT => int
 }
 ```
 

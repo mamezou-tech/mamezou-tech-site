@@ -1,5 +1,5 @@
 ---
-title: C#からTwinCAT ADSを使ってPLCデータと連携する
+title: C#×TwinCAT ADSでPLCデータを自在に操る！ハンズオンで学ぶ連携の基本
 author: shuji-morimoto
 tags: [C#, ADS, TwinCAT]
 date: 2026-03-09
@@ -104,16 +104,16 @@ INTが16bitなど幾つか注意が必要です。
 # TwinCAT側の設定
 以下の条件で変数を登録します
 - `PlcProject プロジェクト` - `GVLs` に グローバル変数リスト名 `GVL_Test` を定義(名前は任意)
-- 変数名 `TestDada` データ型 `DINT` とする
+- 変数名 `TestData` データ型 `DINT` とする
 
 ```cs: TwinCAT側の設定
 {attribute 'qualified_only'}
 VAR_GLOBAL
-    TestDada : DINT;
+    TestData : DINT;
 END_VAR
 ```
 
-それではC#からTestDada変数にアクセスしてみましょう。
+それではC#からTestData変数にアクセスしてみましょう。
 
 
 # AdsClientによる変数アクセス
@@ -299,7 +299,7 @@ END_TYPE
 ```cs: TwinCAT側のグローバル変数設定
 {attribute 'qualified_only'}
 VAR_GLOBAL
-    TestDada : DINT;
+    TestData : DINT;
     Sample : DUT_Sample;
 END_VAR
 ```
@@ -351,7 +351,7 @@ TwinCAT 側ではSTRING型で文字列を扱うことができます。しかし
 ```cs: TwinCAT側の設定
 {attribute 'qualified_only'}
 VAR_GLOBAL
-    TestDada : DINT;
+    TestData : DINT;
     Sample : DUT_Sample;
 
     // 積層アプリケーション送信データ

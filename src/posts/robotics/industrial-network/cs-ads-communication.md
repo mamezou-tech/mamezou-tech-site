@@ -1,7 +1,7 @@
 ---
 title: C#×TwinCAT ADSでPLCデータを自在に操る！ハンズオンで学ぶ連携の基本
 author: shuji-morimoto
-tags: [C#, ADS, TwinCAT]
+tags: [#csharp, ADS, TwinCAT]
 date: 2026-03-09
 image: true
 ---

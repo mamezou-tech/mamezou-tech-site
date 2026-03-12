@@ -25,7 +25,7 @@ enTitle: Robotics
 三井化学株式会社と共同で開発した中食工場向け食品盛り付けロボットシステム「美膳」について紹介します。
 
 - [ロボット開発にもクリーンアーキテクチャを。「美膳」が実現する中食工場の自動化](/robotics/bizen/bizen_introduction/)
-- [食品盛り付けロボット「美膳」のUIとコアシステムをつなぐgRPC](/robotics/bizen/bizen_sw_architecture_with_grpc/)
+- [食品盛り付けロボット「美膳」開発の舞台裏――UIとコアをつなぐgRPCとリアルタイム通信の仕組み](/robotics/bizen/bizen_sw_architecture_with_grpc/)
 
 ## 太陽光発電パネルの清掃ロボットシステム
 

@@ -52,8 +52,6 @@ image: true
 
 # コンポーネント間通信
 
-![美膳®のコンポーネント間通信](../../../img/robotics/bizen/bizen_inter_component_communication.webp)
-
 ## gRPCによる通信
 
 美膳®では、GUIアプリケーションとコントローラアプリケーションの通信に **gRPC** を採用しています。コントローラAPIはgRPCで実装されており、コントローラアプリケーションはgRPCサーバとして動作します。GUIアプリケーションはgRPCクライアントとして接続し、各種サービスを利用します。

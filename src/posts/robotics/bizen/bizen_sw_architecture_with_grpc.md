@@ -1,5 +1,5 @@
 ---
-title: 食品盛り付けロボット「美膳」開発の舞台裏――UIとコアをつなぐgRPCとリアルタイム通信の仕組み
+title: 食品盛り付けロボット「美膳®」開発の舞台裏――UIとコアをつなぐgRPCとリアルタイム通信の仕組み
 author: yuki-terada
 tags: [ロボット, 美膳, Bizen, gRPC, gui, Flutter]
 date: 2026-03-23

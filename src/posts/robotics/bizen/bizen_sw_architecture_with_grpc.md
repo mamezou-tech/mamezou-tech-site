@@ -158,7 +158,7 @@ touch counter_api.proto
 
 `counter.proto`をエディタで開き、gRPCのメッセージとサービスを定義して保存してください。
 
-``` proto
+``` protobuf
 syntax = "proto3";
 
 package counter_api;

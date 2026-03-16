@@ -2,7 +2,7 @@
 title: GitHub MCP Registryに公開されているMCPサーバーをVS Codeで動かす手順
 author: masato-ubata
 date: 2026-03-17
-tags: [vscode, MCP, GitHub Copilot]
+tags: [MCP, GitHub Copilot, vscode]
 image: true
 ---
 

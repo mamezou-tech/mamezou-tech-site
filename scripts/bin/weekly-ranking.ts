@@ -12,6 +12,7 @@ const analyticsDataClient = new BetaAnalyticsDataClient({
 });
 
 const now = DateTime.now();
+const yesterday = now.minus({ days: 1 });
 const oneWeekAgo = now.minus({ weeks: 1 });
 
 type Rank = {
@@ -27,7 +28,7 @@ async function runReport(reportFile: string) {
     dateRanges: [
       {
         startDate: oneWeekAgo.toISODate(),
-        endDate: now.toISODate(),
+        endDate: yesterday.toISODate(),
       },
     ],
     dimensions: [

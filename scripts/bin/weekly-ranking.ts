@@ -7,9 +7,12 @@ import { writeFile } from "@opensrc/jsonfile";
 Settings.defaultZone = "Asia/Tokyo";
 
 const propertyId = Deno.env.get("GA_PROPERTY_ID") || "";
-const analyticsDataClient = new BetaAnalyticsDataClient();
+const analyticsDataClient = new BetaAnalyticsDataClient({
+  transport: 'rest',
+});
 
 const now = DateTime.now();
+const yesterday = now.minus({ days: 1 });
 const oneWeekAgo = now.minus({ weeks: 1 });
 
 type Rank = {
@@ -25,7 +28,7 @@ async function runReport(reportFile: string) {
     dateRanges: [
       {
         startDate: oneWeekAgo.toISODate(),
-        endDate: now.toISODate(),
+        endDate: yesterday.toISODate(),
       },
     ],
     dimensions: [
@@ -41,38 +44,53 @@ async function runReport(reportFile: string) {
         name: "eventCount",
       },
     ],
+    orderBys: [
+      {
+        metric: { name: "eventCount" },
+        desc: true,
+      },
+    ],
     dimensionFilter: {
       andGroup: {
-        // for now, not working...
-        // notExpression: {
-        //   filter: {
-        //     fieldName: "fullPageUrl",
-        //     stringFilter: {
-        //       value: "developer.mamezou-tech.com/",
-        //     },
-        //   },
-        // },
         expressions: [
           {
             filter: {
               fieldName: "eventName",
-              stringFilter: {
-                value: "page_view",
-              },
+              stringFilter: { value: "page_view"},
             },
           },
+          {
+            notExpression: {
+              filter: {
+                fieldName: "fullPageUrl",
+                stringFilter: {
+                  matchType: "EXACT",
+                  value: "developer.mamezou-tech.com/",
+                },
+              },
+            },            
+          }
         ],
       },
     },
-    limit: 1000,
+    limit: 20,
+  }, {
+    timeout: 60000,
+    retry: {
+      retryCodes: [4, 14], // 4: DEADLINE_EXCEEDED, 14: UNAVAILABLE をリトライ対象にする
+      backoffSettings: {
+        initialRetryDelayMillis: 1000,
+        retryDelayMultiplier: 2,
+        maxRetryDelayMillis: 10000,
+        initialRpcTimeoutMillis: 60000,
+        rpcTimeoutMultiplier: 1.5,
+        maxRpcTimeoutMillis: 120000,
+        totalTimeoutMillis: 300000,
+      },
+    },
   });
 
   const articles: Rank[] = response.rows!
-    .slice()
-    .sort((a, b) => +b.metricValues![0].value! - +a.metricValues![0].value!)
-    .filter((row) =>
-      row.dimensionValues![1].value !== "developer.mamezou-tech.com/"
-    ) // exclude top page
     .slice(0, 10)
     .map((row) => {
       const [title, url] = row.dimensionValues!.map((v) => v.value);

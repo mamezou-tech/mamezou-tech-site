@@ -2,7 +2,7 @@
 title: 🤖ABBロボットコントローラにPC-SDKで連携するときの落とし穴10選🕳️
 author: shuji-morimoto
 tags: [ロボット, PC-SDK, ABB]
-date: 2026-03-d26
+date: 2026-03-26
 image: true
 ---
 

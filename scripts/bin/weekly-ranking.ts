@@ -41,32 +41,38 @@ async function runReport(reportFile: string) {
         name: "eventCount",
       },
     ],
+    orderBys: [
+      {
+        metric: { name: "eventCount" },
+        desc: true,
+      },
+    ],
     dimensionFilter: {
       andGroup: {
-        // for now, not working...
-        // notExpression: {
-        //   filter: {
-        //     fieldName: "fullPageUrl",
-        //     stringFilter: {
-        //       value: "developer.mamezou-tech.com/",
-        //     },
-        //   },
-        // },
         expressions: [
           {
             filter: {
               fieldName: "eventName",
-              stringFilter: {
-                value: "page_view",
-              },
+              stringFilter: { value: "page_view"},
             },
           },
+          {
+            notExpression: {
+              filter: {
+                fieldName: "fullPageUrl",
+                stringFilter: {
+                  matchType: "EXACT",
+                  value: "developer.mamezou-tech.com/",
+                },
+              },
+            },            
+          }
         ],
       },
     },
-    limit: 1000,
+    limit: 20,
   }, {
-    timeout: 120000,
+    timeout: 60000,
     retry: {
       retryCodes: [4, 14], // 4: DEADLINE_EXCEEDED, 14: UNAVAILABLE をリトライ対象にする
       backoffSettings: {
@@ -82,11 +88,6 @@ async function runReport(reportFile: string) {
   });
 
   const articles: Rank[] = response.rows!
-    .slice()
-    .sort((a, b) => +b.metricValues![0].value! - +a.metricValues![0].value!)
-    .filter((row) =>
-      row.dimensionValues![1].value !== "developer.mamezou-tech.com/"
-    ) // exclude top page
     .slice(0, 10)
     .map((row) => {
       const [title, url] = row.dimensionValues!.map((v) => v.value);

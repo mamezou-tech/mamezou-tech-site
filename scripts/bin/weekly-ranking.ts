@@ -7,7 +7,9 @@ import { writeFile } from "@opensrc/jsonfile";
 Settings.defaultZone = "Asia/Tokyo";
 
 const propertyId = Deno.env.get("GA_PROPERTY_ID") || "";
-const analyticsDataClient = new BetaAnalyticsDataClient();
+const analyticsDataClient = new BetaAnalyticsDataClient({
+  transport: 'rest',
+});
 
 const now = DateTime.now();
 const oneWeekAgo = now.minus({ weeks: 1 });

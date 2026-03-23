@@ -65,6 +65,20 @@ async function runReport(reportFile: string) {
       },
     },
     limit: 1000,
+  }, {
+    timeout: 120000,
+    retry: {
+      retryCodes: [4, 14], // 4: DEADLINE_EXCEEDED, 14: UNAVAILABLE をリトライ対象にする
+      backoffSettings: {
+        initialRetryDelayMillis: 1000,
+        retryDelayMultiplier: 2,
+        maxRetryDelayMillis: 10000,
+        initialRpcTimeoutMillis: 60000,
+        rpcTimeoutMultiplier: 1.5,
+        maxRpcTimeoutMillis: 120000,
+        totalTimeoutMillis: 300000,
+      },
+    },
   });
 
   const articles: Rank[] = response.rows!

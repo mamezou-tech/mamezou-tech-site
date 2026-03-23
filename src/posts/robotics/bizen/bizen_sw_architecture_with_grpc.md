@@ -38,8 +38,6 @@ image: true
 * **コントローラアプリケーション**
   美膳®の中核となるコンポーネントです。装置の状態制御、登録データ管理、画像処理などを担当します。
 
-![GUIアプリケーション画面の一例](/img/robotics/bizen/bizen_ui_screen.png)
-
 システム構成は次の図のようになります。
 
 ![美膳®システムの構成](/img/robotics/bizen/bizen_system_diagram.png)

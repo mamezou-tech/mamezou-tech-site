@@ -20,6 +20,21 @@ enTitle: Robotics
 
 - [豆蔵オリジナルロボットBEANus](/robotics/beanus/beanus_introduction/)
 
+## 食品盛り付けロボットシステム「美膳」
+
+三井化学株式会社と共同で開発した中食工場向け食品盛り付けロボットシステム「美膳」について紹介します。
+
+- [ロボット開発にもクリーンアーキテクチャを。「美膳」が実現する中食工場の自動化](/robotics/bizen/bizen_introduction/)
+- [食品盛り付けロボット「美膳®」開発の舞台裏――UIとコアをつなぐgRPCとリアルタイム通信の仕組み](/robotics/bizen/bizen_sw_architecture_with_grpc/)
+
+## 太陽光発電パネルの清掃ロボットシステム
+
+弊社オリジナルの清掃ロボットシステムに関する記事をまとめてゆきます。
+
+- [DJIドローンの Payload SDK の紹介](/robotics/solar-panel-clean-robot/dji-drone-psdk-introduction/)
+- [DJIドローン開発Tips - カスタムペイロードデバイスの Application Binding](/robotics/solar-panel-clean-robot/dji-drone-psdk-application-binding/)
+- [DJIドローン開発Tips - カスタムウィジェットの解説](/robotics/solar-panel-clean-robot/dji-drone-psdk-custom-widget/)
+
 ## ロボット工学
 
 主に工場や店舗で使われるロボットマニピュレータ制御の基礎技術をまとめてます。
@@ -41,11 +56,16 @@ enTitle: Robotics
 - [UR のシミュレータ環境を Docker で構築する](/robotics/ur/ursim-docker/)
 - [「Universal Robots」の UR+で URCap 開発](/blogs/2023/04/11/urcap-dev/)
 
+## 安川ロボット
+
+- [LLMでロボット通信コードを書く - 安川HSES向けAgent Skillsの紹介](/robotics/yaskawa/yaskawa-hses-agent-skills/)
+
 ## 産業用ネットワーク・通信
 
 - [Open62541 を使用した OPC-UA サーバ開発](/robotics/opcua/opcua_open62541_server/)
 - [Open62541 を使用した OPC-UA クライアント開発](/robotics/opcua/opcua_open62541_client/)
 - [C++でProtocol Buffersを使ってみる](/blogs/2024/03/08/protocol-buffers-cpp/)
+- [C#×TwinCAT ADSでPLCデータを自在に操る！ハンズオンで学ぶ連携の基本](/robotics/industrial-network/cs-ads-communication/)
 
 ## ロボットビジョン
 
@@ -59,6 +79,10 @@ enTitle: Robotics
 弊社のロボットシステム開発で使用したことのある 3D カメラに関する記事をまとめていきます。
 
 - [RealSense D435f で Disparity Shift を調整した話](/robotics/vision/realsense-d435f-disparity-shift/)
+
+### 3D 再構成
+
+- [初心者も挑戦！3D Gaussian Splattingで作るリアル3Dモデリング入門](/robotics/3dgs/3dgs-beginners-guide/)
 
 ## GUI
 
@@ -77,3 +101,7 @@ enTitle: Robotics
 
 - [OpenAI Realtime APIのWebRTCでロボットを操作する](/robotics/ai/voice-operation/)
 - [ロボット開発者のための強化学習入門](/robotics/rl/rl_for_robot/)
+
+## PLC
+- [TwinCATで始めるソフトウェアPLC開発（その1：開発環境構築編）](/robotics/twincat/introduction/twincat-introduction/)
+- [TwinCATで始めるソフトウェアPLC開発（その2：ST言語でのプログラミング（1/2））](/robotics/twincat/introduction-chapter2/twincat-introduction-chapter2/)

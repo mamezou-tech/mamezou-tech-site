@@ -106,8 +106,8 @@ Outputs:
 上記では、[AWS::AppSync::ChannelNamespace](https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-appsync-channelnamespace.html)リソースでNamespace(`sample`)を作成しています。
 ここでは指定してませんが、Namespace単位でAPIレベルの認証方式を限定したり、カスタムのイベントハンドラ[^1]を指定できます。
 
-Event APIではこのNamespaceをプリフィックスとするチャンネルの単位でイベントの発行や購読します。
-チャンネルは`/default/foo/bar`のように階層構造で管理しますが、事前に作成する必要はありません（Event API内で作成されます）。
+Event APIではこのNamespaceをプリフィックスとするチャネルの単位でイベントの発行や購読します。
+チャネルは`/default/foo/bar`のように階層構造で管理しますが、事前に作成する必要はありません（Event API内で作成されます）。
 
 [^1]: リリースアナウンスの[ブログ](https://aws.amazon.com/jp/blogs/news/announcing-aws-appsync-events-serverless-websocket-apis/)を読むと、カスタムイベントハンドラは将来的にLambdaにも対応する予定とのことです。
 
@@ -165,7 +165,7 @@ Namespaceはほとんど何も指定してないのでデフォルト状態で�
   const messages = ref([]);
 
   onMounted(async () => {
-    // /sample/channel配下のチャンネルを購読
+    // /sample/channel配下のチャネルを購読
     channel = await events.connect('/sample/channel/*');
     channel.subscribe({
       next: (data) => {
@@ -192,12 +192,12 @@ Namespaceはほとんど何も指定してないのでデフォルト状態で�
 ```
 
 AppSync Eventsへのアクセスは、もちろん素のWebSocketを使ってもできますが、ここでは[aws-amplify](https://www.npmjs.com/package/aws-amplify)を使います(実装がとても楽になります)。
-`events.connect`でEvent APIに接続し、`events.subscribe`でチャンネルを購読します。
-ここでは購読するチャンネルは`/sample/channel/*`と指定しました。これは`/sample/channel`配下の全チャンネルを意味します。
+`events.connect`でEvent APIに接続し、`events.subscribe`でチャネルを購読します。
+ここでは購読するチャネルは`/sample/channel/*`と指定しました。これは`/sample/channel`配下の全チャネルを意味します。
 
 なお、Event APIから受け取ったデータはそのままリアクティブ変数(`messages`)に設定し、UI表示するようにしています。
 
-このアプリを起動してChromeのDevツールを見ると、WebSocketコネクションの確立やチャンネル購読の通信が確認できます。
+このアプリを起動してChromeのDevツールを見ると、WebSocketコネクションの確立やチャネル購読の通信が確認できます。
 
 ![Chrome WebSocket log](https://i.gyazo.com/a58848d3c959e751f8e5801e1297eaec.png)
 

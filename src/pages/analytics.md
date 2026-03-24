@@ -10,6 +10,23 @@ enTitle: Analytics
 近年では機械学習やAIの普及に伴い、それ以外の分野でも幅広く活用されるようになり、統計解析の知識が必要不可欠な時代になってきました。
 ここでは、そんな統計解析に焦点を当てた記事を紹介していきます。
 
+## ソフトウェア品質のための統計入門
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.1 統計って何？ ソフトウェア品質になぜ必要？）](/blogs/2025/05/27/lets_talk_statistics_shall_we_01/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.2 データとの正しい向き合い方）](/blogs/2025/05/28/lets_talk_statistics_shall_we_02/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.3 代表値の使い分け：平均・中央値・最頻値）](/blogs/2025/05/29/lets_talk_statistics_shall_we_03/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.4 ばらつきの把握：分散・標準偏差・レンジ）](/blogs/2025/05/30/lets_talk_statistics_shall_we_04/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.5 形状を知る：歪度・尖度と分布のクセ）](/blogs/2025/06/02/lets_talk_statistics_shall_we_05/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.6 実務に効くグラフの正しい使い分け）](/blogs/2025/06/03/lets_talk_statistics_shall_we_06/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.7 PythonとExcelで描く統計グラフ入門）](/blogs/2025/06/04/lets_talk_statistics_shall_we_07/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.8 確率の直感と計算：「偶然」の正体を知る）](/blogs/2025/06/05/lets_talk_statistics_shall_we_08/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.9 正規分布とその周辺：3σルールの意味と限界）](/blogs/2025/06/06/lets_talk_statistics_shall_we_09/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.10 母集団と標本：中心極限定理、大数の法則）](/blogs/2025/06/09/lets_talk_statistics_shall_we_10/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.11 信頼区間と誤差：この結果、どこまで信じていい？）](/blogs/2025/06/10/lets_talk_statistics_shall_we_11/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.12 仮説検定：有意差って本当に意味あるの？）](/blogs/2025/06/11/lets_talk_statistics_shall_we_12/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.13 相関と因果：散布図と相関係数の落とし穴）](/blogs/2025/06/12/lets_talk_statistics_shall_we_13/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.14 予測：回帰分析で品質を読み解く）](/blogs/2025/06/13/lets_talk_statistics_shall_we_14/)
+- [統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.15 統計的品質管理(SQC)の実践事例紹介）](/blogs/2025/06/16/lets_talk_statistics_shall_we_15/)
+
 ## 統計解析全般・ツール紹介
 - [統計解析ツールjamoviの紹介](/blogs/2022/05/16/introduction-of-statistical-analysis-tool-jamovi/)
 - [ベイズ統計をお手軽に、統計解析ツールJASPの紹介](/blogs/2022/06/23/statistical-analysis-tool-jasp/)
@@ -48,4 +65,4 @@ enTitle: Analytics
 - [ベイズ推定を学ぶ ～２項推定～](/blogs/2022/06/28/bayesian-inference-by-jasp/)
 
 ## 番外
-- [猫を飼うべきこれだけの理由](/blogs/2022/10/09/cat-and-productivity/) <span style="color: red;">★NEW★</span>
+- [猫を飼うべきこれだけの理由](/blogs/2022/10/09/cat-and-productivity/)

@@ -6,7 +6,7 @@ export default () => (
           豆蔵では共に高め合う仲間を募集しています！
         </p>
         <a
-          href="https://wwwrecruit.mamezou.com/"
+          href="https://recruit.mamezo.tech/"
           target="_blank"
           rel="noreferrer noopener"
         >

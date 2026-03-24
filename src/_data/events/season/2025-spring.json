@@ -1,0 +1,172 @@
+{
+  "entries": [
+    {
+      "date": "4月13日(日)",
+      "author": "toshio-ogiwara",
+      "githubUser": "ogiwarat",
+      "title": "【新人さん向け】Java開発で最初に確認しておきたいEclipse便利設定ガイド",
+      "url": "/blogs/2025/04/13/eclipse-settings-for-newcomer/"
+    },
+    {
+      "date": "5月7日(水)",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "生成 AI 時代の新人さん向け「自分のコードに責任を持てる力」をつけるために",
+      "url": "/blogs/2025/05/07/for-newcomer-in-the-age-of-generative-ai/"
+    },
+    {
+      "date": "5月9日(金)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "「暗号の扉を開く２つの鍵」～公開鍵と秘密鍵の仕組みと、インターネットを守る暗号技術の話",
+      "url": "/blogs/2025/05/09/public-private-keys-story/"
+    },
+    {
+      "date": "5月27日(火)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.1 統計って何？ ソフトウェア品質になぜ必要？）",
+      "url": "/blogs/2025/05/27/lets_talk_statistics_shall_we_01/"
+    },
+    {
+      "date": "5月28日(水)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.2 データとの正しい向き合い方）",
+      "url": "/blogs/2025/05/28/lets_talk_statistics_shall_we_02/"
+    },
+    {
+      "date": "5月29日(木)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.3 代表値の使い分け：平均・中央値・最頻値）",
+      "url": "/blogs/2025/05/29/lets_talk_statistics_shall_we_03/"
+    },
+    {
+      "date": "5月30日(金)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.4 ばらつきの把握：分散・標準偏差・レンジ）",
+      "url": "/blogs/2025/05/30/lets_talk_statistics_shall_we_04/"
+    },
+    {
+      "date": "6月2日(月)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.5 形状を知る：歪度・尖度と分布のクセ）",
+      "url": "/blogs/2025/06/02/lets_talk_statistics_shall_we_05/"
+    },
+    {
+      "date": "6月3日(火)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.6 実務に効くグラフの正しい使い分け）",
+      "url": "/blogs/2025/06/03/lets_talk_statistics_shall_we_06/"
+    },
+    {
+      "date": "6月4日(水)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.7 PythonとExcelで描く統計グラフ入門）",
+      "url": "/blogs/2025/06/04/lets_talk_statistics_shall_we_07/"
+    },
+    {
+      "date": "6月5日(木)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.8 確率の直感と計算：「偶然」の正体を知る）",
+      "url": "/blogs/2025/06/05/lets_talk_statistics_shall_we_08/"
+    },
+    {
+      "date": "6月6日(金)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.9 正規分布とその周辺：3σルールの意味と限界）",
+      "url": "/blogs/2025/06/06/lets_talk_statistics_shall_we_09/"
+    },
+    {
+      "date": "6月6日(金)",
+      "author": "makoto-takahashi",
+      "githubUser": "Makoto1994",
+      "title": "「問題」と「課題」の違いから始めよう ― 新人プロジェクトマネージャー向け：はじめての課題管理ガイド",
+      "url": "/blogs/2025/06/06/from_problem_to_action_issue_management_for_rookies/"
+    },
+    {
+      "date": "6月9日(月)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.10 母集団と標本：中心極限定理、大数の法則）",
+      "url": "/blogs/2025/06/09/lets_talk_statistics_shall_we_10/"
+    },
+    {
+      "date": "6月10日(火)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.11 信頼区間と誤差：この結果、どこまで信じていい？）",
+      "url": "/blogs/2025/06/10/lets_talk_statistics_shall_we_11/"
+    },
+    {
+      "date": "6月11日(水)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.12 仮説検定：有意差って本当に意味あるの？）",
+      "url": "/blogs/2025/06/11/lets_talk_statistics_shall_we_12/"
+    },
+    {
+      "date": "6月12日(木)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.13 相関と因果：散布図と相関係数の落とし穴）",
+      "url": "/blogs/2025/06/12/lets_talk_statistics_shall_we_13/"
+    },
+    {
+      "date": "6月13日(金)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.14 予測：回帰分析で品質を読み解く）",
+      "url": "/blogs/2025/06/13/lets_talk_statistics_shall_we_14/"
+    },
+    {
+      "date": "6月13日(金)",
+      "author": "makoto-takahashi",
+      "githubUser": "Makoto1994",
+      "title": "「事実はひとつ、真実は人の数だけ？」─ 新人プロジェクトマネージャーがコナンに学ぶ“探偵型マネジメント”思考法",
+      "url": "/blogs/2025/06/13/fact_vs_truths_conan_inspired_pm_guide_for_rookies/"
+    },
+    {
+      "date": "6月13日(金)",
+      "author": "yoshifumi-moriya",
+      "githubUser": "morya-530",
+      "title": "文字コード これだけは覚えておこう ～UTF-8編～",
+      "url": "/blogs/2025/06/13/moji-code2/"
+    },
+    {
+      "date": "6月16日(月)",
+      "author": "shuichi-takatsu",
+      "githubUser": "shuichi-takatsu",
+      "title": "統計の話をしようじゃないか - ソフトウェア品質のための統計入門（No.15 統計的品質管理(SQC)の実践事例紹介）",
+      "url": "/blogs/2025/06/16/lets_talk_statistics_shall_we_15/"
+    },
+    {
+      "date": "6月20日(金)",
+      "author": "makoto-takahashi",
+      "githubUser": "Makoto1994",
+      "title": "「問題」と「リスク」の違いから始める ― 新人プロジェクトマネージャー向け：はじめてのリスク管理ガイド",
+      "url": "/blogs/2025/06/20/risk_management_starting_with_risk_vs_problem_for_rookies/"
+    },
+    {
+      "date": "6月27日(金)",
+      "author": "makoto-takahashi",
+      "githubUser": "Makoto1994",
+      "title": "「問題」を診て「課題」を処方する ― 新人プロジェクトマネージャーがSOAPに学ぶ、問題解決の「型」",
+      "url": "/blogs/2025/06/27/soap_based_project_problem_diagnosis_for_rookie/"
+    },
+    {
+      "date": "6月30日(月)",
+      "author": "makoto-takahashi",
+      "githubUser": "Makoto1994",
+      "title": "「問題解決」と「課題達成」どう使い分ける？─新人プロジェクトマネージャー向け：“守り”と“攻め”の思考法",
+      "url": "/blogs/2025/06/30/problem_solving_vs_task_achieving_pm_thinking_for_rookies/"
+    }
+  ]
+}

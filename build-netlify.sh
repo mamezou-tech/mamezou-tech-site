@@ -7,9 +7,9 @@ echo "Starting Deno build task..."
 sed -i.bak 's/"lock": true/"lock": false/' "deno.json"
 
 deno --version
-deno upgrade
+# deno upgrade
 
-sed -i.bak 's/"lock": false/"lock": true/' "deno.json"
+# sed -i.bak 's/"lock": false/"lock": true/' "deno.json"
 
 # Running Deno task
 deno task build

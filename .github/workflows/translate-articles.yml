@@ -98,5 +98,5 @@ jobs:
             ${{ steps.translate-latest-articles.outputs.translated }}
 
             ```
-          reviewers: kudoh
+          reviewers: kondoumh
           labels: bot

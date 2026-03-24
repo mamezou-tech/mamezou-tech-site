@@ -12,7 +12,7 @@ function normalizeContent(original: string) {
       normalized = normalized.replace(m[0], m.groups.title);
     }
   }
-  return normalized.replace(/(<([^>]+)>)/gi, "");
+  return normalized.replace(/(<[^>]+>)/gi, "");
 }
 
 export const excerpt = (content: string | React.ReactElement) => {

@@ -5,8 +5,8 @@ import { dirname } from "@std/path";
 import { existsSync } from "@std/fs";
 import { writeFile } from "@opensrc/jsonfile";
 import { APIError } from "@openai/openai";
-import openai from "../util/openai-client.ts";
 
+const openai = new OpenAI();
 const English = {
   language: "English",
   dir: "en",
@@ -28,7 +28,6 @@ Please follow these instructions:
   - **Do not wrap the front matter in code blocks or add any additional formatting. Output it exactly as \`---\`, followed by the YAML content, and ending with \`---\`.**
 - In the main body of the article:
   - Translate all Japanese text into ${language}.
-  - Do not translate source code (but do translate comments within the code).
   - Do not translate names of books mentioned in the article.
   - Do not translate HTML tags like \`<video>\` or \`<script>\`; output them as they are.
   - Do not translate image links or URLs.
@@ -42,6 +41,7 @@ Here are specific translation rules:
 - **Translate the entire article without summarizing or skipping any sections.** Do not output phrases like "The rest of the article continues" or "Summary of the remaining content."
 - If the article is long, **continue outputting all content until the very end.** If the translation does not fit in one output, split the translation into multiple parts and automatically continue until the entire article is translated. Do not truncate or omit any part of the article.
 - **Your response must be the full translated content as is**, including all text, code comments, and other elements present in the article.
+- Ensure that you translate heading(like \`## heading\`) and code blocks.
 
 Please translate the following article:
 
@@ -73,7 +73,6 @@ function updateMd(translated: string, originalFrontMatter: string) {
   frontMatterYaml.translate = true;
   console.log(translatedFrontMatter);
   const translatedYaml = yaml.load(translatedFrontMatter) as any;
-  console.log(translatedYaml);
   frontMatterYaml.title = translatedYaml.title;
   const finalFrontMatter = yaml.dump(frontMatterYaml);
 
@@ -86,29 +85,26 @@ ${payload}
 
 type Request = {
   userId?: string;
-  messages: OpenAI.ChatCompletionMessageParam[];
+  messages: string | {role: any, content: string}[]
   temperature?: number;
   maxTokens?: number;
   responseFormat?: "text" | "json_object";
   model?: string;
-  reasoningEffort?: "high" | "medium" | "low";
+  reasoningEffort?: OpenAI.ReasoningEffort;
 };
 const debug = !!Deno.env.get("DEBUG");
 export async function requestTranslate(
   request: Request,
-): Promise<OpenAI.ChatCompletion> {
+) {
   try {
     console.time("Chat API");
     if (debug) console.log("sending...", request.messages);
-    const resp = await openai.chat.completions.create({
+    const resp = await openai.responses.create({
       model: request.model ?? "gpt-4o-mini",
       user: request.userId,
-      messages: request.messages,
-      reasoning_effort: request.reasoningEffort,
-      // max_tokens: request.maxTokens,
-      // temperature: request.temperature ?? 0.7,
-      response_format: {
-        type: request.responseFormat ?? "text",
+      input: request.messages,
+      reasoning: {
+        effort: request.reasoningEffort ?? "medium",
       },
     });
     if (debug) console.log("result", resp);
@@ -124,7 +120,7 @@ export async function requestTranslate(
 }
 async function chat(text: string, option: { language: string; dir: string }) {
   async function continueTranslation(
-    prevMessage: OpenAI.ChatCompletionMessageParam,
+    prevMessage: any,
     times = 0,
   ) {
     console.info("retrying...", times);
@@ -135,9 +131,9 @@ async function chat(text: string, option: { language: string; dir: string }) {
         prevMessage,
       ],
     });
-    replies.push(retryResp.choices[0].message.content);
-    if (retryResp.choices[0].finish_reason === "length") {
-      return await continueTranslation(retryResp.choices[0].message, times + 1);
+    replies.push(retryResp.output_text);
+    if (response.incomplete_details?.reason === "max_output_tokens") {
+      return await continueTranslation(retryResp.output, times + 1);
     }
     return;
   }
@@ -147,23 +143,20 @@ async function chat(text: string, option: { language: string; dir: string }) {
       role: "user",
       content: makeMessage(text, option.language),
     }],
-    // temperature: 0,
-    // maxTokens: 8192 * 3,
-    // model: "gpt-4o-2024-11-20",
     reasoningEffort: "high",
-    model: "o3-mini",
+    model: "o4-mini",
     // model: "gpt-4o-mini", // for testing
   } satisfies Parameters<typeof requestTranslate>[number];
 
   const response = await requestTranslate(request);
   console.log(
-    "finish_reason",
-    response.choices[0].finish_reason,
+    "incomplete_details",
+    response.incomplete_details,
     response.usage,
   );
-  replies.push(response.choices[0].message.content);
-  if (response.choices[0].finish_reason === "length") {
-    await continueTranslation(response.choices[0].message, 1);
+  replies.push(response.output_text);
+  if (response.incomplete_details?.reason === "max_output_tokens") {
+    await continueTranslation(response.output, 1);
   }
   return replies.join();
 }
@@ -217,7 +210,7 @@ async function main() {
       }
     }
     await writeFile(
-      "translated.json",
+      "./translated.json",
       { succeeded, failed },
       { spaces: 2 },
     );

@@ -2,7 +2,7 @@
 title: VSCodeのESP-IDF拡張機能「Espressif IDF」を使ってみる
 author: shuichi-takatsu
 date: 2023-02-19
-tags: [vscode, esp32]
+tags: [vscode, esp32, esp-idf]
 ---
 
 以前のIoT記事にて[Arduino IDE](/iot/internet-of-things-03/)を紹介しましたが、いつも使用しているVSCode(Visual Studio Code)でESP32のプログラムを作成できたら便利だなと思っていました。  
@@ -169,3 +169,7 @@ void app_main(void)
 (回避策が分かるまで筆者は何度もインストール・アンインストールを繰り返すことになりました)  
 単にESP32のCプログラムを作成したいだけなら Arduino IDEで十分だなと感じました。  
 ESP32+Rustの開発環境が構築できたらご報告したいと思います。
+
+★追記：ESP-IDF関連記事を別記事でアップしました。
+- [ESP-IDFプロジェクトの構成とCMakeの仕組みを徹底解説！（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/03/esp-idf-vsc-extension-2/)
+- [IDF Component ManagerとKconfig設定でハマった話（VSCode＋ESP-IDF拡張機能）](/blogs/2025/05/06/esp-idf-vsc-extension-3/)

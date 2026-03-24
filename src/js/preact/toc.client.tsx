@@ -151,7 +151,7 @@ function Toc(
       </div>
       <div>
         <a
-          href="https://wwwrecruit.mamezou.com/"
+          href="https://recruit.mamezo.tech/"
           onClick={(ev) => sendGa(ev, "click_recruit")}
           target="_blank"
         >

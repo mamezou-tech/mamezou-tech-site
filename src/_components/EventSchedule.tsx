@@ -1,10 +1,10 @@
 const Entry = (
-  { date, author, githubUser, title, url }: Lume.Data,
+  { date, author, nonContrib, githubUser, title, url }: Lume.Data,
 ) => {
   const authorImageURL = githubUser
     ? `https://github.com/${githubUser}.png`
-    : null;
-  const authorLink = author ? `/authors/${author}` : null;
+    : "/img/android-chrome-192x192.png";
+  const authorLink = author && !nonContrib ? `/authors/${author}` : null;
   return (
     <div
       style={{
@@ -22,7 +22,8 @@ const Entry = (
       >
         <div>{date}</div>
         <div>
-          {author ? <a href={authorLink}>{author}</a> : author}
+          {authorLink ? <a href={authorLink}>{author}</a> : null}
+          {!authorLink && author ? author : null}
           {authorImageURL &&
             (
               <a href={authorLink}>
@@ -71,6 +72,7 @@ export default ({ period, events }: Lume.Data) => {
             key={index}
             date={entry.date}
             author={entry.author}
+            nonContrib={entry.nonContrib}
             githubUser={entry.githubUser}
             title={entry.title}
             url={entry.url}

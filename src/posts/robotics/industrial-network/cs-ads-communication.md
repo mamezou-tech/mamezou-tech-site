@@ -351,7 +351,7 @@ VAR_GLOBAL
     TestData : DINT;
     Sample : DUT_Sample;
 
-    // 積層アプリケーション送信データ
+    // UTF-8での文字列定義
     {attribute 'TcEncoding':='UTF-8'}
     Message : STRING(1024);
 END_VAR

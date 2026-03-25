@@ -36,7 +36,7 @@ async function runReport(reportFile: string) {
         name: "pageTitle",
       },
       {
-        name: "fullPageUrl",
+        name: "pagePath",
       },
     ],
     metrics: [
@@ -91,7 +91,6 @@ async function runReport(reportFile: string) {
   });
 
   const articles: Rank[] = response.rows!
-    .slice(0, 10)
     .map((row) => {
       const [title, url] = row.dimensionValues!.map((v) => v.value);
       const pv = +(row.metricValues![0].value || 0);
@@ -104,7 +103,10 @@ async function runReport(reportFile: string) {
         url: url || "",
         pv,
       };
-    });
+    })
+    .filter(a => a.path !== "/" && a.path !== "")
+    .slice(0, 10)
+;
 
   await writeFile(
     reportFile,

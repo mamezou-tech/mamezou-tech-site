@@ -7,13 +7,11 @@ import { writeFile } from "@opensrc/jsonfile";
 Settings.defaultZone = "Asia/Tokyo";
 
 const propertyId = Deno.env.get("GA_PROPERTY_ID") || "";
-const analyticsDataClient = new BetaAnalyticsDataClient({
-  transport: 'rest',
-});
+const analyticsDataClient = new BetaAnalyticsDataClient();
 
 const now = DateTime.now();
-const yesterday = now.minus({ days: 1 });
-const oneWeekAgo = now.minus({ weeks: 1 });
+const yesterday = now.minus({ days: 1 }); // 今日ではなく昨日
+const oneWeekAgo = yesterday.minus({ weeks: 1 }); // 昨日の1週間前
 
 type Rank = {
   title: string;
@@ -28,7 +26,7 @@ async function runReport(reportFile: string) {
     dateRanges: [
       {
         startDate: oneWeekAgo.toISODate(),
-        endDate: yesterday.toISODate(),
+        endDate: yesterday.toISODate(), // 未確定データを含む「今日」を除外
       },
     ],
     dimensions: [
@@ -36,7 +34,7 @@ async function runReport(reportFile: string) {
         name: "pageTitle",
       },
       {
-        name: "pagePath",
+        name: "pagePath", // fullPageUrl から、軽量な pagePath に変更
       },
     ],
     metrics: [
@@ -47,7 +45,7 @@ async function runReport(reportFile: string) {
     orderBys: [
       {
         metric: { name: "eventCount" },
-        desc: true,
+        desc: true, // API側であらかじめPV順にソートさせる
       },
     ],
     dimensionFilter: {
@@ -56,57 +54,33 @@ async function runReport(reportFile: string) {
           {
             filter: {
               fieldName: "eventName",
-              stringFilter: { value: "page_view"},
+              stringFilter: {
+                value: "page_view",
+              },
             },
           },
-          {
-            notExpression: {
-              filter: {
-                fieldName: "fullPageUrl",
-                stringFilter: {
-                  matchType: "EXACT",
-                  value: "developer.mamezou-tech.com/",
-                },
-              },
-            },            
-          }
         ],
       },
     },
-    limit: 20,
-  }, {
-    timeout: 60000,
-    retry: {
-      retryCodes: [4, 14], // 4: DEADLINE_EXCEEDED, 14: UNAVAILABLE をリトライ対象にする
-      backoffSettings: {
-        initialRetryDelayMillis: 1000,
-        retryDelayMultiplier: 2,
-        maxRetryDelayMillis: 10000,
-        initialRpcTimeoutMillis: 60000,
-        rpcTimeoutMultiplier: 1.5,
-        maxRpcTimeoutMillis: 120000,
-        totalTimeoutMillis: 300000,
-      },
-    },
+    limit: 100, // 1000件から削減し、API側の負荷を減らす
   });
 
   const articles: Rank[] = response.rows!
     .map((row) => {
-      const [title, url] = row.dimensionValues!.map((v) => v.value);
+      const [title, path] = row.dimensionValues!.map((v) => v.value);
       const pv = +(row.metricValues![0].value || 0);
       return {
-        title: title!.replace(" | 豆蔵デベロッパーサイト", "").replace(
-          " | Mamezou Developer Portal",
-          "",
-        ),
-        path: url!.replace("developer.mamezou-tech.com", ""),
-        url: url || "",
+        title: title!
+          .replace(" | 豆蔵デベロッパーサイト", "")
+          .replace(" | Mamezou Developer Portal", ""),
+        path: path!, // すでに "/entry/..." のようなパス形式
+        url: `developer.mamezou-tech.com${path}`, // Slack通知などのためのURL結合
         pv,
       };
     })
-    .filter(a => a.path !== "/" && a.path !== "")
-    .slice(0, 10)
-;
+    // トップページなどの除外は JavaScript 側で安全に処理
+    .filter((a) => a.path !== "/" && a.path !== "/index.html")
+    .slice(0, 10); // 上位10件を確定
 
   await writeFile(
     reportFile,
@@ -124,18 +98,14 @@ async function notifyToSlack(ranks: Rank[]) {
   await web.chat.postMessage({
     channel,
     mrkdwn: true,
-    text: `先週(${oneWeekAgo.toISODate()} ~ ${
-      now.minus({ days: 1 }).toISODate()
-    })のランキング(PVベース)が確定しました:beers:`,
+    text: `先週(${oneWeekAgo.toISODate()} ~ ${yesterday.toISODate()})のランキング(PVベース)が確定しました:beers:`,
     unfurl_media: false,
     blocks: [
       {
         type: "header",
         text: {
           type: "plain_text",
-          text: `先週(${oneWeekAgo.toISODate()} ~ ${
-            now.minus({ days: 1 }).toISODate()
-          })のランキング(PVベース)が確定しました:beers:`,
+          text: `先週(${oneWeekAgo.toISODate()} ~ ${yesterday.toISODate()})のランキング(PVベース)が確定しました:beers:`,
         },
       },
       {

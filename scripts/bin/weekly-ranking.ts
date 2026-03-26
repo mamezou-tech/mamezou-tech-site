@@ -21,8 +21,6 @@ type Rank = {
 };
 
 async function runReport(reportFile: string) {
-  console.log("start fetching data from GA4...");
-
   const [response] = await analyticsDataClient.runReport({
     property: `properties/${propertyId}`,
     dateRanges: [
@@ -135,6 +133,7 @@ const __dirname = dirname(fromFileUrl(import.meta.url));
 const reportDir = join(__dirname, "../../src/_data");
 const reportFile = join(reportDir, "pv.json");
 
+console.log("start fetching data from GA4...");
 await runReport(reportFile);
 
 console.log("DONE!!");

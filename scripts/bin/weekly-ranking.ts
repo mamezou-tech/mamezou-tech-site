@@ -7,11 +7,29 @@ import { writeFile } from "@opensrc/jsonfile";
 Settings.defaultZone = "Asia/Tokyo";
 
 const propertyId = Deno.env.get("GA_PROPERTY_ID") || "";
-// 認証エラー回避のため、コンストラクタは元のまま（デフォルト）にします
-const analyticsDataClient = new BetaAnalyticsDataClient();
+
+// --- Workload Identity 認証情報の読み込み ---
+const credentialsPath = Deno.env.get("GOOGLE_APPLICATION_CREDENTIALS");
+let credentials;
+
+if (credentialsPath) {
+  try {
+    // auth アクションが生成した一時ファイルを読み込む
+    const content = await Deno.readTextFile(credentialsPath);
+    credentials = JSON.parse(content);
+  } catch (e) {
+    console.warn("認証ファイルの読み込みに失敗しました。デフォルト認証を試みます。", e);
+  }
+}
+
+// gRPC エラー(14)回避のため transport: 'rest' を指定
+// 権限エラー(403)回避のため credentials を明示的に渡す
+const analyticsDataClient = new BetaAnalyticsDataClient({
+  transport: 'rest',
+  credentials,
+});
 
 const now = DateTime.now();
-// 「今日」のデータは集計が不安定なため、昨日までを対象にします
 const yesterday = now.minus({ days: 1 });
 const oneWeekAgo = yesterday.minus({ weeks: 1 });
 
@@ -28,17 +46,16 @@ async function runReport(reportFile: string) {
     dateRanges: [
       {
         startDate: oneWeekAgo.toISODate(),
-        endDate: yesterday.toISODate(), // 昨日に変更
+        endDate: yesterday.toISODate(),
       },
     ],
     dimensions: [
       { name: "pageTitle" },
-      { name: "pagePath" }, // fullPageUrl から pagePath に変更（軽量化）
+      { name: "pagePath" }, // pagePath に変更して軽量化
     ],
     metrics: [
       { name: "eventCount" },
     ],
-    // API 側でソートを完結させる
     orderBys: [
       {
         metric: { name: "eventCount" },
@@ -51,25 +68,24 @@ async function runReport(reportFile: string) {
         stringFilter: { value: "page_view" },
       },
     },
-    limit: 100, // 取得件数を絞って高速化
+    limit: 100,
   });
 
-  const articles: Rank[] = response.rows!
+  const articles: Rank[] = (response.rows || [])
     .map((row) => {
-      const [title, path] = row.dimensionValues!.map((v) => v.value);
-      const pv = +(row.metricValues![0].value || 0);
+      const [title, path] = (row.dimensionValues || []).map((v) => v.value);
+      const pv = +(row.metricValues?.[0].value || 0);
       
       return {
         title: title!
           .replace(" | 豆蔵デベロッパーサイト", "")
           .replace(" | Mamezou Developer Portal", ""),
         path: path!, 
-        // Slack通知やリンク生成のためにドメインを付与
         url: `developer.mamezou-tech.com${path}`,
         pv,
       };
     })
-    // トップページなどの除外は JavaScript 側で高速に処理
+    // pagePath にしたので、ドメイン置換ではなくパスの一致でフィルタ
     .filter((a) => a.path !== "/" && a.path !== "/index.html" && !a.path.endsWith("/"))
     .slice(0, 10);
 
@@ -84,6 +100,8 @@ async function runReport(reportFile: string) {
 
 async function notifyToSlack(ranks: Rank[]) {
   const token = Deno.env.get("SLACK_BOT_TOKEN");
+  if (!token) return;
+  
   const web = new WebClient(token);
   const channel = Deno.env.get("SLACK_CHANNEL_ID") || "D041BPULN4S";
   
@@ -104,22 +122,21 @@ async function notifyToSlack(ranks: Rank[]) {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: ranks.map((a, i) =>
-            `${i + 1}. <https://${a.url}|${a.title}> : ${a.pv}`
-          ).join("\n"),
+          text: ranks.length > 0 
+            ? ranks.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.pv}`).join("\n")
+            : "ランキング対象の記事が見つかりませんでした。",
         },
       },
     ],
   });
 }
 
-// 実行とエラーハンドリング
 try {
+  console.log("Generating weekly ranking report...");
   const __dirname = dirname(fromFileUrl(import.meta.url));
   const reportDir = join(__dirname, "../../src/_data");
   const reportFile = join(reportDir, "pv.json");
 
-  console.log("Generating weekly ranking report...");
   await runReport(reportFile);
   console.log("DONE!!");
 } catch (e) {

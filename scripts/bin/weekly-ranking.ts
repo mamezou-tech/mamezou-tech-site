@@ -21,6 +21,8 @@ type Rank = {
 };
 
 async function runReport(reportFile: string) {
+  console.log("start fetching data from GA4...");
+
   const [response] = await analyticsDataClient.runReport({
     property: `properties/${propertyId}`,
     dateRanges: [

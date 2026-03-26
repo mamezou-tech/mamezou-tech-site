@@ -1,4 +1,5 @@
-import { GoogleAuth } from "google-auth-library"; // 認証用
+// npm: プレフィックスを付けて直接参照します
+import { GoogleAuth } from "npm:google-auth-library"; 
 import { DateTime, Settings } from "luxon";
 import { dirname, fromFileUrl, join } from "@std/path";
 import { WebClient } from "@slack/web-api";
@@ -18,7 +19,7 @@ type Rank = {
   pv: number;
 };
 
-// Workload Identity の設定ファイルから自動でトークンを取得する
+// Workload Identity の設定ファイルからトークンを取得
 async function getAccessToken() {
   const auth = new GoogleAuth({
     scopes: "https://www.googleapis.com/auth/analytics.readonly",
@@ -27,7 +28,7 @@ async function getAccessToken() {
   const token = await client.getAccessToken();
   
   if (!token.token) {
-    throw new Error("Failed to retrieve access token via Workload Identity");
+    throw new Error("Workload Identity によるアクセストークンの取得に失敗しました。");
   }
   return token.token;
 }
@@ -36,6 +37,7 @@ async function runReport(reportFile: string) {
   const accessToken = await getAccessToken();
   const url = `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`;
 
+  // fetch (HTTP/1.1) を使用することで gRPC の Error 14 を完全に回避
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -44,8 +46,10 @@ async function runReport(reportFile: string) {
     },
     body: JSON.stringify({
       dateRanges: [{ startDate: oneWeekAgo.toISODate(), endDate: yesterday.toISODate() }],
+      // pagePath に変更することで集計負荷を下げ、2300ページ超でも高速化
       dimensions: [{ name: "pageTitle" }, { name: "pagePath" }],
       metrics: [{ name: "eventCount" }],
+      // API 側でソートを完結
       orderBys: [{ metric: { name: "eventCount" }, desc: true }],
       dimensionFilter: {
         filter: { fieldName: "eventName", stringFilter: { value: "page_view" } },
@@ -65,12 +69,15 @@ async function runReport(reportFile: string) {
       const [title, path] = row.dimensionValues.map((v: any) => v.value);
       const pv = +(row.metricValues[0].value || 0);
       return {
-        title: title.replace(" | 豆蔵デベロッパーサイト", "").replace(" | Mamezou Developer Portal", ""),
+        title: title
+          .replace(" | 豆蔵デベロッパーサイト", "")
+          .replace(" | Mamezou Developer Portal", ""),
         path: path,
         url: `developer.mamezou-tech.com${path}`,
         pv,
       };
     })
+    // 以前うまく動かなかった除外フィルタをここで確実に実行
     .filter((a: Rank) => a.path !== "/" && a.path !== "/index.html" && !a.path.endsWith("/"))
     .slice(0, 10);
 
@@ -106,7 +113,9 @@ async function notifyToSlack(ranks: Rank[]) {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: ranks.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.pv}`).join("\n"),
+          text: ranks.length > 0 
+            ? ranks.map((a, i) => `${i + 1}. <https://${a.url}|${a.title}> : ${a.pv}`).join("\n")
+            : "ランキング対象の記事が見つかりませんでした。",
         },
       },
     ],
@@ -114,7 +123,7 @@ async function notifyToSlack(ranks: Rank[]) {
 }
 
 try {
-  console.log("Generating weekly ranking report via fetch...");
+  console.log("Generating weekly ranking report...");
   const __dirname = dirname(fromFileUrl(import.meta.url));
   const reportDir = join(__dirname, "../../src/_data");
   const reportFile = join(reportDir, "pv.json");

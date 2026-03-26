@@ -1,3 +1,4 @@
+import { GoogleAuth } from "google-auth-library"; // 認証用
 import { DateTime, Settings } from "luxon";
 import { dirname, fromFileUrl, join } from "@std/path";
 import { WebClient } from "@slack/web-api";
@@ -17,20 +18,18 @@ type Rank = {
   pv: number;
 };
 
-// Workload Identity が生成したファイルからアクセストークンを取得する関数
+// Workload Identity の設定ファイルから自動でトークンを取得する
 async function getAccessToken() {
-  const credentialsPath = Deno.env.get("GOOGLE_APPLICATION_CREDENTIALS");
-  if (!credentialsPath) throw new Error("GOOGLE_APPLICATION_CREDENTIALS is not set");
-
-  const content = await Deno.readTextFile(credentialsPath);
-  const { access_token } = JSON.parse(content);
+  const auth = new GoogleAuth({
+    scopes: "https://www.googleapis.com/auth/analytics.readonly",
+  });
+  const client = await auth.getClient();
+  const token = await client.getAccessToken();
   
-  if (!access_token) {
-    // access_token が直接ない場合は環境から取得を試みるが、
-    // 基本的に google-github-actions/auth v2 では上記で取得可能
-    throw new Error("Access token not found in credentials file");
+  if (!token.token) {
+    throw new Error("Failed to retrieve access token via Workload Identity");
   }
-  return access_token;
+  return token.token;
 }
 
 async function runReport(reportFile: string) {
@@ -56,8 +55,8 @@ async function runReport(reportFile: string) {
   });
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`GA API Error: ${response.status} ${error}`);
+    const errorText = await response.text();
+    throw new Error(`GA API Error: ${response.status} ${errorText}`);
   }
 
   const data = await response.json();

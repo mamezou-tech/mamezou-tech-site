@@ -7,11 +7,13 @@ import { writeFile } from "@opensrc/jsonfile";
 Settings.defaultZone = "Asia/Tokyo";
 
 const propertyId = Deno.env.get("GA_PROPERTY_ID") || "";
+// 認証エラー回避のため、コンストラクタは元のまま（デフォルト）にします
 const analyticsDataClient = new BetaAnalyticsDataClient();
 
 const now = DateTime.now();
-const yesterday = now.minus({ days: 1 }); // 今日ではなく昨日
-const oneWeekAgo = yesterday.minus({ weeks: 1 }); // 昨日の1週間前
+// 「今日」のデータは集計が不安定なため、昨日までを対象にします
+const yesterday = now.minus({ days: 1 });
+const oneWeekAgo = yesterday.minus({ weeks: 1 });
 
 type Rank = {
   title: string;
@@ -26,61 +28,50 @@ async function runReport(reportFile: string) {
     dateRanges: [
       {
         startDate: oneWeekAgo.toISODate(),
-        endDate: yesterday.toISODate(), // 未確定データを含む「今日」を除外
+        endDate: yesterday.toISODate(), // 昨日に変更
       },
     ],
     dimensions: [
-      {
-        name: "pageTitle",
-      },
-      {
-        name: "pagePath", // fullPageUrl から、軽量な pagePath に変更
-      },
+      { name: "pageTitle" },
+      { name: "pagePath" }, // fullPageUrl から pagePath に変更（軽量化）
     ],
     metrics: [
-      {
-        name: "eventCount",
-      },
+      { name: "eventCount" },
     ],
+    // API 側でソートを完結させる
     orderBys: [
       {
         metric: { name: "eventCount" },
-        desc: true, // API側であらかじめPV順にソートさせる
+        desc: true,
       },
     ],
     dimensionFilter: {
-      andGroup: {
-        expressions: [
-          {
-            filter: {
-              fieldName: "eventName",
-              stringFilter: {
-                value: "page_view",
-              },
-            },
-          },
-        ],
+      filter: {
+        fieldName: "eventName",
+        stringFilter: { value: "page_view" },
       },
     },
-    limit: 100, // 1000件から削減し、API側の負荷を減らす
+    limit: 100, // 取得件数を絞って高速化
   });
 
   const articles: Rank[] = response.rows!
     .map((row) => {
       const [title, path] = row.dimensionValues!.map((v) => v.value);
       const pv = +(row.metricValues![0].value || 0);
+      
       return {
         title: title!
           .replace(" | 豆蔵デベロッパーサイト", "")
           .replace(" | Mamezou Developer Portal", ""),
-        path: path!, // すでに "/entry/..." のようなパス形式
-        url: `developer.mamezou-tech.com${path}`, // Slack通知などのためのURL結合
+        path: path!, 
+        // Slack通知やリンク生成のためにドメインを付与
+        url: `developer.mamezou-tech.com${path}`,
         pv,
       };
     })
-    // トップページなどの除外は JavaScript 側で安全に処理
-    .filter((a) => a.path !== "/" && a.path !== "/index.html")
-    .slice(0, 10); // 上位10件を確定
+    // トップページなどの除外は JavaScript 側で高速に処理
+    .filter((a) => a.path !== "/" && a.path !== "/index.html" && !a.path.endsWith("/"))
+    .slice(0, 10);
 
   await writeFile(
     reportFile,
@@ -95,17 +86,18 @@ async function notifyToSlack(ranks: Rank[]) {
   const token = Deno.env.get("SLACK_BOT_TOKEN");
   const web = new WebClient(token);
   const channel = Deno.env.get("SLACK_CHANNEL_ID") || "D041BPULN4S";
+  
   await web.chat.postMessage({
     channel,
     mrkdwn: true,
-    text: `先週(${oneWeekAgo.toISODate()} ~ ${yesterday.toISODate()})のランキング(PVベース)が確定しました:beers:`,
+    text: `先週のランキングが確定しました :beers:`,
     unfurl_media: false,
     blocks: [
       {
         type: "header",
         text: {
           type: "plain_text",
-          text: `先週(${oneWeekAgo.toISODate()} ~ ${yesterday.toISODate()})のランキング(PVベース)が確定しました:beers:`,
+          text: `先週(${oneWeekAgo.toISODate()} ~ ${yesterday.toISODate()})のランキング(PVベース) :beers:`,
         },
       },
       {
@@ -117,23 +109,20 @@ async function notifyToSlack(ranks: Rank[]) {
           ).join("\n"),
         },
       },
-      {
-        type: "section",
-        text: {
-          type: "plain_text",
-          text:
-            "PRがマージされたら今週のランキングとしてサイトに掲載されます:clap:\n執筆者の皆様ありがとうございました:mameka_sd_smile:",
-        },
-      },
     ],
   });
 }
 
-const __dirname = dirname(fromFileUrl(import.meta.url));
-const reportDir = join(__dirname, "../../src/_data");
-const reportFile = join(reportDir, "pv.json");
+// 実行とエラーハンドリング
+try {
+  const __dirname = dirname(fromFileUrl(import.meta.url));
+  const reportDir = join(__dirname, "../../src/_data");
+  const reportFile = join(reportDir, "pv.json");
 
-console.log("start fetching data from GA4...");
-await runReport(reportFile);
-
-console.log("DONE!!");
+  console.log("Generating weekly ranking report...");
+  await runReport(reportFile);
+  console.log("DONE!!");
+} catch (e) {
+  console.error("FAILED!!", e);
+  Deno.exit(1);
+}

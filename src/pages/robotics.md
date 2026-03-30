@@ -101,6 +101,7 @@ enTitle: Robotics
 
 - [OpenAI Realtime APIのWebRTCでロボットを操作する](/robotics/ai/voice-operation/)
 - [ロボット開発者のための強化学習入門](/robotics/rl/rl_for_robot/)
+- [最先端ロボ×AIで遊ぼう！LeRobotとSO-101でマルチモーダルAIを体験＆環境構築ガイド](/robotics/lerobot/lerobot_introduction/)
 
 ## PLC
 - [TwinCATで始めるソフトウェアPLC開発（その1：開発環境構築編）](/robotics/twincat/introduction/twincat-introduction/)

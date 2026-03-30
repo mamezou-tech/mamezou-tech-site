@@ -1,5 +1,5 @@
 ---
-title: LeRobot × SO-101 で始めるマルチモーダルAI入門 - 技術紹介と環境構築編
+title: 最先端ロボ×AIで遊ぼう！LeRobotとSO-101でマルチモーダルAIを体験＆環境構築ガイド
 author: christian-takashi-nakata
 date: 2026-03-31
 tags: [LeRobot, SO-101, マルチモーダルAI, AI]

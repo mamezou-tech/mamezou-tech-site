@@ -24,7 +24,7 @@ translate: true
 最终目标是实现当移动一只机械臂时，另一只机械臂能够同步执行相同动作（参见下方 GIF）。
 
 <p align="center">
-  <img width="460" height="300" src="../../../img/robotics/lerobot/lerobot_demo.gif">
+  <img width="460" height="300" src="/img/robotics/lerobot/lerobot_demo.gif">
 </p>
 
 ## 术语说明

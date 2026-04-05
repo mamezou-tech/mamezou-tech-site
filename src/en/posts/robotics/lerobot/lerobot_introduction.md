@@ -26,7 +26,7 @@ In this article, we will use the open-source project LeRobot and the open-source
 The ultimate goal is to replicate an action where, when you move one arm, the other arm follows the same movement (see the GIF below).
 
 <p align="center">
-  <img width="460" height="300" src="../../../img/robotics/lerobot/lerobot_demo.gif">
+  <img width="460" height="300" src="/img/robotics/lerobot/lerobot_demo.gif">
 </p>
 
 ## Terminology

@@ -1,8 +1,8 @@
 ---
-title: 家庭内ネットワークをガチガチに制限してみた ～Raspberry PiとPi-holeで作る本気のペアレンタルコントロール～
+title: 親心VSこども Wi-Fi大作戦！Raspberry Pi＆Pi-holeで徹底ペアレンタルコントロールしてみた
 author: kazuyuki-shiratani
 date: 2026-04-09
-tags: [Network, raspberry-pi,tips]
+tags: [Network, raspberry-pi, tips]
 image: true
 ---
 

@@ -6,6 +6,7 @@ tags:
   - AI
   - Marp
 author: akihiro-ishida
+image: true
 ---
 ## はじめに
 

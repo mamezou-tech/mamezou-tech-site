@@ -92,6 +92,11 @@ git push origin main
 
 「何を話すか」を仕様として書き出せば、AIがスライドの骨格を提案してくれます。人間はレビューと肉付けに集中できるため、質の高いプレゼンをより短時間で仕上げられます。
 
+また、Spec Kit の **[Constitution](https://github.com/mamezou-ishida/mamezou-presentation/blob/main/.specify/memory/constitution.md)**(規約・制限) を活用することで、AIが生成するテキストのトーンやスタイルを統一できます。Constitutionとしてルールを定義しておくことで、複数のスライドにわたって一貫した文体が保たれます。たとえばこのテンプレートでは次のようなルールを定義しています。
+
+- スライド本文の口調は「だ・である」調（常体）で統一する（導入部は「です・ます」調も可）
+- 強調には鉤括弧（「」）を避け、HTMLの `<strong>` タグを使用する
+
 ### 図表の自動変換（Mermaid → PNG）
 
 Mermaid形式（`.mmd`）のファイルをリポジトリに置くと、GitHub Actions が自動的にPNGへ変換し、スライドに埋め込めるようになります。

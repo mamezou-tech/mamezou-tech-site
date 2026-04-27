@@ -2,9 +2,9 @@
 title: AIとMarpで実現するエンジニアらしいプレゼン作成術
 date: 2026-04-27
 tags:
+  - Marp
   - 生成AI
   - AI
-  - Marp
 author: akihiro-ishida
 image: true
 ---

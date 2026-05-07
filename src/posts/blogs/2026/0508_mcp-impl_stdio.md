@@ -79,7 +79,7 @@ server.registerTool(
 async function boot() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("MCP Hello World Server (Modern) running on stdio");
+  console.error("MCP Hello World Server (Modern) running on stdio"); // 標準出力にログを出力するとエラーになるため、`console.error`を使用しています
 }
 
 try {

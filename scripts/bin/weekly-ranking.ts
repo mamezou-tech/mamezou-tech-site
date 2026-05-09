@@ -14,6 +14,7 @@ const analyticsDataClient = new BetaAnalyticsDataClient({
 const now = DateTime.now();
 const yesterday = now.minus({ days: 1 });
 const oneWeekAgo = now.minus({ weeks: 1 });
+const siteHost = "developer.mamezou-tech.com";
 
 type Rank = {
   title: string;
@@ -36,17 +37,17 @@ async function runReport(reportFile: string) {
         name: "pageTitle",
       },
       {
-        name: "fullPageUrl",
+        name: "pagePath",
       },
     ],
     metrics: [
       {
-        name: "eventCount",
+        name: "screenPageViews",
       },
     ],
     orderBys: [
       {
-        metric: { name: "eventCount" },
+        metric: { metricName: "screenPageViews" },
         desc: true,
       },
     ],
@@ -55,25 +56,25 @@ async function runReport(reportFile: string) {
         expressions: [
           {
             filter: {
-              fieldName: "eventName",
-              stringFilter: { value: "page_view"},
+              fieldName: "hostName",
+              stringFilter: { value: siteHost },
             },
           },
           {
             notExpression: {
               filter: {
-                fieldName: "fullPageUrl",
+                fieldName: "pagePath",
                 stringFilter: {
                   matchType: "EXACT",
-                  value: "developer.mamezou-tech.com/",
+                  value: "/",
                 },
               },
-            },            
-          }
+            },
+          },
         ],
       },
     },
-    limit: 20,
+    limit: 10,
   }, {
     timeout: 60000,
     retry: {
@@ -90,18 +91,18 @@ async function runReport(reportFile: string) {
     },
   });
 
-  const articles: Rank[] = response.rows!
-    .slice(0, 10)
+  const rows = response.rows ?? [];
+  const articles: Rank[] = rows
     .map((row) => {
-      const [title, url] = row.dimensionValues!.map((v) => v.value);
+      const [title, path] = row.dimensionValues!.map((v) => v.value);
       const pv = +(row.metricValues![0].value || 0);
       return {
         title: title!.replace(" | 豆蔵デベロッパーサイト", "").replace(
           " | Mamezou Developer Portal",
           "",
         ),
-        path: url!.replace("developer.mamezou-tech.com", ""),
-        url: url || "",
+        path: path || "",
+        url: `https://${siteHost}${path || ""}`,
         pv,
       };
     });
@@ -141,7 +142,7 @@ async function notifyToSlack(ranks: Rank[]) {
         text: {
           type: "mrkdwn",
           text: ranks.map((a, i) =>
-            `${i + 1}. <https://${a.url}|${a.title}> : ${a.pv}`
+            `${i + 1}. <${a.url}|${a.title}> : ${a.pv}`
           ).join("\n"),
         },
       },

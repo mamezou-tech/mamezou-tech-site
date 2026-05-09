@@ -37,6 +37,7 @@ jobs:
           deno task generate:ranking
 
       - name: Commit and Create Pull request
+        if: github.ref == 'refs/heads/main'
         uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "feat: Add PV ranking report"

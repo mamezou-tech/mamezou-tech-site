@@ -13,32 +13,32 @@
       "url": "/blogs/2025/07/05/csharp_vscode/"
     },
     {
-      "title": "手書き風ドローツール Excalidraw のススメ",
-      "url": "/blogs/2023/03/22/use-excalidraw/"
+      "title": "最先端ロボ×AIで遊ぼう！LeRobotとSO-101でマルチモーダルAIを体験＆環境構築ガイド",
+      "url": "/robotics/lerobot/lerobot_introduction/"
     },
     {
       "title": "初心者も挑戦！3D Gaussian Splattingで作るリアル3Dモデリング入門",
       "url": "/robotics/3dgs/3dgs-beginners-guide/"
     },
     {
-      "title": "AWS Generative AI Developer 合格とW全冠達成記",
-      "url": "/blogs/2026/04/20/aws_certified_generative_ai_developer/"
+      "title": "手書き風ドローツール Excalidraw のススメ",
+      "url": "/blogs/2023/03/22/use-excalidraw/"
     },
     {
-      "title": "最先端ロボ×AIで遊ぼう！LeRobotとSO-101でマルチモーダルAIを体験＆環境構築ガイド",
-      "url": "/robotics/lerobot/lerobot_introduction/"
+      "title": "AWS Generative AI Developer 合格とW全冠達成記",
+      "url": "/blogs/2026/04/20/aws_certified_generative_ai_developer/"
     },
     {
       "title": "Microsoft Presidio: 個人情報保護に特化したオープンソースツール",
       "url": "/blogs/2025/01/04/presidio-intro/"
     },
     {
-      "title": "クラウドに頼らないAI体験：LM Studioで始めるローカルLLM入門（Gemma 3）",
-      "url": "/blogs/2025/09/21/gemma_on_lm_studio/"
+      "title": "Whisper を使って会議の音声データを文字起こししてみる",
+      "url": "/blogs/2025/05/02/transcript-meeting-recordings-with-whisper/"
     },
     {
-      "title": "【新人さん向け】Java開発で最初に確認しておきたいEclipse便利設定ガイド",
-      "url": "/blogs/2025/04/13/eclipse-settings-for-newcomer/"
+      "title": "クラウドに頼らないAI体験：LM Studioで始めるローカルLLM入門（Gemma 3）",
+      "url": "/blogs/2025/09/21/gemma_on_lm_studio/"
     }
   ]
 }

@@ -98,7 +98,7 @@ import { createMcpExpressApp } from "@modelcontextprotocol/sdk/server/express.js
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { z } from "zod";
 import { refineTransport } from "./transport.util.js";
-import { ApplicationError } from "./applicaition.error.js";
+import { ApplicationError } from "./application.error.js";
 
 const PORT = Number(process.env.PORT ?? "3000");
 const WEB_API_BASE_URL = process.env.WEB_API_BASE_URL ?? "http://localhost:3001";

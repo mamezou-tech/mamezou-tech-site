@@ -10,7 +10,11 @@ image: true
 
 本ページは「AIエージェントとシステムをつなぐMCP入門」の続編です。  
 今回はStreamableHTTPで通信するMCPサーバー（ステートレス）の実装について説明します。  
-StreamableHTTPを使ったMCPは独立したプロセスとして稼働し、単一のHTTPエンドポイントで複数のMCPクライアントからの接続を受け付ける通信方式です。  
+
+前回のstdio実装編はMCPクライアントがサブプロセスとして実行しローカルで完結する構成でした。StreamableHTTPはHTTP経由でMCPサーバーを公開し、複数のMCPクライアントから利用可能な構成です。  
+MCPサーバーがWebAPIを呼び出してMCPクライアントに最新データを参照させる用途に向いています。  
+また、ステートレスは、リクエストごとに処理が完結するため、ライフサイクルの管理が単純で扱いやすいのが特徴です。  
+
 文量が多くなったので、ステートレスとステートフルは分けて説明します。  
 本ページで掲載しているコードは[こちら](https://github.com/ubata-mamezou/developer-site-article-examples/tree/main/mcp-server_http)で公開しています。
 
@@ -49,7 +53,8 @@ stdioに比べて特色のある「起動処理」について説明します。
       const transport = new StreamableHTTPServerTransport();
 
       try {
-        await server.connect(refineTransport(server, transport)); // 1
+        // 1: 下記コラム参照
+        await server.connect(refineTransport(server, transport));
         await transport.handleRequest(req, res, req.body);
       } catch (error) {
         console.error("Error handling MCP request:", error);
@@ -62,20 +67,26 @@ stdioに比べて特色のある「起動処理」について説明します。
       }
     });
     ```
-    :::alert: 1. 型不一致で代入できないため、加工しています  
-    ```ts
-    export interface Transport {
-      //omit
-      onclose?: () => void;
-    ```
-    ```ts
-    export declare class StreamableHTTPServerTransport implements Transport {
-        set onclose(handler: (() => void) | undefined);
-        get onclose(): (() => void) | undefined;
-    ```
+    :::info: 1. 引数型に合わせるため、型アサーションで型を調整しています  
     `StreamableHTTPServerTransport`は`Transport`を実装しています。  
-    今回使用したバージョンでは、`Transport`が定義している振る舞いを`StreamableHTTPServerTransport`が同名の`get`および`set`実装しているため、構造が異なり型が一致しません。  
-    `server.connect`は`Transport`を引数型としていますが構造が合わないため、Parameters+型アサーションで型を調整しています。
+    ただし、今回使用したバージョンでは、`Transport`が定義している振る舞いと`StreamableHTTPServerTransport`の定義に差異があります。（oncloseはその一例）  
+      ```ts: 該当箇所を部分的に掲載しています
+      // transport.d.ts
+      export interface Transport {
+        onclose?: () => void;
+      }
+      // streamableHttp.d.ts
+      export declare class StreamableHTTPServerTransport implements Transport {
+          set onclose(handler: (() => void) | undefined);
+          get onclose(): (() => void) | undefined;
+      }
+      ```
+    `server.connect`は`Transport`を引数型としていますが構造が合わないため、型アサーションで調整しています。
+      ```ts: 型調整に使用しているコード
+      export const refineTransport = (server: McpServer, transport: StreamableHTTPServerTransport) => {
+        return transport as Parameters<typeof server.connect>[0];
+      };
+    ```
     :::
 * 拒否するエンドポイントを定義  
     拒否したいエンドポイントは405などのレスポンスを定義します。
@@ -153,7 +164,7 @@ async function boot() {
     const transport = new StreamableHTTPServerTransport();
 
     try {
-      await server.connect(refineTransport(server, transport)); // 1
+      await server.connect(refineTransport(server, transport));
       await transport.handleRequest(req, res, req.body);
     } catch (error) {
       console.error("Error handling MCP request:", error);

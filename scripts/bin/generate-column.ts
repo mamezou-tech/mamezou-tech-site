@@ -246,14 +246,22 @@ Include both characters and objects whenever possible, using bright colors and a
   const response = await openai.images.generate({
     prompt: promptSuggestion.output_text ||
       `${title}\n${details}`,
-    model: "dall-e-3",
+    model: "gpt-image-1",
     size: "1024x1024",
-    response_format: "b64_json",
-    quality: "standard",
+    quality: "medium",
   });
 
   const image = response.data![0];
-  const base64Image = image.b64_json?.split(";base64,").pop();
+  let base64Image: string | undefined;
+  if (image.b64_json) {
+    base64Image = image.b64_json.includes(";base64,")
+      ? image.b64_json.split(";base64,").pop()
+      : image.b64_json;
+  } else if (image.url) {
+    const res = await fetch(image.url);
+    if (!res.ok) throw new Error(`failed to fetch image: ${res.status}`);
+    base64Image = Buffer.from(await res.arrayBuffer()).toString("base64");
+  }
   if (!base64Image) {
     throw new Error("illegal image format");
   }

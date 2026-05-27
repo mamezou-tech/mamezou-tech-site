@@ -234,18 +234,21 @@ async function generateImage(
   { title, details }: { title: string; details: string },
   date: string,
 ) {
+  const imageTextRule =
+    "If you include any text in the illustration, render all visible text in natural English only. Do not render Japanese or pseudo-Japanese glyphs.";
   const promptSuggestion = await openai.responses.create({
     model: "gpt-4.1-mini",
     input:
       `Create an anime-inspired, cartoon-style illustration focused on the theme: '${title}'. 
 Incorporate key elements from the following details: '${details}'. 
-Include both characters and objects whenever possible, using bright colors and a fun, playful atmosphere.`,
+Include both characters and objects whenever possible, using bright colors and a fun, playful atmosphere.
+${imageTextRule}`,
   });
   console.log(promptSuggestion.output_text);
 
   const response = await openai.images.generate({
     prompt: promptSuggestion.output_text ||
-      `${title}\n${details}`,
+      `${title}\n${details}\n${imageTextRule}`,
     model: "gpt-image-1",
     size: "1024x1024",
     quality: "medium",

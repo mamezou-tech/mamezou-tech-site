@@ -103,7 +103,7 @@ stdioに比べて特色のある「起動処理」について説明します。
     });
     ```
 * 全コード
-```ts: index.ts
+```ts: index.stateless.ts
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { createMcpExpressApp } from "@modelcontextprotocol/sdk/server/express.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";

@@ -110,11 +110,11 @@ const sessions = new Map<string, SessionContext>();
 
 既存セッションIDがあれば対応するコンテキストを使い、なければ新しいセッションコンテキストを作成します。
 
-**sessionIdGenerator**
+* `sessionIdGenerator`
 名称から勘違いしてしまいがちですが、汎用的な採番戦略ではありません。  
 これはトランスポートに紐づくセッションIDを初期化時に決めるためのコールバックです。  
 
-**MCP-Session-Id**
+* `MCP-Session-Id`
 初回のリクエストで振り出され、クライアントが受け取ります。  
 2回目以降のリクエストでは、`MCP-Session-Id`ヘッダーとして付与して再利用します。  
 

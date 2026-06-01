@@ -139,6 +139,12 @@ app.post("/mcp", async (req, res) => {
 	}
 
 	await context.transport.handleRequest(req, res, req.body);
+
+	// initialize 後に transport 自身へ設定された sessionId をキーに保持する。
+	const issuedSessionId = context.transport.sessionId;
+	if (issuedSessionId) {
+		sessions.set(issuedSessionId, context);
+	}
 });
 ```
 

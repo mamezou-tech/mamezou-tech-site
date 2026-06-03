@@ -192,6 +192,28 @@ const eventTagFilter = (prefix: string) => (rawTags: string[] | string) => {
     return result?.groups ? result.groups.year : undefined;
   }
 };
+
+function getMonthlySummaryTargetDate() {
+  const raw = Deno.env.get("MZ_SUMMARY_TARGET");
+  if (!raw) return DateTime.now();
+
+  if (!/^\d{4}-\d{2}$/.test(raw)) {
+    console.warn(
+      `MZ_SUMMARY_TARGET is invalid: '${raw}'. Expected format is YYYY-MM. Fallback to current month.`,
+    );
+    return DateTime.now();
+  }
+
+  const parsed = DateTime.fromFormat(raw, "yyyy-MM");
+  if (!parsed.isValid) {
+    console.warn(
+      `MZ_SUMMARY_TARGET is invalid: '${raw}'. Fallback to current month.`,
+    );
+    return DateTime.now();
+  }
+  return parsed;
+}
+
 site.filter("adventCalendarTag", eventTagFilter("advent"));
 site.filter("summerRelayTag", eventTagFilter("summer"));
 site.filter(
@@ -209,12 +231,13 @@ site.filter("githubName", githubName);
 
 site.filter(
   "currentMonthPosts",
-  (pages: Lume.Data[]) =>
-    filterByPost(pages).filter((post) => {
-      const now = DateTime.now();
+  (pages: Lume.Data[]) => {
+    const target = getMonthlySummaryTargetDate();
+    return filterByPost(pages).filter((post) => {
       const date = DateTime.fromJSDate(post.date);
-      return date.month === now.month && date.year === now.year;
-    }),
+      return date.month === target.month && date.year === target.year;
+    });
+  },
 );
 
 site.filter("posts", (search: Search) => getPostArticles(search));

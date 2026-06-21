@@ -17,10 +17,6 @@
       "url": "/blogs/2023/03/22/use-excalidraw/"
     },
     {
-      "title": "AWS Generative AI Developer 合格とW全冠達成記",
-      "url": "/blogs/2026/04/20/aws_certified_generative_ai_developer/"
-    },
-    {
       "title": "Microsoft Presidio: 個人情報保護に特化したオープンソースツール",
       "url": "/blogs/2025/01/04/presidio-intro/"
     },
@@ -29,12 +25,16 @@
       "url": "/robotics/lerobot/lerobot_introduction/"
     },
     {
-      "title": "【新人さん向け】Java開発で最初に確認しておきたいEclipse便利設定ガイド",
-      "url": "/blogs/2025/04/13/eclipse-settings-for-newcomer/"
+      "title": "AWS Generative AI Developer 合格とW全冠達成記",
+      "url": "/blogs/2026/04/20/aws_certified_generative_ai_developer/"
     },
     {
       "title": "TwinCATで始めるソフトウェアPLC開発（その1：開発環境構築編）",
       "url": "/robotics/twincat/introduction/twincat-introduction/"
+    },
+    {
+      "title": "【新人さん向け】Java開発で最初に確認しておきたいEclipse便利設定ガイド",
+      "url": "/blogs/2025/04/13/eclipse-settings-for-newcomer/"
     },
     {
       "title": "「暗号の扉を開く２つの鍵」～公開鍵と秘密鍵の仕組みと、インターネットを守る暗号技術の話",

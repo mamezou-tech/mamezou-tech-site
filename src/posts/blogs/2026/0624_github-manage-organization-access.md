@@ -123,7 +123,11 @@ graph TB
 1. リポジトリの Settings → Collaborators and teams
 2. `all-members` チームを追加し、適切な権限（Read/Write）を設定
 
-### Step3: 機密リポジトリの個別設定
+### Step3: オーガニゼーションの Basic Permission を変更
+1. Organization Settings → Member privileges
+2. Base permissions を `No permission` に設定
+
+### Step4: 機密リポジトリの個別設定
 1. 機密リポジトリは `all-members` チームを追加しない
 2. 専用チーム（例：`security-team`）を作成し追加
 3. または、特定ユーザーのみを直接追加
@@ -213,7 +217,7 @@ echo "================================"
 - API 呼び出しで一括処理し、人手を削減
 
 :::info
-最初 `permission=push` のところを Copilot くんが `write` にしていて、実行時にハマりました。GitHub API Copilot くんでも間違えるほど対称性がない部分があるので注意が必要です。
+最初 `permission=push` のところを Copilot くんが `write` にしていて、実行時にハマりました。GitHub API には Copilot くんでも間違えるほど対称性がない部分があるので注意が必要です。
 :::
 
 ### GitHub Actions ワークフロー
@@ -274,7 +278,7 @@ jobs:
 https://github.com/mamezou-tech/[private-repo-for-restricted-team]
 👧 nakamura 16:27  
 404になります。
-👦　kondoh 16:28  
+👦 kondoh 16:28  
 ありがとうございます！機密性の高いリポジトリなので、404で大丈夫です。💯
 :::
 

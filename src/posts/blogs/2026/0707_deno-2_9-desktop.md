@@ -78,12 +78,12 @@ Bundle hello.app
 
 Deno のコンセプト通り、追加のモジュールや設定なし(Out of the box)でデスクトップアプリが生成されました。
 
-## deno desktop の開発体験
+## Deno Desktop の開発体験
 
-MHR (Hot Module Replacement) オプション付きで起動することで、ローカルの開発サーバを立ち上げ、コードの変更を検知してアプリのコンテンツの更新をしてくれます。
+HMR (Hot Module Replacement) オプション付きで起動することで、ローカルの開発サーバを立ち上げ、コード変更を検知してアプリ内容を即時更新してくれます。
 
-```
-desktop --hmr main.ts
+```shell
+deno desktop --hmr main.ts
 ⚠ deno desktop is experimental and subject to change
 Compile main.ts to file:///Users/kondoumh/Library/Caches/deno/desktop/5f4a00908e99d886/hello.dylib
 
@@ -103,7 +103,7 @@ Runtime started
 Listening on http://127.0.0.1:52958/
 ```
 
-main.ts のコードを書き換えると即座に画面に反映されますし、
+main.ts のコードを書き換えると、保存後すぐに画面へ反映されます。
 
 :::info
 Electron では HMR は標準では利用できず、別途 Forge などで開発サーバーを起動する必要があります。
@@ -113,7 +113,11 @@ Electron では HMR は標準では利用できず、別途 Forge などで開�
 
 ## UI の ローカル HTTP サービスによる実現
 
-Electron (の Forge など) ではローカルサーバーの利用はあくまで開発時だけで、デプロイするとアセットは file:// の URL で読み込まれます。これに対し Deno Desktop はデプロイしたバイナリでもローカルサーバーが起動し、空きポートを自動で割り当て、UI のレンダリングを処理します。このサーバーは完全に組み込みであり、外部に公開されることはありません。開発者はポートの衝突を心配する必要はありません。この「開発時も、ビルドされたバイナリでもローカル HTTP サーバーで UI を提供する実行モデルにより
+Electron (Forge など) ではローカルサーバーの利用は開発時が中心で、配布後は file:// でアセットを読む構成が一般的です。
+
+これに対し Deno Desktop は、配布後のバイナリでもローカル HTTP サーバーを内部起動し、空きポートを自動割り当てして UI を描画します。サーバーはプロセス内で閉じており、外部公開はされません。ポート衝突を意識せずに済むのも良い点です。
+
+この「開発時もビルド済みバイナリでも、同じ HTTP 実行モデルで UI を提供する」設計により、
 
 - 開発時とデプロイ時の挙動に差がない
 - コンテンツはブラウザとデスクトップで同じ動きをする
@@ -155,11 +159,7 @@ deno desktop --hmr --backend=cef main.ts
 ## バックエンドとフロントエンドの通信(Bindings)
 
 Electron の iPC 通信は render.js と main.js を preload.js 経由でブリッジする必要があり、かなり面倒です。Deno デスクトップでは BrowserWindow にバインドした関数を `bindings` というグローバルオブジェクトにより簡単に呼び出すことができます。
-
-Deno ランタイムとレンダリングバックエンドはスレッドやプロセスとして動作し、呼び出しはプロセス内チャネルを介して行われます。
-ソケット通信やプロセス間のスケジューリングは起きないそうです。
-
-Electron の ipcMain / ipcRenderer、Tauri の invoke で発生するような、ソケットベースのプロセス間通信を回避できるとのことです。
+Deno ランタイムとレンダリングバックエンドはスレッドやプロセスとして動作し、呼び出しはプロセス内チャネルを介して行われます。ソケット通信やプロセス間のスケジューリングは発生せず、Electron の ipcMain / ipcRenderer、Tauri の invoke で発生するような、ソケットベースのプロセス間通信を回避できるとのことです。
 
 実際のコードで見てみましょう。
 
@@ -333,6 +333,16 @@ win.addEventListener("contextmenuclick", (e) => {
 });
 ```
 
+### 実際にハマった点
+
+`setApplicationMenu()` 実行時のログは出るのに `menuclick` のログが出ない、というケースに遭遇しました。確認しておくとよいポイントは以下です。
+
+- `console.log` の出力先は Deno 側プロセスのターミナル。レンダラーの DevTools Console とは別。
+- `menuclick` は `BrowserWindow` インスタンスに対して発火するため、メニューを設定した `win` と監視している `win` が同じかを確認する。
+- `role` 項目（例: `quit`）は `id` ベースの分岐とは扱いが異なるため、`detail.id` で判定するケースに入らないことがある。
+
+このあたりは experimental 段階ゆえに挙動差が出る可能性もあるので、必要に応じて `--backend=cef` と WebView バックエンドの両方で試すのがおすすめです。
+
 @[og](https://docs.deno.com/runtime/desktop/menus/)
 
 ## フレームワークを利用した開発
@@ -376,11 +386,14 @@ Next.js のアプリが、外部サーバーなしでまるっとデスクトッ
 
 ## Electron との比較
 
-既存の Web アプリがあり、デスクトップ化したい場合は、
+既存 Web アプリをデスクトップ化したいユースケースでは、Deno Desktop はかなり有力です。
 
-WebContentsView 相当のものはない。
+一方で、Electron の `WebContentsView` のような高度なマルチビュー構成を前提にしている場合は、現時点では Electron のほうが適しています。たとえば VS Code や Figma のように、複数ビューを細かく制御するタイプのアプリです。
 
-VS Code や Figma のようなマルチタブを駆使するアプリは Electron 以外の選択肢はありません。
+ざっくり整理すると次のような感触です。
+
+- 単一ウィンドウ中心 + 既存 Web 資産活用: Deno Desktop はかなり良い
+- 複雑なウィンドウ/ビュー管理: Electron が依然強い
 
 :::info
 Tauri も同様
@@ -391,17 +404,14 @@ Tauri も同様
 @[og](https://docs.deno.com/runtime/desktop/comparison/)
 
 ## さいごに
-以上、Deno デスクトップ機能を試しました。
-本格的なデスクトップアプリ開発環境がアウトオブボックスで使えるようになっており、も
+以上、Deno Desktop 機能を一通り試しました。
 
-タスクトレイの API なども完備されており、
+Out of the box でここまでデスクトップ開発体験が整っているのは率直に驚きです。タスクトレイやメニュー、Bindings など、アプリらしさを出すための API が最初から揃っているのも好印象でした。
 
-Tauri と違って、全てを TS で書けるので
-既存の Web アプリがあり、メニューやタスクトレイなどの独自 UI を追加し、OS と連携するような用途は Tauri 以上に輝くのではないかと思います。
-デスクトップアプリ化自体は1時間もかからず済んでしまうでしょう。
+Tauri と違ってアプリ側をすべて TypeScript で書けるため、既存 Web アプリをベースに「メニューやタスクトレイを追加し、OS 機能と連携する」用途ではかなり相性がよいと感じます。最小構成なら、デスクトップアプリ化自体は 1 時間もかからないはずです。
 
 :::info
 Tauri も JS の API を生やして、Rust 知らない勢を取り込もうとしてはいます。
 :::
 
-experimental から安定版への熟成が楽しみな機能です。
+experimental から安定版へ向けて、今後の熟成がとても楽しみな機能です。

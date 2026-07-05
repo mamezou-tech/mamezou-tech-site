@@ -234,13 +234,32 @@ Deno.serve(() => {
 });
 ```
 
+アプリ画面です。`システム情報を取得` ボタンをクリックするとしばらく呼び出し中になり、結果が表示されます。
+
+![Bindings before](https://i.gyazo.com/b006bc1a96a97d4b9133778612fb043b.png)
+
+結果が表示された状態。
+
+![Bindings after](https://i.gyazo.com/54446ed00a52943ed63a92a18f7f9a8d.png)
+
+アプリを起動しているバックエンドでは次のようにログが出ています。
+
+```shell
+[Deno側] フロントエンドから呼ばれました！ 引数: kondoumh
+```
+
 すごくシンプルです。ネイティな OS 機能と Web UI を連携させるのが簡単なところがいいですね。
 
 @[og](https://docs.deno.com/runtime/desktop/bindings/)
 
 ## メニュー の利用
 
-アプリケーションメニュー
+アプリケーションメニューの実装。
+
+- BrowserWindow　の `setApplicationMenu` メソッド内でメニューオブジェクトを定義して渡します。
+- BrowserWindow にイベントリスナーを登録してメニューがクリックされた時の振る舞いを実装します。
+
+`role` などは Electron と同じですね。
 
 ```typescript
 win.setApplicationMenu([
@@ -308,7 +327,8 @@ win.addEventListener("menuclick", (e) => {
 });
 ```
 
-コンテキストメニュー
+コンテキストメニューの実装。
+Deno.MenuItem の配列を作成して、BrowserWindow の `showContextMenu` に座標とともに渡します。
 
 ```typescript
 const contextMenu: Deno.MenuItem[] = [
@@ -333,15 +353,9 @@ win.addEventListener("contextmenuclick", (e) => {
 });
 ```
 
-### 実際にハマった点
-
-`setApplicationMenu()` 実行時のログは出るのに `menuclick` のログが出ない、というケースに遭遇しました。確認しておくとよいポイントは以下です。
-
-- `console.log` の出力先は Deno 側プロセスのターミナル。レンダラーの DevTools Console とは別。
-- `menuclick` は `BrowserWindow` インスタンスに対して発火するため、メニューを設定した `win` と監視している `win` が同じかを確認する。
-- `role` 項目（例: `quit`）は `id` ベースの分岐とは扱いが異なるため、`detail.id` で判定するケースに入らないことがある。
-
-このあたりは experimental 段階ゆえに挙動差が出る可能性もあるので、必要に応じて `--backend=cef` と WebView バックエンドの両方で試すのがおすすめです。
+:::info
+ここではメニューのクリックイベントでログを出力していますが、ログ自体はアプリを起動しているターミナル側に出ますのでご注意ください。
+:::
 
 @[og](https://docs.deno.com/runtime/desktop/menus/)
 
@@ -380,9 +394,13 @@ Next.js のアプリが、外部サーバーなしでまるっとデスクトッ
 
 ## バックエンドの選択について
 
-クロスブラウザが重荷になってきたら、ちょっと配布サイズは大きくなるけど、CEF ベースにスイッチできるのがいいかなと思います。
+WebView でスタートし、クロスブラウザが重荷になってきたら、ちょっと配布サイズは大きくなるけど、CEF にスイッチできるのがいいかなと思います。
 
 @[og](https://docs.deno.com/runtime/desktop/backends/)
+
+:::info
+Tauri だとこの辺、Servo ベースの自前 WebView プロジェクト Verso 待ちですが、Deno は既存の Chromium を選択可能にしているあたり、割り切りが感じれれますね。
+:::
 
 ## Electron との比較
 
@@ -396,7 +414,7 @@ Next.js のアプリが、外部サーバーなしでまるっとデスクトッ
 - 複雑なウィンドウ/ビュー管理: Electron が依然強い
 
 :::info
-Tauri も同様
+マルチビュー構成の対応の弱さは Tauri も同様です。
 
 @[og](https://developer.mamezou-tech.com/blogs/2025/12/01/porting-an-electron-app-to-tauri2/)
 :::

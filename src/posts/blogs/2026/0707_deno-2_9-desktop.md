@@ -1,8 +1,8 @@
 ---
-title: Deno 2.9 のデスクトップ機能を試してみた
+title: Deno 2.9 で登場したデスクトップ機能 (Deno Desktop) - Electron / Tauri との違いを実感
 author: masahiro-kondo
 date: 2026-07-07
-tags: [Deno]
+tags: [Deno Desktop, Tauri, electron, Deno]
 ---
 
 ## はじめに
@@ -158,8 +158,8 @@ deno desktop --hmr --backend=cef main.ts
 
 ## バックエンドとフロントエンドの通信(Bindings)
 
-Electron の iPC 通信は render.js と main.js を preload.js 経由でブリッジする必要があり、かなり面倒です。Deno デスクトップでは BrowserWindow にバインドした関数を `bindings` というグローバルオブジェクトにより簡単に呼び出すことができます。
-Deno ランタイムとレンダリングバックエンドはスレッドやプロセスとして動作し、呼び出しはプロセス内チャネルを介して行われます。ソケット通信やプロセス間のスケジューリングは発生せず、Electron の ipcMain / ipcRenderer、Tauri の invoke で発生するような、ソケットベースのプロセス間通信を回避できるとのことです。
+Electron の IPC 通信は render.js と main.js を preload.js 経由でブリッジする必要があり、かなり面倒です。Deno デスクトップでは BrowserWindow にバインドした関数を `bindings` というグローバルオブジェクトにより簡単に呼び出すことができます。
+Deno ランタイムとレンダリングバックエンドはスレッドやプロセスとして動作し、呼び出しはプロセス内チャネルを介して行われます。このサンプル構成ではソケットベースの IPC を直接扱わずに済むため、Electron の ipcMain / ipcRenderer、Tauri の invoke と比べて見通しよく書けるのが利点です。
 
 実際のコードで見てみましょう。
 
@@ -256,7 +256,7 @@ Deno.serve(() => {
 
 アプリケーションメニューの実装。
 
-- BrowserWindow　の `setApplicationMenu` メソッド内でメニューオブジェクトを定義して渡します。
+- BrowserWindow の `setApplicationMenu` メソッド内でメニューオブジェクトを定義して渡します。
 - BrowserWindow にイベントリスナーを登録してメニューがクリックされた時の振る舞いを実装します。
 
 `role` などは Electron と同じですね。
@@ -373,7 +373,7 @@ Deno.serve() を利用したサンプルを見てきましたが、Deno デス�
 - TanStack Start
 - Vite
 
-ローカルで動いてるのに SSR を使うというのがなんとも不思議な感じですが、ちゃんと動いてセキュアであれヨシという感じでしょうか。
+ローカルで動いてるのに SSR を使うというのがなんとも不思議な感じですが、ちゃんと動いてセキュアであればヨシ！という感じでしょうか。
 
 @[og](https://docs.deno.com/examples/next_tutorial/)
 
@@ -381,8 +381,11 @@ Deno.serve() を利用したサンプルを見てきましたが、Deno デス�
 deno run -A npm:create-next-app@latest
 ```
 
+作成したプロジェクトディレクトリへ移動して実行します。
+
 ```shell
-deno desktop -A 
+cd <project-dir>
+deno desktop -A
 ```
 
 ![Next desktop app](https://i.gyazo.com/0c2090df3d84d37ecffa6c76fc96eb1d.png)
@@ -399,7 +402,7 @@ WebView でスタートし、クロスブラウザが重荷になってきたら
 @[og](https://docs.deno.com/runtime/desktop/backends/)
 
 :::info
-Tauri だとこの辺、Servo ベースの自前 WebView プロジェクト Verso 待ちですが、Deno は既存の Chromium を選択可能にしているあたり、割り切りが感じれれますね。
+Tauri だとこの辺、Servo ベースの自前 WebView プロジェクト Verso 待ちですが、Deno は既存の Chromium を選択可能にしているあたり、現時点での割り切りが感じられますね。
 :::
 
 ## Electron との比較
@@ -417,6 +420,10 @@ Tauri だとこの辺、Servo ベースの自前 WebView プロジェクト Vers
 マルチビュー構成の対応の弱さは Tauri も同様です。
 
 @[og](https://developer.mamezou-tech.com/blogs/2025/12/01/porting-an-electron-app-to-tauri2/)
+
+Electron の WebContensView 構成については以下の記事をご参照ください。
+
+@[og](/blogs/2024/08/28/electron-webcontentsview-app-structure/)
 :::
 
 @[og](https://docs.deno.com/runtime/desktop/comparison/)
@@ -426,10 +433,10 @@ Tauri だとこの辺、Servo ベースの自前 WebView プロジェクト Vers
 
 Out of the box でここまでデスクトップ開発体験が整っているのは率直に驚きです。タスクトレイやメニュー、Bindings など、アプリらしさを出すための API が最初から揃っているのも好印象でした。
 
-Tauri と違ってアプリ側をすべて TypeScript で書けるため、既存 Web アプリをベースに「メニューやタスクトレイを追加し、OS 機能と連携する」用途ではかなり相性がよいと感じます。最小構成なら、デスクトップアプリ化自体は 1 時間もかからないはずです。
+Tauri と違ってアプリ側をすべて TypeScript で書けるため、既存 Web アプリをベースに「メニューやタスクトレイを追加し、OS 機能と連携する」用途ではかなり相性がよいと感じます。最小構成なら、デスクトップアプリ化自体は1時間もかからないはずです。
 
 :::info
 Tauri も JS の API を生やして、Rust 知らない勢を取り込もうとしてはいます。
 :::
 
-experimental から安定版へ向けて、今後の熟成がとても楽しみな機能です。
+Deno のキラー機能になる可能性もありますね。experimental から安定版へ向けて、今後の熟成がとても楽しみな機能です。

@@ -247,7 +247,7 @@ Deno.serve(() => {
 [Deno側] フロントエンドから呼ばれました！ 引数: kondoumh
 ```
 
-すごくシンプルです。ネイティな OS 機能と Web UI を連携させるのが簡単なところがいいですね。
+すごくシンプルです。OS のネイティブ機能と Web UI を簡単に連携できるのがいいですね。
 
 @[og](https://docs.deno.com/runtime/desktop/bindings/)
 

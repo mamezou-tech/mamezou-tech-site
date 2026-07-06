@@ -9,21 +9,20 @@ tags: [Deno Desktop, Tauri, electron, Deno]
 
 Deno 2.9 リリースおめでとうございます。
 
-@[og](https://deno.com/blog/v2.9)
+- [Deno 2.9 | Deno](https://deno.com/blog/v2.9)
 
 Electron 大好きな自分としても気になるのはやはり Deno Desktop です。
-
 Tauri と同様 WebView をバックエンドにする構成と Electron と同様 Chromium ベースの構成を選べるとのことで、これは試すしかないと思いました。
-
-:::info
-Deno ブログには以下のように書かれており、2.9 時点ではデスクトップ機能は実験的段階です。
-
-> deno desktop is experimental in 2.9. The surface described here is stabilizing and some platform features are still landing.
-:::
 
 公式ドキュメントは以下にあります。
 
 @[og](https://docs.deno.com/runtime/desktop/)
+
+:::alert
+Deno ブログには以下のように書かれており、2.9 時点ではデスクトップ機能は実験的段階です。
+
+> deno desktop is experimental in 2.9. The surface described here is stabilizing and some platform features are still landing.
+:::
 
 ## 使ってみる
 
@@ -377,6 +376,8 @@ Deno.serve() を利用したサンプルを見てきましたが、Deno デス�
 
 @[og](https://docs.deno.com/examples/next_tutorial/)
 
+Next.js のアプリを作成します。
+
 ```shell
 deno run -A npm:create-next-app@latest
 ```
@@ -397,7 +398,15 @@ Next.js のアプリが、外部サーバーなしでまるっとデスクトッ
 
 ## バックエンドの選択について
 
-WebView でスタートし、クロスブラウザが重荷になってきたら、ちょっと配布サイズは大きくなるけど、CEF にスイッチできるのがいいかなと思います。
+デスクトップアプリは配布するバイナリのサイズも重要です。小さいに越したことはありません。
+
+Electron は Chromium を内包するため、インストールされたバイナリサイズは300MBぐらいの大きさになったりします。
+
+Deno Desktop の場合、OS にプリインストールされている WebView を使えば70MB程度です。CEF(Chromium) だとやはり300MB程度になります。
+
+OS 依存の WebView だと、Windows と Mac で微妙に CSS や JS の挙動が変わるクロスブラウザ問題が発生するため、そのための対応やテストも必要になります。機能が少ないうちは WebView でもいいかもしれませんが、機能が増えてくるとテストの手間も何倍にもなっていきます。
+
+Deno Desktop の場合、最初は軽量な WebView でスタートし、クロスブラウザが重荷になってきたら、ちょっと配布サイズは大きくなるけど、CEF にスイッチできるのがいいかなと思います。
 
 @[og](https://docs.deno.com/runtime/desktop/backends/)
 

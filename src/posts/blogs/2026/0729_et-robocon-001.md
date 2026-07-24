@@ -1,7 +1,7 @@
 ---
 title: AI活用で進化するETロボコン - シルバーモデル獲得までの4年間と、次の挑戦へ
 author: ken-murai
-date: 2026-07-17
+date: 2026-07-29
 tags: [ETロボコン, AI]
 ---
 

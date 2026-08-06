@@ -2,11 +2,12 @@
 title: AI駆動スクラムの実践 - AIの発信から始めるデイリースクラム
 date: 2026-08-21
 tags:
-  - 生成AI
-  - AI
   - スクラム
   - アジャイル
+  - 生成AI
+  - AI
 author: akihiro-ishida
+image: true
 ---
 
 ## はじめに

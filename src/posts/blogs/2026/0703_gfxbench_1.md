@@ -1,7 +1,7 @@
 ---
 title: オープンソース版GFXBenchをAndroidで動かす（1）ビルド編
 author: kazuya-iwamoto
-date: 2026-07-03
+date: 2026-08-28
 tags: [GFXBench, android, gpu]
 ---
 

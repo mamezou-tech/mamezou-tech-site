@@ -262,7 +262,7 @@ minSdkVersion:'21' (Android5.0) なので古いAndroid端末でもインスト�
 
 ### ユニバーサルAPKビルド  
 
-今回は `PLATFORM=android-arm64-v8a` でAndroidプラットフォームを固定する方法でしたが、複数プラットフォームを含むユニバーサルAPKを作成する方法も存在する様です。  
+今回は `PLATFORM=android-arm64-v8a` でAndroidプラットフォームを固定する手順でしたが、複数プラットフォームを含むユニバーサルAPKを作成する手順も存在する様です。  
 [scripts/build-multiarch-apk.sh](https://github.com/Kishonti-Opensource/gfxbench/blob/main/scripts/build-multiarch-apk.sh)  
 特に古いAndroid端末での実行を考えると `android-armv7a` も必要になってくるので両対応させたい場合に便利と思われます。
 
@@ -276,7 +276,7 @@ minSdkVersion:'21' (Android5.0) なので古いAndroid端末でもインスト�
 
 ### developer版ビルド  
 
-`APPLICATION_TYPE=gui` としてビルドしましたが、`developer` としてビルドする方法もあります。ただこれも実際に試すと修正が必要となりました。  
+`APPLICATION_TYPE=gui` としてビルドしましたが、`developer` としてビルドする手順もあります。ただこれも実際に試すと修正が必要となりました。  
 ビルド時にエラーが発生します。  
 developer版らしく以下の恩恵があります。
 

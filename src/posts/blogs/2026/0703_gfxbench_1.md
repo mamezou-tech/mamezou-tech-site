@@ -195,16 +195,20 @@ index 0cc4a30e..710b4519 100644
 ### 環境変数設定  
 
 git cloneしたソースのトップディレクトリで以下の環境変数をセットします。  
-**JAVE_HOME** のみ **公式手順へのプラス分** です。  
+**公式手順へのプラス/修正分** 分は以下です。
+
+- JAVA_HOMEの追加
+- NDKバージョンを前述の通り28.0.12674087に修正
+
 各ディレクトリ名は各自の環境に合わせて適宜変更してください。  
 （sdkmanagerでインストールした分はデフォルトなら以下のディレクトリ名になっていると思います）
 
 ```bash
 export JAVA_HOME="/c/Tools/jdk-17.0.18+8"
-export ANDROID_NDK="$HOME/AppData/Local/Android/Sdk/ndk/24.0.8215888/"
+export ANDROID_NDK="$HOME/AppData/Local/Android/Sdk/ndk/28.0.12674087/"
 export ANDROID_HOME="$HOME/AppData/Local/Android/Sdk"
-export NG_CMAKE_TOOLCHAIN_FILE="$HOME/AppData/Local/Android/Sdk/ndk/24.0.8215888/build/cmake/android.toolchain.cmake"
-export CMAKE_MAKE_PROGRAM="$HOME/AppData/Local/Android/Sdk/ndk/24.0.8215888/prebuilt/windows-x86_64/bin/make.exe"
+export NG_CMAKE_TOOLCHAIN_FILE="$HOME/AppData/Local/Android/Sdk/ndk/28.0.12674087/build/cmake/android.toolchain.cmake"
+export CMAKE_MAKE_PROGRAM="$HOME/AppData/Local/Android/Sdk/ndk/28.0.12674087/prebuilt/windows-x86_64/bin/make.exe"
 
 export WORKSPACE=$PWD
 export PLATFORM=android-arm64-v8a
@@ -232,7 +236,8 @@ scripts/build.sh
 
 - apkサイズ：1.2GB台  
 - Android端末で起動後のサイズ：3.4GB台  
-  ※起動後のサイズが増えるのは、初回起動時apk内にバンドルされたデータがアプリデータ領域に展開されるため。
+  ※インストール、起動方法については次回の実行編にて  
+  ※起動後のサイズが増えるのは、初回起動時apk内にバンドルされたデータがアプリデータ領域に展開されるため
 
 :::info
 apk内にデータをバンドルさせない手順もあります（環境変数 BUNDLE_DATA=false）。  

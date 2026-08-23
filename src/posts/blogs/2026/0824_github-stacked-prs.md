@@ -1,5 +1,5 @@
 ---
-title: GitHub の Stacked Pull Requests でスタック PR を快適操作 - PR サイズを小さくしてレビューも楽に
+title: GitHub Stacked PRs で実現する「小さな PR」とレビューを溜めない開発スタイル
 author: masahiro-kondo
 date: 2026-08-24
 image: true
@@ -93,8 +93,7 @@ feature/02-add-logic ブランチ。ドキュメントとソースコードを�
     └── hello.py
 ```
 
-feature/03-add-docs ドキュメントを追加しています。
-
+feature/03-add-docs ブランチ。ドキュメントを追加しています。
 
 ```shell
 .

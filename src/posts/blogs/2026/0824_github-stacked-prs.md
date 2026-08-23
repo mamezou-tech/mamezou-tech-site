@@ -2,6 +2,7 @@
 title: GitHub の Stacked Pull Requests でスタック PR を快適操作 - PR サイズを小さくしてレビューも楽に
 author: masahiro-kondo
 date: 2026-08-24
+image: true
 tags: [GitHub]
 ---
 

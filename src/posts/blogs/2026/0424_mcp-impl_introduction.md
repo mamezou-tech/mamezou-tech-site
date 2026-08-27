@@ -22,6 +22,7 @@ image: true
 * [StreamableHTTPステートフル実装編](/blogs/2026/06/05/mcp-impl_http_stateful/)
 * [プロンプト編](/blogs/2026/06/19/mcp-impl_prompt/)
 * [リソース編](/blogs/2026/07/03/mcp-impl_resource/)
+* [認証/認可編](/blogs/2026/08/26/mcp-impl_auth/)
 :::
 
 ## なぜMCPが必要なのか

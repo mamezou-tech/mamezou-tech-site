@@ -25,6 +25,7 @@ image: true
 * **StreamableHTTPステートフル実装編（本ページ）**
 * [プロンプト編](/blogs/2026/06/19/mcp-impl_prompt/)
 * [リソース編](/blogs/2026/07/03/mcp-impl_resource/)
+* [認証/認可編](/blogs/2026/08/26/mcp-impl_auth/)
 :::
 
 ## 今回使用するライブラリなど

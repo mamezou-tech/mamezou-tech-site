@@ -24,6 +24,7 @@ MCPのプロンプトは、MCPクライアント向けにテンプレート化�
 * [StreamableHTTPステートフル実装編](/blogs/2026/06/05/mcp-impl_http_stateful/)
 * **プロンプト編（本ページ）**
 * [リソース編](/blogs/2026/07/03/mcp-impl_resource/)
+* [認証/認可編](/blogs/2026/08/26/mcp-impl_auth/)
 ::: 
 
 ## 今回使用するライブラリなど

@@ -1,5 +1,5 @@
 ---
-title: 【C#入門】デリゲート（delegate）とは？基礎からFunc/Action/eventとの違いまで動くコードで解説
+title: 動くサンプルで理解！C#デリゲート入門 ～Func/Action/eventの違いと使いどころまで
 author: yoshihiro-tamori
 date: 2026-09-02
 tags: [dotnet, csharp]

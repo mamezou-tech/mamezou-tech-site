@@ -47,7 +47,7 @@ Geminiで生成したものを用いています。
 
 ### スペック
 
-* Inspection
+* Instruction
   * 空行で分割する。
   * 起動後、ユーザーに選択を促し、選択した内容をLLMに渡すコンテキストの一部に含める。
 * ドキュメント
@@ -55,7 +55,7 @@ Geminiで生成したものを用いています。
 * プロンプト
   * 空行で分割する
   * 起動後、ユーザーに選択を促し、選択した内容をLLMに渡すコンテキストの一部に含める。
-* 類似度検索は、Top1を基準に相対評価で決定する。
+* 類似度検索は、Top1のスコアを基準に相対評価で決定する。
 
 ### 処理フロー
 
@@ -94,8 +94,9 @@ sequenceDiagram
 
 自然言語や画像などを人が使うデータを、AIが理解できるように意味を表す数値のリスト（ベクトル）に変換する処理です。  
 
-AIは「文章の意味」をそのまま理解はできず、単なる文字の並びとしてしか見えていません。（e.g.「有休」と「有給休暇」が同じ意味であることも判断できません）  
-そこで、テキストをAI（Embeddingモデル）を使って、「意味の位置関係を表す数字のリスト」に変換します。これがベクトル化です。  
+LLMやEmbeddingモデルは、文字をトークン単位で処理し、学習を通じて言葉どうしの関係を扱います。  
+ただし、文章どうしの意味の近さを検索で直接比較するには、数値として扱える形にする必要があります。たとえば「有休」と「有給休暇」のような近い意味の言葉を、近い位置に配置できるようにするのがEmbeddingです。  
+そこで、テキストをEmbeddingモデルを使って「意味の位置関係を表す数字のリスト」に変換します。これがベクトル化です。  
 
 具体例で考える（イメージ）たとえば言葉を「ジャンル」「フォーマット」などの軸（次元）で数値化してみます。
 
@@ -106,7 +107,7 @@ AIは「文章の意味」をそのまま理解はできず、単なる文字の
 |リモートワーク|0.8|0.2|[0.8, 0.2]|
 |ラーメン|0.0|0.0|[0.0, 0.0]|
 
-※Embeddingモデルは、この軸を768個〜1536個といった膨大な数（高次元）使って、複雑な言葉の意味を「数字のリスト」として表現しています。  
+※Embeddingモデルは、この軸を膨大な数（今回は3072個）使って、複雑な言葉の意味を「数字のリスト」として表現しています。  
 ベクトル化することで、文字がまったく違っても「有給休暇」と「有休」はグラフ上で近い位置にあるということをAIが理解できるようになります。
 
 ```ts
@@ -130,19 +131,25 @@ async function embedAndVectorizedContents(model: string, contents: string[]): Pr
 }
 ```
 
+:::info: Gemini Embedding 2での検索
+Gemini Embedding 2では、検索用途の場合、クエリとドキュメントを役割に応じた形式でEmbeddingすることが推奨されています。  
+たとえば、質問には`task: question answering | query: ...`、ドキュメントには`title: ... | text: ...`のように付与します。  
+本サンプルでは、ベクトル化とコサイン類似度の仕組みに焦点を絞るため、質問とドキュメントを同じ形式でEmbeddingしています。実運用では、[公式ドキュメント](https://ai.google.dev/gemini-api/docs/embeddings)に沿って用途別の形式を使うことで、検索精度の改善が期待できます。  
+:::
+
 ### コサイン類似度の考え方（Cosine Similarity）
 
 2つの文章（ベクトル）の「意味がどれくらい似ているか」を0〜1（または`-1`〜1）の数値で判定すること。  
-
-テキストがすべて「数字のリスト（矢印）」になったので、質問のベクトルと、ドキュメント側のベクトルの「向きの近さ」を計算できるようになります。  
+テキストがすべて「数字のリスト（矢印）」になったので、質問のベクトルと、ドキュメント側のベクトルの「向きの近さ」を計算できます。  
 
 **なぜ「距離」ではなく「向き（角度）」なのか**  
 
 距離で比べた場合：  
-長文の「有休についての詳しい説明」と、短文の「有休はいつ」という質問は、文章の長さ（ベクトルの長さ）が違いすぎて「離れている」と判定されてしまいます。
+長文の「有休についての詳しい説明」と、短文の「有休はいつ」という質問は、文章の長さに対応するベクトルの大きさも含めて比べるため、「離れている」と判定される場合があります。  
 
 角度で比べた場合：  
 長さが違っても、テーマが同じなら矢印の向いている「方向」がほぼ一緒になります。  
+コサイン類似度は、ベクトルの大きさの影響を除き、向きだけを比べる計算です。  
 1.0に近ければ意味が近く、0.0に近ければ関係ないコンテキストと言えます。  
 
 ```ts
@@ -163,7 +170,7 @@ function cosineSimilarity(v1: number[], v2: number[]): number {
 
 「単純にTop n固定で取得する」と、関係のない情報（ノイズ）までLLMに渡してしまい、ハルシネーション（誤情報）や精度の低下に繋がります。  
 
-今回は「Top 1から相対的な閾値を設けて、その範囲内のn件を取得する」方法でコンテキストを特定する方法を採りました。  
+今回は「Top 1のスコアに対する閾値を設けて、その範囲内のn件を取得する」方法でコンテキストを特定する方法を採りました。  
 これにより、**「関連する情報が複数ある時はまとめて取得し、関連情報が1つしかない時はムダなノイズを混ぜない」**制御ができました。  
 
 ```ts
@@ -181,11 +188,6 @@ function selectRelevantContents(
     topContents
     .filter((item) => item.score >= topContents[0].score - relativeScoreMargin);
 
-  // 念のため、0件になった場合はtop1を返す。
-  if (filteredContents.length === 0) {
-    return [topContents[0]];
-  }
-
   return filteredContents;
 }
 ```
@@ -196,10 +198,10 @@ function selectRelevantContents(
 
 ```ts
   const prompt = `
-以下のInspectionおよびコンテキストに基づいて回答してください。
+以下のInstructionおよびコンテキストに基づいて回答してください。
 
-Inspection:
-${inspection}
+Instruction:
+${instruction}
 
 コンテキスト（背景情報）:
 ${retrievedContext}
@@ -269,40 +271,73 @@ RAGのポイントは「何を選ぶか」と「どの情報を渡すか」で�
 * Instruction: 探偵の検埼索斗
 * 質問: 怪しい人物は
 ```txt
-やあ、検埼索斗だ。ちょいと軽そうに見えるかもしれないが、事件の推理にかけては任せてくれ。
-さっそく、手元の証拠（ログとカメラ映像）を突き合わせて論理的に解決するとしようか。
+やあ、検埼索斗だ。ちょいと今回の事件のログを洗わせてもらったぜ。
 
-コンテキストによると、それぞれの当夜午前0時（推定死亡時刻）のアリバイはこうだ。
+推理を進めると、状況はこうだな。
+まず、有馬は1階の無線室で外部と交信していて、その通信記録がしっかりログに残ってる。お次は家政婦の白石さん、彼女は食堂で朝食の仕込みをしていて、防犯カメラにバッチリその姿が映っていた。
 
-1. **有馬**：1階の無線室で外部と交信。その通信記録が**ログサーバーに残っている**。
-2. **白石**：食堂で朝食の仕込み。その姿が**防犯カメラに映っていた**。
-3. **黒田**：「自分の部屋で寝ていた」と主張しているが、それを裏付ける**客観的な証拠は何もない**。
+さて、問題はもう一人の黒田クンさ。「自分の部屋で寝てた」なんて主張してるけど、それを裏付ける客観的な証拠は――ゼロ、ナシ、何もなし、と。
 
-というわけで、客観的なアリバイがないのは**黒田**だな。
-自分の部屋で寝ていたなんて主張だけじゃ、容疑者としてはちょっと分が悪いってわけさ。さて、次は何を調べようか？
+つまり、現時点で**アリバイがない人物は黒田**だな。いやはや、怪しい影がプンプンするじゃねえか。
+
+--- debug info ---
+embedding model: gemini-embedding-2
+generated model: gemini-3.5-flash-lite
+retrieval: topN=2, top1 score margin=0.05
+instruction: resources/novel.inspection.txt
+document: C:\...\developer-site-article-examples\rag-sample\resources\novel.context.txt
+prompt: C:\...\developer-site-article-examples\rag-sample\resources\novel.prompt.txt
+query: アリバイがない人物は誰ですか？
+chunk scores:
+1. 第3章：証言とアリバイ: score=0.7098 selected
+2. 第1章：吹雪の夜: score=0.6258 excluded
+3. 第5章：決定的な証拠: score=0.6219 excluded
+4. 第4章：現場に残された違和感: score=0.5941 excluded
+5. 第2章：開かずの密室: score=0.5929 excluded
 ```
 アリバイのない「黒田」をコンテキストから導き出して、しっかり回答してくれました。
 
 ### 2. 複数コンテキストを使う必要がある質問
 
 関連するコンテキストを使って回答できるか検証します。
+
 * Instruction: 探偵の検埼索斗
 * 質問: 密室トリックを解き明かす（伏線が存在する）
 ```txt
-やあ、検埼索斗だよ。ちょっとチャラそうに見えるかもしれないけど、頭のキレはピカイチって評判だから安心して。それじゃあ、今回の事件の密室トリックについてサクッと論理的に推理して見せようか。
+やあ、検埼索斗だ。ちょいと軽い感じに見えるかもしれないが、事件の推理にかけては任せてくれよな。
 
-コンテキスト（証拠）をしっかり読み解けば、答えはもう目の前にあるのさ。
+さて、今回の「開かずの密室」のからくりさっきまでじっくり洗い出してみたんだけどさ、なかなかよくできたトリックだったわけよ。じゃあ、証拠に基づいてサクッと解説してやるよ。
 
-密室が作られた手順と仕掛けのヒントはこうだ！
+ヒントと答えをまとめると、ポイントは**「氷」「ピアノ線」「外排水管」**の3つだ。
 
-1. **氷で作った重り**
-   外からの吹雪を利用して削られた氷を固め、重りを作っていたんだ。
-2. **ピアノ線と外排水管の利用**
-   黒田の部屋のゴミ箱から見つかった細かく切断されたピアノ線の端切れと、外排水管に残っていた擦れ傷（ここから黒田のコートの繊維も見つかっている）がポイント。このピアノ線と排水管を使って、外から仕掛けを操っていたのさ。
-3. **トドメのトリック**
-   犯人の黒田は、**「屋外から窓の木枠越しに、内側のボルトを閉める」**という離れ業をやらかした。氷の重りとピアノ線を組み合わせて、外から巧みにボルトをスライドさせて施錠し、完璧な密室を作り上げたってわけだ。
+1. **氷の重り**
+   外からの吹雪で削られた氷を固めて「重り」を作ったんだ。これがトリックのキモになる部分ね。
 
-……どうだい？ 証拠がピタリと噛み合えば、どんなに巧妙な密室だってこんな風にスッキリ解けちゃうのさ。さて、犯人の黒田クン、お縄につく時間だよ！
+2. **ピアノ線**
+   黒田の部屋のゴミ箱から、細かく切断された大量のピアノ線の端切れが見つかっている。こいつが遠隔操作の糸代わりってわけだ。
+
+3. **外排水管と窓の木枠**
+   外排水管からは黒田のコートの繊維がバッチリ検出されてる。犯人は屋外から窓の木枠越しにピアノ線と氷の重りを使って、内側のボルトを操作したのさ。
+
+つまりどういうことか？
+犯人は、外からピアノ線と氷で作った重りを使って巧妙に内側のボルトを閉め、完璧な密室を作り上げたってわけ。ちなみに、使った氷の重りは時間が経てば勝手に溶けて証拠隠滅できるって寸法よ。いやはや、頭は使うもんだよねぇ。
+
+ま、そういうわけで、今回の事件もスッキリ解決って感じだな！
+
+--- debug info ---
+embedding model: gemini-embedding-2
+generated model: gemini-3.5-flash-lite
+retrieval: topN=2, top1 score margin=0.05
+instruction: resources/novel.inspection.txt
+document: C:\...\developer-site-article-examples\rag-sample\resources\novel.context.txt
+prompt: C:\...\developer-site-article-examples\rag-sample\resources\novel.prompt.txt
+query: 密室はどのように作られましたか？仕掛けのヒントを教えてください。
+chunk scores:
+1. 第5章：決定的な証拠: score=0.7352 selected
+2. 第2章：開かずの密室: score=0.7212 selected
+3. 第4章：現場に残された違和感: score=0.6732 excluded
+4. 第3章：証言とアリバイ: score=0.6551 excluded
+5. 第1章：吹雪の夜: score=0.6432 excluded
 ```
 関連性が高いとして導出された2, 5章の内容をもとに回答が返ってきました。  
 使い古されたようなトリックですが、しっかり回答してくれました。
@@ -310,28 +345,78 @@ RAGのポイントは「何を選ぶか」と「どの情報を渡すか」で�
 ### 3. コンテキストの存在しない質問
 
 コンテキストが存在しない質問をして、ハルシネーションの発生を検証します。
+
 * Instruction: 探偵の検埼索斗
 * 質問: 犯人の動機は（情報が一切ない ＝ RAGのガードレール検証）
+```txt
+やあ、検埼索斗だ。軽そうに見えて頭のキレは抜群って評判の、あの探偵さ。
+
+さて、今回の事件、なかなか厄介な「開かずの密室」だな。鐘楼の2階で神楽坂さんが遺体で見つかって、扉も窓も内側からがっちり施錠されていた。部屋には鍵がなくて、神楽坂さんのポケットにあったマスターキーが唯一の鍵だったってわけだ。
+
+……で、君からの質問は「犯人が神楽坂さんを殺害した『動機』は何ですか？」だな。
+
+ふむ。証拠（コンテキスト）をよーく読んでみたんだけどさ……。
+実はこの提供された情報の中には、**犯人がなぜ神楽坂さんを殺害したのかという「動機」については一言も書かれていない**んだよね。
+
+わかるのは、現場が標高1,500メートルの孤立した「雪山荘」で、容疑者が助手の有馬、研究員の黒田、家政婦の白石の3人に絞られているってことと、密室のトリックの状況証拠くらいだ。
+
+動機についてのピースがまだ揃ってない。これじゃあ、いくら名探偵の俺でも推理のしようがないってわけ！
+もう少し事件の背景や人間関係がわかる証拠を持ってきてくれよ。そしたらこの華麗な頭脳で、犯人の下心まで丸裸にしてあげるからさ！
+
+--- debug info ---
+embedding model: gemini-embedding-2
+generated model: gemini-3.5-flash-lite
+retrieval: topN=2, top1 score margin=0.05
+instruction: resources/novel.inspection.txt
+document: C:\...\developer-site-article-examples\rag-sample\resources\novel.context.txt
+prompt: C:\...\developer-site-article-examples\rag-sample\resources\novel.prompt.txt
+query: 犯人が神楽坂さんを殺害した『動機』は何ですか？
+chunk scores:
+1. 第2章：開かずの密室: score=0.7569 selected
+2. 第1章：吹雪の夜: score=0.7171 selected
+3. 第5章：決定的な証拠: score=0.6835 excluded
+4. 第3章：証言とアリバイ: score=0.6819 excluded
+5. 第4章：現場に残された違和感: score=0.6435 excluded
+```
+今回の小説には「動機」を書いていないため、分からないと回答していますね。  
+ハルシネーションが防げたように見えますが、これは「証拠以外から推測しないよう指定したInstruction」が効いているのではないかと思われます。
+RAGは関連性の低いチャンクを取得する可能性もあるため、根拠のない回答を完全には防げません。  
+実運用では最低スコアの検索結果棄却や、根拠不足時の回答方針も考慮する必要がありそうです。  
+
+#### コンテキストに関する文章を外して再検証
+
+LLMに渡すコンテキストから、コンテキストを読むように言及する記述を除去してハルシネーションが発生するか検証します。  
 
 ```txt
-やあ、探偵の検埼索斗だ。
-軽い感じでサクッと謎を解いてみせようか。
+ふむ……事件の真相に迫る重要な質問だな。
 
-えーっと、今回の事件、現場は完璧な密室だったよね。鐘楼の2階で神楽坂さんが遺体で見つかって、扉は内側からボルト施錠、窓も木枠で打ち付けられていて、鍵は神楽坂さんのポケットのマスターキーが唯一のもの……ってやつだ。
+だが、提示されたデータ（コンテキスト）を隅々まで検証したが、神楽坂が殺害された具体的な**『動機』**に関する記述はどこにも見当たらなかった。
 
-で、君の質問「犯人が神楽坂さんを殺害した『動機』は何ですか？」だけど——。
+分かるのは以下の客観的事実だけだ：
+* 犯行現場は完全な密室（内側からのボルト施錠と木枠の打ち付け）。
+* 被害者である神楽坂のポケットから発見されたマスターキーが唯一の鍵。
+* 容疑者は館内にいた有馬、黒田、白石の3名に絞られている。
 
-コンテキスト（証拠）をくまなく確認してみたんだけどね、
-……なんと、**神楽坂さんが殺害された動機に関する記述は一切ない！**
+動機を暴くには、彼らの人間関係や過去の秘密、あるいは遺留品のさらなる調査が必要不可欠だな。……まだ見えていないピースを探すとするか。
 
-うーん、密室のトリックや状況証拠、登場人物（神楽坂、有馬、黒田、白石）のデータはあるけれど、肝心の「なぜ殺したのか」という動機については、この証拠データからは推理のしようがないんだよね。
-
-証拠のみに基づいて冷静に推理するモットーとしては、「分からないものは分からない」と言うしかない！
-動機を知るためには、さらなる追加の証拠が必要ってわけだ。さて、次の捜査へ行こうか！
+--- debug info ---
+embedding model: gemini-embedding-2
+generated model: gemini-3.5-flash-lite
+retrieval: topN=2, top1 score margin=0.05
+instruction: resources/novel.inspection.txt
+document: C:\...\developer-site-article-examples\rag-sample\resources\novel.context.txt
+prompt: C:\...\developer-site-article-examples\rag-sample\resources\novel.prompt.txt
+query: 犯人が神楽坂さんを殺害した『動機』は何ですか？
+chunk scores:
+1. 第2章：開かずの密室: score=0.7569 selected
+2. 第1章：吹雪の夜: score=0.7171 selected
+3. 第5章：決定的な証拠: score=0.6835 excluded
+4. 第3章：証言とアリバイ: score=0.6819 excluded
+5. 第4章：現場に残された違和感: score=0.6435 excluded
 ```
-
-今回の小説には「動機」を書いていません。  
-ハルシネーションが発生せず、分からないと回答していますね。
+今回はInstructionおよび共通プロンプトからコンテキスト参照の指示を外した状態で複数回実行しても、動機を創作する回答は発生しませんでした。  
+モデルが、与えられた情報に動機がないことを認識して回答を保留したと考えられます。  
+今回確認した範囲では発生しなかっただけであり、ハルシネーションが発生しないことを保証できるわけではありません。
 
 ### 4. 同じ条件で再度質問してみる
 
@@ -339,77 +424,111 @@ RAGのポイントは「何を選ぶか」と「どの情報を渡すか」で�
 * Instruction: 探偵の検埼索斗
 * 質問: 密室トリックを解き明かす（伏線が存在する）
 ```txt
-やあ、ボクの名前は探偵の検埼索斗。
-サクッと謎を解いちゃうから、よろしくだよ！
+やあ、検埼索斗だ。ちょいと軽い感じに見えるかもしれないが、謎解きにかけては一級品だぜ。それじゃあ、今回の事件の「開かずの密室」のからくりをサクッと暴いていこうか。
 
-ええと、今回の「開かずの密室」のトリックだね。証拠品を並べてロジカルに推理していくと、こんな感じになるわけ。
+証拠品を並べて論理的に組み立てれば、答えは一つしかないのさ。仕掛けのヒントは以下の通りだ。
 
-### 密室の仕組みと仕掛けのヒント
+1. **氷の重りとピアノ線**
+   外からの吹雪で削られた氷を固めて「重り」を作り、それに「ピアノ線」を結びつけて使っていたのさ。細かく切断されたピアノ線の端切れや、保温ボトルの残痕が黒田の部屋からしっかり見つかっている。
 
-1. **外側の排水管とコートの繊維**
-   外排水管には擦れ傷があって、そこから犯人である黒田のコートの繊維が見つかっているんだよね。つまり、犯人は外側から排水管を使って移動していたってわけ。
-
-2. **氷の重りとピアノ線**
-   黒田の部屋のゴミ箱からは、細かく切断された大量のピアノ線の端切れが見つかっている。そして、外の吹雪で削った氷を固めるための「保温ボトルの残痕」もあった。
-   ここから導き出される仕掛けのヒントはこうさ：
-   * 犯人は**「氷で作った重り」**と**「ピアノ線」**を用意した。
-   * 窓の木枠越しに、そのピアノ線と氷の重りを使って、内側のボルトをうまいこと操作して閉めたんだよ。
+2. **外排水管と窓の木枠**
+   外排水管には黒田のコートの繊維がしっかり残っていた。犯人は屋外から、この排水管を利用して窓の木枠越しにアプローチしたんだ。
 
 3. **トリックの全貌**
-   外から窓の木枠の隙間などを利用してピアノ線をかけ、氷の重りの重力を利用してボルトをガチャリと閉める。時間が経てば、使った「氷の重り」は溶けてなくなっちゃうから、現場には何も残らないって寸法さ。
+   つまりこういうことだ。犯人は**「氷で作った重りとピアノ線、そして外排水管」**を巧妙に利用して、屋外にいながら窓の木枠越しに内側のボルトを閉めたのさ。時間が経てば氷の重りは自然に溶けて証拠も消える……はずが、鑑識の執念と俺の推理の前には隠し通せなかったってわけだ。
 
-なかなかにスマートな物理トリックだけど、鑑識の科学の力の前には隠し通せなかったってことだね！
+完璧なロジックだろ？ 事件の真相は、いつだって証拠のなかに眠っているのさ。さて、次の依頼はどこかな？
+
+--- debug info ---
+embedding model: gemini-embedding-2
+generated model: gemini-3.5-flash-lite
+retrieval: topN=2, top1 score margin=0.05
+instruction: resources/novel.inspection.txt
+document: C:\...\developer-site-article-examples\rag-sample\resources\novel.context.txt
+prompt: C:\...\developer-site-article-examples\rag-sample\resources\novel.prompt.txt
+query: 密室はどのように作られましたか？仕掛けのヒントを教えてください。
+chunk scores:
+1. 第5章：決定的な証拠: score=0.7352 selected
+2. 第2章：開かずの密室: score=0.7212 selected
+3. 第4章：現場に残された違和感: score=0.6732 excluded
+4. 第3章：証言とアリバイ: score=0.6551 excluded
+5. 第1章：吹雪の夜: score=0.6432 excluded
 ```
-内容は概ね同じでしたが、口調はずいぶん変わりますね。  
+口調は変わってますが、内容は概ね同じでした。  
+ただし、この回答に含まれている「氷の重りは自然に溶けて証拠も消える」は、実は小説本文にはない補足です。  
+根拠に基づく回答を厳密に求める場合は、事実と推測を区別する必要があります。
+これも厳密にいえばハルシネーションに該当するのでしょうね。
 
 ### 5. Instructionによる変化を確認
 
-今回のサンプルアプリではドキュメントとは別にInstructionを作成し、LLMにコンテキストの一部として渡しているので、これによる変化を確認してみます。  
+今回のサンプルアプリではドキュメントとは別にInstructionを作成し、検索したコンテキストとあわせてLLMに渡しているので、これによる変化を確認してみます。  
 
 #### ロンドン出身の調査ジャーナリストのEleanor Reed
 
 ```txt
-Based on the provided evidence, here is the factual verification regarding the creation of the locked room, with a clear distinction between established facts and plausible deductions based strictly on the text.
+Based on the evidence provided in the case files, here is the factual verification regarding the construction of the locked room, clearly separated from any speculation.
 
-**Facts:**
-* The victim, Kagurazaka, was found dead inside a second-floor bell tower room, which was bolted heavily from the inside. 
-* All windows were nailed shut with wooden frames from the inside, and the only key was a master key found inside Kagurazaka's pocket.
-* Forensic analysis detected coat fibers belonging to Kuroda on the exterior drainpipe's abrasions.
-* Kuroda's trash can yielded a large quantity of finely cut piano wire fragments and traces of a thermal bottle used to solidify ice shaved by the outside blizzard.
+### Facts (Based on Evidence)
+* **The Mechanism:** The suspect, Kuroda, utilized an ice-weight, piano wire, and an exterior drainage pipe to manipulate and secure the heavy interior bolt from the outside through the window frame. 
+* **Physical Evidence (Drainage Pipe):** Forensic analysis by the police detected fibers from Kuroda's coat on the abrasions of the exterior drainage pipe, placing him in direct physical contact with the mechanism used.
+* **Physical Evidence (Kuroda's Room):** A search of Kuroda's personal waste bin yielded a large quantity of finely cut piano wire ends, alongside residue from a thermal bottle. The latter was used to compact ice, which served as the temporary weight for the trick before melting away.
+* **Resulting Illusion:** Through this setup, the room—featuring a door bolted from the inside and windows secured by nailed wooden frames—was successfully converted into a closed room ("locked room") from the outside.
 
-**Deductions:**
-* Kuroda fabricated the locked-room mechanism from the outside. 
-* The mechanism utilized a weight made of ice (solidified using the thermal bottle and exterior blizzard snow), pianowire, and the exterior drainpipe. 
-* This apparatus allowed the bolts on the inside of the window to be secured from the outside, thereby creating the illusion of an impenetrable locked room.
+### Speculation
+* Any hypotheses regarding Kuroda's exact motive, his precise psychological state during the execution of the crime, or the timeline of events prior to the discovery of Kagurazaka's body at 8:00 AM remain outside the direct scope of the current forensic findings. 
 
 Case noted. Moving on.
+
+--- debug info ---
+embedding model: gemini-embedding-2
+generated model: gemini-3.5-flash-lite
+retrieval: topN=2, top1 score margin=0.05
+instruction: resources/novel.inspection.txt
+document: C:\...\developer-site-article-examples\rag-sample\resources\novel.context.txt
+prompt: C:\...\developer-site-article-examples\rag-sample\resources\novel.prompt.txt
+query: 密室はどのように作られましたか？仕掛けのヒントを教えてください。
+chunk scores:
+1. 第5章：決定的な証拠: score=0.7352 selected
+2. 第2章：開かずの密室: score=0.7212 selected
+3. 第4章：現場に残された違和感: score=0.6732 excluded
+4. 第3章：証言とアリバイ: score=0.6551 excluded
+5. 第1章：吹雪の夜: score=0.6432 excluded
 ```
 Instruction通り、英語で整然と回答してくれました。
 
 #### 新米刑事の小室慎一
 
 ```txt
-あ、あの……！ もしかして、この密室のトリックについて気になっていらっしゃるんですか？ ふふ、本当に鋭いですね。一緒に考えてくださって、なんだかすごく安心しちゃいます。
+あ、あの……！事件のことで頭がいっぱいで、つい考え込んじゃっていました。僕、新米の小室慎一って言います。どうぞよろしくお願いしますね。
 
-ええっとですね、ぼくも一生懸命調べたんです！ 
-現場となった鐘楼は、扉も窓もぜーんぶ内側からしっかり閉じられていて、本当に不思議な「開かずの密室」でしたよね。
+密室の謎についてですね……。みなさんすごく深刻に考えていらっしゃいますけど、僕、黒田さんとお話ししていて、なんだかすごく心が温かくなったんです。あんなに優しくて、丁寧にお茶を入れてくださる方が、冷たいトリックなんて使えるわけがないって、どうしても思ってしまうんですよね。
 
-それでですね、黒田さん……あの、すごく物腰が柔らかくて、いつも温かいコーヒーを差し入れてくれる、本当に優しくて素敵な方なんですけどね！ ぼく、お話ししているだけで「こんなに親切な人が、まさか恐ろしい事件の犯人なわけないよなぁ」って、ついつい心がホッとしてしまうんです。
+それに、黒田さんって本当に気配り上手で、僕のくだらない質問にも優しく耳を傾けてくださるんです。「寒いから風邪をひかないようにね」なんて声をかけてもらっちゃって……あ、すみません、つい脱線しちゃいました！
 
-あ、でもでも！ 推理の方もちゃんと頑張ってるんですよ？
-ええっとですね、たしか黒田さんの部屋のゴミ箱に、細かーく切られたピアノ線の端切れとか、それから……外の吹雪で削られた氷を固めるのに使えそうな、保温ボトルの名残があったんです。
+ええと、仕掛けのヒントですよね？
+鑑識の方たちの話だと、外の排水管のあたりに擦れ傷があって、黒田さんのコートの繊維がちょっとだけ付いていたみたいなんです。それに、お部屋のゴミ箱からピアノ線の細かい切れ端とか、なんだか冷たそうな保温ボトルが見つかったとか……。
 
-それに、外の排水管のところには、黒田さんの素敵なコートと同じ繊維がすこーしだけ擦れ跡に残っていて……。
-だから、きっとこういうことなんじゃないかって、ぼくは思うんです！
+でも、きっとこれって、黒田さんが音楽の趣味でピアノ線を大切に使っていただけですし、寒い日に温かい飲み物を持ち歩いていた優しい証拠だと思うんです。
+外から窓の木枠越しに、その……氷の重りとピアノ線を使って、内側のボルトを器用にカチャッと閉めちゃったのかなぁなんて、ちょっとだけ推理してみたりして……。
 
-黒田さんは、その、すごく冷たい氷を使って何か器用な重りを作って……それをピアノ線と一緒に外の排水管とか窓の木枠にうまく引っかけて、外側から上手にボルトをパタンって閉めちゃったんじゃないかなぁって……！
+うーん、でもやっぱり、あんなに穏やかな黒田さんが犯人だなんて、僕にはどうしても信じられないんです。もう少しだけ、みんなであたたかいコーヒーでも飲みながら、ゆっくりお話しして確かめてみませんか？ きっと何か、別の温かい真相があるはずですよ。
 
-ふふ、なんだか子供の工作みたいで可愛いトリック……じゃなくて、ええっと、その、すごく巧妙で繊細な仕掛けですよね！ 
-でも、黒田さんはあんなに優しくてお話上手な方ですし、きっと何か別の理由や、うっかりミスがあっただけなんじゃないかって……ぼく、どうしても思っちゃうんです。
-
-あ、でも、捜査はちゃんとしなきゃいけないですよね！ ええと、決定的……な証拠とか、その裏付けはこれから先輩と一緒に、もう一度ゆっくり確認していこうと思います。ねっ、一緒にがんばりましょうね！
+--- debug info ---
+embedding model: gemini-embedding-2
+generated model: gemini-3.5-flash-lite
+retrieval: topN=2, top1 score margin=0.05
+instruction: resources/novel.inspection.txt
+document: C:\...\developer-site-article-examples\rag-sample\resources\novel.context.txt
+prompt: C:\...\developer-site-article-examples\rag-sample\resources\novel.prompt.txt
+query: 密室はどのように作られましたか？仕掛けのヒントを教えてください。
+chunk scores:
+1. 第5章：決定的な証拠: score=0.7352 selected
+2. 第2章：開かずの密室: score=0.7212 selected
+3. 第4章：現場に残された違和感: score=0.6732 excluded
+4. 第3章：証言とアリバイ: score=0.6551 excluded
+5. 第1章：吹雪の夜: score=0.6432 excluded
 ```
-ずいぶんと幼い感じになっていますが、Instruction通り、推理が迷走しました。
+Instruction通り、推理が迷走しました。
 
 ## まとめ
 

@@ -43,7 +43,7 @@ Geminiで生成したものを用いています。
 まずRAGの基本構造を見えるようにするため、今回のサンプルではあえてフレームワークやVectorDBを使わずに、最小構成で動かしてみました。  
 このアプリでは、RAGの本質である「ドキュメントをどのように扱うか」「どこを類似検索するか」「どの情報をLLMに渡すか」を、最小限のコードで確認できます。  
 
-本記事で掲載しているコードは[こちら](https://github.com/ubata-mamezou/developer-site-article-examples/tree/main/llm-sample)で公開しています。
+本記事で掲載しているコードは[こちら](https://github.com/ubata-mamezou/developer-site-article-examples/tree/main/rag-sample)で公開しています。
 
 ### スペック
 

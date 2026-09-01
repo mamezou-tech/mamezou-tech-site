@@ -118,10 +118,12 @@ LLMやEmbeddingモデルは、文字をトークン単位で処理し、学習�
 const vectorizedDoc: number[][] = await embedAndVectorizedContents(LLM_MODEL_EMBEDDED, documents);
 
 async function embedContent(model: string, content: string): Promise<EmbedContentResponse> {
+  // モデルに渡したcontentsが数値化されて返される
   return await ai.models.embedContent({ model, contents: content });
 }
 
 async function embedAndVectorizedContent(model: string, content: string): Promise<number[]> {
+  // モデルから返された値を後続のコサイン類似度算出で使いやすいように数値配列に変換
   return extractValues(await embedContent(model, content));
 }
 
@@ -189,6 +191,7 @@ function selectRelevantContents(
     [...scoredContents]
     .sort((a, b) => b.score - a.score)
     .slice(0, topN);
+  // Top1のスコアから相対的にみて関連の深いドキュメントを抽出
   const filteredContents = 
     topContents
     .filter((item) => item.score >= topContents[0].score - relativeScoreMargin);
@@ -214,6 +217,7 @@ ${retrievedContext}
 質問:
 ${query}`;
 
+  // LLMにコンテキストと質問を投げて、回答を生成
   const response = await ai.models.generateContent({
     model: LLM_MODEL_GENERATED,
     contents: prompt,

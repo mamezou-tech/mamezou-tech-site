@@ -145,7 +145,7 @@ index 8e501d7a..a34fb2a7 100644
 
 #### Androidバージョン 8 → 7 の壁
 
-ommons-io が  java.nio に依存していてそれで `NoClassDefFoundError` が実行時に発生しました。  
+commons-io が  java.nio に依存していてそれで `NoClassDefFoundError` が実行時に発生しました。  
 そもそものところで java.nio を使っていないバージョンにしてみます。
 [Apache Commons IO](https://mvnrepository.com/artifact/commons-io/commons-io) のDependencies情報あたりからバージョンを 2.6 まで下げればいい様なのでそうしてみます。
 

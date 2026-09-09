@@ -6,7 +6,6 @@ import {
 import { moduleInterop } from "npm:@textlint/module-interop@15.2.3";
 import * as jpPreset from "npm:textlint-rule-preset-ja-technical-writing@12.0.2";
 import * as proofdict from "npm:@proofdict/textlint-rule-proofdict@^3.1.2";
-import * as aws from "npm:textlint-rule-aws-spellcheck@^1.3.0";
 import * as markdownProcessor from "npm:@textlint/textlint-plugin-markdown@15.2.3";
 import * as allowlistFilter from "npm:textlint-filter-rule-allowlist";
 
@@ -55,10 +54,6 @@ const presetRules = Object.entries(jpPreset.rules).map(([id, module]) => ({
 
 const descriptor: TextlintKernelDescriptor = new TextlintKernelDescriptor({
   rules: [
-    {
-      ruleId: "aws-spellcheck",
-      rule: moduleInterop(aws.default),
-    },
     {
       ruleId: "@proofdict/proofdict",
       rule: moduleInterop(proofdict.default),

@@ -2,7 +2,7 @@
 title: AWS×UserDataでvLLMを自動起動！停止時コストほぼゼロのローカルLLM環境
 author: kazuyuki-shiratani
 date: 2026-09-16
-tags: [AWS, EC2, LLM, vLLM, S3, ECR]
+tags: [AWS, EC2, LLM, vLLM, s3, ECR]
 image: true
 ---
 

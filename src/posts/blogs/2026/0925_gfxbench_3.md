@@ -13,9 +13,71 @@ GFXBenchというGPUベンチマークソフトを取り上げたシリーズの
 
 ## ソースコード準備
 
+前回までのAPKファイルを古いAndroidバージョンで実行するとエラーが発生し（詳細は後述）終了してしまいました。  
+エラー原因からソースコードを修正して回避出来ないか検討してみます。
+
+### 修正方針
+
+修正方針も色々あるかと思いますが、今回の前提としてAndroid SDKおよびNDKバージョン、Java側の設定は変更しないで頑張ってみる事にしました。  
+
+以下前回までの設定を再掲します。
+
+  Path                 | Version           | Description                             | Location
+  -------              | -------           | -------                                 | -------
+  build-tools;35.0.0   | 35.0.0            | Android SDK Build-Tools 35              | build-tools/35.0.0
+  cmdline-tools;latest | 16.0              | Android SDK Command-line Tools (latest) | cmdline-tools/latest
+  ndk;28.0.12674087    | 28.0.12674087 rc2 | NDK (Side by side) 28.0.12674087        | ndk/28.0.12674087
+  platform-tools       | 35.0.2            | Android SDK Platform-Tools              | platform-tools
+  platforms;android-35 | 1                 | Android SDK Platform 35                 | platforms/android-35
+
+- platformBuildVersionCode='35'
+- compileSdkVersion='35'
+- minSdkVersion:'21'
+- targetSdkVersion:'35'
+
+これら設定の元で修正案を考えていきます。  
+
+### 実行時のエラーと修正案
+
+最初は実行時のエラーの理由が訳わからなかったのですが、整理すると以下の3つの様でした。
+
+#### Androidバージョン 8 → 7 の壁
+
+commons-io が  java.nio に依存していてそれで `NoSuchMethodError` が実行時に発生しました。  
+
+```monitor
+E AndroidRuntime: Caused by: java.lang.NoSuchMethodError: No virtual method toPath()Ljava/nio/file/Path; in class Ljava/io/File; or its super classes (declaration of 'java.io.File' appears in /system/framework/core-libart.jar)
+E AndroidRuntime:   at org.apache.commons.io.IOCase$$ExternalSyntheticApiModelOutline0.m(D8$$SyntheticClass:0)
+・・・
+```
+
+Androidバージョンによる java.nio サポート可否が原因ですが、そもそものところで java.nio を使っていないバージョンにしてみます。  
+[Apache Commons IO](https://mvnrepository.com/artifact/commons-io/commons-io) のDependencies情報あたりからバージョンを 2.6 まで下げればいい様なのでそうしてみます。
+
+#### Androidバージョン 7 → 6 の壁
+
+`cannot locate symbole "__fread_chk"` という問題が実行時に発生しました。  
+
+```monitor
+W Runner  : Failed to preload lib: dlopen failed: cannot locate symbol "__fread_chk" referenced by "/data/app/net.kishonti.gfxbench.v50105.corporate-1/lib/arm/libgfxbench40_gl.so"...
+```
+
+`E` (Error) ではなく `W` (Warning) 表記なので最初は見過ごしていたのですが、これがクリティカルでした。  
+これも何かネイティブ側のライブラリバージョンを下げる方法があればいいと思われます。探すと ANDROID_NATIVE_API_LEVEL という定義が見つかったので、元の値 24 (Android7.0) から 21 (Android5.0) と下げてみます。
+
+#### Androidバージョン 6 → 5 の壁
+
+requestPermissions() で `NoSuchMethodError` が実行時に発生しました。  
+
+```monitor
+E/AndroidRuntime(22812): java.lang.NoSuchMethodError: No virtual method requestPermissions([Ljava/lang/String;I)V in class Lnet/kishonti/testfw/app/MainActivity; or its super classes (declaration of 'net.kishonti.testfw.app.MainActivity' appears in /data/app/net.kishonti.testfw.app-1/base.apk)
+```
+
+このメソッドは APIレベル23 (Android6.0) からなのでそのバージョンから有効な記述に修正します。  
+
 ### 修正
 
-まずは結論からですが、古いAndroidバージョンで実行するためにはソースコードに以下の修正が必要でした。
+以上の修正をまとめたパッチです。Android用**公式手順へのプラス分**となります。  
 
 :::stop
   以下のパッチは筆者の環境における一例であり、適用は**自己責任**にてお願いいたします。（ライセンス等の詳細は[記事末尾](#ライセンスおよび免責事項)に記載しています）
@@ -119,50 +181,10 @@ index 8e501d7a..a34fb2a7 100644
          COMMON_OPTS+=" -DOPT_SWIG_JAVA=1 -DLIBRARY_OUTPUT_PATH_ROOT:PATH=${TFW_PACKAGE_DIR}"
 ```
 
-### 修正点詳細
-
-以下修正点を説明していきます。
-
-修正方針も色々あるかと思いますが、今回の前提としてAndroid SDKおよびNDKバージョン、Java側の設定は変更しないで頑張ってみる事にしました。  
-
-以下前回までの設定を再掲します。
-
-  Path                 | Version           | Description                             | Location
-  -------              | -------           | -------                                 | -------
-  build-tools;35.0.0   | 35.0.0            | Android SDK Build-Tools 35              | build-tools/35.0.0
-  cmdline-tools;latest | 16.0              | Android SDK Command-line Tools (latest) | cmdline-tools/latest
-  ndk;28.0.12674087    | 28.0.12674087 rc2 | NDK (Side by side) 28.0.12674087        | ndk/28.0.12674087
-  platform-tools       | 35.0.2            | Android SDK Platform-Tools              | platform-tools
-  platforms;android-35 | 1                 | Android SDK Platform 35                 | platforms/android-35
-
-- platformBuildVersionCode='35'
-- compileSdkVersion='35'
-- minSdkVersion:'21'
-- targetSdkVersion:'35'
-
-これら設定の元で修正案を考えていきます。  
-最初は実行時のエラーの理由が訳わからなかったのですが、整理すると以下の3つの様でした。
-
-#### Androidバージョン 8 → 7 の壁
-
-commons-io が  java.nio に依存していてそれで `NoClassDefFoundError` が実行時に発生しました。  
-そもそものところで java.nio を使っていないバージョンにしてみます。
-[Apache Commons IO](https://mvnrepository.com/artifact/commons-io/commons-io) のDependencies情報あたりからバージョンを 2.6 まで下げればいい様なのでそうしてみます。
-
-#### Androidバージョン 7 → 6 の壁
-
-`cannot locate symbole "__fread_chk"` というエラーが実行時に発生しました。  
-これも何かネイティブ側のライブラリバージョンを下げる方法があればいいと思われます。探すと ANDROID_NATIVE_API_LEVEL という定義が見つかったので、これを 21 としてみます。
-
-#### Androidバージョン 6 → 5 の壁
-
-requestPermissions() で `NoSuchMethodError` が実行時に発生しました。  
-このメソッドは Android6(APLレベル23) からなのでそういう記述に修正します。  
-
 ## ビルド実行
 
-古いAndroid端末での動作する様に `android-arm64-v8a android-armv7a` 両対応のユニバーサルAPKとしてビルドしてみます。  
-前々回の環境変数を設定の後、ビルドスクリプト2種の代わりに以下のスクリプトを実行します。  
+古いAndroid端末でも動作する様に `android-arm64-v8a android-armv7a` 両対応のユニバーサルAPKとしてビルドしてみます。  
+前々回の環境変数を設定の後、**公式手順** ビルドスクリプト2種 **の代わりに以下のスクリプト**を実行します。  
 （環境変数の内、 PLATFORM, CONFIG, APPLICATION_TYPE はこのsh内で再設定されます）
 
 ```bash
@@ -170,7 +192,7 @@ scripts/build-multiarch-apk.sh
 ```
 
 :::info
-前々回のAndroid公式手順には載っていないのですが、GitHub workflow手順ではAndroid用にこのスクリプトでビルドしている様でそこからの拝借です。
+前々回のAndroid用公式手順には載っていないのですが、GitHub workflow手順ではAndroid用にこのスクリプトでビルドしている様でそこからの拝借です。
 :::
 
 デフォルトだと `android-armv7a android-x86 android-arm64-v8a android-x86-64` の4種類分ビルドされます。  

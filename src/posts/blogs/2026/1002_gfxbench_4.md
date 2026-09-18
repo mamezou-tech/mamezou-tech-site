@@ -43,6 +43,8 @@ Tegra K1の SHIELDタブレット で実際にサンプル（UnrealEngine、Unit
 
 スマートフォン/タブレットを見る時はまずは Tegra K1 のスコア位あれば十分と見ていたものでした。Tegra X1を超えようものならもうえらい事です（※個人の感想です）。
 
+![Who is the fastest](/img/blogs/2026/1002_gfxbench_4/Who_is_the_fastest.webp)
+
 今回はGPU違いですがオフスクリーン版の結果なのでそのまま比較出来ます。ただGPUの FLOPS (Floating-point Operations Per Second) も考慮にいれるとまた違った比較が行えます。次回以降に機会があれば触れてみたいと思います。
 
 以下スコア以外の余談です。  

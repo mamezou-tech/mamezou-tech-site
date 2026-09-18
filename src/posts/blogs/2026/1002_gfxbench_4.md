@@ -63,11 +63,10 @@ Androidバージョン5.0から OpenGL ES 3.1 + AEP 対応が始まっていた�
 
 ## ライセンスおよび免責事項
 
-本記事に掲載しているスクリーンショット、検証結果は、BSD 3-Clause Licenseのもとで公開されている [Kishonti-Opensource/gfxbench](https://github.com/Kishonti-Opensource/gfxbench) のソフトウェアおよびアセットを利用・引用したものです。
+本記事に掲載している検証結果は、BSD 3-Clause Licenseのもとで公開されている [Kishonti-Opensource/gfxbench](https://github.com/Kishonti-Opensource/gfxbench) のソフトウェアおよびアセットを利用したものです。
 
 - **Original Copyright:** (c) 2005–2025 Kishonti Ltd.
 - **License:** [BSD 3-Clause License](https://github.com/Kishonti-Opensource/gfxbench)
-- **画像等の権利について:** 記事内で引用しているGFXBenchのベンチマーク実行画面およびUIの著作権は、原著作者であるKishonti Ltd.に帰属します。
 
 **【免責事項】**  
 本記事に掲載している手順、ベンチマークスコア等の測定結果は、特定の検証環境における現状のまま（AS IS）のものであり、その正確性、安全性、再現性を保証するものではありません。  

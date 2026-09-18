@@ -3,6 +3,7 @@ title: オープンソース版GFXBenchをAndroidで動かす（4）オールド
 author: kazuya-iwamoto
 date: 2026-10-02
 tags: [GFXBench, android, gpu]
+image: /img/blogs/2026/1002_gfxbench_4/How_far_can_your_old_android_go.webp
 ---
 
 ## はじめに

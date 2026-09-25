@@ -147,7 +147,8 @@ Dockerの通常のブリッジネットワーク（`-p 3000:8080`）でコンテ
 :::
 
 起動後、ブラウザで `http://localhost:3000` を開きます。  
-※ 初回アクセス時に管理者アカウント（名前・メール・パスワード）の作成画面が表示されます。手元のローカル環境ですので、お好みの情報でサインアップしてください。
+※ 初回アクセス時に管理者アカウント（名前・メール・パスワード）の作成画面が表示されます。手元のローカル環境ですので、お好みの情報でサインアップしてください。  
+※ 本記事の画面キャプチャでは、サインイン後に左下のユーザーアイコン $\rightarrow$ **「設定（Settings）」 $\rightarrow$ 「全般（General）」 $\rightarrow$ 「言語（Language）」** で表示言語を **「日本語」** に設定しています（英語UIのままでも問題なく利用可能です）。
 
 ---
 
@@ -245,13 +246,13 @@ vLLM サーバーが正常に応答しました！
 ClineからOpen WebUIを経由してアクセスするためのAPIキーを発行します。
 
 1. **管理者設定でAPIキーを有効化**:  
-   左下のユーザーアイコンから **「管理者パネル（Admin Panel）」** $\rightarrow$ **「設定（Settings）」** $\rightarrow$ **「システム（System）」**（または「全般」/「認証」）を開き、**「APIキーを有効にする（Enable API Keys）」** がONになっていることを確認します（※OFFの場合はONにして保存します）。
+   左下のユーザーアイコンから **「管理者パネル（Admin Panel）」** $\rightarrow$ **「設定（Settings）」** $\rightarrow$ **「システム（System）」 $\rightarrow$ 「認証（Authentication）」** を開き、**「API キー（API Key）」** がONになっていることを確認します（※OFFの場合はONにして右下の「保存」をクリックします）。
 
    ![Open WEBUI API Key Admin Settings](/img/blogs/2026/0929_vllm_openwebui_cline/OpenWebui-apikey-admin.png)
 
 2. **個人のAPIキーを発行**:  
    左下のユーザーアイコンから **「設定（Settings / プロフィール）」** $\rightarrow$ **「アカウント（Account）」** を開きます。
-3. **「API Keys」** セクションにある **「Create new secret key」**（キー作成アイコン）をクリックします。
+3. **「API キー」** セクションにある **「＋ 新しいシークレットキーを作成」**（またはキー作成アイコン）をクリックします。
 4. 生成されたAPIキー文字列（※`sk-` 形式ではなく英数字の長いトークン文字列が表示されます）をコピーして控えておきます。
 
    ![Open WEBUI API Key](/img/blogs/2026/0929_vllm_openwebui_cline/OpenWebui-apikey-user.png)
@@ -273,10 +274,10 @@ VS Codeの拡張機能マーケットプレイスで **「Cline」** を検索�
 | :--- | :--- | :--- |
 | **API Provider** | **`OpenAI Compatible`** | プルダウンから選択 |
 | **Base URL** | **`http://localhost:3000/api`** | Open WebUIのエンドポイント（末尾の `/api` に注目）<br>※もし Cline からの接続時に 404 Not Found が返る場合は、Base URL を `http://localhost:3000/api/v1` に変更してお試しください。 |
-| **API Key** | 発行したAPIキー文字列 | Step 3で取得したOpen WebUIのキー |
+| **OpenAI Compatible API Key** | 発行したAPIキー文字列 | Step 3で取得したOpen WebUIのキー |
 | **Model ID** | **`Qwen/Qwen2.5-Coder-7B-Instruct`** | vLLMで提供しているモデル名 |
-| **Model Context Window** | **`16384`** | vLLMの `max_model_len`（16k）に合わせる |
-| **Max Output Tokens** | **`4096`** （または `8192`） | 1リクエストあたりの最大出力トークン数 |
+| **Context Window Size** | **`16384`** | vLLMの `max_model_len`（16k）に合わせる |
+| **Max Output Tokens** | **`8192`** （または `4096`） | 1リクエストあたりの最大出力トークン数 |
 
 ![Cline Settings](/img/blogs/2026/0929_vllm_openwebui_cline/Cline-settings.png)
 
@@ -284,7 +285,7 @@ VS Codeの拡張機能マーケットプレイスで **「Cline」** を検索�
 **⚠️ トークン数設定の超重要ポイント**  
 Clineの初期設定では最大出力トークン（`max_tokens`）が `32000` に設定されていることがあります。この値がバックエンド（vLLM）の最大コンテキスト長（`16384`）を超えていると、vLLMから以下のエラーが返されて接続に失敗します：  
 `max_tokens=32000 cannot be greater than max_model_len=16384. Please request fewer output tokens.`  
-必ず **「Model Context Window」を `16384`**、**「Max Output Tokens」を `4096`（または `8192`）** に設定してください（項目が表示されていない場合は、設定画面の「Model Info」や「Advanced Settings」を展開してください）。  
+必ず **「Context Window Size」を `16384`**、**「Max Output Tokens」を `8192`（または `4096`）** に設定してください（項目が表示されていない場合は、設定画面の「MODEL CONFIGURATION」や「Advanced Settings」を展開してください）。  
 ※もしStep 2のコラムを参考にvLLMを32k（32,768）で起動した場合は、それぞれ `32768` と `8192` に設定してください。
 :::
 

@@ -230,11 +230,15 @@ vLLM サーバーが正常に応答しました！
 
 と入力してみましょう。GPUから猛烈なスピードで日本語のストリーミング応答が返ってくるはずです。まずはここで推論基盤の正常性を楽しく確認できます。
 
+![Open WEBUI Chat](/img/blogs/2026/0929_vllm_openwebui_cline/OpenWebui-chat.png)
+
 :::info
 **💡 ブラウザチャット時のワンポイント（組み込みツールの解除）**  
 もしチャット時にモデルが回答する代わりに `{"name": "ask_user", ...}` のようなJSON形式の引数を出力してしまう場合は、モデルに組み込みツールが紐付いています。  
 左下のユーザーアイコンから **「設定（Settings）」** $\rightarrow$ **「モデル（Models）」**（またはワークスペースのモデル管理）を開き、対象モデル（`Qwen/Qwen2.5-Coder-7B-Instruct`）を「編集」で開いて、**組み込みツールにある「ユーザーに質問（Ask User）」のチェックを解除**して保存してください。  
 これで余計なツール呼び出しを行わず、通常のテキストでスムーズに対話できるようになります（※Step 4で接続するCline連携時は、Cline側が独自のツール定義を適切に制御するため影響ありません）。
+
+![Open WEBUI AskUser Settings](/img/blogs/2026/0929_vllm_openwebui_cline/OpenWebui-tool.png)
 :::
 
 #### 2. Cline接続用 APIキーの発行
@@ -242,10 +246,15 @@ ClineからOpen WebUIを経由してアクセスするためのAPIキーを発�
 
 1. **管理者設定でAPIキーを有効化**:  
    左下のユーザーアイコンから **「管理者パネル（Admin Panel）」** $\rightarrow$ **「設定（Settings）」** $\rightarrow$ **「システム（System）」**（または「全般」/「認証」）を開き、**「APIキーを有効にする（Enable API Keys）」** がONになっていることを確認します（※OFFの場合はONにして保存します）。
+
+   ![Open WEBUI API Key Admin Settings](/img/blogs/2026/0929_vllm_openwebui_cline/OpenWebui-apikey-admin.png)
+
 2. **個人のAPIキーを発行**:  
    左下のユーザーアイコンから **「設定（Settings / プロフィール）」** $\rightarrow$ **「アカウント（Account）」** を開きます。
 3. **「API Keys」** セクションにある **「Create new secret key」**（キー作成アイコン）をクリックします。
 4. 生成されたAPIキー文字列（※`sk-` 形式ではなく英数字の長いトークン文字列が表示されます）をコピーして控えておきます。
+
+   ![Open WEBUI API Key](/img/blogs/2026/0929_vllm_openwebui_cline/OpenWebui-apikey-user.png)
 
 ---
 
@@ -269,6 +278,8 @@ VS Codeの拡張機能マーケットプレイスで **「Cline」** を検索�
 | **Model Context Window** | **`16384`** | vLLMの `max_model_len`（16k）に合わせる |
 | **Max Output Tokens** | **`4096`** （または `8192`） | 1リクエストあたりの最大出力トークン数 |
 
+![Cline Settings](/img/blogs/2026/0929_vllm_openwebui_cline/Cline-settings.png)
+
 :::check
 **⚠️ トークン数設定の超重要ポイント**  
 Clineの初期設定では最大出力トークン（`max_tokens`）が `32000` に設定されていることがあります。この値がバックエンド（vLLM）の最大コンテキスト長（`16384`）を超えていると、vLLMから以下のエラーが返されて接続に失敗します：  
@@ -281,14 +292,20 @@ Clineの初期設定では最大出力トークン（`max_tokens`）が `32000` 
 
 #### 3. 動作確認：自律コーディングを実行！
 
-Clineのチャット入力欄に、開発タスクを依頼してみましょう。
+VS Codeで新規の空フォルダを開き、Clineのチャット入力欄に開発タスクを依頼してみましょう。
 
 ```text
-このリポジトリのコード構造を把握し、主要なユーティリティ関数に対する単体テスト（Unit Test）を作成してください。
+空のプロジェクトから、PythonでシンプルなTODO管理CLIツールを作成してください。
+- タスクの追加・一覧表示・完了機能を持たせる
+- Python標準の unittest を使った単体テストコードを作成する
+- ターミナルでテストを実行し、すべて成功することを確認する
 ```
 
-送信すると、Clineが自律的にプロジェクト内のファイルを探索し始めます。  
-ローカル端末からOpen WebUIを経由し、暗号化SSHトンネルを通ってAWS上のGPUで稼働する `Qwen/Qwen2.5-Coder-7B-Instruct` から猛烈なスピードでトークンがストリーミングされ、VS Code上で差分（Diff）が次々と生成されていきます！
+送信すると、Clineが自律的にプロジェクト構成を考え、ファイル作成やコード記述を始めます。  
+ローカル端末からOpen WebUIを経由し、暗号化SSHトンネルを通ってAWS上のGPUで稼働する `Qwen/Qwen2.5-Coder-7B-Instruct` から猛烈なスピードでトークンがストリーミングされ、VS Code上でファイル（`todo.py`, `test_todo.py` など）が次々と作成・編集されていきます！  
+さらにActモードであれば、統合ターミナルでテストコマンドを実行して動作確認まで自動で行ってくれます。
+
+![Cline Demo](/img/blogs/2026/0929_vllm_openwebui_cline/Cline-demo.gif)
 
 ブラウザのOpen WebUI管理画面の利用ログにもリクエストがしっかり記録されているのが確認できます。
 

@@ -32,12 +32,12 @@ GFXBenchというGPUベンチマークソフトを取り上げたシリーズの
 | Kepler GK20A | Tegra K1 (Denver) | OpenGL ES 3.1 NVIDIA 343.00 | 7.1.1 | 63 | 30 |
 | Maxwell GM20B | Tegra X1 | OpenGL ES 3.2 NVIDIA 361.00 | 8.1.0 | 109 | 59 |
 
-上記 Tegra X1 のスコア は Pixel C というタブレットのものです。携帯用のためか低い値となっている様で、確か据え置き用のAnddroid端末の SHIELD だと T-Rex/Manhattan = 120/60 オーダーのスコアだったかと思います。  
+上記 Tegra X1 のスコアは Pixel C というタブレットのものです。携帯用のためか低い値となっているようで、確か据え置き用のAndroid端末の SHIELD だと T-Rex/Manhattan = 120/60 オーダーのスコアだったかと思います。  
 
 この Tegra K1 のスコア T-Rex/Manhattan = 60/30 と Tegra X1 のスコア 同 120/60 のオーダーが長らく私の中で比較する際の基準のスコアとなっていました。  
 
 :::info
-Tegra K1の SHIELDタブレット で実際にサンプル（UnrealEngine、Unity等）を動かしたりゲームをしたりの感触より。覚えやすい値だったというのもあります。  
+Tegra K1の SHIELDタブレット で実際にサンプル（Unreal Engine、Unity等）を動かしたりゲームをしたりの感触より。覚えやすい値だったというのもあります。  
 時代的に仕方ないですが、このあたりのタブレットがメモリ2GBでなく4GB積んでいれば今でも普段使いしていたのに...と惜しく思います。
 :::
 
@@ -45,11 +45,13 @@ Tegra K1の SHIELDタブレット で実際にサンプル（UnrealEngine、Unit
 
 ![Who is the fastest](/img/blogs/2026/1002_gfxbench_4/Who_is_the_fastest.webp)
 
-今回はGPU違いですがオフスクリーン版の結果なのでそのまま比較出来ます。ただGPUの FLOPS (Floating-point Operations Per Second) も考慮にいれるとまた違った比較が行えます。次回以降に機会があれば触れてみたいと思います。
+今回はGPU違いですがオフスクリーン版の結果なのでそのまま比較できます。ただGPUの FLOPS (Floating-point Operations Per Second) も考慮に入れるとまた違った比較が行えます。次回以降に機会があれば触れてみたいと思います。
 
 以下スコア以外の余談です。  
-・その1．ビルド時に CUDA Toolkit が必要だった件ですが、Tegra K1 で無事CUDA情報が表示されていました。Android版でまったく無駄という訳でもなかった様です。例はこれ位かもですが。  
-・その2．今回の古いバージョン5.1.1のAndroid端末でも、Car Chase（OpenGL ES 3.1 + AEP）および Aztec Ruins（OpenGL ES 3.1）までも実行が可能でした。  
+
+1. ビルド時に CUDA Toolkit が必要だった件ですが、Tegra K1 で無事CUDA情報が表示されていました。Android版でまったく無駄というわけでもなかったようです。例はこれ位かもですが。  
+
+2. 今回の古いバージョン5.1.1のAndroid端末でも、Car Chase（OpenGL ES 3.1 + AEP）および Aztec Ruins（OpenGL ES 3.1）までも実行可能でした。  
 Androidバージョン5.0から OpenGL ES 3.1 + AEP 対応が始まっていたので確かに可能ではあるのですが、実際に描画される画、fpsも低く健気に動く姿に目頭が熱くなる思いでした。
 こんな昔からきちんと頑張ってくれていたのだなと...。
 

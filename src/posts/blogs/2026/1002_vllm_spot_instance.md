@@ -1,5 +1,5 @@
 ---
-title: EC2スポットインスタンス×vLLMでGPUコストを最大70%削減する
+title: EC2スポットインスタンス×vLLMでGPUコストを大幅削減する
 author: kazuyuki-shiratani
 date: 2026-10-02
 tags: [AWS, EC2, LLM, vLLM, Cline, コスト最適化]

@@ -42,6 +42,7 @@ import tailwindOptions from "./tailwind.config.js";
 import cssnano from "npm:cssnano@6.0.2";
 import markdownItCodeBlock from "./lume/markdown-it/code_block_plugin.ts";
 import nesting from "npm:postcss-nesting";
+import { serveFile } from "jsr:@std/http@1.0.12/file-server";
 
 const markdown: Partial<MarkdownOptions> = {
   options: {
@@ -115,8 +116,28 @@ site.use(esbuild({
 }));
 
 site.copy("fonts");
-site.copy("img");
 site.copy("IndexNowKey.txt", "62f91e28a3954a4fbc90fd3c76a307e0.txt");
+
+// ローカル開発時(--serve)は大量の画像ファイルを public にコピーせず、
+// src/img を直接配信することでビルド時間を短縮する
+const isLocalDev = Deno.args.includes("--serve");
+if (isLocalDev) {
+  site.ignore("img");
+  site.options.server.middlewares.push(async (request, next) => {
+    const url = new URL(request.url);
+    if (!url.pathname.startsWith("/img/")) {
+      return next(request);
+    }
+
+    const response = await serveFile(
+      request,
+      site.src(decodeURIComponent(url.pathname)),
+    );
+    return response.status === 404 ? next(request) : response;
+  });
+} else {
+  site.copy("img");
+}
 
 site.helper("year", () => `${new Date().getFullYear()}`, { type: "tag" });
 site.helper("currentDate", () => {

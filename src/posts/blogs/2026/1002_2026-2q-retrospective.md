@@ -1,5 +1,5 @@
 ---
-title: 豆蔵デベロッパーサイト 2026年4-6月のサマリー
+title: 豆蔵デベロッパーサイト 2026年7-9月のサマリー
 author: masahiro-kondo
 date: 2026-10-02
 tags: [retrospective]

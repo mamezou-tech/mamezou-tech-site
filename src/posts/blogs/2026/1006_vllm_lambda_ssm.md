@@ -16,18 +16,18 @@ image: true
 
 1. **手元端末での探索オーバーヘッド**:  
    手元のシェルスクリプトから各リージョンのスポット価格や中断頻度を順次問い合わせていたため、起動前のリージョン探索だけで十数秒の待ち時間が発生していた。
-2. **SSH秘密鍵（.pem）の管理コスト**:  
+2. **在庫切れ（キャパシティ不足）時の手動リトライ負荷**:  
+   最安リージョンで一時的なスポット在庫不足（`InsufficientInstanceCapacity`）が発生すると起動が失敗してしまい、別の候補リージョンを手動で探して再実行する手間が生じていた。
+3. **SSH秘密鍵（.pem）の管理コスト**:  
    各リージョンでEC2を立ち上げるためにキーペアを作成し、ローカルの `~/.ssh/` に秘密鍵を安全に保持・管理し続ける必要があった（誤って紛失したりパーミッションがずれると接続不能になる）。
-3. **ポート22（SSH）の外部公開リスク**:  
+4. **ポート22（SSH）の外部公開リスク**:  
    SSHトンネルを確立するために、各リージョンでセキュリティグループのインバウンドポート22を外部（`0.0.0.0/0` または自宅IP）に開放せざるを得ず、ブルートフォース攻撃やセキュリティポリシー上の懸念が残っていた。
-4. **マルチリージョン展開の基盤管理コスト**:  
+5. **マルチリージョン展開の基盤管理コスト**:  
    S3バケット、ECRリポジトリ、各リージョンのセキュリティグループやIAM権限を手動や場当たり的なスクリプトで維持するのが煩雑になっていた。
 
-「重い探索処理やスポット起動ロジックは、クラウド側（サーバーレス）にすべて集約できないだろうか？」  
-「そして、ポート開放やSSHキーすら一切使わずに、セキュアに手元へ推論ポートをトンネル直結できないだろうか？」  
-「さらに、これらの基盤をすべてTerraformで一発宣言・一発クリーンアップできないだろうか？」
+これらの課題を解消するため、本記事では **AWS Lambda**、**AWS Systems Manager (SSM) セッションマネージャー**、**Terraform** を組み合わせ、ポート開放やSSH鍵の管理を不要にした「サーバーレスGPU起動ブローカー」を構築します。
 
-そこで今回は、**「AWS Lambda」** ＋ **「AWS Systems Manager (SSM) セッションマネージャー」** ＋ **「Terraform」** を組み合わせ、**ポート開放ゼロ・SSH鍵管理不要・Terraform連携の「サーバーレスGPU起動ブローカー」** を構築しました。
+手元の端末から探索や起動のロジックを切り離してLambdaへ集約することで、在庫切れ時の自動フォールバックや高速な並列探索を実現しつつ、SSMポートフォワーディングによってインバウンドポートを開放しない安全な推論環境を整えます。また、マルチリージョンに必要な基盤リソースはすべてTerraformでコード化し、環境の再現性とクリーンアップを容易にしています。
 
 :::info
 **📚 過去シリーズの記事はこちら**  
@@ -126,6 +126,7 @@ vLLM GPU Spot Broker Lambda
 import json
 import logging
 import urllib.request
+import os
 import concurrent.futures
 import boto3
 from botocore.config import Config
@@ -133,11 +134,14 @@ from botocore.config import Config
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-# 候補リージョンとインスタンスタイプ
-CANDIDATE_REGIONS = ["ap-northeast-1", "eu-central-1", "us-east-2", "us-east-1", "us-west-2"]
-INSTANCE_TYPE = "g6.xlarge"
-IAM_ROLE_NAME = "EC2-S3-FullAccess-Profile"  # SSMCore + S3 + ECR 権限を持つインスタンスプロファイル
-TAG_SERVER_NAME = "vllm-spot-server"
+# 候補リージョンとインスタンスタイプ (環境変数があれば優先)
+env_regions = os.environ.get("TARGET_REGIONS")
+CANDIDATE_REGIONS = [r.strip() for r in env_regions.split(",") if r.strip()] if env_regions else ["ap-northeast-1", "eu-central-1", "us-east-2", "us-east-1", "us-west-2"]
+INSTANCE_TYPE = os.environ.get("INSTANCE_TYPE", "g6.xlarge")
+IAM_ROLE_NAME = os.environ.get("INSTANCE_PROFILE_NAME", "VllmServerSSMProfile")  # SSMCore + S3 + ECR 権限を持つインスタンスプロファイル
+TAG_SERVER_NAME = os.environ.get("TAG_SERVER_NAME", "vllm-spot-server")
+S3_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME", "my-vllm-models-hackathon-2026-{account_id}-{region}-an")
+ECR_REPOSITORY_NAME = os.environ.get("ECR_REPOSITORY_NAME", "vllm-openai")
 
 # リージョン別 AMI ID キャッシュ (Ubuntu 22.04 Deep Learning AMI)
 AMI_MAPPING = {
@@ -401,8 +405,8 @@ def launch_spot_instance(best_region_info, account_id):
 
     sg_id = get_or_create_ssm_security_group(ec2, region)
 
-    s3_bucket = f"my-vllm-models-hackathon-2026-{account_id}-{region}-an"
-    docker_image = f"{account_id}.dkr.ecr.{region}.amazonaws.com/vllm-openai:latest"
+    s3_bucket = S3_BUCKET_NAME.replace("{account_id}", account_id).replace("{region}", region)
+    docker_image = f"{account_id}.dkr.ecr.{region}.amazonaws.com/{ECR_REPOSITORY_NAME}:latest"
 
     userdata_script = USERDATA_TEMPLATE.replace("__AWS_REGION__", region)
     userdata_script = userdata_script.replace("__S3_BUCKET_NAME__", s3_bucket)
@@ -565,13 +569,19 @@ def lambda_handler(event, context):
 「EC2スポットの起動・破棄」までをTerraform（`terraform apply / destroy`）で管理しようとすると、実行ごとの動的なリージョン選定が難しくなり、状態ファイル（`tfstate`）のロックや同期で毎回1分以上のオーバーヘッドが発生します。  
 そのため、**「ブローカー基盤までをTerraformで作り、GPUの生成・破棄はブローカー（Lambda）に任せる」** という設計が最も軽快で堅牢です。
 
-### 📦 漏れがちな最重要リソース：Amazon ECRとクロスリージョンレプリケーション
+### 📦 コンテナイメージのマルチリージョン配置（ECRクロスリージョンレプリケーション）
 
-第1回から一貫して採用している通り、vLLMの巨大なコンテナイメージ（約13GB）は **Amazon ECR** に永続化し、起動時にEC2と同一リージョンから超高速・転送料無料でPullします。
+第1回〜第3回では、vLLMのコンテナイメージ（約13GB）を東京リージョンの **Amazon ECR** に配置し、EC2の起動時に同一リージョン内から高速・転送料無料でPullしていました。
 
-しかし、マルチリージョンでスポットを調達する場合、**「東京だけでなく、バージニア、オレゴン、オハイオ、フランクフルト（eu-central-1）のECRにもイメージを用意しておく必要がある」** という課題が発生します。手動で各リージョンに `docker push` を繰り返すのは運用負荷が高く、非効率です。
+本連載のアーキテクチャをマルチリージョンへ拡張するにあたり、調達候補となる各リージョン（バージニア、オレゴン、オハイオ、フランクフルトなど）でも、同様に**同一リージョン内のECRからイメージを取得できる状態**を整えておく必要があります。仮に東京のECRから他リージョンのEC2へ都度Pullしてしまうと、リージョン間データ転送料金が毎回発生するうえ、コンテナ起動時間も大幅に増大してしまうためです。
 
-そこで、Terraformで **`aws_ecr_replication_configuration`** を宣言します：
+とはいえ、イメージを更新するたびに各リージョンのECRエンドポイントへ手動で `docker push` を繰り返すのは運用負荷が高く、非効率です。
+
+そこで、Amazon ECRがネイティブで備えている **クロスリージョンレプリケーション（Cross-Region Replication）** を採用します。Terraformでこのレプリケーション設定（`aws_ecr_replication_configuration`）を宣言しておくことで、開発端末からは東京のECRに1回Pushするだけで、AWSバックボーン経由で全候補リージョンへ自動的に非同期複製されます。
+
+以下は、東京リージョンでのECRリポジトリ作成、旧世代イメージの自動削除ポリシー、および他4リージョンへの自動レプリケーションを定義したTerraformコードです：
+
+<details><summary>ecr.tf（クリックで展開）</summary>
 
 ```hcl
 # terraform/ecr.tf
@@ -612,13 +622,24 @@ resource "aws_ecr_replication_configuration" "vllm_replication" {
 }
 ```
 
-これにより、開発端末からは **「東京のECRに1回だけPushする」** だけで、AWSバックボーン経由で全対象リージョンへ自動同期されます。
+</details>
 
-:::column:💡 ECRとS3の違い：モデルデータ（S3）も自動複製される？
-**「ECRが自動複製されるなら、S3のモデルデータもTerraformで自動同期される？」** と疑問に思うかもしれませんが、結論として **S3バケット内のモデルデータは初回に1回だけ手動（またはスクリプト）で同期しておく必要があります。**
+このように設定しておくことで、開発フローとしては「東京のECRに1度Pushする」という従来の運用のまま、マルチリージョンの全候補地へイメージが自動同期され、どのリージョンでスポットが起動しても同一リージョン内からの高速Pullが担保されます。
 
-* **ECR（コンテナイメージ）**: `aws_ecr_replication_configuration` というネイティブ機能があるため、東京に1度 `docker push` するだけでAWS側が全候補リージョンへ自動複製します。
-* **S3（モデル重みデータ）**: S3 のクロスリージョンレプリケーション（CRR）は、バケットのバージョニング有効化や双方向IAMロールの設定が必要でIaCが過度に肥大化するため、Terraform側ではインフラの器（バケット作成やIAM権限）の準備に留めています。
+:::column:💡 ECRとS3の違い：モデルデータ（S3）も自動レプリケーションできる？
+**「ECRが自動複製されるなら、S3のモデルデータもTerraformで自動レプリケーション（S3 CRR）できないの？」** と疑問に思う方も多いと思います。
+
+結論から言うと、**技術的には Amazon S3 Cross-Region Replication（S3 CRR）を用いて自動同期することが可能**です。しかし、本構成ではあえてS3 CRRを採用せず、**「初回にスクリプトで1回同期する」方針**をとっています。その理由は、大容量モデルデータを扱うスポットGPU環境特有の落とし穴とコストリスクにあります：
+
+1. **バケットのバージョニング必須に伴うストレージ課金リスク**  
+   S3 CRR を設定するには、送信元・同期先の全バケットで「バージョニング（Versioning）」の有効化が必須となります。15GB〜数十GB に及ぶモデル重みデータでバージョニングが有効になっていると、ファイルの差し替えや削除を行った際に過去世代が裏に残り続け、気づかないうちに **15GB × 世代数 × 5リージョン分** のストレージ保管料が発生し続けるリスクがあります（旧世代を自動削除するライフサイクルルールの追加設定が必要になります）。
+2. **既存オブジェクトは自動同期されない制約**  
+   S3 CRR は「レプリケーション設定完了**後**に新規 Put されたオブジェクト」のみを自動転送する仕様です。すでに東京バケットにアップロードされている既存のモデルデータは自動同期されないため、別途 S3 Batch Replication ジョブを発行するか、結局一度手動でコピーし直す必要があります。
+3. **IaC（Terraform）コードの過度な肥大化**  
+   S3サービスがオブジェクトを読み取って別リージョンに書き込むための専用IAMロールや、1対4の `aws_s3_bucket_replication_configuration` をTerraformで書くと、コード量が数十行以上肥大化します。
+
+頻繁にプッシュされるコンテナイメージ（ECR）と異なり、LLMのモデル重みデータは「一度配置したら滅多に変更されない静的アセット」です。  
+そのため、予期せぬ課金リスクやIaCの複雑化を避け、**AWSバックボーン経由で数分で終わる同期スクリプト（`aws s3 sync`）を初回に1度だけ叩く運用**が、最もシンプルかつ安全です。
 
 EC2の起動スクリプト（UserData）は **同一リージョンのS3バケットから高速ダウンロード（`aws s3 sync`）する前提** で組まれているため、各リージョンのバケットが空のままだと起動時にモデル同期エラーとなります。  
 `terraform apply` でバケットを作成した後は、すでにモデルデータがある東京バケットから各リージョンへ1度だけ直接同期を実行しておきましょう：
@@ -643,6 +664,10 @@ done
 
 続いて、対象リージョンすべてに「インバウンド0件（受信完全拒絶）」のセキュリティグループと、EC2・Lambdaに必要なIAM権限を定義します。
 
+SSM接続を利用するため、EC2側のインバウンドポートを開放する必要は一切ありません。以下のようにインバウンドルールを一切定義しない（全拒絶）セキュリティグループを各候補リージョンに作成します：
+
+<details><summary>security_groups.tf（クリックで展開）</summary>
+
 ```hcl
 # terraform/security_groups.tf
 # 東京リージョン用
@@ -660,6 +685,12 @@ resource "aws_security_group" "sg_ap_northeast_1" {
 }
 # （他リージョン us-east-1, us-east-2, us-west-2, eu-central-1 にもプロバイダエイリアス経由で作成）
 ```
+
+</details>
+
+GPUインスタンス（EC2）側には、SSM経由のセッション接続に必要なマネージドポリシー（`AmazonSSMManagedInstanceCore`）に加え、同一リージョンのECRやS3からコンテナイメージ・モデルデータを読み取る最小権限を付与します：
+
+<details><summary>iam_ec2.tf（クリックで展開）</summary>
 
 ```hcl
 # terraform/iam_ec2.tf
@@ -691,6 +722,12 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   role = aws_iam_role.ec2_role.name
 }
 ```
+
+</details>
+
+起動ブローカーとなるLambda関数には、マルチリージョンのスポット料金や稼働状況の照会、EC2スポットインスタンスの起動・破棄、およびEC2インスタンスプロファイルのPassRole権限を付与します：
+
+<details><summary>iam_lambda.tf（クリックで展開）</summary>
 
 ```hcl
 # terraform/iam_lambda.tf
@@ -734,9 +771,13 @@ resource "aws_iam_role_policy" "lambda_ec2_policy" {
 }
 ```
 
+</details>
+
 ### ⚡ Lambda関数の自動パッケージングとデプロイ
 
 Terraformの `archive_file` データソースを活用することで、Pythonコード（`handler.py`）のzip圧縮から関数の作成・更新までを完全自動化します。
+
+<details><summary>lambda.tf（クリックで展開）</summary>
 
 ```hcl
 # terraform/lambda.tf
@@ -767,6 +808,8 @@ resource "aws_lambda_function" "broker" {
 }
 ```
 
+</details>
+
 ### 🚀 Terraformの実行
 
 作業ディレクトリで以下を実行するだけで、数分で全基盤が整います：
@@ -781,6 +824,8 @@ $ terraform apply -auto-approve
 
 :::column:💡 シェルスクリプトで手早く試したい場合（01_deploy_lambda.sh）
 Terraformを導入していない環境向けに、AWS CLIだけでIAM作成・Lambdaデプロイを完結させるスクリプトも用意しています：
+
+<details><summary>01_deploy_lambda.sh（クリックで展開）</summary>
 
 ```bash
 #!/bin/bash
@@ -804,7 +849,8 @@ TRUST_POLICY='{
       "Action": "sts:AssumeRole"
     }
   ]
-}'
+}
+'
 
 if ! aws iam get-role --role-name "${ROLE_NAME}" >/dev/null 2>&1; then
     aws iam create-role --role-name "${ROLE_NAME}" --assume-role-policy-document "${TRUST_POLICY}" >/dev/null
@@ -853,6 +899,8 @@ fi
 rm -f "${TMP_ZIP}"
 echo "🎉 Lambda デプロイ完了: ${FUNCTION_NAME} (${REGION})"
 ```
+
+</details>
 :::
 
 ---
@@ -863,6 +911,8 @@ echo "🎉 Lambda デプロイ完了: ${FUNCTION_NAME} (${REGION})"
 > 手元のクライアントでは、`aws lambda invoke` でLambdaを呼び出し、返ってきたインスタンスIDに対して `aws ssm start-session` でポートフォワーディングを張るだけです。数十行の極小スクリプトで完結します。
 
 ### 🚀 起動＆SSMトンネル直結スクリプト（`02_start_vllm_ssm.sh`）
+
+<details><summary>02_start_vllm_ssm.sh（クリックで展開）</summary>
 
 ```bash
 #!/bin/bash
@@ -941,18 +991,28 @@ fi
 
 echo "=== 4. AWS Systems Manager (SSM) ポートフォワーディング開始 ==="
 echo "※インバウンドポート開放ゼロ＆鍵管理不要のセキュアトンネルです"
+echo "ローカルポート 8000 -> EC2 ポート 8000"
+
+TUNNEL_LOG="${SCRIPT_DIR}/.current_tunnel.log"
 nohup aws ssm start-session \
     --region "${REGION}" \
     --target "${INSTANCE_ID}" \
     --document-name AWS-StartPortForwardingSession \
     --parameters '{"portNumber":["8000"],"localPortNumber":["8000"]}' \
-    > /dev/null 2>&1 &
+    > "${TUNNEL_LOG}" 2>&1 &
 
-echo $! > "${TUNNEL_PID_FILE}"
-echo "SSMトンネル確立完了 (PID: $(cat "${TUNNEL_PID_FILE}"))"
+TUNNEL_PID=$!
+echo "${TUNNEL_PID}" > "${TUNNEL_PID_FILE}"
+echo "SSMトンネル確立完了 (PID: ${TUNNEL_PID})"
 
 echo "=== 5. vLLMサーバーの応答待機中 (ポート 8000)... ==="
 while ! curl -s -f "http://127.0.0.1:8000/health" >/dev/null 2>&1; do
+    if ! kill -0 "${TUNNEL_PID}" 2>/dev/null; then
+        echo ""
+        echo "エラー: SSMトンネルプロセスが異常終了しました。ログ (${TUNNEL_LOG}):"
+        cat "${TUNNEL_LOG}" 2>/dev/null || true
+        exit 1
+    fi
     echo -n "."
     sleep 5
 done
@@ -964,9 +1024,13 @@ echo " 接続先: http://localhost:8000/v1 (Open WebUIから即直結可能)"
 echo "=========================================================="
 ```
 
+</details>
+
 ### 🛑 終了・破棄（Terminate）スクリプト（`03_stop_vllm.sh`）
 
 作業が終わったら、Lambdaへ `action: "terminate"` を投げて手元のSSMトンネルを切断するだけです。
+
+<details><summary>03_stop_vllm.sh（クリックで展開）</summary>
 
 ```bash
 #!/bin/bash
@@ -995,6 +1059,8 @@ COUNT=$(jq -r '.count // 0' "${TMP_RES}")
 echo "🛑 稼働中のGPUスポットインスタンス ${COUNT} 台を完全破棄しました。"
 rm -f "${TMP_RES}"
 ```
+
+</details>
 
 ---
 
@@ -1123,6 +1189,21 @@ $ ./03_stop_vllm.sh
 * **コスト監視（AWS Budgets）**: スポットの消し忘れ防止のため、タグ単位（`Project = vllm-on-demand`）で月額予算アラートを設定しておく。
 * **シークレット管理**: Gatedモデル（Llama等）取得用のHugging Faceトークンなどは、コードに直書きせずSSM Parameter Store等から実行時に注入する。
 * **ブローカーの冗長化**: 必要に応じてLambdaを別リージョン（大阪やオハイオ等）にもスタンバイ配置し、フェイルオーバーできるようにしておく。
+:::
+
+:::column:💡 発展：他ワークロードへの応用パターン
+本記事ではvLLM（GPU推論）を題材としましたが、「Lambdaによるスポット探索・起動・自動フォールバック」と「SSMポートフォワーディングによるインバウンド閉塞アクセス」を組み合わせた構成は、一時的に高スペックなマシンを必要とする他のワークロードにも応用可能です：
+
+1. **大規模コンパイル・ビルド環境**:  
+   手元端末の負荷を軽減するため、多数のvCPUを持つコンピュート最適化インスタンス（例: `c6i` 系列）を必要な時間だけ立ち上げ、ビルド完了後に自動終了させる。
+2. **モデルのファインチューニングやバッチ学習**:  
+   学習時のみ複数GPUインスタンスをスポット起動し、S3からデータセットを取得して学習を実行、生成された重みをS3へ保存した後にインスタンスを破棄する。
+3. **メモリ集約型のデータ処理**:  
+   ローカル環境ではメモリ不足になりやすい大規模データフレームの集計・分析時のみ、大容量メモリを搭載したインスタンス（例: `r6i` 系列）を一時的に利用する。
+4. **セキュアな一時的開発環境（リモートDevbox）**:  
+   インバウンドポートを開放せずにSSM経由で接続できるため、外部へのポート公開が制限されている環境でも、手元のVS Code等からセキュアに一時的な作業環境として利用できる。
+
+「必要なタイミングだけクラウド上の適切なリソースを立ち上げ、完了後は確実に終了させる」というエフェメラルな運用は、コスト効率とセキュリティを両立させるアプローチとして幅広く活用できます。
 :::
 
 ---

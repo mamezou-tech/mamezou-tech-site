@@ -1,5 +1,5 @@
 ---
-title: EC2スポット×vLLMをSSMポートフォワーディングでセキュア化！インバウンド全遮断（0インバウンド）で繋ぐ
+title: EC2スポット×vLLMをSSMポートフォワーディングでセキュア化！ポート開放ゼロ・SSH鍵不要で繋ぐ
 author: kazuyuki-shiratani
 date: 2026-10-06
 tags: [AWS, EC2, SSM, vLLM, セキュリティ, Cline]
@@ -19,7 +19,7 @@ image: true
 
 そこで今回は、AWSのマネージドサービスである **「AWS Systems Manager (SSM) Session Manager」のポートフォワーディング機能** を導入します。
 
-EC2セキュリティグループの**インバウンドルールを完全に空（0インバウンド）**にしたまま、ローカルPCのポート8000とEC2上のvLLM（ポート8000）を安全にトンネリングし、SSH秘密鍵の管理を完全に撤廃する手法を詳しく解説します。
+EC2セキュリティグループの **インバウンドルールを完全に空（ポート開放ゼロ）** にしたまま、ローカルPCのポート8000とEC2上のvLLM（ポート8000）を安全にトンネリングし、SSH秘密鍵の管理を完全に撤廃する手法を詳しく解説します。
 
 :::info
 **📚 本シリーズの過去記事はこちら**
@@ -33,9 +33,9 @@ EC2セキュリティグループの**インバウンドルールを完全に空
 ## なぜSSHからSSMポートフォワーディングへ移行するのか？
 
 > **📌 このセクションの要点**  
-> SSMポートフォワーディングを採用することで、「インバウンド全拒否（0インバウンド）」と「SSH秘密鍵の完全撤廃」を同時に実現できます。接続の認可はAWS IAMで一元管理され、CloudTrailによる監査ログも自動で残ります。
+> SSMポートフォワーディングを採用することで、「インバウンド全閉塞（ポート開放ゼロ）」と「SSH秘密鍵の完全撤廃」を同時に実現できます。接続の認可はAWS IAMで一元管理され、CloudTrailによる監査ログも自動で残ります。
 
-### 1. 0インバウンド（インバウンドルール一切不要）
+### 1. ポート開放ゼロ（インバウンド許可一切不要）
 
 従来のSSH接続では、EC2のセキュリティグループでインバウンドポート22を許可する必要がありました。
 
@@ -47,7 +47,7 @@ flowchart LR
         direction TB
         Cline["VS Code (Cline)"]
         CLI["AWS CLI (Session Manager Plugin)<br>localhost:8000"]
-        Cline -->|http://localhost:8000| CLI
+        Cline -->|"http://localhost:8000"| CLI
     end
 
     subgraph AWS ["AWS バックボーン"]
@@ -62,11 +62,11 @@ flowchart LR
         Agent -->|localhost:8000| VLLM
     end
 
-    CLI ===|HTTPS / 443 (IAM認証)| SSMEndpoint
-    Agent ===|HTTPS / 443 (アウトバウンド確立)| SSMEndpoint
+    CLI ===|"HTTPS / 443 (IAM認証)"| SSMEndpoint
+    Agent ===|"HTTPS / 443 (アウトバウンド確立)"| SSMEndpoint
 ```
 
-これにより、EC2セキュリティグループのインバウンドルールは**1つも存在しない（インバウンド0件）**状態にできます。インターネット側からのポートスキャンやブルートフォース攻撃を物理的に遮断できるため、極めて堅牢なセキュリティ境界が完成します。
+これにより、EC2セキュリティグループのインバウンドルールは**1つも存在しない（インバウンド0件）**状態にできます。インターネット側からのポートスキャンやブルートフォース攻撃をネットワーク的に遮断し、インバウンドの攻撃面（アタックサーフェス）を最小化できます。
 
 ### 2. SSH秘密鍵（`.pem`）の完全撤廃
 
@@ -79,9 +79,9 @@ SSMポートフォワーディングを利用する場合、認証・認可は�
 
 | 項目 | 従来のSSHトンネル (第3回) | SSMポートフォワーディング (今回) | メリット |
 | :--- | :--- | :--- | :--- |
-| **インバウンドポート** | ポート 22 を開放必須 | **完全閉塞（0インバウンド）** | インターネットからの侵入経路が皆無 |
+| **インバウンドポート** | ポート 22 を開放必須 | **完全閉塞（ポート開放ゼロ）** | インターネットからのインバウンド直接侵入経路を排除 |
 | **接続元IP制限** | 自宅/オフィスのIP変更時にSG修正が必要 | **不要**（IAM認証で保護） | リモートワークでもIP変更作業がゼロに |
-| **鍵管理** | リージョンごとの `.pem` 秘密鍵の保管・管理が必要 | **不要（鍵レス）** | 秘密鍵の漏洩・紛失リスクが完全消滅 |
+| **鍵管理** | リージョンごとの `.pem` 秘密鍵の保管・管理が必要 | **不要（鍵レス）** | 秘密鍵自体の保管・ローテーション管理が不要に |
 | **監査ログ** | SSH接続ログをサーバー内に収集する設定が必要 | **CloudTrail / CloudWatch** に自動記録 | いつ誰がセッションを開始したか証跡が残る |
 | **マルチリージョン展開** | リージョンごとにKeyName作成が必要 | **全リージョン共通で追加設定不要** | スクリプトの可搬性と自動化が容易 |
 
@@ -125,9 +125,11 @@ session-manager-plugin
 SSM経由での接続を実現するために、各リージョンに以下の2つのリソースを準備します：
 
 1. **IAMインスタンスプロファイル**: EC2がSSMエージェントを通じてAWS SSMサービスと通信するためのIAMロール（`AmazonSSMManagedInstanceCore` ポリシーを含む）。
-2. **0インバウンド・セキュリティグループ**: インバウンドルールが0件で、アウトバウンドのみ許可されたセキュリティグループ（`vllm-ssm-isolated-sg`）。
+2. **インバウンド全閉塞セキュリティグループ**: インバウンドルールが0件で、アウトバウンドのみ許可されたセキュリティグループ（`vllm-ssm-isolated-sg`）。
 
 これらを一括作成するセットアップスクリプトを用意しました。
+
+<details><summary>setup_ssm_assets.sh（クリックで展開）</summary>
 
 ```bash
 #!/bin/bash
@@ -135,13 +137,13 @@ set -euo pipefail
 
 # ==============================================================================
 # setup_ssm_assets.sh
-# SSMポートフォワーディング用のIAMロールおよび0インバウンドSGを各リージョンに作成する
+# SSMポートフォワーディング用のIAMロールおよびインバウンド全閉塞SGを各リージョンに作成する
 # ==============================================================================
 
 ROLE_NAME="vllm-ssm-instance-role"
 PROFILE_NAME="vllm-ssm-instance-profile"
 SG_NAME="vllm-ssm-isolated-sg"
-REGIONS=("ap-northeast-1" "us-west-2" "us-east-1" "eu-central-1")
+REGIONS=("ap-northeast-1" "us-west-2" "us-east-1" "us-east-2" "eu-central-1")
 
 echo "=== 1. IAMロール & インスタンスプロファイルの作成 ==="
 
@@ -184,7 +186,7 @@ else
     echo "インスタンスプロファイル ${PROFILE_NAME} は既に存在します。"
 fi
 
-echo "=== 2. 各リージョンでの 0インバウンド セキュリティグループ作成 ==="
+echo "=== 2. 各リージョンでの インバウンド全閉塞セキュリティグループ作成 ==="
 for REGION in "${REGIONS[@]}"; do
     echo "リージョン [${REGION}] を確認中..."
     VPC_ID=$(aws ec2 describe-vpcs --region "${REGION}" --filters "Name=is-default,Values=true" --query "Vpcs[0].VpcId" --output text)
@@ -200,7 +202,7 @@ for REGION in "${REGIONS[@]}"; do
             --vpc-id "${VPC_ID}" \
             --query "GroupId" --output text)
         
-        # デフォルトで全アウトバウンドは許可されるため、インバウンドルールは何も追加しない（0インバウンド）
+        # デフォルトで全アウトバウンドは許可されるため、インバウンドルールは何も追加しない（ポート開放ゼロ）
         echo "  作成完了: ${SG_ID} (インバウンドルール: 0件)"
     else
         echo "  既に存在します: ${EXISTING_SG}"
@@ -209,6 +211,8 @@ done
 
 echo "事前準備が完了しました！"
 ```
+
+</details>
 
 このスクリプトを実行すると、各リージョンにインバウンドルールが1つもないセキュリティグループ `vllm-ssm-isolated-sg` と、SSM通信が許可されたインスタンスプロファイル `vllm-ssm-instance-profile` が作成されます。
 
@@ -222,7 +226,7 @@ echo "事前準備が完了しました！"
 
 1. **SSHキーの指定を削除**:
    - `aws ec2 run-instances` に渡していた `--key-name` パラメータを完全に削除します。
-2. **IAMインスタンスプロファイルと0インバウンドSGを指定**:
+2. **IAMインスタンスプロファイルとインバウンド全閉塞SGを指定**:
    - `--iam-instance-profile Name=vllm-ssm-instance-profile` を追加。
    - `--security-group-ids` に `vllm-ssm-isolated-sg` を指定。
 3. **SSMエージェントのオンライン待機**:
@@ -257,7 +261,7 @@ INSTANCE_STATE_FILE="${SCRIPT_DIR}/.current_instance_id"
 TUNNEL_PID_FILE="${SCRIPT_DIR}/.current_tunnel_pid"
 REGION_STATE_FILE="${SCRIPT_DIR}/.current_region"
 
-CANDIDATE_REGIONS=("ap-northeast-1" "us-west-2" "us-east-1" "eu-central-1")
+CANDIDATE_REGIONS=("ap-northeast-1" "us-west-2" "us-east-1" "us-east-2" "eu-central-1")
 CANDIDATE_INSTANCE_TYPES=("g6.xlarge")
 IAM_PROFILE_NAME="vllm-ssm-instance-profile"
 SG_NAME="vllm-ssm-isolated-sg"
@@ -356,7 +360,7 @@ INSTANCE_ID=""
 for REGION in "${SORTED_REGIONS[@]}"; do
     echo "リージョン [${REGION}] でスポット起動を試行中..."
     
-    # 0インバウンドSGのID取得
+    # インバウンド全閉塞SGのID取得
     SG_ID=$(aws ec2 describe-security-groups --region "${REGION}" --filters "Name=group-name,Values=${SG_NAME}" --query "SecurityGroups[0].GroupId" --output text 2>/dev/null || true)
     if [ -z "${SG_ID}" ] || [ "${SG_ID}" = "None" ]; then
         echo "  警告: ${REGION} に ${SG_NAME} が見つかりません。スキップします。"
@@ -479,7 +483,7 @@ if [ "${SERVER_READY}" != "true" ]; then
 fi
 
 # --- 5. 既存トンネルの整理と新規SSMポートフォワーディング確立 ---
-echo "=== 5. SSMポートフォワーディングの確立 (0インバウンドトンネル) ==="
+echo "=== 5. SSMポートフォワーディングの確立 (ポート開放不要トンネル) ==="
 TUNNEL_LOG="${SCRIPT_DIR}/.current_tunnel.log"
 
 if [ -f "${TUNNEL_PID_FILE}" ]; then
@@ -525,7 +529,7 @@ if [ "${LOCAL_OK}" != "true" ]; then
 fi
 
 echo "=========================================================="
-echo " 0インバウンド SSM環境の起動が完了しました！"
+echo " ポート開放ゼロ SSM環境の起動が完了しました！"
 echo " EC2 Instance ID : ${INSTANCE_ID} (Spot, Region: ${SELECTED_REGION})"
 echo " セキュリティ      : インバウンドルール 0件（完全閉塞）"
 echo " トンネル接続      : localhost:8000 -> EC2:8000 (SSM暗号化)"
@@ -564,7 +568,7 @@ $ ./01_start_vllm_ssm.sh
 EC2インスタンス内部のSSM Agentが接続されるのを待機中...
 ..... SSM Agent が Online になりました！ (5回目の試行)
 
-=== 4. SSMポートフォワーディングの確立 (0インバウンドトンネル) ===
+=== 4. SSMポートフォワーディングの確立 (ポート開放不要トンネル) ===
 SSMポートフォワーディングを開始しました (PID: 41820)
 
 === 5. vLLM サーバーの起動待機 (http://localhost:8000/health) ===
@@ -572,7 +576,7 @@ UserDataによるS3モデルダウンロードとvLLM起動を待機していま
 ................................ vLLM サーバーが正常に応答しました！
 
 ==========================================================
- 0インバウンド SSM環境の起動が完了しました！
+ ポート開放ゼロ SSM環境の起動が完了しました！
  EC2 Instance ID : i-0abc12345678def01 (Spot, Region: us-west-2)
  セキュリティ      : インバウンドルール 0件（完全閉塞）
  トンネル接続      : localhost:8000 -> EC2:8000 (SSM暗号化)
@@ -584,7 +588,7 @@ UserDataによるS3モデルダウンロードとvLLM起動を待機していま
 ==========================================================
 ```
 
-### 2. 0インバウンドの確認
+### 2. インバウンドルール0件の確認
 
 AWSマネジメントコンソールやAWS CLIで対象インスタンスのセキュリティグループを確認してみます。
 
@@ -605,7 +609,7 @@ $ curl -s http://localhost:8000/v1/models | jq .data[0].id
 "Qwen/Qwen2.5-Coder-14B-Instruct-AWQ"
 ```
 
-この「外部からは鉄壁の閉塞状態なのに、手元からは透過的に直結している」体験は、一度味わうと従来のSSHトンネルには戻れなくなるほどの快適さと安心感があります。
+外部に対するインバウンドポートを一切開けずに手元から透過的に直結できる体験は、従来のSSH運用と比べても管理負荷とセキュリティの両面で大きなメリットがあります。
 
 ---
 
@@ -658,9 +662,9 @@ fi
 
 今回は、第3回で構築した「マルチリージョン・スポットvLLM環境」の通信レイヤーを根本から見直し、**AWS Systems Manager Session Managerによるポートフォワーディング**へと刷新しました。
 
-* **0インバウンド化の達成**: セキュリティグループのインバウンド許可を完全に撤廃し、不正アクセスやポートスキャンの脅威を物理的にシャットアウト。
+* **ポート開放ゼロ（インバウンド全閉塞）の達成**: セキュリティグループのインバウンド許可を完全に撤廃し、不特定多数からのポートスキャンや直接攻撃のリスクを遮断。
 * **SSH鍵管理の完全撤廃**: リージョンごとの鍵ペア作成や `.pem` ファイルの管理・配布・紛失リスクから完全に解放。
-* **IAMによる認可と監査**: AWS認証情報に基づくアクセス制御とCloudTrailによるセッション開始ログの取得により、エンタープライズでも通用する監査体制を確立。
+* **IAMによる認可と監査**: AWS認証情報に基づくアクセス制御とCloudTrailによるセッション開始ログの取得により、企業ユースでも求められるアクセス統制とセッション監査ログの取得に対応。
 * **使い勝手は変わらず快適**: ローカルPC上ではこれまで通り `localhost:8000` にアクセスするだけで、Open WebUIやClineからの透過的な推論が可能。
 
 セキュリティと運用利便性の双方を大きく向上させた強固な基盤が整いました。

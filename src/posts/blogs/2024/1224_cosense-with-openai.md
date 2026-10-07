@@ -19,7 +19,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 2019 年 7 月に Cosense を弊社内での公式ツール化してから、早 5 年が経過しました。Cosense は社員全員が毎日のように活用するツールとなり、社内ポータルとして定着しています。
 
-![](https://i.gyazo.com/9f66dcad9f0c37a203d50ea1bc35f41e.png)
+![](/img/gyazo/9f66dcad9f0c37a203d50ea1bc35f41e.png)
 
 なお Cosense 導入前の課題と、それを Cosense を使ってどのように解決したのか、そしてその効果については 下記記事を参照ください。
 
@@ -32,17 +32,17 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 
 [^2]: Cosense には 「QuickSearch」、「関連ページ」、「2 hop search」「全文検索」といった便利な検索機能が用意されています。しかし流石に 1 万ページを超えるような大規模な情報量になると、目的のページを見つけ出すのが困難になります。
 
-![](https://i.gyazo.com/aca4b2a833d40992963d4f13d141cca9.png)
+![](/img/gyazo/aca4b2a833d40992963d4f13d141cca9.png)
 
 そこで、生成 AI ([OpenAI API](https://openai.com/index/openai-api/)) に関する知見の獲得を兼ね、ドッグフーディング的にこの課題を解消できないか、ということで今回の取り組みを実施することにしました。
 
-![](https://i.gyazo.com/b59b768d7dc9151752b4fbe37b9659b8.png)
+![](/img/gyazo/b59b768d7dc9151752b4fbe37b9659b8.png)
 
 ## 生成 AI を使った情報の引き出しの仕組み
 
 ざっくりと、以下のような図の形で実現しています。
 
-![](https://i.gyazo.com/dc581040bbc19d4741d5b361cb65427e.png)
+![](/img/gyazo/dc581040bbc19d4741d5b361cb65427e.png)
 
 情報の入力から引き出しまでの流れは以下の通りです。
 1. 情報入力
@@ -81,7 +81,7 @@ Slack 上で、質問メッセージのスレッドに対する返信として�
 
 以下は実際に Slack 上で質問をしている様子です。
 
-![](https://i.gyazo.com/a9a9f84d48a75dab814c1b05aa9e3104.png)
+![](/img/gyazo/a9a9f84d48a75dab814c1b05aa9e3104.png)
 
 Cosense からの情報取得と、一般的な情報をうまく組み合わせた上で、質問に対する回答がスレッドの中でメッセージとして表示されているのが分かります。また、Cosense の情報ソースも表示されており、このリンクから該当ページへ直接アクセスできます。  
 さらに、スレッド上で追加の質問をすると、最初の質問のコンテキストを理解した上で回答してくれます。  
@@ -95,7 +95,7 @@ Cosense からの情報取得と、一般的な情報をうまく組み合わせ
    - 性格の異なるキャラクターを 2 種類用意
      - mame-kun: Cosense の情報を把握した上で、質問に対してフランクに回答するキャラクター
      - mameka: 一般的な質問に対してポジティブで元気に回答するキャラクター  
-     ![](https://i.gyazo.com/92ff185ff11411c67dd9e405e0d77b81.png)  
+     ![](/img/gyazo/92ff185ff11411c67dd9e405e0d77b81.png)  
      - Slack 上でのスレッドと OpenAI の会話スレッドを同化させ、会話の文脈に沿った自然な応答
     
  
@@ -129,7 +129,7 @@ Cosense からの情報取得と、一般的な情報をうまく組み合わせ
  - 自分の書き込んだノウハウが誰かの役に立つと自覚
    - 各社員が上記効果を実感することで、社内ノウハウ・ノウフーの蓄積 (＝Cosense への書き込み) に積極的に貢献するようになり、ノウハウ・ノウフー共有のさらなるモチベーションが生まれました。これにより、情報のインプットとアウトプットを結ぶ好循環のループができつつあります。
 
-![](https://i.gyazo.com/70165e2d3ee478457c5efd6e877dde2e.png)
+![](/img/gyazo/70165e2d3ee478457c5efd6e877dde2e.png)
 
 ## まとめ
 いかがでしたか。

@@ -1,5 +1,5 @@
 ---
-title: Claude Code との開発サイクルの全体像 ― 書き残す・書けなくする・人間が判断する
+title: どうやって Claude Code と開発してる？ ― いまの回し方をまるごと書き出してみた
 author: kosuke-uematsu
 date: 2026-10-13
 tags: [Claude Code, AIDD, AIエージェント, 生成AI]

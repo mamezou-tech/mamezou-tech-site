@@ -27,7 +27,7 @@ tags: リモートワーク環境
 
 まずは現在のデスク周りの写真をご覧下さい。
 
-![](https://i.gyazo.com/adeb3e4a6457bca1226d384b5f8a59d0.jpg)
+![](/img/gyazo/adeb3e4a6457bca1226d384b5f8a59d0.jpg)
 
 こだわりポイントを 3 つに絞って説明します。
 
@@ -63,4 +63,4 @@ tags: リモートワーク環境
 
 アップグレード前のデスク環境を参考までに。正直こんなごちゃっとした環境にはもう戻りたくないです…。
 
-![](https://i.gyazo.com/17078e15e3d61c87d2d6833dc0bea498.jpg)
+![](/img/gyazo/17078e15e3d61c87d2d6833dc0bea498.jpg)

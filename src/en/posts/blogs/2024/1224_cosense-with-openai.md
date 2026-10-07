@@ -25,7 +25,7 @@ This time, I will introduce the utilization of generative AI in sharing internal
 
 It's been five years since we officially adopted Cosense as a tool within our company in July 2019. Cosense has become a tool that all employees use almost every day and has established itself as an internal portal.
 
-![](https://i.gyazo.com/9f66dcad9f0c37a203d50ea1bc35f41e.png)
+![](/img/gyazo/9f66dcad9f0c37a203d50ea1bc35f41e.png)
 
 Please refer to the following article for the issues before introducing Cosense, how we resolved them using Cosense, and the effects.
 
@@ -37,17 +37,17 @@ As of December 2024, the total number of pages exceeds 14,000, and new informati
 
 [^2]: Cosense provides convenient search functions such as "QuickSearch," "Related Pages," "2 hop search," and "Full-text Search." However, when the amount of information reaches over 10,000 pages, it becomes difficult to find the desired page.
 
-![](https://i.gyazo.com/aca4b2a833d40992963d4f13d141cca9.png)
+![](/img/gyazo/aca4b2a833d40992963d4f13d141cca9.png)
 
 So, aiming to gain knowledge about generative AI ([OpenAI API](https://openai.com/index/openai-api/)), we decided to tackle this issue through dogfooding to see if we can resolve it.
 
-![](https://i.gyazo.com/b59b768d7dc9151752b4fbe37b9659b8.png)
+![](/img/gyazo/b59b768d7dc9151752b4fbe37b9659b8.png)
 
 ## Mechanism of Information Retrieval Using Generative AI
 
 Roughly speaking, we realized it in the form of the diagram below.
 
-![](https://i.gyazo.com/dc581040bbc19d4741d5b361cb65427e.png)
+![](/img/gyazo/dc581040bbc19d4741d5b361cb65427e.png)
 
 The flow from information input to retrieval is as follows:
 
@@ -88,7 +88,7 @@ The answer is displayed on Slack as a reply to the question message thread.
 
 Below is an example of actually asking a question on Slack.
 
-![](https://i.gyazo.com/a9a9f84d48a75dab814c1b05aa9e3104.png)
+![](/img/gyazo/a9a9f84d48a75dab814c1b05aa9e3104.png)
 
 You can see that the answer to the question is displayed as a message within the thread, cleverly combining information retrieved from Cosense and general information. The information source from Cosense is also displayed, and you can directly access the relevant page from this link.  
 Furthermore, if you ask additional questions on the thread, it will answer while understanding the context of the initial question.  
@@ -102,7 +102,7 @@ The design points of this initiative are as follows.
    - Prepare two types of characters with different personalities
      - mame-kun: a character that has grasped Cosense's information and answers questions in a frank manner
      - mameka: a character that answers general questions positively and cheerfully  
-     ![](https://i.gyazo.com/92ff185ff11411c67dd9e405e0d77b81.png)  
+     ![](/img/gyazo/92ff185ff11411c67dd9e405e0d77b81.png)  
      - Synchronize the threads on Slack with the conversation threads on OpenAI to provide natural responses in line with the conversation context
 
  - Knowledge Base (Cosense) Access
@@ -133,7 +133,7 @@ As a result of this initiative, not only was the use of generative AI within the
  - Realizing that the know-how they write is useful to someone
    - As each employee experiences the above effects, they become more actively involved in accumulating internal know-how and know-who (i.e., writing to Cosense), leading to further motivation for sharing know-how and know-who. This is creating a virtuous cycle that connects information input and output.
 
-![](https://i.gyazo.com/70165e2d3ee478457c5efd6e877dde2e.png)
+![](/img/gyazo/70165e2d3ee478457c5efd6e877dde2e.png)
 
 ## Conclusion
 How was it?

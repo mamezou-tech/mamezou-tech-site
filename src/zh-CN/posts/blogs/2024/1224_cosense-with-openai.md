@@ -25,7 +25,7 @@ translate: true
 
 自从2019年7月将Cosense正式引入为公司内工具以来，已经过去5年了。Cosense现已成为全体员工日常使用的工具，并牢牢确立为公司内的门户网站。
 
-![](https://i.gyazo.com/9f66dcad9f0c37a203d50ea1bc35f41e.png)
+![](/img/gyazo/9f66dcad9f0c37a203d50ea1bc35f41e.png)
 
 关于在引入Cosense前的课题、如何利用Cosense解决这些问题，以及由此带来的效果，可以参考以下文章。
 
@@ -38,17 +38,17 @@ translate: true
 
 [^2]: Cosense提供了“QuickSearch”、“关联页面”、“2 hop search”和“全文搜索”等便捷的搜索功能。但是，当信息规模超过1万页时，找到目标页面还是变得十分困难。
 
-![](https://i.gyazo.com/aca4b2a833d40992963d4f13d141cca9.png)
+![](/img/gyazo/aca4b2a833d40992963d4f13d141cca9.png)
 
 为解决这一问题，同时积累关于生成式AI（[OpenAI API](https://openai.com/index/openai-api/)）的知识，我们决定以一种狗粮测试的形式尝试解决问题。
 
-![](https://i.gyazo.com/b59b768d7dc9151752b4fbe37b9659b8.png)
+![](/img/gyazo/b59b768d7dc9151752b4fbe37b9659b8.png)
 
 ## 使用生成式AI实现信息提取的机制
 
 大致上，以如下图所示方式实现。
 
-![](https://i.gyazo.com/dc581040bbc19d4741d5b361cb65427e.png)
+![](/img/gyazo/dc581040bbc19d4741d5b361cb65427e.png)
 
 从信息输入到提取的流程如下：
 1. 信息输入
@@ -88,7 +88,7 @@ OpenAI API返回响应（回答）到Slack。
 
 以下是通过Slack进行提问的实际演示。
 
-![](https://i.gyazo.com/a9a9f84d48a75dab814c1b05aa9e3104.png)
+![](/img/gyazo/a9a9f84d48a75dab814c1b05aa9e3104.png)
 
 可以看出，结合Cosense中的信息和一般信息回答问题，并作为消息显示在线程中。此外，还显示了Cosense的信息来源，通过链接可以直接访问相应页面。  
 进一步来说，在线程中进行追加提问时，它能够理解最初的提问上下文并给出回答。  
@@ -102,7 +102,7 @@ OpenAI API返回响应（回答）到Slack。
    - 设置性格不同的两种角色
      - mame-kun：在掌握Cosense信息的基础上，以轻松方式回答问题的角色
      - mameka：对一般性问题以积极、开朗的方式回答的角色  
-     ![](https://i.gyazo.com/92ff185ff11411c67dd9e405e0d77b81.png)  
+     ![](/img/gyazo/92ff185ff11411c67dd9e405e0d77b81.png)  
      - 将Slack的线程与OpenAI的对话线程同步化，实现符合对话上下文的自然响应
     
  
@@ -136,7 +136,7 @@ OpenAI API返回响应（回答）到Slack。
  - 自己录入的知识能够帮助他人
    - 感受到以上效果的每位员工，更加积极地为公司内部知识与诀窍的积累（即录入Cosense）做贡献，从而产生了进一步共享知识与诀窍的动力。这种良性循环开始形成。
 
-![](https://i.gyazo.com/70165e2d3ee478457c5efd6e877dde2e.png)
+![](/img/gyazo/70165e2d3ee478457c5efd6e877dde2e.png)
 
 ## 总结
 你觉得如何？

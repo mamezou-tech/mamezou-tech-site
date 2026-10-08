@@ -1,5 +1,5 @@
 ---
-title: EC2スポット×vLLMをSSMポートフォワーディングでセキュア化！ポート開放ゼロ・SSH鍵不要で繋ぐ
+title: EC2スポット×vLLMをSSMでセキュア化！ポート開放ゼロで繋ぐ
 author: kazuyuki-shiratani
 date: 2026-10-09
 tags: [AWS, EC2, SSM, vLLM, セキュリティ, Cline]
@@ -66,7 +66,7 @@ flowchart LR
     Agent ===|"HTTPS / 443 (アウトバウンド確立)"| SSMEndpoint
 ```
 
-これにより、EC2セキュリティグループのインバウンドルールは**1つも存在しない（インバウンド0件）**状態にできます。インターネット側からのポートスキャンやブルートフォース攻撃をネットワーク的に遮断し、インバウンドの攻撃面（アタックサーフェス）を最小化できます。
+これにより、EC2セキュリティグループのインバウンドルールは **1つも存在しない（インバウンド0件）** 状態にできます。インターネット側からのポートスキャンやブルートフォース攻撃をネットワーク的に遮断し、インバウンドの攻撃面（アタックサーフェス）を最小化できます。
 
 ### 2. SSH秘密鍵（`.pem`）の完全撤廃
 
@@ -129,14 +129,14 @@ SSM経由での接続を実現するために、各リージョンに以下の2�
 
 これらを一括作成するセットアップスクリプトを用意しました。
 
-<details><summary>setup_ssm_assets.sh（クリックで展開）</summary>
+<details><summary>00_setup_ssm_assets.sh（クリックで展開）</summary>
 
 ```bash
 #!/bin/bash
 set -euo pipefail
 
 # ==============================================================================
-# setup_ssm_assets.sh
+# 00_setup_ssm_assets.sh
 # SSMポートフォワーディング用のIAMロールおよびインバウンド全閉塞SGを各リージョンに作成する
 # ==============================================================================
 
@@ -260,6 +260,7 @@ USER_DATA_FILE="${USER_DATA_FILE:-${SCRIPT_DIR}/02_ec2_userdata.sh}"
 INSTANCE_STATE_FILE="${SCRIPT_DIR}/.current_instance_id"
 TUNNEL_PID_FILE="${SCRIPT_DIR}/.current_tunnel_pid"
 REGION_STATE_FILE="${SCRIPT_DIR}/.current_region"
+TUNNEL_LOG="${SCRIPT_DIR}/.current_tunnel.log"
 
 CANDIDATE_REGIONS=("ap-northeast-1" "us-west-2" "us-east-1" "us-east-2" "eu-central-1")
 CANDIDATE_INSTANCE_TYPES=("g6.xlarge")
@@ -293,6 +294,7 @@ except Exception: pass
 fi
 
 declare -A REG_STATUS REG_MIN_PRICES REG_AZ_COUNTS REG_SCORES REG_RANKS
+BEST_PRICE="999.0"
 
 for REGION in "${CANDIDATE_REGIONS[@]}"; do
     RAW_PRICES=$(aws ec2 describe-spot-price-history \
@@ -330,30 +332,69 @@ for REGION in "${CANDIDATE_REGIONS[@]}"; do
     REG_MIN_PRICES["${REGION}"]="${REG_MIN_PRICE}"
     REG_AZ_COUNTS["${REGION}"]="${AZ_COUNT}"
 
-    # スコア計算 (価格重み + 中断率重み)
-    INTR_TIER="${REGION_INTR_TIERS[${REGION}]:-4}"
-    TIER_WEIGHT="1.0"
-    case "${INTR_TIER}" in
-        0) TIER_WEIGHT="1.0" ;;
-        1) TIER_WEIGHT="1.15" ;;
-        2) TIER_WEIGHT="1.3" ;;
-        3) TIER_WEIGHT="1.5" ;;
-        *) TIER_WEIGHT="1.8" ;;
-    esac
-    SCORE=$(awk -v p="${REG_MIN_PRICE}" -v w="${TIER_WEIGHT}" 'BEGIN {printf "%.4f", p * w}')
-    REG_SCORES["${REGION}"]="${SCORE}"
+    if awk -v p="${REG_MIN_PRICE}" -v m="${BEST_PRICE}" 'BEGIN {exit !(p < m)}' 2>/dev/null; then
+        BEST_PRICE="${REG_MIN_PRICE}"
+    fi
 done
 
-# スコア順にソート
-SORTED_REGIONS=($(for r in "${!REG_SCORES[@]}"; do echo "$r ${REG_SCORES[$r]}"; done | sort -k2 -n | awk '{print $1}'))
+# スコア計算 (価格 40点 + 余剰AZ数 40点 + 中断頻度 20点 = 100点満点)
+for REGION in "${CANDIDATE_REGIONS[@]}"; do
+    if [ "${REG_STATUS[${REGION}]:-}" != "ok" ]; then
+        echo "  - [${REGION}]: 在庫なしまたは未提供"
+        continue
+    fi
 
-echo "選定結果:"
+    PRICE="${REG_MIN_PRICES[${REGION}]}"
+    TIER="${REGION_INTR_TIERS[${REGION}]:-4}"
+    AZ_COUNT="${REG_AZ_COUNTS[${REGION}]}"
+
+    # 価格スコア (最大40点)
+    P_SCORE=$(awk -v min="${BEST_PRICE}" -v cur="${PRICE}" 'BEGIN {printf "%.0f", 40.0 * (min / cur)}')
+
+    # 中断頻度スコア (最大20点)
+    case "${TIER}" in
+        0) I_SCORE=20; I_TEXT="< 5% (極低)" ;;
+        1) I_SCORE=15; I_TEXT="5-10% (低)" ;;
+        2) I_SCORE=10; I_TEXT="10-15% (中)" ;;
+        3) I_SCORE=5;  I_TEXT="15-20% (中高)" ;;
+        *) I_SCORE=0;  I_TEXT="> 20% (高)" ;;
+    esac
+
+    # キャパシティスコア (最大40点)
+    if [ "${AZ_COUNT}" -ge 5 ]; then C_SCORE=40
+    elif [ "${AZ_COUNT}" -eq 4 ]; then C_SCORE=32
+    elif [ "${AZ_COUNT}" -eq 3 ]; then C_SCORE=24
+    elif [ "${AZ_COUNT}" -eq 2 ]; then C_SCORE=16
+    else C_SCORE=8
+    fi
+
+    TOTAL_SCORE=$(( P_SCORE + I_SCORE + C_SCORE ))
+    REG_SCORES["${REGION}"]="${TOTAL_SCORE}"
+
+    if [ "${TOTAL_SCORE}" -ge 75 ]; then RANK="Rank S"
+    elif [ "${TOTAL_SCORE}" -ge 65 ]; then RANK="Rank A"
+    elif [ "${TOTAL_SCORE}" -ge 50 ]; then RANK="Rank B"
+    else RANK="Rank C"
+    fi
+    REG_RANKS["${REGION}"]="${RANK}"
+
+    PRICE_FMT=$(awk -v p="${PRICE}" 'BEGIN {printf "%.4f", p}')
+    echo "  - [${REGION}] 価格=\$${PRICE_FMT}/h, 中断率=${I_TEXT}, 余剰AZ=${AZ_COUNT} -> 総合スコア: ${TOTAL_SCORE}点 (${RANK})"
+done
+
+# スコア順にソート (降順)
+SORTED_REGIONS=($(for r in "${!REG_SCORES[@]}"; do echo "$r ${REG_SCORES[$r]}"; done | sort -k2 -nr | awk '{print $1}'))
+
+echo "----------------------------------------------------------"
+echo "総合優先度ランキング:"
 for i in "${!SORTED_REGIONS[@]}"; do
     r="${SORTED_REGIONS[$i]}"
-    echo "  第$((i+1))位: ${r} (最安 \$${REG_MIN_PRICES[$r]}/h, スコア: ${REG_SCORES[$r]})"
+    echo "  第$((i+1))位: ${r} (${REG_RANKS[$r]} / スコア: ${REG_SCORES[$r]}点, 最安: \$${REG_MIN_PRICES[$r]}/h)"
 done
+echo "----------------------------------------------------------"
 
 # --- 2. スポットインスタンス起動試行 ---
+echo "=== 2. スポットインスタンス起動試行 ==="
 SELECTED_REGION=""
 INSTANCE_ID=""
 
@@ -420,6 +461,11 @@ echo "${SELECTED_REGION}" > "${REGION_STATE_FILE}"
 echo "インスタンスが running 状態になるのを待機中..."
 aws ec2 wait instance-running --region "${SELECTED_REGION}" --instance-ids "${INSTANCE_ID}"
 
+# Git Bash環境向けにSessionManagerPluginのパスを追加
+if [ -d "/c/Program Files/Amazon/SessionManagerPlugin/bin" ]; then
+    export PATH="${PATH}:/c/Program Files/Amazon/SessionManagerPlugin/bin"
+fi
+
 # --- 3. SSMエージェントのオンライン待機 ---
 echo "=== 3. SSMエージェントのオンライン待機 ==="
 echo "EC2インスタンス内部のSSM Agentが接続されるのを待機中..."
@@ -484,8 +530,6 @@ fi
 
 # --- 5. 既存トンネルの整理と新規SSMポートフォワーディング確立 ---
 echo "=== 5. SSMポートフォワーディングの確立 (ポート開放不要トンネル) ==="
-TUNNEL_LOG="${SCRIPT_DIR}/.current_tunnel.log"
-
 if [ -f "${TUNNEL_PID_FILE}" ]; then
     OLD_PID=$(cat "${TUNNEL_PID_FILE}" | tr -d '[:space:]')
     if [ -n "${OLD_PID}" ] && ps -p "${OLD_PID}" > /dev/null 2>&1; then
@@ -549,17 +593,25 @@ echo "=========================================================="
 
 ### 1. スクリプトの実行
 
-スクリプトを実行すると、マルチリージョン探索、スポットインスタンスの起動、SSMエージェントの接続待機、ポートフォワーディングの確立がすべて全自動で進みます。
+スクリプトを実行すると、マルチリージョン探索、スポットインスタンスの起動、SSMエージェントの接続待機、サーバー側vLLM起動待機、ポートフォワーディングの確立がすべて全自動で進みます。
 
 ```bash
 $ ./01_start_vllm_ssm.sh
 === 1. マルチリージョン スポット総合優先度探索 ===
-選定結果:
-  第1位: us-west-2 (最安 $0.3850/h, スコア: 0.4428)
-  第2位: eu-central-1 (最安 $0.4120/h, スコア: 0.4738)
-  第3位: ap-northeast-1 (最安 $0.5510/h, スコア: 0.6337)
-  第4位: us-east-1 (最安 $0.5830/h, スコア: 0.6705)
-
+  - [ap-northeast-1] 価格=$0.5510/h, 中断率=< 5% (極低), 余剰AZ=3 -> 総合スコア: 72点 (Rank A)
+  - [us-west-2] 価格=$0.3850/h, 中断率=< 5% (極低), 余剰AZ=4 -> 総合スコア: 92点 (Rank S)
+  - [us-east-1] 価格=$0.5830/h, 中断率=5-10% (低), 余剰AZ=6 -> 総合スコア: 81点 (Rank S)
+  - [us-east-2] 価格=$0.4210/h, 中断率=< 5% (極低), 余剰AZ=3 -> 総合スコア: 80点 (Rank S)
+  - [eu-central-1] 価格=$0.4120/h, 中断率=< 5% (極低), 余剰AZ=3 -> 総合スコア: 81点 (Rank S)
+----------------------------------------------------------
+総合優先度ランキング:
+  第1位: us-west-2 (Rank S / スコア: 92点, 最安: $0.3850/h)
+  第2位: us-east-1 (Rank S / スコア: 81点, 最安: $0.5830/h)
+  第3位: eu-central-1 (Rank S / スコア: 81点, 最安: $0.4120/h)
+  第4位: us-east-2 (Rank S / スコア: 80点, 最安: $0.4210/h)
+  第5位: ap-northeast-1 (Rank A / スコア: 72点, 最安: $0.5510/h)
+----------------------------------------------------------
+=== 2. スポットインスタンス起動試行 ===
 リージョン [us-west-2] でスポット起動を試行中...
   起動成功！ Instance ID: i-0abc12345678def01 (us-west-2)
 インスタンスが running 状態になるのを待機中...
@@ -568,12 +620,15 @@ $ ./01_start_vllm_ssm.sh
 EC2インスタンス内部のSSM Agentが接続されるのを待機中...
 ..... SSM Agent が Online になりました！ (5回目の試行)
 
-=== 4. SSMポートフォワーディングの確立 (ポート開放不要トンネル) ===
+=== 4. サーバー側での vLLM 起動待機 (http://127.0.0.1:8000/health) ===
+UserDataによるS3モデルダウンロードとvLLM起動を待機しています（通常2〜4分程度）...
+................................ サーバー側の vLLM が正常に応答しました！
+
+=== 5. SSMポートフォワーディングの確立 (ポート開放不要トンネル) ===
 SSMポートフォワーディングを開始しました (PID: 41820)
 
-=== 5. vLLM サーバーの起動待機 (http://localhost:8000/health) ===
-UserDataによるS3モデルダウンロードとvLLM起動を待機しています（通常2〜4分程度）...
-................................ vLLM サーバーが正常に応答しました！
+=== 6. ローカル疎通確認 (http://localhost:8000/health) ===
+ ローカルからの直結疎通を確認しました！ (HTTP 200 OK)
 
 ==========================================================
  ポート開放ゼロ SSM環境の起動が完了しました！
@@ -617,6 +672,8 @@ $ curl -s http://localhost:8000/v1/models | jq .data[0].id
 
 作業が終わったら、破棄スクリプト（`02_stop_vllm_ssm.sh`）を実行してリソースを解放します。
 
+<details><summary>02_stop_vllm_ssm.sh（クリックで展開）</summary>
+
 ```bash
 #!/bin/bash
 set -euo pipefail
@@ -630,11 +687,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTANCE_STATE_FILE="${SCRIPT_DIR}/.current_instance_id"
 TUNNEL_PID_FILE="${SCRIPT_DIR}/.current_tunnel_pid"
 REGION_STATE_FILE="${SCRIPT_DIR}/.current_region"
+TUNNEL_LOG="${SCRIPT_DIR}/.current_tunnel.log"
 
 AWS_REGION=$(cat "${REGION_STATE_FILE}" 2>/dev/null | tr -d '[:space:]' || echo "ap-northeast-1")
 INSTANCE_ID=$(cat "${INSTANCE_STATE_FILE}" 2>/dev/null | tr -d '[:space:]' || echo "${1:-}")
 
 # 1. SSMポートフォワードプロセスの終了
+echo "=== 1. SSMポートフォワードプロセスの終了 ==="
 if [ -f "${TUNNEL_PID_FILE}" ]; then
     TUNNEL_PID=$(cat "${TUNNEL_PID_FILE}" | tr -d '[:space:]')
     if [ -n "${TUNNEL_PID}" ] && ps -p "${TUNNEL_PID}" > /dev/null 2>&1; then
@@ -643,16 +702,24 @@ if [ -f "${TUNNEL_PID_FILE}" ]; then
     fi
     rm -f "${TUNNEL_PID_FILE}"
 fi
+pkill -f "AWS-StartPortForwardingSession.*8000" 2>/dev/null || true
 
 # 2. EC2インスタンスの完全終了 (Terminate)
 if [ -n "${INSTANCE_ID}" ]; then
-    echo "=== EC2インスタンスの完全終了 (Terminate) ==="
+    echo "=== 2. EC2インスタンスの完全終了 (Terminate) ==="
+    echo "対象インスタンスID: ${INSTANCE_ID} (${AWS_REGION})"
     aws ec2 terminate-instances --region "${AWS_REGION}" --instance-ids "${INSTANCE_ID}" --output table
+    echo "インスタンスの終了完了を待機中..."
     aws ec2 wait instance-terminated --region "${AWS_REGION}" --instance-ids "${INSTANCE_ID}"
-    rm -f "${INSTANCE_STATE_FILE}" "${REGION_STATE_FILE}"
-    echo "スポットインスタンス、EBSボリューム、SSMトンネルの完全破棄が完了しました！"
 fi
+
+rm -f "${INSTANCE_STATE_FILE}" "${REGION_STATE_FILE}" "${TUNNEL_LOG}"
+echo "=========================================================="
+echo " スポットインスタンス、EBSボリューム、SSMトンネルの完全破棄が完了しました！"
+echo "=========================================================="
 ```
+
+</details>
 
 実行すると、バックグラウンドのポートフォワーディングプロセスが終了し、EC2インスタンスとEBSがTerminateされ、これ以降の課金は完全にストップします。
 

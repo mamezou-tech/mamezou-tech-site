@@ -1,5 +1,5 @@
 ---
-title: vLLM起動をAWS Lambda化！最安スポット探索と自動フォールバック
+title: vLLM起動をAWS Lambda化！最安スポット探索と自動フォールバック機能の実装
 author: kazuyuki-shiratani
 date: 2026-10-14
 tags: [AWS, lambda, Python, EC2, vLLM, コスト最適化]
@@ -7,6 +7,8 @@ image: true
 ---
 
 ## はじめに
+
+これは、思いついたアイデアや気になるクラウド技術を、まずは好奇心のままに手を動かして形にしてみる技術検証ログです。
 
 前回の記事（[EC2スポット×vLLMをSSMでセキュア化！ポート開放ゼロで繋ぐ](/blogs/2026/10/09/vllm_ssm_zero_inbound/)）では、AWS Systems Manager（SSM）Session Managerによるポートフォワーディングを導入し、セキュリティグループのインバウンドを完全に閉塞（ポート開放ゼロ）しながら、SSH鍵管理を完全撤廃したセキュアなGPU利用環境を構築しました。
 
@@ -19,9 +21,9 @@ image: true
 3. **ローカル環境の肥大化と保守性**:  
    Bashスクリプト内に価格パース、中断率計算、JSON加工、AWKによるスコアリングロジックが詰め込まれ、シェルスクリプトのメンテナンス性が限界に達していました。
 
-そこで今回は、これらの判定・探索ロジックをすべてクライアントから切り離し、**AWS Lambdaによる「サーバーレスGPUブローカー」** へと進化させます。
+そこで今回は、「いっそクラウド側で世界中の最安スポットGPUを並列で高速に自動探索・起動してくれるサーバーレスAPIを作ってしまえば面白いのでは？」というアイデアを形にするため、これらの判定・探索ロジックをすべてクライアントから切り離し、**AWS Lambdaによる「サーバーレスGPUブローカー」** へと進化させます。
 
-Pythonの `concurrent.futures` によるマルチリージョン・マルチAZの超高速並列スキャン（1秒台で完了）と、**スポット枯渇時のスマートな「オンデマンド・フォールバック機能」** を実装した実践的な手法を紹介します。
+Pythonの `concurrent.futures` によるマルチリージョン・マルチAZの高速並列スキャン（1秒台で完了）と、**スポット枯渇時のスマートな「オンデマンド・フォールバック機能」** を実装した実践的な手法を紹介します。
 
 :::info
 **📚 関連する過去の検証記事**
@@ -72,7 +74,7 @@ flowchart TD
 
 | 項目 | 第4回までの構成 (クライアントBash) | 今回の構成 (Lambda ブローカー) | メリット |
 | :--- | :--- | :--- | :--- |
-| **探索速度** | 15〜30秒以上（CLIを直列実行） | **約1〜2秒（Pythonスレッド並列）** | 待ち時間が劇的に短縮 |
+| **探索速度** | 15〜30秒以上（CLIを直列実行） | **約1〜2秒（Pythonスレッド並列）** | 待ち時間を大幅に短縮 |
 | **クライアントの責務** | 価格・中断率の取得、探索計算、起動試行 | **Lambda呼び出しとSSMトンネル接続のみ** | 複雑な探索ロジックから解放 |
 | **スポット枯渇時** | エラーで中断、手動対応 | **明確なエラー案内 & オンデマンド切替** | 開発作業を止めずにリカバリ可能 |
 | **通常起動戦略** | なし | **「コスト最安」または「レイテンシー最小」** | 業務の優先度に応じた柔軟な選択 |
@@ -97,6 +99,16 @@ flowchart TD
 ## Lambda関数の実装 (`handler.py`)
 
 Lambda関数のコアロジックです。外部ライブラリを必要とせず、標準ライブラリ（`concurrent.futures`, `urllib.request`）と `boto3` だけで完結します。
+
+:::info
+**💡 工夫ポイント：UserDataのS3外出しと3行ブートストラップ**  
+本実装では、初期化処理（NVMeマウント、Docker領域移動、並列同期、vLLM起動、アイドル自動停止）の長大なBashスクリプト本体を **S3（`s3://${S3_BUCKET}/scripts/startup.sh`）へ外出し** しています。
+
+EC2に渡すUserDataは「S3からスクリプトを取得して実行するわずか3行」に留めることで、以下のメリットが得られます：
+* **Lambdaコードの大幅なスリム化**: 100行を超えるBashヒアドキュメントを排除でき、コード全体の可読性が向上。
+* **高速な試行錯誤**: 起動スクリプトを微修正したいとき、Lambda関数を再ビルド・再デプロイすることなく、S3上のスクリプトを更新するだけで即時反映。
+* **UserDataの16KB制限回避**: スクリプトがどれだけ肥大化しても、EC2のUserDataサイズ上限（16KB）に抵触しません。
+:::
 
 <details><summary>handler.py（クリックで展開）</summary>
 
@@ -145,120 +157,22 @@ ON_DEMAND_METRICS = {
     "eu-central-1":   {"price": 1.2024, "latency_ms": 230, "name": "フランクフルト"},
 }
 
-# 共通 UserData テンプレート (S3・ECR並列ダウンロード + SSM対応版)
-USERDATA_TEMPLATE = """#!/bin/bash
+# S3外出しブートストラップ UserData (本体は s3://.../scripts/startup.sh から高速取得)
+USERDATA_BOOTSTRAP = """#!/bin/bash
 set -euo pipefail
-LOG_FILE="/var/log/userdata-vllm.log"
-exec > >(tee -a "${LOG_FILE}") 2>&1
-echo "=== [$(date '+%Y-%m-%d %H:%M:%S')] UserData 実行開始 (SSM完全閉塞版) ==="
+LOG_FILE="/var/log/userdata-bootstrap.log"
+exec > >(tee -a "${LOG_FILE}" | logger -t user-data -s 2>/dev/console) 2>&1
 
 AWS_REGION="__AWS_REGION__"
-S3_BUCKET_NAME="__S3_BUCKET_NAME__"
-HF_MODEL_ID="Qwen/Qwen2.5-Coder-7B-Instruct"
-SERVED_MODEL_NAME="Qwen/Qwen2.5-Coder-7B-Instruct"
-VLLM_PORT="8000"
-GPU_MEMORY_UTILIZATION="0.90"
-MAX_MODEL_LEN="16384"
+S3_BUCKET="__S3_BUCKET_NAME__"
 DOCKER_IMAGE="__DOCKER_IMAGE__"
 
-# 1. ローカル NVMe インスタンスストア（250GB）の検出と活用
-NVME_DIR="/opt/dlami/nvme"
-if mountpoint -q "${NVME_DIR}" || [ -d "${NVME_DIR}" ]; then
-    echo "DLAMI既定の NVMe マウント (${NVME_DIR}) を活用します..."
-    mkdir -p "${NVME_DIR}/models" "${NVME_DIR}/docker"
-    mkdir -p /data
-    ln -sfn "${NVME_DIR}/models" /data/models
-else
-    NVME_DEV=$(lsblk -d -n -o NAME,SIZE | grep -E '250G|232G' | head -n1 | awk '{print $1}')
-    if [ -n "${NVME_DEV}" ]; then
-        mkfs.ext4 -F "/dev/${NVME_DEV}" || true
-        mkdir -p /data
-        mount -o noatime "/dev/${NVME_DEV}" /data || true
-    else
-        mkdir -p /data
-    fi
-    mkdir -p /data/models /data/docker
-    NVME_DIR="/data"
-fi
+echo "=== S3から起動スクリプト (startup.sh) を取得 ==="
+aws s3 cp "s3://${S3_BUCKET}/scripts/startup.sh" /tmp/startup.sh --region "${AWS_REGION}"
+chmod +x /tmp/startup.sh
 
-LOCAL_MODEL_ROOT="/data/models"
-LOCAL_MODEL_DIR="${LOCAL_MODEL_ROOT}/${HF_MODEL_ID}"
-mkdir -p "${LOCAL_MODEL_DIR}"
-chmod 777 "${LOCAL_MODEL_ROOT}"
-
-# 2. Docker データ領域を NVMe に配置
-systemctl stop docker containerd || true
-mkdir -p "${NVME_DIR}/docker" "${NVME_DIR}/containerd"
-mkdir -p /var/lib/docker /var/lib/containerd
-cp -a /var/lib/docker/* "${NVME_DIR}/docker/" 2>/dev/null || true
-cp -a /var/lib/containerd/* "${NVME_DIR}/containerd/" 2>/dev/null || true
-mount --bind "${NVME_DIR}/docker" /var/lib/docker
-mount --bind "${NVME_DIR}/containerd" /var/lib/containerd
-systemctl daemon-reload
-systemctl start containerd
-systemctl start docker
-
-# 3. S3モデル同期 と Docker pull の並列実行
-S3_SRC="s3://${S3_BUCKET_NAME}/models/${HF_MODEL_ID}"
-aws configure set default.s3.max_concurrent_requests 20
-
-(
-    echo "--- [Task A] Dockerイメージ取得: ${DOCKER_IMAGE} ---"
-    if [[ "${DOCKER_IMAGE}" == *".dkr.ecr."* ]]; then
-        ECR_REGISTRY=$(echo "${DOCKER_IMAGE}" | cut -d'/' -f1)
-        ECR_REGION=$(echo "${ECR_REGISTRY}" | awk -F. '{print $4}')
-        aws ecr get-login-password --region "${ECR_REGION:-${AWS_REGION}}" | docker login --username AWS --password-stdin "${ECR_REGISTRY}" || true
-    fi
-    docker pull "${DOCKER_IMAGE}"
-) > /var/log/docker-pull.log 2>&1 &
-PID_DOCKER=$!
-
-(
-    echo "--- [Task B] S3モデル高速同期 ---"
-    aws s3 sync "${S3_SRC}" "${LOCAL_MODEL_DIR}" --region "${AWS_REGION}" --no-progress
-) > /var/log/model-sync.log 2>&1 &
-PID_S3=$!
-
-wait "${PID_DOCKER}"
-wait "${PID_S3}"
-echo "=== 並列ダウンロード完了！ ==="
-
-# 4. vLLMコンテナ起動
-docker run -d \\
-    --name "vllm-server" \\
-    --restart unless-stopped \\
-    --gpus all \\
-    --ipc=host \\
-    -p "${VLLM_PORT}:8000" \\
-    -v "${LOCAL_MODEL_ROOT}:/models" \\
-    "${DOCKER_IMAGE}" \\
-    --model "/models/${HF_MODEL_ID}" \\
-    --served-model-name "${SERVED_MODEL_NAME}" \\
-    --gpu-memory-utilization "${GPU_MEMORY_UTILIZATION}" \\
-    --max-model-len "${MAX_MODEL_LEN}" \\
-    --trust-remote-code \\
-    --enable-auto-tool-choice \\
-    --tool-call-parser hermes
-
-# 5. アイドル1時間自動終了デーモン
-cat <<'EOF_IDLE' > /usr/local/bin/auto-idle-shutdown.sh
-#!/bin/bash
-IDLE_LIMIT=3600
-IDLE_COUNT=0
-while true; do
-    sleep 300
-    REQ=$(docker logs --since 5m vllm-server 2>&1 | grep -c "POST /v1" || true)
-    if [ "${REQ}" -eq 0 ]; then
-        IDLE_COUNT=$((IDLE_COUNT + 300))
-        [ "${IDLE_COUNT}" -ge "${IDLE_LIMIT}" ] && { shutdown -h now; exit 0; }
-    else
-        IDLE_COUNT=0
-    fi
-done
-EOF_IDLE
-chmod +x /usr/local/bin/auto-idle-shutdown.sh
-nohup /usr/local/bin/auto-idle-shutdown.sh > /dev/null 2>&1 &
-echo "=== UserData 完了 (SSM待機中) ==="
+echo "=== startup.sh 実行 ==="
+/tmp/startup.sh "${AWS_REGION}" "${S3_BUCKET}" "${DOCKER_IMAGE}"
 """
 
 
@@ -447,8 +361,8 @@ def launch_instance(region, account_id, is_spot=True):
 
     docker_image = f"{account_id}.dkr.ecr.{region}.amazonaws.com/{ECR_REPOSITORY_NAME}:latest"
 
-    # UserData 生成
-    userdata_script = USERDATA_TEMPLATE.replace("__AWS_REGION__", region)
+    # UserData 生成 (S3外出しブートストラップ)
+    userdata_script = USERDATA_BOOTSTRAP.replace("__AWS_REGION__", region)
     userdata_script = userdata_script.replace("__S3_BUCKET_NAME__", s3_bucket)
     userdata_script = userdata_script.replace("__DOCKER_IMAGE__", docker_image)
 
@@ -697,9 +611,140 @@ def lambda_handler(event, context):
 
 ---
 
+## S3に配置する初期化スクリプト (`startup.sh`)
+
+S3（`s3://${S3_BUCKET}/scripts/startup.sh`）に配置する初期化シェルスクリプト本体です。インスタンス起動時にブートストラップUserData経由でS3から自動ダウンロードされ、実行されます。
+
+NVMeマウント、Docker領域の退避、S3モデル同期とDocker pullの並列処理、vLLM起動、およびアイドル自動停止デーモンの全処理がこのスクリプトにカプセル化されています。
+
+<details><summary>startup.sh（クリックで展開）</summary>
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+LOG_FILE="/var/log/userdata-vllm.log"
+exec > >(tee -a "${LOG_FILE}" | logger -t user-data -s 2>/dev/console) 2>&1
+
+echo "=== [$(date '+%Y-%m-%d %H:%M:%S')] startup.sh 実行開始 (S3外出しブートストラップ版) ==="
+
+AWS_REGION="${1:-$(curl -s http://169.254.169.254/latest/meta-data/placement/region)}"
+S3_BUCKET_NAME="${2:-}"
+DOCKER_IMAGE="${3:-}"
+
+HF_MODEL_ID="Qwen/Qwen2.5-Coder-7B-Instruct"
+SERVED_MODEL_NAME="Qwen/Qwen2.5-Coder-7B-Instruct"
+VLLM_PORT="8000"
+GPU_MEMORY_UTILIZATION="0.90"
+MAX_MODEL_LEN="16384"
+
+# 1. ローカル NVMe インスタンスストア（250GB）の検出と活用
+NVME_DIR="/opt/dlami/nvme"
+if mountpoint -q "${NVME_DIR}" || [ -d "${NVME_DIR}" ]; then
+    echo "DLAMI既定の NVMe マウント (${NVME_DIR}) を活用します..."
+    mkdir -p "${NVME_DIR}/models" "${NVME_DIR}/docker"
+    mkdir -p /data
+    ln -sfn "${NVME_DIR}/models" /data/models
+else
+    NVME_DEV=$(lsblk -d -n -o NAME,SIZE | grep -E '250G|232G' | head -n1 | awk '{print $1}')
+    if [ -n "${NVME_DEV}" ]; then
+        mkfs.ext4 -F "/dev/${NVME_DEV}" || true
+        mkdir -p /data
+        mount -o noatime "/dev/${NVME_DEV}" /data || true
+    else
+        mkdir -p /data
+    fi
+    mkdir -p /data/models /data/docker
+    NVME_DIR="/data"
+fi
+
+LOCAL_MODEL_ROOT="/data/models"
+LOCAL_MODEL_DIR="${LOCAL_MODEL_ROOT}/${HF_MODEL_ID}"
+mkdir -p "${LOCAL_MODEL_DIR}"
+chmod 777 "${LOCAL_MODEL_ROOT}"
+
+# 2. Docker データ領域を NVMe に配置
+systemctl stop docker containerd || true
+mkdir -p "${NVME_DIR}/docker" "${NVME_DIR}/containerd"
+mkdir -p /var/lib/docker /var/lib/containerd
+cp -a /var/lib/docker/* "${NVME_DIR}/docker/" 2>/dev/null || true
+cp -a /var/lib/containerd/* "${NVME_DIR}/containerd/" 2>/dev/null || true
+mount --bind "${NVME_DIR}/docker" /var/lib/docker
+mount --bind "${NVME_DIR}/containerd" /var/lib/containerd
+systemctl daemon-reload
+systemctl start containerd
+systemctl start docker
+
+# 3. S3モデル同期 と Docker pull の並列実行
+S3_SRC="s3://${S3_BUCKET_NAME}/models/${HF_MODEL_ID}"
+aws configure set default.s3.max_concurrent_requests 20
+
+(
+    echo "--- [Task A] Dockerイメージ取得: ${DOCKER_IMAGE} ---"
+    if [[ "${DOCKER_IMAGE}" == *".dkr.ecr."* ]]; then
+        ECR_REGISTRY=$(echo "${DOCKER_IMAGE}" | cut -d'/' -f1)
+        ECR_REGION=$(echo "${ECR_REGISTRY}" | awk -F. '{print $4}')
+        aws ecr get-login-password --region "${ECR_REGION:-${AWS_REGION}}" | docker login --username AWS --password-stdin "${ECR_REGISTRY}" || true
+    fi
+    docker pull "${DOCKER_IMAGE}"
+) > /var/log/docker-pull.log 2>&1 &
+PID_DOCKER=$!
+
+(
+    echo "--- [Task B] S3モデル高速同期 ---"
+    aws s3 sync "${S3_SRC}" "${LOCAL_MODEL_DIR}" --region "${AWS_REGION}" --no-progress
+) > /var/log/model-sync.log 2>&1 &
+PID_S3=$!
+
+wait "${PID_DOCKER}"
+wait "${PID_S3}"
+echo "=== 並列ダウンロード完了！ ==="
+
+# 4. vLLMコンテナ起動
+docker run -d \
+    --name "vllm-server" \
+    --restart unless-stopped \
+    --gpus all \
+    --ipc=host \
+    -p "${VLLM_PORT}:8000" \
+    -v "${LOCAL_MODEL_ROOT}:/models" \
+    "${DOCKER_IMAGE}" \
+    --model "/models/${HF_MODEL_ID}" \
+    --served-model-name "${SERVED_MODEL_NAME}" \
+    --gpu-memory-utilization "${GPU_MEMORY_UTILIZATION}" \
+    --max-model-len "${MAX_MODEL_LEN}" \
+    --trust-remote-code \
+    --enable-auto-tool-choice \
+    --tool-call-parser hermes
+
+# 5. アイドル1時間自動終了デーモン
+cat <<'EOF_IDLE' > /usr/local/bin/auto-idle-shutdown.sh
+#!/bin/bash
+IDLE_LIMIT=3600
+IDLE_COUNT=0
+while true; do
+    sleep 300
+    REQ=$(docker logs --since 5m vllm-server 2>&1 | grep -c "POST /v1" || true)
+    if [ "${REQ}" -eq 0 ]; then
+        IDLE_COUNT=$((IDLE_COUNT + 300))
+        [ "${IDLE_COUNT}" -ge "${IDLE_LIMIT}" ] && { shutdown -h now; exit 0; }
+    else
+        IDLE_COUNT=0
+    fi
+done
+EOF_IDLE
+chmod +x /usr/local/bin/auto-idle-shutdown.sh
+nohup /usr/local/bin/auto-idle-shutdown.sh > /dev/null 2>&1 &
+echo "=== startup.sh 完了 (SSM待機中) ==="
+```
+
+</details>
+
+---
+
 ## Lambdaのデプロイスクリプト (`00_deploy_lambda.sh`)
 
-作成した `handler.py` をZIPアーカイブ化し、AWS Lambdaにデプロイするシェルスクリプトです。
+作成した `handler.py` をZIPアーカイブ化してAWS Lambdaにデプロイし、同時に `startup.sh` をS3バケットへ自動同期するシェルスクリプトです。
 
 <details><summary>00_deploy_lambda.sh（クリックで展開）</summary>
 
@@ -789,6 +834,13 @@ echo "=== 2. Lambda コードのパッケージング ==="
 TMP_ZIP=$(mktemp --suffix=.zip)
 rm -f "${TMP_ZIP}"
 (cd "${LAMBDA_DIR}" && zip -q -r "${TMP_ZIP}" handler.py)
+
+echo "=== 2.5 起動スクリプト (startup.sh) を S3 へ同期 ==="
+S3_BUCKET="my-vllm-models-hackathon-2026-${AWS_ACCOUNT_ID}-${REGION}-an"
+if aws s3 ls "s3://${S3_BUCKET}" >/dev/null 2>&1; then
+    echo "startup.sh を s3://${S3_BUCKET}/scripts/startup.sh へアップロード中..."
+    aws s3 cp "${SCRIPT_DIR}/startup.sh" "s3://${S3_BUCKET}/scripts/startup.sh" --region "${REGION}"
+fi
 
 echo "=== 3. Lambda 関数 (${FUNCTION_NAME}) の作成/更新 ==="
 if aws lambda get-function --region "${REGION}" --function-name "${FUNCTION_NAME}" >/dev/null 2>&1; then
@@ -1082,7 +1134,7 @@ echo " トンネル接続      : localhost:8000 -> EC2:8000 (SSM暗号化)"
 echo " Web UI / API    : http://localhost:8000/v1"
 echo ""
 echo " VS Code の Cline から接続してください (Base URL: http://localhost:8000/v1)"
-echo " 検証終了時は以下のコマンドで完全破棄してください:"
+echo " 検証終了時は以下のコマンドでリソースを破棄してください:"
 echo "   ./02_stop_vllm_ssm.sh"
 echo "=========================================================="
 ```
@@ -1128,7 +1180,7 @@ SSMポートフォワーディングを開始しました (PID: 53120)
  Web UI / API    : http://localhost:8000/v1
 
  VS Code の Cline から接続してください (Base URL: http://localhost:8000/v1)
- 検証終了時は以下のコマンドで完全破棄してください:
+ 検証終了時は以下のコマンドでリソースを破棄してください:
    ./02_stop_vllm_ssm.sh
 ==========================================================
 ```
@@ -1195,9 +1247,9 @@ $ ./01_start_vllm_ssm.sh --on-demand --strategy latency
 
 ---
 
-## 検証終了時の完全破棄スクリプト (`02_stop_vllm_ssm.sh`)
+## 検証終了時のリソース破棄スクリプト (`02_stop_vllm_ssm.sh`)
 
-作業が終了したら、破棄スクリプト（`02_stop_vllm_ssm.sh`）を実行します。ローカルのSSMトンネルプロセスを安全に切断した上で、Lambdaブローカーに終了リクエストを発行し、EC2インスタンスおよびEBSボリュームを完全に破棄します。
+作業が終了したら、破棄スクリプト（`02_stop_vllm_ssm.sh`）を実行します。ローカルのSSMトンネルプロセスを安全に切断した上で、Lambdaブローカーに終了リクエストを発行し、EC2インスタンスおよびEBSボリュームを確実に破棄します。
 
 <details><summary>02_stop_vllm_ssm.sh（クリックで展開）</summary>
 
@@ -1232,7 +1284,7 @@ fi
 pkill -f "AWS-StartPortForwardingSession.*8000" 2>/dev/null || true
 
 # 2. Lambdaブローカーへのインスタンス破棄リクエスト
-echo "=== 2. サーバーレスGPUブローカー（Lambda）へ完全破棄リクエスト ==="
+echo "=== 2. サーバーレスGPUブローカー（Lambda）へリソース破棄リクエスト ==="
 TMP_RES=$(mktemp)
 aws lambda invoke \
     --region "${BROKER_REGION}" \
@@ -1259,7 +1311,7 @@ else
 fi
 
 rm -f "${TMP_RES}" "${INSTANCE_STATE_FILE}" "${REGION_STATE_FILE}" "${TUNNEL_LOG}"
-echo "スポットインスタンス、EBSボリューム、SSMトンネルの完全破棄が完了しました！"
+echo "スポットインスタンス、EBSボリューム、SSMトンネルの破棄が完了しました！"
 ```
 
 </details>

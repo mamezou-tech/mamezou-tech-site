@@ -1,7 +1,7 @@
 ---
 title: 豆蔵デベロッパーサイト5周年：900記事と執筆者83名の歩み、そして次のステージへ！
 author: masahiro-kondo
-date: 2026-10-15
+date: 2026-10-14
 tags: [retrospective]
 image: true
 ---

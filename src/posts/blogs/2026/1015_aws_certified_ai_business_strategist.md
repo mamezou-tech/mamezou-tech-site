@@ -73,16 +73,18 @@ AWS認定の新設試験ベータ版は、8,250円（税込）という特別価
 
 AWS公式の学習プラットフォーム「AWS Skill Builder」にて、AI Business Strategist向けの公式教材や関連プランを確認しました。
 
-- **Exam Prep Plan: AWS Certified AI Business Strategist (AIB-C01 / AB1-C01)**
-  - 試験範囲を網羅する概念整理やフラッシュカードが提供されており、用語の定義やAWSが推奨するベストプラクティスを効率よくインプットできました。
+- [**試験準備カテゴリ（AIB-C01 / AB1-C01）**](https://skillbuilder.aws/category/exam-prep/ai-business-strategist-business-AIB-C01)
+  - ベータ試験期間中だったためか、専用の公式対策プラン（Exam Prep Plan）や公式模擬問題はまだ用意されていませんでした。
+  - そのため、ビジネスリーダー向けの生成AI学習コース（「Generative AI for Executives」等）を活用しました。
+  - さらに、責任あるAI（Responsible AI）に関する教材で基礎概念をインプットしました。
 
 ### 3. 公式ホワイトペーパー・ブログの確認
 
 ビジネス価値やガバナンスに関するAWSの公式ドキュメントやフレームワークを復習しました。
 
-- **AWS Cloud Adoption Framework (CAF) for Artificial Intelligence**
-- **責任あるAI（Responsible AI）に関する公式ガイダンス**
-- **Amazon Bedrock / AWSの生成AIサービス活用事例**（金融、ヘルスケア、小売など業界ごとのユースケース）
+- [**AWS Cloud Adoption Framework (CAF) for Artificial Intelligence**](https://docs.aws.amazon.com/pdfs/whitepapers/latest/aws-caf-for-ai/aws-caf-for-ai.pdf)
+- [**責任あるAI（Responsible AI）に関する公式ガイダンス**](https://aws.amazon.com/jp/ai/responsible-ai/)
+- [**Amazon Bedrock / AWSの生成AIサービス活用事例**](https://aws.amazon.com/jp/ai/generative-ai/customers/)（金融、ヘルスケア、小売など業界ごとのユースケース）
 
 ## 準備しながら気づいたこと
 
@@ -108,11 +110,32 @@ AWS公式の学習プラットフォーム「AWS Skill Builder」にて、AI Bus
 
 ## 受験結果について
 
-後日、スコアレポートが届き、**無事に合格**できました。
+当日夜、スコアレポートが届き、**無事に合格**できました。
 
 さらに、ベータ試験の合格者に対する特典である**アーリーアダプター（Early Adopter）のデジタルバッジ**も無事獲得できました。
 
+![credly-badges](/img/blogs/2026/1015_aws_certified_ai_business_strategist/credly-badges.png)
+
 手応えとしても感じていた通り、細かなAWS CLIコマンドなどを問う問題はありませんでした。ビジネスの文脈に即して「適切なAI活用判断ができるか」「責任ある推進体制を築けるか」という本質的な理解が問われる試験でした。
+
+### 活かせる前提知識（他のAI認定との親和性）
+
+実際に受験してみて感じたのは、他社クラウドや既存のAI認定で培った知識が大きなアドバンテージになる点です。  
+特に、以下の認定資格の知識や学習経験があれば、出題意図をスムーズに汲み取ることができ、**だいぶ楽に受験できる**と感じました。
+
+- **AWS Certified Generative AI Developer - Professional (AIP-C01)**  
+  Bedrock の選定基準やガードレール、コンプライアンス設計などの深い知見
+- **AWS Certified AI Practitioner (AIF-C01)**  
+  AWS における AI/ML 基礎概念やユースケース全般の土台
+- **Google Cloud認定 Generative AI Leader (GAIL)**  
+  ビジネスリーダー視点での生成 AI 導入・ROI 評価・組織展開という共通の思想
+- **Microsoft認定: Azure AI の基礎 (AI-901)**  
+  責任ある AI（公平性・透明性・プライバシー保護など）の基本原則の共通性
+- **生成AIパスポート（GUGA）**  
+  AI リテラシー、知的財産権、著作権、リスク管理といった社会・ビジネス共通の基礎教養
+
+ちなみに、私自身は上記のうち「生成AIパスポート」以外はすべて合格・取得済みです。  
+そのため、各試験で培ったガバナンスやユースケースの知識が自然と頭に入っており、初見のシナリオ問題でもスムーズに判断できました。
 
 ## まとめ
 

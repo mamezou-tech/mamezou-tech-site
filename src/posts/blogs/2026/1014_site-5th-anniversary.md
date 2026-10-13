@@ -9,6 +9,9 @@ image: true
 ## はじめに
 おかげさまで、この10月で豆蔵デベロッパーサイトは立ち上げから5周年を迎えることができました。
 
+![Mameka 5th anniv.](/img/blogs/2026/1014_site-5th-anniversary/mameka-5th-anniv.webp)
+*5周年を祝う豆香*
+
 ローンチのお知らせは2021年の11月29日でした。
 
 @[og](/blogs/2021/11/29/site-launch/)

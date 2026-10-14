@@ -71,12 +71,12 @@ AWS認定の新設試験ベータ版は、8,250円（税込）という特別価
 
 ### 2. AWS Skill Builder
 
-AWS公式の学習プラットフォーム「AWS Skill Builder」にて、AI Business Strategist向けの公式教材や関連プランを確認しました。
+AWS公式の学習プラットフォーム「AWS Skill Builder」にて、公式問題集や関連教材を確認・活用しました。
 
+- [**Official Practice Question Set: AWS Certified AI Business Strategist (AIB-C01 - 日本語)**](https://skillbuilder.aws/learn/NN5MQE4G3M/official-practice-question-set-aws-certified-ai-business-strategist-aibc01--/B3F7Q7CP37)
+  - 公式の練習問題集（日本語）が提供されており、出題傾向やシナリオ問題の形式、選択肢の問われ方を事前に把握するのに最適
 - [**試験準備カテゴリ（AIB-C01 / AB1-C01）**](https://skillbuilder.aws/category/exam-prep/ai-business-strategist-business-AIB-C01)
-  - ベータ試験期間中だったためか、専用の公式対策プラン（Exam Prep Plan）や公式模擬問題はまだ用意されていませんでした。
-  - そのため、ビジネスリーダー向けの生成AI学習コース（「Generative AI for Executives」等）を活用しました。
-  - さらに、責任あるAI（Responsible AI）に関する教材で基礎概念をインプットしました。
+  - ビジネスリーダー向けの生成AIコース（「Generative AI for Executives」等）や、責任あるAI（Responsible AI）に関する教材を活用した基礎概念のインプット
 
 ### 3. 公式ホワイトペーパー・ブログの確認
 

@@ -36,6 +36,8 @@ Changelog
 実装: 最も大きい（CompletionProvider + DefinitionProvider + 参照形式の仕様決め）
 優先度: 中（段階導入推奨）
 
+これは知らなかったんですが、ChangeLog はソフトウェアの変更情報を書くためのものなので、ファイル名を補完出来たら、更にファイル中の関数などのシンボルに飛べたら、便利なんだろうなと。自分のユースケースでは使わないですが、面白そうなので追加することにしました。
+
 **kondoumh/changelog-support#28**
 
 dayOfWeekLang に none を追加して曜日を出さない
@@ -50,6 +52,8 @@ Outline 表示（日時、summary、必要なら bullet の先頭タグ）
 価値: 長い ChangeLog の可読性がかなり上がる
 実装: DocumentSymbolProvider 実装が必要、parser ルール設計が肝
 優先度: 中〜高（価値大、工数中）
+
+アウトラインは VS Code のアウトラインに対して ChangeLog の構造を渡すだけで実装できてしまう
 
 ## 実装
 

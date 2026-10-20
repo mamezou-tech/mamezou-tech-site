@@ -50,6 +50,34 @@ html.dark {
   hr {
     border-color: var(--dm-border);
   }
+
+  /*
+   * Algolia 検索欄・予測パネル
+   * algoliasearchNetlify.css（CDN）の CSS 変数を上書きする。
+   * --color-*: netlify-frontend 独自、--aa-*: autocomplete-theme-classic 由来
+   */
+  .aa-Autocomplete,
+  .aa-Panel,
+  .aa-DetachedContainer,
+  .aa-DetachedFormContainer {
+    --color-background: var(--dm-surface);
+    --color-text: var(--dm-text);
+    --color-selected: #34303d;
+    --color-mark: #a99cff;
+    --color-input-icon: var(--dm-text-muted);
+
+    --aa-background-color-rgb: 34, 31, 40;
+    --aa-input-background-color-rgb: 34, 31, 40;
+    --aa-text-color-rgb: 228, 225, 234;
+    --aa-muted-color-rgb: 179, 175, 189;
+    --aa-primary-color-rgb: 169, 156, 255;
+    --aa-selected-color-rgb: 169, 156, 255;
+    --aa-panel-border-color-rgb: 74, 70, 82;
+    --aa-input-border-color-rgb: 74, 70, 82;
+    --aa-panel-shadow: 0 0 0 1px #4a4652, 0 6px 16px -4px rgba(0, 0, 0, .6);
+
+    color: var(--dm-text);
+  }
 }
 
 /* トップページの「先週の人気記事」などのおすすめ枠・タグ枠 */
@@ -64,14 +92,19 @@ html.dark {
     }
   }
 
-  fieldset.tags.bg-white {
-    background-color: var(--dm-surface);
-    border-color: var(--dm-border);
-  }
-
   .page-ranking {
     border-color: var(--dm-border);
   }
+}
+
+/*
+ * 注意: Tailwind のクラス名（bg-white など）を含むセレクタは html.dark の中に
+ * ネストしないこと。@apply bg-white の参照先として親ルールごと拾われ、
+ * 「@apply does not currently support nested CSS」でビルドが失敗する。
+ */
+html.dark fieldset.tags.bg-white {
+  background-color: var(--dm-surface);
+  border-color: var(--dm-border);
 }
 
 /* 切り替えボタン */

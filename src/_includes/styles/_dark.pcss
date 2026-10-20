@@ -1,0 +1,97 @@
+/*
+ * ダークモード（第1段階）
+ * html.dark が付いているときだけ適用される上書きスタイル。
+ * 細かいハードコード色の置き換えは後続作業で行う。
+ */
+html.dark {
+  color-scheme: dark;
+
+  --dm-bg: #16141a;
+  --dm-surface: #221f28;
+  --dm-text: #e4e1ea;
+  --dm-text-muted: #b3afbd;
+  --dm-border: #4a4652;
+  --dm-link: #9ec5ff;
+
+  body {
+    background-color: var(--dm-bg);
+    background-image: none;
+    color: var(--dm-text);
+  }
+
+  /* 面（記事・ヒーロー・カード・目次・検索） */
+  article,
+  .tdbc-hero,
+  .tdbc-card,
+  div#search,
+  .toc {
+    background-color: var(--dm-surface);
+  }
+
+  h4,
+  blockquote {
+    color: var(--dm-text-muted);
+  }
+
+  a {
+    color: var(--dm-link);
+  }
+
+  .tdbc-card a.tdbc-card__title {
+    color: #d9a6ff;
+  }
+
+  code:not([class*=language]) {
+    background-color: var(--dm-bg);
+    color: var(--dm-text);
+    border-color: var(--dm-border);
+  }
+
+  hr {
+    border-color: var(--dm-border);
+  }
+}
+
+/* トップページの「先週の人気記事」などのおすすめ枠・タグ枠 */
+html.dark {
+  .additional-area {
+    background-color: rgba(34, 31, 40, 0.85);
+    border-color: var(--dm-border);
+    box-shadow: 5px 5px 2px #000;
+
+    h2 {
+      border-bottom-color: var(--dm-border);
+    }
+  }
+
+  fieldset.tags.bg-white {
+    background-color: var(--dm-surface);
+    border-color: var(--dm-border);
+  }
+
+  .page-ranking {
+    border-color: var(--dm-border);
+  }
+}
+
+/* 切り替えボタン */
+.theme-toggle {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 50;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  border: 1px solid #adacb7;
+  background-color: #fff;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, .18);
+}
+
+html.dark .theme-toggle {
+  background-color: var(--dm-surface);
+  border-color: var(--dm-border);
+}

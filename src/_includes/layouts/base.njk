@@ -23,6 +23,21 @@
     <meta name="author" content="{{ author }}" />
     {%- endif %}
     <link href="/css/style.css" rel="stylesheet" />
+    <script>
+      // 描画前にテーマを決めてちらつきを防ぐ（保存値 > OS設定）
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem("theme"); } catch (e) {}
+        if (t !== "light" && t !== "dark") {
+          t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        var root = document.documentElement;
+        root.classList.toggle("dark", t === "dark");
+        root.setAttribute("data-color-mode", t);
+        root.setAttribute("data-light-theme", "light");
+        root.setAttribute("data-dark-theme", "dark");
+      })();
+    </script>
     <link rel="canonical" href="{{ meta.url }}{{ url }}" >
 
     {% if meta.env === 'production' %}
@@ -142,6 +157,26 @@
         </div>
       </div>
     </footer>
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="ダークモード切り替え"></button>
+    <script>
+      (function () {
+        var btn = document.getElementById("theme-toggle");
+        var root = document.documentElement;
+        function render() {
+          var dark = root.classList.contains("dark");
+          btn.textContent = dark ? "\u2600\uFE0F" : "\uD83C\uDF19";
+          btn.title = dark ? "ライトモードにする" : "ダークモードにする";
+        }
+        btn.addEventListener("click", function () {
+          var t = root.classList.contains("dark") ? "light" : "dark";
+          root.classList.toggle("dark", t === "dark");
+          root.setAttribute("data-color-mode", t);
+          try { localStorage.setItem("theme", t); } catch (e) {}
+          render();
+        });
+        render();
+      })();
+    </script>
     <script type="module" src="/js/site.js"></script>
   </body>
 </html>

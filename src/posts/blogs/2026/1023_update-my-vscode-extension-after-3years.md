@@ -1,5 +1,5 @@
 ---
-title: 自作 VS Code 拡張をまた3年ぶりにアップデート
+title: 自作 VS Code 拡張をまた3年ぶりにアップデート 〜過去の自分と AI に助けてもらった話〜
 author: masahiro-kondo
 date: 2026-10-23
 tags: [vscode, 個人開発]
@@ -99,7 +99,7 @@ npx @vscode/vsce publish
 npm version 0.3.0
 ```
 
-package.json（+ lockfile）更新、コミット、タグ作成まで一気にやってくれます。こんな便利なコマンドがあるの知りませんでした。
+package.json（+ lockfile）更新、コミット、タグ作成まで一気にやってくれます。こんな便利なコマンドがあるの知りませんでした（Copilot さんに教えてもらいました）。
 Node.js 何年使ってるねんって感じですが、まあこんなもんです。
 :::
 

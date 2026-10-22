@@ -25,7 +25,7 @@ GitHub リポジトリはこちらです。
 
 ## 初めての機能拡張リクエスト
 
-この Marketplace で星もついてない、5年間で620件ぐらいしかダウンロードされていない弱小 Extension に 先日 enhancemebnt issue が3つも登録されていました。
+この Marketplace で星もついてない、5年間で620件ぐらいしかダウンロードされていない弱小 Extension に 先日 enhancement issue が3つも登録されていました。
 
 - [auto-complete / go to filenames · Issue #27 · kondoumh/changelog-support](https://github.com/kondoumh/changelog-support/issues/27)
 - [setting language "none" to not insert weekday · Issue #28 · kondoumh/changelog-support](https://github.com/kondoumh/changelog-support/issues/28)

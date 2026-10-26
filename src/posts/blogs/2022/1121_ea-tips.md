@@ -2,7 +2,7 @@
 title: 明日から使えるEnterprise Architectの小技集
 author: kazuki-ogawa
 date: 2022-11-21
-tags: ["Enterprise Achitect", "EA", "モデリング", "小技"]
+tags: ["Enterprise Architect", "EA", "モデリング", "小技"]
 ---
 
 みなさん、モデリングツールは何を使っているでしょうか。

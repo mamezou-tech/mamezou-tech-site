@@ -13,6 +13,7 @@
 @import "../_includes/styles/_layout.pcss";
 @import "../_includes/styles/_sitenav.pcss";
 @import "../_includes/styles/_og-preview.pcss";
+@import "../_includes/styles/_dark.pcss";
 
 @tailwind base;
 @tailwind components;

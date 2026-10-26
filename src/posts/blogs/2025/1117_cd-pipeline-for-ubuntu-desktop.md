@@ -2,7 +2,7 @@
 title: SSH穴あけ不要！Cloudflare Tunnel でお家 Ubuntu Desktop へのセキュアな CD パイプラインを構築したい！
 author: kosuke-uematsu
 date: 2025-11-17
-tags: [Github Actions, Cloudflare, ssh, CI/CD]
+tags: [GitHub Actions, Cloudflare, ssh, CI/CD]
 ---
 
 ## はじめに

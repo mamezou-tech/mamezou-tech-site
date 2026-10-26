@@ -2,7 +2,7 @@
 title: Javaでもローカル環境でWhisperを使って音声データ書き起こしをしたい
 author: kotaro-miura
 date: 2025-05-13
-tags: [whisper, whisper, OpenBLAS, java, JNI]
+tags: [whisper, OpenBLAS, java, JNI]
 image: true
 ---
 

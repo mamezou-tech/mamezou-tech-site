@@ -2,7 +2,7 @@
 title: Getting Help with Command Inputs from GitHub Copilot in the CLI
 author: masahiro-kondo
 date: 2024-02-28T00:00:00.000Z
-tags: [Copilot, GitHub]
+tags: [GitHub Copilot, GitHub]
 image: true
 translate: true
 ---

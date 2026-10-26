@@ -2,7 +2,7 @@
 title: 最新LLMで“バイブコーディング”を実践（要件定義〜機能実装①）
 author: kenta-kirihara
 date: 2025-08-19
-tags: [バイブコーディング, chatgpt, ClaudeCode, 生成AI, AI]
+tags: [バイブコーディング, chatgpt, Claude Code, 生成AI, AI]
 image: true
 ---
 

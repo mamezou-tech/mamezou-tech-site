@@ -5,7 +5,7 @@ title: >-
 author: kosuke-uematsu
 date: 2025-11-17T00:00:00.000Z
 tags:
-  - Github Actions
+  - GitHub Actions
   - Cloudflare
   - ssh
   - CI/CD

@@ -11,7 +11,7 @@ tags: scrapbox
 
 ですが、本記事では技術情報そのものではなく、技術情報をどのように社内で共有・活用しているかについてご紹介します。
 
-![](https://i.gyazo.com/2e2e9df7e5d9c6bb2dbfd10a503ea35e.png)
+![](/img/gyazo/2e2e9df7e5d9c6bb2dbfd10a503ea35e.png)
 
 弊社豆蔵では、[Helpfeel社](https://corp.helpfeel.com/) による [Cosense (旧Scrapbox)](https://cosen.se/) を社内公式ツールとして 2018 年 5 月に導入しました。
 
@@ -34,7 +34,7 @@ tags: scrapbox
 - 社内の半端ないアウェイ感
 - 社員にとってやりがいのある案件とのアンマッチ
 
-![](https://i.gyazo.com/f5346e6fa360d65ef1f28c7bc476d61b.png)
+![](/img/gyazo/f5346e6fa360d65ef1f28c7bc476d61b.png)
 
 以下、それぞれの課題について、詳しく説明します。
 
@@ -75,7 +75,7 @@ tags: scrapbox
 - 案件の概要をみられるようにした
 - 社内活動をみられるようにした
 
-![](https://i.gyazo.com/a72535e17bd185f70b77c30853d52e1a.png)
+![](/img/gyazo/a72535e17bd185f70b77c30853d52e1a.png)
 
 以下、それぞれの取り組みについてご紹介します。
 
@@ -113,7 +113,7 @@ Cosense という情報共有の場を用意し、社員個々人のアウトプ
 
 定量的な効果としては、以下の図の通りです。
 
-![](https://i.gyazo.com/ce26ed9f558b5bc892f5ae606b61a29b.png)
+![](/img/gyazo/ce26ed9f558b5bc892f5ae606b61a29b.png)
 
 現在は社員全員が利用しており、月平均で 200 前後の新しいページが社員によって作られています。
 
@@ -125,7 +125,7 @@ Cosense という情報共有の場を用意し、社員個々人のアウトプ
 
 さて、次に定性的な効果です。
 
-![](https://i.gyazo.com/9caa83801fb46cc5ea9e02bd3201e3b0.png)
+![](/img/gyazo/9caa83801fb46cc5ea9e02bd3201e3b0.png)
 
 以下、それぞれについて詳しく説明します。
 

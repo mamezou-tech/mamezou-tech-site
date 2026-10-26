@@ -3,7 +3,7 @@ title: 无需开放 SSH 端口！使用 Cloudflare Tunnel 构建家用 Ubuntu De
 author: kosuke-uematsu
 date: 2025-11-17T00:00:00.000Z
 tags:
-  - Github Actions
+  - GitHub Actions
   - Cloudflare
   - ssh
   - CI/CD

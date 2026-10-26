@@ -7,7 +7,7 @@ date: 2025-08-19T00:00:00.000Z
 tags:
   - バイブコーディング
   - chatgpt
-  - ClaudeCode
+  - Claude Code
   - 生成AI
   - AI
 image: true

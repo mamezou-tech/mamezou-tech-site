@@ -109,7 +109,7 @@ site.use(esbuild({
     tsconfigRaw: {
       compilerOptions: {
         jsx: "react-jsx",
-        jsxImportSource: "npm:preact",
+        jsxImportSource: "npm:preact@^10.25.0",
       },
     },
   },

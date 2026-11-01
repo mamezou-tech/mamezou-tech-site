@@ -5,6 +5,8 @@ import { dirname } from "@std/path";
 import { existsSync } from "@std/fs";
 import { writeFile } from "@opensrc/jsonfile";
 import { APIError } from "@openai/openai";
+import { WebClient } from "@slack/web-api";
+import { KnownBlock } from "npm:@slack/types";
 
 const openai = new OpenAI();
 const English = {
@@ -179,6 +181,42 @@ async function translate(
   await Deno.writeTextFile(newFilePath, updatedMd);
 }
 
+async function notifyFailures(
+  language: string,
+  failed: { path: string; link: string; message: string }[],
+) {
+  const token = Deno.env.get("SLACK_BOT_TOKEN");
+  if (!token) return;
+  const web = new WebClient(token);
+  const channel = Deno.env.get("SLACK_CHANNEL_ID") || "D041BPULN4S";
+  const failedList = failed
+    .map((f) => `• <${f.link}|${f.path}>\n  ${f.message}`)
+    .join("\n")
+    .slice(0, 2900);
+  const blocks: KnownBlock[] = [
+    {
+      type: "header",
+      text: {
+        type: "plain_text",
+        text: `翻訳失敗(${language}): ${failed.length}件`,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: failedList,
+      },
+    },
+  ];
+  await web.chat.postMessage({
+    channel,
+    mrkdwn: true,
+    text: `翻訳(${language})に失敗した記事が${failed.length}件あります`,
+    blocks,
+  });
+}
+
 async function main() {
   const [lang, filePath, originalUrlPath] = Deno.args;
   console.info("lang", lang, filePath, originalUrlPath);
@@ -214,6 +252,9 @@ async function main() {
       { succeeded, failed },
       { spaces: 2 },
     );
+    if (failed.length > 0) {
+      await notifyFailures(targetLang.language, failed);
+    }
   } else {
     await translate({
       filePath,

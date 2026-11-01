@@ -249,7 +249,7 @@ ${imageTextRule}`,
   const response = await openai.images.generate({
     prompt: promptSuggestion.output_text ||
       `${title}\n${details}\n${imageTextRule}`,
-    model: "gpt-image-1",
+    model: "gpt-image-2",
     size: "1024x1024",
     quality: "medium",
   });

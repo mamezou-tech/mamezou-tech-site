@@ -116,7 +116,7 @@ Please pick one of these keywords and write a short article about it.`;
 
   async function createColumn() {
     const result = await openai.responses.create({
-      model: "o3",
+      model: "gpt-5.6-sol",
       reasoning: {
         effort: "high"
       },

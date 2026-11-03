@@ -20,10 +20,12 @@ enTitle: Agile Development
 - [第7回: レトロスペクティブが機能しません…同じ改善案の再放送と、ToDoの列挙会](/blogs/2026/10/09/7_retrospectives_dont_work/)
 - [第8回: スプリントレビューにステークホルダーが来なくなりました](/blogs/2026/10/09/8_stakeholders_skip_sprint_review/)
 - [第9回: ストーリーポイントの人日換算を上司に求められます](/blogs/2026/10/21/9_story_points_to_person_days/)
-- [番外編（見積りの、理屈っぽい話）】属人性を排した見積りのはずなのに、ストーリーポイントは人によって違う。](/blogs/2026/10/21/ex_what_do_story_points_measure/)
+- [番外編（見積りの、理屈っぽい話）: 属人性を排した見積りのはずなのに、ストーリーポイントは人によって違う。](/blogs/2026/10/21/ex_what_do_story_points_measure/)
 - [第10回: ベロシティが安定しません。計画に使っていいの？](/blogs/2026/10/21/10_unstable_velocity/)
 - [第11回: なぜいつも終わらない？スプリント持ち越しタスクの本当の理由と処方箋](/blogs/2026/10/30/11_unfinished_tasks_every_sprint/)
 - [第12回: もう割り込みに振り回されない！アジャイル現場の”計画の守り方”FAQ](/blogs/2026/10/30/12_planning_interrupt_work/)
+- [番外編: 正論が通らないとき…発注側や上層部が聞く耳を持たない場合の生存戦略](/blogs/2026/11/02/ex_when_being_right_isnt_enough/)
+- [だけど大きく途を踏み外した編: 私が「私設・日本式アジャイルを撲滅する会」の会長である理由](/blogs/2026/11/02/ex_abolish_japanese_agile/)
 - 第13回: POが多忙でチームに来ません
 - 第14回: スクラムマスターは何をする人？ 暇そうに見えます
 - 第15回: 自己組織化と言われても、結局リーダーが全部決めています

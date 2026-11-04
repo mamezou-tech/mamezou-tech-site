@@ -1,8 +1,8 @@
 ---
 title: GitHub Immutable Releases を設定したリポジトリのリリース用パイプラインが静かに壊れたので直した話
 author: masahiro-kondo
-date: 2026-11-03
-tags: [GitHub, CI/CD, electron]
+date: 2026-11-05
+tags: [GitHub, CI/CD, electron, Security]
 image: true
 ---
 
@@ -235,4 +235,4 @@ softprops/action-gh-release@v3自身の現在のドキュメントにはこう�
 以上、Immutable releases の仕様変更により、リリース用ビルドパイプラインがいつの間にか壊れていた話でした。
 今回は v3.8.0 から v3.9.2 へのアップデートになりましたが、v3.9.0 と v3.9.1 は immutable なリリースにタグ名を奪われたことで使い捨てになっています。実際のアプリケーションコードの変更は CWE-918 (SSRF) の修正1件のみで、残りはすべてこのワークフロー周りの修正によるバージョン消費でした。
 
-Immutable Release 自体はよりセキュアになっていると思いますので、安心して使っていただいてよいと思います。
+Matrix ビルドはジョブを並列化する有効な手段ですが、Immutable Releases のようにリソースを固定化してしまう機能と併用する際は注意が必要ということがわかりました。Immutable Release 自体はよりセキュアになっていると思いますので、安心して使っていただいてよいと思います。

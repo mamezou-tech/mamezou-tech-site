@@ -27,7 +27,10 @@ image: true
 Jack さんのブログにあるように、Electron は Chromium の証明書ストアを同梱しており、Chromium や Node を更新してビルドし直さない限りストアが更新されません。つまり、古いバージョンの Electron で作られたアプリを配布し続けていると、信頼すべきでなくなったルート証明書をいつまでも信頼し続けてしまいます。
 
 @[og](https://blog.jxck.io/entries/2026-10-25/emudhra.html)
+
+Electron アプリはビルド時点のルート証明書を内包するため、古い Electron バージョンでビルドされたままのアプリは、失効すべき証明書を信頼し続けてしまうリスクがあるということです。
 :::
+
 
 ## リリース用ワークフローにエラーが発生
 さて、アプリの細かい修正や Electron のバージョンアップを実施して、リリースの段階になりました。このリポジトリでは新しいバージョンのタグを作成し push するとリリース用のワークフローが起動するように設定しています。冒頭の記事で書いているように、macOS / Windows / Linux のバイナリーを strategy.matrix を使ってそれぞれのプラットフォームの Actions Runner で生成し、GitHub のリリースを作成する [softprops/action-gh-release](https://github.com/softprops/action-gh-release) を使ってリリースしています。
@@ -100,7 +103,7 @@ action-gh-release のパラメータに `prerelease: true` を指定している
 
 > `prerelease` を `true` にすることで、ドラフトリリースを作成してくれます。
 
-とあり、ドラフトで添付ファイルと差分を確認してから Publish をクリックと、人間が最後に明示的に公開する手順を踏んでいました。
+とあり、ドラフトで添付ファイルと差分を確認してから Publish をクリックするという、人間が最後に明示的に公開する手順を踏んでいました。
 
 ## レースコンディションの回避
 最初に考えたのは、strategy.matrix で独立した3つのプロセスで publish が実行されることによるレースです。並列の matrix ジョブが実行され、各ジョブが個別に softprops/action-gh-release を呼んで同じ v3.9.0 タグのリリースを作成・更新しようとします。そこへほぼ同時にリクエストが飛んだ結果、同じタグに対してリリースオブジェクトが複数作られるような動きになったのではないか。そこで、ビルドとリリースでジョブを分けて、ビルドだけをマトリクスで実行するように修正しました。また、バイナリを作成している electron-builder のオプションに `--publish never` をつけることで暗黙的な公開を抑止しました。
@@ -216,7 +219,7 @@ jobs:
 v3.9.1 のタグも、空のまま immutable 化したリリースに使われてしまっていたため、こちらも再利用できません。結局、v3.9.2 としてもう一度タグを push し直し、ようやく4つのアセットが揃ったドラフトリリースが作成されました。ドラフトのまま変更可能な状態なので、不要な `.blockmap` ファイルなどを削除し、内容を確認してから `publish` をクリックして、無事リリースが完了しました。
 
 ## 何が変わったのか
-softprops/action-gh-release@v3自身の現在のドキュメントにはこうあります。
+softprops/action-gh-release の現在の最新版である@v3のドキュメントにはこうあります。
 
 > GitHub only allows asset uploads before a release is published, but draft prereleases publish with the release.published event instead of release.prereleased. If you need prereleases with assets on an immutable-release repository, keep the release as a draft with draft: true, then publish it later from that draft.
 

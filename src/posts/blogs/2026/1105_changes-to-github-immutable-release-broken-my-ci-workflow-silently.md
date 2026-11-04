@@ -43,7 +43,7 @@ Error: Validation Failed: {"resource":"Release","code":"custom","field":"target_
 Immutable releases にまつわるエラーのようです。
 
 ## 初期のワークフローの実装
-エラーが発生した時点のワークフローファイルは以下のようになっていました。matrics.strategy で各プラットフォームの Runner のジョブでビルドとリリースを一気に行う形です。
+エラーが発生した時点のワークフローファイルは以下のようになっていました。strategy.matrix で各プラットフォームの Runner のジョブでビルドとリリースを一気に行う形です。
 
 ```yaml:Release.yml(エラー発生時点)
 name: Release

@@ -24,7 +24,7 @@ image: true
 
 @[og](https://forest.watch.impress.co.jp/docs/news/2152996.html)
 
-Jack さんのブログにあるように、古いバージョンの Electron でビルドした脆弱性を含むアプリを配布していると、ユーザーがダウンロードしてインストールしてしまう可能性があります。
+Jack さんのブログにあるように、Electron は Chromium の証明書ストアを同梱しており、Chromium や Node を更新してビルドし直さない限りストアが更新されません。つまり、古いバージョンの Electron で作られたアプリを配布し続けていると、信頼すべきでなくなったルート証明書をいつまでも信頼し続けてしまいます。
 
 @[og](https://blog.jxck.io/entries/2026-10-25/emudhra.html)
 :::
@@ -98,7 +98,7 @@ action-gh-release のパラメータに `prerelease: true` を指定している
 
 当時は、この設定でちゃんとドラフトのリリースが作成されていたようです。記事にも
 
-> 「prerelease を trueにすることで、ドラフトリリースを作成してくれます」
+> `prerelease` を `true` にすることで、ドラフトリリースを作成してくれます。
 
 とあり、ドラフトで添付ファイルと差分を確認してから Publish をクリックと、人間が最後に明示的に公開する手順を踏んでいました。
 
@@ -180,45 +180,28 @@ jobs:
 
 `fail-fast: false` にしているので、全ての Runner のジョブが終わってから後続の publish ジョブが実行されます。
 
-## Pre-release 自体が immutable になっていた
-これで、ドラフトのリリースは作成されました。うまくいったと思ったのですが、ドラフトページから `publish` ボタンで公開しようとした時点でエラーになってしまいました。
+とはいえ、壊れた v3.9.0 のリリースはそのままでした。重複して作られたリリースのうち、空のまま immutable 化してしまった方を削除すれば、もう一方の(アセットが揃っている)ドラフトを publish できるだろうと考え、空のリリースを削除しました。ところが、ドラフトページから `publish` ボタンを押すと、今度は以下のエラーになりました。
 
 > There was an error creating your Release: tag name was used by an immutable release.
 
-ドラフトのまま公開できない状態でした。いろいろ調べて、原因が分かりました。softprops/action-gh-release の出力するエラーメッセージに原因と解決策が書かれていました。
+どうやら、一度 immutable なリリースに使われたタグ名は、そのリリースを削除してもリポジトリ側で「使用済み」として記録され続けるようです（改竄防止のための仕様としては筋が通っています）。v3.9.0 というタグ自体がもう使えなくなってしまったので、バージョンを上げて v3.9.1 として仕切り直すことにしました。
 
-> prerelease は release.published イベントで即座に公開されて immutable になってしまうので、immutable release が有効なリポジトリでアセット付きの prerelease を 作りたいなら、draft: true のままにして後から publish してください
+## Pre-release 自体が immutable になっていた
+ジョブを分離したワークフローで v3.9.1 のタグを push し直したところ、3つの Runner のビルドジョブはすべて成功しました。ところが、最後の publish ジョブの Publish ステップそのものが、今度は以下のエラーで失敗してしまいました。
 
-そこで、以下のように softprops/action-gh-release のオプションで `draft: true` を指定し Pre-release ではなくドラフトでリリースを作成するように変更しました。
+> Cannot upload asset sbe-3.9.1-universal-mac.zip to an immutable release.
+
+ジョブは1つに統合したはずなのに、4つのアセット（exe, dmg, zip, AppImage）のうち3つまではアップロードできて、最後の1つだけ弾かれる、という中途半端な失敗でした。原因は softprops/action-gh-release 自身が出力したエラーメッセージに書かれていました。
+
+> GitHub only allows asset uploads before a release is published, but draft prereleases publish with the release.published event instead of release.prereleased. If you need prereleases with assets on an immutable-release repository, keep the release as a draft with draft: true, then publish it later from that draft and subscribe downstream workflows to release.published.
+
+つまり、Immutable releases が有効なリポジトリでは `prerelease: true` を指定しただけの場合、リリースの作成と同時に `release.published` イベントが発火して即座に公開・immutable 化されてしまうとのことでした。4つのアセットをほぼ同時にアップロードし始めたものの、その途中でリリースがロックされてしまい、間に合わなかったアセットだけ弾かれた、というわけです。
+
+そこで、以下のように softprops/action-gh-release のオプションで `draft: true` を指定し、Pre-release ではなくドラフトでリリースを作成するように変更しました。
 
 ```yaml:Release.yml
-name: Release
-
-on:
-  push:
-    branches:
-      - "!*"
-    tags:
-      - "v*"
-
-jobs:
-  build:
-
-  # 中略
-
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Download artifacts
-      uses: actions/download-artifact@v8
-      with:
-        path: dist
-        pattern: dist-*
-        merge-multiple: true
     - name: Publish
-      uses: softprops/action-gh-release@v3
+      uses: softprops/action-gh-release@v2
       with:
         files: |
           dist/*.exe
@@ -230,7 +213,7 @@ jobs:
         draft: true # ドラフトモードでリリースを作成
 ```
 
-これで、ドラフトリリースの画面から publish をクリックできるようになり、無事リリースが完了しました。
+v3.9.1 のタグも、空のまま immutable 化したリリースに使われてしまっていたため、こちらも再利用できません。結局、v3.9.2 としてもう一度タグを push し直し、ようやく4つのアセットが揃ったドラフトリリースが作成されました。ドラフトのまま変更可能な状態なので、不要な `.blockmap` ファイルなどを削除し、内容を確認してから `publish` をクリックして、無事リリースが完了しました。
 
 ## 何が変わったのか
 softprops/action-gh-release@v3自身の現在のドキュメントにはこうあります。
@@ -245,11 +228,11 @@ softprops/action-gh-release@v3自身の現在のドキュメントにはこう�
 つまり、ジョブが並列で同じリリースに書き込みに行く構造自体は1年前から変わっていない。当時それでも壊れなかったのは、「prerelease は人間が手動 Publish するまでロックされない」という仕様のおかげで、並列書き込みが衝突する前に猶予があったから。GitHub がこの間に「prerelease も即ロック」という形に仕様を厳格化した(おそらく、誰も手動で publish しなければ永久にミュータブルなままで immutable release の保証が骨抜きになる抜け道を塞ぐため)ことで、今回1年ぶりに実行したことでその変更の影響を受けてしまったということのようです。
 
 :::info
-上記は推論であり、の仕様変更を明記した GitHub 公式の Changelog ブログのエントリは見つけられませんでした。確度の高い状況証拠(ブログの記述・softprops/action-gh-release ドキュメントの現在の注意書き)からの推測である点はご承知おきください。
+上記は推論であり、この仕様変更を明記した GitHub 公式の Changelog ブログのエントリは見つけられませんでした。確度の高い状況証拠(ブログの記述・softprops/action-gh-release ドキュメントの現在の注意書き)からの推測である点はご承知おきください。
 :::
 
 ## さいごに
 以上、Immutable releases の仕様変更により、リリース用ビルドパイプラインがいつの間にか壊れていた話でした。
-今回、v3.8.0 から v3,9.2 へのアップデートになりました。2つのリビジョンの変更はワークフローのみです。
+今回は v3.8.0 から v3.9.2 へのアップデートになりましたが、v3.9.0 と v3.9.1 は immutable なリリースにタグ名を奪われたことで使い捨てになっています。実際のアプリケーションコードの変更は CWE-918 (SSRF) の修正1件のみで、残りはすべてこのワークフロー周りの修正によるバージョン消費でした。
 
 Immutable Release 自体はよりセキュアになっていると思いますので、安心して使っていただいてよいと思います。

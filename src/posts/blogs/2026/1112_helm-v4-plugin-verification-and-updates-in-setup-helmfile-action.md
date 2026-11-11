@@ -2,6 +2,7 @@
 title: GitHub Actions Runner の Helm 4系移行に伴う setup-helmfile Action の対応
 author: masahiro-kondo
 date: 2026-11-12
+image: true
 tags: [GitHub Actions, oss, CI/CD]
 ---
 

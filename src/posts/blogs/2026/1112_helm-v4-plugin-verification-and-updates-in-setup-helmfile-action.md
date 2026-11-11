@@ -19,7 +19,7 @@ setup-helmfile は以下の記事でも紹介しています。
 @[og](https://developer.mamezou-tech.com/oss-intro/setup-helmfile/)
 :::
 
-setup-helmfile はデフォルトの挙動として Helm plugin である helm-diff, helm-git をインストールします。
+setup-helmfile はデフォルトの挙動として Helm plugin である helm-diff, helm-s3 をインストールします。
 
 ## GitHub Actions Runner の helm CLI が v4系に移行
 
@@ -30,8 +30,8 @@ setup-helmfile は利用する helm CLI のバージョンを v3系に固定し�
 今回、`install-helm: no` でインストールするテストケースでプラグインのインストールが失敗していました。これは、Runner にプリインストールされた helm CLI が v4系に移行していたからだと判明しました。
 
 ## Helm v4で導入されたプラグイン検証
-Helm v4 で plugin install コマンドに --verify フラグが追加され、かつデフォルトが有効 (true) に設定されています。これによりプラグインインストール時には PGP 署名の検証がデフォルトで実行されます。これはサプライチェーンセキュリティを担保するための Helm 開発コミュニティの施策です。
-メジャーなプラグインは、メンテナがいずれ署名対応するため、通常通り helm plugin install すれば検証が動いて無事インストールできます。
+Helm v4 で plugin install コマンドに --verify フラグが追加され、かつデフォルトが有効 (true) に設定されています。これによりプラグインインストール時には PGP 署名(provenance ファイル)の検証がデフォルトで実行されます。これはサプライチェーンセキュリティを担保するための Helm 開発コミュニティの施策です。
+メジャーなプラグインは、メンテナがいずれ署名対応するため、通常通り helm plugin install すれば検証が動いて無事インストールできると考えられます。
 しかし、署名が普及するまでの過渡期や、あまりメンテナンスされていないプラグインについては、 verify を無効化にしてもインストールしたい局面が出てきます。
 
 利用するプラグインのバージョンを固定した上で verify を無効化して凌ぐ期間がしばらく続くと思われます。

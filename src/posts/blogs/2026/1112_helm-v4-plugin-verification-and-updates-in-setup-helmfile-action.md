@@ -8,7 +8,7 @@ tags: [GitHub Actions, oss, CI/CD]
 
 ## はじめに
 
-豆蔵の GitHub オーガニゼーション(mamezou-tech) では GitHub Action 用の Action である setup-helmfile を公開しています。
+豆蔵の GitHub オーガニゼーション(mamezou-tech) では GitHub Actions 用の Action である setup-helmfile を公開しています。
 
 @[og](https://github.com/marketplace/actions/setup-helmfile)
 

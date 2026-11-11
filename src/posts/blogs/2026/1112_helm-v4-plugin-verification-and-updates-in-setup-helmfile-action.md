@@ -26,7 +26,7 @@ setup-helmfile はデフォルトの挙動として Helm plugin である helm-d
 
 先日、PR を取り込んだりしてリリース作業をしているときに、GitHub Actions Runner にプリインストールされている helm CLI を使用するテストケースでエラーが発生しました。
 
-setup-helmfile は利用する helm CLI のバージョンを v3系に固定しており、利用者が `install-helm: no` を指定した時のみ、helm CLI をインストールをスキップし Runner にインストールされた helm CLI を使用します。
+setup-helmfile は利用する helm CLI のバージョンを v3系に固定しており、利用者が `install-helm: no` を指定した時のみ、helm CLI のインストールをスキップし Runner にインストールされた helm CLI を使用します。
 
 今回、`install-helm: no` でインストールするテストケースでプラグインのインストールが失敗していました。これは、Runner にプリインストールされた helm CLI が v4系に移行していたからだと判明しました。
 
@@ -61,9 +61,11 @@ async function installHelmPlugin(plugin) {
     return;
   }
   if (/unknown flag:\s*--verify/.test(stderr)) {
+    // 不明なフラグのエラーが出た時だけ、フラグなしでリトライ
     await exec.exec(`helm plugin install ${plugin}`);
     return;
   }
+  // それ以外のエラーではリトライせずエラーをスロー
   throw new Error(`helm plugin install ${plugin} failed:\n${stderr}`);
 }
 ```
@@ -72,5 +74,5 @@ async function installHelmPlugin(plugin) {
 
 ## さいごに
 
-GitHub Actions Runner (ubuntu-latest) も最近 Ubuntu 26.04 にアップデートされ、各種ソフトウェアもバージョンアップされています。
-Helm のエコシステムもセキュアな方向にシフトしつつあります。setup-helmfile もその流れに合わせてメンテナンスを続けています。
+GitHub Actions Runner (ubuntu-latest) も最近 Ubuntu 26.04 にアップデートされ、各種ソフトウェアもバージョンアップされています。Helm のエコシステムもセキュアな方向にシフトしつつあります。
+setup-helmfile もその流れに合わせてメンテナンスを続けています。

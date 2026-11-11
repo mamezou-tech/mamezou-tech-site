@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>電子レンジで見る 構造化設計（メインループ・構造図・C言語風コード）</title>
+<style>
+:root{
+  --bg:#E4E8EB; --panel:#FFFFFF; --ink:#1F2A33; --sub:#5B6873; --line:#C9D1D7;
+  --sel:#2F6FD6; --hot:#E46C0A; --disp:#F4B183; --run:#FFE38A;
+  --gmain:#E6E9EC; --gp1:#DDF1EC; --gp2:#ECE3F7; --gp3:#FCE9D6;
+  --hmain:#5B6873; --hp1:#1F7A68; --hp2:#6A3FA0; --hp3:#B3561B;
+  --ff:"BIZ UDPGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;
+  --fm:"BIZ UDGothic","Osaka-Mono","MS Gothic","Menlo","Consolas",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--ff)}
+.app{height:100vh;display:grid;grid-template-rows:1fr 1fr auto;gap:6px;padding:6px}
+.top{display:grid;grid-template-columns:1fr 1fr;gap:6px;min-height:0}
+.bottom{display:grid;grid-template-columns:1.15fr 1.15fr 1.05fr 1.1fr;gap:6px;min-height:0;background:#D3D9DE;border-radius:8px;padding:6px}
+.pane{background:var(--panel);border-radius:8px;border:1px solid var(--line);display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.pane h2{font-size:13px;margin:0;padding:5px 10px;border-bottom:1px solid var(--line);color:var(--sub);font-weight:700;display:flex;justify-content:space-between;gap:8px}
+.pane h2 span{font-weight:400}
+.pane .body{flex:1;min-height:0;position:relative}
+.pane svg{width:100%;height:100%;display:block}
+.capbar{display:flex;gap:10px;align-items:center;border-top:1px solid var(--line);background:#F6F8F9;padding:5px 10px}
+.caption{flex:1;font-size:13px;line-height:1.5;min-height:2.9em}
+.caption b{color:var(--sel)}
+.speed{display:flex;gap:4px;font-size:12px;align-items:center;white-space:nowrap}
+.speed button{font-family:inherit;font-size:12px;border:1px solid var(--line);background:#fff;border-radius:4px;padding:2px 8px;cursor:pointer}
+.speed button[aria-pressed="true"]{background:var(--sel);color:#fff;border-color:var(--sel)}
+.capbar{flex-wrap:wrap;row-gap:4px}
+.caption{flex:1 1 100%}
+.ctrl{display:flex;gap:6px;align-items:center;flex:0 0 auto;font-size:12px}
+.ctrl button{font-family:inherit;font-size:12px;border:1px solid var(--line);background:#fff;border-radius:4px;padding:3px 7px;cursor:pointer;white-space:nowrap}
+.ctrl button[aria-pressed="true"]{background:var(--sel);color:#fff;border-color:var(--sel)}
+.ctrl button:disabled{opacity:.4;cursor:default}
+.ctrl button:focus-visible,.speed button:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+#bStep{font-weight:700}
+.stepinfo{flex:1 1 0;min-width:0;font-size:12px;color:var(--sub);font-family:var(--fm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.4em}
+.stepinfo b{color:#B58A00;font-family:var(--ff)}
+.paused .spin{animation-play-state:paused}
+
+.mbtn{cursor:pointer}
+.mbtn:focus{outline:none}
+.mbtn:focus-visible rect,.mbtn:focus-visible circle{stroke:var(--sel);stroke-width:4}
+.mbtn.on rect{stroke:var(--sel);stroke-width:4}
+.mbtn.dis{opacity:.45;cursor:not-allowed}
+.t{font-family:var(--ff);fill:var(--ink)}
+
+/* 構造図 */
+.edge{transition:stroke .2s}
+.edge.hl{stroke:var(--sel);stroke-width:3}
+.mod rect{transition:stroke .2s}
+.mod.act rect{stroke:var(--sel);stroke-width:3.5;fill:var(--run)}
+.cp.flash line,.cp.flash circle{animation:cpf 1s}
+.cp.flash text{animation:cpt 1s}
+@keyframes cpf{0%,60%{stroke:var(--sel)}100%{stroke:#222}}
+@keyframes cpt{0%,60%{fill:var(--sel);font-weight:700}100%{fill:var(--ink)}}
+
+/* コード */
+.col{overflow:auto;padding:6px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
+.colhd{font-size:13px;font-weight:700;padding:5px 10px;color:#fff}
+.fn{border:1px solid var(--line);border-radius:6px;background:#fff;transition:box-shadow .2s,border-color .2s}
+.fn .fh{font-size:12px;font-weight:700;padding:3px 8px;border-bottom:1px solid var(--line)}
+.fn pre{margin:0;padding:4px 6px 4px 0;font-family:var(--fm);font-size:clamp(10px,0.72vw,14px);line-height:1.5;overflow-x:auto}
+.fn.act{border-color:var(--sel);box-shadow:0 0 0 2px var(--sel)}
+.ln{display:block;white-space:pre-wrap;word-break:break-all;padding:0 8px;border-left:4px solid transparent}
+.ln.run{background:var(--run);border-left-color:#B58A00}
+.kw{color:#8B3FB0}.cm{color:#7A8791}.ty{color:#1F7A68}
+.mbtn.latched rect,.mbtn.latched circle{stroke:#E53935;stroke-width:4}
+.spin{transform-origin:300px 17px;animation:spin 1.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#gMain .colhd{background:var(--hmain)} #gMain .fh{background:var(--gmain)}
+#gP1 .colhd{background:var(--hp1)} #gP1 .fh{background:var(--gp1)}
+#gP2 .colhd{background:var(--hp2)} #gP2 .fh{background:var(--gp2)}
+#gP3 .colhd{background:var(--hp3)} #gP3 .fh{background:var(--gp3)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media (max-width:900px),(max-height:520px){
+  .app{height:auto;grid-template-rows:auto auto}
+  .top,.bottom{grid-template-columns:1fr}
+  .pane{min-height:320px}
+}
+
+/* 著作権表示 */
+.legal{font-size:11px;line-height:1.45;color:#46525C;background:#F6F8F9;border:1px solid var(--line,#C9D1D7);border-radius:6px;padding:3px 10px}
+.legal b{color:#1F2A33}
+.notice{position:fixed;inset:0;background:rgba(31,42,51,.55);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.notice[hidden]{display:none}
+.notice .card{background:#fff;border-radius:10px;max-width:640px;width:100%;padding:20px 24px;box-shadow:0 10px 30px rgba(0,0,0,.25);font-size:15px;line-height:1.7}
+.notice h2{font-size:18px;margin:0 0 10px}
+.notice p{margin:0 0 8px}
+.notice button{margin-top:10px;font-family:inherit;font-size:15px;font-weight:700;border:none;border-radius:6px;padding:8px 22px;background:#2F6FD6;color:#fff;cursor:pointer}
+.notice button:focus-visible{outline:3px solid #1F2A33;outline-offset:2px}
+.notice .card{max-height:90vh;overflow:auto}
+.notice ul{margin:0 0 8px;padding-left:1.4em}
+.notice li{margin:2px 0}
+.notice .small{font-size:13px;line-height:1.6;color:#46525C}
+.notice a,.legal a{color:#2F6FD6}
+</style>
+</head>
+<body>
+<div class="notice" id="notice" role="dialog" aria-modal="true" aria-labelledby="noticeTitle">
+  <div class="card">
+    <h2 id="noticeTitle">ご利用の前に</h2>
+    <p>© 2026 株式会社豆蔵 All rights reserved.</p>
+    <p>本教材は、豆蔵の講座を受講された方のフォローアップを主な目的として公開しています。なお、講座を受講されていない方に豆蔵の講座をご紹介いただく場合は、このページへのリンクを共有いただけます。</p>
+    <p>次の行為を禁止します。</p>
+    <ul>
+      <li>本教材（画面、プログラム、図、文章を含む）の全部または一部の複製、転載、再配布</li>
+      <li>改変、または本教材をもとにした類似の教材やツールの作成</li>
+      <li>研修・講義の教材としての利用、または教材としての販売</li>
+      <li>類似の教材やツールを作成する目的での、生成AIへの入力</li>
+    </ul>
+    <p class="small">法令で認められる範囲の引用（出典の明記が必要です）は除きます。本教材は現状のまま提供するもので、内容の正確性や利用の結果について、当社は責任を負いません。</p>
+    <p class="small">豆蔵の講座のご案内：<a href="https://www.mamezou.com/services/hrd/course_search" target="_blank" rel="noopener">講座一覧（株式会社豆蔵）</a></p>
+    <button id="noticeOk">同意して利用する</button>
+  </div>
+</div>
+<div class="app">
+  <div class="top">
+    <section class="pane" aria-label="電子レンジ">
+      <h2>電子レンジ<span>手動設定＝時間で加熱／おこのみ温度＝温度で加熱</span></h2>
+      <div class="body"><svg id="oven" viewBox="0 0 640 330" preserveAspectRatio="xMidYMid meet"></svg></div>
+      <div class="capbar"><div class="caption" id="caption" aria-live="polite">いまは止まっています。<b>▶ 連続実行</b> で動かすか、<b>⏭ 1ステップ</b>（または N キー）で1行ずつ進めてください。</div>
+        <div class="ctrl" role="group" aria-label="実行のしかた">
+          <button id="bRun" aria-pressed="false">▶ 連続実行</button>
+          <button id="bPause" aria-pressed="true">⏸ 止める</button>
+          <button id="bStep" disabled title="止めている間は N キーでも進めます">⏭ 1ステップ (N)</button>
+          <button id="bReset" title="すべてを初期状態に戻して止めます">⏮ 初めに戻す</button>
+        </div>
+        <div class="stepinfo" id="stepInfo" aria-live="polite"></div>
+        <div class="speed" role="group" aria-label="速さ">速さ <button data-sp="0.55" aria-pressed="true">ゆっくり</button><button data-sp="2.5" aria-pressed="false">速い</button></div></div>
+    </section>
+    <section class="pane" aria-label="構造図">
+      <h2>構造図（P75 Work-12 改善例）<span>○ データ　● 制御フラグ　　ボタンの赤枠＝押されて、まだ読まれていない</span></h2>
+      <div class="body"><svg id="sc" class="paused" viewBox="0 0 740 322" preserveAspectRatio="xMidYMid meet"></svg></div>
+    </section>
+  </div>
+  <div class="bottom">
+    <section class="pane" id="gMain"><div class="colhd">電子レンジ主制御</div><div class="col" id="cMain"></div></section>
+    <section class="pane" id="gP1"><div class="colhd">P1. 受付管理 と その下位モジュール</div><div class="col" id="cP1"></div></section>
+    <section class="pane" id="gP2"><div class="colhd">P2. 加熱設定作成 と その下位モジュール</div><div class="col" id="cP2"></div></section>
+    <section class="pane" id="gP3"><div class="colhd">P3. 加熱実行制御 と その下位モジュール</div><div class="col" id="cP3"></div></section>
+  </div>
+  <footer class="legal" aria-label="著作権表示と利用条件"><b>© 2026 株式会社豆蔵 All rights reserved.</b>｜豆蔵の講座の受講後のフォローアップ用の教材です。講座のご紹介を目的とするリンクの共有は可能です。複製・転載・改変・研修での利用、類似の教材を作るための生成AIへの入力は禁止します。｜<a href="https://www.mamezou.com/services/hrd/course_search" target="_blank" rel="noopener">豆蔵の講座のご案内</a></footer>
+</div>
+<script>
+(function(){
+"use strict";
+const NS='http://www.w3.org/2000/svg';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!==undefined)e.textContent=text;if(parent)parent.appendChild(e);return e}
+function txt(p,x,y,s,size,opt={}){return el('text',Object.assign({x,y,class:'t','font-size':size},opt),p,s)}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+/* ================= 電子レンジの絵 ================= */
+const ov=$('#oven');
+el('defs',{},ov).innerHTML=`
+ <radialGradient id="heatG" cx="50%" cy="72%" r="65%"><stop offset="0" stop-color="#F7A54A" stop-opacity=".85"/><stop offset="1" stop-color="#F7A54A" stop-opacity="0"/></radialGradient>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#333"/></marker>
+ <marker id="ahB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#2F6FD6"/></marker>
+ <marker id="ahO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0L10,5L0,10" fill="none" stroke="#333" stroke-width="1.5"/></marker>`;
+// 本体
+el('rect',{x:8,y:14,width:520,height:288,rx:6,fill:'#fff',stroke:'#111','stroke-width':3},ov);
+el('rect',{x:40,y:302,width:50,height:12,fill:'#E5E5E5',stroke:'#888'},ov);
+el('rect',{x:420,y:302,width:50,height:12,fill:'#E5E5E5',stroke:'#888'},ov);
+el('rect',{x:20,y:26,width:360,height:262,fill:'#fff',stroke:'#333','stroke-width':1.5},ov); // 扉
+el('rect',{x:40,y:62,width:310,height:190,fill:'#DCE6F2',stroke:'#7F99B8','stroke-width':1.5},ov); // 窓
+const heat=el('rect',{x:40,y:62,width:310,height:190,fill:'url(#heatG)',opacity:0},ov);
+// マイクロ波
+const waves=el('g',{opacity:0},ov);
+['M195 60 C150 110 90 120 70 190','M195 60 C240 110 300 120 320 190','M195 60 C170 130 150 170 160 205','M195 60 C220 130 240 170 230 205']
+ .forEach(d=>el('path',{d,fill:'none',stroke:'#4F81BD','stroke-width':1.3,'stroke-dasharray':'6 5',class:'wave'},waves));
+// 赤外線
+const ir=el('g',{opacity:0},ov);
+[[95,215],[150,222],[205,226],[260,222],[300,212]].forEach(([x,y])=>el('line',{x1:368,y1:52,x2:x,y2:y,stroke:'#E53935','stroke-width':1.2,'stroke-dasharray':'5 4'},ir));
+// マグネトロン・センサー
+el('ellipse',{cx:195,cy:36,rx:20,ry:6,fill:'#C6D9F1',stroke:'#4F81BD'},ov);
+el('rect',{x:175,y:36,width:40,height:20,fill:'#C6D9F1',stroke:'#4F81BD'},ov);
+el('ellipse',{cx:195,cy:56,rx:20,ry:6,fill:'#C6D9F1',stroke:'#4F81BD'},ov);
+el('rect',{x:360,y:34,width:16,height:30,fill:'#C6D9F1',stroke:'#4F81BD'},ov);
+txt(ov,152,24,'マグネトロン',11,{fill:'#555'});
+txt(ov,330,24,'赤外線センサー',11,{fill:'#555'});
+// 皿と料理
+el('ellipse',{cx:195,cy:222,rx:95,ry:20,fill:'#fff',stroke:'#9AA','stroke-width':1.5},ov);
+const food=el('g',{},ov);
+for(let i=0;i<46;i++){const a=i*2.4,r=8+((i*37)%55);const x=195+Math.cos(a)*r*1.15,y=216+Math.sin(a)*r*0.22;
+  el('ellipse',{cx:x.toFixed(1),cy:y.toFixed(1),rx:7,ry:2.6,transform:`rotate(${(i*47)%180} ${x.toFixed(1)} ${y.toFixed(1)})`,fill:['#6B3E26','#7B4A2D','#3E8E41','#58A14E','#8B5A3C'][i%5]},food)}
+const steam=el('g',{opacity:0},ov);
+[175,195,215].forEach((x,i)=>el('path',{d:`M${x} 200 q-6 -12 0 -24 q6 -12 0 -24`,fill:'none',stroke:'#fff','stroke-width':3,'stroke-linecap':'round',opacity:.9},steam));
+el('rect',{x:364,y:70,width:12,height:200,rx:6,fill:'#F2F0E6',stroke:'#333'},ov); // ドア取っ手
+// 表示窓
+el('rect',{x:392,y:30,width:126,height:56,fill:'var(--disp)',stroke:'var(--hot)','stroke-width':3},ov);
+const d1=txt(ov,455,53,'600W',17,{'text-anchor':'middle'});
+const d2=txt(ov,455,76,'5分',15,{'text-anchor':'middle'});
+// ボタン
+function button(id,x,y,w,h,label,rx,fs){const g=el('g',{class:'mbtn',id,tabindex:0,role:'button','aria-label':label.replace('\n','')},ov);
+  el('rect',{x,y,width:w,height:h,rx,fill:'#F2F5FA',stroke:'#4F81BD','stroke-width':2},g);
+  const ls=label.split('\n');ls.forEach((l,i)=>txt(g,x+w/2,y+h/2+(i-(ls.length-1)/2)*15+5,l,fs||14,{'text-anchor':'middle'}));return g}
+button('bStart',392,98,70,30,'スタート',15);
+button('bCancel',470,98,48,30,'とりけし',15,11);
+button('bTemp',392,140,58,40,'おこのみ\n温度',8,12);
+button('bManual',458,140,60,40,'手動設定',8,12);
+txt(ov,455,198,'出力・温度',12,{'text-anchor':'middle'});
+button('bUp',396,204,52,26,'∧',13,16);
+button('bDown',462,204,52,26,'∨',13,16);
+txt(ov,396,250,'時間',12);
+const dial=el('g',{},ov);
+el('circle',{cx:470,cy:268,r:22,fill:'#F2F5FA',stroke:'#4F81BD','stroke-width':2},dial);
+el('path',{d:'M455 258 A18 18 0 0 1 485 258',fill:'none',stroke:'#4F81BD','stroke-width':2,'marker-end':'url(#ah)'},dial);
+const tMinus=button('tMinus',418,256,26,24,'−',8,15), tPlus=button('tPlus',497,256,26,24,'＋',8,15);
+// 吹き出し（教材の注記風）
+function note(x,y,w,lines){const g=el('g',{},ov);el('rect',{x,y,width:w,height:lines.length*15+8,fill:'#E3E3E3',stroke:'#C0392B','stroke-width':1.2},g);
+  lines.forEach((l,i)=>txt(g,x+6,y+17+i*15,l,11));return g}
+note(532,140,104,['[おこのみ温度]','温度を指定','[手動設定]','出力と時間を指定']);
+
+
+/* ================= ドア ================= */
+const doorG=el('g',{class:'mbtn',id:'bDoor',tabindex:0,role:'button','aria-label':'ドアを開け閉めする'},ov);
+el('rect',{x:360,y:66,width:20,height:208,rx:6,fill:'transparent',stroke:'none'},doorG);
+const doorOpen=el('g',{opacity:0},ov);
+el('rect',{x:40,y:62,width:310,height:190,fill:'#7F8C99',opacity:.55},doorOpen);
+txt(doorOpen,195,165,'ドアが開いています',18,{'text-anchor':'middle',fill:'#fff','font-weight':700});
+txt(ov,352,292,'取っ手を押すとドアの開閉',10,{'text-anchor':'end',fill:'#777'});
+
+/* ================= 構造図 ================= */
+const sc=$('#sc');
+el('defs',{},sc).innerHTML=`<marker id="ea" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="context-stroke"/></marker>
+<marker id="ca" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z" fill="context-stroke"/></marker>`;
+const GRP={main:'#E6E9EC',p1:'#DDF1EC',p2:'#ECE3F7',p3:'#FCE9D6'};
+const M={
+ main:{x:370,y:4,w:104,h:36,l:['電子レンジ','主制御'],g:'main'},
+ p1:{x:110,y:100,w:112,h:34,l:['P1.受付管理'],g:'p1'},
+ p2:{x:340,y:100,w:112,h:34,l:['P2.','加熱設定作成'],g:'p2'},
+ p3:{x:596,y:100,w:112,h:34,l:['P3.','加熱実行制御'],g:'p3'},
+ p11:{x:30,y:268,w:58,h:50,l:['P1.1','加熱設定','受付'],g:'p1'},
+ p12:{x:110,y:268,w:58,h:50,l:['P1.2.','加熱操作','受付'],g:'p1'},
+ p13:{x:190,y:268,w:58,h:50,l:['P1.3.','ドア操作','受付'],g:'p1'},
+ p21:{x:262,y:268,w:58,h:50,l:['P2.1','モード','判定'],g:'p2'},
+ p22:{x:340,y:268,w:58,h:50,l:['P2.2.','時間加熱','設定作成'],g:'p2'},
+ p23:{x:418,y:268,w:58,h:50,l:['P2.3.','温度加熱','設定作成'],g:'p2'},
+ p31:{x:484,y:268,w:52,h:50,l:['P3.1','加熱起動'],g:'p3'},
+ p32:{x:540,y:268,w:52,h:50,l:['P3.2.','加熱終了','判定'],g:'p3'},
+ p33:{x:596,y:268,w:52,h:50,l:['P3.3.','加熱停止'],g:'p3'},
+ p34:{x:652,y:268,w:52,h:50,l:['P3.4.','一時停止'],g:'p3'},
+ p35:{x:708,y:268,w:52,h:50,l:['P3.5.','再開'],g:'p3'},
+};
+const PARENT={p1:'main',p2:'main',p3:'main',p11:'p1',p12:'p1',p13:'p1',p21:'p2',p22:'p2',p23:'p2',p31:'p3',p32:'p3',p33:'p3',p34:'p3',p35:'p3'};
+const edges={};
+for(const c in PARENT){const p=M[PARENT[c]],m=M[c];
+  const x1=p.x,y1=p.y+p.h,x2=m.x,y2=m.y;
+  edges[c]={x1,y1,x2,y2,el:el('line',{x1,y1,x2,y2,stroke:'#222','stroke-width':1.4,'marker-end':'url(#ea)',class:'edge'},sc)}}
+for(const k in M){const m=M[k];const g=el('g',{class:'mod',id:'m_'+k},sc);
+  el('rect',{x:m.x-m.w/2,y:m.y,width:m.w,height:m.h,fill:GRP[m.g],stroke:'#222','stroke-width':1.4},g);
+  const n=m.l.length;m.l.forEach((t,i)=>txt(g,m.x,m.y+m.h/2+(i-(n-1)/2)*12.5+4,t,10,{'text-anchor':'middle'}));m.g_el=g}
+/* 結合子：[edge, ラベル, d=データ/c=制御, down=子へ/up=親へ, 結合子のy, 側(1=右 -1=左), ラベルx, ラベルy, 揃え, 表示行] */
+const CP=[
+ ['p1','設定パラメータ','d','up',58,-1,282,44,'end'],
+ ['p1','加熱終了','c','down',77,-1,198,63,'end'],
+ ['p1','制御イベント','c','up',70,1,246,95,'middle'],
+ ['p2','設定パラメータ','d','down',67,-1,338,64,'end'],
+ ['p2','加熱設定','d','up',70,1,374,78,'start'],
+ ['p3','加熱設定','d','down',58,1,450,44,'start'],
+ ['p3','制御コマンド','c','down',77,1,522,63,'start'],
+ ['p3','加熱終了','c','up',70,-1,476,96,'middle'],
+ ['p11','設定データ','d','up',182,-1,63,172,'end',['設定','データ']],
+ ['p11','加熱終了','c','down',236,1,68,243,'start',['加熱','終了']],
+ ['p12','操作コマンド','c','up',236,1,127,234,'start',['操作','コマンド']],
+ ['p13','ドア開閉イベント','c','up',182,1,156,174,'start',['ドア開閉','イベント']],
+ ['p21','設定パラメータ','d','down',176,-1,298,166,'end',['設定','パラメータ']],
+ ['p21','モード種別','c','up',226,1,303,229,'start',['モード','種別']],
+ ['p22','加熱設定','d','up',252,-1,323,250,'end',['加熱','設定']],
+ ['p22','時間＋出力W数','d','down',226,1,357,224,'start',['時間＋','出力W数']],
+ ['p23','目標温度','d','down',252,-1,391,251,'end',['目標','温度']],
+ ['p23','加熱設定','d','up',190,1,391,187,'start'],
+ ['p31','加熱設定','d','down',200,-1,524,190,'end'],
+ ['p32','加熱設定','d','down',236,-1,536,240,'end',['加熱','設定']],
+ ['p32','加熱終了','c','up',236,1,571,244,'start',['加熱','終了']],
+];
+const couples={};
+CP.forEach(([e,lab,kind,dir,yc,side,lx,ly,anchor,lines])=>{const E=edges[e];const dx=E.x2-E.x1,dy=E.y2-E.y1,L=Math.hypot(dx,dy);
+  const ux=dx/L,uy=dy/L,nx=uy*side,ny=-ux*side;const t=(yc-E.y1)/dy;const px=E.x1+dx*t+nx*11,py=E.y1+dy*t+ny*11;
+  const sgn=dir==='down'?1:-1,len=18;const ax=px-ux*len/2*sgn,ay=py-uy*len/2*sgn,bx=px+ux*len/2*sgn,by=py+uy*len/2*sgn;
+  const g=el('g',{class:'cp'},sc);
+  el('line',{x1:ax,y1:ay,x2:bx,y2:by,stroke:'#222','stroke-width':1.3,'marker-end':'url(#ca)'},g);
+  el('circle',{cx:ax,cy:ay,r:3.4,fill:kind==='c'?'#222':'#fff',stroke:'#222','stroke-width':1.2},g);
+  (lines||[lab]).forEach((l,i)=>txt(g,lx,ly+i*11,l,9,{'text-anchor':anchor}));
+  couples[e+':'+lab+':'+dir]={g,lx,ly:ly+((lines||[lab]).length-1)*11,anchor}});
+const bubLayer=el('g',{},sc);
+const dot=el('circle',{r:4.5,fill:'#2F6FD6',opacity:0},sc);
+
+/* ===== メインループの回転表示 ===== */
+const loopG=el('g',{},sc);
+el('path',{d:'M300 6 a11 11 0 1 1 -1 0',fill:'none',stroke:'#2F6FD6','stroke-width':2.4,'marker-end':'url(#ea)',class:'spin'},loopG);
+const cycleTx=txt(sc,284,16,'',10,{fill:'#2F6FD6','font-weight':700,'text-anchor':'end'});
+txt(sc,284,28,'メインループ',9,{fill:'#2F6FD6','text-anchor':'end'});
+
+/* ================= コード（C言語風） ================= */
+function hlc(s){const i=s.indexOf('/*');const c=i<0?s:s.slice(0,i),m=i<0?'':s.slice(i);
+  return esc(c).replace(/\b(void|bool|int|for|if|else|return|static|switch|case|default|break|true|false|const)\b/g,'<span class="kw">$1</span>')
+    .replace(/(\w*_t)\b/g,'<span class="ty">$1</span>')+(m?'<span class="cm">'+esc(m)+'</span>':'')}
+const CODE={
+ main:[
+ 'void 電子レンジ主制御(void) {',
+ '    設定パラメータ_t 設定パラメータ =   /* 初期設定 */',
+ '        { .モード = 温度, .目標温度 = 60 };',
+ '    加熱設定_t 加熱設定;',
+ '    bool 加熱中 = false, 加熱終了 = false;',
+ '    for (;;) {                  /* メインループ */',
+ '        制御イベント_t 制御イベント;',
+ '        受付管理(加熱終了, &制御イベント,',
+ '                 &設定パラメータ);',
+ '        加熱終了 = false;',
+ '        if (制御イベント == 開始) {',
+ '            加熱設定 = 加熱設定作成(設定パラメータ);',
+ '            加熱実行制御(加熱設定, 開始,',
+ '                         &加熱中, &加熱終了);',
+ '        } else if (制御イベント != なし) {',
+ '            /* 停止・一時停止・再開 */',
+ '            加熱実行制御(加熱設定, 制御イベント,',
+ '                         &加熱中, &加熱終了);',
+ '        } else if (加熱中) {',
+ '            加熱実行制御(加熱設定, 継続,',
+ '                         &加熱中, &加熱終了);',
+ '        }',
+ '        周期待ち();             /* 一定周期 */',
+ '    }',
+ '}'],
+ p1:[
+ 'void 受付管理(bool 加熱終了,',
+ '              制御イベント_t *制御イベント,',
+ '              設定パラメータ_t *設定パラメータ) {',
+ '    static bool 運転中 = false;',
+ '    static bool 一時停止中 = false;',
+ '    操作コマンド_t 操作コマンド;',
+ '    ドア開閉イベント_t ドア開閉イベント;',
+ '',
+ '    *制御イベント = なし;',
+ '    if (加熱終了) 運転中 = false;',
+ '    /* 毎周期、ハードウェアを読みに行く */',
+ '    加熱設定受付(設定パラメータ, 加熱終了);',
+ '    操作コマンド = 加熱操作受付();',
+ '    ドア開閉イベント = ドア操作受付();',
+ '',
+ '    if (ドア開閉イベント == 開 && 運転中) {',
+ '        運転中 = false;  一時停止中 = true;',
+ '        *制御イベント = 一時停止;',
+ '    } else if (操作コマンド == スタート',
+ '               && 一時停止中) {',
+ '        一時停止中 = false;  運転中 = true;',
+ '        *制御イベント = 再開;',
+ '    } else if (操作コマンド == スタート && !運転中',
+ '        && 設定パラメータ->モード != 未設定) {',
+ '        運転中 = true;',
+ '        *制御イベント = 開始;',
+ '    } else if (操作コマンド == とりけし) {',
+ '        運転中 = false;  一時停止中 = false;',
+ '        *制御イベント = 停止;',
+ '    }',
+ '}'],
+ p11:[
+ 'void 加熱設定受付(設定パラメータ_t *設定パラメータ,',
+ '                  bool 加熱終了) {',
+ '    if (加熱終了) {           /* 設定を消す */',
+ '        設定パラメータ->モード = 未設定;',
+ '        return;',
+ '    }',
+ '    if (設定ボタンが押された()) {',
+ '        /* ハードウェアから読む */',
+ '        *設定パラメータ = 設定データを読む();',
+ '        表示を更新する(設定パラメータ);',
+ '    }',
+ '}'],
+ p12:[
+ '操作コマンド_t 加熱操作受付(void) {',
+ '    if (スタートボタンが押された())',
+ '        return スタート;',
+ '    if (とりけしボタンが押された())',
+ '        return とりけし;',
+ '    return なし;',
+ '}'],
+ p13:[
+ 'ドア開閉イベント_t ドア操作受付(void) {',
+ '    static bool 前回開 = false;',
+ '    bool 今回開 = ドアスイッチを読む();',
+ '    ドア開閉イベント_t イベント = なし;',
+ '    /* 前回と比べて変化を検出する */',
+ '    if (今回開 && !前回開) イベント = 開;',
+ '    if (!今回開 && 前回開) イベント = 閉;',
+ '    前回開 = 今回開;',
+ '    return イベント;',
+ '}'],
+ p2:[
+ '加熱設定_t 加熱設定作成(',
+ '        設定パラメータ_t 設定パラメータ) {',
+ '    モード種別_t モード種別 =',
+ '        モード判定(設定パラメータ);',
+ '    if (モード種別 == 時間モード) {',
+ '        return 時間加熱設定作成(',
+ '            設定パラメータ.時間,',
+ '            設定パラメータ.W数);',
+ '    } else {              /* 温度モード */',
+ '        return 温度加熱設定作成(',
+ '            設定パラメータ.目標温度);',
+ '    }',
+ '}'],
+ p21:[
+ 'モード種別_t モード判定(',
+ '        設定パラメータ_t 設定パラメータ) {',
+ '    /* 時間モード / 温度モード */',
+ '    return 設定パラメータ.モード;',
+ '}'],
+ p22:[
+ '加熱設定_t 時間加熱設定作成(int 時間,',
+ '                            int W数) {',
+ '    /* { W数, 時間, 目標温度 } */',
+ '    加熱設定_t 設定 = { W数, 時間, 0 };',
+ '    return 設定;',
+ '}'],
+ p23:[
+ '加熱設定_t 温度加熱設定作成(int 目標温度) {',
+ '    /* { W数, 時間, 目標温度 } */',
+ '    加熱設定_t 設定 = { 500, 0, 目標温度 };',
+ '    return 設定;',
+ '}'],
+ p3:[
+ 'void 加熱実行制御(加熱設定_t 加熱設定,',
+ '                  制御コマンド_t 制御コマンド,',
+ '                  bool *加熱中, bool *加熱終了) {',
+ '    switch (制御コマンド) {',
+ '    case 開始:',
+ '        加熱起動(加熱設定);  *加熱中 = true;',
+ '        break;',
+ '    case 一時停止:',
+ '        一時停止();  *加熱中 = false;',
+ '        return;',
+ '    case 再開:',
+ '        再開();  *加熱中 = true;',
+ '        break;',
+ '    case 停止:',
+ '        加熱停止();  *加熱中 = false;',
+ '        *加熱終了 = true;',
+ '        return;',
+ '    default:                /* 継続 */',
+ '        break;',
+ '    }',
+ '    if (加熱終了判定(加熱設定)) {',
+ '        加熱停止();',
+ '        *加熱中 = false;  *加熱終了 = true;',
+ '    }',
+ '}'],
+ p31:['void 加熱起動(加熱設定_t 加熱設定) {','    経過時間をクリア();','    マグネトロン出力開始(加熱設定.W数);','}'],
+ p32:['bool 加熱終了判定(加熱設定_t 加熱設定) {','    if (加熱設定.時間 > 0)','        return 経過時間() >= 加熱設定.時間;','    return 温度取得() >= 加熱設定.目標温度;','}'],
+ p33:['void 加熱停止(void) {','    マグネトロン出力停止();','}'],
+ p34:['void 一時停止(void) {','    マグネトロン出力停止();','    経過時間を止める();','}'],
+ p35:['void 再開(void) {','    マグネトロン出力再開();','    経過時間を進める();','}'],
+};
+const TITLE={main:'電子レンジ主制御',p1:'P1. 受付管理',p11:'P1.1 加熱設定受付',p12:'P1.2. 加熱操作受付',p13:'P1.3. ドア操作受付',
+ p2:'P2. 加熱設定作成',p21:'P2.1 モード判定',p22:'P2.2. 時間加熱設定作成',p23:'P2.3. 温度加熱設定作成',
+ p3:'P3. 加熱実行制御',p31:'P3.1 加熱起動',p32:'P3.2. 加熱終了判定',p33:'P3.3. 加熱停止',p34:'P3.4. 一時停止',p35:'P3.5. 再開'};
+const COLS={cMain:['main'],cP1:['p1','p11','p12','p13'],cP2:['p2','p21','p22','p23'],cP3:['p3','p31','p32','p33','p34','p35']};
+for(const col in COLS){const box=document.getElementById(col);
+  COLS[col].forEach(k=>{const d=document.createElement('div');d.className='fn';d.id='f_'+k;
+    d.innerHTML=`<div class="fh">${TITLE[k]}</div><pre>${CODE[k].map((l,i)=>{const n=l.length-l.trimStart().length;
+      return `<span class="ln" data-i="${i}" style="padding-left:calc(8px + ${n+3}ch);text-indent:-3ch">${hlc(l.trimStart())||' '}</span>`}).join('')}</pre>`;box.appendChild(d)})}
+
+/* ================= 状態 ================= */
+const S={panel:{mode:'time',W:600,T:300,goal:60},
+  hw:{set:false,start:false,cancel:false,doorOpen:false},          // ハードウェア（押されたまま、読まれるのを待つ）
+  sw:{setting:null,running:false,paused:false,prevDoor:false,heating:false,heatEnd:false,heat:null}, // ソフトウェアの変数
+  temp:10,elapsed:0,cycle:0};
+const Wlist=[200,500,600];
+function fmt(sec){const m=Math.floor(sec/60),s=Math.floor(sec%60);return s?`${m}分${String(s).padStart(2,'0')}秒`:`${m}分`}
+function mmss(sec){sec=Math.max(0,Math.round(sec));return `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`}
+let doneLabel=null;
+function updDisplay(){const sw=S.sw;
+  if(sw.heating||sw.paused){const h=sw.heat;d1.textContent=(sw.paused?'一時停止 ':'加熱中 ')+h.W+'W';
+    d2.textContent=h.時間?`残り ${mmss(h.時間-S.elapsed)}  ${S.temp.toFixed(0)}℃`:`${S.temp.toFixed(0)}℃ → ${h.目標温度}℃`;return}
+  if(doneLabel){d1.textContent=doneLabel;d2.textContent=`${S.temp.toFixed(0)}℃ / ${mmss(S.elapsed)}`;return}
+  const p=sw.setting;if(!p){d1.textContent='---';d2.textContent='設定してください';return}
+  if(p.モード==='時間'){d1.textContent=`${p.W数}W`;d2.textContent=fmt(p.時間)}else{d1.textContent='おこのみ温度';d2.textContent=`${p.目標温度}℃`}}
+function latch(id,on){const b=document.getElementById(id);if(b)b.classList.toggle('latched',on)}
+let latchedSet=null;
+function updPanel(){const t=S.panel.mode==='time';$('#bManual').classList.toggle('on',t);$('#bTemp').classList.toggle('on',!t);
+  [tMinus,tPlus].forEach(b=>b.classList.toggle('dis',!t));doorOpen.setAttribute('opacity',S.hw.doorOpen?1:0)}
+let capT=0;function cap(h){$('#caption').innerHTML=h;capT=performance.now()}
+function capIdle(h){if(performance.now()-capT>4000/SPEED)$('#caption').innerHTML=h}
+function setHeat(on){heat.setAttribute('opacity',on?1:0);waves.setAttribute('opacity',on?1:0);steam.setAttribute('opacity',on&&S.temp>45?1:0)}
+let waveAnim=null;
+function animWaves(on){cancelAnimationFrame(waveAnim);if(!on||reduce)return;let off=0;
+  (function f(){off-=0.6;waves.querySelectorAll('path').forEach(p=>p.setAttribute('stroke-dashoffset',off));waveAnim=requestAnimationFrame(f)})()}
+
+/* ================= アニメーション部品 ================= */
+let SPEED=0.55;
+/* ステップ実行：止めている間は、コードの行が光るたびに「1ステップ進める」を待つ */
+let RUN='run',needGate=false,stepResolve=null,stepNo=0;
+/* 初めに戻す：実行中のメインループを途中で打ち切るための合図 */
+const ABORT={};let aborted=false;const chk=()=>{if(aborted)throw ABORT};
+async function gate(){
+  if(RUN!=='pause'||!needGate)return;
+  needGate=false;$('#bStep').disabled=false;
+  await new Promise(r=>{stepResolve=r});
+}
+function releaseStep(){if(RUN==='pause'&&!stepResolve)return;$('#bStep').disabled=true;stepNo++;dropOldBubbles();if(stepResolve){const r=stepResolve;stepResolve=null;r()}}
+const wait=async ms=>{await gate();chk();await new Promise(r=>setTimeout(r,reduce?Math.min(ms,40):ms/SPEED));chk()};
+function active(k,on){M[k].g_el.classList.toggle('act',on);const f=document.getElementById('f_'+k);f.classList.toggle('act',on);
+  if(on){const col=f.parentElement;const top=f.offsetTop-col.offsetTop;if(top<col.scrollTop||top+50>col.scrollTop+col.clientHeight)col.scrollTo({top:Math.max(0,top-6),behavior:reduce?'auto':'smooth'})}}
+function line(k,sub,nth=1){const ls=$$(`#f_${k} .ln`);ls.forEach(l=>l.classList.remove('run'));if(!sub)return;
+  const hit=ls.filter(l=>l.textContent.includes(sub))[nth-1];if(hit){hit.classList.add('run');
+    needGate=true;$('#stepInfo').innerHTML=`<b>${TITLE[k]}</b>　${esc(hit.textContent.trim())}`;
+    const pre=hit.parentElement,col=pre.closest('.col');const y=hit.offsetTop-col.offsetTop;
+    if(y<col.scrollTop||y+20>col.scrollTop+col.clientHeight)col.scrollTo({top:Math.max(0,y-col.clientHeight/3),behavior:reduce?'auto':'smooth'})}}
+function bubble(key,val){const c=couples[key];if(!c)return;c.g.classList.remove('flash');void c.g.getBBox();c.g.classList.add('flash');
+  if(val===undefined)return;
+  const g=el('g',{class:'vb'},bubLayer);const w=Math.max(30,[...val].length*9.4+12),h=16;
+  let x=c.anchor==='end'?c.lx-w:(c.anchor==='start'?c.lx:c.lx-w/2);let y=c.ly+4;
+  x=Math.max(2,Math.min(738-w,x));
+  el('rect',{x,y,width:w,height:h,rx:2,fill:'#E3E3E3',stroke:'#C0392B','stroke-width':1.1},g);
+  txt(g,x+6,y+12,val,9.5,{fill:'#C0392B','font-weight':700});
+  g.dataset.step=stepNo;
+  setTimeout(function f(){if(RUN==='pause')return;g.remove()},2400/SPEED)}
+function dropOldBubbles(){[...bubLayer.children].forEach(g=>{if(+g.dataset.step<stepNo-1)g.remove()})}
+async function travel(k,dir,ms){await gate();chk();await new Promise(res=>{if(reduce){res();return}const E=edges[k];
+  const [x1,y1,x2,y2]=dir==='down'?[E.x1,E.y1,E.x2,E.y2]:[E.x2,E.y2,E.x1,E.y1];const t0=performance.now();const dur=ms/SPEED;dot.setAttribute('opacity',1);
+  (function f(t){const p=Math.min(1,(t-t0)/dur);dot.setAttribute('cx',x1+(x2-x1)*p);dot.setAttribute('cy',y1+(y2-y1)*p);
+    if(p<1&&!aborted)requestAnimationFrame(f);else{dot.setAttribute('opacity',0);res()}})(t0)});chk()}
+async function call(child,args,body,rets,ms){
+  const E=edges[child].el;E.classList.add('hl');
+  (args||[]).forEach(([lab,val])=>bubble(child+':'+lab+':down',val));
+  await travel(child,'down',ms);active(child,true);
+  if(body)await body();else await wait(ms*.5);
+  (rets?rets():[]).forEach(([lab,val])=>bubble(child+':'+lab+':up',val));
+  await travel(child,'up',ms);active(child,false);line(child,null);E.classList.remove('hl')}
+
+/* ================= メインループ ================= */
+const spText=p=>p.モード==='時間'?`時間・${p.W数}W・${p.時間}秒`:`温度・${p.目標温度}℃`;
+const hsText=h=>h.時間?`${h.W}W・${h.時間}秒`:`${h.W}W・${h.目標温度}℃`;
+let heatCycles=0;
+async function mainLoop(){
+  active('main',true);
+  for(;;){
+    const sw=S.sw,hw=S.hw;
+    const detail=hw.set||hw.start||hw.cancel||(hw.doorOpen!==sw.prevDoor)||sw.heatEnd||heatCycles<2&&sw.heating;
+    const ms=detail?430:110;
+    S.cycle++;cycleTx.textContent=`${S.cycle} 周目`;
+    line('main','for (;;)');await wait(detail?250:60);
+    if(!detail&&!sw.heating)capIdle(`メインループが周期的に回っています（${S.cycle} 周目）。受付管理が毎周期、P1.1〜P1.3 でボタンとドアを読みに行きます。押されていなければ、何も起きません。`);
+    /* ---- 受付管理 ---- */
+    line('main','受付管理(');
+    let ev='なし',endIn=sw.heatEnd;
+    await call('p1',endIn?[['加熱終了','true']]:[],async()=>{
+      line('p1','*制御イベント = なし');await wait(ms*.3);
+      if(endIn){line('p1','if (加熱終了) 運転中');sw.running=false;await wait(ms*.4)}
+      // P1.1
+      line('p1','加熱設定受付(');let readSet=null;
+      await call('p11',endIn?[['加熱終了','true']]:[],async()=>{
+        if(endIn){line('p11','モード = 未設定');sw.setting=null;await wait(ms*.6);
+          cap('前の周期で加熱終了になったので、<b>P1.1 加熱設定受付</b> が設定を消します。');}
+        else{line('p11','設定ボタンが押された()');await wait(ms*.4);
+          if(hw.set){readSet=hw.set;hw.set=false;['bManual','bTemp','bUp','bDown','tMinus','tPlus'].forEach(i=>latch(i,false));
+            line('p11','設定データを読む()');sw.setting=readSet;doneLabel=null;await wait(ms*.5);line('p11','表示を更新する(');updDisplay();
+            cap(`<b>P1.1 加熱設定受付</b> が、押された設定ボタンを周期の中で読み取りました：設定パラメータ（${spText(readSet)}）。`);await wait(ms*.5)}}
+      },()=>readSet?[['設定データ',spText(readSet)]]:[],ms);
+      // P1.2
+      line('p1','加熱操作受付()');let cmd=null;
+      await call('p12',[],async()=>{line('p12','スタートボタン');await wait(ms*.3);
+        if(hw.start){cmd='スタート';hw.start=false;latch('bStart',false)}
+        else{line('p12','とりけしボタン');await wait(ms*.3);if(hw.cancel){cmd='とりけし';hw.cancel=false;latch('bCancel',false)}}
+        if(cmd)cap(`<b>P1.2 加熱操作受付</b> が「${cmd}」ボタンを読み取りました。`);
+      },()=>cmd?[['操作コマンド',cmd]]:[],ms);
+      // P1.3
+      line('p1','ドア操作受付()');let door=null;
+      await call('p13',[],async()=>{line('p13','ドアスイッチを読む()');await wait(ms*.3);
+        const now=hw.doorOpen;if(now&&!sw.prevDoor)door='開';if(!now&&sw.prevDoor)door='閉';sw.prevDoor=now;
+        if(door){line('p13',door==='開'?'イベント = 開':'イベント = 閉');latch('bDoor',false);
+          cap(`<b>P1.3 ドア操作受付</b> が、前の周期と比べてドアが「${door}」に変わったことを検出しました。`);await wait(ms*.4)}
+      },()=>door?[['ドア開閉イベント',door]]:[],ms);
+      // 判定
+      if(door==='開'&&sw.running){line('p1','*制御イベント = 一時停止');sw.running=false;sw.paused=true;ev='一時停止'}
+      else if(cmd==='スタート'&&sw.paused){line('p1','*制御イベント = 再開');sw.paused=false;sw.running=true;ev='再開'}
+      else if(cmd==='スタート'&&!sw.running&&sw.setting){line('p1','*制御イベント = 開始');sw.running=true;ev='開始'}
+      else if(cmd==='とりけし'){line('p1','*制御イベント = 停止');sw.running=false;sw.paused=false;ev='停止'}
+      else if(cmd==='スタート'&&!sw.setting){cap('設定が未設定なので、スタートは受け付けられません。「手動設定」か「おこのみ温度」で設定してください。')}
+      if(ev!=='なし')await wait(ms*.8);
+    },()=>ev!=='なし'?(ev==='開始'?[['制御イベント',ev],['設定パラメータ',spText(sw.setting)]]:[['制御イベント',ev]]):[],ms);
+    line('main','加熱終了 = false;',2);sw.heatEnd=false;await wait(detail?150:30);
+    /* ---- 振り分け ---- */
+    if(ev==='開始'){await doStart();}
+    else if(ev!=='なし'){await doCommand(ev);}
+    else if(sw.heating){await doContinue();}
+    line('main','周期待ち(');await wait(detail?500:260);
+  }
+}
+async function doStart(){const sw=S.sw,sp=sw.setting,ms=480;doneLabel=null;
+  line('main','加熱設定 = 加熱設定作成(');
+  cap(`制御イベント「開始」なので、主制御は <b>加熱設定作成(設定パラメータ)</b> を呼びます。`);
+  const K=sp.モード==='時間';const hs=K?{W:sp.W数,時間:sp.時間}:{W:500,目標温度:sp.目標温度};
+  await call('p2',[['設定パラメータ',spText(sp)]],async()=>{
+    line('p2','モード判定(');await call('p21',[['設定パラメータ',spText(sp)]],null,()=>[['モード種別',sp.モード]],ms);
+    line('p2',K?'時間加熱設定作成(':'温度加熱設定作成(');
+    cap(`<b>モード判定()</b> の結果「${sp.モード}」で、if 文が <b>${K?'P2.2 時間加熱設定作成':'P2.3 温度加熱設定作成'}</b> に分かれます。モードが増えると、この if 文に分岐を書き足すことになります。`);
+    await call(K?'p22':'p23',K?[['時間＋出力W数',`${sp.時間}秒・${sp.W数}W`]]:[['目標温度',sp.目標温度+'℃']],null,()=>[['加熱設定',hsText(hs)]],560);
+  },()=>[['加熱設定',hsText(hs)]],ms);
+  sw.heat=hs;S.temp=10;S.elapsed=0;heatCycles=0;
+  line('main','加熱実行制御(加熱設定, 開始');
+  cap(`加熱設定（${hsText(hs)}）で <b>加熱実行制御(加熱設定, 開始)</b> を呼び、<b>加熱起動()</b> でマグネトロンを動かします。`);
+  await call('p3',[['加熱設定',hsText(hs)],['制御コマンド','開始']],async()=>{
+    line('p3','case 開始');await call('p31',[['加熱設定',hsText(hs)]],async()=>{line('p31','出力開始');setHeat(true);animWaves(true);await wait(400)},null,ms);
+    sw.heating=true;updDisplay();
+    line('p3','if (加熱終了判定(');await call('p32',[['加熱設定',hsText(hs)]],null,()=>[['加熱終了','false']],ms);
+  },null,ms);
+}
+async function doContinue(){const sw=S.sw,h=sw.heat;heatCycles++;const slow=heatCycles<=2;const ms=slow?400:110;
+  S.elapsed+=20;S.temp=Math.min(100,S.temp+0.25*h.W/600*20);updDisplay();setHeat(true);
+  const end=h.時間?S.elapsed>=h.時間:S.temp>=h.目標温度;
+  line('main','加熱実行制御(加熱設定, 継続');
+  if(slow)cap('加熱中は、メインループが周期ごとに <b>加熱実行制御(加熱設定, 継続)</b> を呼び、<b>加熱終了判定()</b> で終わるかどうかを確かめます（時間は早送り：1周＝20秒）。');
+  await call('p3',[['制御コマンド','継続']],async()=>{
+    line('p3','default:');await wait(ms*.3);
+    line('p3','if (加熱終了判定(');
+    await call('p32',[],async()=>{line('p32',h.時間?'経過時間()':'温度取得()');await wait(ms*.4)},()=>[['加熱終了',end?'true':'false']].filter(()=>slow||end),end?420:ms);
+    if(end){line('p3','加熱停止();',2);
+      cap(`<b>加熱終了判定()</b> が true（${h.時間?'時間が来た':'目標温度に届いた'}）。<b>加熱停止()</b> を呼び、加熱終了を主制御へ返します。`);
+      await call('p33',[],async()=>{line('p33','出力停止');setHeat(false);animWaves(false);await wait(400)},null,420);
+      sw.heating=false;sw.heatEnd=true;doneLabel='できあがり';updDisplay()}
+  },()=>end?[['加熱終了','true']]:[],end?420:ms);
+}
+async function doCommand(ev){const sw=S.sw,ms=460;
+  line('main','加熱実行制御(加熱設定, 制御イベント');
+  const leaf={停止:'p33',一時停止:'p34',再開:'p35'}[ev];
+  cap(`制御イベント「${ev}」を、そのまま制御コマンドとして <b>加熱実行制御()</b> に渡します。`);
+  await call('p3',[['制御コマンド',ev]],async()=>{
+    line('p3','case '+ev);await wait(ms*.3);
+    await call(leaf,[],async()=>{line(leaf,ev==='再開'?'出力再開':'出力停止');setHeat(ev==='再開'&&!!sw.heat);animWaves(ev==='再開'&&!!sw.heat);await wait(400)},null,ms);
+    if(ev==='停止'){const was=sw.heating||sw.paused;sw.heating=false;sw.paused=false;sw.heatEnd=true;doneLabel=was?'とりけし':null;
+      cap('とりけしで加熱を止めました。加熱終了を返すので、次の周期で P1.1 が設定を消します。')}
+    if(ev==='一時停止'){sw.heating=false;sw.paused=true;cap('ドアが開いたので一時停止しました。ドアを閉めて「スタート」で再開します。')}
+    if(ev==='再開'){sw.heating=true;sw.paused=false;heatCycles=0}
+    updDisplay();
+  },()=>ev==='停止'?[['加熱終了','true']]:[],ms);
+}
+
+/* ================= ハードウェアの操作（押すと「未読」のまま待つ） ================= */
+function on(id,fn){const b=document.getElementById(id);b.addEventListener('click',fn);b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn()}})}
+function pushSet(id){if(S.sw.heating||S.sw.paused){cap('加熱中は設定ボタンを受け付けません。');return}
+  const P=S.panel;S.hw.set=P.mode==='time'?{モード:'時間',W数:P.W,時間:P.T}:{モード:'温度',目標温度:P.goal};
+  latch(id,true);updPanel();cap(`ボタンが押されました。いまは<b>ハードウェアに押された状態が残っているだけ</b>です。次の周期で P1.1 が読みに来ます。`)}
+on('bManual',()=>{S.panel.mode='time';pushSet('bManual')});
+on('bTemp',()=>{S.panel.mode='temp';pushSet('bTemp')});
+on('bUp',()=>{const P=S.panel;if(P.mode==='time')P.W=Wlist[Math.min(2,Wlist.indexOf(P.W)+1)];else P.goal=Math.min(90,P.goal+5);pushSet('bUp')});
+on('bDown',()=>{const P=S.panel;if(P.mode==='time')P.W=Wlist[Math.max(0,Wlist.indexOf(P.W)-1)];else P.goal=Math.max(40,P.goal-5);pushSet('bDown')});
+const tChange=(d,id)=>{const P=S.panel;if(P.mode!=='time'){cap('おこのみ温度では、時間は指定しません。');return}P.T=Math.max(30,Math.min(600,P.T+d));pushSet(id)};
+on('tMinus',()=>tChange(-30,'tMinus'));on('tPlus',()=>tChange(30,'tPlus'));
+on('bStart',()=>{if(S.hw.doorOpen){cap('ドアが開いているので、スタートボタンは効きません（安全のためのしくみ）。');return}
+  S.hw.start=true;latch('bStart',true);cap('「スタート」が押されました。次の周期で P1.2 が読みに来ます。')});
+on('bCancel',()=>{S.hw.cancel=true;latch('bCancel',true);cap('「とりけし」が押されました。次の周期で P1.2 が読みに来ます。')});
+on('bDoor',()=>{S.hw.doorOpen=!S.hw.doorOpen;updPanel();latch('bDoor',true);
+  cap(`ドアを${S.hw.doorOpen?'開け':'閉め'}ました。ドアスイッチの状態が変わり、次の周期で P1.3 が変化に気づきます。`)});
+$$('.speed button').forEach(b=>b.onclick=()=>{SPEED=+b.dataset.sp;$$('.speed button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+function setRun(mode){RUN=mode;
+  $('#bRun').setAttribute('aria-pressed',mode==='run');$('#bPause').setAttribute('aria-pressed',mode==='pause');
+  $('#bStep').disabled=!(mode==='pause'&&stepResolve);$('#sc').classList.toggle('paused',mode==='pause');
+  if(mode==='run'){needGate=false;$('#stepInfo').textContent='';[...bubLayer.children].forEach(g=>setTimeout(()=>g.remove(),1200/SPEED));if(stepResolve){const r=stepResolve;stepResolve=null;r()}}
+  else cap('止めました。<b>1ステップ</b>（または N キー）を押すたびに、コードの次の行まで進みます。止めている間も、電子レンジのボタンは押せます（次に読まれるまで赤枠のまま待ちます）。');}
+let loopP=null,resetting=false;
+function startLoop(){loopP=mainLoop().catch(e=>{if(e!==ABORT)throw e})}
+function initState(){
+  Object.assign(S.panel,{mode:'temp',W:600,T:300,goal:60});
+  Object.assign(S.hw,{set:false,start:false,cancel:false,doorOpen:false});
+  Object.assign(S.sw,{setting:null,running:false,paused:false,prevDoor:false,heating:false,heatEnd:false,heat:null});
+  S.temp=10;S.elapsed=0;S.cycle=0;heatCycles=0;doneLabel=null;
+  S.sw.setting={モード:'温度',目標温度:60};updPanel();updDisplay()}
+async function resetAll(){if(resetting)return;resetting=true;$('#bReset').disabled=true;
+  aborted=true;if(stepResolve){const r=stepResolve;stepResolve=null;r()}
+  if(loopP)await loopP;
+  aborted=false;needGate=false;stepNo=0;
+  /* 画面の後片付け */
+  $$('.latched').forEach(e=>e.classList.remove('latched'));
+  $$('.act').forEach(e=>e.classList.remove('act'));
+  $$('.ln.run').forEach(e=>e.classList.remove('run'));
+  $$('.edge.hl').forEach(e=>e.classList.remove('hl'));
+  [...bubLayer.children].forEach(g=>g.remove());
+  dot.setAttribute('opacity',0);setHeat(false);animWaves(false);
+  cycleTx.textContent='';$('#stepInfo').textContent='';
+  $$('.col').forEach(c=>c.scrollTo({top:0}));
+  initState();
+  startPaused('初めに戻しました');
+  resetting=false;$('#bReset').disabled=false}
+/* 止めた状態で、メインループの先頭の行で待つ */
+function startPaused(head){
+  RUN='pause';$('#bRun').setAttribute('aria-pressed',false);$('#bPause').setAttribute('aria-pressed',true);$('#sc').classList.add('paused');
+  startLoop();
+  cap(head+'（おこのみ温度 60℃ が設定済み）。<b>▶ 連続実行</b> で動かすか、<b>⏭ 1ステップ</b>（または N キー）で1行ずつ進めてください。')}
+$('#bReset').onclick=resetAll;
+$('#bRun').onclick=()=>setRun('run');
+$('#bPause').onclick=()=>setRun('pause');
+$('#bStep').onclick=()=>{if(RUN==='pause')releaseStep()};
+document.addEventListener('keydown',e=>{if(!document.getElementById('notice').hidden)return;
+  if((e.key==='n'||e.key==='N')&&RUN==='pause'){e.preventDefault();releaseStep()}});
+/* 初期状態：おこのみ温度 60℃ が設定済みの状態から始める */
+initState();
+const boot=()=>startPaused('止まった状態から始めます');
+if(document.getElementById('notice').hidden)boot();else document.addEventListener('notice-closed',boot,{once:true});
+
+})();
+</script>
+<script>
+(function(){const n=document.getElementById('notice'),b=document.getElementById('noticeOk');
+  b.focus();const close=()=>{n.hidden=true;document.dispatchEvent(new Event('notice-closed'))};
+  b.addEventListener('click',close);document.addEventListener('keydown',e=>{if(!n.hidden&&e.key==='Escape')close()});})();
+</script>
+</body>
+</html>

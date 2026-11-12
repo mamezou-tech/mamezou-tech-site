@@ -6,6 +6,7 @@ enTitle: Events
 ---
 
 ## アドベントカレンダー
+- [アドベントカレンダー2026](/events/advent-calendar/2026/) **Coming soon!**
 - [アドベントカレンダー2025](/events/advent-calendar/2025/)
 - [アドベントカレンダー2024](/events/advent-calendar/2024/)
 - [アドベントカレンダー2023](/events/advent-calendar/2023/)

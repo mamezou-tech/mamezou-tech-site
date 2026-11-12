@@ -1,0 +1,119 @@
+{
+  "entries": [
+    {
+      "dayOfWeek": "Mon."
+    },
+    {
+      "dayOfWeek": "Tue."
+    },
+    {
+      "dayOfWeek": "Wed."
+    },
+    {
+      "dayOfWeek": "Thu."
+    },
+    {
+      "dayOfWeek": "Fri."
+    },
+    {},
+    {
+      "date": "1",
+      "author": "kosuke-uematsu",
+      "githubUser": "kosuke-uematsu",
+      "title": "【仮題】【zsh + fzf】うろ覚えの「あのコマンド」「あのディレクトリ」をあいまい検索で引き当てる"
+    },
+    {
+      "date": "2"
+    },
+    {
+      "date": "3",
+      "author": "shinichiro-iwaki",
+      "githubUser": "shinichiro-iwaki",
+      "title": "AIの品質評価まわりで何か書こうと思います"
+    },
+    {
+      "date": "4",
+      "author": "hironori-maruoka",
+      "githubUser": "hironori-maruoka",
+      "title": "AI開発のデザインパターン関連でなにか一つ書こうと思います"
+    },
+    {
+      "date": "7",
+      "author": "kohei-tsukano",
+      "githubUser": "kohei-tsukano",
+      "title": "AI周りで何か書きます！（PRレビューとか）"
+    },
+    {
+      "date": "8"
+    },
+    {
+      "date": "9",
+      "author": "takahiro-maeda",
+      "githubUser": "Death-True2",
+      "title": "何か書きます（LLM or AIDD or CICD関連）"
+    },
+    {
+      "date": "10"
+    },
+    {
+      "date": "11",
+      "author": "masahiro-kondo",
+      "githubUser": "kondoumh",
+      "title": "VS Code 拡張開発ネタで書こうと思います"
+    },
+    {
+      "date": "14",
+      "author": "hirokazu-niwa",
+      "githubUser": "hirokazu-komaki",
+      "title": "最近業務で触れることの多いGithubとAWSのCICD連携について書こうと思います"
+    },
+    {
+      "date": "15",
+      "author": "kenta-ishihara",
+      "githubUser": "kenta-ishihara",
+      "title": "なんか書きます！(AI関係)"
+    },
+    {
+      "date": "16",
+      "author": "soonki-chang",
+      "githubUser": "Soonki",
+      "title": "ADE Orcaを三か月間業務でがっつり使ってみた　的な内容で書きます。"
+    },
+    {
+      "date": "17",
+      "author": "masayuki-kono",
+      "githubUser": "masayuki-kono",
+      "title": "AIのタスク管理に Beads Rust を使ってみた"
+    },
+    {
+      "date": "18",
+      "author": "tomotaka-maruyama",
+      "nonContrib": true,
+      "title": "ROS2と組込みまわりでなんか書くと思います"
+    },
+    {
+      "date": "21",
+      "author": "kazuyuki-shiratani",
+      "githubUser": "k-shiratani",
+      "title": "何か書きます"
+    },
+    {
+      "date": "22",
+      "author": "kazuki-ogawa",
+      "githubUser": "kazuki-ogawa",
+      "title": "AI関係で何か書きます！"
+    },
+    {
+      "date": "23",
+      "author": "shuji-morimoto",
+      "githubUser": "shuji-morimoto",
+      "title": "AIを活用してドッキングステーションの温度制御システムをDIYしてみた"
+    },
+    {
+      "date": "24"
+    },
+    {
+      "date": "25"
+    }
+  ]
+}

@@ -23,7 +23,10 @@
       "title": "【仮題】【zsh + fzf】うろ覚えの「あのコマンド」「あのディレクトリ」をあいまい検索で引き当てる"
     },
     {
-      "date": "2"
+      "date": "2",
+      "author": "ken-murai",
+      "githubUser": "Murai-MZ",
+      "title": "ETロボコンのソフト開発と大会結果（仮）"
     },
     {
       "date": "3",
@@ -88,6 +91,7 @@
     {
       "date": "18",
       "author": "tomotaka-maruyama",
+      "githubUser": "maruyama-tomotaka",
       "nonContrib": true,
       "title": "ROS2と組込みまわりでなんか書くと思います"
     },

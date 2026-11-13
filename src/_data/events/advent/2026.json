@@ -56,7 +56,11 @@
       "title": "何か書きます（LLM or AIDD or CICD関連）"
     },
     {
-      "date": "10"
+      "date": "10",
+      "author": "kiyohito-ito",
+      "githubUser": "kiyohome",
+      "nonContrib": true,
+      "title": "AI関連？"
     },
     {
       "date": "11",

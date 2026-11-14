@@ -4,7 +4,7 @@ author: masayuki-kono
 date: 2026-12-17
 image: true
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2026/
-tags: [Claude Code, Codex, AIエージェント, 生成AI, beads, Orca, advent2026]
+tags: [beads, Claude Code, Codex, Orca, 生成AI, AIエージェント, advent2026]
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2026](/events/advent-calendar/2026/)第17日目の記事です。

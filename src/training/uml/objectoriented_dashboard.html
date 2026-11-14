@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>電子レンジで見る オーバーライドとポリモフィズム（連動ビュー）</title>
+<style>
+:root{
+  --bg:#E4E8EB; --panel:#FFFFFF; --ink:#1F2A33; --sub:#5B6873; --line:#C9D1D7;
+  --uml:#FFFFCC;          /* 教材のクラス図の黄色 */
+  --sel:#2F6FD6;          /* 選択中・呼び出し */
+  --selbg:#DCE8FB;
+  --hot:#E46C0A;          /* 表示窓の枠 */
+  --disp:#F4B183;         /* 表示窓 */
+  --callout:#E3E3E3; --calloutline:#C0392B;
+  --run:#FFE38A;
+  --ff:"BIZ UDPGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;
+  --fm:"BIZ UDGothic","Osaka-Mono","MS Gothic","Menlo","Consolas",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--ff)}
+.app{height:100vh;display:grid;grid-template-rows:1.12fr 0.88fr auto;gap:6px;padding:6px}
+.top{display:grid;grid-template-columns:1fr 1fr;gap:6px;min-height:0}
+.topR{display:grid;grid-template-columns:1fr 1fr;gap:6px;min-height:0}
+.bottom{display:grid;grid-template-columns:1fr 1.1fr 1fr 1fr;gap:6px;min-height:0;background:#D3D9DE;border-radius:8px;padding:6px}
+.pane{background:var(--panel);border-radius:8px;border:1px solid var(--line);display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.pane h2{font-size:13px;margin:0;padding:5px 10px;border-bottom:1px solid var(--line);color:var(--sub);font-weight:700;display:flex;justify-content:space-between;gap:8px}
+.pane h2 span{font-weight:400}
+.pane .body{flex:1;min-height:0;position:relative}
+.pane svg{width:100%;height:100%;display:block}
+.caption{font-size:13px;line-height:1.5;padding:5px 10px;border-top:1px solid var(--line);background:#F6F8F9;min-height:2.9em}
+.caption b{color:var(--sel)}
+
+/* ステップ実行の操作 */
+.capbar{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;border-top:1px solid var(--line);background:#F6F8F9;padding:4px 10px 5px}
+.capbar .caption{flex:1 1 100%;border-top:none;padding:0;min-height:2.9em}
+.ctrl{display:flex;gap:6px;align-items:center;flex:0 0 auto;font-size:12px}
+.ctrl button{font-family:inherit;font-size:12px;border:1px solid var(--line);background:#fff;border-radius:4px;padding:3px 8px;cursor:pointer;white-space:nowrap}
+.ctrl button[aria-pressed="true"]{background:var(--sel);color:#fff;border-color:var(--sel)}
+.ctrl button:disabled{opacity:.4;cursor:default}
+.ctrl button:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+#bStep{font-weight:700}
+.stepinfo{flex:1 1 0;min-width:0;font-size:12px;color:var(--sub);font-family:var(--fm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.4em}
+.stepinfo b{color:#B58A00;font-family:var(--ff)}
+.stepinfo i{font-style:normal;color:var(--sel);font-family:var(--ff);font-weight:700}
+
+/* 電子レンジのボタン */
+.mbtn{cursor:pointer}
+.mbtn:focus{outline:none}
+.mbtn:focus-visible rect,.mbtn:focus-visible circle,.mbtn:focus-visible ellipse{stroke:var(--sel);stroke-width:4}
+.mbtn:hover rect,.mbtn:hover ellipse{filter:brightness(1.06)}
+.mbtn.on rect{stroke:var(--sel);stroke-width:4}
+.mbtn.dis{opacity:.45;cursor:not-allowed}
+
+/* コード */
+.code{position:relative;margin:0;font-family:var(--fm);font-size:clamp(11px,0.78vw,15px);line-height:1.5;padding:6px 0;overflow:auto;height:100%}
+.ln{display:block;white-space:pre;padding:0 10px;border-left:4px solid transparent;transition:background .2s}
+.ln.run{background:var(--run);border-left-color:#B58A00}
+.ln.inh{color:#7A8791}
+.ln.inh.run{color:var(--ink)}
+.kw{color:#8B3FB0}.cm{color:#7A8791}
+.codepane.off{opacity:.42}
+.stack{display:grid;grid-template-rows:1fr 1fr;gap:6px;min-height:0}
+.codepane.sel{border:2px solid var(--sel)}
+.codepane.sel h2{background:var(--selbg);color:var(--sel)}
+
+/* SVG 共通 */
+.t{font-family:var(--ff);fill:var(--ink)}
+.cls rect{fill:var(--uml);stroke:#222;stroke-width:1.2}
+.cls.sel rect.frame{stroke:var(--sel);stroke-width:3}
+.cls.sel rect.head{fill:#CFE0FB}
+.cls.off{opacity:.38}
+.bub rect{fill:var(--callout);stroke:var(--calloutline);stroke-width:1.2}
+.bub.flash rect{animation:flash 1.1s}
+@keyframes flash{0%{fill:var(--run)}100%{fill:var(--callout)}}
+.msg line,.msg path{stroke:#333;stroke-width:1.2;fill:none}
+.msg.ret line{stroke-dasharray:4 3}
+.msg.stop line,.msg.stop path{stroke:#999}
+.msg.stop text{fill:#888}
+.msg.hl line,.msg.hl path{stroke:var(--sel);stroke-width:2.6}
+.msg.hl text{fill:var(--sel);font-weight:700}
+.life{stroke:#666;stroke-dasharray:4 4;stroke-width:1}
+.lhead rect{fill:var(--uml);stroke:#222;stroke-width:1.2}
+.lhead.swap rect{animation:swap 1s}
+@keyframes swap{0%{fill:#CFE0FB}100%{fill:var(--uml)}}
+.frame-lbl{fill:#fff;stroke:#333;stroke-width:1}
+.exec{fill:#fff;stroke:#333;stroke-width:1}
+.exec.on{fill:#CFE0FB;stroke:var(--sel);stroke-width:1.4}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:900px),(max-height:520px){
+  .app{height:auto;grid-template-rows:auto auto}
+  .top,.topR,.bottom{grid-template-columns:1fr}
+  .pane{min-height:320px}
+}
+
+/* 著作権表示 */
+.legal{font-size:11px;line-height:1.45;color:#46525C;background:#F6F8F9;border:1px solid var(--line,#C9D1D7);border-radius:6px;padding:3px 10px}
+.legal b{color:#1F2A33}
+.notice{position:fixed;inset:0;background:rgba(31,42,51,.55);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.notice[hidden]{display:none}
+.notice .card{background:#fff;border-radius:10px;max-width:640px;width:100%;padding:20px 24px;box-shadow:0 10px 30px rgba(0,0,0,.25);font-size:15px;line-height:1.7}
+.notice h2{font-size:18px;margin:0 0 10px}
+.notice p{margin:0 0 8px}
+.notice button{margin-top:10px;font-family:inherit;font-size:15px;font-weight:700;border:none;border-radius:6px;padding:8px 22px;background:#2F6FD6;color:#fff;cursor:pointer}
+.notice button:focus-visible{outline:3px solid #1F2A33;outline-offset:2px}
+.notice .card{max-height:90vh;overflow:auto}
+.notice ul{margin:0 0 8px;padding-left:1.4em}
+.notice li{margin:2px 0}
+.notice .small{font-size:13px;line-height:1.6;color:#46525C}
+.notice a,.legal a{color:#2F6FD6}
+</style>
+</head>
+<body>
+<div class="notice" id="notice" role="dialog" aria-modal="true" aria-labelledby="noticeTitle">
+  <div class="card">
+    <h2 id="noticeTitle">ご利用の前に</h2>
+    <p>© 2026 株式会社豆蔵 All rights reserved.</p>
+    <p>本教材は、豆蔵の講座を受講された方のフォローアップを主な目的として公開しています。なお、講座を受講されていない方に豆蔵の講座をご紹介いただく場合は、このページへのリンクを共有いただけます。</p>
+    <p>次の行為を禁止します。</p>
+    <ul>
+      <li>本教材（画面、プログラム、図、文章を含む）の全部または一部の複製、転載、再配布</li>
+      <li>改変、または本教材をもとにした類似の教材やツールの作成</li>
+      <li>研修・講義の教材としての利用、または教材としての販売</li>
+      <li>類似の教材やツールを作成する目的での、生成AIへの入力</li>
+    </ul>
+    <p class="small">法令で認められる範囲の引用（出典の明記が必要です）は除きます。本教材は現状のまま提供するもので、内容の正確性や利用の結果について、当社は責任を負いません。</p>
+    <p class="small">豆蔵の講座のご案内：<a href="https://www.mamezou.com/services/hrd/course_search" target="_blank" rel="noopener">講座一覧（株式会社豆蔵）</a></p>
+    <button id="noticeOk">同意して利用する</button>
+  </div>
+</div>
+<div class="app">
+  <div class="top">
+    <!-- 左上：電子レンジ -->
+    <section class="pane" aria-label="電子レンジ">
+      <h2>電子レンジ<span>手動設定＝時間あたため／おこのみ温度＝目標温度あたため</span></h2>
+      <div class="body"><svg id="oven" viewBox="0 0 640 330" preserveAspectRatio="xMidYMid meet"></svg></div>
+      <div class="capbar"><div class="caption" id="caption" aria-live="polite">「手動設定」か「おこのみ温度」を押してから、「スタート」を押してください。加熱中に取っ手を押すとドアが開いて一時停止し、閉めて「スタート」で再開します。</div>
+        <div class="ctrl" role="group" aria-label="実行のしかた">
+          <button id="bRun" aria-pressed="true">▶ 連続実行</button>
+          <button id="bPause" aria-pressed="false">⏸ 止める</button>
+          <button id="bStep" disabled title="ステップ実行の間は N キーでも進めます">⏭ 1ステップ (N)</button>
+          <button id="bReset" title="すべてを初期状態に戻します">⏮ 初めに戻す</button>
+        </div>
+        <div class="stepinfo" id="stepInfo" aria-live="polite"></div></div>
+    </section>
+    <div class="topR">
+      <section class="pane" aria-label="クラス図">
+        <h2>クラス図<span id="clsNote">選択済あたため：時間あたため</span></h2>
+        <div class="body"><svg id="cls" viewBox="0 0 380 390" preserveAspectRatio="xMidYMid meet"></svg></div>
+      </section>
+      <section class="pane" aria-label="シーケンス図">
+        <h2>シーケンス図<span id="seqNote">あたため開始</span></h2>
+        <div class="body"><svg id="seq" viewBox="0 0 340 374" preserveAspectRatio="xMidYMid meet"></svg></div>
+      </section>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="stack"><section class="pane codepane" id="pOven"><h2>電子レンジ クラス<span>抽象クラス（呼ぶ側）</span></h2><div class="body"><pre class="code" id="cOven"></pre></div></section><section class="pane codepane" id="pV1"><h2>電子レンジv1 クラス<span>電子レンジ の下位クラス</span></h2><div class="body"><pre class="code" id="cV1"></pre></div></section></div>
+    <section class="pane codepane" id="pBase"><h2>あたため クラス<span>抽象クラス（上位クラス）</span></h2><div class="body"><pre class="code" id="cBase"></pre></div></section>
+    <section class="pane codepane" id="pTime"><h2>時間あたため クラス<span>あたため の下位クラス</span></h2><div class="body"><pre class="code" id="cTime"></pre></div></section>
+    <section class="pane codepane" id="pTemp"><h2>目標温度あたため クラス<span>あたため の下位クラス</span></h2><div class="body"><pre class="code" id="cTemp"></pre></div></section>
+  </div>
+  <footer class="legal" aria-label="著作権表示と利用条件"><b>© 2026 株式会社豆蔵 All rights reserved.</b>｜豆蔵の講座の受講後のフォローアップ用の教材です。講座のご紹介を目的とするリンクの共有は可能です。複製・転載・改変・研修での利用、類似の教材を作るための生成AIへの入力は禁止します。｜<a href="https://www.mamezou.com/services/hrd/course_search" target="_blank" rel="noopener">豆蔵の講座のご案内</a></footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const NS='http://www.w3.org/2000/svg';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!==undefined)e.textContent=text;if(parent)parent.appendChild(e);return e}
+function txt(p,x,y,s,size,opt={}){return el('text',Object.assign({x,y,class:'t','font-size':size},opt),p,s)}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+/* ================= 状態 ================= */
+const S={mode:'time',W:600,T:300,goal:60,running:false,heating:false,paused:false,door:false,loopN:0,token:0,temp:10,elapsed:0,
+  objs:{time:{指定W数:600,指定時間:300,目標温度:null,状態:'待機中'},temp:{指定W数:null,指定時間:null,目標温度:null,状態:'待機中'}}};
+S.obj=S.objs.time;
+const Wlist=[200,500,600];
+const NAME={time:'時間あたため',temp:'目標温度あたため'};
+
+/* ================= 電子レンジの絵 ================= */
+const ov=$('#oven');
+el('defs',{},ov).innerHTML=`
+ <radialGradient id="heatG" cx="50%" cy="72%" r="65%"><stop offset="0" stop-color="#F7A54A" stop-opacity=".85"/><stop offset="1" stop-color="#F7A54A" stop-opacity="0"/></radialGradient>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#333"/></marker>
+ <marker id="ahB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#2F6FD6"/></marker>
+ <marker id="ahO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0L10,5L0,10" fill="none" stroke="#333" stroke-width="1.5"/></marker>`;
+// 本体
+el('rect',{x:8,y:14,width:520,height:288,rx:6,fill:'#fff',stroke:'#111','stroke-width':3},ov);
+el('rect',{x:40,y:302,width:50,height:12,fill:'#E5E5E5',stroke:'#888'},ov);
+el('rect',{x:420,y:302,width:50,height:12,fill:'#E5E5E5',stroke:'#888'},ov);
+el('rect',{x:20,y:26,width:360,height:262,fill:'#fff',stroke:'#333','stroke-width':1.5},ov); // 扉
+el('rect',{x:40,y:62,width:310,height:190,fill:'#DCE6F2',stroke:'#7F99B8','stroke-width':1.5},ov); // 窓
+const heat=el('rect',{x:40,y:62,width:310,height:190,fill:'url(#heatG)',opacity:0},ov);
+// マイクロ波
+const waves=el('g',{opacity:0},ov);
+['M195 60 C150 110 90 120 70 190','M195 60 C240 110 300 120 320 190','M195 60 C170 130 150 170 160 205','M195 60 C220 130 240 170 230 205']
+ .forEach(d=>el('path',{d,fill:'none',stroke:'#4F81BD','stroke-width':1.3,'stroke-dasharray':'6 5',class:'wave'},waves));
+// 赤外線
+const ir=el('g',{opacity:0},ov);
+[[95,215],[150,222],[205,226],[260,222],[300,212]].forEach(([x,y])=>el('line',{x1:368,y1:52,x2:x,y2:y,stroke:'#E53935','stroke-width':1.2,'stroke-dasharray':'5 4'},ir));
+// マグネトロン・センサー
+el('ellipse',{cx:195,cy:36,rx:20,ry:6,fill:'#C6D9F1',stroke:'#4F81BD'},ov);
+el('rect',{x:175,y:36,width:40,height:20,fill:'#C6D9F1',stroke:'#4F81BD'},ov);
+el('ellipse',{cx:195,cy:56,rx:20,ry:6,fill:'#C6D9F1',stroke:'#4F81BD'},ov);
+el('rect',{x:360,y:34,width:16,height:30,fill:'#C6D9F1',stroke:'#4F81BD'},ov);
+txt(ov,152,24,'マグネトロン',11,{fill:'#555'});
+txt(ov,330,24,'赤外線センサー',11,{fill:'#555'});
+// 皿と料理
+el('ellipse',{cx:195,cy:222,rx:95,ry:20,fill:'#fff',stroke:'#9AA','stroke-width':1.5},ov);
+const food=el('g',{},ov);
+for(let i=0;i<46;i++){const a=i*2.4,r=8+((i*37)%55);const x=195+Math.cos(a)*r*1.15,y=216+Math.sin(a)*r*0.22;
+  el('ellipse',{cx:x.toFixed(1),cy:y.toFixed(1),rx:7,ry:2.6,transform:`rotate(${(i*47)%180} ${x.toFixed(1)} ${y.toFixed(1)})`,fill:['#6B3E26','#7B4A2D','#3E8E41','#58A14E','#8B5A3C'][i%5]},food)}
+const steam=el('g',{opacity:0},ov);
+[175,195,215].forEach((x,i)=>el('path',{d:`M${x} 200 q-6 -12 0 -24 q6 -12 0 -24`,fill:'none',stroke:'#fff','stroke-width':3,'stroke-linecap':'round',opacity:.9},steam));
+el('rect',{x:364,y:70,width:12,height:200,rx:6,fill:'#F2F0E6',stroke:'#333'},ov); // ドア取っ手
+// 表示窓
+el('rect',{x:392,y:30,width:126,height:56,fill:'var(--disp)',stroke:'var(--hot)','stroke-width':3},ov);
+const d1=txt(ov,455,53,'600W',17,{'text-anchor':'middle'});
+const d2=txt(ov,455,76,'5分',15,{'text-anchor':'middle'});
+// ボタン
+function button(id,x,y,w,h,label,rx,fs){const g=el('g',{class:'mbtn',id,tabindex:0,role:'button','aria-label':label.replace('\n','')},ov);
+  el('rect',{x,y,width:w,height:h,rx,fill:'#F2F5FA',stroke:'#4F81BD','stroke-width':2},g);
+  const ls=label.split('\n');ls.forEach((l,i)=>txt(g,x+w/2,y+h/2+(i-(ls.length-1)/2)*15+5,l,fs||14,{'text-anchor':'middle'}));return g}
+button('bStart',392,98,70,30,'スタート',15);
+button('bCancel',470,98,48,30,'とりけし',15,11);
+button('bTemp',392,140,58,40,'おこのみ\n温度',8,12);
+button('bManual',458,140,60,40,'手動設定',8,12);
+txt(ov,455,198,'出力・温度',12,{'text-anchor':'middle'});
+button('bUp',396,204,52,26,'∧',13,16);
+button('bDown',462,204,52,26,'∨',13,16);
+txt(ov,396,250,'時間',12);
+const dial=el('g',{},ov);
+el('circle',{cx:470,cy:268,r:22,fill:'#F2F5FA',stroke:'#4F81BD','stroke-width':2},dial);
+el('path',{d:'M455 258 A18 18 0 0 1 485 258',fill:'none',stroke:'#4F81BD','stroke-width':2,'marker-end':'url(#ah)'},dial);
+const tMinus=button('tMinus',418,256,26,24,'−',8,15), tPlus=button('tPlus',497,256,26,24,'＋',8,15);
+// 吹き出し（教材の注記風）
+function note(x,y,w,lines){const g=el('g',{},ov);el('rect',{x,y,width:w,height:lines.length*15+8,fill:'#E3E3E3',stroke:'#C0392B','stroke-width':1.2},g);
+  lines.forEach((l,i)=>txt(g,x+6,y+17+i*15,l,11));return g}
+note(532,140,104,['[おこのみ温度]','温度を指定','[手動設定]','出力と時間を指定']);
+/* ドア */
+const doorG=el('g',{class:'mbtn',id:'bDoor',tabindex:0,role:'button','aria-label':'ドアを開け閉めする'},ov);
+el('rect',{x:360,y:66,width:20,height:208,rx:6,fill:'transparent',stroke:'none'},doorG);
+const doorOpen=el('g',{opacity:0},ov);
+el('rect',{x:40,y:62,width:310,height:190,fill:'#7F8C99',opacity:.55},doorOpen);
+txt(doorOpen,195,165,'ドアが開いています',18,{'text-anchor':'middle',fill:'#fff','font-weight':700});
+txt(ov,352,292,'取っ手を押すとドアの開閉',10,{'text-anchor':'end',fill:'#777'});
+
+/* ================= クラス図 ================= */
+const cs=$('#cls');
+el('defs',{},cs).innerHTML=`<marker id="gen" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0L12,6L0,12z" fill="#fff" stroke="#222" stroke-width="1.2"/></marker>
+<marker id="nav" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0L10,5L0,10" fill="none" stroke="#222" stroke-width="1.3"/></marker>`;
+function umlClass(x,y,w,name,attrs,ops,opt={}){
+  const rh=opt.rh||15,fs=opt.fs||10,hh=18;
+  const g=el('g',{class:'cls'},cs);const h=hh+Math.max(1,attrs.length)*rh+5+ops.length*rh+5;
+  el('rect',{x,y,width:w,height:h,class:'frame'},g);
+  el('rect',{x,y,width:w,height:hh,class:'head'},g);
+  txt(g,x+w/2,y+13,name,11,{'text-anchor':'middle','font-weight':700,'font-style':opt.abstract?'italic':'normal'});
+  let yy=y+hh;el('line',{x1:x,y1:yy,x2:x+w,y2:yy,stroke:'#222'},g);
+  const rows={};
+  attrs.forEach((a,i)=>{rows[a]=yy+rh-3+i*rh;txt(g,x+4,yy+rh-3+i*rh,a,fs)});
+  yy+=Math.max(1,attrs.length)*rh+5;el('line',{x1:x,y1:yy,x2:x+w,y2:yy,stroke:'#222'},g);
+  ops.forEach((o,i)=>{const t=txt(g,x+4,yy+rh-3+i*rh,o,fs);if(opt.abstract&&o.includes('作成'))t.setAttribute('font-style','italic');rows[o]=yy+rh-3+i*rh});
+  return {g,x,y,w,h,rows};
+}
+const cOven=umlClass(4,4,112,'電子レンジ',[],['+ あたため開始()','+ 停止()','+ 一時停止()','+ 再開()'],{fs:9.5,rh:12,abstract:true});
+const cV1=umlClass(196,4,140,'電子レンジ v1',[],['+ 手動設定(W数, 時間)','+ おこのみ温度(温度)'],{fs:9,rh:13});
+const cBase=umlClass(4,110,140,'あたため',['# 目標温度','# 指定W数','# 指定時間','# 状態'],['+ 開始()','+ 停止()','+ 一時停止()','+ 再開()','# 加熱を続ける()','# あたためパラメータ作成()'],{abstract:true,fs:9.5,rh:13});
+const cTime=umlClass(2,318,164,'時間あたため',['- 固定目標温度 = 999度'],['+ 時間設定(W数, 時間)','# あたためパラメータ作成()'],{fs:9,rh:13});
+const cTemp=umlClass(172,318,166,'目標温度あたため',['- 固定W数 = 500W','- タイムアウト時間 = 30分'],['+ 目標温度設定(温度)','# あたためパラメータ作成()'],{fs:9,rh:13});
+// 関連
+el('line',{x1:40,y1:cOven.y+cOven.h,x2:40,y2:cBase.y,stroke:'#222','stroke-width':1.2,'marker-end':'url(#nav)'},cs);
+txt(cs,46,cBase.y-4,'選択済あたため　0..1',9.5);txt(cs,30,cOven.y+cOven.h+11,'1',9.5);
+txt(cs,152,82,'選択済あたため の実体：',9.5,{fill:'#2F6FD6'});
+const assoc=txt(cs,152,96,'',11,{fill:'#2F6FD6','font-weight':700});
+/* 電子レンジ v1 → 電子レンジ（汎化） */
+el('line',{x1:196,y1:40,x2:116,y2:40,stroke:'#222','stroke-width':1.2,'marker-end':'url(#gen)'},cs);
+/* 電子レンジ v1 ◆— 時間あたため／目標温度あたため（コンポジション：v1 が生成して保持） */
+function diamond(x,y){el('path',{d:`M${x} ${y} l9 -4 l9 4 l-9 4 z`,fill:'#222',stroke:'#222'},cs)}
+el('path',{d:'M354 28 L372 28 L372 352 L338 352',fill:'none',stroke:'#222','stroke-width':1.2},cs);diamond(336,28);
+txt(cs,342,24,'1',9);txt(cs,342,364,'1',9);
+el('path',{d:'M354 54 L362 54 L362 308 L140 308 L140 318',fill:'none',stroke:'#222','stroke-width':1.2},cs);diamond(336,54);
+txt(cs,342,50,'1',9);txt(cs,130,316,'1',9);
+// 汎化
+const by=cBase.y+cBase.h, jy=by+20;
+el('path',{d:`M84 ${cTime.y} L84 ${jy} L74 ${jy}`,fill:'none',stroke:'#222','stroke-width':1.2},cs);
+el('path',{d:`M255 ${cTemp.y} L255 ${jy} L74 ${jy} L74 ${by}`,fill:'none',stroke:'#222','stroke-width':1.2,'marker-end':'url(#gen)'},cs);
+// 属性の吹き出し
+const bubbles={};
+txt(cs,152,cBase.y+12,'代入されている値',9,{fill:'#C0392B'});
+['目標温度','指定W数','指定時間','状態'].forEach((k,i)=>{const y=cBase.rows['# '+k];const g=el('g',{class:'bub'},cs);
+  el('path',{d:`M${cBase.x+cBase.w+1} ${y-4} L152 ${y-8} L152 ${y} Z`,fill:'#E3E3E3',stroke:'#C0392B','stroke-width':1.1},g);
+  el('rect',{x:151,y:y-12,width:182,height:15,rx:2},g);
+  const t=txt(g,157,y,'',10);bubbles[k]={g,t}});
+
+/* ================= シーケンス図 ================= */
+const sq=$('#seq');
+el('defs',{},sq).innerHTML=`<marker id="sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="context-stroke"/></marker>
+<marker id="sr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0L10,5L0,10" fill="none" stroke="context-stroke" stroke-width="1.4"/></marker>`;
+const LX=[42,125,215,300];
+const heads=[['','：電子レンジ v1'],['選択済あたため','：時間あたため'],['食品現在温度センサー','：赤外線センサー'],['','：マグネトロン']];
+const headEls=[];
+heads.forEach((h,i)=>{const g=el('g',{class:'lhead'},sq);const w=i===2?88:78;
+  el('rect',{x:LX[i]-w/2,y:4,width:w,height:30},g);
+  txt(g,LX[i],h[0]?16:23,h[0],i===2?8.2:9,{'text-anchor':'middle'});
+  const b=txt(g,LX[i],h[0]?29:23,h[1],9,{'text-anchor':'middle'});
+  el('line',{x1:LX[i],y1:34,x2:LX[i],y2:372,class:'life'},sq);headEls.push({g,b})});
+/* 実行仕様（活性区間）：[ライフライン, 開始y, 終了y, 入れ子の段] */
+function exec(i,y1,y2,lv=0){return el('rect',{x:LX[i]-4+lv*4,y:y1,width:8,height:y2-y1,class:'exec'},sq)}
+exec(0,46,184);                 // 電子レンジ.あたため開始()
+const act=exec(1,58,184);       // あたため.開始()
+exec(1,79,88,1);                // あたためパラメータ作成()（自己呼び出し）
+const actLoop=exec(1,111,184,1);// 加熱を続ける()（自己呼び出し）
+exec(2,146,162);                // 温度取得()
+exec(3,92,98);exec(3,180,186);  // 出力開始()・出力停止()
+exec(0,211,238);exec(1,223,238);exec(3,235,240);   // とりけし
+exec(0,263,290);exec(1,275,290);exec(3,287,292);   // ドア開
+exec(0,315,368);const actR=exec(1,327,368);exec(3,339,345);   // 再開
+const actRe=exec(1,358,368,1);  // 加熱を続ける()（入り直し）
+const allAct=()=>[act,actLoop,actR,actRe];
+const msgs={};
+function msg(id,from,to,y,label,kind='',nest=0){
+  const g=el('g',{class:'msg '+kind},sq);
+  if(from===to){const x=LX[from]+4;el('path',{d:`M${x} ${y} h22 v11 h-18`,'marker-end':'url(#sa)'},g);txt(g,x+25,y+4,label,8.8);}
+  else{const x1=from<0?4:LX[from]+(to>from?4+nest:-4),x2=LX[to]+(to>from?-4:4+nest);
+    el('line',{x1,y1:y,x2,y2:y,'marker-end':kind.includes('ret')?'url(#sr)':'url(#sa)'},g);
+    if(from<0)txt(g,2,y-3,label,8.8);else txt(g,(x1+x2)/2,y-3,label,8.8,{'text-anchor':'middle'});}
+  msgs[id]={g,from,to,y,label};return g}
+msg('m0',-1,0,46,'あたため開始()');
+msg('m1',0,1,58,'開始()');
+msg('m2',1,1,68,'あたためパラメータ作成()');
+msg('m3',1,3,92,'出力開始(指定W数)');
+msg('mL',1,1,100,'加熱を続ける()');
+el('rect',{x:8,y:120,width:328,height:50,fill:'none',stroke:'#333'},sq);
+el('path',{d:'M8 120 h32 v10 l-5 5 h-27 z',class:'frame-lbl'},sq);txt(sq,12,131,'loop',9,{'font-weight':700});
+txt(sq,43,131,'[ 現在温度 < 目標温度 and 経過時間 < 指定時間 and 状態 == 加熱中 ]',7);
+const loopCount=txt(sq,332,166,'',9,{'text-anchor':'end',fill:'#2F6FD6','font-weight':700});
+msg('m4',1,2,146,'温度取得()','',4);
+msg('m5',2,1,162,'現在温度','ret',4);
+msg('m6',1,3,180,'出力停止()','',4);
+/* 加熱中に起きる操作：alt（3つのオペランド） */
+el('rect',{x:8,y:188,width:328,height:182,fill:'none',stroke:'#333'},sq);
+el('path',{d:'M8 188 h28 v10 l-5 5 h-23 z',class:'frame-lbl'},sq);txt(sq,12,199,'alt',9,{'font-weight':700});
+txt(sq,40,199,'[ とりけしボタンが押された ]',8.4);
+msg('s0',-1,0,211,'停止()','stop');
+msg('s1',0,1,223,'停止()','stop');
+msg('s2',1,3,235,'出力停止()','stop');
+el('line',{x1:8,y1:241,x2:336,y2:241,stroke:'#333','stroke-dasharray':'5 3'},sq);
+txt(sq,12,251,'[ 加熱中にドアが開いた ]',8.4);
+const exitNote=txt(sq,332,251,'→ ループを抜ける',8.4,{'text-anchor':'end',fill:'#999'});
+msg('p0',-1,0,263,'一時停止()','stop');
+msg('p1',0,1,275,'一時停止()','stop');
+msg('p2',1,3,287,'出力停止()','stop');
+el('line',{x1:8,y1:293,x2:336,y2:293,stroke:'#333','stroke-dasharray':'5 3'},sq);
+txt(sq,12,303,'[ 一時停止中に、ドアを閉めてスタートが押された ]',8.4);
+msg('r0',-1,0,315,'再開()','stop');
+msg('r1',0,1,327,'再開()','stop');
+msg('r2',1,3,339,'出力開始(指定W数)','stop');
+msg('r3',1,1,347,'加熱を続ける()','stop');
+const dot=el('circle',{r:4,fill:'#2F6FD6',opacity:0},sq);
+
+/* ================= コード ================= */
+function hl(s){const i=s.indexOf('#');const c=i<0?s:s.slice(0,i),m=i<0?'':s.slice(i);
+  return esc(c).replace(/\b(class|def|self|None|return|while|and|raise|if)\b/g,'<span class="kw">$1</span>')+(m?'<span class="cm">'+esc(m)+'</span>':'')}
+function render(pre,lines){pre.innerHTML=lines.map((l,i)=>{const inh=l.trim().startsWith('#=');const s=inh?l.replace('#=','#'):l;
+  return `<span class="ln ${inh?'inh':''}" data-i="${i}">${hl(s)||' '}</span>`}).join('')}
+const codeOven=[
+ 'class 電子レンジ:   # 抽象クラス',
+ '    def __init__(self):',
+ '        self.選択済あたため = None   # あたため型',
+ '',
+ '    def あたため開始(self):',
+ '        self.選択済あたため.開始()   # 中身は知らない',
+ '',
+ '    def 停止(self):',
+ '        self.選択済あたため.停止()',
+ '',
+ '    def 一時停止(self):   # ドアが開いたとき',
+ '        self.選択済あたため.一時停止()',
+ '',
+ '    def 再開(self):   # 一時停止中にスタート',
+ '        self.選択済あたため.再開()',
+];
+const codeV1=[
+ 'class 電子レンジv1(電子レンジ):',
+ '    def __init__(self):   # 具象クラスを知るのはここだけ',
+ '        super().__init__()',
+ '        self.時間あたため = 時間あたため()',
+ '        self.目標温度あたため = 目標温度あたため()',
+ '',
+ '    def 手動設定(self, W数, 時間):',
+ '        self.時間あたため.時間設定(W数, 時間)',
+ '        self.選択済あたため = self.時間あたため',
+ '',
+ '    def おこのみ温度(self, 温度):',
+ '        self.目標温度あたため.目標温度設定(温度)',
+ '        self.選択済あたため = self.目標温度あたため',
+];
+const codeBase=[
+ 'class あたため:   # 抽象クラス',
+ '    def __init__(self):',
+ '        self.目標温度 = None',
+ '        self.指定W数 = None',
+ '        self.指定時間 = None',
+ '        self.状態 = "待機中"   # 待機中/加熱中/一時停止中',
+ '',
+ '    def 開始(self):   # 共通の手順',
+ '        self.あたためパラメータ作成()   # ← 穴',
+ '        self.状態 = "加熱中"',
+ '        マグネトロン.出力開始(self.指定W数)',
+ '        self.加熱を続ける()',
+ '',
+ '    def 加熱を続ける(self):   # ループを切り出したもの',
+ '        現在温度 = センサー.温度取得()',
+ '        while (現在温度 < self.目標温度 and',
+ '               経過時間() < self.指定時間):',
+ '            if self.状態 == "一時停止中":',
+ '                return   # ループを抜ける',
+ '            現在温度 = センサー.温度取得()',
+ '        self.状態 = "待機中"',
+ '        マグネトロン.出力停止()',
+ '',
+ '    def 停止(self):',
+ '        self.状態 = "待機中"',
+ '        マグネトロン.出力停止()',
+ '',
+ '    def 一時停止(self):',
+ '        if self.状態 != "加熱中": return',
+ '        self.状態 = "一時停止中"',
+ '        マグネトロン.出力停止()',
+ '        経過時間を止める()',
+ '',
+ '    def 再開(self):',
+ '        if self.状態 != "一時停止中": return',
+ '        self.状態 = "加熱中"',
+ '        マグネトロン.出力開始(self.指定W数)',
+ '        経過時間を進める()',
+ '        self.加熱を続ける()   # ループに入り直す',
+ '',
+ '    def あたためパラメータ作成(self):   # 中身なし',
+ '        raise NotImplementedError   # 下位クラスが書く',
+];
+const codeTime=[
+ 'class 時間あたため(あたため):',
+ '    固定目標温度 = 999',
+ '',
+ '    def 時間設定(self, W数, 時間):',
+ '        self.指定W数 = W数',
+ '        self.指定時間 = 時間',
+ '',
+ '    def あたためパラメータ作成(self):  # オーバーライド',
+ '        self.目標温度 = self.固定目標温度',
+ '',
+ '    #= 開始()・停止()・一時停止()・',
+ '    #= 再開()・加熱を続ける() は、',
+ '    #= 上位クラス あたため のものを使う',
+];
+const codeTemp=[
+ 'class 目標温度あたため(あたため):',
+ '    固定W数 = 500',
+ '    タイムアウト時間 = 30 * 60',
+ '',
+ '    def 目標温度設定(self, 温度):',
+ '        self.目標温度 = 温度',
+ '',
+ '    def あたためパラメータ作成(self):  # オーバーライド',
+ '        self.指定W数 = self.固定W数',
+ '        self.指定時間 = self.タイムアウト時間',
+ '',
+ '    #= 開始()・停止()・一時停止()・',
+ '    #= 再開()・加熱を続ける() は、',
+ '    #= 上位クラス あたため のものを使う',
+];
+render($('#cOven'),codeOven);render($('#cV1'),codeV1);render($('#cBase'),codeBase);render($('#cTime'),codeTime);render($('#cTemp'),codeTemp);
+const PANE={'#cOven':'電子レンジ','#cV1':'電子レンジv1','#cBase':'あたため','#cTime':'時間あたため','#cTemp':'目標温度あたため'};
+let curLine='';
+function runLines(pre,idx){let first=null;$$(pre+' .ln').forEach(l=>{const on=idx.includes(+l.dataset.i);l.classList.toggle('run',on);if(on&&!first)first=l});
+  if(first){const t=[...first.parentElement.children].filter(l=>idx.includes(+l.dataset.i)&&l.textContent.trim()&&!l.classList.contains('inh'))[0];
+    if(t){curLine=`<b>${PANE[pre]}</b>　${esc(t.textContent.trim())}`;needGate=true;showStep()}}
+  if(first){const box=first.parentElement,top=first.offsetTop,bot=top+first.offsetHeight*idx.length;
+    if(top<box.scrollTop||bot>box.scrollTop+box.clientHeight)box.scrollTo({top:Math.max(0,top-box.clientHeight/3),behavior:reduce?'auto':'smooth'})}}
+function clearLines(){$$('.ln.run').forEach(l=>l.classList.remove('run'))}
+const pSub=()=>S.mode==='time'?'#cTime':'#cTemp';
+
+/* ================= 表示の更新 ================= */
+function fmt(sec){const m=Math.floor(sec/60),s=Math.floor(sec%60);return s?`${m}分${String(s).padStart(2,'0')}秒`:`${m}分`}
+function mmss(sec){sec=Math.max(0,Math.round(sec));return `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`}
+function updDisplay(){
+  if(S.running&&S.obj.指定W数){d1.textContent=`${S.paused?'一時停止':'加熱中'} ${S.obj.指定W数}W`;
+    d2.textContent=S.mode==='time'?`残り ${mmss(S.obj.指定時間-S.elapsed)}  ${S.temp.toFixed(0)}℃`:`${S.temp.toFixed(0)}℃ → ${S.goal}℃`;return}
+  if(S.mode==='time'){d1.textContent=`${S.W}W`;d2.textContent=fmt(S.T)}else{d1.textContent='おこのみ温度';d2.textContent=`${S.goal}℃`}
+}
+function updBubbles(changed=[]){
+  const unit={目標温度:' ℃',指定W数:' W',指定時間:' 秒',状態:''};
+  for(const k in bubbles){const v=S.obj[k];const b=bubbles[k];
+    b.t.textContent=v===null||v===undefined?`${k} ＝ 未設定`:`${k} ＝ ${v}${unit[k]}`;
+    b.t.setAttribute('fill',v===null||v===undefined?'#888':'#1F2A33');
+    if(changed.includes(k)){b.g.classList.remove('flash');void b.g.getBBox();b.g.classList.add('flash')}}
+}
+function updMode(swap){
+  const t=S.mode==='time';
+  cTime.g.classList.toggle('sel',t);cTime.g.classList.toggle('off',!t);
+  cTemp.g.classList.toggle('sel',!t);cTemp.g.classList.toggle('off',t);
+  assoc.textContent=NAME[S.mode];
+  $('#clsNote').textContent=`選択済あたため：${NAME[S.mode]}`;
+  headEls[1].b.textContent='：'+NAME[S.mode];
+  if(swap){headEls[1].g.classList.remove('swap');void headEls[1].g.getBBox();headEls[1].g.classList.add('swap')}
+  $('#pTime').classList.toggle('sel',t);$('#pTime').classList.toggle('off',!t);
+  $('#pTemp').classList.toggle('sel',!t);$('#pTemp').classList.toggle('off',t);
+  $('#bManual').classList.toggle('on',t);$('#bTemp').classList.toggle('on',!t);
+  [tMinus,tPlus].forEach(b=>b.classList.toggle('dis',!t));
+}
+function cap(h){$('#caption').innerHTML=h}
+
+/* 設定の変更：v1 が保持するインスタンスに代入し、選択済あたため を切り替える */
+let flashTimer=null;
+function applySetting(newMode,what){
+  const prev=S.mode;S.mode=newMode;
+  if(newMode==='time'){const o=S.objs.time;o.指定W数=S.W;o.指定時間=S.T;S.obj=o;
+    runLines('#cV1',[6,7,8]);runLines('#cTime',[3,4,5]);
+    cap(`<b>電子レンジ v1 の 手動設定(${S.W}, ${S.T})</b>：v1 が保持している 時間あたため の <b>時間設定()</b> で値を代入し、<b>選択済あたため</b> をこのインスタンスに切り替えました。電子レンジ（上位クラス）は、どの具象クラスかを知りません。`)}
+  else{const o=S.objs.temp;o.目標温度=S.goal;S.obj=o;
+    runLines('#cV1',[10,11,12]);runLines('#cTemp',[4,5]);
+    cap(`<b>電子レンジ v1 の おこのみ温度(${S.goal})</b>：v1 が保持している 目標温度あたため の <b>目標温度設定()</b> で値を代入し、<b>選択済あたため</b> をこのインスタンスに切り替えました。電子レンジ（上位クラス）は、どの具象クラスかを知りません。`)}
+  runLines('#cOven',[]);
+  cV1.g.classList.add('sel');$('#pV1').classList.add('sel');
+  updMode(newMode!==prev);updBubbles(['目標温度','指定W数','指定時間','状態']);updDisplay();
+  clearTimeout(flashTimer);flashTimer=setTimeout(()=>{cV1.g.classList.remove('sel');$('#pV1').classList.remove('sel');if(!S.running)clearLines()},1800);
+}
+
+/* ================= アニメーション ================= */
+/* ステップ実行：ステップ実行中は、コードの行が光るたび・メッセージを送るたびに「1ステップ」を待つ */
+let RUN='run',needGate=false,waiters=[],nextMsg='';
+function showStep(){if(RUN!=='step'){$('#stepInfo').innerHTML='';return}
+  $('#stepInfo').innerHTML=curLine+(nextMsg?`　→ 次のメッセージ：<i>${esc(nextMsg)}</i>`:'')}
+async function gate(){
+  if(RUN!=='step'||!needGate)return;
+  needGate=false;showStep();$('#bStep').disabled=false;
+  await new Promise(r=>waiters.push(r));
+}
+function releaseAll(){const w=waiters;waiters=[];w.forEach(r=>r())}
+function releaseStep(){if(!waiters.length)return;$('#bStep').disabled=true;nextMsg='';releaseAll()}
+/* 新しい操作（ドア・とりけし・再開）が来たら、古い流れの待ちをほどいて終わらせる */
+function kick(){releaseAll();$('#bStep').disabled=true}
+const wait=async ms=>{await gate();await new Promise(r=>setTimeout(r,reduce?Math.min(ms,80):ms))};
+function hlMsg(id,on){msgs[id].g.classList.toggle('hl',on)}
+function travel(id,ms){return new Promise(res=>{const m=msgs[id];if(reduce){res();return}
+  let x1,x2;if(m.from===m.to){x1=LX[m.from]+4;x2=x1+22}else{x1=m.from<0?4:LX[m.from];x2=LX[m.to]}
+  const t0=performance.now();dot.setAttribute('opacity',1);
+  (function f(t){const p=Math.min(1,(t-t0)/ms);let x,y=m.y;
+    if(m.from===m.to){if(p<.33){x=x1+(x2-x1)*p*3}else if(p<.66){x=x2;y=m.y+11*(p-.33)*3}else{x=x2-(x2-x1)*(p-.66)*3;y=m.y+11}}
+    else x=x1+(x2-x1)*p;
+    dot.setAttribute('cx',x);dot.setAttribute('cy',y);if(p<1)requestAnimationFrame(f);else{dot.setAttribute('opacity',0);res()}})(t0)})}
+async function step(id,ms,tok){if(tok!==S.token)return false;
+  nextMsg=msgs[id].label;needGate=true;await gate();nextMsg='';if(tok!==S.token)return false;
+  hlMsg(id,true);await travel(id,ms);await wait(ms*.35);hlMsg(id,false);return tok===S.token}
+function setHeat(on){heat.setAttribute('opacity',on?1:0);waves.setAttribute('opacity',on?1:0);steam.setAttribute('opacity',on&&S.temp>45?1:0)}
+let waveAnim=null;
+function animWaves(on){cancelAnimationFrame(waveAnim);if(!on||reduce)return;let off=0;
+  (function f(){off-=0.6;waves.querySelectorAll('path').forEach(p=>p.setAttribute('stroke-dashoffset',off));waveAnim=requestAnimationFrame(f)})()}
+
+async function start(){
+  if(S.running)return;S.running=true;kick();const tok=++S.token;
+  S.temp=10;S.elapsed=0;S.loopN=0;S.paused=false;loopCount.textContent='';
+  $('#seqNote').textContent='あたため開始';
+  const sub=pSub(),K=S.mode;
+  runLines('#cOven',[4,5]);cap('<b>あたため開始()</b> が押されました。実体は 電子レンジ v1 ですが、あたため開始() は上位クラス <b>電子レンジ</b> に書かれています。');
+  if(!await step('m0',650,tok))return;
+  cap(`電子レンジは <b>self.選択済あたため.開始()</b> を呼びます。中身が ${NAME[K]} であることは知りません（知っているのは 電子レンジ v1 だけです）。`);
+  if(!await step('m1',700,tok))return;
+  runLines('#cOven',[]);runLines(sub,K==='time'?[10,11,12]:[11,12,13]);runLines('#cBase',[7]);act.classList.add('on');
+  cap(`<b>開始()</b> は ${NAME[K]} には書かれていないので、上位クラス <b>あたため の 開始()</b> が動きます。`);
+  await wait(1100);if(tok!==S.token)return;
+  runLines(sub,K==='time'?[7,8]:[7,8,9]);runLines('#cBase',[8]);
+  cap(`開始() の中で <b>self.あたためパラメータ作成()</b> を呼ぶと、self の実体が ${NAME[K]} なので、<b>${NAME[K]} の あたためパラメータ作成()</b> が呼ばれます（オーバーライド）。`);
+  if(!await step('m2',900,tok))return;
+  const ch=K==='time'?['目標温度']:['指定W数','指定時間'];
+  if(K==='time')S.obj.目標温度=999;else{S.obj.指定W数=500;S.obj.指定時間=1800}
+  updBubbles(ch);await wait(1300);if(tok!==S.token)return;
+  runLines(sub,[]);runLines('#cBase',[9,10]);S.obj.状態='加熱中';updBubbles(['状態']);
+  cap(`共通の手順に戻り、<b>状態を「加熱中」</b>にして、マグネトロンに <b>出力開始(${S.obj.指定W数})</b> を送ります。`);
+  if(!await step('m3',700,tok))return;
+  S.heating=true;setHeat(true);animWaves(true);updDisplay();
+  runLines('#cBase',[11,13]);
+  cap('続けて <b>加熱を続ける()</b> を呼び、温度を見ながら加熱するループに入ります（P171 の 開始() にあったループを、再開でも使えるように別のメソッドに切り出しています）。');
+  if(!await step('mL',800,tok))return;
+  if(S.door){pause();return}
+  heatLoop(tok);
+}
+async function heatLoop(tok){
+  allAct().forEach(a=>a.classList.remove('on'));(S.loopN?[actR,actRe]:[act,actLoop]).forEach(a=>a.classList.add('on'));
+  const rate=0.25*S.obj.指定W数/600, dt=15; let reason='';
+  exitNote.setAttribute('fill','#999');
+  while(tok===S.token){
+    S.loopN++;const n=S.loopN;loopCount.textContent=`${n} 回目`;
+    const ms=n<=2?650:200;
+    runLines('#cBase',n===1?[14]:[15,16,17,19]);
+    if(n<=2)cap(`ループ：毎回 <b>状態</b> を確かめ、赤外線センサーに <b>温度取得()</b> を送って、<b>現在温度</b> で終わるかどうかを判定します。`);
+    ir.setAttribute('opacity',1);
+    if(!await step('m4',ms,tok))break;
+    if(!await step('m5',ms,tok))break;
+    ir.setAttribute('opacity',0);
+    S.elapsed+=dt;S.temp=Math.min(100,S.temp+rate*dt);updDisplay();setHeat(true);
+    if(S.temp>=S.obj.目標温度){reason=`現在温度が目標温度 ${S.obj.目標温度}℃ に届いた`;break}
+    if(S.elapsed>=S.obj.指定時間){reason=`経過時間が指定時間 ${S.obj.指定時間} 秒に達した`;break}
+  }
+  if(tok!==S.token)return;
+  runLines('#cBase',[20,21]);S.obj.状態='待機中';updBubbles(['状態']);
+  cap(`<b>${reason}</b>ので、ループを抜けて <b>状態を「待機中」</b>に戻し、<b>出力停止()</b> を送ります。手順は共通でも、あたためパラメータ作成() の中身が違うので、終わり方が変わります。`);
+  if(!await step('m6',700,tok))return;
+  finish();
+}
+const inhLines=()=>S.mode==='time'?[10,11,12]:[11,12,13];
+function quiet(){Object.keys(msgs).forEach(k=>hlMsg(k,false));dot.setAttribute('opacity',0);ir.setAttribute('opacity',0)}
+async function pause(){
+  kick();const tok=++S.token;S.paused=true;S.heating=false;quiet();setHeat(false);animWaves(false);
+  $('#seqNote').textContent='一時停止';
+  runLines('#cOven',[10,11]);runLines(pSub(),inhLines());runLines('#cBase',[]);
+  cap('<b>ドアが開きました</b>：電子レンジの <b>一時停止()</b> から <b>self.選択済あたため.一時停止()</b> を呼びます。一時停止() も上位クラス あたため のものです。');
+  if(!await step('p0',550,tok))return;
+  if(!await step('p1',600,tok))return;
+  runLines('#cOven',[]);runLines('#cBase',[27,28,29]);S.obj.状態='一時停止中';updBubbles(['状態']);
+  cap('あたため の <b>一時停止()</b> は、状態が「加熱中」であることを確かめてから、<b>状態を「一時停止中」</b>に変えます。');
+  await wait(1300);if(tok!==S.token)return;
+  runLines('#cBase',[30,31]);
+  if(!await step('p2',600,tok))return;
+  runLines('#cBase',[17,18]);exitNote.setAttribute('fill','#2F6FD6');allAct().forEach(a=>a.classList.remove('on'));
+  cap('<b>加熱を続ける()</b> のループは、次に状態を確かめたときに「一時停止中」なので、<b>return でループを抜けます</b>。');
+  await wait(1800);if(tok!==S.token)return;
+  updDisplay();
+  cap('出力と経過時間を止め、ループも抜けました。ドアを閉めてから「スタート」を押すと再開します。');
+}
+async function resume(){
+  kick();const tok=++S.token;S.paused=false;quiet();exitNote.setAttribute('fill','#999');
+  $('#seqNote').textContent='再開';
+  runLines('#cOven',[13,14]);runLines(pSub(),inhLines());runLines('#cBase',[]);
+  cap('一時停止中に「スタート」が押されたので、電子レンジは <b>あたため開始()</b> ではなく <b>再開()</b> を呼びます。');
+  if(!await step('r0',550,tok))return;
+  if(!await step('r1',600,tok))return;
+  runLines('#cOven',[]);runLines('#cBase',[33,34,35]);S.obj.状態='加熱中';updBubbles(['状態']);actR.classList.add('on');
+  cap('あたため の <b>再開()</b> は、状態が「一時停止中」であることを確かめてから、<b>状態を「加熱中」</b>に戻します。');
+  await wait(1300);if(tok!==S.token)return;
+  runLines('#cBase',[36,37]);
+  if(!await step('r2',600,tok))return;
+  S.heating=true;setHeat(true);animWaves(true);updDisplay();
+  runLines('#cBase',[38,13]);
+  cap('もう一度 <b>加熱を続ける()</b> を呼んで、<b>ループに入り直します</b>。あたためパラメータ作成() はやり直しません。');
+  if(!await step('r3',800,tok))return;
+  heatLoop(tok);
+}
+function finish(){allAct().forEach(a=>a.classList.remove('on'));S.running=false;S.heating=false;S.paused=false;setHeat(false);animWaves(false);ir.setAttribute('opacity',0);act.classList.remove('on');
+  updDisplay();d1.textContent='できあがり';d2.textContent=`${S.temp.toFixed(0)}℃ / ${mmss(S.elapsed)}`;
+  setTimeout(clearLines,800)}
+async function stop(){
+  if(!S.running){cap('いまは動いていません。「スタート」で あたため開始() を呼びます。');return}
+  kick();const tok=++S.token;S.running=true;S.heating=false;quiet();setHeat(false);animWaves(false);
+  $('#seqNote').textContent='とりけし';
+  runLines('#cOven',[7,8]);runLines(pSub(),S.mode==='time'?[10,11,12]:[11,12,13]);runLines('#cBase',[]);
+  cap(`<b>とりけし</b>：電子レンジの <b>停止()</b> から <b>self.選択済あたため.停止()</b> を呼びます。停止() も上位クラス あたため のものです。`);
+  if(!await step('s0',550,tok))return;
+  if(!await step('s1',600,tok))return;
+  runLines('#cOven',[]);runLines('#cBase',[23,24,25]);S.obj.状態='待機中';updBubbles(['状態']);exitNote.setAttribute('fill','#999');
+  if(!await step('s2',600,tok))return;
+  cap('マグネトロンの出力を止めました。');
+  finish();d1.textContent='とりけし';
+}
+
+/* ================= 操作 ================= */
+function on(id,fn){const b=document.getElementById(id);b.addEventListener('click',fn);b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn()}})}
+const busy=()=>{if(S.running){cap('あたため中は設定を変えられません。「とりけし」で止めてから変えてください。');return true}return false};
+on('bManual',()=>{if(busy())return;applySetting('time','mode')});
+on('bTemp',()=>{if(busy())return;applySetting('temp','mode')});
+on('bUp',()=>{if(busy())return;if(S.mode==='time'){S.W=Wlist[Math.min(Wlist.length-1,Wlist.indexOf(S.W)+1)]}else{S.goal=Math.min(90,S.goal+5)}applySetting(S.mode,'val')});
+on('bDown',()=>{if(busy())return;if(S.mode==='time'){S.W=Wlist[Math.max(0,Wlist.indexOf(S.W)-1)]}else{S.goal=Math.max(40,S.goal-5)}applySetting(S.mode,'val')});
+const tChange=d=>{if(busy())return;if(S.mode!=='time'){cap('おこのみ温度では、時間は指定しません。目標温度あたため が タイムアウト30分 を自分で入れます。');return}
+  S.T=Math.max(30,Math.min(600,S.T+d));applySetting('time','val')};
+on('tMinus',()=>tChange(-30));on('tPlus',()=>tChange(30));
+on('bStart',()=>{
+  if(S.door){cap('ドアが開いているので、スタートは効きません。取っ手を押してドアを閉めてください。');return}
+  if(S.running){if(S.paused)resume();return}
+  start()});
+on('bCancel',stop);
+on('bDoor',()=>{S.door=!S.door;doorOpen.setAttribute('opacity',S.door?1:0);
+  if(S.door){
+    if(S.running&&S.heating&&!S.paused)pause();
+    else if(S.running&&!S.paused)cap('ドアが開きました。出力開始の直後に一時停止します。');
+    else if(S.paused)cap('ドアはすでに開いています。');
+    else cap('ドアを開けました。加熱していないので、何も起きません。');
+  }else cap(S.paused?'ドアを閉めました。「スタート」を押すと再開します。':'ドアを閉めました。');});
+
+function setRun(mode){RUN=mode;
+  $('#bRun').setAttribute('aria-pressed',mode==='run');$('#bPause').setAttribute('aria-pressed',mode==='step');
+  if(mode==='run'){needGate=false;nextMsg='';$('#stepInfo').innerHTML='';$('#bStep').disabled=true;releaseAll()}
+  else{showStep();cap('止めました（ステップ実行）。動いている間は、コードの行が光るたび・メッセージを送るたびに止まります。<b>⏭ 1ステップ</b>（または N キー）で次へ進みます。止まっている間も、電子レンジのボタンやドアは操作できます。')}}
+/* 初めに戻す：動きを打ち切って、開いた直後の状態に戻す */
+const INIT_CAP='「手動設定」か「おこのみ温度」を押して方式を選び、∧∨や時間で値を変えてから「スタート」を押してください。「とりけし」で止まります。';
+function resetAll(){
+  kick();++S.token;nextMsg='';curLine='';
+  Object.assign(S,{mode:'time',W:600,T:300,goal:60,running:false,heating:false,paused:false,door:false,loopN:0,temp:10,elapsed:0});
+  Object.assign(S.objs.time,{指定W数:600,指定時間:300,目標温度:null,状態:'待機中'});
+  Object.assign(S.objs.temp,{指定W数:null,指定時間:null,目標温度:null,状態:'待機中'});
+  S.obj=S.objs.time;
+  quiet();setHeat(false);animWaves(false);doorOpen.setAttribute('opacity',0);
+  allAct().forEach(a=>a.classList.remove('on'));loopCount.textContent='';exitNote.setAttribute('fill','#999');
+  $('#seqNote').textContent='あたため開始';
+  applySetting('time','mode');clearTimeout(flashTimer);cV1.g.classList.remove('sel');$('#pV1').classList.remove('sel');
+  clearLines();needGate=false;$('#bStep').disabled=true;$('#stepInfo').innerHTML='';
+  $$('.code').forEach(c=>c.scrollTo({top:0}));
+  cap('初めに戻しました。'+INIT_CAP)}
+$('#bReset').onclick=resetAll;
+$('#bRun').onclick=()=>setRun('run');
+$('#bPause').onclick=()=>setRun('step');
+$('#bStep').onclick=()=>{if(RUN==='step')releaseStep()};
+document.addEventListener('keydown',e=>{if(!document.getElementById('notice').hidden)return;
+  if((e.key==='n'||e.key==='N')&&RUN==='step'){e.preventDefault();releaseStep()}});
+
+applySetting('time','mode');clearLines();needGate=false;curLine='';
+cap(INIT_CAP);
+})();
+</script>
+<script>
+(function(){const n=document.getElementById('notice'),b=document.getElementById('noticeOk');
+  b.focus();const close=()=>{n.hidden=true;document.dispatchEvent(new Event('notice-closed'))};
+  b.addEventListener('click',close);document.addEventListener('keydown',e=>{if(!n.hidden&&e.key==='Escape')close()});})();
+</script>
+</body>
+</html>

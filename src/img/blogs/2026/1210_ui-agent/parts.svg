@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 324" width="1040" height="324" role="img" aria-label="部品の役割と相互作用と、試作での実物の図。上の段は役割と相互作用。Web UIはプレゼンテーションとして依頼の名前と中身をJSONで送る。サーバーは中継として中身を見ずにそのまま運ぶ。modはコントローラとして依頼の名前をスキルに振り分け、スラッシュコマンドにする。Claude CodeのAIとスキルはサービス（ロジック）で、AIへの指示（プロンプト）はスキルが持つ。下の段は試作での実物。「AIに聞く」ボタンが{&quot;command&quot;: &quot;answer&quot;, &quot;params&quot;: {…}}を送り、サーバーは/t/&lt;トークン&gt;/api/commandsで受けて/bridge/pollで渡し、modはanswerを/pr-review:answerにして、スキルのanswer/SKILL.mdが動く">
+<title>部品の役割と相互作用と、試作での実物の図。上の段は役割と相互作用。Web UIはプレゼンテーションとして依頼の名前と中身をJSONで送る。サーバーは中継として中身を見ずにそのまま運ぶ。modはコントローラとして依頼の名前をスキルに振り分け、スラッシュコマンドにする。Claude CodeのAIとスキルはサービス（ロジック）で、AIへの指示（プロンプト）はスキルが持つ。下の段は試作での実物。「AIに聞く」ボタンが{"command": "answer", "params": {…}}を送り、サーバーは/t/&lt;トークン&gt;/api/commandsで受けて/bridge/pollで渡し、modはanswerを/pr-review:answerにして、スキルのanswer/SKILL.mdが動く</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
+.mono { font-family: 'SFMono-Regular',Consolas,'Liberation Mono',monospace; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; }
+.ui { fill: #ddf4ff; stroke: #2a78d6; } .srv { fill: #f6f8fa; stroke: #8c959f; stroke-dasharray: 5 4; }
+.mod { fill: #ffffff; stroke: #2a78d6; stroke-width: 2.5; } .sk { fill: #fff8c5; stroke: #9a6700; stroke-width: 2.5; }
+.ar { stroke: #2a78d6; fill: none; stroke-width: 2; } .ah { fill: #2a78d6; }
+.go { fill: #2a78d6; } .ret { fill: #1a7f37; }
+.sep { stroke: #d0d7de; stroke-width: 1.5; stroke-dasharray: 4 4; }
+</style>
+<defs>
+<marker id="p1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="1040" height="324"/>
+
+<!-- 上の段：役割と相互作用 -->
+<text class="go" x="20" y="24" font-size="14" font-weight="bold">役割と相互作用</text>
+
+<rect class="ui" x="20" y="48" width="140" height="74" rx="8"/>
+<text class="t1" x="90" y="80" font-size="16" font-weight="bold" text-anchor="middle">Web UI</text>
+<text class="t1" x="90" y="104" font-size="13" text-anchor="middle">プレゼンテーション</text>
+<rect class="srv" x="307" y="48" width="140" height="74" rx="8"/>
+<text class="t1" x="377" y="80" font-size="16" font-weight="bold" text-anchor="middle">サーバー</text>
+<text class="t1" x="377" y="104" font-size="13" text-anchor="middle">中継</text>
+<rect class="mod" x="594" y="48" width="140" height="74" rx="8"/>
+<text class="t1" x="664" y="80" font-size="16" font-weight="bold" text-anchor="middle">mod</text>
+<text class="t1" x="664" y="104" font-size="13" text-anchor="middle">コントローラ</text>
+<rect class="sk" x="881" y="48" width="140" height="74" rx="8"/>
+<text class="t2" x="951" y="66" font-size="11" text-anchor="middle">Claude Code</text>
+<text class="t1" x="951" y="88" font-size="16" font-weight="bold" text-anchor="middle">AIとスキル</text>
+<text class="t1" x="951" y="110" font-size="13" text-anchor="middle">サービス（ロジック）</text>
+
+<line class="ar" x1="164" y1="85" x2="303" y2="85" marker-end="url(#p1)"/>
+<text class="t1" x="233" y="60" font-size="12" text-anchor="middle">JSON</text>
+<text class="t2" x="233" y="76" font-size="12" text-anchor="middle">（依頼の名前と中身）</text>
+<line class="ar" x1="451" y1="85" x2="590" y2="85" marker-end="url(#p1)"/>
+<text class="t1" x="520" y="76" font-size="12" text-anchor="middle">そのまま</text>
+<line class="ar" x1="738" y1="85" x2="877" y2="85" marker-end="url(#p1)"/>
+<text class="t1" x="807" y="76" font-size="12" text-anchor="middle">スラッシュコマンド</text>
+
+<text class="t2" x="90" y="146" font-size="13" text-anchor="middle">依頼の名前と中身を送る</text>
+<text class="t2" x="377" y="146" font-size="13" text-anchor="middle">中身を見ずに運ぶ</text>
+<text class="t2" x="664" y="146" font-size="13" text-anchor="middle">依頼の名前を</text>
+<text class="t2" x="664" y="164" font-size="13" text-anchor="middle">スキルに振り分ける</text>
+<text class="t2" x="951" y="146" font-size="13" text-anchor="middle">AIへの指示（プロンプト）</text>
+<text class="t2" x="951" y="164" font-size="13" text-anchor="middle">はスキルが持つ</text>
+
+<line class="sep" x1="20" y1="186" x2="1020" y2="186"/>
+
+<!-- 下の段：試作では -->
+<text class="ret" x="20" y="212" font-size="14" font-weight="bold">試作では</text>
+
+<rect class="ui" x="20" y="228" width="140" height="80" rx="8"/>
+<text class="t1" x="90" y="273" font-size="13" text-anchor="middle">「AIに聞く」ボタン</text>
+<rect class="srv" x="307" y="228" width="140" height="80" rx="8"/>
+<text class="mono t1" x="377" y="252" font-size="11" text-anchor="middle">/t/&lt;トークン&gt;/</text>
+<text class="t1" x="377" y="272" font-size="11" text-anchor="middle"><tspan class="mono">api/commands</tspan> で受け</text>
+<text class="t1" x="377" y="294" font-size="11" text-anchor="middle"><tspan class="mono">/bridge/poll</tspan> で渡す</text>
+<rect class="mod" x="594" y="228" width="140" height="80" rx="8"/>
+<text class="mono t1" x="664" y="262" font-size="12" text-anchor="middle">answer →</text>
+<text class="mono t1" x="664" y="282" font-size="12" text-anchor="middle">/pr-review:answer</text>
+<rect class="sk" x="881" y="228" width="140" height="80" rx="8"/>
+<text class="mono t1" x="951" y="273" font-size="12" text-anchor="middle">answer/SKILL.md</text>
+
+<line class="ar" x1="164" y1="268" x2="303" y2="268" marker-end="url(#p1)"/>
+<text class="mono t1" x="233" y="244" font-size="11" text-anchor="middle">{"command": "answer",</text>
+<text class="mono t1" x="233" y="259" font-size="11" text-anchor="middle">"params": {…}}</text>
+<line class="ar" x1="451" y1="268" x2="590" y2="268" marker-end="url(#p1)"/>
+<text class="t1" x="520" y="259" font-size="12" text-anchor="middle">そのまま</text>
+<line class="ar" x1="738" y1="268" x2="877" y2="268" marker-end="url(#p1)"/>
+<text class="mono t1" x="807" y="244" font-size="11" text-anchor="middle">/pr-review:answer</text>
+<text class="mono t1" x="807" y="259" font-size="11" text-anchor="middle">{…}</text>
+</svg>

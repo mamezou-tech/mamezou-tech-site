@@ -59,7 +59,7 @@ modはプラグインに入れたJavaScriptかTypeScriptのコードでClaude Co
 
 ![Web UIの依頼は、modなら人がターミナルで使っている今の会話に入り、Agent SDKやclaude -pではサーバーが起動した別の会話に入る](/img/blogs/2026/1210_ui-agent/choices.svg)
 
-ほかのつなぎ方は次の理由で使いませんでした。
+ほかの方法は次の理由で使いませんでした。
 
 - **[channels](https://code.claude.com/docs/en/channels-reference)**（MCPサーバーから動いている会話にイベントを送る仕組み）: 今の会話に届く。ただ、research previewである。自作のchannelは許可された一覧にないので、起動のたびに`--dangerously-load-development-channels`を付けて警告を承認しなければならない。答えもAIが返信のツールを呼んだときにだけ戻る。modならAIが答え終わったときに答えを必ず受け取れる
 - **[Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)**（Claude Codeと同じエージェントを自分のプログラムから動かすライブラリー）: サーバーが別の会話を起動するので依頼がターミナルの会話に入らない。Anthropicの事前の許可なしに、自分の製品の利用者にclaude.aiのログインを使わせることも認められていない

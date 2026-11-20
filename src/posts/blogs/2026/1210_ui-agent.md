@@ -160,7 +160,7 @@ on('tool.call', { tool: 'AskUserQuestion' }, async ($, e, next) => {
 })
 ```
 
-modのフックが動ける時間は1回に10秒までです。ただ、modの機能（HTTPのリクエストなど）の結果を待つ間はその時間に数えられません（[Mods reference](https://code.claude.com/docs/en/plugins/mods/reference#limits)）。そのため人がWeb UIで答えるまでフックの中で待てます。
+modのフックが動ける時間は1回に10秒までです。ただ、`$.http.fetch`で送ったHTTPのリクエストの応答を待つ間はその10秒に数えられません（[Mods reference](https://code.claude.com/docs/en/plugins/mods/reference#limits)）。そのため人がWeb UIで答えるまでフックの中で待てます。
 
 ### 4. Claude Codeが作業中でも別の質問に返事をする
 

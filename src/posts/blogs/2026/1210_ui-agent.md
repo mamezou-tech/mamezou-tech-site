@@ -123,7 +123,7 @@ AIは答えの根拠にした行をWeb UIで光らせ、スレッドに根拠と
 
 ![AIが示した根拠の10行目が光り、スレッドに根拠として並んでいる](/img/blogs/2026/1210_ui-agent/web-2-operate.png)
 
-modはAIが呼べるツールを足せます（`$.tool.register`）。AIはReadやBashと同じようにそのツールを呼び、modはその中でWeb UIを動かします。試作では根拠の行をWeb UIで光らせるツール`pr_show`を足しました。AIは根拠にした行を`pr_show`で1か所ずつ光らせます。modはツールが呼ばれるたびにWeb UIへの知らせ（以下、イベント）を作り、HTTPのPOSTでサーバーへ送ります。サーバーはイベントを[SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)でWeb UIへ流します。SSEはサーバーが1本のHTTPの接続でブラウザへ続けてデータを送る仕組みです。そのため1つの質問でもイベントは何回も届きます。
+modはAIが呼べるツールを足せます（`$.tool.register`）。AIはReadやBashと同じようにそのツールを呼び、modはその中でWeb UIを動かします。試作では根拠の行をWeb UIで光らせるツール`pr_show`を足しました。AIは根拠にした行を`pr_show`で1か所ずつ光らせます。modはツールが呼ばれるたびにWeb UIへのイベントを作り、HTTPのPOSTでサーバーへ送ります。サーバーはイベントを[SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)でWeb UIへ流します。SSEはサーバーが1本のHTTPの接続でブラウザへ続けてデータを送る仕組みです。そのため1つの質問でもイベントは何回も届きます。
 
 ![1つの質問に対し、AIが手順を進めるたびにイベントがWeb UIに届く。何回、何を返すかはスキルに沿ってAIが決める](/img/blogs/2026/1210_ui-agent/events.svg)
 

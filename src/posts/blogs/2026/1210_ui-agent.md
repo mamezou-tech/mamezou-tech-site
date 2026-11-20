@@ -168,7 +168,7 @@ Claude Codeは今の作業が終わるまで次の依頼を始めません。人
 
 ![作業の途中に聞いた質問へ、終わったら答えるという一次回答が出ている](/img/blogs/2026/1210_ui-agent/web-7-interim.png)
 
-一次回答を書くのは作業しているAIとは別のAIです。modは`$.model.fork`でこの別のAIに質問を渡します（[Use the mods API](https://code.claude.com/docs/en/plugins/mods/api#call-a-model)）。別のAIはここまでのコンテキストを引き継ぎます。そのため会話でもう読んだ差分のことならその場で答えられます。ただ、ファイルを読むなどのツールは使えません。まだ読んでいない差分のことは画面のように何の作業中かだけを返します。本回答は作業が終わってから作業していたAIが出します。
+一次回答を書くのは作業しているAIとは別のAIです。modは`$.model.fork`で別のAIに質問を渡します（[Use the mods API](https://code.claude.com/docs/en/plugins/mods/api#call-a-model)）。別のAIはここまでのコンテキストを引き継ぎます。そのため会話でもう読んだ差分のことならその場で答えられます。ただ、ファイルを読むなどのツールは使えません。まだ読んでいない差分のことは画面のように何の作業中かだけを返します。本回答は作業が終わってから作業していたAIが出します。
 
 ![長い作業の途中にWeb UIで質問すると、modは$.model.forkで別のAIに一次回答を書かせてWeb UIに出す。作業のターンが終わるとWeb UIの依頼のターンが本回答を出す](/img/blogs/2026/1210_ui-agent/busy.svg)
 

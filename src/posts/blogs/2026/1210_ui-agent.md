@@ -68,6 +68,8 @@ modはプラグインに入れたJavaScriptかTypeScriptのコードでClaude Co
 | <span style="white-space:nowrap">[`claude -p`](https://code.claude.com/docs/en/headless)</span> | Claude Codeを対話なしで動かすコマンド。Agent SDKと同じく別の会話になるのでWeb UIの依頼がターミナルの会話に入らない。 |
 | <span style="white-space:nowrap">[MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview)</span> | MCPサーバーが返すWeb UIをAIのアプリが描くMCPの拡張。Claude Codeが対応していないのでWeb UIを出せない。 |
 
+<br>
+
 Web UIとmodの間には手元で小さなサーバーを動かします。このサーバーはWeb UIを配り、依頼と答えを運びます。1回のやりとりは次のように流れます。
 
 ![1回のやりとりの流れ。Web UIの質問はサーバーとmodを通って今の会話に入り、AIの示した根拠の行と答えが同じ道を戻ってWeb UIに出る](/img/blogs/2026/1210_ui-agent/flow.svg)

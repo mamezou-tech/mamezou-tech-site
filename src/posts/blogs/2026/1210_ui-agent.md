@@ -4,6 +4,7 @@ author: kiyohito-ito
 date: 2026-12-10
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2026/
 tags: [Claude Code, mods, AIエージェント, 生成AI, advent2026]
+image: true
 ---
 
 これは[豆蔵デベロッパーサイトアドベントカレンダー2026](/events/advent-calendar/2026/)第10日目の記事です。

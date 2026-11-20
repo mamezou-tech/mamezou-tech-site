@@ -298,8 +298,6 @@ on('turn.complete', async ($, e, next) => {
 })
 ```
 
-最初はスキルが呼び出されたときのフック（`skill.prompt`）でidを探そうとしました。ところがTeamのアカウントではこのフックが動かず、ターミナルに「its skill.prompt hook was skipped」と出ました（1の画面キャプチャ）。TeamかEnterpriseのログインではClaude Codeに組み込まれたmodが一部のフックを止めます（[Manage mods for your organization](https://code.claude.com/docs/en/plugins/mods/admin)）。管理者の設定がある環境でも同じです。`turn.start`と`turn.complete`は止められません。
-
 ### 9. 不正利用を防ぐ
 
 Web UIから届いた文はそのまま今の会話へのプロンプトになります。試作はClaude CodeをDocker Sandboxesの中で権限の確認を省くモード（bypassPermissions）で動かしました。このモードのAIはプロンプトに従ってツールを確認なしに使います。Docker Sandboxesの標準のモードは作業中のディレクトリをホストと共有します。つまりサーバーに文を送れる人は誰でもAIにそのディレクトリのファイルを書き換えさせられます。

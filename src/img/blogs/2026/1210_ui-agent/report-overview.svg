@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" role="img" aria-label="使う人はホストでsbx runを1回打ち、Node.jsとプラグインを入れたmixinでDocker Sandboxesを作る。サンドボックスの中で、modが手元のサーバーを起動する。ホストのブラウザは固定したポートでサーバーのWeb UIを開く。modはサーバーから質問を取り出して今の会話に入れ、ツールで画面を動かす。AskUserQuestionとプランの承認はHTTPのフックでサーバーに回す。CIでは同じスキルをclaude -pで呼ぶ">
+<title>使う人はホストでsbx runを1回打ち、Node.jsとプラグインを入れたmixinでDocker Sandboxesを作る。サンドボックスの中で、modが手元のサーバーを起動する。ホストのブラウザは固定したポートでサーバーのWeb UIを開く。modはサーバーから質問を取り出して今の会話に入れ、ツールで画面を動かす。AskUserQuestionとプランの承認はHTTPのフックでサーバーに回す。CIでは同じスキルをclaude -pで呼ぶ</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP',sans-serif; }
+.mono { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; }
+.box { fill: #f6f8fa; stroke: #8c959f; } .ui { fill: #ddf4ff; stroke: #2a78d6; } .srv { fill: #dafbe1; stroke: #1a7f37; } .cc { fill: #fff8c5; stroke: #9a6700; }
+.area { fill: none; stroke: #8c959f; stroke-dasharray: 6 4; } .mix { fill: none; stroke: #8250df; stroke-dasharray: 3 3; } .mixt { fill: #8250df; }
+.ar { stroke: #57606a; fill: none; stroke-width: 1.5; } .ard { stroke: #57606a; fill: none; stroke-width: 1.5; stroke-dasharray: 5 4; } .ah { fill: #57606a; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0d1117; } .t1 { fill: #e6edf3; } .t2 { fill: #9198a1; }
+  .box { fill: #161b22; stroke: #6e7681; } .ui { fill: #12263f; stroke: #3987e5; } .srv { fill: #12261e; stroke: #3fb950; } .cc { fill: #2e2410; stroke: #c98500; }
+  .area { stroke: #6e7681; } .mix { stroke: #a371f7; } .mixt { fill: #a371f7; }
+  .ar { stroke: #9198a1; } .ard { stroke: #9198a1; } .ah { fill: #9198a1; }
+}
+</style>
+<defs><marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<rect class="bg" width="960" height="560"/>
+
+<!-- ホスト -->
+<rect class="area" x="10" y="10" width="250" height="400" rx="8"/>
+<text x="26" y="34" class="t2" font-size="13">ホスト</text>
+<rect class="box" x="26" y="50" width="218" height="96" rx="6"/>
+<text x="135" y="74" class="t1" font-size="13" text-anchor="middle">① 使う人が1回打つ</text>
+<text x="135" y="98" class="t1 mono" font-size="11" text-anchor="middle">sbx run --publish P:P</text>
+<text x="135" y="116" class="t1 mono" font-size="11" text-anchor="middle">--kit &lt;mixin&gt; claude</text>
+<text x="135" y="136" class="t2" font-size="11" text-anchor="middle">ホストのポートを固定する</text>
+<rect class="ui" x="26" y="200" width="218" height="96" rx="6"/>
+<text x="135" y="230" class="t1" font-size="14" text-anchor="middle">ブラウザのWeb UI</text>
+<text x="135" y="254" class="t2 mono" font-size="11" text-anchor="middle">http://localhost:P/…</text>
+<text x="135" y="274" class="t2" font-size="11" text-anchor="middle">（ホストの127.0.0.1:P）</text>
+
+<!-- サンドボックス -->
+<rect class="area" x="290" y="10" width="660" height="400" rx="8"/>
+<text x="306" y="34" class="t2" font-size="13">Docker Sandboxes（Claude Codeはbypassで動く）</text>
+<rect class="mix" x="306" y="46" width="300" height="80" rx="6"/>
+<text x="318" y="68" class="mixt" font-size="12">mixin（キット）</text>
+<text x="318" y="90" class="t1" font-size="12">Node.jsの実行ファイル、プラグイン</text>
+<text x="318" y="110" class="t2" font-size="11">ENVでPATHとプラグインのパスを設定</text>
+
+<rect class="srv" x="306" y="190" width="240" height="120" rx="6"/>
+<text x="426" y="218" class="t1" font-size="14" text-anchor="middle">手元のサーバー</text>
+<text x="426" y="242" class="t2" font-size="12" text-anchor="middle">依存のないNode.js、dist/を配る</text>
+<text x="426" y="262" class="t2 mono" font-size="11" text-anchor="middle">0.0.0.0:P</text>
+<text x="426" y="282" class="t2" font-size="12" text-anchor="middle">起動ごとのトークン</text>
+
+<rect class="cc" x="640" y="46" width="296" height="350" rx="6"/>
+<text x="788" y="70" class="t1" font-size="14" text-anchor="middle">Claude Code</text>
+<rect class="box" x="660" y="86" width="256" height="84" rx="4"/>
+<text x="788" y="112" class="t1" font-size="13" text-anchor="middle">mod</text>
+<text x="788" y="134" class="t2" font-size="11" text-anchor="middle">サーバーを起動、質問を取り出す、</text>
+<text x="788" y="152" class="t2" font-size="11" text-anchor="middle">画面を動かすツール</text>
+<rect class="box" x="660" y="190" width="256" height="84" rx="4"/>
+<text x="788" y="216" class="t1" font-size="13" text-anchor="middle">今の会話</text>
+<text x="788" y="238" class="t2" font-size="11" text-anchor="middle">指示はプラグインのスキル、</text>
+<text x="788" y="256" class="t2" font-size="11" text-anchor="middle">質問と画面の要素は引数</text>
+<rect class="box" x="660" y="294" width="256" height="84" rx="4"/>
+<text x="788" y="320" class="t1" font-size="13" text-anchor="middle">HTTPのフック</text>
+<text x="788" y="342" class="t2" font-size="11" text-anchor="middle">PreToolUse、PermissionRequest</text>
+<text x="788" y="360" class="t2" font-size="11" text-anchor="middle">（AskUserQuestion、プランの承認）</text>
+
+<!-- 矢印 -->
+<path class="ar" d="M135,146 L135,170 L456,170 L456,128" marker-end="url(#m)"/>
+<text x="296" y="164" class="t2" font-size="11" text-anchor="middle">作る</text>
+<path class="ar" d="M244,230 L304,230" marker-end="url(#m)"/>
+<text x="274" y="222" class="t2" font-size="11" text-anchor="middle">開く</text>
+<path class="ar" d="M304,270 L246,270" marker-end="url(#m)"/>
+<text x="274" y="288" class="t2" font-size="11" text-anchor="middle">SSE</text>
+<path class="ar" d="M658,112 L520,112 L520,188" marker-end="url(#m)"/>
+<text x="528" y="156" class="t2" font-size="11">② 起動</text>
+<path class="ar" d="M548,214 L600,214 L600,150 L658,150" marker-end="url(#m)"/>
+<text x="604" y="184" class="t2" font-size="11">③ 取り出す</text>
+<path class="ar" d="M788,170 L788,188" marker-end="url(#m)"/>
+<text x="800" y="184" class="t2" font-size="11">④ 入れる</text>
+<path class="ar" d="M658,250 L548,250" marker-end="url(#m)"/>
+<text x="603" y="244" class="t2" font-size="11" text-anchor="middle">⑤ 画面と答え</text>
+<path class="ar" d="M658,336 L426,336 L426,312" marker-end="url(#m)"/>
+<text x="540" y="354" class="t2" font-size="11" text-anchor="middle">⑥ 人への問いを回す</text>
+
+<!-- CI -->
+<rect class="area" x="290" y="430" width="660" height="116" rx="8"/>
+<text x="306" y="454" class="t2" font-size="13">CI（Web UIとはつながない）</text>
+<rect class="box" x="306" y="466" width="400" height="66" rx="6"/>
+<text x="506" y="492" class="t1 mono" font-size="12" text-anchor="middle">claude -p "/&lt;プラグイン名&gt;:&lt;スキル名&gt;"</text>
+<text x="506" y="516" class="t2" font-size="11" text-anchor="middle">⑦ --plugin-dirでプラグインを渡し、APIキーで動かす</text>
+<path class="ard" d="M706,500 L944,500 L944,232 L918,232" marker-end="url(#m)"/>
+<text x="825" y="494" class="t2" font-size="11" text-anchor="middle">同じスキル</text>
+</svg>

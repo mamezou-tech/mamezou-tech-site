@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" role="img" aria-label="Web UIとClaude Codeのつなぎ方の2つの形。上の形では、modが手元のサーバーから質問を取り出し、人がターミナルで使っている今の会話に入れる。下の形では、サーバーがAgent SDK、claude -p、ACPで別の会話を起動して持ち、人がターミナルで使っている会話とはつながらない">
+<title>Web UIとClaude Codeのつなぎ方の2つの形。上の形では、modが手元のサーバーから質問を取り出し、人がターミナルで使っている今の会話に入れる。下の形では、サーバーがAgent SDK、claude -p、ACPで別の会話を起動して持ち、人がターミナルで使っている会話とはつながらない</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP',sans-serif; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; }
+.box { fill: #f6f8fa; stroke: #8c959f; } .ui { fill: #ddf4ff; stroke: #2a78d6; } .srv { fill: #dafbe1; stroke: #1a7f37; } .cc { fill: #fff8c5; stroke: #9a6700; }
+.off { fill: none; stroke: #8c959f; stroke-dasharray: 5 4; }
+.ar { stroke: #57606a; fill: none; stroke-width: 1.5; } .ah { fill: #57606a; } .sep { stroke: #d0d7de; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0d1117; } .t1 { fill: #e6edf3; } .t2 { fill: #9198a1; }
+  .box { fill: #161b22; stroke: #6e7681; } .ui { fill: #12263f; stroke: #3987e5; } .srv { fill: #12261e; stroke: #3fb950; } .cc { fill: #2e2410; stroke: #c98500; }
+  .off { stroke: #6e7681; } .ar { stroke: #9198a1; } .ah { fill: #9198a1; } .sep { stroke: #30363d; }
+}
+</style>
+<defs><marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<rect class="bg" width="900" height="400"/>
+
+<text x="16" y="28" class="t1" font-size="15">A：modで、人が使っている今の会話に入れる</text>
+<rect class="ui" x="20" y="60" width="150" height="70" rx="6"/>
+<text x="95" y="100" class="t1" font-size="14" text-anchor="middle">Web UI</text>
+<rect class="srv" x="230" y="60" width="160" height="70" rx="6"/>
+<text x="310" y="92" class="t1" font-size="14" text-anchor="middle">手元のサーバー</text>
+<text x="310" y="112" class="t2" font-size="12" text-anchor="middle">質問のキュー</text>
+<rect class="cc" x="450" y="44" width="430" height="140" rx="6"/>
+<text x="665" y="66" class="t1" font-size="14" text-anchor="middle">人がターミナルで起動したClaude Code</text>
+<rect class="box" x="470" y="80" width="130" height="80" rx="4"/>
+<text x="535" y="114" class="t1" font-size="13" text-anchor="middle">mod</text>
+<text x="535" y="134" class="t2" font-size="12" text-anchor="middle">プラグインの中</text>
+<rect class="box" x="720" y="80" width="140" height="80" rx="4"/>
+<text x="790" y="114" class="t1" font-size="13" text-anchor="middle">今の会話</text>
+<text x="790" y="134" class="t2" font-size="12" text-anchor="middle">ターミナルと同じ</text>
+<path class="ar" d="M170,84 L228,84" marker-end="url(#m)"/>
+<text x="199" y="78" class="t2" font-size="11" text-anchor="middle">質問</text>
+<path class="ar" d="M228,112 L172,112" marker-end="url(#m)"/>
+<text x="199" y="128" class="t2" font-size="11" text-anchor="middle">画面</text>
+<path class="ar" d="M390,90 L468,90" marker-end="url(#m)"/>
+<text x="429" y="84" class="t2" font-size="11" text-anchor="middle">取り出す</text>
+<path class="ar" d="M468,140 L392,140" marker-end="url(#m)"/>
+<text x="429" y="156" class="t2" font-size="11" text-anchor="middle">画面を動かす</text>
+<path class="ar" d="M600,104 L718,104" marker-end="url(#m)"/>
+<text x="659" y="98" class="t2" font-size="11" text-anchor="middle">$.prompt.submit</text>
+<path class="ar" d="M718,138 L602,138" marker-end="url(#m)"/>
+<text x="659" y="154" class="t2" font-size="11" text-anchor="middle">ツール、答え</text>
+
+<line class="sep" x1="16" y1="204" x2="884" y2="204"/>
+
+<text x="16" y="232" class="t1" font-size="15">B、D、ACP：サーバーが別の会話を起動して持つ</text>
+<rect class="ui" x="20" y="262" width="150" height="70" rx="6"/>
+<text x="95" y="302" class="t1" font-size="14" text-anchor="middle">Web UI</text>
+<rect class="srv" x="230" y="262" width="160" height="70" rx="6"/>
+<text x="310" y="294" class="t1" font-size="14" text-anchor="middle">手元のサーバー</text>
+<text x="310" y="314" class="t2" font-size="12" text-anchor="middle">会話を持つ</text>
+<rect class="cc" x="450" y="250" width="200" height="94" rx="6"/>
+<text x="550" y="278" class="t1" font-size="13" text-anchor="middle">サーバーが起動した会話</text>
+<text x="550" y="300" class="t2" font-size="12" text-anchor="middle">Agent SDK、claude -p、</text>
+<text x="550" y="318" class="t2" font-size="12" text-anchor="middle">ACPのアダプター</text>
+<rect class="off" x="700" y="262" width="180" height="70" rx="6"/>
+<text x="790" y="292" class="t2" font-size="13" text-anchor="middle">人がターミナルで</text>
+<text x="790" y="312" class="t2" font-size="13" text-anchor="middle">使っている会話</text>
+<path class="ar" d="M170,286 L228,286" marker-end="url(#m)"/>
+<text x="199" y="280" class="t2" font-size="11" text-anchor="middle">質問</text>
+<path class="ar" d="M228,314 L172,314" marker-end="url(#m)"/>
+<text x="199" y="330" class="t2" font-size="11" text-anchor="middle">画面</text>
+<path class="ar" d="M390,286 L448,286" marker-end="url(#m)"/>
+<text x="419" y="280" class="t2" font-size="11" text-anchor="middle">起動</text>
+<path class="ar" d="M448,314 L392,314" marker-end="url(#m)"/>
+<text x="419" y="330" class="t2" font-size="11" text-anchor="middle">出来事</text>
+<text x="675" y="372" class="t2" font-size="12" text-anchor="middle">入らない（会話の記録から分岐はできる）</text>
+</svg>

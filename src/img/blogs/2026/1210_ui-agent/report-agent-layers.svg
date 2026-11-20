@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" role="img" aria-label="同じWeb UIを複数のAIエージェントに向ける時の層。Web UI、サーバー、Web UIを動かすMCPのツール、ACPのクライアントと許可の画面は共通に作る。起動のコマンド、認証、確認を省く設定はAIエージェントごとに作る。Copilot CLI、Cursor、Gemini CLI、Antigravity CLI、Kiro CLI、OpenCode、Cline、JunieはACPで直接つなぎ、Claude CodeとCodexはACPのアダプターを通す">
+<title>同じWeb UIを複数のAIエージェントに向ける時の層。Web UI、サーバー、Web UIを動かすMCPのツール、ACPのクライアントと許可の画面は共通に作る。起動のコマンド、認証、確認を省く設定はAIエージェントごとに作る。Copilot CLI、Cursor、Gemini CLI、Antigravity CLI、Kiro CLI、OpenCode、Cline、JunieはACPで直接つなぎ、Claude CodeとCodexはACPのアダプターを通す</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP',sans-serif; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; }
+.box { fill: #f6f8fa; stroke: #8c959f; } .com { fill: #dafbe1; stroke: #1a7f37; } .per { fill: #fff8c5; stroke: #9a6700; } .ag { fill: #ddf4ff; stroke: #2a78d6; }
+.ar { stroke: #57606a; fill: none; stroke-width: 1.5; } .ah { fill: #57606a; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0d1117; } .t1 { fill: #e6edf3; } .t2 { fill: #9198a1; }
+  .box { fill: #161b22; stroke: #6e7681; } .com { fill: #12261e; stroke: #3fb950; } .per { fill: #2e2410; stroke: #c98500; } .ag { fill: #12263f; stroke: #3987e5; }
+  .ar { stroke: #9198a1; } .ah { fill: #9198a1; }
+}
+</style>
+<defs><marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<rect class="bg" width="900" height="400"/>
+
+<text x="16" y="34" class="t2" font-size="13">共通に作る</text>
+<rect class="com" x="150" y="14" width="160" height="60" rx="6"/>
+<text x="230" y="49" class="t1" font-size="13" text-anchor="middle">Web UI</text>
+<rect class="com" x="330" y="14" width="170" height="60" rx="6"/>
+<text x="415" y="40" class="t1" font-size="13" text-anchor="middle">サーバー</text>
+<text x="415" y="60" class="t2" font-size="11" text-anchor="middle">質問のキュー、プロンプト</text>
+<rect class="com" x="520" y="14" width="170" height="60" rx="6"/>
+<text x="605" y="40" class="t1" font-size="13" text-anchor="middle">Web UIを動かす</text>
+<text x="605" y="60" class="t2" font-size="11" text-anchor="middle">MCPのツール</text>
+<rect class="com" x="710" y="14" width="176" height="60" rx="6"/>
+<text x="798" y="40" class="t1" font-size="13" text-anchor="middle">ACPのクライアント</text>
+<text x="798" y="60" class="t2" font-size="11" text-anchor="middle">と許可の画面</text>
+
+<text x="16" y="134" class="t2" font-size="13">AIエージェント</text>
+<text x="16" y="152" class="t2" font-size="13">ごとに作る</text>
+<rect class="per" x="150" y="114" width="230" height="56" rx="6"/>
+<text x="265" y="147" class="t1" font-size="13" text-anchor="middle">起動のコマンド</text>
+<rect class="per" x="400" y="114" width="230" height="56" rx="6"/>
+<text x="515" y="147" class="t1" font-size="13" text-anchor="middle">認証</text>
+<rect class="per" x="650" y="114" width="236" height="56" rx="6"/>
+<text x="768" y="147" class="t1" font-size="13" text-anchor="middle">確認を省く設定</text>
+
+<path class="ar" d="M798,74 L798,92 L515,92 L515,112" marker-end="url(#m)"/>
+<path class="ar" d="M515,170 L515,208" marker-end="url(#m)"/>
+<text x="527" y="196" class="t2" font-size="11">stdioでACPを話す。MCPのツールはsession/newで渡す</text>
+
+<text x="16" y="244" class="t2" font-size="13">ACPで直接</text>
+<rect class="ag" x="150" y="214" width="736" height="72" rx="6"/>
+<text x="518" y="244" class="t1" font-size="13" text-anchor="middle">Copilot CLI、Cursor、Gemini CLI、Antigravity CLI、</text>
+<text x="518" y="266" class="t1" font-size="13" text-anchor="middle">Kiro CLI、OpenCode、Cline、Junie</text>
+
+<text x="16" y="324" class="t2" font-size="13">アダプター</text>
+<text x="16" y="342" class="t2" font-size="13">を通す</text>
+<rect class="ag" x="150" y="304" width="360" height="72" rx="6"/>
+<text x="330" y="334" class="t1" font-size="13" text-anchor="middle">Claude Code</text>
+<text x="330" y="356" class="t2" font-size="11" text-anchor="middle">claude-agent-acp（Agent SDKを包む）</text>
+<rect class="ag" x="526" y="304" width="360" height="72" rx="6"/>
+<text x="706" y="334" class="t1" font-size="13" text-anchor="middle">Codex</text>
+<text x="706" y="356" class="t2" font-size="11" text-anchor="middle">codex-acp（app-serverを起動する）</text>
+</svg>

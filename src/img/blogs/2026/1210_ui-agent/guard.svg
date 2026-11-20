@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" role="img" aria-label="手元のサーバーに届きうる相手と止める仕組み。正しいWeb UIはHostの確認とURLのトークンを通る。別のタブのページはトークンを知らないので止まる。ほかのマシンはポートが127.0.0.1にだけ出ているので届かない。modはBearerトークンでmod専用のエンドポイントを使う。ブラウザからmod専用のエンドポイントを呼ぶとOriginが付くので断られる">
+<title>手元のサーバーに届きうる相手と止める仕組み。正しいWeb UIはHostの確認とURLのトークンを通る。別のタブのページはトークンを知らないので止まる。ほかのマシンはポートが127.0.0.1にだけ出ているので届かない。modはBearerトークンでmod専用のエンドポイントを使う。ブラウザからmod専用のエンドポイントを呼ぶとOriginが付くので断られる</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
+.mono { font-family: 'SFMono-Regular',Consolas,'Liberation Mono',monospace; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; }
+.ok { fill: #ddf4ff; stroke: #2a78d6; } .bad { fill: #ffebe9; stroke: #cf222e; } .mod { fill: #ffffff; stroke: #2a78d6; stroke-width: 2.5; }
+.chk { fill: #f6f8fa; stroke: #57606a; } .srv { fill: #fff8c5; stroke: #9a6700; stroke-width: 2; }
+.ar { stroke: #2a78d6; fill: none; stroke-width: 2; } .ah { fill: #2a78d6; }
+.ng { stroke: #cf222e; fill: none; stroke-width: 2; stroke-dasharray: 5 4; } .nh { fill: #cf222e; }
+.x { fill: #cf222e; font-weight: bold; } .o { fill: #1a7f37; font-weight: bold; }
+</style>
+<defs>
+<marker id="g1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+<marker id="g2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="nh"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="900" height="400"/>
+<text class="t1" x="120" y="24" font-size="14" font-weight="bold" text-anchor="middle">届きうる相手</text>
+<text class="t1" x="460" y="24" font-size="14" font-weight="bold" text-anchor="middle">止める仕組み</text>
+
+<rect class="srv" x="720" y="40" width="160" height="340" rx="10"/>
+<text class="t1" x="800" y="200" font-size="15" font-weight="bold" text-anchor="middle">手元のサーバー</text>
+<text class="t2" x="800" y="224" font-size="12" text-anchor="middle">届いた文は</text>
+<text class="t2" x="800" y="242" font-size="12" text-anchor="middle">会話のプロンプトになる</text>
+
+<!-- 1 正しいWeb UI -->
+<rect class="ok" x="20" y="44" width="200" height="52" rx="6"/>
+<text class="t1" x="120" y="66" font-size="13" text-anchor="middle">正しいWeb UI</text>
+<text class="mono t2" x="120" y="86" font-size="11" text-anchor="middle">/t/&lt;トークン&gt;/</text>
+<rect class="chk" x="290" y="50" width="340" height="40" rx="6"/>
+<text class="t1" x="304" y="75" font-size="12"><tspan class="o">○</tspan> Hostがlocalhost  <tspan class="o">○</tspan> URLのトークンが合う</text>
+<line class="ar" x1="220" y1="70" x2="286" y2="70" marker-end="url(#g1)"/>
+<line class="ar" x1="630" y1="70" x2="716" y2="70" marker-end="url(#g1)"/>
+
+<!-- 2 別のタブ -->
+<rect class="bad" x="20" y="114" width="200" height="52" rx="6"/>
+<text class="t1" x="120" y="136" font-size="13" text-anchor="middle">別のタブの悪いページ</text>
+<text class="t2" x="120" y="156" font-size="11" text-anchor="middle">トークンを知らない</text>
+<rect class="chk" x="290" y="120" width="340" height="40" rx="6"/>
+<text class="t1" x="304" y="145" font-size="12"><tspan class="x">×</tspan> URLのトークンがない（Hostも違えば止まる）</text>
+<line class="ng" x1="220" y1="140" x2="286" y2="140" marker-end="url(#g2)"/>
+
+<!-- 3 ほかのマシン -->
+<rect class="bad" x="20" y="184" width="200" height="52" rx="6"/>
+<text class="t1" x="120" y="216" font-size="13" text-anchor="middle">ほかのマシン</text>
+<rect class="chk" x="290" y="190" width="340" height="40" rx="6"/>
+<text class="t1" x="304" y="215" font-size="12"><tspan class="x">×</tspan> ポートはホストの127.0.0.1にだけ出す</text>
+<line class="ng" x1="220" y1="210" x2="286" y2="210" marker-end="url(#g2)"/>
+
+<!-- 4 mod -->
+<rect class="mod" x="20" y="254" width="200" height="52" rx="6"/>
+<text class="t1" x="120" y="276" font-size="13" text-anchor="middle">mod</text>
+<text class="mono t2" x="120" y="296" font-size="11" text-anchor="middle">Bearerトークン、Originなし</text>
+<rect class="chk" x="290" y="260" width="340" height="40" rx="6"/>
+<text class="t1" x="304" y="285" font-size="12"><tspan class="o">○</tspan> mod専用のエンドポイント <tspan class="mono">/bridge/</tspan></text>
+<line class="ar" x1="220" y1="280" x2="286" y2="280" marker-end="url(#g1)"/>
+<line class="ar" x1="630" y1="280" x2="716" y2="280" marker-end="url(#g1)"/>
+
+<!-- 5 ブラウザからbridge -->
+<rect class="bad" x="20" y="324" width="200" height="52" rx="6"/>
+<text class="t1" x="120" y="346" font-size="13" text-anchor="middle">ブラウザのページから</text>
+<text class="mono t2" x="120" y="366" font-size="11" text-anchor="middle">/bridge/ を呼ぶ</text>
+<rect class="chk" x="290" y="330" width="340" height="40" rx="6"/>
+<text class="t1" x="304" y="355" font-size="12"><tspan class="x">×</tspan> Originヘッダーが付くので断る</text>
+<line class="ng" x1="220" y1="350" x2="286" y2="350" marker-end="url(#g2)"/>
+</svg>

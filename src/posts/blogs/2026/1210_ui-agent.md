@@ -61,7 +61,7 @@ modはプラグインに入れたJavaScriptかTypeScriptのコードでClaude Co
 
 ほかの方法は次の理由で使いませんでした。
 
-| 方法 | 説明と使わなかった理由 |
+| 方法 | 使わなかった理由 |
 |---|---|
 | [channels](https://code.claude.com/docs/en/channels-reference) | MCPサーバーから動いている会話にイベントを送る仕組み。research previewのため自作のchannelは起動のたびに承認が必要。AIが返信のツールを呼ばないと回答がWeb UIに戻らない。 |
 | [Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview) | Claude Codeと同じエージェントを自分のプログラムから動かすライブラリ。サーバーが別の会話を起動するのでWeb UIの依頼がターミナルの会話に入らない。 |

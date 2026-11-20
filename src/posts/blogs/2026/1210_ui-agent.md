@@ -43,7 +43,7 @@ image: true
 9. [不正利用を防ぐ](#9-不正利用を防ぐ)
 10. [配布する](#10-配布する)
 
-試しにPRをレビューするWeb UIを作りました。ターミナルで`/pr-review`と打つとWeb UIのサーバーが起動してURLが出ます。そのURLをブラウザで開いて使います。差分の行を選んで質問すると、ターミナルの会話のAIが根拠の行を光らせて答えます。PRはClaude Codeが作った架空のリポジトリの例でHTTPクライアントに再試行を足す短い変更です。以下では行ごとの質問と答えのやりとりをスレッドと呼びます。
+試しにPRをレビューするWeb UIを作りました。ターミナルで`/pr-review`と打つとWeb UIのサーバーが起動してURLが出ます。そのURLをブラウザで開いて使います。差分の行を選んで質問するとターミナルの会話のAIが根拠の行を光らせて答えます。PRはClaude Codeが作った架空のリポジトリの例でHTTPクライアントに再試行を足す短い変更です。以下では行ごとの質問と答えのやりとりをスレッドと呼びます。
 
 ![作ったPRレビューのWeb UI。差分の行についてのスレッドに質問と答えと根拠の行が並び、右にPR全体について聞く欄がある](/img/blogs/2026/1210_ui-agent/web-ui.svg)
 
@@ -64,7 +64,7 @@ modはプラグインに入れたJavaScriptかTypeScriptのコードでClaude Co
 - **[channels](https://code.claude.com/docs/en/channels-reference)**（MCPサーバーから動いている会話にイベントを送る仕組み）  
   research previewで、自作のchannelは起動のたびにフラグを付けて警告を承認しなければならない。答えもAIが返信のツールを呼んだときにしか戻らない。
 - **[Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)**（Claude Codeと同じエージェントを自分のプログラムから動かすライブラリー）  
-  サーバーが別の会話を起動するので、依頼がターミナルの会話に入らない。
+  サーバーが別の会話を起動するので依頼がターミナルの会話に入らない。
 - **[`claude -p`](https://code.claude.com/docs/en/headless)**（Claude Codeを対話なしで動かすコマンド）  
   Agent SDKと同じく、依頼がターミナルの会話に入らない。
 - **[MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview)**（MCPサーバーが返すWeb UIをAIのアプリが描くMCPの拡張）  

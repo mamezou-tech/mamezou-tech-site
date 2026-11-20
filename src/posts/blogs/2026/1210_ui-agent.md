@@ -1,10 +1,12 @@
 ---
 title: 自作のWeb UIでClaude Codeと会話したくてmodを試してみた
-author: ito-kiyohito
-date: TODO
-tags: [Claude Code, Web UI, mods, スキル, Docker Sandboxes, AIエージェント]
+author: kiyohito-ito
+date: 2026-12-10
+adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2026/
+tags: [Claude Code, Web UI, mods, スキル, Docker Sandboxes, AIエージェント, advent2026]
 ---
-# 自作のWeb UIでClaude Codeと会話したくてmodを試してみた
+
+これは[豆蔵デベロッパーサイトアドベントカレンダー2026](/events/advent-calendar/2026/)第10日目の記事です。
 
 こんにちは、デジタルアーキテクチャ事業部の伊藤です。
 
@@ -16,7 +18,7 @@ tags: [Claude Code, Web UI, mods, スキル, Docker Sandboxes, AIエージェン
 
 そんなとき思いつきました。ターミナルで使っている会話から作業に合わせたWeb UIを起動し、同じ会話でやりとりできたらどうだろう。Web UIで行を選んで聞き、納得したらそのまま「直して」と頼めます。
 
-![Web UIで聞いたことがターミナルのClaude Codeの会話に入り、そのあとWeb UIから「直して」とだけ頼むとAIがその行を直す](images/same-conversation.svg)
+![Web UIで聞いたことがターミナルのClaude Codeの会話に入り、そのあとWeb UIから「直して」とだけ頼むとAIがその行を直す](/img/blogs/2026/1210_ui-agent/same-conversation.svg)
 
 これができればレビューがずっと楽になるはずです。探してみると、AIエージェントの計画やコードをWeb UIでレビューできる[Plannotator](https://github.com/backnotprop/plannotator)がWeb UIと今の会話をつないでいました。つなぐところはPlannotatorを参考にさせてもらいました。
 
@@ -42,7 +44,7 @@ tags: [Claude Code, Web UI, mods, スキル, Docker Sandboxes, AIエージェン
 
 試しにPRをレビューするWeb UIを作りました。ターミナルで`/pr-review`と打つとWeb UIのサーバーが起動してURLが出ます。そのURLをブラウザで開いて使います。差分の行を選んで聞くとターミナルで開いている会話のAIが根拠の行を光らせて答えます。PRはClaude Codeが作った架空のリポジトリの例でHTTPクライアントに再試行を足す短い変更です。以下では行ごとの質問と答えのやりとりをスレッドと呼びます。
 
-![作ったPRレビューのWeb UI。差分の行についてのスレッドに質問と答えと根拠の行が並び、右にPR全体について聞く欄がある](images/web-ui.png)
+![作ったPRレビューのWeb UI。差分の行についてのスレッドに質問と答えと根拠の行が並び、右にPR全体について聞く欄がある](/img/blogs/2026/1210_ui-agent/web-ui.png)
 
 ここからはこのWeb UIで10項目をどう実現したかを順に見ていきます。
 
@@ -54,7 +56,7 @@ Web UIで聞いたこと（以下、依頼）をターミナルの今の会話�
 
 modはプラグインに入れたJavaScriptかTypeScriptのコードでClaude Codeの見た目や動きを変える仕組みです。Claude Codeのv2.1.287からは何も設定せずに使えます（[Mods overview](https://code.claude.com/docs/en/plugins/mods/overview)）。
 
-![Web UIの依頼は、modなら人がターミナルで使っている今の会話に入り、Agent SDKやclaude -pではサーバーが起動した別の会話に入る](images/choices.svg)
+![Web UIの依頼は、modなら人がターミナルで使っている今の会話に入り、Agent SDKやclaude -pではサーバーが起動した別の会話に入る](/img/blogs/2026/1210_ui-agent/choices.svg)
 
 ほかのつなぎ方は次の理由で使いませんでした。
 
@@ -67,7 +69,7 @@ modはプラグインに入れたJavaScriptかTypeScriptのコードでClaude Co
 
 Web UIとmodの間には手元で小さなサーバーを動かします。このサーバーはWeb UIを配り、依頼と答えを運びます。1回のやりとりは次のように流れます。
 
-![1回のやりとりの流れ。Web UIの質問はサーバーとmodを通って今の会話に入り、AIの示した根拠の行と答えが同じ道を戻ってWeb UIに出る](images/flow.svg)
+![1回のやりとりの流れ。Web UIの質問はサーバーとmodを通って今の会話に入り、AIの示した根拠の行と答えが同じ道を戻ってWeb UIに出る](/img/blogs/2026/1210_ui-agent/flow.svg)
 
 modのコードは`register`という関数を持つTypeScriptかJavaScriptのファイルです。Claude Codeはmodを読み込むときにこの関数を1回呼びます。modはどのときにどの関数を呼んでほしいかをその中で登録します。たとえばスラッシュコマンドが打たれたとき（`command.run`）やAIがツールを呼ぶとき（`tool.call`）です。1つの依頼にAIが答え始めるとき（ターンの始まり、`turn.start`）と答え終わるとき（ターンの終わり、`turn.complete`）もあります。登録した関数をフックと呼びます。フックは引数の`$`を通してClaude Codeの機能を使います。`$`はmodからClaude Codeを使うための窓口です（[Use the mods API](https://code.claude.com/docs/en/plugins/mods/api)）。
 
@@ -105,17 +107,17 @@ Web UIで聞いたことはターミナルの会話にもそのまま残りま�
 
 次の画面はWeb UIで24〜28行目について聞いた依頼がターミナルの会話に入った直後です。
 
-![Web UIのスレッドで聞いた質問がターミナルの会話に依頼として入っている](images/web-1-conversation.png)
+![Web UIのスレッドで聞いた質問がターミナルの会話に依頼として入っている](/img/blogs/2026/1210_ui-agent/web-1-conversation.png)
 
 ### 2. Claude CodeからWeb UIを操作する
 
 AIは答えの根拠にした行をWeb UIで光らせ、スレッドに根拠として並べます。次の画面は10行目を根拠として光らせたWeb UIです。
 
-![AIが示した根拠の10行目が光り、スレッドに根拠として並んでいる](images/web-2-operate.png)
+![AIが示した根拠の10行目が光り、スレッドに根拠として並んでいる](/img/blogs/2026/1210_ui-agent/web-2-operate.png)
 
 modはAIが呼べるツールを足せます（`$.tool.register`）。AIはReadやBashと同じようにそのツールを呼び、modはその中でWeb UIを動かします。試作では根拠の行をWeb UIで光らせるツール`pr_show`を足しました。AIは根拠にした行を`pr_show`で1か所ずつ光らせます。modはツールが呼ばれるたびにWeb UIへの知らせ（以下、イベント）を作り、HTTPのPOSTでサーバーへ送ります。サーバーはイベントを[SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)でWeb UIへ流します。SSEはサーバーが1本のHTTPの接続でブラウザへ続けてデータを送る仕組みです。そのため1つの質問でもイベントは何回も届きます。
 
-![1つの質問に対し、AIが手順を進めるたびにイベントがWeb UIに届く。何回、何を返すかはスキルに沿ってAIが決める](images/events.svg)
+![1つの質問に対し、AIが手順を進めるたびにイベントがWeb UIに届く。何回、何を返すかはスキルに沿ってAIが決める](/img/blogs/2026/1210_ui-agent/events.svg)
 
 答え終わるとmodは`turn.complete`のフックで最後の返事を`answer`のイベントにして送ります。Web UIはイベントの`type`で画面のどこを変えるかを決めます。たとえば`show`なら根拠の行を光らせ、`answer`ならスレッドに答えを出します。
 
@@ -134,7 +136,7 @@ modはAIが呼べるツールを足せます（`$.tool.register`）。AIはRead�
 
 Claude Codeは人に選んでほしいことがあると`AskUserQuestion`というツールでターミナルに選択肢を出します。Web UIとつながっている間はこの選択肢をターミナルの代わりにWeb UIのカードで出します。次の画面はどちらもRetry-Afterの扱いを聞いたものです。左はWeb UIとつながっていないときのターミナル、右は試作のWeb UIです。
 
-![左はWeb UIとつながっていないClaude Codeのターミナルに出る選択肢、右は同じ質問を試作のWeb UIに出したカード](images/web-5-ask.png)
+![左はWeb UIとつながっていないClaude Codeのターミナルに出る選択肢、右は同じ質問を試作のWeb UIに出したカード](/img/blogs/2026/1210_ui-agent/web-5-ask.png)
 
 modは`AskUserQuestion`を`tool.call`のフックで受け、質問をサーバーへ送ります。人がWeb UIで選んだ答えをフックがツールの結果として返すのでターミナルのダイアログは出ません。
 
@@ -156,11 +158,11 @@ modのフックが動ける時間は1回に10秒までです。ただ、modの�
 
 Claude Codeは今の作業が終わるまで次の依頼を始めません。人がターミナルで頼んだ作業が長いとWeb UIの質問には何も返らないまま待たされます。そこで作業中に来た質問にはまず一次回答を返すようにしました。次の画面で質問の下に出ている「いまは60秒待つコマンドを実行中です。終わったら…確かめてから答えます。」が一次回答です。
 
-![作業の途中に聞いた質問へ、終わったら答えるという一次回答が出ている](images/web-7-interim.png)
+![作業の途中に聞いた質問へ、終わったら答えるという一次回答が出ている](/img/blogs/2026/1210_ui-agent/web-7-interim.png)
 
 一次回答を書くのは作業しているAIとは別のAIです。modは`$.model.fork`でこの別のAIに質問を渡します（[Use the mods API](https://code.claude.com/docs/en/plugins/mods/api#call-a-model)）。別のAIはここまでのコンテキストを引き継ぎます。そのため会話でもう読んだ差分のことならその場で答えられます。ただ、ファイルを読むなどのツールは使えません。まだ読んでいない差分のことは画面のように何の作業中かだけを返します。本回答は作業が終わってから作業していたAIが出します。
 
-![長い作業の途中にWeb UIで質問すると、modは$.model.forkで別のAIに一次回答を書かせてWeb UIに出す。作業のターンが終わるとWeb UIの依頼のターンが本回答を出す](images/busy.svg)
+![長い作業の途中にWeb UIで質問すると、modは$.model.forkで別のAIに一次回答を書かせてWeb UIに出す。作業のターンが終わるとWeb UIの依頼のターンが本回答を出す](/img/blogs/2026/1210_ui-agent/busy.svg)
 
 別のAIにツールも使わせたいときは`$.model.fork`の代わりに`$.agent.spawn`でサブエージェントを起動する手があります。サブエージェントはコンテキストを引き継いだうえでツールを使えます。作業中でも差分を読んで本回答まで出せるはずですが、試作では試していません。
 
@@ -168,7 +170,7 @@ Claude Codeは今の作業が終わるまで次の依頼を始めません。人
 
 Web UIで何度も聞くとコンテキストが膨らみます。そこでWeb UIのヘッダーにコンテキストの使用率と、コンパクトとクリアのボタンを置きました。
 
-![ヘッダーにコンテキストの使用率と、コンパクトとクリアのボタンがある](images/web-6-compact.png)
+![ヘッダーにコンテキストの使用率と、コンパクトとクリアのボタンがある](/img/blogs/2026/1210_ui-agent/web-6-compact.png)
 
 使用率はAIが答え終わるたびにmodがClaude Codeから読んでWeb UIへ送ります。85%を超えると使用率が橙になり「コンパクトをお勧めします」と出ます。
 
@@ -194,7 +196,7 @@ async function clear($) {
 
 ターミナルとWeb UIの両方から同じ会話に書き込みます。送信と改行のキーが違うと改行のつもりで送ってしまいます。そこでWeb UIの入力欄のキーをClaude Codeに合わせました。次の画面は設定を変えていないときの入力欄です。Claude Codeの既定と同じくEnterで送り、Shift+Enterで改行します。
 
-![入力欄の下に「Enterで送る、Shift+Enterで改行」と出ている](images/web-8-keys.png)
+![入力欄の下に「Enterで送る、Shift+Enterで改行」と出ている](/img/blogs/2026/1210_ui-agent/web-8-keys.png)
 
 Claude Codeのキーは`~/.claude/keybindings.json`で変えられます（[Customize keyboard shortcuts](https://code.claude.com/docs/en/keybindings)）。modはこのファイルから入力欄のキーの設定（`Chat`）を読み、Web UIへ送ります。Web UIはそれに合わせて送信と改行を決め、入力欄の下の案内も変えます。このファイルはClaude Codeを再起動しなくても反映されます。そのためmodはAIが答え終わるたびに読み直します。
 
@@ -219,7 +221,7 @@ Web UIは依頼の名前と中身だけを送ります。AIへの指示（プロ
 
 次の図の上半分は依頼がスキルに届くまでの流れです。下半分は2で見たイベントの流れです。
 
-![行きはWeb UIの操作が依頼の名前になり、modがスキルに対応させる。帰りはAIの動きをmodがイベントにし、Web UIが描く](images/roles.svg)
+![行きはWeb UIの操作が依頼の名前になり、modがスキルに対応させる。帰りはAIの動きをmodがイベントにし、Web UIが描く](/img/blogs/2026/1210_ui-agent/roles.svg)
 
 「AIに聞く」を押すとWeb UIは次のJSONを送ります。`command`が依頼の名前、`params`が中身です。
 
@@ -281,7 +283,7 @@ Web UIから続けていくつか聞くと依頼はターミナルで頼んだ�
 
 そこでWeb UIは依頼にスレッドのidを入れます。AIが依頼に答え始めるとmodの`turn.start`のフックにその依頼の文が渡ります。modはその文からidを探し、見つかればそのターンの答えをそのスレッドに返します。
 
-![Web UIの依頼にはスレッドのidを入れる。modはターンの始まりの文にidがあればそのターンをそのスレッドのものとし、ターンが終わると答えを同じスレッドに返す](images/turns.svg)
+![Web UIの依頼にはスレッドのidを入れる。modはターンの始まりの文にidがあればそのターンをそのスレッドのものとし、ターンが終わると答えを同じスレッドに返す](/img/blogs/2026/1210_ui-agent/turns.svg)
 
 ```ts
 // plugin/hooks/register.ts（抜粋）
@@ -304,7 +306,7 @@ Web UIから届いた文はそのまま今の会話へのプロンプトにな�
 
 そこでサーバーに送れる相手を正しいWeb UIとmodだけに絞りました。
 
-![手元のサーバーに届きうる相手と、止める仕組み。正しいWeb UIとmodだけが通る](images/guard.svg)
+![手元のサーバーに届きうる相手と、止める仕組み。正しいWeb UIとmodだけが通る](/img/blogs/2026/1210_ui-agent/guard.svg)
 
 `Host`ヘッダーを確かめるのは別のドメイン名から同じサーバーに届かせる攻撃（DNSリバインディング）を防ぐためです。
 

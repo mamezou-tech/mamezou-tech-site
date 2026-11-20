@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" width="900" height="430" role="img" aria-label="Web UIの依頼がどの会話に届くかを示す図。modは手元のサーバーへ依頼を取りに行き、人がターミナルで使っている今の会話に入れる。channelsも今の会話に届くが、自作のものは起動のたびにフラグと警告の承認が要る。Agent SDKとclaude -pはサーバーが別のClaude Codeを起動して依頼するので、依頼はターミナルの会話に入らない">
-<title>Web UIの依頼がどの会話に届くかを示す図。modは手元のサーバーへ依頼を取りに行き、人がターミナルで使っている今の会話に入れる。channelsも今の会話に届くが、自作のものは起動のたびにフラグと警告の承認が要る。Agent SDKとclaude -pはサーバーが別のClaude Codeを起動して依頼するので、依頼はターミナルの会話に入らない</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" width="900" height="430" role="img" aria-label="Web UIの依頼がどの会話に届くかを示す図。modは手元のサーバーへ依頼を取りに行き、人がターミナルで使っている今の会話に入れる。channelsも依頼を今の会話に入れられるが、自作のものは起動のたびにフラグと警告の承認が要る。Agent SDKとclaude -pはサーバーが別のClaude Codeを起動して依頼するので、依頼はターミナルの会話に入らない">
+<title>Web UIの依頼がどの会話に届くかを示す図。modは手元のサーバーへ依頼を取りに行き、人がターミナルで使っている今の会話に入れる。channelsも依頼を今の会話に入れられるが、自作のものは起動のたびにフラグと警告の承認が要る。Agent SDKとclaude -pはサーバーが別のClaude Codeを起動して依頼するので、依頼はターミナルの会話に入らない</title>
 <style>
 text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
 .mono { font-family: 'SFMono-Regular',Consolas,'Liberation Mono',monospace; }

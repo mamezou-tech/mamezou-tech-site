@@ -74,7 +74,14 @@ Web UIとmodの間には手元で小さなサーバーを動かします。こ�
 
 ![1回のやりとりの流れ。Web UIの質問はサーバーとmodを通って今の会話に入り、AIの示した根拠の行と答えが同じ道を戻ってWeb UIに出る](/img/blogs/2026/1210_ui-agent/flow.svg)
 
-modのコードは`register`という関数を持つTypeScriptかJavaScriptのファイルです。Claude Codeはmodを読み込むときにこの関数を1回呼びます。modはどのときにどの関数を呼んでほしいかをその中で登録します。たとえばスラッシュコマンドが打たれたとき（`command.run`）やAIがツールを呼ぶとき（`tool.call`）です。1つの依頼にAIが答え始めるとき（ターンの始まり、`turn.start`）と答え終わるとき（ターンの終わり、`turn.complete`）もあります。登録した関数をフックと呼びます。フックは引数の`$`を通してClaude Codeの機能を使います。`$`はmodからClaude Codeを使うための窓口です（[Use the mods API](https://code.claude.com/docs/en/plugins/mods/api)）。
+modのコードは`register`という関数を持つTypeScriptかJavaScriptのファイルです。Claude Codeはmodを読み込むときにこの関数を1回呼びます。modはどのタイミングでどの関数を呼んでほしいかをその中で登録します。たとえば次のタイミングです。
+
+- スラッシュコマンドが打たれたとき（`command.run`）
+- AIがツールを呼ぶとき（`tool.call`）
+- 1つの依頼にAIが答え始めるとき（ターンの始まり、`turn.start`）
+- AIが答え終わるとき（ターンの終わり、`turn.complete`）
+
+登録した関数をフックと呼びます。フックは引数の`$`を通してClaude Codeの機能を使います。`$`はmodからClaude Codeを使うための窓口です（[Use the mods API](https://code.claude.com/docs/en/plugins/mods/api)）。
 
 試作のmodは`/pr-review`が打たれたときのフックでサーバーを起動し、依頼を取りに行き始めます。
 

@@ -61,14 +61,18 @@ modはプラグインに入れたJavaScriptかTypeScriptのコードでClaude Co
 
 ほかの方法は次の理由で使いませんでした。
 
-- **[channels](https://code.claude.com/docs/en/channels-reference)**（MCPサーバーから動いている会話にイベントを送る仕組み）  
-  research previewで、自作のchannelは起動のたびにフラグを付けて警告を承認しなければならない。答えもAIが返信のツールを呼んだときにしか戻らない。
-- **[Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)**（Claude Codeと同じエージェントを自分のプログラムから動かすライブラリー）  
-  サーバーが別の会話を起動するので依頼がターミナルの会話に入らない。
-- **[`claude -p`](https://code.claude.com/docs/en/headless)**（Claude Codeを対話なしで動かすコマンド）  
-  Agent SDKと同じく、依頼がターミナルの会話に入らない。
-- **[MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview)**（MCPサーバーが返すWeb UIをAIのアプリが描くMCPの拡張）  
-  Claude CodeはこのWeb UIを描かない。
+- **[channels](https://code.claude.com/docs/en/channels-reference)**  
+  MCPサーバーから動いている会話にイベントを送る仕組み。  
+  research previewのため自作のchannelは起動のたびに承認が必要。AIが返信のツールを呼ばないと回答がWeb UIに戻らない。
+- **[Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)**  
+  Claude Codeと同じエージェントを自分のプログラムから動かすライブラリー。  
+  サーバーが別の会話を起動するのでWeb UIの依頼がターミナルの会話に入らない。
+- **[`claude -p`](https://code.claude.com/docs/en/headless)**  
+  Claude Codeを対話なしで動かすコマンド。  
+  Agent SDKと同じく別の会話になるのでWeb UIの依頼がターミナルの会話に入らない。
+- **[MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview)**  
+  MCPサーバーが返すWeb UIをAIのアプリが描くMCPの拡張。  
+  Claude Codeが対応していないのでWeb UIを出せない。
 
 Web UIとmodの間には手元で小さなサーバーを動かします。このサーバーはWeb UIを配り、依頼と答えを運びます。1回のやりとりは次のように流れます。
 

@@ -61,10 +61,14 @@ modはプラグインに入れたJavaScriptかTypeScriptのコードでClaude Co
 
 ほかの方法は次の理由で使いませんでした。
 
-- **[channels](https://code.claude.com/docs/en/channels-reference)**（MCPサーバーから動いている会話にイベントを送る仕組み）: 今の会話に届く。ただ、research previewである。自作のchannelは許可された一覧にないので、起動のたびに`--dangerously-load-development-channels`を付けて警告を承認しなければならない。答えもAIが返信のツールを呼んだときにだけ戻る。modならAIが答え終わったときに答えを必ず受け取れる
-- **[Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)**（Claude Codeと同じエージェントを自分のプログラムから動かすライブラリー）: サーバーが別の会話を起動するので依頼がターミナルの会話に入らない。Anthropicの事前の許可なしに、自分の製品の利用者にclaude.aiのログインを使わせることも認められていない
-- **[`claude -p`](https://code.claude.com/docs/en/headless)**（Claude Codeを対話なしで動かすコマンド）: Agent SDKと同じく、依頼がターミナルの会話に入らない
-- **[MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview)**（MCPサーバーが返すWeb UIをAIのアプリが描くMCPの拡張）: Claude CodeはこのWeb UIを描かない。MCPの[対応表](https://modelcontextprotocol.io/extensions/client-matrix)でもClaude（web）とClaude Desktopには対応の印があり、Claude Codeにはない
+- **[channels](https://code.claude.com/docs/en/channels-reference)**（MCPサーバーから動いている会話にイベントを送る仕組み）  
+  今の会話に届く。ただ、research previewである。自作のchannelは許可された一覧にないので、起動のたびに`--dangerously-load-development-channels`を付けて警告を承認しなければならない。答えもAIが返信のツールを呼んだときにだけ戻る。modならAIが答え終わったときに答えを必ず受け取れる
+- **[Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)**（Claude Codeと同じエージェントを自分のプログラムから動かすライブラリー）  
+  サーバーが別の会話を起動するので依頼がターミナルの会話に入らない。Anthropicの事前の許可なしに、自分の製品の利用者にclaude.aiのログインを使わせることも認められていない
+- **[`claude -p`](https://code.claude.com/docs/en/headless)**（Claude Codeを対話なしで動かすコマンド）  
+  Agent SDKと同じく、依頼がターミナルの会話に入らない
+- **[MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview)**（MCPサーバーが返すWeb UIをAIのアプリが描くMCPの拡張）  
+  Claude CodeはこのWeb UIを描かない。MCPの[対応表](https://modelcontextprotocol.io/extensions/client-matrix)でもClaude（web）とClaude Desktopには対応の印があり、Claude Codeにはない
 
 Web UIとmodの間には手元で小さなサーバーを動かします。このサーバーはWeb UIを配り、依頼と答えを運びます。1回のやりとりは次のように流れます。
 

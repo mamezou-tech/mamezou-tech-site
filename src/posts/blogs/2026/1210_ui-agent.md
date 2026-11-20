@@ -320,14 +320,6 @@ Web UIをビルドしたファイルとサーバーを含めてプラグイン�
 
 modのコードはNode.jsのAPIを使えず、自分でポートを開けません（[Use the mods API](https://code.claude.com/docs/en/plugins/mods/api#reach-files-processes-and-the-network)）。そのためサーバーは別のプロセスで動かします。試作ではmodがプラグインに入れたサーバーをBunで起動します。
 
-Docker Sandboxesの中で動かすときはホストで次のコマンドを打つとホストのブラウザで開けます。
-
-```bash
-sbx port publish <サンドボックスの名前> 47802:47802
-```
-
-ホスト側のポートも47802に固定します。省くとホスト側のポートが毎回変わり、modが出すURLと合わなくなります。
-
 ## まとめ
 
 modが出てきたとき、正直なところ何に使うのだろうと思っていました。

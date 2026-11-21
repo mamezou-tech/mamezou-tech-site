@@ -3,6 +3,7 @@ title: ゼロ年代のフリーソフトウェアをサルベージ！ アイデ
 author: masahiro-kondo
 date: 2026-12-11
 tags: [個人開発, vscode, advent2026]
+image: true
 adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/2026/
 ---
 

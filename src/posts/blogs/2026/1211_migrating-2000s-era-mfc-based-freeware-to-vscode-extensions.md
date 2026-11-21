@@ -52,7 +52,7 @@ adventCalendarUrl: https://developer.mamezou-tech.com/events/advent-calendar/202
 ## アプリケーションプラットフォームとしての VS Code Extensions 環境
 先日、自作の VS Code 拡張 changelog-support にアウトライン機能を追加したりしました。VS Code の機能を使って割と簡単にリッチな UI が提供できることを理解しました。
 
-@[og](https://developer.mamezou-tech.com/blogs/2026/10/23/update-my-vscode-extension-after-3years/)
+@[og](/blogs/2026/10/23/update-my-vscode-extension-after-3years/)
 
 この時ふと、「今は VS Code 拡張に移行するのが一番いいんじゃね？」と思いつき、プロトタイピングをやってみたという話です。
 

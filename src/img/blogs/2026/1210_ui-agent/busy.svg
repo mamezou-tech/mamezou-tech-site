@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="900" height="300" role="img" aria-label="人がターミナルで頼んだ長い作業の途中にWeb UIで質問すると、modは$.model.forkで別のAIに一次回答を書かせ、すぐWeb UIに出す。別のAIはコンテキストを引き継ぐがツールを使えないので、差分を読む必要があれば何の作業中かだけを返す。依頼は作業のターンが終わるまで待ち、modが今の会話に入れる。Web UIの依頼のターンが終わると、modがturn.completeで本回答をスレッドに出す。間にあるサーバーは図では省いている">
+<title>人がターミナルで頼んだ長い作業の途中にWeb UIで質問すると、modは$.model.forkで別のAIに一次回答を書かせ、すぐWeb UIに出す。別のAIはコンテキストを引き継ぐがツールを使えないので、差分を読む必要があれば何の作業中かだけを返す。依頼は作業のターンが終わるまで待ち、modが今の会話に入れる。Web UIの依頼のターンが終わると、modがturn.completeで本回答をスレッドに出す。間にあるサーバーは図では省いている</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
+.mono { font-family: 'SFMono-Regular',Consolas,'Liberation Mono',monospace; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; }
+.ui { fill: #ddf4ff; stroke: #2a78d6; } .human { fill: #eaeef2; stroke: #8c959f; } .turn { fill: #ddf4ff; stroke: #2a78d6; stroke-width: 2; }
+.mod { fill: #ffffff; stroke: #2a78d6; stroke-width: 2; }
+.ar { stroke: #2a78d6; fill: none; stroke-width: 2; } .ah { fill: #2a78d6; }
+.back { stroke: #1a7f37; fill: none; stroke-width: 2; } .bh { fill: #1a7f37; }
+.wait { stroke: #8c959f; fill: none; stroke-width: 1.5; stroke-dasharray: 4 4; }
+</style>
+<defs>
+<marker id="b1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+<marker id="b2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="bh"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="900" height="300"/>
+
+<text class="t2" x="20" y="44" font-size="12">Web UI</text>
+<text class="t2" x="20" y="146" font-size="12">mod</text>
+<text class="t2" x="20" y="250" font-size="12">今の会話</text>
+
+<!-- Web UI -->
+<rect class="ui" x="90" y="22" width="150" height="40" rx="6"/>
+<text class="t1" x="165" y="47" font-size="13" text-anchor="middle">質問する</text>
+<rect class="ui" x="300" y="6" width="330" height="64" rx="6"/>
+<text class="t2" x="314" y="24" font-size="11">一次回答</text>
+<text class="t1" x="314" y="44" font-size="12">「いまは60秒待つコマンドを実行中です。</text>
+<text class="t1" x="314" y="61" font-size="12">終わったら答えます」</text>
+<rect class="ui" x="690" y="22" width="180" height="40" rx="6"/>
+<text class="t1" x="780" y="47" font-size="13" text-anchor="middle">スレッドに本回答が出る</text>
+
+<!-- mod -->
+<rect class="mod" x="100" y="116" width="230" height="50" rx="6"/>
+<text class="mono t1" x="215" y="138" font-size="12" text-anchor="middle">$.model.fork</text>
+<text class="t1" x="215" y="158" font-size="12" text-anchor="middle">別のAIがツールを使わずに返す</text>
+<rect class="mod" x="460" y="116" width="170" height="50" rx="6"/>
+<text class="t1" x="545" y="138" font-size="12" text-anchor="middle">依頼を今の会話に入れる</text>
+<text class="t2" x="545" y="157" font-size="11" text-anchor="middle">作業のターンが終わってから</text>
+<rect class="mod" x="690" y="116" width="180" height="50" rx="6"/>
+<text class="mono t1" x="780" y="138" font-size="12" text-anchor="middle">turn.complete</text>
+<text class="t1" x="780" y="158" font-size="12" text-anchor="middle">本回答をスレッドへ</text>
+
+<!-- 今の会話 -->
+<rect class="human" x="90" y="220" width="520" height="50" rx="6"/>
+<text class="t1" x="350" y="250" font-size="13" text-anchor="middle">人がターミナルで頼んだ長い作業のターン</text>
+<rect class="turn" x="630" y="220" width="240" height="50" rx="6"/>
+<text class="t1" x="750" y="250" font-size="13" text-anchor="middle">Web UIの依頼のターン</text>
+
+<!-- 一次回答：Web UI → mod → Web UI -->
+<line class="ar" x1="165" y1="62" x2="190" y2="114" marker-end="url(#b1)"/>
+<line class="back" x1="300" y1="116" x2="318" y2="72" marker-end="url(#b2)"/>
+
+<!-- 本回答：Web UI → mod → 今の会話 → mod → Web UI -->
+<path class="wait" d="M240,56 C270,82 420,92 515,114" marker-end="url(#b1)"/>
+<text class="t2" x="640" y="100" font-size="11" text-anchor="middle">依頼は作業のターンが終わるまで待つ</text>
+<line class="ar" x1="580" y1="166" x2="660" y2="218" marker-end="url(#b1)"/>
+<line class="ar" x1="820" y1="220" x2="805" y2="168" marker-end="url(#b1)"/>
+<line class="back" x1="780" y1="116" x2="780" y2="64" marker-end="url(#b2)"/>
+
+<text class="t2" x="880" y="292" font-size="11" text-anchor="end">サーバーは省略</text>
+</svg>

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" width="900" height="560" role="img" aria-label="Web UIの操作とAIの動きの対応の図。行きは、Web UIのボタンが依頼の名前のJSONになり、modが名前ごとにスキルやコマンドに対応させる。AIへの指示はスキルにある。帰りは、AIがツールを呼んだり答え終わったりするとmodがイベントにし、Web UIがイベントごとに行を光らせたり答えを出したりする。サーバーは中身に触れずに運ぶ">
+<title>Web UIの操作とAIの動きの対応の図。行きは、Web UIのボタンが依頼の名前のJSONになり、modが名前ごとにスキルやコマンドに対応させる。AIへの指示はスキルにある。帰りは、AIがツールを呼んだり答え終わったりするとmodがイベントにし、Web UIがイベントごとに行を光らせたり答えを出したりする。サーバーは中身に触れずに運ぶ</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
+.mono { font-family: 'SFMono-Regular',Consolas,'Liberation Mono',monospace; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; }
+.ui { fill: #ddf4ff; stroke: #2a78d6; } .btn { fill: #ffffff; stroke: #2a78d6; }
+.srv { fill: #f6f8fa; stroke: #8c959f; stroke-dasharray: 5 4; }
+.mod { fill: #ffffff; stroke: #2a78d6; stroke-width: 2.5; } .sk { fill: #fff8c5; stroke: #9a6700; stroke-width: 2.5; }
+.ev { fill: #dafbe1; stroke: #1a7f37; } .cmd { fill: #ddf4ff; stroke: #2a78d6; }
+.ar { stroke: #2a78d6; fill: none; stroke-width: 2; } .ah { fill: #2a78d6; }
+.back { stroke: #1a7f37; fill: none; stroke-width: 2; } .bh { fill: #1a7f37; }
+.go { fill: #2a78d6; } .ret { fill: #1a7f37; }
+</style>
+<defs>
+<marker id="r1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+<marker id="r2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="bh"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="900" height="560"/>
+
+<!-- 列の見出し -->
+<text class="t1" x="110" y="24" font-size="14" font-weight="bold" text-anchor="middle">Web UI</text>
+<text class="t2" x="300" y="18" font-size="12" text-anchor="middle">サーバー</text>
+<text class="t2" x="300" y="32" font-size="10" text-anchor="middle">中身に触れずに運ぶ</text>
+<text class="t1" x="470" y="24" font-size="14" font-weight="bold" text-anchor="middle">mod</text>
+<text class="t1" x="755" y="24" font-size="14" font-weight="bold" text-anchor="middle">今の会話のAI</text>
+<rect class="srv" x="270" y="66" width="60" height="140" rx="6"/>
+<rect class="srv" x="270" y="260" width="60" height="232" rx="6"/>
+
+<!-- 行き -->
+<text class="go" x="20" y="56" font-size="14" font-weight="bold">行き：Web UIの操作が依頼の名前になり、modがスキルやコマンドに対応させる</text>
+
+<rect class="btn" x="30" y="72" width="160" height="34" rx="6"/>
+<text class="t1" x="110" y="94" font-size="13" text-anchor="middle">「AIに聞く」</text>
+<line class="ar" x1="190" y1="89" x2="356" y2="89" marker-end="url(#r1)"/>
+<rect class="cmd" x="200" y="77" width="64" height="22" rx="4"/><text class="mono t1" x="232" y="92" font-size="11" text-anchor="middle">answer</text>
+<rect class="mod" x="360" y="72" width="220" height="34" rx="6"/>
+<text class="mono t1" x="470" y="94" font-size="12" text-anchor="middle">/pr-review:answer {…}</text>
+<line class="ar" x1="580" y1="89" x2="626" y2="89" marker-end="url(#r1)"/>
+<rect class="sk" x="630" y="72" width="250" height="34" rx="6"/>
+<text class="t1" x="755" y="94" font-size="12" text-anchor="middle">answer/SKILL.md の手順で答える</text>
+
+<rect class="btn" x="30" y="118" width="160" height="34" rx="6"/>
+<text class="t1" x="110" y="140" font-size="13" text-anchor="middle">「コンパクトする」</text>
+<line class="ar" x1="190" y1="135" x2="356" y2="135" marker-end="url(#r1)"/>
+<rect class="cmd" x="200" y="123" width="64" height="22" rx="4"/><text class="mono t1" x="232" y="138" font-size="11" text-anchor="middle">compact</text>
+<rect class="mod" x="360" y="118" width="220" height="34" rx="6"/>
+<text class="mono t1" x="470" y="140" font-size="12" text-anchor="middle">$.session.compact</text>
+<line class="ar" x1="580" y1="135" x2="626" y2="135" marker-end="url(#r1)"/>
+<rect class="sk" x="630" y="118" width="250" height="34" rx="6"/>
+<text class="t1" x="755" y="140" font-size="12" text-anchor="middle">compact/SKILL.md の指示で要約する</text>
+
+<rect class="btn" x="30" y="164" width="160" height="34" rx="6"/>
+<text class="t1" x="110" y="186" font-size="13" text-anchor="middle">「クリアする」</text>
+<line class="ar" x1="190" y1="181" x2="356" y2="181" marker-end="url(#r1)"/>
+<rect class="cmd" x="200" y="169" width="64" height="22" rx="4"/><text class="mono t1" x="232" y="184" font-size="11" text-anchor="middle">clear</text>
+<rect class="mod" x="360" y="164" width="220" height="34" rx="6"/>
+<text class="mono t1" x="470" y="186" font-size="12" text-anchor="middle">/clear</text>
+<line class="ar" x1="580" y1="181" x2="626" y2="181" marker-end="url(#r1)"/>
+<rect class="srv" x="630" y="164" width="250" height="34" rx="6" style="stroke-dasharray:none"/>
+<text class="t1" x="755" y="186" font-size="12" text-anchor="middle">会話を消す</text>
+
+<!-- 帰り -->
+<text class="ret" x="20" y="250" font-size="14" font-weight="bold">帰り：AIの動きをmodがイベントにし、Web UIがイベントごとに描く</text>
+
+<rect class="ui" x="30" y="266" width="230" height="34" rx="6"/>
+<text class="t1" x="145" y="288" font-size="12" text-anchor="middle">スピナーと何をして答えるかを出す</text>
+<line class="back" x1="626" y1="283" x2="264" y2="283" marker-end="url(#r2)"/>
+<rect class="ev" x="420" y="272" width="80" height="22" rx="4"/><text class="mono t1" x="460" y="287" font-size="11" text-anchor="middle">plan</text>
+<rect class="srv" x="630" y="266" width="250" height="34" rx="6" style="stroke-dasharray:none"/>
+<text class="mono t1" x="755" y="288" font-size="12" text-anchor="middle">pr_plan を呼ぶ</text>
+
+<rect class="ui" x="30" y="312" width="230" height="34" rx="6"/>
+<text class="t1" x="145" y="334" font-size="12" text-anchor="middle">差分の根拠の行を光らせる</text>
+<line class="back" x1="626" y1="329" x2="264" y2="329" marker-end="url(#r2)"/>
+<rect class="ev" x="420" y="318" width="80" height="22" rx="4"/><text class="mono t1" x="460" y="333" font-size="11" text-anchor="middle">show</text>
+<rect class="srv" x="630" y="312" width="250" height="34" rx="6" style="stroke-dasharray:none"/>
+<text class="mono t1" x="755" y="334" font-size="12" text-anchor="middle">pr_show を呼ぶ</text>
+
+<rect class="ui" x="30" y="358" width="230" height="34" rx="6"/>
+<text class="t1" x="145" y="380" font-size="12" text-anchor="middle">使っているツールを1行出す</text>
+<line class="back" x1="626" y1="375" x2="264" y2="375" marker-end="url(#r2)"/>
+<rect class="ev" x="420" y="364" width="80" height="22" rx="4"/><text class="mono t1" x="460" y="379" font-size="11" text-anchor="middle">progress</text>
+<rect class="srv" x="630" y="358" width="250" height="34" rx="6" style="stroke-dasharray:none"/>
+<text class="t1" x="755" y="380" font-size="12" text-anchor="middle">ほかのツール（Readなど）を使う</text>
+
+<rect class="ui" x="30" y="404" width="230" height="34" rx="6"/>
+<text class="t1" x="145" y="426" font-size="12" text-anchor="middle">選択肢のカードを出す</text>
+<line class="back" x1="626" y1="421" x2="264" y2="421" marker-end="url(#r2)"/>
+<rect class="ev" x="420" y="410" width="80" height="22" rx="4"/><text class="mono t1" x="460" y="425" font-size="11" text-anchor="middle">ask</text>
+<rect class="srv" x="630" y="404" width="250" height="34" rx="6" style="stroke-dasharray:none"/>
+<text class="mono t1" x="755" y="426" font-size="12" text-anchor="middle">AskUserQuestion を使う</text>
+
+<rect class="ui" x="30" y="450" width="230" height="34" rx="6"/>
+<text class="t1" x="145" y="472" font-size="12" text-anchor="middle">スレッドに答えを出す</text>
+<line class="back" x1="626" y1="467" x2="264" y2="467" marker-end="url(#r2)"/>
+<rect class="ev" x="420" y="456" width="80" height="22" rx="4"/><text class="mono t1" x="460" y="471" font-size="11" text-anchor="middle">answer</text>
+<rect class="srv" x="630" y="450" width="250" height="34" rx="6" style="stroke-dasharray:none"/>
+<text class="t1" x="755" y="472" font-size="12" text-anchor="middle">答え終わる（ターンの終わり）</text>
+
+<text class="t2" x="20" y="520" font-size="12">プロンプトはスキル（黄色）にだけある。Web UI、サーバー、modは名前とイベントを運び、対応させるだけ</text>
+</svg>

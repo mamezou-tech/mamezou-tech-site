@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 370" width="900" height="370" role="img" aria-label="1回のやりとりの流れ。modは手元のサーバーへ依頼を取りに行き、届くまで待つ。Web UIが質問をサーバーに送ると、サーバーはmodに依頼を返し、modは今の会話に入れる。AIが根拠の行を示すと、modはイベントをサーバーに送り、サーバーはWeb UIの行を光らせる。AIが答え終わると、同じ道で答えがWeb UIに出る">
+<title>1回のやりとりの流れ。modは手元のサーバーへ依頼を取りに行き、届くまで待つ。Web UIが質問をサーバーに送ると、サーバーはmodに依頼を返し、modは今の会話に入れる。AIが根拠の行を示すと、modはイベントをサーバーに送り、サーバーはWeb UIの行を光らせる。AIが答え終わると、同じ道で答えがWeb UIに出る</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; }
+.ui { fill: #ddf4ff; stroke: #2a78d6; } .srv { fill: #f6f8fa; stroke: #57606a; } .cc { fill: #fff8c5; stroke: #9a6700; }
+.mod { fill: #ffffff; stroke: #2a78d6; stroke-width: 3; }
+.life { stroke: #d0d7de; stroke-width: 2; stroke-dasharray: 4 4; }
+.ar { stroke: #2a78d6; fill: none; stroke-width: 2; } .ah { fill: #2a78d6; }
+.wait { stroke: #2a78d6; fill: none; stroke-width: 2; stroke-dasharray: 6 4; }
+.back { stroke: #1a7f37; fill: none; stroke-width: 2; } .bh { fill: #1a7f37; }
+</style>
+<defs>
+<marker id="m1" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+<marker id="m2" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="bh"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="900" height="370"/>
+
+<rect class="ui" x="40" y="16" width="150" height="54" rx="8"/>
+<text class="t1" x="115" y="49" font-size="15" text-anchor="middle">Web UI</text>
+<rect class="srv" x="260" y="16" width="160" height="54" rx="8"/>
+<text class="t1" x="340" y="49" font-size="15" text-anchor="middle">手元のサーバー</text>
+<rect class="cc" x="470" y="8" width="410" height="70" rx="10"/>
+<text class="t2" x="482" y="26" font-size="11">人がターミナルで起動したClaude Code</text>
+<rect class="mod" x="490" y="32" width="150" height="38" rx="8"/>
+<text class="t1" x="565" y="57" font-size="15" text-anchor="middle" font-weight="bold">mod</text>
+<rect class="srv" x="690" y="32" width="170" height="38" rx="8"/>
+<text class="t1" x="775" y="57" font-size="15" text-anchor="middle">今の会話のAI</text>
+
+<line class="life" x1="115" y1="70" x2="115" y2="355"/>
+<line class="life" x1="340" y1="70" x2="340" y2="355"/>
+<line class="life" x1="565" y1="78" x2="565" y2="355"/>
+<line class="life" x1="775" y1="78" x2="775" y2="355"/>
+
+<!-- modが依頼を取りに行き、届くまで待つ -->
+<line class="wait" x1="565" y1="112" x2="340" y2="112" marker-end="url(#m1)"/>
+<text class="t1" x="452" y="103" font-size="13" text-anchor="middle">依頼を取りに行き、届くまで待つ</text>
+
+<!-- 質問 -->
+<line class="ar" x1="115" y1="162" x2="340" y2="162" marker-end="url(#m1)"/>
+<text class="t1" x="228" y="153" font-size="13" text-anchor="middle">質問を送る</text>
+<line class="ar" x1="340" y1="192" x2="565" y2="192" marker-end="url(#m1)"/>
+<text class="t1" x="452" y="183" font-size="13" text-anchor="middle">依頼を返す</text>
+<line class="ar" x1="565" y1="222" x2="775" y2="222" marker-end="url(#m1)"/>
+<text class="t1" x="670" y="213" font-size="13" text-anchor="middle">会話に入れる</text>
+
+<!-- 根拠の行 -->
+<line class="back" x1="775" y1="270" x2="565" y2="270" marker-end="url(#m2)"/>
+<text class="t1" x="670" y="261" font-size="13" text-anchor="middle">根拠の行を示す</text>
+<line class="back" x1="565" y1="270" x2="340" y2="270" marker-end="url(#m2)"/>
+<text class="t1" x="452" y="261" font-size="13" text-anchor="middle">イベントを送る</text>
+<line class="back" x1="340" y1="270" x2="115" y2="270" marker-end="url(#m2)"/>
+<text class="t1" x="228" y="261" font-size="13" text-anchor="middle">行を光らせる</text>
+
+<!-- 答え -->
+<line class="back" x1="775" y1="330" x2="565" y2="330" marker-end="url(#m2)"/>
+<text class="t1" x="670" y="321" font-size="13" text-anchor="middle">答え終わる</text>
+<line class="back" x1="565" y1="330" x2="340" y2="330" marker-end="url(#m2)"/>
+<text class="t1" x="452" y="321" font-size="13" text-anchor="middle">イベントを送る</text>
+<line class="back" x1="340" y1="330" x2="115" y2="330" marker-end="url(#m2)"/>
+<text class="t1" x="228" y="321" font-size="13" text-anchor="middle">答えを出す</text>
+</svg>

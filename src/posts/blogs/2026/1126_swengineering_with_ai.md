@@ -3,6 +3,7 @@ title: AI時代のソフトウェアエンジニアリング
 author: yasumasa-takahashi
 date: 2026-11-26
 tags: [AI]
+image: true
 ---
 
 ## AIの時代

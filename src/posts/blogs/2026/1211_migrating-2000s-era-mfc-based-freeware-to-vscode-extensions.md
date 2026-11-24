@@ -1,5 +1,5 @@
 ---
-title: ゼロ年代のフリーソフトウェアをサルベージ！ アイデアプロセッサ iEdit を VS Code 拡張として式年遷宮(モダナイズ)している話
+title: ゼロ年代フリーソフトウェアをサルベージ！ アイデアプロセッサ iEdit を VS Code 拡張として式年遷宮(モダナイズ) - AI Ready な可視化ツールへ
 author: masahiro-kondo
 date: 2026-12-11
 tags: [個人開発, vscode, advent2026]
@@ -249,6 +249,96 @@ VS Code 拡張では、VS Code の Extension Host 内で TextDocument として�
 :::info
 アーキテクチャ図の右部分のように要素を破線の枠で囲むような図はオリジナルの iEdit では描けたのですが、vis-network で作ったプロト版には厳しかったです。ダイアグラムを描くだけでなくドローツール的な領域にも踏み込む必要があるためです。ということで上記の図は Gemini に描いてもらいました。
 :::
+
+## おまけ: AI に iEdit ファイルを生成してもらう
+VS Code 拡張になったことで、Copilot とか Claude Code に 「xxをやって結果を iEdit 形式で吐いて」ってお願いができるようになりました。プロンプトで JSON ファイルの形式さえ教えてあげれば、MCP サーバー建てたりとか面倒なことやらなくてもいいのです。
+
+こんなプロンプトを書いて投げてみました。徳川15代の歴代将軍の家系図を作って、各ノードにそれぞれの将軍のプロフィールを書いてもらうというものです。
+
+```markdown:プロンプト
+あなたは iEdit JSON 生成アシスタントです。
+以下の仕様を厳密に守って、最終的に JSON だけを出力してください（説明文やコードフェンス不要）。
+
+# iEdit JSON 仕様
+- ルートはオブジェクト
+- 必須キー: version, selectedNodeId, nodes, links
+- version は 1
+- selectedNodeId は nodes 内に存在する id
+- nodes は配列。各要素:
+  - id: string（一意）
+  - parentId: string | null（root のみ null）
+  - label: string
+  - text: string（Markdown可）
+  - shape?: "box" | "ellipse" | "roundbox"
+  - x, y, nodeColor は省略可
+- links は配列。各要素:
+  - id: string（一意）
+  - source: string（nodes.id を参照）
+  - target: string（nodes.id を参照）
+  - label?: string
+- JSON は UTF-8 を想定。妥当な JSON のみ出力
+
+# 構造ルール
+- 必ず id="root", parentId=null のノードを 1 つ作る
+- それ以外のノードは parentId に既存ノード id を設定
+- 同じ id を再利用しない
+- links の source/target は必ず既存 id を参照
+- 不明な情報は捏造せず text に「要確認」と明記
+
+# 出力前セルフチェック（内部で実施）
+1) JSON 構文が正しい
+2) nodes.id / links.id の重複なし
+3) parentId/source/target の参照整合性 OK
+4) selectedNodeId が存在
+5) root が 1 件
+
+---
+以下のテーマで生成:
+Wikipedia情報をもとに、徳川将軍家（初代〜15代）の iEdit JSON を作成
+
+追加要件:
+- root 配下に「徳川将軍家」カテゴリを置く
+- 初代〜15代の各将軍ノードを作成
+- parentId で家系の主系統を表現
+- 養子・継承・分家など parentId で表しにくい関係は links で補足
+- 各将軍ノード text は 200〜400字
+- 各 text 末尾に「出典: Wikipedia（ページ名）」を入れる
+- 最終出力は JSON のみ
+```
+
+以下が出力された JSON を可視化した結果です。家系図(Family tree) がツリーに展開されてしまいましたね。たまたま選択してた階層に、家綱と綱吉が出てきており、二人が兄弟だったことを知りました。
+
+![Family outline](/img/blogs/2026/1211_migrating-2000s-era-freeware/family1.png)
+
+プロンプトを少し修正。
+
+```markdown:プロンプト
+# 構造ルール（重要）
+- 必ず id="root", parentId=null のノードを1つ作る
+- 必ず id="tokugawa-shogunate", parentId="root" のカテゴリノードを作る
+- 将軍ノード（1代〜15代）は **全て parentId="tokugawa-shogunate"** にする
+  - 親子を parentId 連鎖で表現しない（フラット構造）
+- 血縁・継承・養子・分家などの関係は links で表現する
+
+# 内容要件
+- 1代〜15代の将軍ノードを作る
+- 各将軍ノード text は 180〜350字程度
+- 各 text の末尾に「出典: Wikipedia（ページ名）」を付ける
+- 不確かな情報は断定せず「要確認」と明記
+
+# 品質チェック（内部で実施）
+1) JSON として妥当
+2) nodes.id / links.id 重複なし
+3) parentId/source/target の参照整合性OK
+4) root は1件のみ
+5) 将軍ノードの parentId が全件 tokugawa-shogunate
+
+この条件で JSON を生成してください。
+```
+
+今度はちゃんとネットワークに展開されました。iEdit の芋づる機能で綺麗に配置できました。(正しい家系図なのかはよくわかりませんが)
+
+![Family network](/img/blogs/2026/1211_migrating-2000s-era-freeware/family2.png)
 
 ## さいごに
 以上、古いフリーソフトウェアを VS Code の拡張としてモダナイズする話でした。オリジナル iEdit では色々と自作してコードも膨大になっていましたが、Copilot の書いてくれたコードはさほど大量でもなく、シンプルです。ドキュメントの編集というドメインが VS Code 拡張に対して提供されている機能とマッチして素早くモノが作れた (VS Code という巨人の肩に乗れた) ということかなと思いました。

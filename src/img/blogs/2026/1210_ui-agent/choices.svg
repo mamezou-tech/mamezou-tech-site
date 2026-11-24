@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" width="900" height="430" role="img" aria-label="Web UIの依頼がどの会話に届くかを示す図。modは手元のサーバーへ依頼を取りに行き、人がターミナルで使っている今の会話に入れる。channelsも依頼を今の会話に入れられるが、自作のものは起動のたびにフラグと警告の承認が要る。Agent SDKとclaude -pはサーバーが別のClaude Codeを起動して依頼するので、依頼はターミナルの会話に入らない">
+<title>Web UIの依頼がどの会話に届くかを示す図。modは手元のサーバーへ依頼を取りに行き、人がターミナルで使っている今の会話に入れる。channelsも依頼を今の会話に入れられるが、自作のものは起動のたびにフラグと警告の承認が要る。Agent SDKとclaude -pはサーバーが別のClaude Codeを起動して依頼するので、依頼はターミナルの会話に入らない</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
+.mono { font-family: 'SFMono-Regular',Consolas,'Liberation Mono',monospace; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; }
+.box { fill: #ffffff; stroke: #8c959f; } .ui { fill: #ddf4ff; stroke: #2a78d6; } .srv { fill: #f6f8fa; stroke: #57606a; }
+.cc { fill: #fff8c5; stroke: #9a6700; } .other { fill: #f6f8fa; stroke: #8c959f; stroke-dasharray: 6 4; }
+.pick { fill: #ffffff; stroke: #2a78d6; stroke-width: 3; }
+.ar { stroke: #2a78d6; fill: none; stroke-width: 2.5; } .ah { fill: #2a78d6; }
+.ar2 { stroke: #8c959f; fill: none; stroke-width: 1.8; stroke-dasharray: 6 4; } .ah2 { fill: #8c959f; }
+.tag { fill: #2a78d6; } .tagt { fill: #ffffff; } .warn { fill: #9a6700; }
+</style>
+<defs>
+<marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+<marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah2"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="900" height="430"/>
+
+<!-- ブラウザとサーバー -->
+<rect class="ui" x="20" y="175" width="130" height="70" rx="8"/>
+<text class="t1" x="85" y="205" font-size="15" text-anchor="middle">ブラウザの</text>
+<text class="t1" x="85" y="226" font-size="15" text-anchor="middle">Web UI</text>
+<line class="ar" x1="150" y1="210" x2="208" y2="210" marker-end="url(#a1)"/>
+<text class="t2" x="179" y="200" font-size="12" text-anchor="middle">依頼</text>
+<rect class="srv" x="210" y="175" width="140" height="70" rx="8"/>
+<text class="t1" x="280" y="205" font-size="15" text-anchor="middle">手元の</text>
+<text class="t1" x="280" y="226" font-size="15" text-anchor="middle">サーバー</text>
+
+<!-- 人が起動したClaude Code -->
+<rect class="cc" x="420" y="16" width="464" height="214" rx="10"/>
+<text class="t1" x="436" y="42" font-size="15" font-weight="bold">人がターミナルで起動したClaude Code</text>
+<rect class="pick" x="436" y="60" width="150" height="60" rx="8"/>
+<text class="t1" x="511" y="86" font-size="16" text-anchor="middle" font-weight="bold">mod</text>
+<text class="t2" x="511" y="106" font-size="12" text-anchor="middle">プラグインの中で動く</text>
+<rect class="box" x="436" y="148" width="150" height="60" rx="8" stroke-dasharray="6 4"/>
+<text class="t1" x="511" y="174" font-size="15" text-anchor="middle">channels</text>
+<text class="warn" x="511" y="194" font-size="12" text-anchor="middle">起動ごとにフラグと承認</text>
+<rect class="box" x="660" y="60" width="206" height="148" rx="8"/>
+<text class="t1" x="763" y="86" font-size="15" text-anchor="middle" font-weight="bold">今の会話</text>
+<text class="mono t2" x="676" y="114" font-size="12">&gt; 人が打った依頼</text>
+<text class="mono t1" x="676" y="138" font-size="12">&gt; Web UIからの依頼</text>
+<text class="mono t2" x="676" y="162" font-size="12">● Claudeの答え</text>
+<text class="t2" x="676" y="194" font-size="12">人もそのまま打ち込める</text>
+<line class="ar" x1="586" y1="90" x2="658" y2="118" marker-end="url(#a1)"/>
+<line class="ar2" x1="586" y1="178" x2="658" y2="150" marker-end="url(#a2)"/>
+
+<!-- サーバーからmodとchannelsへ -->
+<path class="ar" d="M434,90 C390,90 380,190 352,196" marker-start="url(#a1)"/>
+<text class="tag" x="366" y="128" font-size="12" font-weight="bold" text-anchor="end">modが</text>
+<text class="tag" x="366" y="144" font-size="12" font-weight="bold" text-anchor="end">取りに行く</text>
+<path class="ar2" d="M352,222 C392,222 400,178 434,178" marker-end="url(#a2)"/>
+
+<!-- サーバーが起動したClaude Code -->
+<rect class="other" x="420" y="262" width="464" height="150" rx="10"/>
+<text class="t1" x="436" y="288" font-size="15" font-weight="bold">サーバーが起動した別のClaude Code</text>
+<rect class="box" x="436" y="306" width="150" height="80" rx="8"/>
+<text class="t1" x="511" y="334" font-size="14" text-anchor="middle">Agent SDK</text>
+<text class="t1" x="511" y="354" font-size="14" text-anchor="middle">claude -p</text>
+<text class="warn" x="511" y="376" font-size="12" text-anchor="middle">ログインに許可が要る</text>
+<rect class="box" x="660" y="306" width="206" height="80" rx="8"/>
+<text class="t1" x="763" y="338" font-size="15" text-anchor="middle">別の会話</text>
+<text class="t2" x="763" y="362" font-size="12" text-anchor="middle">ターミナルには出ない</text>
+<line class="ar2" x1="586" y1="346" x2="658" y2="346" marker-end="url(#a2)"/>
+<path class="ar2" d="M280,245 C280,320 380,346 434,346" marker-end="url(#a2)"/>
+<text class="t2" x="272" y="300" font-size="12" text-anchor="end">起動して依頼する</text>
+</svg>

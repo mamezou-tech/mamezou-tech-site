@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" width="900" height="430" role="img" aria-label="普通のWeb APIは1つのリクエストに1つのレスポンスを返す。この試作では1つの質問に対して、AIが手順を進めるたびにイベントが何回もWeb UIへ届き、Web UIはそのたびに表示を変える。何回、何を返すかはスキルの手順に沿ってAIが決める">
+<title>普通のWeb APIは1つのリクエストに1つのレスポンスを返す。この試作では1つの質問に対して、AIが手順を進めるたびにイベントが何回もWeb UIへ届き、Web UIはそのたびに表示を変える。何回、何を返すかはスキルの手順に沿ってAIが決める</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
+.mono { font-family: 'SFMono-Regular',Consolas,'Liberation Mono',monospace; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; }
+.ui { fill: #ddf4ff; stroke: #2a78d6; } .srv { fill: #f6f8fa; stroke: #57606a; } .sk { fill: #fff8c5; stroke: #9a6700; }
+.life { stroke: #d0d7de; stroke-width: 2; stroke-dasharray: 4 4; }
+.ar { stroke: #2a78d6; fill: none; stroke-width: 2; } .ah { fill: #2a78d6; }
+.back { stroke: #1a7f37; fill: none; stroke-width: 2; } .bh { fill: #1a7f37; }
+.ev { fill: #dafbe1; stroke: #1a7f37; } .cmd { fill: #ddf4ff; stroke: #2a78d6; }
+.brace { stroke: #9a6700; fill: none; stroke-width: 2; }
+.sep { stroke: #d0d7de; stroke-width: 1; }
+</style>
+<defs>
+<marker id="e1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+<marker id="e2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="bh"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="900" height="430"/>
+
+<!-- 普通のWeb API -->
+<text class="t1" x="20" y="28" font-size="14" font-weight="bold">普通のWeb API</text>
+<rect class="ui" x="40" y="44" width="120" height="34" rx="6"/><text class="t1" x="100" y="66" font-size="13" text-anchor="middle">フロントエンド</text>
+<rect class="srv" x="600" y="44" width="120" height="34" rx="6"/><text class="t1" x="660" y="66" font-size="13" text-anchor="middle">バックエンド</text>
+<line class="ar" x1="160" y1="54" x2="596" y2="54" marker-end="url(#e1)"/>
+<text class="t2" x="380" y="48" font-size="12" text-anchor="middle">リクエスト</text>
+<line class="back" x1="600" y1="70" x2="164" y2="70" marker-end="url(#e2)"/>
+<text class="t2" x="380" y="88" font-size="12" text-anchor="middle">レスポンスを1回返す</text>
+
+<line class="sep" x1="20" y1="108" x2="880" y2="108"/>
+
+<!-- この試作 -->
+<text class="t1" x="20" y="134" font-size="14" font-weight="bold">この試作</text>
+<rect class="ui" x="40" y="146" width="120" height="34" rx="6"/><text class="t1" x="100" y="168" font-size="13" text-anchor="middle">Web UI</text>
+<rect class="srv" x="600" y="146" width="120" height="34" rx="6"/><text class="t1" x="660" y="168" font-size="13" text-anchor="middle">今の会話のAI</text>
+<line class="life" x1="100" y1="180" x2="100" y2="420"/>
+<line class="life" x1="660" y1="180" x2="660" y2="420"/>
+
+<line class="ar" x1="100" y1="200" x2="656" y2="200" marker-end="url(#e1)"/>
+<rect class="cmd" x="330" y="189" width="100" height="22" rx="4"/><text class="mono t1" x="380" y="204" font-size="11" text-anchor="middle">answer（1回）</text>
+
+<line class="back" x1="660" y1="240" x2="104" y2="240" marker-end="url(#e2)"/>
+<rect class="ev" x="340" y="229" width="80" height="22" rx="4"/><text class="mono t1" x="380" y="244" font-size="11" text-anchor="middle">plan</text>
+<text class="t2" x="110" y="232" font-size="11">何をして答えるかを出す</text>
+
+<line class="back" x1="660" y1="276" x2="104" y2="276" marker-end="url(#e2)"/>
+<rect class="ev" x="340" y="265" width="80" height="22" rx="4"/><text class="mono t1" x="380" y="280" font-size="11" text-anchor="middle">progress</text>
+<text class="t2" x="110" y="268" font-size="11">「PRの差分を読んでいます」</text>
+
+<line class="back" x1="660" y1="312" x2="104" y2="312" marker-end="url(#e2)"/>
+<rect class="ev" x="340" y="301" width="80" height="22" rx="4"/><text class="mono t1" x="380" y="316" font-size="11" text-anchor="middle">show</text>
+<text class="t2" x="110" y="304" font-size="11">10行目を光らせる</text>
+
+<line class="back" x1="660" y1="348" x2="104" y2="348" marker-end="url(#e2)"/>
+<rect class="ev" x="340" y="337" width="80" height="22" rx="4"/><text class="mono t1" x="380" y="352" font-size="11" text-anchor="middle">show</text>
+<text class="t2" x="110" y="340" font-size="11">26〜27行目を光らせる</text>
+
+<line class="back" x1="660" y1="392" x2="104" y2="392" marker-end="url(#e2)"/>
+<rect class="ev" x="340" y="381" width="80" height="22" rx="4"/><text class="mono t1" x="380" y="396" font-size="11" text-anchor="middle">answer</text>
+<text class="t2" x="110" y="384" font-size="11">スレッドに答えを出す</text>
+
+<path class="brace" d="M690,232 Q705,232 705,250 L705,300 Q705,312 718,312 Q705,312 705,324 L705,382 Q705,396 690,396"/>
+<rect class="sk" x="726" y="270" width="160" height="84" rx="6"/>
+<text class="t1" x="806" y="294" font-size="12" text-anchor="middle">何回、何を返すかは</text>
+<text class="t1" x="806" y="314" font-size="12" text-anchor="middle">スキルの手順に沿って</text>
+<text class="t1" x="806" y="334" font-size="12" text-anchor="middle">AIが決める</text>
+</svg>

@@ -47,7 +47,10 @@
       "title": "AI周りで何か書きます！（PRレビューとか）"
     },
     {
-      "date": "8"
+      "date": "8",
+      "author": "masato-ubata",
+      "githubUser": "ubata-mamezou",
+      "title": "OpenSSF Scorecardを活用してセキュリティレベルを向上させる"
     },
     {
       "date": "9",
@@ -118,7 +121,10 @@
       "title": "AIを活用してドッキングステーションの温度制御システムをDIYしてみた"
     },
     {
-      "date": "24"
+      "date": "24",
+      "author": "akihiro-ishida",
+      "githubUser": "mamezou-ishida",
+      "title": "何か書きます"
     },
     {
       "date": "25"

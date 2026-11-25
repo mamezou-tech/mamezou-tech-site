@@ -127,7 +127,11 @@
       "title": "何か書きます"
     },
     {
-      "date": "25"
+      "date": "25",
+      "author": "fuma-motoyama",
+      "githubUser": "MZfmotoyama",
+      "nonContrib": true,
+      "title": "何か書きます"
     }
   ]
 }

@@ -118,7 +118,7 @@ image: true
 
 フレームワークと共通コンポーネントを先に設計して作る手間は大きいものの一度で済むはずです。その分機能ごとのテストとレビューを減らせるので規模が大きいほど人の負荷を下げられそうです。
 
-Googleも危ない操作を安全に作ったAPIの中に閉じ込め、XSSとSQLインジェクションをほぼなくしたと2025年に報告しています（[Safe Coding](https://research.google/pubs/safe-coding-rigorous-modular-reasoning-about-software-safety-extended-version/)）。Googleはそれを使用APIチェックでなく型チェックで守らせています。
+Googleも危ない操作を安全に作ったAPIの中に閉じ込め、XSSとSQLインジェクションをほぼなくしたと2025年に報告しています（[Safe Coding](https://research.google/pubs/safe-coding-rigorous-modular-reasoning-about-software-safety-extended-version/)）。
 
 ### 公開APIだけを使わせるには？
 

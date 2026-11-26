@@ -28,13 +28,13 @@ image: true
 | 参考にした一覧 | 内容 | 参考にしたチェック項目 |
 |---|---|---|
 | [OWASP ASVS 5.0](https://github.com/OWASP/ASVS/tree/v5.0.0) | アプリケーションのセキュリティ | 223 |
-| ISO/IEC 25010:2023 | 品質の枠組み | 79 |
+| ISO/IEC 25010:2023 | 品質の枠組み | 77 |
 | [CWE](https://cwe.mitre.org/) | セキュリティの弱点 | 61 |
 | [WCAG 2.2](https://www.w3.org/TR/WCAG22/) | アクセシビリティ | 54 |
-| [非機能要求グレード2018](https://www.ipa.go.jp/archive/digital/iot-en-ci/jyouryuu/hikinou/ent03-b.html) | 性能、可用性、運用 | 44 |
+| [非機能要求グレード2018](https://www.ipa.go.jp/archive/digital/iot-en-ci/jyouryuu/hikinou/ent03-b.html) | 性能、可用性、運用 | 42 |
 | [OWASP Top 10:2025](https://top10.owasp.org/2025/) | セキュリティのリスク | 31 |
 | [OpenSSF Scorecard](https://github.com/ossf/scorecard/blob/main/docs/checks.md) | サプライチェーン | 17 |
-| [Orthogonal Defect Classification](https://doi.org/10.1109/32.177364) | 不具合の種類 | 15 |
+| [Orthogonal Defect Classification](https://doi.org/10.1109/32.177364) | 不具合の種類 | 14 |
 | [The Twelve-Factor App](https://12factor.net/) | 設定、ログ、終わり方 | 9 |
 | [NIST SSDF 1.1](https://csrc.nist.gov/pubs/sp/800/218/final) | 安全な開発の仕組み | 3 |
 | [SLSA v1.2](https://slsa.dev/spec/v1.2/) | ビルドとソースの来歴 | 3 |

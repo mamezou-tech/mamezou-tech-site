@@ -90,9 +90,9 @@ IDで対応付けてあれば対応表や注記をたどってその要件のテ
 
 ![Kiro、BMAD、AI-DLCはテストを流して確認し、Spec KitとOpenSpecはテストを流さずにコードと仕様を読み比べることを示す図。KiroとBMADはテストを仕様から作る](/img/blogs/2026/1217_sdd-tools/check-ways.svg)
 
-Kiroは要件からプロパティ（どんな入力でも成り立つ条件）を書き出し、プロパティベーステストにして多くの入力で流します。BMADのTEAは受け入れ条件から実装より先に受け入れテストを作ります。AI-DLCはテストを流し、目標ごとに期待した結果と実際の結果を表にして照らします。
+Kiroは要件からプロパティ（どんな入力でも成り立つ条件）を書き出し、[プロパティベーステスト](https://kiro.dev/docs/specs/correctness/)にして多くの入力で流します。BMADのTEAは受け入れ条件から実装より先に受け入れテストを作ります。AI-DLCはテストを流し、目標ごとに期待した結果と実際の結果を表にして照らします。
 
-Spec Kitのconvergeは要件ごとにコードとのずれを探し、OpenSpecのverifyは抜けや誤りを指摘します。どちらもテストを流さないため、結果は助言にとどまります。
+Spec Kitの[converge](https://github.com/github/spec-kit/blob/v1.2.2/templates/commands/converge.md)は要件ごとにコードとのずれを探し、OpenSpecの[verify](https://github.com/Fission-AI/OpenSpec/blob/v1.14.3/docs/commands.md#opsxverify)は抜けや誤りを指摘します。どちらもテストを流さないため、結果は助言にとどまります。
 
 ## 今の振る舞いを壊していないかを見る？
 

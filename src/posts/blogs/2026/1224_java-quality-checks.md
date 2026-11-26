@@ -83,7 +83,7 @@ image: true
 
 | 種類 | 何を見るか | ツール |
 |---|---|---|
-| 設定チェック | IaC、CI、コンテナ、リポジトリの設定 | [Conftest](https://www.conftest.dev/)、[Checkov](https://www.checkov.io/5.Policy%20Index/all.html)、[kube-linter](https://github.com/stackrox/kube-linter/blob/main/docs/generated/checks.md)、[hadolint](https://github.com/hadolint/hadolint)、[zizmor](https://docs.zizmor.sh/audits/)、[GitHubのrulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets) |
+| 設定チェック | IaC、CI、コンテナ、リポジトリの設定 | [Conftest](https://www.conftest.dev/)、[Checkov](https://www.checkov.io/5.Policy%20Index/all.html)、[kube-linter](https://github.com/stackrox/kube-linter/blob/main/docs/generated/checks.md)、[hadolint](https://github.com/hadolint/hadolint#rules)、[zizmor](https://docs.zizmor.sh/audits/)、[GitHubのrulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets) |
 | 静的解析 | コードの誤り、危険な書き方、書き方の規約 | [Error Prone](https://errorprone.info/bugpatterns)、[SpotBugs](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html)、[PMD](https://docs.pmd-code.org/latest/pmd_rules_java.html)、[Checkstyle](https://checkstyle.org/checks.html)、[Semgrep](https://docs.semgrep.dev/writing-rules/rule-syntax)、[ESLint](https://eslint.org/docs/latest/rules/) |
 | APIのチェック | コードが呼ぶAPIが決めた一覧どおりか | [forbiddenapis](https://github.com/policeman-tools/forbidden-apis)、[Nablarchの使用不許可APIチェックツール](https://github.com/nablarch/nablarch-unpublished-api-checker) |
 | アーキテクチャテスト | モジュールとレイヤーの依存関係 | [ArchUnit](https://www.archunit.org/userguide/html/000_Index.html) |
@@ -122,7 +122,7 @@ Googleも危ない操作を安全に作ったAPIの中に閉じ込め、XSSとSQ
 
 ### 公開APIだけを使わせるには？
 
-使用APIチェックは既存ツールでできました。Javaなら既存ツールの表のAPIのチェックに挙げた[Nablarch](https://nablarch.github.io/docs/LATEST/doc/development_tools/java_static_analysis/index.html)の使用不許可APIチェックツールが使えます。自作するのはアプリケーションに見せる公開APIとその裏に作り込むものの方です。このツールはSpotBugsのプラグインでライセンスはApache-2.0です（[リポジトリ](https://github.com/nablarch/nablarch-unpublished-api-checker)、[使い方](https://github.com/Fintan-contents/coding-standards/blob/main/java/staticanalysis/unpublished-api/README.md)）。Nablarchを使わないプロジェクトでも設定ファイルを自分で書けば使えます。
+使用APIチェックは既存ツールでできました。Javaなら既存ツールの表のAPIのチェックに挙げた[Nablarch](https://nablarch.github.io/docs/LATEST/doc/development_tools/java_static_analysis/index.html#api)の使用不許可APIチェックツールが使えます。自作するのはアプリケーションに見せる公開APIとその裏に作り込むものの方です。このツールはSpotBugsのプラグインでライセンスはApache-2.0です（[リポジトリ](https://github.com/nablarch/nablarch-unpublished-api-checker)、[使い方](https://github.com/Fintan-contents/coding-standards/blob/main/java/staticanalysis/unpublished-api/README.md)）。Nablarchを使わないプロジェクトでも設定ファイルを自分で書けば使えます。
 
 使ってよいAPIは設定ファイルに1行ずつ書きます。メソッドは引数の型まで指定できるのでオーバーロードしたメソッドも1つずつ許可できます。たとえば次のように書きます。
 

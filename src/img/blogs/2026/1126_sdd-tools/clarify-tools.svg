@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" width="720" height="520" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif" font-size="15" fill="#1f2328">
+<style>
+@media (prefers-color-scheme: dark) {
+  [fill="#0969da"] { fill: #4493f8 }
+  [fill="#1f2328"] { fill: #e6edf3 }
+  [fill="#57606a"] { fill: #9198a1 }
+  [fill="#8250df"] { fill: #ab7df8 }
+  [fill="#bc4c00"] { fill: #f0883e }
+  [fill="#ddf4ff"] { fill: #12263f }
+  [fill="#fbefff"] { fill: #221a33 }
+  [fill="#fff1e5"] { fill: #2b1d12 }
+  [fill="#ffffff"] { fill: #0d1117 }
+  [stroke="#0969da"] { stroke: #4493f8 }
+  [stroke="#8250df"] { stroke: #ab7df8 }
+  [stroke="#bc4c00"] { stroke: #f0883e }
+  text[fill="#ffffff"], tspan[fill="#ffffff"] { fill: #ffffff }
+}
+</style>
+  <rect width="720" height="520" fill="#ffffff"/>
+  <text x="125.0" y="34" text-anchor="middle" font-weight="bold" fill="#0969da">観点の一覧を持つ</text>
+  <line x1="12" y1="46" x2="238" y2="46" stroke="#0969da" stroke-width="2"/>
+  <rect x="12" y="60" width="226" height="146" rx="6" fill="#ddf4ff" stroke="#0969da"/>
+  <text x="22" y="82" font-weight="bold" font-size="13">Spec Kitのclarify</text>
+  <text x="22" y="104" font-size="12" fill="#57606a">観点</text>
+  <text x="98" y="104" font-size="13">10の観点</text>
+  <text x="22" y="128" font-size="12" fill="#57606a">聞き方</text>
+  <text x="98" y="128" font-size="13">推奨案つきの選択肢</text>
+  <text x="98" y="146" font-size="13">1問ずつ、5問まで</text>
+  <text x="22" y="170" font-size="12" fill="#57606a">書き戻す先</text>
+  <text x="98" y="170" font-size="13">仕様の本文と、</text>
+  <text x="98" y="188" font-size="13">質問と答えの記録</text>
+  <rect x="12" y="218" width="226" height="146" rx="6" fill="#ddf4ff" stroke="#0969da"/>
+  <text x="22" y="240" font-weight="bold" font-size="13">KiroのAnalyze Requirements</text>
+  <text x="22" y="262" font-size="12" fill="#57606a">観点</text>
+  <text x="98" y="262" font-size="13">論理の食い違いなど</text>
+  <text x="98" y="280" font-size="13">5つの種類</text>
+  <text x="22" y="304" font-size="12" fill="#57606a">聞き方</text>
+  <text x="98" y="304" font-size="13">論理式にし、割れや</text>
+  <text x="98" y="322" font-size="13">食い違いを2択で</text>
+  <text x="22" y="346" font-size="12" fill="#57606a">書き戻す先</text>
+  <text x="98" y="346" font-size="13">仕様の本文</text>
+  <rect x="12" y="376" width="226" height="128" rx="6" fill="#ddf4ff" stroke="#0969da"/>
+  <text x="22" y="398" font-weight="bold" font-size="12">AI-DLCのrequirements-analysis</text>
+  <text x="22" y="420" font-size="12" fill="#57606a">観点</text>
+  <text x="98" y="420" font-size="13">6つの観点と、</text>
+  <text x="98" y="438" font-size="13">抜けがちな項目の一覧</text>
+  <text x="22" y="462" font-size="12" fill="#57606a">聞き方</text>
+  <text x="98" y="462" font-size="13">推奨案なしの選択肢</text>
+  <text x="22" y="486" font-size="12" fill="#57606a">書き戻す先</text>
+  <text x="98" y="486" font-size="13">質問のファイル</text>
+  <text x="362.0" y="34" text-anchor="middle" font-weight="bold" fill="#8250df">一覧を持たない</text>
+  <line x1="249" y1="46" x2="475" y2="46" stroke="#8250df" stroke-width="2"/>
+  <rect x="249" y="60" width="226" height="122" rx="6" fill="#fbefff" stroke="#8250df"/>
+  <text x="259" y="82" font-weight="bold" font-size="13">OpenSpecのexplore</text>
+  <text x="259" y="104" font-size="12" fill="#57606a">聞き方</text>
+  <text x="335" y="104" font-size="13">決まった形を</text>
+  <text x="335" y="122" font-size="13">使わない</text>
+  <text x="259" y="146" font-size="12" fill="#57606a">書き戻す先</text>
+  <text x="335" y="146" font-size="13">会話。同意すれば</text>
+  <text x="335" y="164" font-size="13">成果物にも書く</text>
+  <rect x="249" y="194" width="226" height="104" rx="6" fill="#fbefff" stroke="#8250df"/>
+  <text x="259" y="216" font-weight="bold" font-size="13">BMADのPRDの工程</text>
+  <text x="259" y="238" font-size="12" fill="#57606a">聞き方</text>
+  <text x="335" y="238" font-size="13">開いた質問</text>
+  <text x="259" y="262" font-size="12" fill="#57606a">書き戻す先</text>
+  <text x="335" y="262" font-size="13">PRDの本文と</text>
+  <text x="335" y="280" font-size="13">決定の記録</text>
+  <text x="599.0" y="34" text-anchor="middle" font-weight="bold" fill="#bc4c00">人に聞く条件を持つ</text>
+  <line x1="486" y1="46" x2="712" y2="46" stroke="#bc4c00" stroke-width="2"/>
+  <rect x="486" y="60" width="226" height="218" rx="6" fill="#fff1e5" stroke="#bc4c00"/>
+  <text x="496" y="82" font-weight="bold" font-size="13">BMADのbuildの工程</text>
+  <text x="496" y="104" font-size="12" fill="#57606a">聞くもの</text>
+  <text x="572" y="104" font-size="13">依頼に書かれず、</text>
+  <text x="572" y="122" font-size="13">コードで決まらず、</text>
+  <text x="572" y="140" font-size="13">人が結果で気づく</text>
+  <text x="572" y="158" font-size="13">ものだけ</text>
+  <text x="496" y="182" font-size="12" fill="#57606a">聞き方</text>
+  <text x="572" y="182" font-size="13">推奨案なしの選択肢</text>
+  <text x="572" y="200" font-size="13">と、選ぶと何が</text>
+  <text x="572" y="218" font-size="13">起きるか</text>
+  <text x="496" y="242" font-size="12" fill="#57606a">書き戻す先</text>
+  <text x="572" y="242" font-size="13">仕様のうち、承認</text>
+  <text x="572" y="260" font-size="13">したら変えない部分</text>
+  <text x="496" y="300" font-size="12" fill="#57606a">Spec Kitのspecifyと</text>
+  <text x="496" y="318" font-size="12" fill="#57606a">OpenSpecのproposeも、影響が</text>
+  <text x="496" y="336" font-size="12" fill="#57606a">大きいときだけ聞く条件を持つ</text>
+</svg>

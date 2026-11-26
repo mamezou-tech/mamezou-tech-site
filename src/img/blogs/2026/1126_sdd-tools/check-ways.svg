@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="760" height="360" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif" font-size="15" fill="#1f2328">
+<style>
+@media (prefers-color-scheme: dark) {
+  [fill="#0969da"] { fill: #4493f8 }
+  [fill="#1a7f37"] { fill: #3fb950 }
+  [fill="#1f2328"] { fill: #e6edf3 }
+  [fill="#57606a"] { fill: #9198a1 }
+  [fill="#dafbe1"] { fill: #12261e }
+  [fill="#ddf4ff"] { fill: #12263f }
+  [fill="#ffffff"] { fill: #0d1117 }
+  [stroke="#0969da"] { stroke: #4493f8 }
+  [stroke="#1a7f37"] { stroke: #3fb950 }
+  [stroke="#57606a"] { stroke: #9198a1 }
+  [stroke="#d0d7de"] { stroke: #30363d }
+}
+</style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#57606a"/>
+    </marker>
+  </defs>
+  <rect width="760" height="360" fill="#ffffff"/>
+
+  <!-- テストを流して確認する -->
+  <text x="250" y="30" text-anchor="middle" font-weight="bold" fill="#1a7f37">テストを流して確認する</text>
+  <line x1="12" y1="42" x2="488" y2="42" stroke="#1a7f37" stroke-width="2"/>
+  <text x="250" y="64" text-anchor="middle" font-size="13" fill="#57606a">KiroとBMADはテストを仕様から作る</text>
+
+  <rect x="12" y="80" width="476" height="80" rx="6" fill="#dafbe1" stroke="#1a7f37" stroke-width="1.5"/>
+  <text x="24" y="104" font-weight="bold">Kiro</text>
+  <text x="64" y="104" font-size="13" fill="#57606a">Correctness</text>
+  <rect x="24" y="118" width="56" height="28" rx="4" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="52" y="137" text-anchor="middle" font-size="13">要件</text>
+  <line x1="82" y1="132" x2="102" y2="132" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="104" y="118" width="90" height="28" rx="4" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="149" y="137" text-anchor="middle" font-size="13">プロパティ</text>
+  <line x1="196" y1="132" x2="216" y2="132" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="218" y="118" width="170" height="28" rx="4" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="303" y="137" text-anchor="middle" font-size="13">プロパティベーステスト</text>
+  <text x="398" y="137" font-size="12" fill="#57606a">多くの入力で</text>
+
+  <rect x="12" y="172" width="476" height="80" rx="6" fill="#dafbe1" stroke="#1a7f37" stroke-width="1.5"/>
+  <text x="24" y="196" font-weight="bold">BMAD Method</text>
+  <text x="140" y="196" font-size="13" fill="#57606a">TEA</text>
+  <rect x="24" y="210" width="110" height="28" rx="4" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="79" y="229" text-anchor="middle" font-size="13">受け入れ条件</text>
+  <line x1="136" y1="224" x2="156" y2="224" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="158" y="210" width="120" height="28" rx="4" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="218" y="229" text-anchor="middle" font-size="13">受け入れテスト</text>
+  <text x="288" y="229" font-size="12" fill="#57606a">実装より先に作る</text>
+
+  <rect x="12" y="264" width="476" height="80" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+  <text x="24" y="288" font-weight="bold">AI-DLC</text>
+  <text x="84" y="288" font-size="13" fill="#57606a">build-and-test</text>
+  <rect x="24" y="302" width="100" height="28" rx="4" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="74" y="321" text-anchor="middle" font-size="13">テストの結果</text>
+  <line x1="126" y1="316" x2="146" y2="316" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="148" y="302" width="200" height="28" rx="4" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="248" y="321" text-anchor="middle" font-size="13">目標ごとの期待と実際の表</text>
+
+  <!-- テストを流さない -->
+  <text x="625" y="30" text-anchor="middle" font-weight="bold" fill="#57606a">テストを流さない</text>
+  <line x1="502" y1="42" x2="748" y2="42" stroke="#57606a" stroke-width="2"/>
+  <text x="625" y="64" text-anchor="middle" font-size="13" fill="#57606a">コードと仕様を読み比べる</text>
+
+  <rect x="502" y="80" width="246" height="80" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="514" y="104" font-weight="bold">Spec Kit</text>
+  <text x="590" y="104" font-size="13" fill="#57606a">converge</text>
+  <text x="514" y="137" font-size="13">要件ごとにコードとのずれを探す</text>
+
+  <rect x="502" y="172" width="246" height="80" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="514" y="196" font-weight="bold">OpenSpec</text>
+  <text x="594" y="196" font-size="13" fill="#57606a">verify</text>
+  <text x="514" y="229" font-size="13">抜けや誤りを指摘する</text>
+</svg>

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 386" width="720" height="386" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif" font-size="15" fill="#1f2328">
+<style>
+@media (prefers-color-scheme: dark) {
+  [fill="#0969da"] { fill: #4493f8 }
+  [fill="#1a7f37"] { fill: #3fb950 }
+  [fill="#1f2328"] { fill: #e6edf3 }
+  [fill="#57606a"] { fill: #9198a1 }
+  [fill="#8250df"] { fill: #ab7df8 }
+  [fill="#dafbe1"] { fill: #12261e }
+  [fill="#ddf4ff"] { fill: #12263f }
+  [fill="#fbefff"] { fill: #221a33 }
+  [fill="#ffffff"] { fill: #0d1117 }
+  [stroke="#0969da"] { stroke: #4493f8 }
+  [stroke="#1a7f37"] { stroke: #3fb950 }
+  [stroke="#57606a"] { stroke: #9198a1 }
+  [stroke="#8250df"] { stroke: #ab7df8 }
+  [stroke="#d0d7de"] { stroke: #30363d }
+  text[fill="#ffffff"], tspan[fill="#ffffff"] { fill: #ffffff }
+}
+</style>
+  <rect width="720" height="386" fill="#ffffff"/>
+  <rect x="20" y="16" width="680" height="44" rx="6" fill="#ffffff" stroke="#57606a"/>
+  <text x="360" y="43" text-anchor="middle">どのツールも：要件からタスクを書いて実装する（設計は省けるものもある）</text>
+  <text x="20" y="98" font-size="13" font-weight="bold" fill="#57606a">ツール</text>
+  <text x="180" y="98" font-size="13" font-weight="bold" fill="#57606a">背景を書く単位</text>
+  <text x="400" y="98" font-size="13" font-weight="bold" fill="#57606a">あいまいなところの聞き方</text>
+  <line x1="20" y1="110" x2="700" y2="110" stroke="#d0d7de"/>
+  <text x="20" y="141.0" font-weight="bold">Spec Kit</text>
+  <text x="180" y="141.0" font-size="14">ユーザーストーリーごと</text>
+  <rect x="400" y="120.0" width="300" height="32" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+  <text x="550" y="141.0" text-anchor="middle" font-size="14" fill="#1f2328">観点の一覧で聞く（clarify）</text>
+  <line x1="20" y1="162" x2="700" y2="162" stroke="#d0d7de"/>
+  <text x="20" y="193.0" font-weight="bold">Kiro</text>
+  <text x="180" y="193.0" font-size="14">ユーザーストーリーごと</text>
+  <rect x="400" y="172.0" width="300" height="32" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+  <text x="550" y="193.0" text-anchor="middle" font-size="14" fill="#1f2328">食い違いや抜けを2択で聞く</text>
+  <line x1="20" y1="214" x2="700" y2="214" stroke="#d0d7de"/>
+  <text x="20" y="245.0" font-weight="bold">OpenSpec</text>
+  <text x="180" y="245.0" font-size="14">変更の全体</text>
+  <rect x="400" y="224.0" width="300" height="32" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+  <text x="550" y="245.0" text-anchor="middle" font-size="14" fill="#1f2328">影響の大きいところだけ聞く</text>
+  <line x1="20" y1="266" x2="700" y2="266" stroke="#d0d7de"/>
+  <text x="20" y="297.0" font-weight="bold">BMAD Method</text>
+  <text x="180" y="297.0" font-size="14">機能や変更の全体</text>
+  <rect x="400" y="276.0" width="300" height="32" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+  <text x="550" y="297.0" text-anchor="middle" font-size="14" fill="#1f2328">開いた質問と、聞く条件</text>
+  <line x1="20" y1="318" x2="700" y2="318" stroke="#d0d7de"/>
+  <text x="20" y="349.0" font-weight="bold">AI-DLC</text>
+  <text x="180" y="349.0" font-size="14">変更の全体</text>
+  <rect x="400" y="328.0" width="300" height="32" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+  <text x="550" y="349.0" text-anchor="middle" font-size="14" fill="#1f2328">観点の一覧で聞く</text>
+  <line x1="20" y1="370" x2="700" y2="370" stroke="#d0d7de"/>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 426" width="760" height="426" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif" font-size="14" fill="#1f2328">
+<style>
+@media (prefers-color-scheme: dark) {
+  [fill="#0969da"] { fill: #4493f8 }
+  [fill="#1f2328"] { fill: #e6edf3 }
+  [fill="#57606a"] { fill: #9198a1 }
+  [fill="#8250df"] { fill: #ab7df8 }
+  [fill="#bc4c00"] { fill: #f0883e }
+  [fill="#ddf4ff"] { fill: #12263f }
+  [fill="#fbefff"] { fill: #221a33 }
+  [fill="#fff1e5"] { fill: #2b1d12 }
+  [fill="#ffffff"] { fill: #0d1117 }
+  [stroke="#0969da"] { stroke: #4493f8 }
+  [stroke="#57606a"] { stroke: #9198a1 }
+  [stroke="#8250df"] { stroke: #ab7df8 }
+  [stroke="#bc4c00"] { stroke: #f0883e }
+  text[fill="#ffffff"], tspan[fill="#ffffff"] { fill: #ffffff }
+}
+</style>
+<rect width="760" height="426" fill="#ffffff"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker></defs>
+<text x="12" y="26" font-size="13" font-weight="bold" fill="#57606a">大きい単位</text>
+<line x1="100" y1="22" x2="656" y2="22" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="748" y="26" text-anchor="end" font-size="13" font-weight="bold" fill="#57606a">小さい単位</text>
+<text x="130.0" y="56" text-anchor="middle" font-size="15" font-weight="bold" fill="#0969da">プロダクト全体</text>
+<line x1="12" y1="68" x2="248" y2="68" stroke="#0969da" stroke-width="2"/>
+<rect x="12" y="82" width="236" height="90" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="24" y="104" font-size="13" font-weight="bold">Kiro</text>
+<text x="24" y="124" font-size="13">steeringのproduct.md</text>
+<text x="24" y="141" font-size="12" fill="#57606a">どの工程でもAIエージェントに</text>
+<text x="24" y="158" font-size="12" fill="#57606a">読ませる</text>
+<text x="378.0" y="56" text-anchor="middle" font-size="15" font-weight="bold" fill="#8250df">機能や変更の全体</text>
+<line x1="260" y1="68" x2="496" y2="68" stroke="#8250df" stroke-width="2"/>
+<rect x="260" y="82" width="236" height="56" rx="6" fill="#fbefff" stroke="#8250df" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="272" y="104" font-size="13" font-weight="bold">Spec Kit</text>
+<text x="272" y="124" font-size="13">拡張assessのproblem.md</text>
+<rect x="260" y="148" width="236" height="73" rx="6" fill="#fbefff" stroke="#8250df" stroke-width="1.5"/>
+<text x="272" y="170" font-size="13" font-weight="bold">OpenSpec</text>
+<text x="272" y="190" font-size="13">変更の提案の## Why</text>
+<text x="272" y="207" font-size="12" fill="#57606a">解く問題と、なぜ今か</text>
+<rect x="260" y="231" width="236" height="73" rx="6" fill="#fbefff" stroke="#8250df" stroke-width="1.5"/>
+<text x="272" y="253" font-size="13" font-weight="bold">BMAD</text>
+<text x="272" y="273" font-size="13">buildの仕様のIntent</text>
+<text x="272" y="290" font-size="12" fill="#57606a">承認したあとは変えない</text>
+<rect x="260" y="314" width="236" height="56" rx="6" fill="#fbefff" stroke="#8250df" stroke-width="1.5"/>
+<text x="272" y="336" font-size="13" font-weight="bold">AI-DLC</text>
+<text x="272" y="356" font-size="13">意図の文書の問題となぜ今か</text>
+<text x="626.0" y="56" text-anchor="middle" font-size="15" font-weight="bold" fill="#bc4c00">ユーザーストーリー</text>
+<line x1="508" y1="68" x2="744" y2="68" stroke="#bc4c00" stroke-width="2"/>
+<rect x="508" y="82" width="236" height="56" rx="6" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.5"/>
+<text x="520" y="104" font-size="13" font-weight="bold">Spec Kit</text>
+<text x="520" y="124" font-size="13">「Why this priority」</text>
+<rect x="508" y="148" width="236" height="73" rx="6" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.5"/>
+<text x="520" y="170" font-size="13" font-weight="bold">Kiro、BMAD、AI-DLC</text>
+<text x="520" y="190" font-size="13">「so that」</text>
+<text x="520" y="207" font-size="12" fill="#57606a">Kiroは公開されたspecの例から</text>
+<rect x="12" y="390" width="40" height="20" rx="4" fill="#ffffff" stroke="#57606a" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="60" y="405" font-size="12">任意で入れたときに使う</text>
+</svg>

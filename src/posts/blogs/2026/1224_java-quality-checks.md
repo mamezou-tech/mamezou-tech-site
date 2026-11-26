@@ -91,7 +91,7 @@ image: true
 | 互換性チェック | 公開APIとDBのスキーマが前のバージョンと互換か | [oasdiff](https://github.com/oasdiff/oasdiff)、[Squawk](https://squawkhq.com/docs/rules) |
 | マイグレーションテスト | DBマイグレーションを適用できるか | [Flyway](https://documentation.red-gate.com/fd/validate-277578898.html) |
 | 複雑度チェック | コードの複雑度 | [PMD](https://docs.pmd-code.org/latest/pmd_rules_java_design.html) |
-| DAST | 動かしたアプリケーションの脆弱性 | [OWASP ZAP](https://www.zaproxy.org/docs/alerts/)、[testssl.sh](https://testssl.sh/doc/testssl.1.html) |
+| DAST | 動かしたアプリケーションの脆弱性 | [ZAP](https://www.zaproxy.org/docs/alerts/)、[testssl.sh](https://testssl.sh/doc/testssl.1.html) |
 | アクセシビリティテスト | 画面のアクセシビリティ | [axe-core](https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md) |
 | ミューテーションテスト | テストがバグを見つけられるか | [PIT](https://pitest.org/quickstart/maven/) |
 | 依存関係スキャン | 依存関係の既知の脆弱性 | [OWASP Dependency-Check](https://jeremylong.github.io/DependencyCheck/dependency-check-maven/configuration.html) |

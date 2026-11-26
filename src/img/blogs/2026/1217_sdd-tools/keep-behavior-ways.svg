@@ -32,11 +32,11 @@
 <text x="532" y="130" font-size="13">変更のたびに、仕様を書く前に</text>
 <text x="532" y="150" font-size="13">コードを調べ、変えないものを書く</text>
 <rect x="272" y="180" width="230" height="88" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
-<text x="286" y="206" font-size="14" font-weight="bold">Kiro（不具合の仕様）</text>
-<text x="286" y="230" font-size="13">不具合を直すときだけ、</text>
-<text x="286" y="250" font-size="13">原因をコードから探る</text>
+<text x="286" y="206" font-size="14" font-weight="bold">Kiro（Planモード）</text>
+<text x="286" y="230" font-size="13">既存のコードを読んでから</text>
+<text x="286" y="250" font-size="13">計画を立てる</text>
 <rect x="518" y="180" width="230" height="88" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
-<text x="532" y="206" font-size="14" font-weight="bold">Spec Kit（不具合の拡張）</text>
-<text x="532" y="230" font-size="13">不具合を直すときだけ、</text>
-<text x="532" y="250" font-size="13">怪しい箇所をコードから探す</text>
+<text x="532" y="206" font-size="14" font-weight="bold">Spec Kit</text>
+<text x="532" y="230" font-size="13">仕様を書く前には</text>
+<text x="532" y="250" font-size="13">コードを読まない</text>
 </svg>

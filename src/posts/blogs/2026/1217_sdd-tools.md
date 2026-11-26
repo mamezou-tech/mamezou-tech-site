@@ -1,7 +1,7 @@
 ---
 title: Spec Kit、OpenSpecなど仕様駆動開発（SDD）ツール5つを調べてみた
 author: kiyohito-ito
-date: 2026-11-26
+date: 2026-12-17
 tags: [仕様駆動, SDD, Spec Kit, Kiro, OpenSpec, AIエージェント]
 image: true
 ---
@@ -36,7 +36,7 @@ AI-DLCは仕様駆動開発（Spec-Driven Development、以下SDD）のツール
 
 5つはどれもAIエージェントが要件や設計などの文書を先に書き、その文書を元にコードを書きます。違うのは受け持つ範囲とどの文書を仕様と呼ぶかの2つです。
 
-![5つのツールの進め方と仕様と呼ぶ文書の図。Spec KitとOpenSpecの仕様は設計を含まず、Kiroの仕様は要件、設計、タスクの3つ](/img/blogs/2026/1126_sdd-tools/spec-scope.svg)
+![5つのツールの進め方と仕様と呼ぶ文書の図。Spec KitとOpenSpecの仕様は設計を含まず、Kiroの仕様は要件、設計、タスクの3つ](/img/blogs/2026/1217_sdd-tools/spec-scope.svg)
 
 この記事でも各ツールが仕様と呼ぶ文書を仕様と呼びます。
 
@@ -44,7 +44,7 @@ AI-DLCは仕様駆動開発（Spec-Driven Development、以下SDD）のツール
 
 要件からタスクを書いて実装するまではどのツールも同じです。設計は変更が小さければ省けるツールもあります。違いが出たのは仕様の誤りを防ぐ方法です。あいまいなところを人に聞くことと仕様の目的を書くことの2つがありました。
 
-![どのツールも要件からタスクを書いて実装する。違いが出たのは仕様の目的の書き方とあいまいなところの聞き方](/img/blogs/2026/1126_sdd-tools/spec-and-build.svg)
+![どのツールも要件からタスクを書いて実装する。違いが出たのは仕様の目的の書き方とあいまいなところの聞き方](/img/blogs/2026/1217_sdd-tools/spec-and-build.svg)
 
 あいまいなところを聞かなければ仕様の足りないところはAIエージェントが決めたまま進みます。目的が書いてあれば人とAIレビューのどちらでも仕様が目的からずれていないかに気づけます。この記事では目的や理由をまとめて背景と呼びます。聞き方と背景の書き方を次の2つの節で順に見ます。
 
@@ -52,7 +52,7 @@ AI-DLCは仕様駆動開発（Spec-Driven Development、以下SDD）のツール
 
 どのツールにもあいまいなところを人に聞く仕組みがあります。聞き方は3通りあり、得意なところが違いました。
 
-![ツールと工程を観点の一覧の有無と人に聞く条件の有無で3つに分け、聞き方と答えを書き戻す先を並べた図](/img/blogs/2026/1126_sdd-tools/clarify-tools.svg)
+![ツールと工程を観点の一覧の有無と人に聞く条件の有無で3つに分け、聞き方と答えを書き戻す先を並べた図](/img/blogs/2026/1217_sdd-tools/clarify-tools.svg)
 
 観点の一覧を持てば毎回同じ観点で抜けを探せます。一覧を持たなければ話の流れに合わせて深く聞けます。人に聞く条件を決めておけば聞く数を絞れます。
 
@@ -62,13 +62,13 @@ AI-DLCは仕様駆動開発（Spec-Driven Development、以下SDD）のツール
 
 どのツールも背景を書く節や項目を決めています。違いは背景を書く単位と読んだ背景を判定に使うかどうかの2つです。
 
-![背景を書く節や項目がプロダクト全体、機能や変更の全体、ユーザーストーリーのどの単位にあるかをツールごとに並べた図](/img/blogs/2026/1126_sdd-tools/why-units.svg)
+![背景を書く節や項目がプロダクト全体、機能や変更の全体、ユーザーストーリーのどの単位にあるかをツールごとに並べた図](/img/blogs/2026/1217_sdd-tools/why-units.svg)
 
 単位が大きいほど多くの作業に背景が届きます。たとえばKiroの[steering](https://kiro.dev/docs/steering/)の`product.md`に書いた製品の目的はどの作業でもAIエージェントが読みます。
 
 成果物が背景に沿っているかを判定するよう指示文に書いているのはBMADとAI-DLCのAIレビューだけです。AIレビューはAIエージェントが成果物を読み、指摘を返すものです。
 
-![背景を書く人と成果物が背景に沿っているかを判定するAIレビューをBMADのbuildとAI-DLCで並べた図](/img/blogs/2026/1126_sdd-tools/why-review.svg)
+![背景を書く人と成果物が背景に沿っているかを判定するAIレビューをBMADのbuildとAI-DLCで並べた図](/img/blogs/2026/1217_sdd-tools/why-review.svg)
 
 ほかの3つのツールでもAIレビューに背景の節を渡せば同じ使い方ができそうです。
 
@@ -76,7 +76,7 @@ AI-DLCは仕様駆動開発（Spec-Driven Development、以下SDD）のツール
 
 拡張まで含めるとどのツールも要件とテストを対応付けます。対応付けの方法は要件のIDをテストまで運ぶものとAIエージェントが仕様とテストを読んで対応させるものに分かれます。
 
-![要件とテストの対応付けの方法と対応のない要件を誰が見つけるかをツールごとに並べた図。ツールのプログラムで見つけるのはSpec Kitの拡張v-modelとAI-DLC](/img/blogs/2026/1126_sdd-tools/trace-flow.svg)
+![要件とテストの対応付けの方法と対応のない要件を誰が見つけるかをツールごとに並べた図。ツールのプログラムで見つけるのはSpec Kitの拡張v-modelとAI-DLC](/img/blogs/2026/1217_sdd-tools/trace-flow.svg)
 
 IDで対応付けてあれば対応表や注記をたどってその要件のテストを見つけられます。
 
@@ -88,7 +88,7 @@ IDで対応付けてあれば対応表や注記をたどってその要件のテ
 
 5つのツールはどれも作ったものが仕様に合うかを確認する機能を持っていました。確認の仕方は2通りです。1つはテストを流して確認する方法です。もう1つはAIエージェントがコードを読んで仕様と読み比べる方法です。テストを流すツールのうちKiroとBMADはテストを仕様から作ります。
 
-![Kiro、BMAD、AI-DLCはテストを流して確認し、Spec KitとOpenSpecはテストを流さずにコードと仕様を読み比べることを示す図。KiroとBMADはテストを仕様から作る](/img/blogs/2026/1126_sdd-tools/check-ways.svg)
+![Kiro、BMAD、AI-DLCはテストを流して確認し、Spec KitとOpenSpecはテストを流さずにコードと仕様を読み比べることを示す図。KiroとBMADはテストを仕様から作る](/img/blogs/2026/1217_sdd-tools/check-ways.svg)
 
 Kiroは要件からプロパティ（どんな入力でも成り立つ条件）を書き出し、プロパティベーステストにして多くの入力で流します。BMADのTEAは受け入れ条件から実装より先に受け入れテストを作ります。AI-DLCはテストを流し、目標ごとに期待した結果と実際の結果を表にして照らします。
 
@@ -98,7 +98,7 @@ Spec Kitのconvergeは要件ごとにコードとのずれを探し、OpenSpec�
 
 多くのツールは変えたあとでテストを流し、今の振る舞いを壊していないかを確認します。
 
-![変える前と変えた後に何を流すかをツールごとに並べた図。変える前にテストを流して基準を取るのはBMADのTEAのガイドとAI-DLC](/img/blogs/2026/1126_sdd-tools/regression-checks.svg)
+![変える前と変えた後に何を流すかをツールごとに並べた図。変える前にテストを流して基準を取るのはBMADのTEAのガイドとAI-DLC](/img/blogs/2026/1217_sdd-tools/regression-checks.svg)
 
 変える前にも流して基準を取るよう勧めるのはBMADのTEAの[ガイド](https://github.com/bmad-code-org/bmad-method-test-architecture-enterprise/blob/v3.2.0/docs/how-to/brownfield/use-tea-with-existing-tests.md)とAI-DLCの[共有の知識](https://github.com/awslabs/aidlc-workflows/blob/v2.11.1/core/knowledge/aidlc-shared/brownfield.md)です。基準があれば前から落ちていたテストと今回壊したテストを見分けられます。
 
@@ -108,7 +108,7 @@ Spec Kitのconvergeは要件ごとにコードとのずれを探し、OpenSpec�
 
 冒頭の体験のように既存のシステムに機能を足すときはツールが今のコードや業務ルールを踏まえて進めるかが気になります。既存のシステム向けの手順を持つのはAI-DLCだけでした。ほかの4つは新しく作るときと同じ手順で進み、その中で関係するコードを読みます。
 
-![既存のシステム向けの手順を持つのはAI-DLCだけであることを示す図。OpenSpecとBMADは変更のたびに関係するコードを読み、KiroとSpec Kitは不具合を直すときだけ読む](/img/blogs/2026/1126_sdd-tools/keep-behavior-ways.svg)
+![既存のシステム向けの手順を持つのはAI-DLCだけであることを示す図。OpenSpecとBMADは変更のたびに関係するコードを読み、KiroとSpec Kitは不具合を直すときだけ読む](/img/blogs/2026/1217_sdd-tools/keep-behavior-ways.svg)
 
 AI-DLCはソースのファイルがあれば既存のシステムとみなし、先にコード全体を読みます。そこからアーキテクチャやAPIなどの文書を作り、要件を決めるときに使います。OpenSpecとBMADは変更のたびに関係するコードを読みます。KiroとSpec Kitがコードを読むのは不具合を直すときだけです。
 

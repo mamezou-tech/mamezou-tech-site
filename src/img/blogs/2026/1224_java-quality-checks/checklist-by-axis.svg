@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 492" width="900" height="492" role="img" aria-label="チェックリスト453件を既存ツール、自作チェック、人で分ける見込みを品質と開発対象ごとに数えた図。人に残りそうな項目は品質ではアクセシビリティの14件と機能の正しさの10件が多く、開発対象ではアプリケーション基盤とアプリケーションの機能に30件ずつ残りそう。既存ツールで見られそうな割合はインフラ、開発基盤、運用基盤で大きい">
-<title>チェックリスト453件を既存ツール、自作チェック、人で分ける見込みを品質と開発対象ごとに数えた図。人に残りそうな項目は品質ではアクセシビリティの14件と機能の正しさの10件が多く、開発対象ではアプリケーション基盤とアプリケーションの機能に30件ずつ残りそう。既存ツールで見られそうな割合はインフラ、開発基盤、運用基盤で大きい</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 492" width="900" height="492" role="img" aria-label="チェックリスト453件を既存ツール、自作チェック、人で分ける見込みを品質と開発対象ごとに数えた図。人に残りそうな項目は品質ではアクセシビリティの13件と機能の正しさの10件が多く、開発対象ではアプリケーション基盤とアプリケーションの機能に29件ずつ残りそう。既存ツールで見られそうな割合はインフラ、開発基盤、運用基盤で大きい">
+<title>チェックリスト453件を既存ツール、自作チェック、人で分ける見込みを品質と開発対象ごとに数えた図。人に残りそうな項目は品質ではアクセシビリティの13件と機能の正しさの10件が多く、開発対象ではアプリケーション基盤とアプリケーションの機能に29件ずつ残りそう。既存ツールで見られそうな割合はインフラ、開発基盤、運用基盤で大きい</title>
 <style>
 text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
 .bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; } .tw { fill: #ffffff; }
@@ -39,11 +39,11 @@ text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif
 <rect class="c3" x="327.1" y="168" width="2.5" height="18"/>
 <text x="335.6" y="182" class="t2" font-size="13">61</text>
 <text x="170" y="208" class="t1" font-size="13" text-anchor="end">アクセシビリティ</text>
-<rect class="c1" x="180.0" y="194" width="2.5" height="18"/>
-<rect class="c2" x="182.5" y="194" width="95.6" height="18"/>
-<text x="230.3" y="208" class="tw" font-size="12" text-anchor="middle">39</text>
-<rect class="c3" x="278.1" y="194" width="34.3" height="18"/>
-<text x="295.2" y="208" class="tw" font-size="12" text-anchor="middle">14</text>
+<rect class="c1" x="180.0" y="194" width="4.9" height="18"/>
+<rect class="c2" x="184.9" y="194" width="95.6" height="18"/>
+<text x="232.7" y="208" class="tw" font-size="12" text-anchor="middle">39</text>
+<rect class="c3" x="280.5" y="194" width="31.9" height="18"/>
+<text x="296.5" y="208" class="tw" font-size="12" text-anchor="middle">13</text>
 <text x="318.4" y="208" class="t2" font-size="13">54</text>
 <text x="170" y="234" class="t1" font-size="13" text-anchor="end">保守性</text>
 <rect class="c1" x="180.0" y="220" width="58.9" height="18"/>
@@ -71,20 +71,20 @@ text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif
 <text x="215.4" y="312" class="t2" font-size="13">12</text>
 <text x="12" y="344" class="t1" font-size="14" font-weight="bold">開発対象ごと</text>
 <text x="170" y="370" class="t1" font-size="13" text-anchor="end">アプリケーション基盤</text>
-<rect class="c1" x="180.0" y="356" width="127.7" height="18"/>
-<text x="243.8" y="370" class="tw" font-size="12" text-anchor="middle">77</text>
-<rect class="c2" x="307.7" y="356" width="462.6" height="18"/>
-<text x="539.0" y="370" class="tw" font-size="12" text-anchor="middle">279</text>
-<rect class="c3" x="770.3" y="356" width="49.7" height="18"/>
-<text x="795.1" y="370" class="tw" font-size="12" text-anchor="middle">30</text>
+<rect class="c1" x="180.0" y="356" width="129.3" height="18"/>
+<text x="244.7" y="370" class="tw" font-size="12" text-anchor="middle">78</text>
+<rect class="c2" x="309.3" y="356" width="462.6" height="18"/>
+<text x="540.6" y="370" class="tw" font-size="12" text-anchor="middle">279</text>
+<rect class="c3" x="771.9" y="356" width="48.1" height="18"/>
+<text x="796.0" y="370" class="tw" font-size="12" text-anchor="middle">29</text>
 <text x="826.0" y="370" class="t2" font-size="13">386</text>
 <text x="170" y="396" class="t1" font-size="13" text-anchor="end">アプリケーションの機能</text>
-<rect class="c1" x="180.0" y="382" width="119.4" height="18"/>
-<text x="239.7" y="396" class="tw" font-size="12" text-anchor="middle">72</text>
-<rect class="c2" x="299.4" y="382" width="316.7" height="18"/>
-<text x="457.7" y="396" class="tw" font-size="12" text-anchor="middle">191</text>
-<rect class="c3" x="616.1" y="382" width="49.7" height="18"/>
-<text x="640.9" y="396" class="tw" font-size="12" text-anchor="middle">30</text>
+<rect class="c1" x="180.0" y="382" width="121.0" height="18"/>
+<text x="240.5" y="396" class="tw" font-size="12" text-anchor="middle">73</text>
+<rect class="c2" x="301.0" y="382" width="316.7" height="18"/>
+<text x="459.4" y="396" class="tw" font-size="12" text-anchor="middle">191</text>
+<rect class="c3" x="617.7" y="382" width="48.1" height="18"/>
+<text x="641.8" y="396" class="tw" font-size="12" text-anchor="middle">29</text>
 <text x="671.8" y="396" class="t2" font-size="13">293</text>
 <text x="170" y="422" class="t1" font-size="13" text-anchor="end">インフラ</text>
 <rect class="c1" x="180.0" y="408" width="59.7" height="18"/>

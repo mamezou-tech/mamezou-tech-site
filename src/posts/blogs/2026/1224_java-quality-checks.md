@@ -2,7 +2,7 @@
 title: JavaのWebアプリケーション開発で品質をどこまで自動チェックできるか調べてみた
 author: kiyohito-ito
 date: 2026-12-24
-tags: [品質, 非機能要件, 静的解析, テスト自動化, java, GitHub]
+tags: [java, 品質, テスト, Security, CI/CD, AIエージェント]
 image: true
 ---
 

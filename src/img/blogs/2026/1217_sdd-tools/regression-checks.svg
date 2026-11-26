@@ -58,7 +58,8 @@
 <text x="662.0" y="328.0" text-anchor="middle" font-size="13">基準と比べる</text>
 <line x1="12" y1="354" x2="748" y2="354" stroke="#d0d7de" stroke-width="1"/>
 <text x="12" y="382.0" font-size="14" font-weight="bold">AI-DLC</text>
-<text x="12" y="399.0" font-size="12" fill="#57606a">（共有の知識）</text>
+<text x="12" y="399.0" font-size="12" fill="#57606a">変える前の基準は</text>
+<text x="12" y="416.0" font-size="12" fill="#57606a">ガイドだけ</text>
 <rect x="132.0" y="360" width="196.0" height="52" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
 <text x="230.0" y="382.0" text-anchor="middle" font-size="13">テストを全部流し、</text>
 <text x="230.0" y="400.0" text-anchor="middle" font-size="13">結果を基準として記録する</text>

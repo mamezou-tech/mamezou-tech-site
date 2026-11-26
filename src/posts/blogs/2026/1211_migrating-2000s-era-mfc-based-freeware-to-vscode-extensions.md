@@ -349,6 +349,6 @@ iedit-vscode プロジェクトの NPM パッケージ依存関係を解析し�
 
 プロトなのでまだ Visual Studio Marketplace には公開していませんが、年末年始で細かい調整をして公開したいなと考えています。
 
-ちょっと試してみたいと言う方は、リリースページに VSIX 形式のインストーラを置いてますので、ダウンロードして VS Code でコマンドパレットを開き、`Extensions: Install from VSIX...` を実行してください。
+ちょっと試してみたい方は、リリースページに VSIX 形式のインストーラを置いてますので、ダウンロードして VS Code でコマンドパレットを開き、`Extensions: Install from VSIX...` を実行してください。
 
 @[og](https://github.com/kondoumh/iedit-vscode/releases/tag/v0.1.1-beta.1)

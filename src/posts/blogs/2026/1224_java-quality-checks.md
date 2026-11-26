@@ -89,7 +89,7 @@ image: true
 | アーキテクチャテスト | モジュールとレイヤーの依存関係 | [ArchUnit](https://www.archunit.org/userguide/html/000_Index.html) |
 | 性能テスト | レスポンスタイム、スループット | [Gatling](https://docs.gatling.io/concepts/assertions/) |
 | 互換性チェック | 公開APIとDBのスキーマが前のバージョンと互換か | [oasdiff](https://github.com/oasdiff/oasdiff)、[Squawk](https://squawkhq.com/docs/rules) |
-| マイグレーションテスト | DBマイグレーションを適用できるか | [Flyway](https://documentation.red-gate.com/fd/validate-277578898.html) |
+| マイグレーションテスト | DBマイグレーションを適用できるか | [Flyway](https://documentation.red-gate.com/fd/migrate-277578887.html) |
 | 複雑度チェック | コードの複雑度 | [PMD](https://docs.pmd-code.org/latest/pmd_rules_java_design.html) |
 | DAST | 動かしたアプリケーションの脆弱性 | [ZAP](https://www.zaproxy.org/docs/alerts/)、[testssl.sh](https://testssl.sh/doc/testssl.1.html) |
 | アクセシビリティテスト | 画面のアクセシビリティ | [axe-core](https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md) |

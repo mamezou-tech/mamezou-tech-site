@@ -83,14 +83,14 @@ image: true
 
 | 種類 | 何を見るか | ツール |
 |---|---|---|
-| 設定チェック | IaC、CI、コンテナ、リポジトリの設定 | [Conftest](https://www.conftest.dev/)、[Checkov](https://www.checkov.io/5.Policy%20Index/terraform.html)、[kube-linter](https://github.com/stackrox/kube-linter/blob/main/docs/generated/checks.md)、[hadolint](https://github.com/hadolint/hadolint)、[zizmor](https://docs.zizmor.sh/audits/)、[GitHubのrulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets) |
+| 設定チェック | IaC、CI、コンテナ、リポジトリの設定 | [Conftest](https://www.conftest.dev/)、[Checkov](https://www.checkov.io/5.Policy%20Index/all.html)、[kube-linter](https://github.com/stackrox/kube-linter/blob/main/docs/generated/checks.md)、[hadolint](https://github.com/hadolint/hadolint)、[zizmor](https://docs.zizmor.sh/audits/)、[GitHubのrulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets) |
 | 静的解析 | コードの誤り、危険な書き方、書き方の規約 | [Error Prone](https://errorprone.info/bugpatterns)、[SpotBugs](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html)、[PMD](https://docs.pmd-code.org/latest/pmd_rules_java.html)、[Checkstyle](https://checkstyle.org/checks.html)、[Semgrep](https://docs.semgrep.dev/writing-rules/rule-syntax)、[ESLint](https://eslint.org/docs/latest/rules/) |
 | APIのチェック | コードが呼ぶAPIが決めた一覧どおりか | [forbiddenapis](https://github.com/policeman-tools/forbidden-apis)、[Nablarchの使用不許可APIチェックツール](https://github.com/nablarch/nablarch-unpublished-api-checker) |
 | アーキテクチャテスト | モジュールとレイヤーの依存関係 | [ArchUnit](https://www.archunit.org/userguide/html/000_Index.html) |
 | 性能テスト | レスポンスタイム、スループット | [Gatling](https://docs.gatling.io/concepts/assertions/) |
 | 互換性チェック | 公開APIとDBのスキーマが前のバージョンと互換か | [oasdiff](https://github.com/oasdiff/oasdiff)、[Squawk](https://squawkhq.com/docs/rules) |
 | マイグレーションテスト | DBマイグレーションを適用できるか | [Flyway](https://documentation.red-gate.com/fd/validate-277578898.html) |
-| 複雑度チェック | コードの複雑度 | [PMD](https://pmd.github.io/pmd/pmd_rules_java_design.html) |
+| 複雑度チェック | コードの複雑度 | [PMD](https://docs.pmd-code.org/latest/pmd_rules_java_design.html) |
 | DAST | 動かしたアプリケーションの脆弱性 | [OWASP ZAP](https://www.zaproxy.org/docs/alerts/)、[testssl.sh](https://testssl.sh/doc/testssl.1.html) |
 | アクセシビリティテスト | 画面のアクセシビリティ | [axe-core](https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md) |
 | ミューテーションテスト | テストがバグを見つけられるか | [PIT](https://pitest.org/quickstart/maven/) |

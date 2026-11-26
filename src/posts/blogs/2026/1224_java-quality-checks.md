@@ -142,19 +142,20 @@ Claude CodeがNablarchを使わない小さなプロジェクトで試しまし�
 
 - SpotBugs 4.9以降ならJava 21で、4.9.4以降ならJava 25でも動いた
 - 許可していないメソッドの呼び出しはすべて報告した
-- メソッド参照（`Math::abs`）とフィールドの読み出し（`System.out`）は見逃した
+- メソッド参照とコンストラクタ参照（`Math::abs`、`Thread::new`）、フィールドの読み出し（`System.out`）は見逃した
 
-見逃した2つは[ArchUnit](https://www.archunit.org/userguide/html/000_Index.html)で補えました。ArchUnitの規則で同じ設定ファイルを読み、メソッド参照とフィールドの読み出しの先が許可リストにあるかを見ます。要のところは次の数行です。
+見逃したものは[ArchUnit](https://www.archunit.org/userguide/html/000_Index.html)で補えました。ArchUnitの規則で同じ設定ファイルを読み、メソッド参照とコンストラクタ参照、フィールドの読み出しの先が許可リストにあるかを見ます。要のところは次の数行です。
 
 ```java
 accesses.addAll(javaClass.getMethodReferencesFromSelf());
+accesses.addAll(javaClass.getConstructorReferencesFromSelf());
 javaClass.getFieldAccessesFromSelf().stream()
         .filter(access -> access.getAccessType() == AccessType.GET)
         .forEach(accesses::add);
 // 許可リストにない先は違反として報告する
 ```
 
-`Math::abs`と`System.out`を報告し、許可した`String::trim`や`Integer::parseInt`のような参照は報告しませんでした。使用不許可APIチェックツールとArchUnitを組み合わせれば公開APIだけを使わせる仕組みを既存ツールで手軽に作れますね。
+`Math::abs`、`Thread::new`、`System.out`を報告し、許可した`String::trim`や`Integer::parseInt`のような参照は報告しませんでした。使用不許可APIチェックツールとArchUnitを組み合わせれば公開APIだけを使わせる仕組みを既存ツールで手軽に作れますね。
 
 [forbiddenapis](https://github.com/policeman-tools/forbidden-apis)も使うAPIを見るツールですが使ってはいけないAPIを並べる拒否リストの方式です。公開APIだけを使わせるなら使ってよいAPIを並べる許可リストの方式が合います。
 

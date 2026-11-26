@@ -8,7 +8,7 @@ image: true
 
 こんにちは、デジタルアーキテクチャ事業部の伊藤です。
 
-先日、[AI-DLC](https://github.com/awslabs/aidlc-workflows)というツールを使い、中身をまったく知らない既存のアプリケーションに機能を足してもらいました。Excelをアップロードして明細を登録する機能です。フロントエンドからバックエンドまで3時間ほどでできあがり、感動しました！
+先日、[AI-DLC](https://github.com/awslabs/aidlc-workflows)（AWSが公開している、AIエージェントに開発を進めさせる手順のルール集）というツールを使い、中身をまったく知らない既存のアプリケーションに機能を足してもらいました。Excelをアップロードして明細を登録する機能です。フロントエンドからバックエンドまで3時間ほどでできあがり、感動しました！
 
 ただ、できたものの品質がよいかを私は判断できません。人がコードを全部読んでいては3時間で作れた速さが活きません。そこで何をチェックすればよいかとどこまでを機械でチェックできるかを調べてみました。
 
@@ -39,7 +39,7 @@ image: true
 | [NIST SSDF 1.1](https://csrc.nist.gov/pubs/sp/800/218/final) | 安全な開発の仕組み | 3 |
 | [SLSA v1.2](https://slsa.dev/spec/v1.2/) | ビルドとソースの来歴 | 3 |
 
-1回のチェックで合否が出る粒度に分けると453件のチェック項目になりました。チェックリストは[checklist.csv](/img/blogs/2026/1224_java-quality-checks/checklist.csv)に置きました。項目ごとに当てはまる条件、参考にした一覧、どうチェックするか（既存ツールの規則や自作の作り方）を書いています。
+1回のチェックで合否が出る粒度に分けると453件のチェック項目になりました。1つの項目が複数の一覧を参考にすることがあるので、表の件数の合計とは合いません。チェックリストは[checklist.csv](/img/blogs/2026/1224_java-quality-checks/checklist.csv)に置きました。項目ごとに当てはまる条件、参考にした一覧、どうチェックするか（既存ツールの規則や自作の作り方）を書いています。
 
 皆さんは実際に眺めてみてどんな印象を持ちましたか？たとえば次のような項目が並んでいます。
 
@@ -73,9 +73,9 @@ image: true
 - そのまま使う
   - Checkovの規則CKV_DOCKER_8を使い、Dockerfileの最後のUSERがrootでないかを見る
 - 設定を変える
-  - PITの`mutationThreshold`にミューテーションスコアの下限を書き、下回ったらビルドを落とす
+  - ミューテーションテストのツールPITの`mutationThreshold`にミューテーションスコア（わざと入れたバグをテストが見つけた割合）の下限を書き、下回ったらビルドを落とす
 - 規則を書き足す
-  - ConftestにRegoで規則を書き足し、IaCやCIの設定が決めた値どおりかを見る
+  - ConftestにRego（Conftestの規則を書く言語）で規則を書き足し、IaC（インフラを定義するコード）やCIの設定が決めた値どおりかを見る
 
 規則を書き足せばシステムで決めた値どおりかもチェックでき、既存ツールの使い道が広がります。131件の半分近くはこの使い方です。
 
@@ -88,10 +88,10 @@ image: true
 | APIのチェック | コードが呼ぶAPIが決めた一覧どおりか | [forbiddenapis](https://github.com/policeman-tools/forbidden-apis)、[Nablarchの使用不許可APIチェックツール](https://github.com/nablarch/nablarch-unpublished-api-checker) |
 | アーキテクチャテスト | モジュールとレイヤーの依存関係 | [ArchUnit](https://www.archunit.org/userguide/html/000_Index.html) |
 | 性能テスト | レスポンスタイム、スループット | [Gatling](https://docs.gatling.io/concepts/assertions/) |
-| 互換性チェック | 公開APIとDBのスキーマが前のバージョンと互換か | [oasdiff](https://github.com/oasdiff/oasdiff)、[Squawk](https://squawkhq.com/docs/rules) |
+| 互換性チェック | 公開するWeb APIとDBのスキーマが前のバージョンと互換か | [oasdiff](https://github.com/oasdiff/oasdiff)、[Squawk](https://squawkhq.com/docs/rules) |
 | マイグレーションテスト | DBマイグレーションを適用できるか | [Flyway](https://documentation.red-gate.com/fd/migrate-277578887.html) |
 | 複雑度チェック | コードの複雑度 | [PMD](https://docs.pmd-code.org/latest/pmd_rules_java_design.html) |
-| DAST | 動かしたアプリケーションの脆弱性 | [ZAP](https://www.zaproxy.org/docs/alerts/)、[testssl.sh](https://testssl.sh/doc/testssl.1.html) |
+| DAST（動的アプリケーションセキュリティテスト） | 動かしたアプリケーションの脆弱性 | [ZAP](https://www.zaproxy.org/docs/alerts/)、[testssl.sh](https://testssl.sh/doc/testssl.1.html) |
 | アクセシビリティテスト | 画面のアクセシビリティ | [axe-core](https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md) |
 | ミューテーションテスト | テストがバグを見つけられるか | [PIT](https://pitest.org/quickstart/maven/) |
 | 依存関係スキャン | 依存関係の既知の脆弱性 | [OWASP Dependency-Check](https://jeremylong.github.io/DependencyCheck/dependency-check-maven/configuration.html) |

@@ -46,7 +46,7 @@ AI-DLCは仕様駆動開発（Spec-Driven Development、以下SDD）のツール
 
 ![どのツールも要件からタスクを書いて実装する。違いが出たのは仕様の目的の書き方とあいまいなところの聞き方](/img/blogs/2026/1217_sdd-tools/spec-and-build.svg)
 
-あいまいなところを聞かなければ仕様の足りないところはAIエージェントが決めたまま進みます。目的が書いてあれば人とAIレビューのどちらでも仕様が目的からずれていないかに気づけます。この記事では目的や理由をまとめて背景と呼びます。聞き方と背景の書き方を次の2つの節で順に見ます。
+あいまいなところを聞かなければ仕様の足りないところはAIエージェントが決めたまま進みます。目的が書いてあれば人とAIレビュー（AIエージェントが成果物を読み、指摘を返すもの）のどちらでも仕様が目的からずれていないかに気づけます。この記事では目的や理由をまとめて背景と呼びます。聞き方と背景の書き方を次の2つの節で順に見ます。
 
 ## あいまいなところをどう聞く？
 
@@ -66,9 +66,9 @@ AI-DLCは仕様駆動開発（Spec-Driven Development、以下SDD）のツール
 
 単位が大きいほど多くの作業に背景が届きます。たとえばKiroの[steering](https://kiro.dev/docs/steering/)の`product.md`に書いた製品の目的はどの作業でもAIエージェントが読みます。
 
-成果物が背景に沿っているかを判定するよう指示文に書いているのはBMADとAI-DLCのAIレビューだけです。AIレビューはAIエージェントが成果物を読み、指摘を返すものです。
+成果物が背景に沿っているかを判定するよう指示文に書いているのはBMADとAI-DLCのAIレビューだけです。
 
-![背景をAIエージェントが書き、成果物が背景に沿っているかをAIレビューが判定する流れをBMADのbuildとAI-DLCで並べた図](/img/blogs/2026/1217_sdd-tools/why-review.svg)
+![背景をAIエージェントが書き、成果物が背景に沿っているかをAIレビューが判定する流れをBMADのbuild（依頼から実装とレビューまで進めるスキル）とAI-DLCで並べた図](/img/blogs/2026/1217_sdd-tools/why-review.svg)
 
 ほかの3つのツールでもAIレビューに背景の節を渡せば同じ使い方ができそうです。
 
@@ -80,7 +80,7 @@ AI-DLCは仕様駆動開発（Spec-Driven Development、以下SDD）のツール
 
 IDで対応付けてあれば対応表や注記をたどってその要件のテストを見つけられます。
 
-ただ、対応付けてあってもテストが要件を確認しているとは限りません。AI-DLCの対応表に何もチェックしないテストを書いてもチェックは通りました。チェックはテストの中身を見ません。
+ただ、対応付けてあってもテストが要件を確認しているとは限りません。AI-DLCの対応表に何もチェックしないテストを書いてもAI-DLCのチェックは通りました。このチェックはテストの中身を見ません。
 
 何もチェックしないテストを見抜く機能もあります。BMADのテストのモジュールTEAの[trace](https://github.com/bmad-code-org/bmad-method-test-architecture-enterprise/blob/v3.2.0/skills/bmad-tea-trace/steps-c/step-03-map-criteria.md#1a-tests-that-name-a-criterion-without-establishing-it)はAIエージェントがテストのassertを要件の文と読み比べ、要件を確認していないテストを数えません。ただし判定するのはAIエージェントです。
 
@@ -92,7 +92,7 @@ IDで対応付けてあれば対応表や注記をたどってその要件のテ
 
 Kiroは要件からプロパティ（どんな入力でも成り立つ条件）を書き出し、[プロパティベーステスト](https://kiro.dev/docs/specs/correctness/)にして多くの入力で流します。BMADのTEAは受け入れ条件から実装より先に受け入れテストを作ります。AI-DLCはテストを流し、目標ごとに期待した結果と実際の結果を表にして照らします。
 
-Spec Kitの[converge](https://github.com/github/spec-kit/blob/v1.2.2/templates/commands/converge.md)は要件ごとにコードとのずれを探し、OpenSpecの[verify](https://github.com/Fission-AI/OpenSpec/blob/v1.14.3/docs/commands.md#opsxverify)は抜けや誤りを指摘します。どちらもテストを流さないため、結果は助言にとどまります。
+Spec Kitの[converge](https://github.com/github/spec-kit/blob/v1.2.2/templates/commands/converge.md)（実装後にコードを仕様と照らすコマンド）は要件ごとにコードとのずれを探します。OpenSpecの[verify](https://github.com/Fission-AI/OpenSpec/blob/v1.14.3/docs/commands.md#opsxverify)（実装が変更の文書に合うかを確かめるコマンド）は抜けや誤りを指摘します。どちらもテストを流さないため、結果は助言にとどまります。
 
 ## 今の振る舞いを壊していないかを見る？
 

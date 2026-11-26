@@ -116,6 +116,7 @@ site.use(esbuild({
 }));
 
 site.copy("fonts");
+site.copy("training");
 site.copy("IndexNowKey.txt", "62f91e28a3954a4fbc90fd3c76a307e0.txt");
 
 // ローカル開発時(--serve)は大量の画像ファイルを public にコピーせず、

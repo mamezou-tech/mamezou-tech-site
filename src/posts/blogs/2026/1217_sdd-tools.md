@@ -1,5 +1,5 @@
 ---
-title: Spec Kit、OpenSpecなど仕様駆動開発（SDD）ツール5つを調べてみた
+title: Spec Kit、OpenSpecなど仕様駆動開発（SDD）ツール5つが仕様とのズレをどう防ぐか調べてみた
 author: kiyohito-ito
 date: 2026-12-17
 tags: [仕様駆動, SDD, Spec Kit, Kiro, OpenSpec, AIエージェント]

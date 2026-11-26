@@ -86,8 +86,8 @@
   <text x="20" y="478" font-weight="bold">BMAD Method</text>
   <text x="20" y="498" text-anchor="start" font-size="13" fill="#57606a">役割ごとの</text>
   <text x="20" y="515" text-anchor="start" font-size="13" fill="#57606a">AIエージェント</text>
-  <rect x="150" y="454" width="116" height="48" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="208.0" y="475" text-anchor="middle" fill="#1f2328">製品の要件</text>
+  <rect x="150" y="454" width="116" height="48" rx="6" fill="#ffffff" stroke="#57606a"/>
+  <text x="208.0" y="475" text-anchor="middle" fill="#57606a">製品の要件</text>
   <text x="208.0" y="493" text-anchor="middle" font-size="12" fill="#57606a">PRD</text>
   <line x1="266" y1="478" x2="296" y2="478" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
   <rect x="298" y="454" width="130" height="48" rx="6" fill="#ffffff" stroke="#57606a"/>

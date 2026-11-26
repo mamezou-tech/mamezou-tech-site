@@ -140,7 +140,7 @@ com.example.common.http.ApiClient
 
 Claude CodeがNablarchを使わない小さなプロジェクトで試しました。上のような設定ファイルを使った結果は次のとおりです。
 
-- SpotBugs 4.9以降ならJava 21とJava 25のどちらでも動いた
+- SpotBugs 4.9以降ならJava 21で、4.9.4以降ならJava 25でも動いた
 - 許可していないメソッドの呼び出しはすべて報告した
 - メソッド参照（`Math::abs`）とフィールドの読み出し（`System.out`）は見逃した
 

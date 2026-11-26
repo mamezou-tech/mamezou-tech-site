@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" height="460" role="img" aria-label="チェックリスト453件を品質と開発対象ごとに数えた図。品質ではセキュリティが261件でもっとも多い。開発対象ではアプリケーション基盤が386件でもっとも多く、アプリケーションの機能が293件で続く">
+<title>チェックリスト453件を品質と開発対象ごとに数えた図。品質ではセキュリティが261件でもっとも多い。開発対象ではアプリケーション基盤が386件でもっとも多く、アプリケーションの機能が293件で続く</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; } .tw { fill: #ffffff; }
+.c0 { fill: #8c959f; } .c1 { fill: #2a78d6; } .c2 { fill: #1baf7a; } .c3 { fill: #eb6834; } .gone { fill: #d0d7de; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0d1117; } .t1 { fill: #e6edf3; } .t2 { fill: #9198a1; }
+  .c0 { fill: #6e7681; } .c1 { fill: #3987e5; } .c2 { fill: #199e70; } .c3 { fill: #d95926; } .gone { fill: #30363d; }
+}
+</style>
+<rect class="bg" width="900" height="460"/>
+<text x="12" y="20" class="t1" font-size="15" font-weight="bold">チェックリスト453件を、品質と開発対象ごとに分けた数</text>
+<text x="12" y="40" class="t2" font-size="12">1つの項目が2つ以上に当たる時はそれぞれに数える。バーの長さの縮尺は軸ごとに違う</text>
+<text x="12" y="72" class="t1" font-size="14" font-weight="bold">品質ごと</text>
+<text x="170" y="98" class="t1" font-size="13" text-anchor="end">セキュリティ</text>
+<rect class="c0" x="180.0" y="84" width="640.0" height="18"/>
+<text x="826.0" y="98" class="t2" font-size="13">261</text>
+<text x="170" y="124" class="t1" font-size="13" text-anchor="end">機能の正しさ</text>
+<rect class="c0" x="180.0" y="110" width="171.6" height="18"/>
+<text x="357.6" y="124" class="t2" font-size="13">70</text>
+<text x="170" y="150" class="t1" font-size="13" text-anchor="end">可用性</text>
+<rect class="c0" x="180.0" y="136" width="149.6" height="18"/>
+<text x="335.6" y="150" class="t2" font-size="13">61</text>
+<text x="170" y="176" class="t1" font-size="13" text-anchor="end">アクセシビリティ</text>
+<rect class="c0" x="180.0" y="162" width="132.4" height="18"/>
+<text x="318.4" y="176" class="t2" font-size="13">54</text>
+<text x="170" y="202" class="t1" font-size="13" text-anchor="end">保守性</text>
+<rect class="c0" x="180.0" y="188" width="85.8" height="18"/>
+<text x="271.8" y="202" class="t2" font-size="13">35</text>
+<text x="170" y="228" class="t1" font-size="13" text-anchor="end">運用</text>
+<rect class="c0" x="180.0" y="214" width="68.7" height="18"/>
+<text x="254.7" y="228" class="t2" font-size="13">28</text>
+<text x="170" y="254" class="t1" font-size="13" text-anchor="end">性能</text>
+<rect class="c0" x="180.0" y="240" width="56.4" height="18"/>
+<text x="242.4" y="254" class="t2" font-size="13">23</text>
+<text x="170" y="280" class="t1" font-size="13" text-anchor="end">互換性</text>
+<rect class="c0" x="180.0" y="266" width="29.4" height="18"/>
+<text x="215.4" y="280" class="t2" font-size="13">12</text>
+<text x="12" y="312" class="t1" font-size="14" font-weight="bold">開発対象ごと</text>
+<text x="170" y="338" class="t1" font-size="13" text-anchor="end">アプリケーション基盤</text>
+<rect class="c0" x="180.0" y="324" width="640.0" height="18"/>
+<text x="826.0" y="338" class="t2" font-size="13">386</text>
+<text x="170" y="364" class="t1" font-size="13" text-anchor="end">アプリケーションの機能</text>
+<rect class="c0" x="180.0" y="350" width="485.8" height="18"/>
+<text x="671.8" y="364" class="t2" font-size="13">293</text>
+<text x="170" y="390" class="t1" font-size="13" text-anchor="end">インフラ</text>
+<rect class="c0" x="180.0" y="376" width="106.1" height="18"/>
+<text x="292.1" y="390" class="t2" font-size="13">64</text>
+<text x="170" y="416" class="t1" font-size="13" text-anchor="end">開発基盤</text>
+<rect class="c0" x="180.0" y="402" width="54.7" height="18"/>
+<text x="240.7" y="416" class="t2" font-size="13">33</text>
+<text x="170" y="442" class="t1" font-size="13" text-anchor="end">運用基盤</text>
+<rect class="c0" x="180.0" y="428" width="21.6" height="18"/>
+<text x="207.6" y="442" class="t2" font-size="13">13</text>
+</svg>

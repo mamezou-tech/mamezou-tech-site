@@ -68,7 +68,7 @@ AI-DLCは仕様駆動開発（Spec-Driven Development、以下SDD）のツール
 
 成果物が背景に沿っているかを判定するよう指示文に書いているのはBMADとAI-DLCのAIレビューだけです。AIレビューはAIエージェントが成果物を読み、指摘を返すものです。
 
-![背景を書く人と成果物が背景に沿っているかを判定するAIレビューをBMADのbuildとAI-DLCで並べた図](/img/blogs/2026/1217_sdd-tools/why-review.svg)
+![背景をAIエージェントが書き、成果物が背景に沿っているかをAIレビューが判定する流れをBMADのbuildとAI-DLCで並べた図](/img/blogs/2026/1217_sdd-tools/why-review.svg)
 
 ほかの3つのツールでもAIレビューに背景の節を渡せば同じ使い方ができそうです。
 

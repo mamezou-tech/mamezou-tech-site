@@ -82,7 +82,7 @@ IDで対応付けてあれば対応表や注記をたどってその要件のテ
 
 ただ、対応付けてあってもテストが要件を確認しているとは限りません。AI-DLCの対応表に何もチェックしないテストを書いてもチェックは通りました。チェックはテストの中身を見ません。
 
-何もチェックしないテストを見抜く機能もあります。BMADのテストのモジュールTEAの[trace](https://github.com/bmad-code-org/bmad-method-test-architecture-enterprise/tree/v3.2.0/skills/bmad-tea-trace/steps-c)はAIエージェントがテストのassertを要件の文と読み比べ、要件を確認していないテストを数えません。ただし判定するのはAIエージェントです。
+何もチェックしないテストを見抜く機能もあります。BMADのテストのモジュールTEAの[trace](https://github.com/bmad-code-org/bmad-method-test-architecture-enterprise/blob/v3.2.0/skills/bmad-tea-trace/steps-c/step-03-map-criteria.md#1a-tests-that-name-a-criterion-without-establishing-it)はAIエージェントがテストのassertを要件の文と読み比べ、要件を確認していないテストを数えません。ただし判定するのはAIエージェントです。
 
 ## 作ったものが仕様に合うかをチェックする？
 
@@ -100,7 +100,7 @@ Spec Kitのconvergeは要件ごとにコードとのずれを探し、OpenSpec�
 
 ![変える前と変えた後に何を流すかをツールごとに並べた図。変える前にテストを流して基準を取るのはBMADのTEAのガイドとAI-DLC](/img/blogs/2026/1217_sdd-tools/regression-checks.svg)
 
-変える前にも流して基準を取るよう勧めるのはBMADのTEAの[ガイド](https://github.com/bmad-code-org/bmad-method-test-architecture-enterprise/blob/v3.2.0/docs/how-to/brownfield/use-tea-with-existing-tests.md)とAI-DLCの[ガイド](https://github.com/awslabs/aidlc-workflows/blob/v2.11.1/core/knowledge/aidlc-shared/brownfield.md)です。基準があれば前から落ちていたテストと今回壊したテストを見分けられます。
+変える前にも流して基準を取るよう勧めるのはBMADのTEAの[ガイド](https://github.com/bmad-code-org/bmad-method-test-architecture-enterprise/blob/v3.2.0/docs/how-to/brownfield/use-tea-with-existing-tests.md#for-refactoring-regression-safety)とAI-DLCの[ガイド](https://github.com/awslabs/aidlc-workflows/blob/v2.11.1/core/knowledge/aidlc-shared/brownfield.md)です。基準があれば前から落ちていたテストと今回壊したテストを見分けられます。
 
 守る振る舞いを先に書いて渡す方法もあります。Kiroの[不具合の仕様](https://kiro.dev/docs/specs/bugfix-specs/)は変えてはいけない振る舞いをテストでチェックできる形にして書きます。Spec Kitの[ガイド](https://github.com/github/spec-kit/blob/v1.2.2/docs/guides/existing-projects.md)は変えてはいけない振る舞いを人が依頼に書くよう勧めます。
 

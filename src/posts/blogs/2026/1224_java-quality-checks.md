@@ -75,7 +75,7 @@ image: true
 - 設定を変える
   - OWASP Dependency-Checkの[`failBuildOnCVSS`](https://dependency-check.github.io/DependencyCheck/dependency-check-maven/configuration.html)にCVSS（脆弱性の深刻度のスコア）のしきい値を書き、それ以上の脆弱性を持つ依存ライブラリがあればビルドを落とす
 - 規則を書き足す
-  - ArchUnitに[規則を書き足し](https://www.archunit.org/userguide/html/000_Index.html#_creating_custom_rules)、`@Transactional`を付けたメソッドが同じクラスの中から呼ばれていないかを見る。Springの既定の設定では、同じクラスの中からの呼び出しには[トランザクションが付かない](https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html#transaction-declarative-annotations-method-visibility)
+  - ArchUnitに[規則を書き足し](https://github.com/TNG/ArchUnit/blob/v1.4.1/docs/userguide/004_What_to_Check.adoc#layer-checks)、コントローラーのパッケージがリポジトリのパッケージを直接参照していないか（レイヤーの間の依存の向き）を見る
 
 規則を書き足せばシステムで決めたルールどおりかもチェックでき、既存ツールの使い道が広がります。132件の半分近くはこの使い方です。
 
@@ -188,6 +188,4 @@ javaClass.getFieldAccessesFromSelf().stream()
 - どこまで機械でチェックできるか
   - 既存ツールで132件、フレームワークや共通コンポーネントへの作り込みとCIのスクリプトで287件をチェックできそう。人に残るのは34件の見込み
 
-フレームワークに作り込めば人に残るのが34件まで減りそうなことに驚きました。
-
-アプリケーションを横断するルールはできるだけフレームワークや共通コンポーネントに閉じ込め、使用APIチェックで守らせる。あらためて、このやり方がAIエージェントの速さを活かしたまま品質を守る落としどころだと思いました。
+フレームワークに作り込めば人に残るのが34件まで減りそうなことに驚きました。アプリケーションを横断するルールはできるだけフレームワークや共通コンポーネントに閉じ込め、使用APIチェックで守らせる。あらためて、このやり方がAIエージェントの速さを活かしたまま品質を守る落としどころだと思いました。

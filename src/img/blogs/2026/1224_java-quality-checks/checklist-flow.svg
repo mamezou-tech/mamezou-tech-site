@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 244" width="900" height="244" role="img" aria-label="チェックリスト453件のうち既存ツールでチェックできそうな132件を除くと321件が残る。自作でチェックできそうな287件を除くと34件が残り、人が見る見込み">
+<title>チェックリスト453件のうち既存ツールでチェックできそうな132件を除くと321件が残る。自作でチェックできそうな287件を除くと34件が残り、人が見る見込み</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; } .tw { fill: #ffffff; }
+.c0 { fill: #8c959f; } .c1 { fill: #2a78d6; } .c2 { fill: #1baf7a; } .c3 { fill: #eb6834; } .gone { fill: #d0d7de; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0d1117; } .t1 { fill: #e6edf3; } .t2 { fill: #9198a1; }
+  .c0 { fill: #6e7681; } .c1 { fill: #3987e5; } .c2 { fill: #199e70; } .c3 { fill: #d95926; } .gone { fill: #30363d; }
+}
+</style>
+<rect class="bg" width="900" height="244"/>
+<text x="12" y="22" class="t1" font-size="15" font-weight="bold">チェックリスト453件を、既存ツール、自作の順にチェックして残る数の見込み</text>
+<text x="250" y="86" class="t1" font-size="14" text-anchor="end" font-weight="bold">チェックリスト453件</text>
+<rect class="c0" x="262.0" y="64" width="560.0" height="34" rx="2"/>
+<text x="814.0" y="86" class="tw" font-size="13" font-weight="bold" text-anchor="end">453</text>
+<text x="250" y="142" class="t1" font-size="14" text-anchor="end" font-weight="bold">既存ツールのあとに残る321件</text>
+<rect class="c0" x="262.0" y="120" width="396.8" height="34" rx="2"/>
+<text x="650.8" y="142" class="tw" font-size="13" font-weight="bold" text-anchor="end">321</text>
+<rect class="c1" fill-opacity="0.3" x="658.8" y="120" width="163.2" height="34" rx="2"/>
+<text x="740.4" y="142" class="t1" font-size="13" text-anchor="middle">既存ツールで132件</text>
+<text x="250" y="198" class="t1" font-size="14" text-anchor="end" font-weight="bold">自作のあとに残る34件</text>
+<rect class="c3" x="262.0" y="176" width="42.0" height="34" rx="2"/>
+<rect class="c2" fill-opacity="0.3" x="304.0" y="176" width="354.8" height="34" rx="2"/>
+<text x="481.4" y="198" class="t1" font-size="13" text-anchor="middle">自作で287件</text>
+<text x="262" y="228" class="t1" font-size="14" font-weight="bold">人が見る34件</text>
+</svg>

@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 492" width="900" height="492" role="img" aria-label="チェックリスト453件を既存ツール、自作チェック、人で分ける見込みを品質特性と開発対象ごとに数えた図。人に残りそうな項目は品質特性ではアクセシビリティの13件と機能の正しさの10件が多く、開発対象ではアプリケーション基盤とアプリケーションの機能に29件ずつ残りそう。既存ツールで見られそうな割合はインフラ、開発基盤、運用基盤で大きい">
+<title>チェックリスト453件を既存ツール、自作チェック、人で分ける見込みを品質特性と開発対象ごとに数えた図。人に残りそうな項目は品質特性ではアクセシビリティの13件と機能の正しさの10件が多く、開発対象ではアプリケーション基盤とアプリケーションの機能に29件ずつ残りそう。既存ツールで見られそうな割合はインフラ、開発基盤、運用基盤で大きい</title>
+<style>
+text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
+.bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; } .tw { fill: #ffffff; }
+.c0 { fill: #8c959f; } .c1 { fill: #2a78d6; } .c2 { fill: #1baf7a; } .c3 { fill: #eb6834; } .gone { fill: #d0d7de; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0d1117; } .t1 { fill: #e6edf3; } .t2 { fill: #9198a1; }
+  .c0 { fill: #6e7681; } .c1 { fill: #3987e5; } .c2 { fill: #199e70; } .c3 { fill: #d95926; } .gone { fill: #30363d; }
+}
+</style>
+<rect class="bg" width="900" height="492"/>
+<text x="12" y="20" class="t1" font-size="15" font-weight="bold">チェックリスト453件を、既存ツール、自作チェック、人で分けた数の見込み</text>
+<text x="12" y="40" class="t2" font-size="12">1つの項目が2つ以上に当たる時はそれぞれに数える。バーの長さの縮尺は軸ごとに違う</text>
+<rect class="c1" x="180" y="54" width="14" height="14" rx="2"/><text x="200" y="66" class="t1" font-size="13">既存ツール</text>
+<rect class="c2" x="320" y="54" width="14" height="14" rx="2"/><text x="340" y="66" class="t1" font-size="13">自作チェック</text>
+<rect class="c3" x="460" y="54" width="14" height="14" rx="2"/><text x="480" y="66" class="t1" font-size="13">人</text>
+<text x="12" y="104" class="t1" font-size="14" font-weight="bold">品質特性ごと</text>
+<text x="170" y="130" class="t1" font-size="13" text-anchor="end">セキュリティ</text>
+<rect class="c1" x="180.0" y="116" width="156.9" height="18"/>
+<text x="258.5" y="130" class="tw" font-size="12" text-anchor="middle">64</text>
+<rect class="c2" x="336.9" y="116" width="463.4" height="18"/>
+<text x="568.7" y="130" class="tw" font-size="12" text-anchor="middle">189</text>
+<rect class="c3" x="800.4" y="116" width="19.6" height="18"/>
+<text x="826.0" y="130" class="t2" font-size="13">261</text>
+<text x="170" y="156" class="t1" font-size="13" text-anchor="end">機能の正しさ</text>
+<rect class="c1" x="180.0" y="142" width="78.5" height="18"/>
+<text x="219.2" y="156" class="tw" font-size="12" text-anchor="middle">32</text>
+<rect class="c2" x="258.5" y="142" width="68.7" height="18"/>
+<text x="292.8" y="156" class="tw" font-size="12" text-anchor="middle">28</text>
+<rect class="c3" x="327.1" y="142" width="24.5" height="18"/>
+<text x="339.4" y="156" class="tw" font-size="12" text-anchor="middle">10</text>
+<text x="357.6" y="156" class="t2" font-size="13">70</text>
+<text x="170" y="182" class="t1" font-size="13" text-anchor="end">可用性</text>
+<rect class="c1" x="180.0" y="168" width="56.4" height="18"/>
+<text x="208.2" y="182" class="tw" font-size="12" text-anchor="middle">23</text>
+<rect class="c2" x="236.4" y="168" width="90.7" height="18"/>
+<text x="281.8" y="182" class="tw" font-size="12" text-anchor="middle">37</text>
+<rect class="c3" x="327.1" y="168" width="2.5" height="18"/>
+<text x="335.6" y="182" class="t2" font-size="13">61</text>
+<text x="170" y="208" class="t1" font-size="13" text-anchor="end">アクセシビリティ</text>
+<rect class="c1" x="180.0" y="194" width="4.9" height="18"/>
+<rect class="c2" x="184.9" y="194" width="95.6" height="18"/>
+<text x="232.7" y="208" class="tw" font-size="12" text-anchor="middle">39</text>
+<rect class="c3" x="280.5" y="194" width="31.9" height="18"/>
+<text x="296.5" y="208" class="tw" font-size="12" text-anchor="middle">13</text>
+<text x="318.4" y="208" class="t2" font-size="13">54</text>
+<text x="170" y="234" class="t1" font-size="13" text-anchor="end">保守性</text>
+<rect class="c1" x="180.0" y="220" width="58.9" height="18"/>
+<text x="209.4" y="234" class="tw" font-size="12" text-anchor="middle">24</text>
+<rect class="c2" x="238.9" y="220" width="19.6" height="18"/>
+<rect class="c3" x="258.5" y="220" width="7.4" height="18"/>
+<text x="271.8" y="234" class="t2" font-size="13">35</text>
+<text x="170" y="260" class="t1" font-size="13" text-anchor="end">運用</text>
+<rect class="c1" x="180.0" y="246" width="22.1" height="18"/>
+<rect class="c2" x="202.1" y="246" width="44.1" height="18"/>
+<text x="224.1" y="260" class="tw" font-size="12" text-anchor="middle">18</text>
+<rect class="c3" x="246.2" y="246" width="2.5" height="18"/>
+<text x="254.7" y="260" class="t2" font-size="13">28</text>
+<text x="170" y="286" class="t1" font-size="13" text-anchor="end">性能</text>
+<rect class="c1" x="180.0" y="272" width="27.0" height="18"/>
+<text x="193.5" y="286" class="tw" font-size="12" text-anchor="middle">11</text>
+<rect class="c2" x="207.0" y="272" width="27.0" height="18"/>
+<text x="220.5" y="286" class="tw" font-size="12" text-anchor="middle">11</text>
+<rect class="c3" x="233.9" y="272" width="2.5" height="18"/>
+<text x="242.4" y="286" class="t2" font-size="13">23</text>
+<text x="170" y="312" class="t1" font-size="13" text-anchor="end">互換性</text>
+<rect class="c1" x="180.0" y="298" width="12.3" height="18"/>
+<rect class="c2" x="192.3" y="298" width="14.7" height="18"/>
+<rect class="c3" x="207.0" y="298" width="2.5" height="18"/>
+<text x="215.4" y="312" class="t2" font-size="13">12</text>
+<text x="12" y="344" class="t1" font-size="14" font-weight="bold">開発対象ごと</text>
+<text x="170" y="370" class="t1" font-size="13" text-anchor="end">アプリケーション基盤</text>
+<rect class="c1" x="180.0" y="356" width="129.3" height="18"/>
+<text x="244.7" y="370" class="tw" font-size="12" text-anchor="middle">78</text>
+<rect class="c2" x="309.3" y="356" width="462.6" height="18"/>
+<text x="540.6" y="370" class="tw" font-size="12" text-anchor="middle">279</text>
+<rect class="c3" x="771.9" y="356" width="48.1" height="18"/>
+<text x="796.0" y="370" class="tw" font-size="12" text-anchor="middle">29</text>
+<text x="826.0" y="370" class="t2" font-size="13">386</text>
+<text x="170" y="396" class="t1" font-size="13" text-anchor="end">アプリケーションの機能</text>
+<rect class="c1" x="180.0" y="382" width="121.0" height="18"/>
+<text x="240.5" y="396" class="tw" font-size="12" text-anchor="middle">73</text>
+<rect class="c2" x="301.0" y="382" width="316.7" height="18"/>
+<text x="459.4" y="396" class="tw" font-size="12" text-anchor="middle">191</text>
+<rect class="c3" x="617.7" y="382" width="48.1" height="18"/>
+<text x="641.8" y="396" class="tw" font-size="12" text-anchor="middle">29</text>
+<text x="671.8" y="396" class="t2" font-size="13">293</text>
+<text x="170" y="422" class="t1" font-size="13" text-anchor="end">インフラ</text>
+<rect class="c1" x="180.0" y="408" width="59.7" height="18"/>
+<text x="209.8" y="422" class="tw" font-size="12" text-anchor="middle">36</text>
+<rect class="c2" x="239.7" y="408" width="39.8" height="18"/>
+<text x="259.6" y="422" class="tw" font-size="12" text-anchor="middle">24</text>
+<rect class="c3" x="279.5" y="408" width="6.6" height="18"/>
+<text x="292.1" y="422" class="t2" font-size="13">64</text>
+<text x="170" y="448" class="t1" font-size="13" text-anchor="end">開発基盤</text>
+<rect class="c1" x="180.0" y="434" width="39.8" height="18"/>
+<text x="199.9" y="448" class="tw" font-size="12" text-anchor="middle">24</text>
+<rect class="c2" x="219.8" y="434" width="9.9" height="18"/>
+<rect class="c3" x="229.7" y="434" width="5.0" height="18"/>
+<text x="240.7" y="448" class="t2" font-size="13">33</text>
+<text x="170" y="474" class="t1" font-size="13" text-anchor="end">運用基盤</text>
+<rect class="c1" x="180.0" y="460" width="16.6" height="18"/>
+<rect class="c2" x="196.6" y="460" width="1.7" height="18"/>
+<rect class="c3" x="198.2" y="460" width="3.3" height="18"/>
+<text x="207.6" y="474" class="t2" font-size="13">13</text>
+</svg>

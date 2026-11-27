@@ -71,19 +71,19 @@ image: true
 453件のうち132件は既存ツールでチェックできそうです。全体の3割ほどですがそのまま使えるものばかりではなく、設定を変えたり規則を書き足したりして使うものも多いです。
 
 - そのまま使う
-  - Checkovの規則[CKV_DOCKER_8](https://www.checkov.io/5.Policy%20Index/dockerfile.html)を使い、Dockerfileの最後のUSERがrootでないかを見る
+  - SpotBugsの規則[ES_COMPARING_STRINGS_WITH_EQ](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#es-comparison-of-string-objects-using-or-es-comparing-strings-with-eq)を使い、文字列を`==`で比べているコードを見つける
 - 設定を変える
-  - ミューテーションテストのツールPITの[`mutationThreshold`](https://pitest.org/quickstart/maven/)にミューテーションスコア（わざと入れたバグをテストが見つけた割合）の下限を書き、下回ったらビルドを落とす
+  - OWASP Dependency-Checkの[`failBuildOnCVSS`](https://dependency-check.github.io/DependencyCheck/dependency-check-maven/configuration.html)にCVSS（脆弱性の深刻度のスコア）のしきい値を書き、それ以上の脆弱性を持つ依存ライブラリがあればビルドを落とす
 - 規則を書き足す
-  - ConftestにRego（Conftestの規則を書く言語）で規則を書き足し、IaC（インフラを定義するコード）やCIの設定が決めた値どおりかを見る
+  - ArchUnitに[規則を書き足し](https://www.archunit.org/userguide/html/000_Index.html#_creating_custom_rules)、`@Transactional`を付けたメソッドが同じクラスの中から呼ばれていないかを見る。Springの既定の設定では、同じクラスの中からの呼び出しには[トランザクションが付かない](https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html#transaction-declarative-annotations-method-visibility)
 
-規則を書き足せばシステムで決めた値どおりかもチェックでき、既存ツールの使い道が広がります。132件の半分近くはこの使い方です。
+規則を書き足せばシステムで決めたルールどおりかもチェックでき、既存ツールの使い道が広がります。132件の半分近くはこの使い方です。
 
 既存ツールでチェックできる項目は設定チェックと静的解析が多くを占めます。チェックとテストの種類ごとにまとめると次のようになります。
 
 | 種類 | 何を見るか | ツール |
 |---|---|---|
-| 設定チェック | IaC、CI、コンテナ、リポジトリの設定 | [Conftest](https://www.conftest.dev/)、[Checkov](https://www.checkov.io/5.Policy%20Index/all.html)、[kube-linter](https://github.com/stackrox/kube-linter/blob/main/docs/generated/checks.md)、[hadolint](https://github.com/hadolint/hadolint#rules)、[zizmor](https://docs.zizmor.sh/audits/)、[GitHubのrulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets) |
+| 設定チェック | IaC（インフラを定義するコード）、CI、コンテナ、リポジトリの設定 | [Conftest](https://www.conftest.dev/)、[Checkov](https://www.checkov.io/5.Policy%20Index/all.html)、[kube-linter](https://github.com/stackrox/kube-linter/blob/main/docs/generated/checks.md)、[hadolint](https://github.com/hadolint/hadolint#rules)、[zizmor](https://docs.zizmor.sh/audits/)、[GitHubのrulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets) |
 | 静的解析 | コードの誤り、危険な書き方、書き方の規約 | [Error Prone](https://errorprone.info/bugpatterns)、[SpotBugs](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html)、[PMD](https://docs.pmd-code.org/latest/pmd_rules_java.html)、[Checkstyle](https://checkstyle.org/checks.html)、[Semgrep](https://docs.semgrep.dev/writing-rules/rule-syntax)、[ESLint](https://eslint.org/docs/latest/rules/) |
 | APIのチェック | コードが呼ぶAPIが決めた一覧どおりか | [forbiddenapis](https://github.com/policeman-tools/forbidden-apis)、[Nablarchの使用不許可APIチェックツール](https://github.com/nablarch/nablarch-unpublished-api-checker) |
 | アーキテクチャテスト | モジュールとレイヤーの依存関係 | [ArchUnit](https://www.archunit.org/userguide/html/000_Index.html) |

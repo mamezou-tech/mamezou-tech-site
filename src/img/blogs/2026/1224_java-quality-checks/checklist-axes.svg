@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" height="460" role="img" aria-label="チェックリスト453件を品質と開発対象ごとに数えた図。品質ではセキュリティが261件でもっとも多い。開発対象ではアプリケーション基盤が386件でもっとも多く、アプリケーションの機能が293件で続く">
-<title>チェックリスト453件を品質と開発対象ごとに数えた図。品質ではセキュリティが261件でもっとも多い。開発対象ではアプリケーション基盤が386件でもっとも多く、アプリケーションの機能が293件で続く</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" height="460" role="img" aria-label="チェックリスト453件を品質特性と開発対象ごとに数えた図。品質特性ではセキュリティが261件でもっとも多い。開発対象ではアプリケーション基盤が386件でもっとも多く、アプリケーションの機能が293件で続く">
+<title>チェックリスト453件を品質特性と開発対象ごとに数えた図。品質特性ではセキュリティが261件でもっとも多い。開発対象ではアプリケーション基盤が386件でもっとも多く、アプリケーションの機能が293件で続く</title>
 <style>
 text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
 .bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; } .tw { fill: #ffffff; }
@@ -10,9 +10,9 @@ text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif
 }
 </style>
 <rect class="bg" width="900" height="460"/>
-<text x="12" y="20" class="t1" font-size="15" font-weight="bold">チェックリスト453件を、品質と開発対象ごとに分けた数</text>
+<text x="12" y="20" class="t1" font-size="15" font-weight="bold">チェックリスト453件を、品質特性と開発対象ごとに分けた数</text>
 <text x="12" y="40" class="t2" font-size="12">1つの項目が2つ以上に当たる時はそれぞれに数える。バーの長さの縮尺は軸ごとに違う</text>
-<text x="12" y="72" class="t1" font-size="14" font-weight="bold">品質ごと</text>
+<text x="12" y="72" class="t1" font-size="14" font-weight="bold">品質特性ごと</text>
 <text x="170" y="98" class="t1" font-size="13" text-anchor="end">セキュリティ</text>
 <rect class="c0" x="180.0" y="84" width="640.0" height="18"/>
 <text x="826.0" y="98" class="t2" font-size="13">261</text>

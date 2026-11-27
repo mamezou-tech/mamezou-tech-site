@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 492" width="900" height="492" role="img" aria-label="チェックリスト453件を既存ツール、自作チェック、人で分ける見込みを品質と開発対象ごとに数えた図。人に残りそうな項目は品質ではアクセシビリティの13件と機能の正しさの10件が多く、開発対象ではアプリケーション基盤とアプリケーションの機能に29件ずつ残りそう。既存ツールで見られそうな割合はインフラ、開発基盤、運用基盤で大きい">
-<title>チェックリスト453件を既存ツール、自作チェック、人で分ける見込みを品質と開発対象ごとに数えた図。人に残りそうな項目は品質ではアクセシビリティの13件と機能の正しさの10件が多く、開発対象ではアプリケーション基盤とアプリケーションの機能に29件ずつ残りそう。既存ツールで見られそうな割合はインフラ、開発基盤、運用基盤で大きい</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 492" width="900" height="492" role="img" aria-label="チェックリスト453件を既存ツール、自作チェック、人で分ける見込みを品質特性と開発対象ごとに数えた図。人に残りそうな項目は品質特性ではアクセシビリティの13件と機能の正しさの10件が多く、開発対象ではアプリケーション基盤とアプリケーションの機能に29件ずつ残りそう。既存ツールで見られそうな割合はインフラ、開発基盤、運用基盤で大きい">
+<title>チェックリスト453件を既存ツール、自作チェック、人で分ける見込みを品質特性と開発対象ごとに数えた図。人に残りそうな項目は品質特性ではアクセシビリティの13件と機能の正しさの10件が多く、開発対象ではアプリケーション基盤とアプリケーションの機能に29件ずつ残りそう。既存ツールで見られそうな割合はインフラ、開発基盤、運用基盤で大きい</title>
 <style>
 text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif; }
 .bg { fill: #ffffff; } .t1 { fill: #1f2328; } .t2 { fill: #57606a; } .tw { fill: #ffffff; }
@@ -15,7 +15,7 @@ text { font-family: 'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif
 <rect class="c1" x="180" y="54" width="14" height="14" rx="2"/><text x="200" y="66" class="t1" font-size="13">既存ツール</text>
 <rect class="c2" x="320" y="54" width="14" height="14" rx="2"/><text x="340" y="66" class="t1" font-size="13">自作チェック</text>
 <rect class="c3" x="460" y="54" width="14" height="14" rx="2"/><text x="480" y="66" class="t1" font-size="13">人</text>
-<text x="12" y="104" class="t1" font-size="14" font-weight="bold">品質ごと</text>
+<text x="12" y="104" class="t1" font-size="14" font-weight="bold">品質特性ごと</text>
 <text x="170" y="130" class="t1" font-size="13" text-anchor="end">セキュリティ</text>
 <rect class="c1" x="180.0" y="116" width="156.9" height="18"/>
 <text x="258.5" y="130" class="tw" font-size="12" text-anchor="middle">64</text>

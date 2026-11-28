@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 460" width="760" height="460" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif" font-size="14" fill="#1f2328">
+<style>
+@media (prefers-color-scheme: dark) {
+  [fill="#0a3069"] { fill: #cae8ff }
+  [fill="#1f2328"] { fill: #e6edf3 }
+  [fill="#512a97"] { fill: #d2a8ff }
+  [fill="#57606a"] { fill: #9198a1 }
+  [fill="#ddf4ff"] { fill: #12263f }
+  [fill="#f6f8fa"] { fill: #161b22 }
+  [fill="#fbefff"] { fill: #221a33 }
+  [fill="#ffffff"] { fill: #0d1117 }
+  [stroke="#0969da"] { stroke: #4493f8 }
+  [stroke="#57606a"] { stroke: #9198a1 }
+  [stroke="#8250df"] { stroke: #ab7df8 }
+  [stroke="#d0d7de"] { stroke: #3d444d }
+  text[fill="#ffffff"], tspan[fill="#ffffff"] { fill: #ffffff }
+}
+</style>
+<rect width="760" height="460" fill="#ffffff"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker></defs>
+<rect x="10" y="10" width="740" height="232" rx="8" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="24" y="34" font-size="14" font-weight="bold">BMADのbuild</text>
+<rect x="52.0" y="50" width="104" height="22" fill="#ddf4ff" rx="11" stroke="#0969da" stroke-width="1.5"/>
+<text x="104.0" y="65.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#0a3069">AIエージェント</text>
+<rect x="28" y="80" width="152" height="60" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="104.0" y="115" text-anchor="middle" font-size="13">Intentを書く</text>
+<rect x="274.0" y="50" width="36" height="22" fill="#fbefff" rx="11" stroke="#8250df" stroke-width="1.5"/>
+<text x="292.0" y="65.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#512a97">人</text>
+<rect x="216" y="80" width="152" height="60" rx="6" fill="#fbefff" stroke="#8250df" stroke-width="1.5"/>
+<text x="292.0" y="106" text-anchor="middle" font-size="13">人が承認する</text>
+<text x="292.0" y="124" text-anchor="middle" font-size="13">（以後は変えない）</text>
+<line x1="180" y1="110.0" x2="214" y2="110.0" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="428.0" y="50" width="104" height="22" fill="#ddf4ff" rx="11" stroke="#0969da" stroke-width="1.5"/>
+<text x="480.0" y="65.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#0a3069">AIエージェント</text>
+<rect x="404" y="80" width="152" height="60" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="480.0" y="106" text-anchor="middle" font-size="13">AIエージェントが</text>
+<text x="480.0" y="124" text-anchor="middle" font-size="13">実装する</text>
+<line x1="368" y1="110.0" x2="402" y2="110.0" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="616.0" y="50" width="104" height="22" fill="#ddf4ff" rx="11" stroke="#0969da" stroke-width="1.5"/>
+<text x="668.0" y="65.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#0a3069">AIエージェント</text>
+<rect x="592" y="80" width="152" height="60" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="668.0" y="106" text-anchor="middle" font-size="13">AIレビューが実装を</text>
+<text x="668.0" y="124" text-anchor="middle" font-size="13">Intentと比べる</text>
+<line x1="556" y1="110.0" x2="590" y2="110.0" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M668.0,140 V170 H104.0 V143" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="386.0" y="192" text-anchor="middle" font-size="12" fill="#57606a">意図が足りない指摘（intent_gap）は、</text>
+<text x="386.0" y="209" text-anchor="middle" font-size="12" fill="#57606a">変更を戻して人が決め直す</text>
+<rect x="10" y="256" width="740" height="150" rx="8" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="24" y="280" font-size="14" font-weight="bold">AI-DLC</text>
+<rect x="52.0" y="296" width="104" height="22" fill="#ddf4ff" rx="11" stroke="#0969da" stroke-width="1.5"/>
+<text x="104.0" y="311.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#0a3069">AIエージェント</text>
+<rect x="28" y="326" width="152" height="60" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="104.0" y="361" text-anchor="middle" font-size="13">要件の文書を書く</text>
+<rect x="240.0" y="296" width="104" height="22" fill="#ddf4ff" rx="11" stroke="#0969da" stroke-width="1.5"/>
+<text x="292.0" y="311.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#0a3069">AIエージェント</text>
+<rect x="216" y="326" width="152" height="60" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="292.0" y="361" text-anchor="middle" font-size="13">要件をAIレビューする</text>
+<line x1="180" y1="356.0" x2="214" y2="356.0" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="372" y1="356.0" x2="400" y2="356.0" stroke="#57606a" stroke-width="1.5" stroke-dasharray="3 3"/>
+<rect x="404" y="318" width="328" height="76" rx="6" fill="#ffffff" stroke="#0969da" stroke-width="1"/>
+<text x="418" y="344" font-size="13">要件ごとに、なぜ要るのかを、使う人の必要や</text>
+<text x="418" y="364" font-size="13">業務の価値までさかのぼって確かめる</text>
+<rect x="20.0" y="424" width="104" height="22" fill="#ddf4ff" rx="11" stroke="#0969da" stroke-width="1.5"/>
+<text x="72" y="439.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#0a3069">AIエージェント</text>
+<text x="130" y="439" font-size="12">プロンプトに沿ってする</text>
+<rect x="312.0" y="424" width="36" height="22" fill="#fbefff" rx="11" stroke="#8250df" stroke-width="1.5"/>
+<text x="330" y="439.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#512a97">人</text>
+<text x="354" y="439" font-size="12">人が決める</text>
+</svg>

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 426" width="760" height="426" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif" font-size="14" fill="#1f2328">
+<style>
+@media (prefers-color-scheme: dark) {
+  [fill="#0969da"] { fill: #4493f8 }
+  [fill="#1f2328"] { fill: #e6edf3 }
+  [fill="#57606a"] { fill: #9198a1 }
+  [fill="#8250df"] { fill: #ab7df8 }
+  [fill="#bc4c00"] { fill: #f0883e }
+  [fill="#ddf4ff"] { fill: #12263f }
+  [fill="#fbefff"] { fill: #221a33 }
+  [fill="#fff1e5"] { fill: #2b1d12 }
+  [stroke="#0969da"] { stroke: #4493f8 }
+  [stroke="#57606a"] { stroke: #9198a1 }
+  [stroke="#8250df"] { stroke: #ab7df8 }
+  [stroke="#bc4c00"] { stroke: #f0883e }
+  [stroke="#d0d7de"] { stroke: #3d444d }
+  [fill="#ffffff"] { fill: #0d1117 }
+  text[fill="#ffffff"], tspan[fill="#ffffff"] { fill: #ffffff }
+}
+</style>
+<rect width="760" height="426" fill="#ffffff"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker></defs>
+<rect x="132.0" y="12" width="196.0" height="34" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="230.0" y="34" text-anchor="middle" font-size="14" font-weight="bold" fill="#0969da">変える前</text>
+<rect x="348.0" y="12" width="196.0" height="34" rx="6" fill="#fbefff" stroke="#8250df" stroke-width="1.5"/>
+<text x="446.0" y="34" text-anchor="middle" font-size="14" font-weight="bold" fill="#8250df">変える</text>
+<line x1="328.0" y1="29" x2="346.0" y2="29" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="564.0" y="12" width="196.0" height="34" rx="6" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.5"/>
+<text x="662.0" y="34" text-anchor="middle" font-size="14" font-weight="bold" fill="#bc4c00">変えた後</text>
+<line x1="544.0" y1="29" x2="562.0" y2="29" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="12" y1="54" x2="748" y2="54" stroke="#d0d7de" stroke-width="1"/>
+<text x="12" y="88.0" font-size="14" font-weight="bold">Spec Kit</text>
+<text x="12" y="105.0" font-size="12" fill="#57606a">（不具合の拡張）</text>
+<rect x="564.0" y="60" width="196.0" height="60" rx="6" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.5"/>
+<text x="662.0" y="86.0" text-anchor="middle" font-size="13">変えたモジュールの</text>
+<text x="662.0" y="104.0" text-anchor="middle" font-size="13">テスト一式を流す</text>
+<line x1="12" y1="128" x2="748" y2="128" stroke="#d0d7de" stroke-width="1"/>
+<text x="12" y="162.0" font-size="14" font-weight="bold">Kiro</text>
+<text x="12" y="179.0" font-size="12" fill="#57606a">（不具合の仕様）</text>
+<rect x="564.0" y="134" width="196.0" height="60" rx="6" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.5"/>
+<text x="662.0" y="160.0" text-anchor="middle" font-size="13">変えてはいけない振る舞いを</text>
+<text x="662.0" y="178.0" text-anchor="middle" font-size="13">プロパティベーステストで見る</text>
+<line x1="12" y1="202" x2="748" y2="202" stroke="#d0d7de" stroke-width="1"/>
+<text x="12" y="236.0" font-size="14" font-weight="bold">OpenSpec</text>
+<text x="12" y="253.0" font-size="12" fill="#57606a">（verify）</text>
+<rect x="564.0" y="208" width="196.0" height="60" rx="6" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.5"/>
+<text x="662.0" y="234.0" text-anchor="middle" font-size="13">テストは流さない</text>
+<text x="662.0" y="252.0" text-anchor="middle" font-size="13">テストがあるかを見る</text>
+<line x1="12" y1="276" x2="748" y2="276" stroke="#d0d7de" stroke-width="1"/>
+<text x="12" y="304.0" font-size="14" font-weight="bold">BMAD</text>
+<text x="12" y="321.0" font-size="12" fill="#57606a">（TEAのガイド）</text>
+<text x="18" y="338.0" font-size="12" fill="#57606a">人が進める手順</text>
+<rect x="132.0" y="282" width="196.0" height="64" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="230.0" y="310.0" text-anchor="middle" font-size="13">関係するテスト一式を流し、</text>
+<text x="230.0" y="328.0" text-anchor="middle" font-size="13">結果を基準として記録する</text>
+<rect x="564.0" y="282" width="196.0" height="64" rx="6" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.5"/>
+<text x="662.0" y="310.0" text-anchor="middle" font-size="13">同じ一式を流し直して</text>
+<text x="662.0" y="328.0" text-anchor="middle" font-size="13">基準と比べる</text>
+<line x1="12" y1="354" x2="748" y2="354" stroke="#d0d7de" stroke-width="1"/>
+<text x="12" y="382.0" font-size="14" font-weight="bold">AI-DLC</text>
+<text x="12" y="399.0" font-size="12" fill="#57606a">（ガイド）</text>
+<rect x="132.0" y="360" width="196.0" height="52" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="230.0" y="382.0" text-anchor="middle" font-size="13">テストを全部流し、</text>
+<text x="230.0" y="400.0" text-anchor="middle" font-size="13">結果を基準として記録する</text>
+<rect x="564.0" y="360" width="196.0" height="52" rx="6" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.5"/>
+<text x="662.0" y="382.0" text-anchor="middle" font-size="13">テストを全部流し直して</text>
+<text x="662.0" y="400.0" text-anchor="middle" font-size="13">基準と比べる</text>
+</svg>

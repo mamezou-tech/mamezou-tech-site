@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 292" width="760" height="292" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic',Meiryo,sans-serif" font-size="14" fill="#1f2328">
+<style>
+@media (prefers-color-scheme: dark) {
+  [fill="#0969da"] { fill: #4493f8 }
+  [fill="#1f2328"] { fill: #e6edf3 }
+  [fill="#ddf4ff"] { fill: #12263f }
+  [fill="#f6f8fa"] { fill: #161b22 }
+  [fill="#ffffff"] { fill: #0d1117 }
+  [stroke="#0969da"] { stroke: #4493f8 }
+  [stroke="#57606a"] { stroke: #9198a1 }
+}
+</style>
+<rect width="760" height="292" fill="#ffffff"/>
+<rect x="12" y="12" width="236" height="56" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="130.0" y="35" text-anchor="middle" font-size="14" font-weight="bold" fill="#0969da">既存のシステム向けの</text>
+<text x="130.0" y="56" text-anchor="middle" font-size="14" font-weight="bold" fill="#0969da">手順がある</text>
+<rect x="272" y="12" width="476" height="56" rx="6" fill="#f6f8fa" stroke="#57606a" stroke-width="1.5"/>
+<text x="510.0" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#1f2328">新しく作るときと同じ手順で進む</text>
+<rect x="12" y="80" width="236" height="200" rx="6" fill="#ffffff" stroke="#0969da" stroke-width="1.5"/>
+<text x="26" y="106" font-size="14" font-weight="bold">AI-DLC</text>
+<text x="26" y="130" font-size="13">先にコード全体を読み、</text>
+<text x="26" y="150" font-size="13">アーキテクチャやAPIなどの</text>
+<text x="26" y="170" font-size="13">文書を作り、要件を決める</text>
+<text x="26" y="190" font-size="13">ときに使う</text>
+<rect x="272" y="80" width="230" height="88" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+<text x="286" y="106" font-size="14" font-weight="bold">OpenSpec（propose）</text>
+<text x="286" y="130" font-size="13">変更のたびに、提案を書く前に</text>
+<text x="286" y="150" font-size="13">関係する実装とテストを読む</text>
+<rect x="518" y="80" width="230" height="88" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+<text x="532" y="106" font-size="14" font-weight="bold">BMAD（build）</text>
+<text x="532" y="130" font-size="13">変更のたびに、仕様を書く前に</text>
+<text x="532" y="150" font-size="13">コードを調べ、変えないものを書く</text>
+<rect x="272" y="180" width="230" height="100" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+<text x="286" y="204" font-size="14" font-weight="bold">Kiro</text>
+<text x="286" y="226" font-size="13">仕様は新しく作るときと同じ手順</text>
+<text x="286" y="244" font-size="13">仕様を作らないPlanモードでは</text>
+<text x="286" y="262" font-size="13">既存のコードを読む</text>
+<rect x="518" y="180" width="230" height="100" rx="6" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+<text x="532" y="206" font-size="14" font-weight="bold">Spec Kit</text>
+<text x="532" y="230" font-size="13">仕様を書く前には</text>
+<text x="532" y="250" font-size="13">コードを読まない</text>
+</svg>
